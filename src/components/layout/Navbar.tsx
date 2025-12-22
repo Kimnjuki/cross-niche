@@ -18,6 +18,7 @@ const navLinks = [
   { href: '/gaming', label: 'Play', color: 'text-gaming' },
   { href: '/reviews', label: 'Reviews', color: 'text-foreground' },
   { href: '/buying-guides', label: 'Buying Guides', color: 'text-foreground' },
+  { href: '/tools', label: 'Tools', color: 'text-foreground' },
   { href: '/guides', label: 'Guides', color: 'text-foreground' },
   { href: '/tutorials', label: 'Tutorials', color: 'text-foreground' },
   { href: '/downloads', label: 'Downloads', color: 'text-foreground' },
