@@ -27,6 +27,10 @@ import MitigationGuide from "./pages/MitigationGuide";
 import AIEditor from "./pages/AIEditor";
 import SecurityScore from "./pages/SecurityScore";
 import Disclosure from "./pages/Disclosure";
+import ProductReview from "./pages/ProductReview";
+import ProductComparison from "./pages/ProductComparison";
+import ProductReviews from "./pages/ProductReviews";
+import BuyingGuides from "./pages/BuyingGuides";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -67,6 +71,11 @@ const App = () => (
             <Route path="/editor" element={<AIEditor />} />
             <Route path="/security-score" element={<SecurityScore />} />
             <Route path="/disclosure" element={<Disclosure />} />
+            <Route path="/reviews" element={<ProductReviews />} />
+            <Route path="/review/:id" element={<ProductReview />} />
+            <Route path="/compare/:id" element={<ProductComparison />} />
+            <Route path="/buying-guides" element={<BuyingGuides />} />
+            <Route path="/buying-guide/:id" element={<BuyingGuides />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
