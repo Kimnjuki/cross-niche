@@ -278,9 +278,15 @@ export default function BuyingGuides() {
                       )}
                     </div>
 
-                    <Button variant="outline" className="w-full group-hover:bg-primary group-hover:text-primary-foreground">
-                      Read Guide
-                      <ArrowRight className="h-4 w-4 ml-2" />
+                    <Button 
+                      variant="outline" 
+                      className="w-full group-hover:bg-primary group-hover:text-primary-foreground"
+                      asChild
+                    >
+                      <Link to={`/buying-guide/${guide.id}`}>
+                        Read Guide
+                        <ArrowRight className="h-4 w-4 ml-2" />
+                      </Link>
                     </Button>
                   </div>
                 </CardContent>

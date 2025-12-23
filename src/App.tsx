@@ -31,6 +31,7 @@ import ProductReview from "./pages/ProductReview";
 import ProductComparison from "./pages/ProductComparison";
 import ProductReviews from "./pages/ProductReviews";
 import BuyingGuides from "./pages/BuyingGuides";
+import BuyingGuideDetail from "./pages/BuyingGuideDetail";
 import Tools from "./pages/Tools";
 import NotFound from "./pages/NotFound";
 
@@ -76,7 +77,7 @@ const App = () => (
             <Route path="/review/:id" element={<ProductReview />} />
             <Route path="/compare/:id" element={<ProductComparison />} />
             <Route path="/buying-guides" element={<BuyingGuides />} />
-            <Route path="/buying-guide/:id" element={<BuyingGuides />} />
+            <Route path="/buying-guide/:id" element={<BuyingGuideDetail />} />
             <Route path="/tools" element={<Tools />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
