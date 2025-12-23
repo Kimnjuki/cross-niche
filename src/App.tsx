@@ -37,6 +37,10 @@ import PSUCalculator from "./pages/tools/PSUCalculator";
 import SecurityRiskCalculator from "./pages/tools/SecurityRiskCalculator";
 import FPSEstimator from "./pages/tools/FPSEstimator";
 import PasswordGenerator from "./pages/tools/PasswordGenerator";
+import CompatibilityChecker from "./pages/tools/CompatibilityChecker";
+import StorageCalculator from "./pages/tools/StorageCalculator";
+import FileSizeConverter from "./pages/tools/FileSizeConverter";
+import PricePerGB from "./pages/tools/PricePerGB";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -87,6 +91,10 @@ const App = () => (
             <Route path="/tools/security-risk" element={<SecurityRiskCalculator />} />
             <Route path="/tools/fps-estimator" element={<FPSEstimator />} />
             <Route path="/tools/password-generator" element={<PasswordGenerator />} />
+            <Route path="/tools/compatibility" element={<CompatibilityChecker />} />
+            <Route path="/tools/storage" element={<StorageCalculator />} />
+            <Route path="/tools/file-converter" element={<FileSizeConverter />} />
+            <Route path="/tools/price-per-gb" element={<PricePerGB />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
