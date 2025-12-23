@@ -11,6 +11,7 @@ import Tech from "./pages/Tech";
 import Security from "./pages/Security";
 import Gaming from "./pages/Gaming";
 import Guides from "./pages/Guides";
+import GuideDetail from "./pages/GuideDetail";
 import Tutorials from "./pages/Tutorials";
 import TutorialDetail from "./pages/TutorialDetail";
 import Downloads from "./pages/Downloads";
@@ -65,6 +66,7 @@ const App = () => (
             <Route path="/security" element={<Security />} />
             <Route path="/gaming" element={<Gaming />} />
             <Route path="/guides" element={<Guides />} />
+            <Route path="/guides/:id" element={<GuideDetail />} />
             <Route path="/tutorials" element={<Tutorials />} />
             <Route path="/tutorial/:id" element={<TutorialDetail />} />
             <Route path="/downloads" element={<Downloads />} />

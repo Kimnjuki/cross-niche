@@ -7,7 +7,8 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { BookOpen, Wrench, Search, ExternalLink, Clock, AlertTriangle } from 'lucide-react';
+import { BookOpen, Wrench, Search, ExternalLink, Clock, AlertTriangle, ArrowRight } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import { cn } from '@/lib/utils';
 
 const difficultyColors = {
@@ -89,31 +90,37 @@ export default function Guides() {
             {/* Guides Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {filteredGuides.map((guide) => (
-                <Card key={guide.id} className="group hover:border-primary/50 transition-colors">
-                  <CardHeader>
-                    <div className="flex gap-2 mb-2">
-                      <Badge className={cn(difficultyColors[guide.difficulty], 'capitalize')}>
-                        {guide.difficulty}
-                      </Badge>
-                      <Badge className={nicheColors[guide.niche]} variant="outline">
-                        {guide.niche}
-                      </Badge>
-                    </div>
-                    <CardTitle className="font-display text-lg group-hover:text-primary transition-colors">
-                      {guide.title}
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-muted-foreground text-sm mb-4">{guide.description}</p>
-                    <div className="flex items-center gap-4 text-sm text-muted-foreground">
-                      <span className="flex items-center gap-1">
-                        <Clock className="h-4 w-4" />
-                        {guide.readTime} min
-                      </span>
-                      <span>{guide.platform.join(', ')}</span>
-                    </div>
-                  </CardContent>
-                </Card>
+                <Link key={guide.id} to={`/guides/${guide.id}`}>
+                  <Card className="group hover:border-primary/50 transition-all hover:shadow-lg h-full flex flex-col">
+                    <CardHeader>
+                      <div className="flex gap-2 mb-2">
+                        <Badge className={cn(difficultyColors[guide.difficulty], 'capitalize')}>
+                          {guide.difficulty}
+                        </Badge>
+                        <Badge className={nicheColors[guide.niche]} variant="outline">
+                          {guide.niche}
+                        </Badge>
+                      </div>
+                      <CardTitle className="font-display text-lg group-hover:text-primary transition-colors">
+                        {guide.title}
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent className="flex-1 flex flex-col">
+                      <p className="text-muted-foreground text-sm mb-4 flex-1">{guide.description}</p>
+                      <div className="flex items-center justify-between text-sm text-muted-foreground mb-4">
+                        <span className="flex items-center gap-1">
+                          <Clock className="h-4 w-4" />
+                          {guide.readTime} min
+                        </span>
+                        <span>{guide.platform.join(', ')}</span>
+                      </div>
+                      <Button variant="outline" className="w-full group-hover:bg-primary group-hover:text-primary-foreground">
+                        Read Guide
+                        <ArrowRight className="h-4 w-4 ml-2" />
+                      </Button>
+                    </CardContent>
+                  </Card>
+                </Link>
               ))}
             </div>
           </TabsContent>
