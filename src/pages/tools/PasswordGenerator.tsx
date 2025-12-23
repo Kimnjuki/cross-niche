@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Layout } from '@/components/layout/Layout';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -67,9 +67,9 @@ export default function PasswordGenerator() {
   const strength = getPasswordStrength();
 
   // Generate password on mount
-  useState(() => {
+  useEffect(() => {
     if (!password) generatePassword();
-  });
+  }, []);
 
   return (
     <Layout>
