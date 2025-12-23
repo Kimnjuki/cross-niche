@@ -16,8 +16,178 @@ import {
 import { cn } from '@/lib/utils';
 import type { BuyingGuide } from '@/types/products';
 
-// Mock buying guides
+// Mock buying guides - Based on most searched topics on the internet
 const mockGuides: BuyingGuide[] = [
+  {
+    id: 'best-smartphone-2024',
+    title: 'Best Smartphones 2024: iPhone vs Android Buying Guide',
+    description: 'Complete guide to choosing the best smartphone in 2024. Compare iPhone, Samsung, Google Pixel, and more. Find the perfect phone for your needs and budget.',
+    category: 'Smartphones',
+    niche: 'tech',
+    sections: [
+      {
+        title: 'iPhone vs Android: Which is Right for You?',
+        content: 'Understanding the differences between iOS and Android to make the right choice for your needs.',
+      },
+      {
+        title: 'Budget Range ($200-$400)',
+        content: 'Best value smartphones for budget-conscious buyers.',
+      },
+      {
+        title: 'Mid-Range ($400-$800)',
+        content: 'Sweet spot for most users with excellent features.',
+      },
+      {
+        title: 'Flagship ($800-$1200)',
+        content: 'Premium smartphones with cutting-edge features.',
+      },
+    ],
+    recommendedProducts: ['iphone-15-pro', 'galaxy-s24-ultra', 'pixel-8-pro'],
+    budgetRanges: [
+      { min: 200, max: 400, label: 'Budget', recommendedProducts: ['pixel-7a', 'galaxy-a54'] },
+      { min: 400, max: 800, label: 'Mid-Range', recommendedProducts: ['pixel-8', 'galaxy-s23'] },
+      { min: 800, max: 1200, label: 'Flagship', recommendedProducts: ['iphone-15-pro', 'galaxy-s24-ultra'] },
+    ],
+    publishedAt: '2024-12-19',
+    updatedAt: '2024-12-20',
+    readTime: 25,
+  },
+  {
+    id: 'best-laptop-students-2024',
+    title: 'Best Laptops for Students 2024: Complete Buying Guide',
+    description: 'Find the perfect student laptop for remote learning, note-taking, and productivity. Compare budget, mid-range, and premium options.',
+    category: 'Laptops',
+    niche: 'tech',
+    sections: [
+      {
+        title: 'What Students Need in a Laptop',
+        content: 'Essential features and considerations for student laptops.',
+      },
+      {
+        title: 'Budget Range ($300-$600)',
+        content: 'Affordable laptops perfect for students on a budget.',
+      },
+      {
+        title: 'Mid-Range ($600-$1000)',
+        content: 'Best value laptops with excellent performance.',
+      },
+      {
+        title: 'Premium ($1000-$2000)',
+        content: 'High-performance laptops for demanding students.',
+      },
+    ],
+    recommendedProducts: ['macbook-air-m2', 'dell-xps-13', 'surface-laptop-5'],
+    budgetRanges: [
+      { min: 300, max: 600, label: 'Budget', recommendedProducts: ['chromebook', 'hp-pavilion-15'] },
+      { min: 600, max: 1000, label: 'Mid-Range', recommendedProducts: ['macbook-air-m2', 'dell-xps-13'] },
+      { min: 1000, max: 2000, label: 'Premium', recommendedProducts: ['macbook-pro-14', 'surface-laptop-studio'] },
+    ],
+    publishedAt: '2024-12-18',
+    updatedAt: '2024-12-20',
+    readTime: 22,
+  },
+  {
+    id: 'best-wireless-earbuds-2024',
+    title: 'Best Wireless Earbuds 2024: AirPods vs Alternatives',
+    description: 'Complete guide to choosing the best wireless earbuds. Compare AirPods, Samsung Galaxy Buds, Sony, and more.',
+    category: 'Audio',
+    niche: 'tech',
+    sections: [
+      {
+        title: 'Key Features to Consider',
+        content: 'Sound quality, battery life, fit, and comfort considerations.',
+      },
+      {
+        title: 'Budget Range ($50-$100)',
+        content: 'Affordable earbuds with great value.',
+      },
+      {
+        title: 'Mid-Range ($100-$200)',
+        content: 'Best balance of features and price.',
+      },
+      {
+        title: 'Premium ($200+)',
+        content: 'Top-tier earbuds with advanced features.',
+      },
+    ],
+    recommendedProducts: ['airpods-pro-2', 'sony-wf-1000xm5', 'galaxy-buds-2-pro'],
+    budgetRanges: [
+      { min: 50, max: 100, label: 'Budget', recommendedProducts: ['anker-liberty-4', 'galaxy-buds-fe'] },
+      { min: 100, max: 200, label: 'Mid-Range', recommendedProducts: ['airpods-3', 'sony-wf-c700n'] },
+      { min: 200, max: 400, label: 'Premium', recommendedProducts: ['airpods-pro-2', 'sony-wf-1000xm5'] },
+    ],
+    publishedAt: '2024-12-17',
+    updatedAt: '2024-12-19',
+    readTime: 18,
+  },
+  {
+    id: 'best-gaming-console-2024',
+    title: 'Best Gaming Consoles 2024: PlayStation vs Xbox vs Switch',
+    description: 'Complete guide to choosing the best gaming console. Compare PlayStation 5, Xbox Series X/S, and Nintendo Switch.',
+    category: 'Gaming Consoles',
+    niche: 'gaming',
+    sections: [
+      {
+        title: 'Console Comparison Overview',
+        content: 'Understanding the differences between major console platforms.',
+      },
+      {
+        title: 'PlayStation 5 Options',
+        content: 'PS5 Disc vs Digital Edition comparison.',
+      },
+      {
+        title: 'Xbox Series X/S Options',
+        content: 'Xbox Series X vs Series S and Game Pass value.',
+      },
+      {
+        title: 'Nintendo Switch Options',
+        content: 'Switch OLED vs Switch vs Switch Lite comparison.',
+      },
+    ],
+    recommendedProducts: ['ps5-disc', 'xbox-series-x', 'switch-oled'],
+    budgetRanges: [
+      { min: 200, max: 300, label: 'Budget', recommendedProducts: ['switch-lite', 'xbox-series-s'] },
+      { min: 300, max: 400, label: 'Mid-Range', recommendedProducts: ['switch-oled', 'ps5-digital'] },
+      { min: 400, max: 600, label: 'Premium', recommendedProducts: ['ps5-disc', 'xbox-series-x'] },
+    ],
+    publishedAt: '2024-12-16',
+    updatedAt: '2024-12-19',
+    readTime: 20,
+  },
+  {
+    id: 'best-smartwatch-2024',
+    title: 'Best Smartwatches 2024: Apple Watch vs Samsung vs Fitbit',
+    description: 'Complete guide to choosing the best smartwatch. Compare Apple Watch, Samsung Galaxy Watch, Fitbit, and more.',
+    category: 'Wearables',
+    niche: 'tech',
+    sections: [
+      {
+        title: 'Smartwatch vs Fitness Tracker',
+        content: 'Understanding the differences and which is right for you.',
+      },
+      {
+        title: 'Budget Range ($100-$200)',
+        content: 'Affordable smartwatches and fitness trackers.',
+      },
+      {
+        title: 'Mid-Range ($200-$400)',
+        content: 'Best balance of features and price.',
+      },
+      {
+        title: 'Premium ($400+)',
+        content: 'Top-tier smartwatches with advanced features.',
+      },
+    ],
+    recommendedProducts: ['apple-watch-9', 'galaxy-watch-6', 'garmin-venu-3'],
+    budgetRanges: [
+      { min: 100, max: 200, label: 'Budget', recommendedProducts: ['fitbit-charge-6', 'galaxy-watch-4'] },
+      { min: 200, max: 400, label: 'Mid-Range', recommendedProducts: ['apple-watch-se', 'galaxy-watch-6'] },
+      { min: 400, max: 1000, label: 'Premium', recommendedProducts: ['apple-watch-9', 'apple-watch-ultra-2'] },
+    ],
+    publishedAt: '2024-12-15',
+    updatedAt: '2024-12-18',
+    readTime: 19,
+  },
   {
     id: 'best-gaming-gpu-2024',
     title: 'Best Gaming GPUs 2024: Complete Buying Guide',
@@ -166,6 +336,176 @@ const mockGuides: BuyingGuide[] = [
     publishedAt: '2024-12-10',
     updatedAt: '2024-12-15',
     readTime: 18,
+  },
+  {
+    id: 'best-gaming-chair-2024',
+    title: 'Best Gaming Chairs 2024: Ergonomic Comfort Guide',
+    description: 'Complete guide to choosing the best gaming chair. Compare ergonomic designs, comfort features, and price ranges for long gaming sessions.',
+    category: 'Gaming Accessories',
+    niche: 'gaming',
+    sections: [
+      {
+        title: 'Why You Need a Gaming Chair',
+        content: 'Benefits of proper ergonomic support for gaming.',
+      },
+      {
+        title: 'Budget Range ($100-$200)',
+        content: 'Affordable gaming chairs with good value.',
+      },
+      {
+        title: 'Mid-Range ($200-$400)',
+        content: 'Best balance of comfort and features.',
+      },
+      {
+        title: 'Premium ($400+)',
+        content: 'Top-tier ergonomic gaming chairs.',
+      },
+    ],
+    recommendedProducts: ['secretlab-titan', 'herman-miller-logitech', 'noblechairs-hero'],
+    budgetRanges: [
+      { min: 100, max: 200, label: 'Budget', recommendedProducts: ['gtracing-pro', 'respawn-110'] },
+      { min: 200, max: 400, label: 'Mid-Range', recommendedProducts: ['secretlab-titan', 'noblechairs-hero'] },
+      { min: 400, max: 2000, label: 'Premium', recommendedProducts: ['herman-miller-embody', 'steelcase-gesture'] },
+    ],
+    publishedAt: '2024-12-14',
+    updatedAt: '2024-12-17',
+    readTime: 16,
+  },
+  {
+    id: 'best-vpn-2024',
+    title: 'Best VPN 2024: Complete Security & Privacy Guide',
+    description: 'Comprehensive guide to choosing the best VPN service. Compare NordVPN, ExpressVPN, Surfshark, and more for privacy and security.',
+    category: 'Security Software',
+    niche: 'security',
+    sections: [
+      {
+        title: 'Why You Need a VPN',
+        content: 'Privacy protection and security benefits explained.',
+      },
+      {
+        title: 'Budget Range ($0-$5/month)',
+        content: 'Free and affordable VPN options.',
+      },
+      {
+        title: 'Mid-Range ($5-$10/month)',
+        content: 'Best value VPN services with excellent features.',
+      },
+      {
+        title: 'Premium ($10+/month)',
+        content: 'Top-tier VPN services with advanced security.',
+      },
+    ],
+    recommendedProducts: ['nordvpn', 'expressvpn', 'surfshark'],
+    budgetRanges: [
+      { min: 0, max: 5, label: 'Budget', recommendedProducts: ['protonvpn-free', 'surfshark'] },
+      { min: 5, max: 10, label: 'Mid-Range', recommendedProducts: ['nordvpn', 'expressvpn'] },
+      { min: 10, max: 15, label: 'Premium', recommendedProducts: ['expressvpn-premium', 'nordvpn-premium'] },
+    ],
+    publishedAt: '2024-12-13',
+    updatedAt: '2024-12-16',
+    readTime: 17,
+  },
+  {
+    id: 'best-gaming-monitor-2024',
+    title: 'Best Gaming Monitors 2024: 4K, 1440p, and 1080p Guide',
+    description: 'Complete guide to choosing the best gaming monitor. Compare refresh rates, resolutions, and panel types for competitive and immersive gaming.',
+    category: 'Monitors',
+    niche: 'gaming',
+    sections: [
+      {
+        title: 'Understanding Monitor Specifications',
+        content: 'Resolution, refresh rate, and response time explained.',
+      },
+      {
+        title: 'Budget Range ($150-$300)',
+        content: 'Affordable gaming monitors with good performance.',
+      },
+      {
+        title: 'Mid-Range ($300-$600)',
+        content: 'Best value monitors for most gamers.',
+      },
+      {
+        title: 'Premium ($600+)',
+        content: 'Top-tier monitors with cutting-edge features.',
+      },
+    ],
+    recommendedProducts: ['lg-27gp850', 'asus-rog-pg279qm', 'alienware-aw3423dw'],
+    budgetRanges: [
+      { min: 150, max: 300, label: 'Budget', recommendedProducts: ['asus-tuf-vg249q', 'acer-nitro-xf243y'] },
+      { min: 300, max: 600, label: 'Mid-Range', recommendedProducts: ['lg-27gp850', 'samsung-odyssey-g7'] },
+      { min: 600, max: 2000, label: 'Premium', recommendedProducts: ['asus-rog-pg32ucdm', 'alienware-aw3423dw'] },
+    ],
+    publishedAt: '2024-12-12',
+    updatedAt: '2024-12-15',
+    readTime: 21,
+  },
+  {
+    id: 'best-wifi-router-2024',
+    title: 'Best Wi-Fi Routers 2024: Mesh vs Traditional Guide',
+    description: 'Complete guide to choosing the best Wi-Fi router. Compare mesh systems, traditional routers, and gaming routers for your home network.',
+    category: 'Networking',
+    niche: 'tech',
+    sections: [
+      {
+        title: 'Router Types Explained',
+        content: 'Traditional routers vs mesh systems vs gaming routers.',
+      },
+      {
+        title: 'Budget Range ($50-$150)',
+        content: 'Affordable routers with good performance.',
+      },
+      {
+        title: 'Mid-Range ($150-$400)',
+        content: 'Best value routers for most homes.',
+      },
+      {
+        title: 'Premium ($400+)',
+        content: 'Top-tier routers with advanced features.',
+      },
+    ],
+    recommendedProducts: ['asus-rt-ax86u', 'eero-6-plus', 'asus-rog-gt-ax11000'],
+    budgetRanges: [
+      { min: 50, max: 150, label: 'Budget', recommendedProducts: ['tp-link-ax21', 'asus-rt-ax55'] },
+      { min: 150, max: 400, label: 'Mid-Range', recommendedProducts: ['asus-rt-ax86u', 'eero-6-plus'] },
+      { min: 400, max: 2000, label: 'Premium', recommendedProducts: ['asus-rog-gt-ax11000', 'netgear-orbi-rbke963'] },
+    ],
+    publishedAt: '2024-12-11',
+    updatedAt: '2024-12-14',
+    readTime: 18,
+  },
+  {
+    id: 'best-gaming-mouse-2024',
+    title: 'Best Gaming Mice 2024: Wired vs Wireless Guide',
+    description: 'Complete guide to choosing the best gaming mouse. Compare wired and wireless options, sensor types, and DPI settings for FPS, MOBA, and MMO gaming.',
+    category: 'Gaming Accessories',
+    niche: 'gaming',
+    sections: [
+      {
+        title: 'Wired vs Wireless Gaming Mice',
+        content: 'Understanding the differences and which is right for you.',
+      },
+      {
+        title: 'Budget Range ($20-$50)',
+        content: 'Affordable gaming mice with good performance.',
+      },
+      {
+        title: 'Mid-Range ($50-$100)',
+        content: 'Best balance of features and price.',
+      },
+      {
+        title: 'Premium ($100+)',
+        content: 'Top-tier gaming mice with advanced features.',
+      },
+    ],
+    recommendedProducts: ['logitech-g-pro-superlight', 'razer-viper-v2-pro', 'razer-deathadder-v3-pro'],
+    budgetRanges: [
+      { min: 20, max: 50, label: 'Budget', recommendedProducts: ['logitech-g203', 'razer-deathadder-essential'] },
+      { min: 50, max: 100, label: 'Mid-Range', recommendedProducts: ['steelseries-aerox-5', 'logitech-g-pro-superlight'] },
+      { min: 100, max: 200, label: 'Premium', recommendedProducts: ['finalmouse-starlight', 'razer-deathadder-v3-pro'] },
+    ],
+    publishedAt: '2024-12-10',
+    updatedAt: '2024-12-13',
+    readTime: 17,
   },
 ];
 
