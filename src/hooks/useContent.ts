@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { supabase } from '@/integrations/supabase/client';
+import { supabase, isSupabaseConfigured } from '@/integrations/supabase/client';
 import type { Tables } from '@/integrations/supabase/types';
 
 export type ContentItem = Tables<'feed_content_view'>;
@@ -11,6 +11,10 @@ export function usePublishedContent(limit = 20) {
   return useQuery({
     queryKey: ['content', 'published', limit],
     queryFn: async () => {
+      if (!isSupabaseConfigured()) {
+        return [] as ContentItem[];
+      }
+      
       const { data, error } = await supabase
         .from('feed_content_view')
         .select('*')
@@ -18,7 +22,10 @@ export function usePublishedContent(limit = 20) {
         .order('published_at', { ascending: false })
         .limit(limit);
       
-      if (error) throw error;
+      if (error) {
+        console.error('Error fetching published content:', error);
+        return [] as ContentItem[];
+      }
       return data as ContentItem[];
     },
   });
@@ -29,6 +36,10 @@ export function useContentByFeed(feedSlug: string, limit = 20) {
   return useQuery({
     queryKey: ['content', 'feed', feedSlug, limit],
     queryFn: async () => {
+      if (!isSupabaseConfigured()) {
+        return [] as ContentItem[];
+      }
+      
       const { data, error } = await supabase
         .from('feed_content_view')
         .select('*')
@@ -37,7 +48,10 @@ export function useContentByFeed(feedSlug: string, limit = 20) {
         .order('published_at', { ascending: false })
         .limit(limit);
       
-      if (error) throw error;
+      if (error) {
+        console.error('Error fetching content by feed:', error);
+        return [] as ContentItem[];
+      }
       return data as ContentItem[];
     },
   });
@@ -48,6 +62,10 @@ export function useContentByNiche(nicheName: string, limit = 20) {
   return useQuery({
     queryKey: ['content', 'niche', nicheName, limit],
     queryFn: async () => {
+      if (!isSupabaseConfigured()) {
+        return [] as ContentItem[];
+      }
+      
       const { data, error } = await supabase
         .from('feed_content_view')
         .select('*')
@@ -56,7 +74,10 @@ export function useContentByNiche(nicheName: string, limit = 20) {
         .order('published_at', { ascending: false })
         .limit(limit);
       
-      if (error) throw error;
+      if (error) {
+        console.error('Error fetching content by niche:', error);
+        return [] as ContentItem[];
+      }
       return data as ContentItem[];
     },
   });
@@ -67,6 +88,10 @@ export function useFeaturedContent(limit = 5) {
   return useQuery({
     queryKey: ['content', 'featured', limit],
     queryFn: async () => {
+      if (!isSupabaseConfigured()) {
+        return [];
+      }
+      
       const { data, error } = await supabase
         .from('featured_content_view')
         .select('*')
@@ -74,7 +99,10 @@ export function useFeaturedContent(limit = 5) {
         .order('featured_priority', { ascending: false })
         .limit(limit);
       
-      if (error) throw error;
+      if (error) {
+        console.error('Error fetching featured content:', error);
+        return [];
+      }
       return data;
     },
   });
@@ -85,6 +113,10 @@ export function useContentBySlug(slug: string, options?: { enabled?: boolean }) 
   return useQuery({
     queryKey: ['content', 'slug', slug],
     queryFn: async () => {
+      if (!isSupabaseConfigured()) {
+        return null;
+      }
+      
       const { data, error } = await supabase
         .from('feed_content_view')
         .select('*')
@@ -92,7 +124,10 @@ export function useContentBySlug(slug: string, options?: { enabled?: boolean }) 
         .eq('status', 'published')
         .maybeSingle();
       
-      if (error) throw error;
+      if (error) {
+        console.error('Error fetching content by slug:', error);
+        return null;
+      }
       return data as ContentItem | null;
     },
     enabled: options?.enabled !== undefined ? options.enabled : !!slug,
@@ -104,12 +139,19 @@ export function useNiches() {
   return useQuery({
     queryKey: ['niches'],
     queryFn: async () => {
+      if (!isSupabaseConfigured()) {
+        return [] as Niche[];
+      }
+      
       const { data, error } = await supabase
         .from('niches')
         .select('*')
         .order('id');
       
-      if (error) throw error;
+      if (error) {
+        console.error('Error fetching niches:', error);
+        return [] as Niche[];
+      }
       return data as Niche[];
     },
   });
@@ -120,13 +162,20 @@ export function useFeeds() {
   return useQuery({
     queryKey: ['feeds'],
     queryFn: async () => {
+      if (!isSupabaseConfigured()) {
+        return [] as Feed[];
+      }
+      
       const { data, error } = await supabase
         .from('feeds')
         .select('*')
         .eq('is_active', true)
         .order('display_order');
       
-      if (error) throw error;
+      if (error) {
+        console.error('Error fetching feeds:', error);
+        return [] as Feed[];
+      }
       return data as Feed[];
     },
   });
@@ -137,6 +186,10 @@ export function useTrendingContent(limit = 6) {
   return useQuery({
     queryKey: ['content', 'trending', limit],
     queryFn: async () => {
+      if (!isSupabaseConfigured()) {
+        return [] as ContentItem[];
+      }
+      
       const { data, error } = await supabase
         .from('feed_content_view')
         .select('*')
@@ -144,7 +197,10 @@ export function useTrendingContent(limit = 6) {
         .order('view_count', { ascending: false })
         .limit(limit);
       
-      if (error) throw error;
+      if (error) {
+        console.error('Error fetching trending content:', error);
+        return [] as ContentItem[];
+      }
       return data as ContentItem[];
     },
   });

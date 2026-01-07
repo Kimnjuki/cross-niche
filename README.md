@@ -1,192 +1,151 @@
 # The Grid Nexus - Cross-Niche Intelligence Platform
 
-**Tech • Security • Gaming Intelligence**
+**Live URL**: https://thegridnexus.com
 
-A comprehensive platform providing breaking news, in-depth analysis, and expert guides across technology, cybersecurity, and gaming.
+A comprehensive intelligence platform covering technology, cybersecurity, and gaming with real-time content aggregation, user authentication, and bookmarking features.
 
-## 🚀 Features
+## 🚀 Quick Start
 
-### Core Features
-- **Breaking News Banner** - Real-time critical security alerts
-- **Nexus Risk Rating System** - Gamer-specific security scoring (1-5 scale)
-- **AI-Powered Content** - Summarization, expansion, and analysis tools
-- **RSS Feed Integration** - Aggregate content from multiple sources
-- **Content Collections** - Organize and save articles
-- **Search & Filtering** - Advanced search with difficulty level filters
-- **Article Ratings** - Verge Score-style ratings (1-10 scale)
-- **View & Comment Tracking** - Engagement metrics
-- **Popular Stories Widget** - Trending content sidebar
-- **Downloads Section** - Security tools and utilities catalog
+### Prerequisites
 
-### Security Features
-- **Threat Alert Sidebar** - Real-time threat intelligence
-- **Nexus Score Widget** - Global threat level indicator
-- **Mitigation Guides** - Hardware-specific security guides
-- **Expert Interviews** - Industry expert insights
-- **Security Score Badges** - Visual risk indicators
+- Node.js 18+ and npm (or use [nvm](https://github.com/nvm-sh/nvm#installing-and-updating))
+- A Supabase account (free tier works)
 
-### Content Management
-- **AI Editor** - Rich text editor with AI assistance
-- **Tutorials System** - Step-by-step guides with progress tracking
-- **Difficulty Levels** - Beginner to Expert content classification
-- **Role-Based Filtering** - Streamer, SysAdmin, Gamer views
-- **SEO Optimization** - JSON-LD schema and meta tags
+### Setup Instructions
 
-## 🛠️ Tech Stack
+1. **Clone the repository**
+   ```sh
+   git clone <YOUR_GIT_URL>
+   cd cross-niche-intelligence-main
+   ```
 
-- **Frontend**: React 18 + TypeScript
-- **Build Tool**: Vite
-- **UI Framework**: shadcn-ui + Tailwind CSS
-- **Routing**: React Router DOM v6
-- **State Management**: React Query (TanStack Query)
-- **Backend**: Supabase (Database, Auth, Storage)
-- **AI Integration**: OpenAI API
-- **RSS Parsing**: RSS Parser
-- **Rich Text Editor**: Tiptap
-- **SEO**: React Helmet Async
+2. **Install dependencies**
+   ```sh
+   npm install
+   ```
 
-## 📦 Installation
+3. **Configure Supabase**
+   
+   Create a `.env` file in the root directory:
+   ```env
+   VITE_SUPABASE_URL=your_supabase_project_url
+   VITE_SUPABASE_PUBLISHABLE_KEY=your_supabase_anon_public_key
+   VITE_APP_URL=https://thegridnexus.com
+   ```
+   
+   To get your Supabase credentials:
+   - Go to [Supabase Dashboard](https://app.supabase.com)
+   - Create a new project or select an existing one
+   - Navigate to Settings > API
+   - Copy the "Project URL" and "anon public" key
+   - Paste them into your `.env` file
 
-```bash
-# Clone the repository
-git clone https://github.com/YOUR_USERNAME/cross-niche-intelligence.git
-cd cross-niche-intelligence
+4. **Start the development server**
+   ```sh
+   npm run dev
+   ```
 
-# Install dependencies
-npm install
+   The application will be available at `http://localhost:8080`
 
-# Set up environment variables
-cp .env.example .env
-# Edit .env with your Supabase and OpenAI credentials
+**Edit a file directly in GitHub**
 
-# Start development server
-npm run dev
+- Navigate to the desired file(s).
+- Click the "Edit" button (pencil icon) at the top right of the file view.
+- Make your changes and commit the changes.
+
+**Use GitHub Codespaces**
+
+- Navigate to the main page of your repository.
+- Click on the "Code" button (green button) near the top right.
+- Select the "Codespaces" tab.
+- Click on "New codespace" to launch a new Codespace environment.
+- Edit files directly within the Codespace and commit and push your changes once you're done.
+
+## 🛠️ Technologies
+
+This project is built with:
+
+- **Vite** - Build tool and dev server
+- **TypeScript** - Type-safe JavaScript
+- **React 18** - UI library
+- **shadcn-ui** - Component library
+- **Tailwind CSS** - Styling
+- **Supabase** - Backend (authentication, database)
+- **React Query** - Data fetching and caching
+- **React Router** - Client-side routing
+
+## 📦 Build for Production
+
+```sh
+# Build the application
+npm run build
+
+# Preview the production build
+npm run preview
 ```
+
+The built files will be in the `dist` directory, ready for deployment.
 
 ## 🔧 Environment Variables
 
-Create a `.env` file in the root directory:
+Required environment variables (create a `.env` file):
 
-```env
-VITE_SUPABASE_URL=your_supabase_url
-VITE_SUPABASE_PUBLISHABLE_KEY=your_supabase_key
-VITE_OPENAI_API_KEY=your_openai_key
-```
+- `VITE_SUPABASE_URL` - Your Supabase project URL
+- `VITE_SUPABASE_PUBLISHABLE_KEY` - Your Supabase anon/public key
+- `VITE_APP_URL` - Your production URL (optional, for SEO)
 
-## 📁 Project Structure
+**Note**: Environment variables must be prefixed with `VITE_` to be accessible in the browser.
 
-```
-src/
-├── components/          # React components
-│   ├── ai/            # AI-powered features
-│   ├── articles/      # Article components
-│   ├── layout/        # Layout components
-│   ├── nexus/         # Nexus rating system
-│   ├── threats/       # Threat alerts
-│   └── ui/            # shadcn-ui components
-├── contexts/          # React contexts
-├── data/              # Mock data
-├── hooks/              # Custom React hooks
-├── integrations/       # External integrations
-│   └── supabase/      # Supabase client
-├── lib/                # Utility libraries
-│   ├── ai/            # AI services
-│   ├── nexus/         # Nexus rating logic
-│   ├── rss/           # RSS feed services
-│   └── seo/           # SEO utilities
-├── pages/              # Page components
-└── types/              # TypeScript types
-```
+## 🚢 Deployment
 
-## 🎯 Key Pages
+### Deploying to Production
 
-- `/` - Homepage with featured content
-- `/tech` - Technology news and analysis
-- `/security` - Cybersecurity threats and guides
-- `/gaming` - Gaming news and reviews
-- `/guides` - Security and tech guides
-- `/tutorials` - Step-by-step tutorials
-- `/downloads` - Security tools downloads
-- `/search` - Advanced content search
-- `/editor` - AI-powered content editor
-- `/collections` - User content collections
-- `/rss-feeds` - RSS feed management
+1. **Build the application**
+   ```sh
+   npm run build
+   ```
 
-## 🚀 Deployment
+2. **Deploy the `dist` folder** to your hosting provider:
+   - **Vercel**: Connect your GitHub repo and deploy
+   - **Netlify**: Drag and drop the `dist` folder or connect via Git
+   - **Cloudflare Pages**: Connect your repo and set build command to `npm run build`
 
-### Build for Production
+3. **Set environment variables** in your hosting provider's dashboard:
+   - Add `VITE_SUPABASE_URL`
+   - Add `VITE_SUPABASE_PUBLISHABLE_KEY`
+   - Add `VITE_APP_URL` (optional)
 
-```bash
-npm run build
-```
+4. **Configure your domain** (if using https://thegridnexus.com):
+   - Point your domain to your hosting provider
+   - Update DNS records as required by your provider
 
-The `dist` folder will contain the production-ready files.
+### Important Notes
 
-### Deploy to Vercel/Netlify
+- The application will work without Supabase credentials, but authentication and database features will be disabled
+- Make sure your Supabase project has the required database tables and RLS policies configured
+- For production, ensure your Supabase project allows requests from your domain
 
-1. Connect your GitHub repository
-2. Set environment variables
-3. Deploy automatically on push
+## 📝 Features
 
-## 📝 Development
+- ✅ User authentication (sign up, login, logout)
+- ✅ Bookmark articles for later reading
+- ✅ Real-time content from Supabase
+- ✅ Responsive design
+- ✅ SEO optimized
+- ✅ Dark mode support (via next-themes)
 
-```bash
-# Development server (port 8080)
-npm run dev
+## 🐛 Troubleshooting
 
-# Build for production
-npm run build
+**Supabase connection issues:**
+- Verify your `.env` file has the correct credentials
+- Check that your Supabase project is active
+- Ensure RLS policies allow public read access to content tables
 
-# Preview production build
-npm run preview
+**Build errors:**
+- Clear `node_modules` and reinstall: `rm -rf node_modules && npm install`
+- Check Node.js version: `node --version` (should be 18+)
 
-# Lint code
-npm run lint
-```
-
-## 🔐 Security Features
-
-- **Nexus Risk Rating**: Gamer-specific CVSS translation (1-5 scale)
-- **Threat Intelligence**: Real-time security alerts
-- **Mitigation Guides**: Hardware-specific protection steps
-- **Expert Analysis**: Industry expert interviews
-- **Security Scoring**: Visual risk indicators
-
-## 📊 Competitive Advantages
-
-- **Cross-Niche Intelligence**: Unique combination of Tech + Security + Gaming
-- **Gamer-Focused Security**: Nexus Risk Rating system
-- **AI-Powered Tools**: Content generation and analysis
-- **Actionable Guides**: Direct threat-to-solution mapping
-- **Real-Time Updates**: Breaking news and threat alerts
-
-## 🤝 Contributing
-
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add some amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
-
-## 📄 License
-
-This project is licensed under the MIT License.
-
-## 👥 Authors
-
-- **kimathi njuki** - Initial work
-
-## 🙏 Acknowledgments
-
-- shadcn-ui for the component library
-- Supabase for backend infrastructure
-- OpenAI for AI capabilities
-- Unsplash for free images
-
-## 📞 Contact
-
-For questions or support, please open an issue on GitHub.
-
----
-
-**Built with ❤️ for the gaming and security community**
+**Authentication not working:**
+- Verify Supabase Auth is enabled in your project
+- Check browser console for error messages
+- Ensure email confirmation is disabled for development (in Supabase Auth settings)

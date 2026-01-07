@@ -3,12 +3,8 @@ import { HeroSection } from '@/components/home/HeroSection';
 import { NicheSection } from '@/components/home/NicheSection';
 import { TrendingSection } from '@/components/home/TrendingSection';
 import { NewsletterForm } from '@/components/newsletter/NewsletterForm';
-import { DailyRoundupForm } from '@/components/newsletter/DailyRoundupForm';
-import { CommunitySection } from '@/components/community/CommunitySection';
-import { ExpertInterview } from '@/components/expert/ExpertInterview';
-import { ReportDownload } from '@/components/reports/ReportDownload';
 import { mockArticles } from '@/data/mockData';
-import { usePublishedContent, useContentByFeed, useTrendingContent } from '@/hooks/useContent';
+import { usePublishedContent, useTrendingContent, useContentByFeed } from '@/hooks/useContent';
 import { mapContentToArticles } from '@/lib/contentMapper';
 import { Skeleton } from '@/components/ui/skeleton';
 
@@ -69,49 +65,13 @@ const Index = () => {
       
       <NicheSection niche="gaming" articles={gamingArticles} />
       
-      {/* Expert Interviews & Reports Section */}
-      <section className="py-16 bg-background">
-        <div className="container mx-auto px-4">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-6xl mx-auto mb-12">
-            <ExpertInterview
-              expertName="Former NSA Analyst"
-              expertTitle="Cybersecurity Expert"
-              quote="The intersection of AI and gaming creates unprecedented security challenges. We're seeing state-level actors weaponizing game engines for reconnaissance..."
-              articleUrl="/article/expert-interview-1"
-            />
-            <ReportDownload
-              report={{
-                id: '1',
-                title: 'The Future of Secure Gaming: AI, Quantum, and Zero-Trust Architecture',
-                description: 'Our quarterly analysis reveals key trends shaping the convergence of hardware innovation, threat landscape, and player experience in 2025.',
-                publishedAt: new Date().toISOString(),
-                downloadUrl: '/reports/future-secure-gaming-2025.pdf',
-              }}
-            />
-          </div>
-        </div>
-      </section>
-      
-      {/* Newsletter & Community Section */}
       <section className="py-16 bg-muted/30">
-        <div className="container mx-auto px-4">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-6xl mx-auto">
-            <div>
-              <h2 className="text-3xl font-bold mb-4">Stay Informed</h2>
-              <p className="text-muted-foreground mb-8">
-                Get the latest tech, security, and gaming insights delivered to your inbox weekly.
-              </p>
-              <NewsletterForm variant="inline" />
-            </div>
-            <CommunitySection />
-          </div>
-        </div>
-      </section>
-      
-      {/* Daily Roundup Section */}
-      <section className="py-16 bg-background">
-        <div className="container max-w-2xl mx-auto px-4">
-          <DailyRoundupForm />
+        <div className="container max-w-4xl mx-auto px-4 text-center">
+          <h2 className="text-3xl font-bold mb-4">Stay Informed</h2>
+          <p className="text-muted-foreground mb-8">
+            Get the latest tech, security, and gaming insights delivered to your inbox weekly.
+          </p>
+          <NewsletterForm variant="inline" />
         </div>
       </section>
     </Layout>

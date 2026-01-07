@@ -1,14 +1,12 @@
 import { useState } from 'react';
 import { Layout } from '@/components/layout/Layout';
-import { DifficultyLevelFilter, type DifficultyLevel } from '@/components/filters/DifficultyLevelFilter';
 import { mockGuides, mockTools } from '@/data/mockData';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { BookOpen, Wrench, Search, ExternalLink, Clock, AlertTriangle, ArrowRight } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { BookOpen, Wrench, Search, ExternalLink, Clock, AlertTriangle } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 const difficultyColors = {
@@ -25,13 +23,12 @@ const nicheColors = {
 
 export default function Guides() {
   const [searchQuery, setSearchQuery] = useState('');
-  const [selectedDifficultyLevels, setSelectedDifficultyLevels] = useState<DifficultyLevel[]>([]);
+  const [selectedDifficulty, setSelectedDifficulty] = useState<string | null>(null);
 
   const filteredGuides = mockGuides.filter(guide => {
     const matchesSearch = guide.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
                          guide.description.toLowerCase().includes(searchQuery.toLowerCase());
-    const matchesDifficulty = selectedDifficultyLevels.length === 0 || 
-                             selectedDifficultyLevels.includes(guide.difficulty as DifficultyLevel);
+    const matchesDifficulty = !selectedDifficulty || guide.difficulty === selectedDifficulty;
     return matchesSearch && matchesDifficulty;
   });
 
@@ -78,49 +75,51 @@ export default function Guides() {
                   className="pl-10"
                 />
               </div>
-              <div>
-                <DifficultyLevelFilter
-                  selectedLevels={selectedDifficultyLevels}
-                  onLevelsChange={setSelectedDifficultyLevels}
-                  variant="badges"
-                />
+              <div className="flex gap-2">
+                {['beginner', 'intermediate', 'advanced'].map((difficulty) => (
+                  <Button
+                    key={difficulty}
+                    variant={selectedDifficulty === difficulty ? 'default' : 'outline'}
+                    size="sm"
+                    onClick={() => setSelectedDifficulty(
+                      selectedDifficulty === difficulty ? null : difficulty
+                    )}
+                    className="capitalize"
+                  >
+                    {difficulty}
+                  </Button>
+                ))}
               </div>
             </div>
 
             {/* Guides Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {filteredGuides.map((guide) => (
-                <Link key={guide.id} to={`/guides/${guide.id}`}>
-                  <Card className="group hover:border-primary/50 transition-all hover:shadow-lg h-full flex flex-col">
-                    <CardHeader>
-                      <div className="flex gap-2 mb-2">
-                        <Badge className={cn(difficultyColors[guide.difficulty], 'capitalize')}>
-                          {guide.difficulty}
-                        </Badge>
-                        <Badge className={nicheColors[guide.niche]} variant="outline">
-                          {guide.niche}
-                        </Badge>
-                      </div>
-                      <CardTitle className="font-display text-lg group-hover:text-primary transition-colors">
-                        {guide.title}
-                      </CardTitle>
-                    </CardHeader>
-                    <CardContent className="flex-1 flex flex-col">
-                      <p className="text-muted-foreground text-sm mb-4 flex-1">{guide.description}</p>
-                      <div className="flex items-center justify-between text-sm text-muted-foreground mb-4">
-                        <span className="flex items-center gap-1">
-                          <Clock className="h-4 w-4" />
-                          {guide.readTime} min
-                        </span>
-                        <span>{guide.platform.join(', ')}</span>
-                      </div>
-                      <Button variant="outline" className="w-full group-hover:bg-primary group-hover:text-primary-foreground">
-                        Read Guide
-                        <ArrowRight className="h-4 w-4 ml-2" />
-                      </Button>
-                    </CardContent>
-                  </Card>
-                </Link>
+                <Card key={guide.id} className="group hover:border-primary/50 transition-colors">
+                  <CardHeader>
+                    <div className="flex gap-2 mb-2">
+                      <Badge className={cn(difficultyColors[guide.difficulty], 'capitalize')}>
+                        {guide.difficulty}
+                      </Badge>
+                      <Badge className={nicheColors[guide.niche]} variant="outline">
+                        {guide.niche}
+                      </Badge>
+                    </div>
+                    <CardTitle className="font-display text-lg group-hover:text-primary transition-colors">
+                      {guide.title}
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-muted-foreground text-sm mb-4">{guide.description}</p>
+                    <div className="flex items-center gap-4 text-sm text-muted-foreground">
+                      <span className="flex items-center gap-1">
+                        <Clock className="h-4 w-4" />
+                        {guide.readTime} min
+                      </span>
+                      <span>{guide.platform.join(', ')}</span>
+                    </div>
+                  </CardContent>
+                </Card>
               ))}
             </div>
           </TabsContent>

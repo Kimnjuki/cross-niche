@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { Link, useLocation, useSearchParams } from 'react-router-dom';
-import { Menu, X, User, Bookmark, LogOut, Search, Folder, Sparkles, Rss } from 'lucide-react';
+import { Link, useLocation } from 'react-router-dom';
+import { Menu, X, User, Bookmark, LogOut, Search } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/contexts/AuthContext';
 import {
@@ -10,41 +10,18 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { cn } from '@/lib/utils';
 
 const navLinks = [
   { href: '/tech', label: 'Innovate', color: 'text-tech' },
   { href: '/security', label: 'Secured', color: 'text-security' },
   { href: '/gaming', label: 'Play', color: 'text-gaming' },
-  { href: '/reviews', label: 'Reviews', color: 'text-foreground' },
-  { href: '/buying-guides', label: 'Buying Guides', color: 'text-foreground' },
-  { href: '/tools', label: 'Tools', color: 'text-foreground' },
   { href: '/guides', label: 'Guides', color: 'text-foreground' },
-  { href: '/tutorials', label: 'Tutorials', color: 'text-foreground' },
-  { href: '/downloads', label: 'Downloads', color: 'text-foreground' },
-];
-
-const roleFilters = [
-  { value: 'streamer', label: 'Streamer' },
-  { value: 'sysadmin', label: 'SysAdmin' },
-  { value: 'gamer', label: 'Gamer' },
 ];
 
 export function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const { user, logout } = useAuth();
   const location = useLocation();
-  const [searchParams, setSearchParams] = useSearchParams();
-  const activeRole = searchParams.get('role') || 'all';
-
-  const handleRoleFilter = (role: string) => {
-    if (role === 'all') {
-      searchParams.delete('role');
-    } else {
-      searchParams.set('role', role);
-    }
-    setSearchParams(searchParams);
-  };
 
   return (
     <nav className="sticky top-0 z-50 bg-background/80 backdrop-blur-lg border-b border-border">
@@ -53,7 +30,7 @@ export function Navbar() {
           {/* Logo */}
           <Link to="/" className="flex items-center gap-2">
             <div className="w-8 h-8 rounded-lg gradient-hero" />
-            <span className="font-display font-bold text-xl">The Grid Nexus</span>
+            <span className="font-display font-bold text-xl">NexusMedia</span>
           </Link>
 
           {/* Desktop Navigation */}
@@ -71,47 +48,10 @@ export function Navbar() {
             ))}
           </div>
 
-          {/* Role Filter Tabs - Sub-bar */}
-          {(location.pathname === '/tech' || location.pathname === '/security' || location.pathname === '/gaming' || location.pathname === '/guides') && (
-            <div className="hidden md:flex items-center gap-2">
-              <span className="text-xs text-muted-foreground mr-2">Filter:</span>
-              <button
-                onClick={() => handleRoleFilter('all')}
-                className={cn(
-                  'px-3 py-1.5 rounded-full text-xs font-medium transition-all duration-200',
-                  activeRole === 'all' || !searchParams.get('role')
-                    ? 'bg-primary text-primary-foreground'
-                    : 'bg-muted text-muted-foreground hover:bg-muted/80'
-                )}
-              >
-                All
-              </button>
-              {roleFilters.map((role) => (
-                <button
-                  key={role.value}
-                  onClick={() => handleRoleFilter(role.value)}
-                  className={cn(
-                    'px-3 py-1.5 rounded-full text-xs font-medium transition-all duration-200',
-                    activeRole === role.value
-                      ? 'bg-primary text-primary-foreground'
-                      : 'bg-muted text-muted-foreground hover:bg-muted/80'
-                  )}
-                >
-                  {role.label}
-                </button>
-              ))}
-            </div>
-          )}
-
           {/* Desktop Actions */}
           <div className="hidden md:flex items-center gap-4">
-            <Button variant="ghost" size="icon" asChild>
-              <Link to="/search">
-                <Search className="h-5 w-5" />
-              </Link>
-            </Button>
-            <Button variant="ghost" asChild>
-              <Link to="/pricing">Pricing</Link>
+            <Button variant="ghost" size="icon">
+              <Search className="h-5 w-5" />
             </Button>
             {user ? (
               <DropdownMenu>
@@ -135,24 +75,6 @@ export function Navbar() {
                     <Link to="/bookmarks" className="flex items-center gap-2">
                       <Bookmark className="h-4 w-4" />
                       Bookmarks
-                    </Link>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem asChild>
-                    <Link to="/collections" className="flex items-center gap-2">
-                      <Folder className="h-4 w-4" />
-                      Collections
-                    </Link>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem asChild>
-                    <Link to="/rss-feeds" className="flex items-center gap-2">
-                      <Rss className="h-4 w-4" />
-                      RSS Feeds
-                    </Link>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem asChild>
-                    <Link to="/editor" className="flex items-center gap-2">
-                      <Sparkles className="h-4 w-4" />
-                      AI Editor
                     </Link>
                   </DropdownMenuItem>
                   <DropdownMenuSeparator />
@@ -201,15 +123,6 @@ export function Navbar() {
                   </Link>
                   <Link to="/bookmarks" onClick={() => setIsOpen(false)} className="py-2">
                     Bookmarks
-                  </Link>
-                  <Link to="/collections" onClick={() => setIsOpen(false)} className="py-2">
-                    Collections
-                  </Link>
-                  <Link to="/rss-feeds" onClick={() => setIsOpen(false)} className="py-2">
-                    RSS Feeds
-                  </Link>
-                  <Link to="/editor" onClick={() => setIsOpen(false)} className="py-2">
-                    AI Editor
                   </Link>
                   <button onClick={() => { logout(); setIsOpen(false); }} className="py-2 text-left text-destructive">
                     Logout

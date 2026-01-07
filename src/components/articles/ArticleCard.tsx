@@ -4,8 +4,6 @@ import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
 import { Bookmark, Clock, Shield, AlertTriangle } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
-import { ArticleStats } from '@/components/articles/ArticleStats';
-import { ArticleRating } from '@/components/articles/ArticleRating';
 import { cn } from '@/lib/utils';
 
 interface ArticleCardProps {
@@ -34,51 +32,31 @@ const nicheLabels = {
   gaming: 'Play',
 };
 
-// Determine difficulty level based on readTime
-const getDifficultyLevel = (readTime: number): 'Beginner' | 'Expert' => {
-  return readTime <= 10 ? 'Beginner' : 'Expert';
-};
-
-// Get security score glow color
-const getSecurityGlow = (score?: number): string => {
-  if (!score) return '';
-  if (score <= 1) return 'group-hover:shadow-[0_0_20px_rgba(239,68,68,0.4)]';
-  if (score <= 2) return 'group-hover:shadow-[0_0_20px_rgba(239,68,68,0.3)]';
-  if (score <= 3) return 'group-hover:shadow-[0_0_20px_rgba(234,179,8,0.3)]';
-  if (score <= 4) return 'group-hover:shadow-[0_0_20px_rgba(34,197,94,0.3)]';
-  return 'group-hover:shadow-[0_0_20px_rgba(34,197,94,0.4)]'; // score 5
-};
-
 export function ArticleCard({ article, variant = 'default' }: ArticleCardProps) {
   const { user, toggleBookmark } = useAuth();
   const styles = nicheStyles[article.niche];
   const isBookmarked = user?.bookmarks.includes(article.id);
 
-  const handleBookmark = (e: React.MouseEvent) => {
+  const handleBookmark = async (e: React.MouseEvent) => {
     e.preventDefault();
+    e.stopPropagation();
     if (user) {
-      toggleBookmark(article.id);
+      await toggleBookmark(article.id);
     }
   };
 
   if (variant === 'featured') {
-    const securityGlow = getSecurityGlow(article.securityScore);
     return (
       <Link to={`/article/${article.id}`}>
         <Card className={cn(
-          'group overflow-hidden border-0 bg-card transition-all duration-200 hover:scale-[1.02]',
-          styles.accent,
-          securityGlow
+          'group overflow-hidden border-0 bg-card transition-all duration-300',
+          styles.accent
         )}>
           <div className="relative aspect-[16/9] overflow-hidden">
             <img
-              src={article.imageUrl || 'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=1200&h=675&fit=crop&q=80'}
+              src={article.imageUrl}
               alt={article.title}
               className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-              onError={(e) => {
-                const target = e.target as HTMLImageElement;
-                target.src = 'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=1200&h=675&fit=crop&q=80';
-              }}
             />
             <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-background/50 to-transparent" />
             <div className="absolute top-4 left-4 flex gap-2">
@@ -111,16 +89,12 @@ export function ArticleCard({ article, variant = 'default' }: ArticleCardProps) 
   if (variant === 'compact') {
     return (
       <Link to={`/article/${article.id}`}>
-        <div className="group flex gap-4 py-4 border-b border-border last:border-0 transition-all duration-200 hover:scale-[1.02]">
+        <div className="group flex gap-4 py-4 border-b border-border last:border-0">
           <div className="w-20 h-20 rounded-lg overflow-hidden flex-shrink-0">
             <img
-              src={article.imageUrl || 'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=400&h=400&fit=crop&q=80'}
+              src={article.imageUrl}
               alt={article.title}
               className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
-              onError={(e) => {
-                const target = e.target as HTMLImageElement;
-                target.src = 'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=400&h=400&fit=crop&q=80';
-              }}
             />
           </div>
           <div className="flex-1 min-w-0">
@@ -137,25 +111,17 @@ export function ArticleCard({ article, variant = 'default' }: ArticleCardProps) 
     );
   }
 
-  const difficulty = getDifficultyLevel(article.readTime);
-  const securityGlow = getSecurityGlow(article.securityScore);
-
   return (
     <Link to={`/article/${article.id}`}>
       <Card className={cn(
-        'group overflow-hidden border border-border bg-card transition-all duration-200 hover:scale-[1.02] hover:border-border/80',
-        styles.accent,
-        securityGlow
+        'group overflow-hidden border border-border bg-card transition-all duration-300 hover:border-border/80',
+        styles.accent
       )}>
         <div className="relative aspect-video overflow-hidden">
           <img
-            src={article.imageUrl || 'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=1200&h=675&fit=crop&q=80'}
+            src={article.imageUrl}
             alt={article.title}
             className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-            onError={(e) => {
-              const target = e.target as HTMLImageElement;
-              target.src = 'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=1200&h=675&fit=crop&q=80';
-            }}
           />
           <div className="absolute top-3 left-3 right-3 flex justify-between items-start">
             <div className="flex gap-2 flex-wrap">
@@ -199,36 +165,12 @@ export function ArticleCard({ article, variant = 'default' }: ArticleCardProps) 
           <p className="text-muted-foreground text-sm line-clamp-2 mb-3">
             {article.excerpt}
           </p>
-          
-          {/* Actionability Bar */}
-          <div className="space-y-2 mb-3 pt-3 border-t border-border">
-            <ArticleStats
-              viewCount={(article as any).viewCount}
-              commentCount={(article as any).commentCount}
-              readTime={article.readTime}
-              isTrending={(article as any).isTrending}
-              size="sm"
-            />
-            {(article as any).rating && (
-              <ArticleRating score={(article as any).rating} size="sm" showLabel={false} />
-            )}
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-2">
-                {/* Difficulty Pill */}
-                <Badge 
-                  variant="outline" 
-                  className={cn(
-                    'px-3 py-1 rounded-full text-xs font-medium',
-                    difficulty === 'Beginner' 
-                      ? 'bg-green-500/10 text-green-700 dark:text-green-400 border-green-500/20' 
-                      : 'bg-purple-500/10 text-purple-700 dark:text-purple-400 border-purple-500/20'
-                  )}
-                >
-                  {difficulty}
-                </Badge>
-              </div>
-              <span className="text-sm text-muted-foreground">{article.author}</span>
-            </div>
+          <div className="flex items-center justify-between text-sm text-muted-foreground">
+            <span>{article.author}</span>
+            <span className="flex items-center gap-1">
+              <Clock className="h-4 w-4" />
+              {article.readTime} min
+            </span>
           </div>
         </CardContent>
       </Card>

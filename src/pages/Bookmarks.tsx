@@ -5,9 +5,56 @@ import { mockArticles } from '@/data/mockData';
 import { ArticleGrid } from '@/components/articles/ArticleGrid';
 import { Button } from '@/components/ui/button';
 import { Bookmark } from 'lucide-react';
+import { useQuery } from '@tanstack/react-query';
+import { supabase, isSupabaseConfigured } from '@/integrations/supabase/client';
+import { mapContentToArticles } from '@/lib/contentMapper';
+import { Skeleton } from '@/components/ui/skeleton';
 
 export default function Bookmarks() {
-  const { user } = useAuth();
+  const { user, isLoading: authLoading } = useAuth();
+
+  // Fetch bookmarked content from Supabase
+  const { data: bookmarkedContent, isLoading: bookmarksLoading } = useQuery({
+    queryKey: ['bookmarks', user?.id],
+    queryFn: async () => {
+      if (!user || !isSupabaseConfigured()) return [];
+      
+      const { data: bookmarks, error } = await supabase
+        .from('user_bookmarks')
+        .select('content_id')
+        .eq('user_id', user.id);
+      
+      if (error) throw error;
+      if (!bookmarks || bookmarks.length === 0) return [];
+      
+      const contentIds = bookmarks.map(b => b.content_id);
+      const { data: content, error: contentError } = await supabase
+        .from('feed_content_view')
+        .select('*')
+        .in('id', contentIds)
+        .eq('status', 'published');
+      
+      if (contentError) throw contentError;
+      return content || [];
+    },
+    enabled: !!user && isSupabaseConfigured(),
+  });
+
+  if (authLoading || bookmarksLoading) {
+    return (
+      <Layout>
+        <div className="container mx-auto px-4 py-12">
+          <Skeleton className="h-10 w-64 mb-4" />
+          <Skeleton className="h-6 w-48 mb-8" />
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {[1, 2, 3].map(i => (
+              <Skeleton key={i} className="h-64 w-full" />
+            ))}
+          </div>
+        </div>
+      </Layout>
+    );
+  }
 
   if (!user) {
     return (
@@ -26,7 +73,10 @@ export default function Bookmarks() {
     );
   }
 
-  const bookmarkedArticles = mockArticles.filter(a => user.bookmarks.includes(a.id));
+  // Use Supabase content if available, otherwise fallback to mock data
+  const bookmarkedArticles = bookmarkedContent && bookmarkedContent.length > 0
+    ? mapContentToArticles(bookmarkedContent)
+    : mockArticles.filter(a => user.bookmarks.includes(a.id));
 
   return (
     <Layout>
