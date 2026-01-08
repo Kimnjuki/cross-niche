@@ -1,9 +1,6 @@
 import { Article } from '@/types';
 import { ArticleCard } from '@/components/articles/ArticleCard';
 import { NewsletterForm } from '@/components/newsletter/NewsletterForm';
-import { ThreatAlertSidebar, type ThreatAlert } from '@/components/threats/ThreatAlertSidebar';
-import { useThreatAlerts } from '@/hooks/useThreatAlerts';
-import { AlertTriangle } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useState, useEffect } from 'react';
 
@@ -12,7 +9,6 @@ interface HeroSectionProps {
 }
 
 export function HeroSection({ featuredArticle }: HeroSectionProps) {
-  const { data: threatAlerts = [] } = useThreatAlerts(5);
   const [imageLoaded, setImageLoaded] = useState(false);
   
   // Preload background images
@@ -135,75 +131,9 @@ export function HeroSection({ featuredArticle }: HeroSectionProps) {
           </div>
         </div>
 
-        {/* Split-Pane Layout */}
-        <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-6">
-          {/* Left: Featured Story */}
-          <div className="lg:col-span-1">
-            <ArticleCard article={featuredArticle} variant="featured" />
-          </div>
-
-          {/* Right: Live Threat Feed */}
-          <div className="lg:col-span-1">
-            <div className="h-full flex flex-col">
-              {/* Threat Feed Header */}
-              <div className="mb-4 pb-3 border-b border-border">
-                <div className="flex items-center gap-2 mb-2">
-                  <AlertTriangle className="h-5 w-5 text-destructive" />
-                  <h2 className="font-display font-bold text-xl">Live Threat Feed</h2>
-                  <span className="ml-auto flex items-center gap-2">
-                    <span className="relative flex h-3 w-3">
-                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
-                      <span className="relative inline-flex rounded-full h-3 w-3 bg-red-500"></span>
-                    </span>
-                    <span className="text-xs text-muted-foreground">LIVE</span>
-                  </span>
-                </div>
-              </div>
-
-              {/* Scrolling Ticker */}
-              {threatAlerts.length > 0 && (
-                <div className="mb-4 overflow-hidden bg-surface-elevated rounded-lg p-3 border border-border relative">
-                  <div className="flex animate-ticker-scroll whitespace-nowrap">
-                    {/* First set */}
-                    {threatAlerts.map((alert) => (
-                      <div key={alert.id} className="flex items-center gap-4 mr-8 flex-shrink-0">
-                        <span className={cn(
-                          'text-xs font-medium px-2 py-1 rounded',
-                          alert.severity === 'critical' ? 'bg-red-500/20 text-red-400' :
-                          alert.severity === 'high' ? 'bg-orange-500/20 text-orange-400' :
-                          'bg-yellow-500/20 text-yellow-400'
-                        )}>
-                          {alert.severity.toUpperCase()}
-                        </span>
-                        <span className="text-sm text-foreground">{alert.title}</span>
-                        <span className="text-xs text-muted-foreground">•</span>
-                      </div>
-                    ))}
-                    {/* Duplicate for seamless loop */}
-                    {threatAlerts.map((alert) => (
-                      <div key={`dup-${alert.id}`} className="flex items-center gap-4 mr-8 flex-shrink-0">
-                        <span className={cn(
-                          'text-xs font-medium px-2 py-1 rounded',
-                          alert.severity === 'critical' ? 'bg-red-500/20 text-red-400' :
-                          alert.severity === 'high' ? 'bg-orange-500/20 text-orange-400' :
-                          'bg-yellow-500/20 text-yellow-400'
-                        )}>
-                          {alert.severity.toUpperCase()}
-                        </span>
-                        <span className="text-sm text-foreground">{alert.title}</span>
-                        <span className="text-xs text-muted-foreground">•</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
-
-              {/* Threat Alert Sidebar */}
-              <div className="flex-1">
-                <ThreatAlertSidebar alerts={threatAlerts} maxAlerts={4} className="h-full" />
-              </div>
-            </div>
-          </div>
+        {/* Featured Story */}
+        <div className="max-w-4xl mx-auto">
+          <ArticleCard article={featuredArticle} variant="featured" />
         </div>
       </div>
     </section>
