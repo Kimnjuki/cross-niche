@@ -21,6 +21,9 @@ import {
 import { useAuth } from '@/contexts/AuthContext';
 import { useReadingTracker, useUserBehavior } from '@/hooks/useUserBehavior';
 import { AITools } from '@/components/ai/AITools';
+import { EnhancedShareBar } from '@/components/sharing/EnhancedShareBar';
+import { SEOHead } from '@/components/seo/SEOHead';
+import { LazyImage } from '@/components/ui/lazy-image';
 import { cn } from '@/lib/utils';
 import type { Article as ArticleType } from '@/types';
 
@@ -118,6 +121,21 @@ export default function Article() {
 
   return (
     <Layout>
+      {/* SEO and Social Media Meta Tags */}
+      <SEOHead
+        title={`${article.title} - The Grid Nexus`}
+        description={article.excerpt}
+        keywords={article.tags}
+        image={article.imageUrl}
+        url={window.location.href}
+        type="article"
+        article={article}
+        publishedTime={article.publishedAt}
+        author={article.author}
+        section={article.niche}
+        tags={article.tags}
+      />
+
       <article className="container mx-auto px-4 py-8">
         {/* Back Link */}
         <Link 
@@ -169,39 +187,40 @@ export default function Article() {
 
         {/* Featured Image */}
         <div className="max-w-4xl mb-8">
-          <img
+          <LazyImage
             src={article.imageUrl}
             alt={article.title}
-            className="w-full aspect-video object-cover rounded-xl"
+            className="w-full aspect-video rounded-xl"
           />
         </div>
 
-        {/* Action Bar */}
-        <div className="max-w-4xl mb-8 flex items-center justify-between border-y border-border py-4">
-          <div className="flex items-center gap-2">
-            <span className="text-sm text-muted-foreground mr-2">Share:</span>
-            <Button variant="ghost" size="icon" onClick={() => handleShare('twitter')}>
-              <Twitter className="h-4 w-4" />
-            </Button>
-            <Button variant="ghost" size="icon" onClick={() => handleShare('facebook')}>
-              <Facebook className="h-4 w-4" />
-            </Button>
-            <Button variant="ghost" size="icon" onClick={() => handleShare('linkedin')}>
-              <Linkedin className="h-4 w-4" />
-            </Button>
+        {/* Enhanced Share Bar & Actions */}
+        <div className="max-w-4xl mb-8">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            {/* Enhanced Share Bar */}
+            <div className="lg:col-span-2">
+              <EnhancedShareBar article={article} variant="inline" />
+            </div>
+
+            {/* Bookmark Action */}
+            <div className="flex justify-end">
+              {user && (
+                <Button
+                  variant={isBookmarked ? 'default' : 'outline'}
+                  size="lg"
+                  onClick={handleBookmark}
+                  className="gap-2 w-full lg:w-auto"
+                >
+                  <Bookmark className={cn('h-5 w-5', isBookmarked && 'fill-current')} />
+                  {isBookmarked ? 'Saved' : 'Save Article'}
+                </Button>
+              )}
+            </div>
           </div>
-          {user && (
-            <Button
-              variant={isBookmarked ? 'default' : 'outline'}
-              size="sm"
-              onClick={handleBookmark}
-              className="gap-2"
-            >
-              <Bookmark className={cn('h-4 w-4', isBookmarked && 'fill-current')} />
-              {isBookmarked ? 'Saved' : 'Save'}
-            </Button>
-          )}
         </div>
+
+        {/* Floating Share Bar */}
+        <EnhancedShareBar article={article} variant="floating" className="hidden lg:block" />
 
         {/* Content */}
         <div className="max-w-4xl mb-12">
