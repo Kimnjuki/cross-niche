@@ -40,14 +40,66 @@ export interface Tool {
   imageUrl?: string;
 }
 
+export type CommentSortType = 'best' | 'newest' | 'oldest' | 'controversial';
+
+export type CommentReactionType = 'like' | 'love' | 'laugh' | 'angry' | 'sad' | 'surprise';
+
+export interface CommentReaction {
+  userId: string;
+  type: CommentReactionType;
+  createdAt: string;
+}
+
 export interface Comment {
   id: string;
   articleId: string;
   userId: string;
   userName: string;
+  userAvatar?: string;
   content: string;
   createdAt: string;
+  updatedAt?: string;
   likes: number;
+  dislikes: number;
+  score: number; // Calculated score for ranking
+  isEdited: boolean;
+  isDeleted: boolean;
+  parentId?: string; // For threaded comments
+  replies: string[]; // Array of reply comment IDs
+  reactions: CommentReaction[];
+  isReported: boolean;
+  reportCount: number;
+  isModerated: boolean;
+  moderationReason?: string;
+  userReputation?: number;
+  isVerified?: boolean;
+  isExpert?: boolean;
+}
+
+export interface CommentThread {
+  rootComment: Comment;
+  replies: Comment[];
+  depth: number;
+  totalReplies: number;
+}
+
+export interface UserCommentStats {
+  userId: string;
+  totalComments: number;
+  likesReceived: number;
+  reputation: number;
+  isVerified: boolean;
+  isExpert: boolean;
+  badges: string[];
+}
+
+export interface ModerationAction {
+  id: string;
+  commentId: string;
+  moderatorId: string;
+  action: 'approve' | 'reject' | 'delete' | 'ban_user' | 'shadow_ban';
+  reason: string;
+  createdAt: string;
 }
 
 export interface User {

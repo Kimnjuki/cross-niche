@@ -20,6 +20,7 @@ import {
 } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { useReadingTracker, useUserBehavior } from '@/hooks/useUserBehavior';
+import { AITools } from '@/components/ai/AITools';
 import { cn } from '@/lib/utils';
 import type { Article as ArticleType } from '@/types';
 
@@ -205,7 +206,7 @@ export default function Article() {
         {/* Content */}
         <div className="max-w-4xl mb-12">
           <div className="prose prose-lg max-w-none">
-            <div 
+            <div
               className="text-lg leading-relaxed text-foreground"
               dangerouslySetInnerHTML={{ __html: article.content || article.excerpt }}
             />
@@ -219,6 +220,14 @@ export default function Article() {
               ))}
             </div>
           )}
+        </div>
+
+        {/* AI Tools */}
+        <div className="max-w-4xl mb-12">
+          <AITools
+            articleContent={article.content || article.excerpt}
+            articleTitle={article.title}
+          />
         </div>
 
         {/* Comments */}
