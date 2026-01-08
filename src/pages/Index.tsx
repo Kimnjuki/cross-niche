@@ -2,6 +2,7 @@ import { Layout } from '@/components/layout/Layout';
 import { HeroSection } from '@/components/home/HeroSection';
 import { NicheSection } from '@/components/home/NicheSection';
 import { TrendingSection } from '@/components/home/TrendingSection';
+import { PersonalizedFeed } from '@/components/home/PersonalizedFeed';
 import { NewsletterForm } from '@/components/newsletter/NewsletterForm';
 import { mockArticles } from '@/data/mockData';
 import { usePublishedContent, useTrendingContent, useContentByFeed } from '@/hooks/useContent';
@@ -56,22 +57,28 @@ const Index = () => {
   return (
     <Layout>
       <HeroSection featuredArticle={featuredArticle} />
-      
+
+      <section className="py-12 bg-background">
+        <div className="container mx-auto px-4">
+          <PersonalizedFeed userId="demo-user" maxArticles={6} />
+        </div>
+      </section>
+
       <TrendingSection articles={trendingArticles} />
-      
+
       <NicheSection niche="tech" articles={techArticles} />
-      
+
       <NicheSection niche="security" articles={securityArticles} />
-      
+
       <NicheSection niche="gaming" articles={gamingArticles} />
-      
+
       <section className="py-16 bg-muted/30">
         <div className="container max-w-4xl mx-auto px-4 text-center">
           <h2 className="text-3xl font-bold mb-4">Stay Informed</h2>
           <p className="text-muted-foreground mb-8">
-            Get the latest tech, security, and gaming insights delivered to your inbox weekly.
+            Get personalized tech, security, and gaming insights delivered to your inbox.
           </p>
-          <NewsletterForm variant="inline" />
+          <NewsletterForm variant="advanced" />
         </div>
       </section>
     </Layout>

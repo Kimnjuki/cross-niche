@@ -8,17 +8,18 @@ import { Button } from '@/components/ui/button';
 import { CommentSection } from '@/components/comments/CommentSection';
 import { ArticleCard } from '@/components/articles/ArticleCard';
 import { Skeleton } from '@/components/ui/skeleton';
-import { 
-  ArrowLeft, 
-  Clock, 
-  Bookmark, 
-  Shield, 
+import {
+  ArrowLeft,
+  Clock,
+  Bookmark,
+  Shield,
   AlertTriangle,
   Twitter,
   Facebook,
   Linkedin
 } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
+import { useReadingTracker, useUserBehavior } from '@/hooks/useUserBehavior';
 import { cn } from '@/lib/utils';
 import type { Article as ArticleType } from '@/types';
 
@@ -34,18 +35,18 @@ const nicheRoutes = { tech: '/tech', security: '/security', gaming: '/gaming' };
 export default function Article() {
   const { id } = useParams<{ id: string }>();
   const { user, toggleBookmark } = useAuth();
-  
+
   // Try to fetch from Supabase by slug
   const { data: contentData, isLoading } = useContentBySlug(id || '');
-  
+
   // Get related content based on feed
   const feedSlug = contentData?.feed_slug || '';
   const { data: relatedContent } = useContentByFeed(feedSlug, 4);
-  
+
   // Map Supabase content to Article type, fallback to mock
   let article: ArticleType | undefined;
   let relatedArticles: ArticleType[] = [];
-  
+
   if (contentData) {
     article = mapContentToArticle(contentData);
     relatedArticles = relatedContent
@@ -58,6 +59,10 @@ export default function Article() {
       .filter(a => a.niche === article?.niche && a.id !== id)
       .slice(0, 3);
   }
+
+  // Track user behavior and reading progress
+  const { trackArticleBookmark, trackArticleShare } = useUserBehavior(user?.id || 'demo-user');
+  useReadingTracker(article!, user?.id || 'demo-user');
 
   if (isLoading) {
     return (
@@ -99,6 +104,15 @@ export default function Article() {
       linkedin: `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}`,
     };
     window.open(shareUrls[platform as keyof typeof shareUrls], '_blank');
+
+    // Track share behavior
+    trackArticleShare(article);
+  };
+
+  const handleBookmark = async () => {
+    await toggleBookmark(article.id);
+    // Track bookmark behavior
+    trackArticleBookmark(article);
   };
 
   return (
@@ -179,7 +193,7 @@ export default function Article() {
             <Button
               variant={isBookmarked ? 'default' : 'outline'}
               size="sm"
-              onClick={async () => await toggleBookmark(article.id)}
+              onClick={handleBookmark}
               className="gap-2"
             >
               <Bookmark className={cn('h-4 w-4', isBookmarked && 'fill-current')} />
