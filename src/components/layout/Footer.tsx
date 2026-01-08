@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { DailyRoundupForm } from '@/components/newsletter/DailyRoundupForm';
+import { NewsletterForm } from '@/components/newsletter/NewsletterForm';
 
 export function Footer() {
   return (
@@ -61,13 +61,13 @@ export function Footer() {
             </div>
           </div>
 
-          {/* Daily Roundup */}
+          {/* Newsletter */}
           <div>
             <h4 className="font-display font-semibold mb-4">Daily Security & Gaming Roundup</h4>
             <p className="text-muted-foreground text-sm mb-4">
               Get the free daily briefing on threats, tech, and gaming news.
             </p>
-            <DailyRoundupForm />
+            <NewsletterForm />
           </div>
         </div>
 
