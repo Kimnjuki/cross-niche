@@ -1,0 +1,245 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 220 20% 97%;
+    --foreground: 220 30% 10%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 220 30% 10%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 220 30% 10%;
+
+    --primary: 199 89% 48%; /* #0ea5e9 */
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 220 15% 92%;
+    --secondary-foreground: 220 30% 10%;
+
+    --muted: 220 15% 94%;
+    --muted-foreground: 220 10% 45%;
+
+    --accent: 220 15% 92%;
+    --accent-foreground: 220 30% 10%;
+
+    --destructive: 0 85% 60%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 220 15% 88%;
+    --input: 220 15% 88%;
+    --ring: 220 90% 50%;
+
+    --radius: 0.75rem;
+
+    /* Niche Colors */
+    --tech: 220 90% 50%;
+    --tech-foreground: 0 0% 100%;
+    --tech-muted: 220 70% 95%;
+
+    --security: 0 75% 55%;
+    --security-foreground: 0 0% 100%;
+    --security-muted: 0 60% 95%;
+
+    --gaming: 145 70% 42%;
+    --gaming-foreground: 0 0% 100%;
+    --gaming-muted: 145 50% 94%;
+
+    /* Gradient */
+    --gradient-hero: linear-gradient(135deg, hsl(220 90% 50%) 0%, hsl(260 80% 55%) 50%, hsl(320 75% 55%) 100%);
+    --gradient-tech: linear-gradient(135deg, hsl(220 90% 50%) 0%, hsl(240 80% 55%) 100%);
+    --gradient-security: linear-gradient(135deg, hsl(0 75% 55%) 0%, hsl(30 80% 50%) 100%);
+    --gradient-gaming: linear-gradient(135deg, hsl(145 70% 42%) 0%, hsl(175 70% 45%) 100%);
+
+    /* Shadows */
+    --shadow-sm: 0 1px 2px 0 hsl(220 30% 10% / 0.05);
+    --shadow-md: 0 4px 6px -1px hsl(220 30% 10% / 0.1), 0 2px 4px -2px hsl(220 30% 10% / 0.1);
+    --shadow-lg: 0 10px 15px -3px hsl(220 30% 10% / 0.1), 0 4px 6px -4px hsl(220 30% 10% / 0.1);
+    --shadow-glow-tech: 0 0 30px hsl(220 90% 50% / 0.3);
+    --shadow-glow-security: 0 0 30px hsl(0 75% 55% / 0.3);
+    --shadow-glow-gaming: 0 0 30px hsl(145 70% 42% / 0.3);
+
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 240 5.3% 26.1%;
+    --sidebar-primary: 240 5.9% 10%;
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 240 4.8% 95.9%;
+    --sidebar-accent-foreground: 240 5.9% 10%;
+    --sidebar-border: 220 13% 91%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+
+    /* New Design System Colors */
+    --danger-glow: rgba(239, 68, 68, 0.15);
+    --surface-elevated: 217 33% 17%; /* #1e293b */
+  }
+
+  .dark {
+    --background: 220 25% 8%;
+    --foreground: 220 15% 95%;
+
+    --card: 220 25% 12%;
+    --card-foreground: 220 15% 95%;
+
+    --popover: 220 25% 12%;
+    --popover-foreground: 220 15% 95%;
+
+    --primary: 199 89% 48%; /* #0ea5e9 */
+    --primary-foreground: 220 25% 8%;
+
+    --secondary: 220 20% 18%;
+    --secondary-foreground: 220 15% 95%;
+
+    --muted: 220 20% 18%;
+    --muted-foreground: 220 15% 60%;
+
+    --accent: 220 20% 18%;
+    --accent-foreground: 220 15% 95%;
+
+    --destructive: 0 70% 50%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 220 20% 20%;
+    --input: 220 20% 20%;
+    --ring: 220 90% 60%;
+
+    /* Niche Colors Dark */
+    --tech: 220 90% 60%;
+    --tech-muted: 220 40% 20%;
+
+    --security: 0 70% 55%;
+    --security-muted: 0 40% 20%;
+
+    --gaming: 145 60% 50%;
+    --gaming-muted: 145 30% 18%;
+
+    --sidebar-background: 240 5.9% 10%;
+    --sidebar-foreground: 240 4.8% 95.9%;
+    --sidebar-primary: 224.3 76.3% 48%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 240 3.7% 15.9%;
+    --sidebar-accent-foreground: 240 4.8% 95.9%;
+    --sidebar-border: 240 3.7% 15.9%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+
+    /* New Design System Colors */
+    --danger-glow: rgba(239, 68, 68, 0.15);
+    --surface-elevated: 217 33% 17%; /* #1e293b */
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+    font-family: 'Inter', system-ui, sans-serif;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Inter', system-ui, sans-serif;
+  }
+
+  code, pre, .font-mono, .technical-data {
+    font-family: 'Fira Code', monospace;
+  }
+}
+
+@layer utilities {
+  .gradient-hero {
+    background: var(--gradient-hero);
+  }
+  .gradient-tech {
+    background: var(--gradient-tech);
+  }
+  .gradient-security {
+    background: var(--gradient-security);
+  }
+  .gradient-gaming {
+    background: var(--gradient-gaming);
+  }
+  .shadow-glow-tech {
+    box-shadow: var(--shadow-glow-tech);
+  }
+  .shadow-glow-security {
+    box-shadow: var(--shadow-glow-security);
+  }
+  .shadow-glow-gaming {
+    box-shadow: var(--shadow-glow-gaming);
+  }
+  .danger-glow {
+    box-shadow: 0 0 20px var(--danger-glow);
+  }
+  .surface-elevated {
+    background-color: hsl(var(--surface-elevated));
+  }
+  .animate-ticker-scroll {
+    animation: ticker-scroll 30s linear infinite;
+  }
+  @keyframes ticker-scroll {
+    0% {
+      transform: translateX(0);
+    }
+    100% {
+      transform: translateX(-50%);
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .animate-ticker-scroll {
+      animation: none;
+    }
+  }
+  @keyframes float {
+    0%, 100% {
+      transform: translateY(0) translateX(0);
+      opacity: 0.3;
+    }
+    25% {
+      transform: translateY(-20px) translateX(10px);
+      opacity: 0.5;
+    }
+    50% {
+      transform: translateY(-10px) translateX(-10px);
+      opacity: 0.4;
+    }
+    75% {
+      transform: translateY(-30px) translateX(5px);
+      opacity: 0.6;
+    }
+  }
+  @keyframes pulse-glow-soft {
+    0%, 100% {
+      opacity: 0.4;
+      transform: scale(1);
+    }
+    50% {
+      opacity: 0.6;
+      transform: scale(1.05);
+    }
+  }
+  .bg-grid-pattern {
+    background-image: 
+      linear-gradient(rgba(14, 165, 233, 0.1) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(14, 165, 233, 0.1) 1px, transparent 1px);
+    background-size: 40px 40px;
+  }
+  @keyframes reveal {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  .animate-reveal {
+    animation: reveal 0.6s ease-out;
+  }
+}

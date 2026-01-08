@@ -1,0 +1,48 @@
+import { Toaster } from "@/components/ui/toaster";
+import { Toaster as Sonner } from "@/components/ui/sonner";
+import { TooltipProvider } from "@/components/ui/tooltip";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { AuthProvider } from "@/contexts/AuthContext";
+import Index from "./pages/Index";
+import Auth from "./pages/Auth";
+import Tech from "./pages/Tech";
+import Security from "./pages/Security";
+import Gaming from "./pages/Gaming";
+import Guides from "./pages/Guides";
+import Article from "./pages/Article";
+import Bookmarks from "./pages/Bookmarks";
+import SecurityScore from "./pages/SecurityScore";
+import Disclosure from "./pages/Disclosure";
+import NotFound from "./pages/NotFound";
+
+const queryClient = new QueryClient();
+
+const App = () => (
+  <QueryClientProvider client={queryClient}>
+    <AuthProvider>
+      <TooltipProvider>
+        <Toaster />
+        <Sonner />
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<Index />} />
+            <Route path="/auth" element={<Auth />} />
+            <Route path="/tech" element={<Tech />} />
+            <Route path="/security" element={<Security />} />
+            <Route path="/gaming" element={<Gaming />} />
+            <Route path="/guides" element={<Guides />} />
+            <Route path="/article/:id" element={<Article />} />
+            <Route path="/bookmarks" element={<Bookmarks />} />
+            <Route path="/security-score" element={<SecurityScore />} />
+            <Route path="/disclosure" element={<Disclosure />} />
+            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </BrowserRouter>
+      </TooltipProvider>
+    </AuthProvider>
+  </QueryClientProvider>
+);
+
+export default App;
