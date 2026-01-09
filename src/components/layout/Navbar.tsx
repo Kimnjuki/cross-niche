@@ -16,6 +16,7 @@ const navLinks = [
   { href: '/security', label: 'Secured', color: 'text-security' },
   { href: '/gaming', label: 'Play', color: 'text-gaming' },
   { href: '/guides', label: 'Guides', color: 'text-foreground' },
+  { href: '/roadmap', label: 'Roadmap', color: 'text-foreground' },
 ];
 
 export function Navbar() {

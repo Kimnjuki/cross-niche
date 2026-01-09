@@ -14,6 +14,7 @@ import Article from "./pages/Article";
 import Bookmarks from "./pages/Bookmarks";
 import SecurityScore from "./pages/SecurityScore";
 import Disclosure from "./pages/Disclosure";
+import Roadmap from "./pages/Roadmap";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -36,6 +37,7 @@ const App = () => (
             <Route path="/bookmarks" element={<Bookmarks />} />
             <Route path="/security-score" element={<SecurityScore />} />
             <Route path="/disclosure" element={<Disclosure />} />
+            <Route path="/roadmap" element={<Roadmap />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
