@@ -134,7 +134,7 @@ export function EnhancedShareBar({ article, className, variant = 'inline' }: Enh
   useEffect(() => {
     document.addEventListener('selectionchange', handleTextSelection);
     return () => document.removeEventListener('selectionchange', handleTextSelection);
-  }, []);
+  }, [handleTextSelection]);
 
   if (variant === 'floating' && !isVisible) return null;
 

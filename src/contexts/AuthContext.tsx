@@ -75,13 +75,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   // Load bookmarks from Supabase
   const loadBookmarks = async (userId: string): Promise<string[]> => {
     if (!isSupabaseConfigured()) return [];
-    
+
     try {
       const { data, error } = await supabase
         .from('user_bookmarks')
         .select('content_id')
         .eq('user_id', userId);
-      
+
       if (error) throw error;
       return data?.map(b => b.content_id) || [];
     } catch (error) {
@@ -112,8 +112,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       }
 
       return { success: true };
-    } catch (error: any) {
-      return { success: false, error: error.message || 'An unexpected error occurred' };
+    } catch (error: unknown) {
+      const err = error as Error;
+      return { success: false, error: err.message || 'An unexpected error occurred' };
     }
   };
 
@@ -143,8 +144,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       }
 
       return { success: true };
-    } catch (error: any) {
-      return { success: false, error: error.message || 'An unexpected error occurred' };
+    } catch (error: unknown) {
+      const err = error as Error;
+      return { success: false, error: err.message || 'An unexpected error occurred' };
     }
   };
 
@@ -175,7 +177,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           .eq('id', existing.id);
 
         if (error) throw error;
-        
+
         setUser({
           ...user,
           bookmarks: user.bookmarks.filter(id => id !== articleId),
@@ -190,7 +192,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           });
 
         if (error) throw error;
-        
+
         setUser({
           ...user,
           bookmarks: [...user.bookmarks, articleId],
