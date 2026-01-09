@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
@@ -107,7 +107,7 @@ export function EnhancedShareBar({ article, className, variant = 'inline' }: Enh
     return `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(articleUrl)}`;
   };
 
-  const handleTextSelection = () => {
+  const handleTextSelection = React.useCallback(() => {
     const selection = window.getSelection();
     if (selection && selection.toString().length > 10) {
       const selectedText = selection.toString();
@@ -128,7 +128,7 @@ export function EnhancedShareBar({ article, className, variant = 'inline' }: Enh
         ),
       });
     }
-  };
+  }, [articleTitle, articleUrl, toast]);
 
   // Text selection listener
   useEffect(() => {
