@@ -186,3 +186,201 @@ export interface SemanticSimilarity {
   commonTags: string[];
   commonEntities: string[];
 }
+
+export interface ProductReview {
+  id: string;
+  productName: string;
+  tagline: string;
+  category: string; // 'GPU', 'CPU', 'Gaming Laptop', 'Monitor', etc.
+  brand: string;
+  model: string;
+  price: number;
+  currency: string;
+  images: string[];
+  scores: {
+    overall: number; // 0-10
+    performance: number; // 0-10
+    value: number; // 0-10
+    design: number; // 0-10
+    features?: number; // 0-10
+    build?: number; // 0-10
+  };
+  verdict: 'recommended' | 'mixed' | 'not-recommended';
+  summary: string;
+  pros: string[];
+  cons: string[];
+  keySpecs: Array<{
+    label: string;
+    value: string;
+  }>;
+  reviewer: {
+    id: string;
+    name: string;
+    avatar?: string;
+    credibility: number; // 0-100
+    reviewCount: number;
+  };
+  reviewerCount: number;
+  helpful: {
+    upvotes: number;
+    downvotes: number;
+  };
+  publishDate: string;
+  lastUpdated?: string;
+  affiliateLinks?: Array<{
+    retailer: string;
+    url: string;
+    price: number;
+  }>;
+  relatedProducts?: string[]; // Product IDs
+  tags: string[];
+}
+
+export interface GameReview {
+  id: string;
+  gameTitle: string;
+  developer: string;
+  publisher: string;
+  releaseDate: string;
+  platforms: string[];
+  genre: string[];
+  images: string[];
+  videos: Array<{
+    title: string;
+    url: string;
+    thumbnail: string;
+    duration: number;
+  }>;
+  scores: {
+    overall: number; // 0-10
+    gameplay: number; // 0-10
+    graphics: number; // 0-10
+    sound: number; // 0-10
+    story?: number; // 0-10
+    value?: number; // 0-10
+  };
+  verdict: 'must-play' | 'recommended' | 'mixed' | 'avoid';
+  summary: string;
+  pros: string[];
+  cons: string[];
+  reviewer: {
+    id: string;
+    name: string;
+    avatar?: string;
+    credibility: number;
+    reviewCount: number;
+  };
+  userScore?: number; // Average user rating
+  userReviewCount?: number;
+  publishDate: string;
+  lastUpdated?: string;
+  metacriticScore?: number;
+  steamScore?: number;
+  tags: string[];
+}
+
+export interface ThreatReport {
+  id: string;
+  title: string;
+  severity: 'critical' | 'high' | 'medium' | 'low' | 'info';
+  threatType: 'malware' | 'ransomware' | 'phishing' | 'ddos' | 'data-breach' | 'vulnerability' | 'insider-threat';
+  affectedSystems: string[];
+  affectedIndustries: string[];
+  description: string;
+  technicalDetails: string;
+  impact: {
+    financial: number; // Estimated cost in millions
+    operational: string; // Description of operational impact
+    reputation: string; // Brand/reputation impact
+  };
+  mitigation: string[];
+  indicators: Array<{
+    type: 'ip' | 'domain' | 'hash' | 'email' | 'file';
+    value: string;
+    description: string;
+  }>;
+  attribution?: string; // Suspected attacker group
+  firstSeen: string;
+  lastSeen: string;
+  status: 'active' | 'contained' | 'resolved';
+  confidence: number; // 0-100
+  sources: Array<{
+    name: string;
+    url: string;
+    date: string;
+  }>;
+  tags: string[];
+  publishedAt: string;
+  updatedAt?: string;
+}
+
+export interface VulnerabilityReport {
+  id: string;
+  cve: string;
+  title: string;
+  severity: 'critical' | 'high' | 'medium' | 'low';
+  cvssScore: number;
+  affectedProducts: Array<{
+    vendor: string;
+    product: string;
+    versions: string;
+  }>;
+  description: string;
+  exploitability: string;
+  impact: string;
+  remediation: string;
+  proofOfConcept?: string;
+  references: Array<{
+    type: 'vendor' | 'security' | 'exploit' | 'mitigation';
+    title: string;
+    url: string;
+  }>;
+  publishedAt: string;
+  updatedAt?: string;
+  status: 'unpatched' | 'patched' | 'disputed' | 'rejected';
+  tags: string[];
+}
+
+export interface StartupProfile {
+  id: string;
+  name: string;
+  tagline: string;
+  description: string;
+  founded: string;
+  headquarters: string;
+  industry: string[];
+  stage: 'pre-seed' | 'seed' | 'series-a' | 'series-b' | 'series-c' | 'growth' | 'ipo' | 'acquired';
+  funding: {
+    totalRaised: number;
+    currency: string;
+    lastRound: {
+      amount: number;
+      date: string;
+      round: string;
+      investors: string[];
+    };
+    valuation?: number;
+  };
+  team: Array<{
+    name: string;
+    role: string;
+    linkedin?: string;
+    experience: string;
+  }>;
+  metrics: {
+    employees: number;
+    revenue?: number;
+    growth?: number;
+    customers?: number;
+  };
+  website: string;
+  socialLinks: {
+    twitter?: string;
+    linkedin?: string;
+    crunchbase?: string;
+  };
+  logo: string;
+  images: string[];
+  tags: string[];
+  lastUpdated: string;
+}
