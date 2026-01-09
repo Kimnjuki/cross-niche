@@ -212,7 +212,7 @@ export function CommentSection({ articleId }: CommentSectionProps) {
     setComments(comments.map(c => {
       if (c.id === commentId) {
         const existingReactionIndex = c.reactions.findIndex(r => r.userId === user?.id && r.type === reactionType);
-        let newReactions = [...c.reactions];
+        const newReactions = [...c.reactions];
 
         if (existingReactionIndex >= 0) {
           // Remove reaction if it exists

@@ -206,27 +206,30 @@ export class NewsletterCurationEngine {
 
     // Type-specific scoring (10% weight)
     switch (type) {
-      case 'daily-digest':
+      case 'daily-digest': {
         // Prioritize recent, high-impact articles
         const daysSincePublished = (Date.now() - new Date(article.publishedAt).getTime()) / (1000 * 60 * 60 * 24);
         score += Math.max(0, (1 - daysSincePublished) * 0.1);
         break;
-      case 'weekly-deep-dive':
+      }
+      case 'weekly-deep-dive': {
         // Prioritize in-depth, analytical content
         if (article.readTime > 8) score += 0.05;
         if (article.tags.some(tag => ['analysis', 'deep-dive', 'guide'].includes(tag.toLowerCase()))) {
           score += 0.05;
         }
         break;
+      }
       case 'topic-specific':
         // Already handled in topic filtering
         score += 0.1;
         break;
-      case 'breaking-news':
+      case 'breaking-news': {
         // Prioritize very recent, high-impact content
         const hoursSincePublished = (Date.now() - new Date(article.publishedAt).getTime()) / (1000 * 60 * 60);
         if (hoursSincePublished < 24) score += 0.1;
         break;
+      }
     }
 
     return Math.min(score, 1);
@@ -274,9 +277,10 @@ export class NewsletterCurationEngine {
     if (articles.length === 0) return template.title;
 
     switch (type) {
-      case 'daily-digest':
+      case 'daily-digest': {
         const mainTopic = this.getMainTopic(articles);
         return mainTopic ? `${mainTopic} Digest` : template.title;
+      }
       case 'weekly-deep-dive':
         return articles[0] ? `Deep Dive: ${articles[0].title.split(':')[0]}` : template.title;
       case 'topic-specific':
