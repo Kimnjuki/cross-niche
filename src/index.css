@@ -242,4 +242,79 @@
   .animate-reveal {
     animation: reveal 0.6s ease-out;
   }
+
+  /* Accessibility: Screen reader only content - WCAG 2.4.1 */
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+  }
+
+  .sr-only:focus,
+  .sr-only:active {
+    position: static;
+    width: auto;
+    height: auto;
+    padding: inherit;
+    margin: inherit;
+    overflow: visible;
+    clip: auto;
+    white-space: normal;
+  }
+
+  .focus\:not-sr-only:focus {
+    position: static;
+    width: auto;
+    height: auto;
+    padding: inherit;
+    margin: inherit;
+    overflow: visible;
+    clip: auto;
+    white-space: normal;
+  }
+
+  /* Accessibility: Focus indicators - WCAG 2.4.7 */
+  *:focus-visible {
+    outline: 2px solid hsl(var(--ring));
+    outline-offset: 2px;
+    border-radius: calc(var(--radius) - 2px);
+  }
+
+  /* Accessibility: Skip link styling */
+  a:focus:not(:focus-visible) {
+    outline: none;
+  }
+
+  /* Accessibility: Reduced motion support - WCAG 2.3.3 */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+
+  /* Accessibility: High contrast mode support */
+  @media (prefers-contrast: high) {
+    :root {
+      --border: 220 30% 20%;
+      --ring: 220 90% 50%;
+    }
+  }
+
+  /* Accessibility: Color contrast improvements - WCAG 1.4.3 */
+  @media (prefers-contrast: more) {
+    .text-muted-foreground {
+      color: hsl(220 30% 30%);
+    }
+  }
 }
