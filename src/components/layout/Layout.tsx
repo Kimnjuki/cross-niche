@@ -14,6 +14,8 @@ export function Layout({ children }: LayoutProps) {
       <Footer />
       {/* Floating Nexus Score Widget */}
       <NexusScoreWidget />
+      {/* Cookie Consent Banner */}
+      <CookieConsent />
     </div>
   );
 }
