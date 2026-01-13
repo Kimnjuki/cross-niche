@@ -15,18 +15,53 @@ export function usePublishedContent(limit = 20) {
         return [] as ContentItem[];
       }
       
-      const { data, error } = await supabase
+      // Try feed_content_view first
+      let { data, error } = await supabase
         .from('feed_content_view')
         .select('*')
         .eq('status', 'published')
         .order('published_at', { ascending: false })
         .limit(limit);
       
-      if (error) {
-        console.error('Error fetching published content:', error);
-        return [] as ContentItem[];
+      // If view fails or returns no data, try direct query with joins
+      if (error || !data || data.length === 0) {
+        console.warn('feed_content_view failed or empty, trying direct query:', error?.message);
+        
+        const { data: directData, error: directError } = await supabase
+          .from('content')
+          .select(`
+            *,
+            content_feeds!inner(
+              feed_id,
+              feeds!inner(slug, name)
+            ),
+            content_niches!inner(
+              niche_id,
+              niches!inner(name)
+            )
+          `)
+          .eq('status', 'published')
+          .order('published_at', { ascending: false })
+          .limit(limit);
+        
+        if (directError) {
+          console.error('Error fetching published content (direct query):', directError);
+          return [] as ContentItem[];
+        }
+        
+        // Transform direct query result to match ContentItem format
+        if (directData) {
+          data = directData.map((item: any) => ({
+            ...item,
+            feed_slug: item.content_feeds?.[0]?.feeds?.slug || '',
+            feed_name: item.content_feeds?.[0]?.feeds?.name || '',
+            niches: item.content_niches?.map((cn: any) => cn.niches?.name).filter(Boolean) || [],
+            author_name: 'Anonymous', // Will need to join authors table if needed
+          })) as ContentItem[];
+        }
       }
-      return data as ContentItem[];
+      
+      return data as ContentItem[] || [];
     },
   });
 }
