@@ -1,6 +1,7 @@
 import { Navbar } from './Navbar';
 import { Footer } from './Footer';
 import { NexusScoreWidget } from '@/components/ui/NexusScoreWidget';
+import { CookieConsent } from '@/components/consent/CookieConsent';
 
 interface LayoutProps {
   children: React.ReactNode;
