@@ -6,6 +6,8 @@ A comprehensive intelligence platform covering technology, cybersecurity, and ga
 
 ## 🚀 Quick Start
 
+> **Note**: If deployment skips build due to cache, make a dummy commit to trigger rebuild.
+
 ### Prerequisites
 
 - Node.js 18+ and npm (or use [nvm](https://github.com/nvm-sh/nvm#installing-and-updating))
