@@ -167,75 +167,160 @@ export function useContentByFeed(feedSlug: string, limit = 20) {
       
       // If view fails, use direct query
       if (error || !data || data.length === 0) {
-        // Get feed ID first
-        const { data: feedData } = await supabase
-          .from('feeds')
-          .select('id')
-          .eq('slug', feedSlug)
-          .maybeSingle();
+        // Try to get feed ID, but don't fail if feeds table doesn't exist
+        let feedId: number | null = null;
+        let feedName = '';
         
-        if (!feedData) {
-          return [] as ContentItem[];
+        try {
+          const { data: feedData } = await supabase
+            .from('feeds')
+            .select('id, name')
+            .eq('slug', feedSlug)
+            .maybeSingle();
+          
+          if (feedData) {
+            feedId = feedData.id;
+            feedName = feedData.name || '';
+          }
+        } catch (feedError) {
+          console.warn('Feeds table not available, using content-only query:', feedError);
         }
         
-        // Get content linked to this feed
-        const { data: contentFeeds } = await supabase
-          .from('content_feeds')
-          .select('content_id')
-          .eq('feed_id', feedData.id);
+        // Get content - either by feed relationship or all published content
+        let contentData: any[] = [];
+        let contentError: any = null;
         
-        if (!contentFeeds || contentFeeds.length === 0) {
-          return [] as ContentItem[];
+        if (feedId) {
+          // Try to get content via feed relationship
+          try {
+            const { data: contentFeeds } = await supabase
+              .from('content_feeds')
+              .select('content_id')
+              .eq('feed_id', feedId);
+            
+            if (contentFeeds && contentFeeds.length > 0) {
+              const contentIds = contentFeeds.map(cf => cf.content_id);
+              const result = await supabase
+                .from('content')
+                .select('id, title, slug, body, excerpt, summary, status, published_at, created_at, updated_at, featured_image_url, read_time_minutes, is_featured, is_breaking, security_score, content_type, author_id')
+                .in('id', contentIds)
+                .eq('status', 'published')
+                .order('published_at', { ascending: false })
+                .limit(limit);
+              
+              contentData = result.data || [];
+              contentError = result.error;
+            }
+          } catch (relError) {
+            console.warn('Could not fetch via feed relationship:', relError);
+          }
         }
         
-        const contentIds = contentFeeds.map(cf => cf.content_id);
+        // If no content found via feed, get all published content and filter by keywords
+        if (contentData.length === 0) {
+          const result = await supabase
+            .from('content')
+            .select('id, title, slug, body, excerpt, summary, status, published_at, created_at, updated_at, featured_image_url, read_time_minutes, is_featured, is_breaking, security_score, content_type, author_id')
+            .eq('status', 'published')
+            .order('published_at', { ascending: false })
+            .limit(limit * 2); // Get more to filter
+          
+          contentData = result.data || [];
+          contentError = result.error;
+          
+          // Filter by keywords based on feed slug
+          const keywords: Record<string, string[]> = {
+            'secured': ['security', 'cyber', 'threat', 'malware', 'breach', 'vulnerability'],
+            'play': ['game', 'gaming', 'gta', 'nvidia', 'rtx', 'switch', 'console'],
+            'innovate': ['tech', 'ces', 'ai', 'hardware', 'software', 'innovation'],
+          };
+          
+          const feedKeywords = keywords[feedSlug] || [];
+          if (feedKeywords.length > 0) {
+            contentData = contentData.filter((item: any) => {
+              const titleLower = (item.title || '').toLowerCase();
+              const bodyLower = (item.body || '').toLowerCase();
+              return feedKeywords.some(keyword => 
+                titleLower.includes(keyword) || bodyLower.includes(keyword)
+              );
+            }).slice(0, limit);
+          } else {
+            contentData = contentData.slice(0, limit);
+          }
+        }
         
-        // Get the actual content
-        const { data: contentData, error: contentError } = await supabase
-          .from('content')
-          .select('*')
-          .in('id', contentIds)
-          .eq('status', 'published')
-          .order('published_at', { ascending: false })
-          .limit(limit);
-        
-        if (contentError || !contentData) {
+        if (contentError || !contentData || contentData.length === 0) {
           console.error('Error fetching content by feed:', contentError);
           return [] as ContentItem[];
         }
         
-        // Get niches and tags
-        const { data: nicheRelations } = await supabase
-          .from('content_niches')
-          .select('content_id, niches(name)')
-          .in('content_id', contentIds);
-        
-        const { data: tagRelations } = await supabase
-          .from('content_tags')
-          .select('content_id, tags(name)')
-          .in('content_id', contentIds);
-        
+        // Get relationships (optional, don't fail if tables don't exist)
+        const contentIds = contentData.map(c => c.id);
         const nicheMap: Record<string, string[]> = {};
-        nicheRelations?.forEach((nr: any) => {
-          if (!nicheMap[nr.content_id]) nicheMap[nr.content_id] = [];
-          if (nr.niches?.name) nicheMap[nr.content_id].push(nr.niches.name);
-        });
-        
         const tagMap: Record<string, string[]> = {};
-        tagRelations?.forEach((tr: any) => {
-          if (!tagMap[tr.content_id]) tagMap[tr.content_id] = [];
-          if (tr.tags?.name) tagMap[tr.content_id].push(tr.tags.name);
-        });
+        
+        try {
+          const { data: nicheRelations } = await supabase
+            .from('content_niches')
+            .select('content_id, niche_id')
+            .in('content_id', contentIds);
+          
+          if (nicheRelations && nicheRelations.length > 0) {
+            try {
+              const nicheIds = [...new Set(nicheRelations.map(nr => nr.niche_id))];
+              const { data: nichesData } = await supabase
+                .from('niches')
+                .select('id, name')
+                .in('id', nicheIds);
+              
+              const nicheDetailsMap: Record<number, string> = {};
+              nichesData?.forEach(n => { nicheDetailsMap[n.id] = n.name; });
+              
+              nicheRelations.forEach((nr: any) => {
+                if (!nicheMap[nr.content_id]) nicheMap[nr.content_id] = [];
+                const nicheName = nicheDetailsMap[nr.niche_id];
+                if (nicheName) nicheMap[nr.content_id].push(nicheName);
+              });
+            } catch {}
+          }
+        } catch {}
+        
+        try {
+          const { data: tagRelations } = await supabase
+            .from('content_tags')
+            .select('content_id, tag_id')
+            .in('content_id', contentIds);
+          
+          if (tagRelations && tagRelations.length > 0) {
+            try {
+              const tagIds = [...new Set(tagRelations.map(tr => tr.tag_id))];
+              const { data: tagsData } = await supabase
+                .from('tags')
+                .select('id, name')
+                .in('id', tagIds);
+              
+              const tagDetailsMap: Record<string, string> = {};
+              tagsData?.forEach(t => { tagDetailsMap[t.id] = t.name; });
+              
+              tagRelations.forEach((tr: any) => {
+                if (!tagMap[tr.content_id]) tagMap[tr.content_id] = [];
+                const tagName = tagDetailsMap[tr.tag_id];
+                if (tagName) tagMap[tr.content_id].push(tagName);
+              });
+            } catch {}
+          }
+        } catch {}
         
         // Transform to ContentItem format
         data = contentData.map((item: any) => ({
           ...item,
           feed_slug: feedSlug,
-          feed_name: feedData.name || '',
-          feed_id: feedData.id,
+          feed_name: feedName,
+          feed_id: feedId,
           niches: nicheMap[item.id] || [],
           tags: tagMap[item.id] || [],
           author_name: 'Anonymous',
+          view_count: 0,
         })) as ContentItem[];
       }
       
@@ -316,7 +401,7 @@ export function useContentBySlug(slug: string, options?: { enabled?: boolean }) 
       if (error || !data) {
         const { data: contentData, error: contentError } = await supabase
           .from('content')
-          .select('*')
+          .select('id, title, slug, body, excerpt, summary, status, published_at, created_at, updated_at, featured_image_url, read_time_minutes, is_featured, is_breaking, security_score, content_type, author_id')
           .eq('slug', slug)
           .eq('status', 'published')
           .maybeSingle();
@@ -326,31 +411,86 @@ export function useContentBySlug(slug: string, options?: { enabled?: boolean }) 
           return null;
         }
         
-        // Get relationships
-        const { data: feedRelation } = await supabase
-          .from('content_feeds')
-          .select('feeds(slug, name)')
-          .eq('content_id', contentData.id)
-          .limit(1)
-          .maybeSingle();
+        // Get relationships (optional, don't fail if tables don't exist)
+        let feedSlug = '';
+        let feedName = '';
+        const niches: string[] = [];
+        const tags: string[] = [];
         
-        const { data: nicheRelations } = await supabase
-          .from('content_niches')
-          .select('niches(name)')
-          .eq('content_id', contentData.id);
+        try {
+          const { data: feedRelation } = await supabase
+            .from('content_feeds')
+            .select('feed_id')
+            .eq('content_id', contentData.id)
+            .limit(1)
+            .maybeSingle();
+          
+          if (feedRelation?.feed_id) {
+            try {
+              const { data: feedData } = await supabase
+                .from('feeds')
+                .select('slug, name')
+                .eq('id', feedRelation.feed_id)
+                .maybeSingle();
+              
+              if (feedData) {
+                feedSlug = feedData.slug || '';
+                feedName = feedData.name || '';
+              }
+            } catch {}
+          }
+        } catch {}
         
-        const { data: tagRelations } = await supabase
-          .from('content_tags')
-          .select('tags(name)')
-          .eq('content_id', contentData.id);
+        try {
+          const { data: nicheRelations } = await supabase
+            .from('content_niches')
+            .select('niche_id')
+            .eq('content_id', contentData.id);
+          
+          if (nicheRelations && nicheRelations.length > 0) {
+            try {
+              const nicheIds = nicheRelations.map(nr => nr.niche_id);
+              const { data: nichesData } = await supabase
+                .from('niches')
+                .select('name')
+                .in('id', nicheIds);
+              
+              nichesData?.forEach(n => {
+                if (n.name) niches.push(n.name);
+              });
+            } catch {}
+          }
+        } catch {}
+        
+        try {
+          const { data: tagRelations } = await supabase
+            .from('content_tags')
+            .select('tag_id')
+            .eq('content_id', contentData.id);
+          
+          if (tagRelations && tagRelations.length > 0) {
+            try {
+              const tagIds = tagRelations.map(tr => tr.tag_id);
+              const { data: tagsData } = await supabase
+                .from('tags')
+                .select('name')
+                .in('id', tagIds);
+              
+              tagsData?.forEach(t => {
+                if (t.name) tags.push(t.name);
+              });
+            } catch {}
+          }
+        } catch {}
         
         data = {
           ...contentData,
-          feed_slug: feedRelation?.feeds?.slug || '',
-          feed_name: feedRelation?.feeds?.name || '',
-          niches: nicheRelations?.map((nr: any) => nr.niches?.name).filter(Boolean) || [],
-          tags: tagRelations?.map((tr: any) => tr.tags?.name).filter(Boolean) || [],
+          feed_slug: feedSlug,
+          feed_name: feedName,
+          niches: niches,
+          tags: tags,
           author_name: 'Anonymous',
+          view_count: 0,
         } as ContentItem;
       }
       
@@ -426,11 +566,12 @@ export function useTrendingContent(limit = 6) {
       
       // If view fails, use direct query
       if (error || !data || data.length === 0) {
+        // Order by published_at since view_count doesn't exist
         const { data: contentData, error: contentError } = await supabase
           .from('content')
-          .select('*')
+          .select('id, title, slug, body, excerpt, summary, status, published_at, created_at, updated_at, featured_image_url, read_time_minutes, is_featured, is_breaking, security_score, content_type, author_id')
           .eq('status', 'published')
-          .order('view_count', { ascending: false, nullsFirst: false })
+          .order('published_at', { ascending: false })
           .limit(limit);
         
         if (contentError || !contentData) {
@@ -438,33 +579,16 @@ export function useTrendingContent(limit = 6) {
           return [] as ContentItem[];
         }
         
-        // Get relationships (simplified - just get first feed for each)
-        const contentIds = contentData.map(c => c.id);
-        
-        const { data: feedRelations } = await supabase
-          .from('content_feeds')
-          .select('content_id, feeds(slug, name)')
-          .in('content_id', contentIds);
-        
-        const feedMap: Record<string, any> = {};
-        feedRelations?.forEach((fr: any) => {
-          if (fr.feeds && !feedMap[fr.content_id]) {
-            feedMap[fr.content_id] = fr.feeds;
-          }
-        });
-        
-        // Transform to ContentItem format
-        data = contentData.map((item: any) => {
-          const feed = feedMap[item.id] || {};
-          return {
-            ...item,
-            feed_slug: feed.slug || '',
-            feed_name: feed.name || '',
-            niches: [],
-            tags: [],
-            author_name: 'Anonymous',
-          } as ContentItem;
-        });
+        // Transform to ContentItem format (no relationships needed for trending)
+        data = contentData.map((item: any) => ({
+          ...item,
+          feed_slug: '',
+          feed_name: '',
+          niches: [],
+          tags: [],
+          author_name: 'Anonymous',
+          view_count: 0,
+        })) as ContentItem[];
       }
       
       return (data as ContentItem[]) || [];
