@@ -444,8 +444,7 @@ export function useTrendingContent(limit = 6) {
         const { data: feedRelations } = await supabase
           .from('content_feeds')
           .select('content_id, feeds(slug, name)')
-          .in('content_id', contentIds)
-          .limit(1, { foreignTable: 'feeds' });
+          .in('content_id', contentIds);
         
         const feedMap: Record<string, any> = {};
         feedRelations?.forEach((fr: any) => {
