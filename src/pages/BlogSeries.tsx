@@ -9,6 +9,7 @@ import { useContentByFeed, usePublishedContent } from '@/hooks/useContent';
 import { mapContentToArticle } from '@/lib/contentMapper';
 import { insertArticles } from '@/lib/insertArticles';
 import { diagnoseAndFixContent, forceUpdateAllContent } from '@/lib/diagnoseAndFixContent';
+import { fixExistingContent } from '@/lib/fixExistingContent';
 import { LazyImage } from '@/components/ui/lazy-image';
 import { Link } from 'react-router-dom';
 import { 
@@ -52,7 +53,9 @@ export default function BlogSeries() {
   const [insertStatus, setInsertStatus] = useState<{ success: boolean; message?: string } | null>(null);
   const [isDiagnosing, setIsDiagnosing] = useState(false);
   const [isFixing, setIsFixing] = useState(false);
+  const [isFixingExisting, setIsFixingExisting] = useState(false);
   const [diagnosticResult, setDiagnosticResult] = useState<any>(null);
+  const [fixResult, setFixResult] = useState<any>(null);
 
   // Fetch all published content
   const { data: allContent, isLoading: isLoadingAll } = usePublishedContent(50);
@@ -197,6 +200,37 @@ export default function BlogSeries() {
     }
   };
 
+  const handleFixExisting = async () => {
+    setIsFixingExisting(true);
+    setFixResult(null);
+    
+    try {
+      const result = await fixExistingContent();
+      setFixResult(result);
+      
+      if (result.success) {
+        toast.success('Content fixed successfully', {
+          description: `Updated ${result.updated} articles, linked ${result.linkedToFeeds} to feeds, ${result.linkedToNiches} to niches. ${result.visibleCount} articles now visible.`
+        });
+      } else {
+        toast.error('Fix failed', {
+          description: result.error || 'Unknown error'
+        });
+      }
+      
+      // Refresh content after fix
+      setTimeout(() => {
+        window.location.reload();
+      }, 2000);
+    } catch (error) {
+      toast.error('Fix failed', {
+        description: error instanceof Error ? error.message : 'Unknown error'
+      });
+    } finally {
+      setIsFixingExisting(false);
+    }
+  };
+
   const isLoading = isLoadingAll || (selectedNiche === 'tech' && isLoadingTech) || 
                      (selectedNiche === 'security' && isLoadingSecurity) || 
                      (selectedNiche === 'gaming' && isLoadingGaming);
@@ -294,7 +328,7 @@ export default function BlogSeries() {
                 </Button>
                 <Button 
                   onClick={handleForceFix} 
-                  disabled={isDiagnosing || isFixing}
+                  disabled={isDiagnosing || isFixing || isFixingExisting}
                   variant="outline"
                   className="gap-2 w-full"
                 >
@@ -310,9 +344,70 @@ export default function BlogSeries() {
                     </>
                   )}
                 </Button>
+                <Button 
+                  onClick={handleFixExisting} 
+                  disabled={isDiagnosing || isFixing || isFixingExisting}
+                  variant="default"
+                  className="gap-2 w-full"
+                >
+                  {isFixingExisting ? (
+                    <>
+                      <Loader2 className="h-4 w-4 animate-spin" />
+                      Fixing Existing...
+                    </>
+                  ) : (
+                    <>
+                      <RefreshCw className="h-4 w-4" />
+                      Fix Existing Content (Recommended)
+                    </>
+                  )}
+                </Button>
               </CardContent>
             </Card>
           </div>
+
+          {/* Fix Results */}
+          {fixResult && (
+            <Card className="mb-6">
+              <CardHeader>
+                <CardTitle className={cn(
+                  fixResult.success ? "text-green-500" : "text-red-500"
+                )}>
+                  Fix Results
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                  <div className="p-3 rounded-lg bg-muted">
+                    <div className="text-2xl font-bold">{fixResult.updated || 0}</div>
+                    <div className="text-xs text-muted-foreground">Updated</div>
+                  </div>
+                  <div className="p-3 rounded-lg bg-muted">
+                    <div className="text-2xl font-bold">{fixResult.linkedToFeeds || 0}</div>
+                    <div className="text-xs text-muted-foreground">Linked to Feeds</div>
+                  </div>
+                  <div className="p-3 rounded-lg bg-muted">
+                    <div className="text-2xl font-bold">{fixResult.linkedToNiches || 0}</div>
+                    <div className="text-xs text-muted-foreground">Linked to Niches</div>
+                  </div>
+                  <div className="p-3 rounded-lg bg-muted">
+                    <div className="text-2xl font-bold">{fixResult.visibleCount || 0}</div>
+                    <div className="text-xs text-muted-foreground">Now Visible</div>
+                  </div>
+                </div>
+                {fixResult.errors && fixResult.errors.length > 0 && (
+                  <div>
+                    <h4 className="font-semibold mb-2 text-red-500">Errors:</h4>
+                    <ul className="list-disc list-inside space-y-1 text-sm text-muted-foreground">
+                      {fixResult.errors.map((error: string, idx: number) => (
+                        <li key={idx}>{error}</li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+          )}
 
           {/* Diagnostic Results */}
           {diagnosticResult && (
