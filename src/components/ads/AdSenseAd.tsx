@@ -103,7 +103,12 @@ export function AdSenseAd({
     };
   }, [adSlot, adLoaded]);
 
-  // Don't render if ads are blocked or user hasn't consented
+  // Don't render if user hasn't consented
+  if (!hasAdConsent()) {
+    return null;
+  }
+
+  // Don't render if ads are blocked
   if (adBlocked) {
     return null;
   }
