@@ -24,6 +24,7 @@ import { AITools } from '@/components/ai/AITools';
 import { EnhancedShareBar } from '@/components/sharing/EnhancedShareBar';
 import { SEOHead } from '@/components/seo/SEOHead';
 import { LazyImage } from '@/components/ui/lazy-image';
+import { AdPlacement } from '@/components/ads/AdPlacement';
 import { cn } from '@/lib/utils';
 import type { Article as ArticleType } from '@/types';
 
@@ -230,6 +231,9 @@ export default function Article() {
               dangerouslySetInnerHTML={{ __html: article.content || article.excerpt }}
             />
           </div>
+
+          {/* In-Article Ad - Mid Content */}
+          <AdPlacement position="in-article" />
 
           {/* Tags */}
           {article.tags.length > 0 && (

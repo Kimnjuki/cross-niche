@@ -62,7 +62,45 @@ export default function Privacy() {
                 <li>Analyze usage patterns to enhance our platform</li>
                 <li>Detect and prevent fraud, abuse, and security issues</li>
                 <li>Comply with legal obligations and enforce our terms</li>
+                <li>Serve personalized advertisements through Google AdSense (with your consent)</li>
               </ul>
+            </section>
+
+            <section>
+              <h2 className="font-display font-semibold text-2xl mb-4">Google AdSense</h2>
+              <p className="text-muted-foreground mb-4">
+                We use Google AdSense to display advertisements on our website. Google AdSense uses cookies and similar technologies to:
+              </p>
+              <ul className="list-disc list-inside text-muted-foreground space-y-2 mb-4">
+                <li>Serve personalized ads based on your interests and browsing behavior</li>
+                <li>Measure ad performance and effectiveness</li>
+                <li>Prevent fraud and abuse</li>
+                <li>Limit the number of times you see an ad</li>
+              </ul>
+              <p className="text-muted-foreground mb-4">
+                Google may use information about your visits to this and other websites to provide relevant advertisements. 
+                You can opt-out of personalized advertising by visiting{' '}
+                <a 
+                  href="https://www.google.com/settings/ads" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="text-primary hover:underline"
+                >
+                  Google's Ad Settings
+                </a>
+                {' '}or by adjusting your cookie preferences on our website.
+              </p>
+              <p className="text-muted-foreground">
+                For more information about how Google uses data when you use our site, please visit{' '}
+                <a 
+                  href="https://policies.google.com/technologies/partner-sites" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="text-primary hover:underline"
+                >
+                  Google's Privacy & Terms
+                </a>.
+              </p>
             </section>
 
             <section>
@@ -148,4 +186,5 @@ export default function Privacy() {
     </Layout>
   );
 }
+
 

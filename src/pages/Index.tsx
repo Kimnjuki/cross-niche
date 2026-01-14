@@ -8,6 +8,7 @@ import { usePublishedContent, useTrendingContent, useContentByFeed } from '@/hoo
 import { mapContentToArticles } from '@/lib/contentMapper';
 import { Skeleton } from '@/components/ui/skeleton';
 import { ArticleCard } from '@/components/articles/ArticleCard';
+import { AdPlacement } from '@/components/ads/AdPlacement';
 
 const Index = () => {
   const { data: allContent, isLoading: loadingAll } = usePublishedContent(20);
@@ -112,9 +113,20 @@ const Index = () => {
       {/* Trending Section */}
       <TrendingSection articles={trendingArticles} />
 
+      {/* Ad Placement - Between Sections */}
+      <AdPlacement position="between-content" />
+
       {/* Niche Sections */}
       <NicheSection niche="tech" articles={techArticles} />
+      
+      {/* Ad Placement - Between Sections */}
+      <AdPlacement position="in-feed" />
+
       <NicheSection niche="security" articles={securityArticles} />
+      
+      {/* Ad Placement - Between Sections */}
+      <AdPlacement position="in-feed" />
+
       <NicheSection niche="gaming" articles={gamingArticles} />
 
       {/* Newsletter Section */}
