@@ -55,12 +55,29 @@ export function usePublishedContent(limit = 20) {
         console.warn('feed_content_view not available, using direct query:', error?.message);
         
         // Simple query - just get content first
-        const { data: contentData, error: contentError } = await supabase
+        // First try with published status
+        let { data: contentData, error: contentError } = await supabase
           .from('content')
           .select('*')
           .eq('status', 'published')
           .order('published_at', { ascending: false })
           .limit(limit);
+        
+        // If no published content, check if there's any content at all
+        if (!contentData || contentData.length === 0) {
+          const { data: allContentData } = await supabase
+            .from('content')
+            .select('*')
+            .order('created_at', { ascending: false })
+            .limit(limit);
+          
+          if (allContentData && allContentData.length > 0) {
+            console.warn(`Found ${allContentData.length} articles but none are published. Status values:`, 
+              [...new Set(allContentData.map(c => c.status))]);
+            // Still return empty to encourage fixing status
+            return [] as ContentItem[];
+          }
+        }
         
         if (contentError) {
           console.error('Error fetching published content:', contentError);
