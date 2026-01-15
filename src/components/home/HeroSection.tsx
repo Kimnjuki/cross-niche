@@ -1,6 +1,7 @@
 import { Article } from '@/types';
 import { ArticleCard } from '@/components/articles/ArticleCard';
 import { NewsletterForm } from '@/components/newsletter/NewsletterForm';
+import { LiveThreatFeed } from './LiveThreatFeed';
 import { cn } from '@/lib/utils';
 import { useState, useEffect } from 'react';
 
@@ -25,8 +26,6 @@ export function HeroSection({ featuredArticle }: HeroSectionProps) {
     <section className="relative overflow-hidden min-h-[600px] md:min-h-[700px]">
       {/* Background Image/Video Layer */}
       <div className="absolute inset-0 z-0">
-        {/* Background Image - Tech/Security/Gaming Theme */}
-        {/* Using tech-focused images: circuit boards, code, digital elements */}
         <div 
           className={cn(
             "absolute inset-0 bg-cover bg-center bg-no-repeat transition-opacity duration-1000",
@@ -41,18 +40,16 @@ export function HeroSection({ featuredArticle }: HeroSectionProps) {
             backgroundPosition: 'center, center',
           }}
         >
-          {/* Fallback gradient while images load */}
           <div className={cn(
             "absolute inset-0 bg-gradient-to-br from-primary/20 via-destructive/20 to-gaming/20 transition-opacity duration-1000",
             imageLoaded ? "opacity-0" : "opacity-100"
           )} />
-          {/* Dark overlay for readability */}
           <div className="absolute inset-0 bg-gradient-to-br from-background/98 via-background/95 to-background/92" />
           <div className="absolute inset-0 bg-gradient-to-t from-background via-background/80 to-transparent" />
           <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-background/90" />
         </div>
         
-        {/* Animated Grid Pattern Overlay - Tech Theme */}
+        {/* Animated Grid Pattern Overlay */}
         <div className="absolute inset-0 opacity-15">
           <div 
             className="w-full h-full"
@@ -65,53 +62,6 @@ export function HeroSection({ featuredArticle }: HeroSectionProps) {
             }}
           />
         </div>
-        
-        {/* Hexagonal Pattern Overlay - Security Theme */}
-        <div className="absolute inset-0 opacity-10">
-          <svg className="w-full h-full" xmlns="http://www.w3.org/2000/svg">
-            <defs>
-              <pattern id="hexagons" width="50" height="43.4" patternUnits="userSpaceOnUse" patternTransform="scale(1) rotate(0)">
-                <polygon points="24.8,22 37.3,14.2 37.3,7.1 24.8,0 12.3,7.1 12.3,14.2" fill="none" stroke="rgba(239, 68, 68, 0.2)" strokeWidth="1"/>
-              </pattern>
-            </defs>
-            <rect width="100%" height="100%" fill="url(#hexagons)" />
-          </svg>
-        </div>
-        
-        {/* Animated Particles Effect - Gaming Theme */}
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          {[...Array(30)].map((_, i) => {
-            const colors = [
-              'rgba(14, 165, 233, 0.4)',   // Tech blue
-              'rgba(239, 68, 68, 0.4)',     // Security red
-              'rgba(34, 197, 94, 0.4)',     // Gaming green
-            ];
-            return (
-              <div
-                key={i}
-                className="absolute rounded-full blur-sm"
-                style={{
-                  width: `${Math.random() * 6 + 3}px`,
-                  height: `${Math.random() * 6 + 3}px`,
-                  left: `${Math.random() * 100}%`,
-                  top: `${Math.random() * 100}%`,
-                  backgroundColor: colors[i % 3],
-                  boxShadow: `0 0 ${Math.random() * 10 + 5}px ${colors[i % 3]}`,
-                  animation: `float ${Math.random() * 15 + 10}s ease-in-out infinite`,
-                  animationDelay: `${Math.random() * 5}s`,
-                }}
-              />
-            );
-          })}
-        </div>
-        
-        {/* Subtle Scanline Effect */}
-        <div 
-          className="absolute inset-0 opacity-5"
-          style={{
-            background: 'repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(14, 165, 233, 0.1) 2px, rgba(14, 165, 233, 0.1) 4px)',
-          }}
-        />
       </div>
 
       {/* Background Gradient Overlay */}
@@ -119,6 +69,7 @@ export function HeroSection({ featuredArticle }: HeroSectionProps) {
       <div className="absolute inset-0 z-0 bg-gradient-to-b from-transparent via-background/30 to-background" />
       
       <div className="container mx-auto px-4 py-12 md:py-20 relative z-10">
+        {/* Header Section */}
         <div className="max-w-4xl mx-auto text-center mb-12">
           <h1 className="font-display font-bold text-4xl md:text-6xl mb-4 bg-gradient-to-r from-tech via-security to-gaming bg-clip-text text-transparent drop-shadow-lg">
             Tech • Security • Gaming
@@ -131,11 +82,20 @@ export function HeroSection({ featuredArticle }: HeroSectionProps) {
           </div>
         </div>
 
-        {/* Featured Story */}
-        <div className="max-w-4xl mx-auto">
-          <ArticleCard article={featuredArticle} variant="featured" />
+        {/* Split-Pane Layout: Featured Story + Live Threat Feed */}
+        <div className="max-w-7xl mx-auto grid md:grid-cols-2 gap-6">
+          {/* Left Side: Primary Featured Story */}
+          <div className="space-y-4">
+            <ArticleCard article={featuredArticle} variant="featured" />
+          </div>
+
+          {/* Right Side: Live Threat Feed */}
+          <div className="space-y-4">
+            <LiveThreatFeed />
+          </div>
         </div>
       </div>
     </section>
   );
 }
+

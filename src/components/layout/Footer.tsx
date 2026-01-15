@@ -75,12 +75,21 @@ export function Footer() {
           <p className="text-muted-foreground text-sm">
             © {new Date().getFullYear()} The Grid Nexus. All rights reserved.
           </p>
-          <p className="text-muted-foreground text-sm">
-            Tech • Security • Gaming Intelligence •{' '}
-            <Link to="/disclosure" className="hover:text-foreground transition-colors">
-              Affiliate Disclosure
-            </Link>
-          </p>
+          <div className="flex flex-col md:flex-row items-center gap-4">
+            <p className="text-muted-foreground text-sm">
+              Tech • Security • Gaming Intelligence •{' '}
+              <Link to="/disclosure" className="hover:text-foreground transition-colors">
+                Affiliate Disclosure
+              </Link>
+            </p>
+            <a 
+              className="clickio-cmp-settings-text clickio-cmp-settings-display text-muted-foreground hover:text-foreground transition-colors text-sm" 
+              style={{display: 'none'}} 
+              href="#"
+            >
+              Your Privacy Choices
+            </a>
+          </div>
         </div>
       </div>
     </footer>
