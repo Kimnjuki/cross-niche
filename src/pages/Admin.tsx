@@ -9,6 +9,7 @@ import { mapContentToArticles } from '@/lib/contentMapper';
 import { insertArticles } from '@/lib/insertArticles';
 import { diagnoseAndFixContent, forceUpdateAllContent } from '@/lib/diagnoseAndFixContent';
 import { fixExistingContent } from '@/lib/fixExistingContent';
+import { comprehensiveContentFix, quickFixAllContent } from '@/lib/comprehensiveContentFix';
 import { 
   Upload,
   CheckCircle2,
@@ -27,9 +28,11 @@ export default function Admin() {
   const [isDiagnosing, setIsDiagnosing] = useState(false);
   const [isFixing, setIsFixing] = useState(false);
   const [isFixingExisting, setIsFixingExisting] = useState(false);
+  const [isComprehensiveFixing, setIsComprehensiveFixing] = useState(false);
   const [insertStatus, setInsertStatus] = useState<{ success: boolean; message?: string } | null>(null);
   const [diagnosticResult, setDiagnosticResult] = useState<any>(null);
   const [fixResult, setFixResult] = useState<any>(null);
+  const [comprehensiveResult, setComprehensiveResult] = useState<any>(null);
 
   const { data: allContent, isLoading } = usePublishedContent(50);
   const allArticles = allContent ? mapContentToArticles(allContent) : [];
@@ -165,6 +168,56 @@ export default function Admin() {
     }
   };
 
+  const handleComprehensiveFix = async () => {
+    setIsComprehensiveFixing(true);
+    setComprehensiveResult(null);
+    
+    try {
+      const result = await comprehensiveContentFix();
+      setComprehensiveResult(result);
+      
+      if (result.fixed > 0) {
+        toast.success('Comprehensive fix completed', {
+          description: `Fixed ${result.fixed} articles. Found ${result.issues.length} issues.`
+        });
+      } else if (result.issues.length === 0) {
+        toast.success('All content is properly configured');
+      } else {
+        toast.warning('Some issues found', {
+          description: `Found ${result.issues.length} issues. ${result.fixed} articles fixed.`
+        });
+      }
+      
+      setTimeout(() => window.location.reload(), 2000);
+    } catch (error) {
+      toast.error('Comprehensive fix failed');
+    } finally {
+      setIsComprehensiveFixing(false);
+    }
+  };
+
+  const handleQuickFix = async () => {
+    setIsFixing(true);
+    
+    try {
+      const result = await quickFixAllContent();
+      
+      if (result.fixed > 0) {
+        toast.success('Quick fix completed', {
+          description: `Fixed ${result.fixed} articles. ${result.errors.length} errors.`
+        });
+      } else {
+        toast.info('No content needed fixing');
+      }
+      
+      setTimeout(() => window.location.reload(), 2000);
+    } catch (error) {
+      toast.error('Quick fix failed');
+    } finally {
+      setIsFixing(false);
+    }
+  };
+
   return (
     <Layout>
       <div className="container mx-auto px-4 py-8 max-w-7xl">
@@ -281,8 +334,44 @@ export default function Admin() {
             </CardHeader>
             <CardContent className="space-y-3">
               <Button 
+                onClick={handleComprehensiveFix} 
+                disabled={isComprehensiveFixing || isFixing || isDiagnosing || isFixingExisting}
+                className="gap-2 w-full bg-primary"
+              >
+                {isComprehensiveFixing ? (
+                  <>
+                    <Loader2 className="h-4 w-4 animate-spin" />
+                    Comprehensive Fix...
+                  </>
+                ) : (
+                  <>
+                    <RefreshCw className="h-4 w-4" />
+                    Comprehensive Fix (Recommended)
+                  </>
+                )}
+              </Button>
+              <Button 
+                onClick={handleQuickFix} 
+                disabled={isFixing || isDiagnosing || isFixingExisting || isComprehensiveFixing}
+                variant="default"
+                className="gap-2 w-full"
+              >
+                {isFixing ? (
+                  <>
+                    <Loader2 className="h-4 w-4 animate-spin" />
+                    Quick Fixing...
+                  </>
+                ) : (
+                  <>
+                    <RefreshCw className="h-4 w-4" />
+                    Quick Fix All Content
+                  </>
+                )}
+              </Button>
+              <Button 
                 onClick={handleFixExisting} 
-                disabled={isFixingExisting || isFixing || isDiagnosing}
+                disabled={isFixingExisting || isFixing || isDiagnosing || isComprehensiveFixing}
+                variant="outline"
                 className="gap-2 w-full"
               >
                 {isFixingExisting ? (
@@ -293,13 +382,13 @@ export default function Admin() {
                 ) : (
                   <>
                     <RefreshCw className="h-4 w-4" />
-                    Fix Existing Content (Recommended)
+                    Fix Existing Content
                   </>
                 )}
               </Button>
               <Button 
                 onClick={handleDiagnose} 
-                disabled={isDiagnosing || isFixing || isFixingExisting}
+                disabled={isDiagnosing || isFixing || isFixingExisting || isComprehensiveFixing}
                 variant="outline"
                 className="gap-2 w-full"
               >
@@ -317,7 +406,7 @@ export default function Admin() {
               </Button>
               <Button 
                 onClick={handleForceFix} 
-                disabled={isDiagnosing || isFixing || isFixingExisting}
+                disabled={isDiagnosing || isFixing || isFixingExisting || isComprehensiveFixing}
                 variant="outline"
                 className="gap-2 w-full"
               >
@@ -338,34 +427,71 @@ export default function Admin() {
         </div>
 
         {/* Results */}
-        {fixResult && (
+        {(fixResult || comprehensiveResult) && (
           <Card className="mb-6">
             <CardHeader>
               <CardTitle className={cn(
-                fixResult.success ? "text-green-500" : "text-red-500"
+                (fixResult?.success || comprehensiveResult?.fixed > 0) ? "text-green-500" : "text-red-500"
               )}>
                 Fix Results
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                <div className="p-3 rounded-lg bg-muted">
-                  <div className="text-2xl font-bold">{fixResult.updated || 0}</div>
-                  <div className="text-xs text-muted-foreground">Updated</div>
+              {comprehensiveResult && (
+                <>
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <div className="p-3 rounded-lg bg-muted">
+                      <div className="text-2xl font-bold">{comprehensiveResult.totalContent || 0}</div>
+                      <div className="text-xs text-muted-foreground">Total Content</div>
+                    </div>
+                    <div className="p-3 rounded-lg bg-muted">
+                      <div className="text-2xl font-bold">{comprehensiveResult.publishedContent || 0}</div>
+                      <div className="text-xs text-muted-foreground">Published</div>
+                    </div>
+                    <div className="p-3 rounded-lg bg-muted">
+                      <div className="text-2xl font-bold">{comprehensiveResult.fixed || 0}</div>
+                      <div className="text-xs text-muted-foreground">Fixed</div>
+                    </div>
+                    <div className="p-3 rounded-lg bg-muted">
+                      <div className="text-2xl font-bold">{comprehensiveResult.issues.length || 0}</div>
+                      <div className="text-xs text-muted-foreground">Issues Found</div>
+                    </div>
+                  </div>
+                  {comprehensiveResult.issues.length > 0 && (
+                    <div className="mt-4 p-4 rounded-lg bg-muted/50">
+                      <div className="text-sm font-semibold mb-2">Issues:</div>
+                      <ul className="text-xs text-muted-foreground space-y-1 max-h-40 overflow-y-auto">
+                        {comprehensiveResult.issues.slice(0, 10).map((issue: string, i: number) => (
+                          <li key={i}>• {issue}</li>
+                        ))}
+                        {comprehensiveResult.issues.length > 10 && (
+                          <li>... and {comprehensiveResult.issues.length - 10} more</li>
+                        )}
+                      </ul>
+                    </div>
+                  )}
+                </>
+              )}
+              {fixResult && (
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                  <div className="p-3 rounded-lg bg-muted">
+                    <div className="text-2xl font-bold">{fixResult.updated || 0}</div>
+                    <div className="text-xs text-muted-foreground">Updated</div>
+                  </div>
+                  <div className="p-3 rounded-lg bg-muted">
+                    <div className="text-2xl font-bold">{fixResult.linkedToFeeds || 0}</div>
+                    <div className="text-xs text-muted-foreground">Linked to Feeds</div>
+                  </div>
+                  <div className="p-3 rounded-lg bg-muted">
+                    <div className="text-2xl font-bold">{fixResult.linkedToNiches || 0}</div>
+                    <div className="text-xs text-muted-foreground">Linked to Niches</div>
+                  </div>
+                  <div className="p-3 rounded-lg bg-muted">
+                    <div className="text-2xl font-bold">{fixResult.visibleCount || 0}</div>
+                    <div className="text-xs text-muted-foreground">Now Visible</div>
+                  </div>
                 </div>
-                <div className="p-3 rounded-lg bg-muted">
-                  <div className="text-2xl font-bold">{fixResult.linkedToFeeds || 0}</div>
-                  <div className="text-xs text-muted-foreground">Linked to Feeds</div>
-                </div>
-                <div className="p-3 rounded-lg bg-muted">
-                  <div className="text-2xl font-bold">{fixResult.linkedToNiches || 0}</div>
-                  <div className="text-xs text-muted-foreground">Linked to Niches</div>
-                </div>
-                <div className="p-3 rounded-lg bg-muted">
-                  <div className="text-2xl font-bold">{fixResult.visibleCount || 0}</div>
-                  <div className="text-xs text-muted-foreground">Now Visible</div>
-                </div>
-              </div>
+              )}
             </CardContent>
           </Card>
         )}
