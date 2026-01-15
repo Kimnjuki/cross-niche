@@ -19,7 +19,6 @@ const navLinks = [
   { href: '/gaming', label: 'Play', color: 'text-gaming' },
   { href: '/guides', label: 'Guides', color: 'text-foreground' },
   { href: '/roadmap', label: 'Roadmap', color: 'text-foreground' },
-  { href: '/admin', label: 'Admin', color: 'text-foreground' },
 ];
 
 const roleFilters = [
