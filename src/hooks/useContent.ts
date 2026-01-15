@@ -91,23 +91,41 @@ export function usePublishedContent(limit = 20) {
         // Get feeds and niches separately
         const contentIds = contentData.map(c => c.id);
         
-        // Get feed relationships
-        const { data: feedRelations } = await supabase
-          .from('content_feeds')
-          .select('content_id, feed_id, feeds(slug, name)')
-          .in('content_id', contentIds);
+        // Get feed relationships (with error handling)
+        let feedRelations: any[] = [];
+        try {
+          const { data } = await supabase
+            .from('content_feeds')
+            .select('content_id, feed_id, feeds(slug, name)')
+            .in('content_id', contentIds);
+          feedRelations = data || [];
+        } catch (e) {
+          console.warn('Could not fetch feed relationships:', e);
+        }
         
-        // Get niche relationships
-        const { data: nicheRelations } = await supabase
-          .from('content_niches')
-          .select('content_id, niche_id, niches(name)')
-          .in('content_id', contentIds);
+        // Get niche relationships (with error handling)
+        let nicheRelations: any[] = [];
+        try {
+          const { data } = await supabase
+            .from('content_niches')
+            .select('content_id, niche_id, niches(name)')
+            .in('content_id', contentIds);
+          nicheRelations = data || [];
+        } catch (e) {
+          console.warn('Could not fetch niche relationships:', e);
+        }
         
-        // Get tags
-        const { data: tagRelations } = await supabase
-          .from('content_tags')
-          .select('content_id, tag_id, tags(name)')
-          .in('content_id', contentIds);
+        // Get tags (with error handling)
+        let tagRelations: any[] = [];
+        try {
+          const { data } = await supabase
+            .from('content_tags')
+            .select('content_id, tag_id, tags(name)')
+            .in('content_id', contentIds);
+          tagRelations = data || [];
+        } catch (e) {
+          console.warn('Could not fetch tag relationships:', e);
+        }
         
         // Build feed map
         const feedMap: Record<string, any> = {};
@@ -147,12 +165,40 @@ export function usePublishedContent(limit = 20) {
           const feeds = feedMap[item.id]?.feeds || [];
           const primaryFeed = feeds[0] || {};
           
+          // If no feed relationship, try to infer from content
+          let feedSlug = primaryFeed.slug || '';
+          if (!feedSlug) {
+            const titleLower = (item.title || '').toLowerCase();
+            const bodyLower = (item.body || item.excerpt || item.summary || '').toLowerCase();
+            const combined = `${titleLower} ${bodyLower}`;
+            
+            if (combined.includes('security') || combined.includes('cyber') || combined.includes('threat')) {
+              feedSlug = 'secured';
+            } else if (combined.includes('game') || combined.includes('gaming') || combined.includes('nvidia')) {
+              feedSlug = 'play';
+            } else {
+              feedSlug = 'innovate';
+            }
+          }
+          
+          // If no niche relationship, infer from feed
+          let niches = nicheMap[item.id] || [];
+          if (niches.length === 0) {
+            if (feedSlug === 'secured') {
+              niches = ['Security'];
+            } else if (feedSlug === 'play') {
+              niches = ['Gaming'];
+            } else {
+              niches = ['Tech'];
+            }
+          }
+          
           return {
             ...item,
-            feed_slug: primaryFeed.slug || '',
-            feed_name: primaryFeed.name || '',
+            feed_slug: feedSlug,
+            feed_name: primaryFeed.name || (feedSlug === 'secured' ? 'Secured' : feedSlug === 'play' ? 'Play' : 'Innovate'),
             feed_id: feedMap[item.id]?.feeds?.[0]?.id || null,
-            niches: nicheMap[item.id] || [],
+            niches: niches,
             tags: tagMap[item.id] || [],
             author_name: 'Anonymous', // Default if no author
           } as ContentItem;
