@@ -32,6 +32,7 @@ import { usePublishedContent } from '@/hooks/useContent';
 import { mapContentToArticles } from '@/lib/contentMapper';
 import { ContentEditor } from '@/components/admin/ContentEditor';
 import { supabase, isSupabaseConfigured } from '@/integrations/supabase/client';
+import { autoFixAndPublishAll } from '@/lib/autoFixAndPublish';
 
 export default function Profile() {
   const { user, logout } = useAuth();
@@ -44,10 +45,12 @@ export default function Profile() {
   const [isFixing, setIsFixing] = useState(false);
   const [isFixingExisting, setIsFixingExisting] = useState(false);
   const [isComprehensiveFixing, setIsComprehensiveFixing] = useState(false);
+  const [isAutoFixing, setIsAutoFixing] = useState(false);
   const [insertStatus, setInsertStatus] = useState<{ success: boolean; message?: string } | null>(null);
   const [diagnosticResult, setDiagnosticResult] = useState<any>(null);
   const [fixResult, setFixResult] = useState<any>(null);
   const [comprehensiveResult, setComprehensiveResult] = useState<any>(null);
+  const [autoFixResult, setAutoFixResult] = useState<any>(null);
   const [showContentEditor, setShowContentEditor] = useState(false);
   const [editingContent, setEditingContent] = useState<any>(null);
 
@@ -201,6 +204,32 @@ export default function Profile() {
       toast.error('Quick fix failed');
     } finally {
       setIsFixing(false);
+    }
+  };
+
+  const handleAutoFixAndPublish = async () => {
+    setIsAutoFixing(true);
+    setAutoFixResult(null);
+    
+    try {
+      const result = await autoFixAndPublishAll();
+      setAutoFixResult(result);
+      
+      if (result.success) {
+        toast.success('Auto-fix completed', {
+          description: `Published ${result.published} articles, fixed ${result.fixed} articles, linked ${result.linked} relationships.`
+        });
+      } else {
+        toast.error('Auto-fix had errors', {
+          description: `${result.errors.length} errors occurred.`
+        });
+      }
+      
+      setTimeout(() => window.location.reload(), 2000);
+    } catch (error) {
+      toast.error('Auto-fix failed');
+    } finally {
+      setIsAutoFixing(false);
     }
   };
 
@@ -393,9 +422,27 @@ export default function Profile() {
                   </CardHeader>
                   <CardContent className="space-y-3">
                     <Button 
-                      onClick={handleComprehensiveFix} 
-                      disabled={isComprehensiveFixing || isFixing || isDiagnosing || isFixingExisting}
+                      onClick={handleAutoFixAndPublish} 
+                      disabled={isAutoFixing || isComprehensiveFixing || isFixing || isDiagnosing || isFixingExisting}
                       className="gap-2 w-full bg-primary"
+                    >
+                      {isAutoFixing ? (
+                        <>
+                          <Loader2 className="h-4 w-4 animate-spin" />
+                          Auto-Fixing & Publishing...
+                        </>
+                      ) : (
+                        <>
+                          <RefreshCw className="h-4 w-4" />
+                          Auto-Fix & Publish All (Recommended)
+                        </>
+                      )}
+                    </Button>
+                    <Button 
+                      onClick={handleComprehensiveFix} 
+                      disabled={isAutoFixing || isComprehensiveFixing || isFixing || isDiagnosing || isFixingExisting}
+                      variant="default"
+                      className="gap-2 w-full"
                     >
                       {isComprehensiveFixing ? (
                         <>
@@ -405,7 +452,7 @@ export default function Profile() {
                       ) : (
                         <>
                           <RefreshCw className="h-4 w-4" />
-                          Comprehensive Fix (Recommended)
+                          Comprehensive Fix
                         </>
                       )}
                     </Button>
@@ -468,7 +515,7 @@ export default function Profile() {
               </div>
 
               {/* Results */}
-              {(fixResult || comprehensiveResult) && (
+              {(fixResult || comprehensiveResult || autoFixResult) && (
                 <Card>
                   <CardHeader>
                     <CardTitle className={cn(
@@ -478,6 +525,41 @@ export default function Profile() {
                     </CardTitle>
                   </CardHeader>
                   <CardContent className="space-y-4">
+                    {autoFixResult && (
+                      <>
+                        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                          <div className="p-3 rounded-lg bg-muted">
+                            <div className="text-2xl font-bold">{autoFixResult.published || 0}</div>
+                            <div className="text-xs text-muted-foreground">Published</div>
+                          </div>
+                          <div className="p-3 rounded-lg bg-muted">
+                            <div className="text-2xl font-bold">{autoFixResult.fixed || 0}</div>
+                            <div className="text-xs text-muted-foreground">Fixed</div>
+                          </div>
+                          <div className="p-3 rounded-lg bg-muted">
+                            <div className="text-2xl font-bold">{autoFixResult.linked || 0}</div>
+                            <div className="text-xs text-muted-foreground">Linked</div>
+                          </div>
+                          <div className="p-3 rounded-lg bg-muted">
+                            <div className="text-2xl font-bold">{autoFixResult.errors.length || 0}</div>
+                            <div className="text-xs text-muted-foreground">Errors</div>
+                          </div>
+                        </div>
+                        {autoFixResult.errors.length > 0 && (
+                          <div className="mt-4 p-4 rounded-lg bg-muted/50">
+                            <div className="text-sm font-semibold mb-2">Errors:</div>
+                            <ul className="text-xs text-muted-foreground space-y-1 max-h-40 overflow-y-auto">
+                              {autoFixResult.errors.slice(0, 10).map((error: string, i: number) => (
+                                <li key={i}>• {error}</li>
+                              ))}
+                              {autoFixResult.errors.length > 10 && (
+                                <li>... and {autoFixResult.errors.length - 10} more</li>
+                              )}
+                            </ul>
+                          </div>
+                        )}
+                      </>
+                    )}
                     {comprehensiveResult && (
                       <>
                         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">

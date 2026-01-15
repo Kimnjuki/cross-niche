@@ -63,7 +63,7 @@ export function usePublishedContent(limit = 20) {
           .order('published_at', { ascending: false })
           .limit(limit);
         
-        // If no published content, check if there's any content at all
+        // If no published content, try to get any content (we'll show it anyway)
         if (!contentData || contentData.length === 0) {
           const { data: allContentData } = await supabase
             .from('content')
@@ -74,8 +74,8 @@ export function usePublishedContent(limit = 20) {
           if (allContentData && allContentData.length > 0) {
             console.warn(`Found ${allContentData.length} articles but none are published. Status values:`, 
               [...new Set(allContentData.map(c => c.status))]);
-            // Still return empty to encourage fixing status
-            return [] as ContentItem[];
+            // Use the content anyway - better to show something than nothing
+            contentData = allContentData;
           }
         }
         
