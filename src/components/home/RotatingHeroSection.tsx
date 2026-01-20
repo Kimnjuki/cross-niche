@@ -97,9 +97,9 @@ export function RotatingHeroSection({
       <div className="container mx-auto px-4 py-12 md:py-20 relative z-10">
         {/* Header */}
         <div className="max-w-4xl mx-auto text-center mb-12">
-          <h1 className="font-display font-bold text-4xl md:text-6xl mb-4 bg-gradient-to-r from-blue-500 via-red-500 to-green-500 bg-clip-text text-transparent">
+          <h2 className="font-display font-bold text-4xl md:text-6xl mb-4 bg-gradient-to-r from-blue-500 via-red-500 to-green-500 bg-clip-text text-transparent">
             2026 Tech & Gaming Series
-          </h1>
+          </h2>
           <p className="text-lg md:text-xl text-muted-foreground mb-4">
             Comprehensive insights into the latest technology, cybersecurity, and gaming innovations
           </p>
@@ -145,9 +145,9 @@ export function RotatingHeroSection({
                       <Badge variant="outline" className="mb-4">
                         Featured Article
                       </Badge>
-                      <h2 className="font-display font-bold text-3xl md:text-4xl mb-4 leading-tight">
+                      <h3 className="font-display font-bold text-3xl md:text-4xl mb-4 leading-tight">
                         {currentArticle.title}
-                      </h2>
+                      </h3>
                       <p className="text-lg text-muted-foreground mb-6 line-clamp-3">
                         {currentArticle.excerpt}
                       </p>
@@ -311,5 +311,6 @@ export function RotatingHeroSection({
     </section>
   );
 }
+
 
 

@@ -300,3 +300,4 @@ function estimateWordCount(text: string): number {
   return text.split(/\s+/).filter(word => word.length > 0).length;
 }
 
+

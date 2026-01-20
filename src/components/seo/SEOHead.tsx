@@ -101,38 +101,88 @@ export function SEOHead({
       document.head.appendChild(structuredDataScript);
     }
 
-    const structuredData = {
+    const structuredData = type === 'article' && article ? {
       '@context': 'https://schema.org',
-      '@type': type === 'article' ? 'Article' : 'WebSite',
+      '@type': 'Article',
+      headline: article.title,
       name: title,
       description: description,
       url: url,
-      ...(type === 'article' && article ? {
-        headline: article.title,
-        image: image.startsWith('http') ? image : `${window.location.origin}${image}`,
-        datePublished: article.publishedAt,
-        author: {
-          '@type': 'Person',
-          name: author || article.author
-        },
-        publisher: {
-          '@type': 'Organization',
+      image: image.startsWith('http') ? image : `${window.location.origin}${image}`,
+      datePublished: article.publishedAt,
+      dateModified: modifiedTime || article.publishedAt,
+      author: {
+        '@type': 'Person',
+        name: author || article.author
+      },
+      publisher: {
+        '@type': 'Organization',
+        name: 'The Grid Nexus',
+        logo: {
+          '@type': 'ImageObject',
+          url: `${window.location.origin}/logo.png`
+        }
+      },
+      keywords: tags.join(', '),
+      articleSection: section || article.niche,
+      wordCount: Math.floor((article.content || article.excerpt).split(' ').length),
+      mainEntityOfPage: {
+        '@type': 'WebPage',
+        '@id': url
+      }
+    } : {
+      '@context': 'https://schema.org',
+      '@graph': [
+        {
+          '@type': 'WebSite',
+          '@id': `${window.location.origin}/#website`,
+          url: window.location.origin,
           name: 'The Grid Nexus',
+          description: description,
+          publisher: {
+            '@id': `${window.location.origin}/#organization`
+          },
+          potentialAction: {
+            '@type': 'SearchAction',
+            target: {
+              '@type': 'EntryPoint',
+              urlTemplate: `${window.location.origin}/search?q={search_term_string}`
+            },
+            'query-input': 'required name=search_term_string'
+          }
+        },
+        {
+          '@type': 'Organization',
+          '@id': `${window.location.origin}/#organization`,
+          name: 'The Grid Nexus',
+          url: window.location.origin,
           logo: {
             '@type': 'ImageObject',
             url: `${window.location.origin}/logo.png`
-          }
+          },
+          sameAs: [
+            'https://twitter.com/thegridnexus',
+            'https://facebook.com/thegridnexus'
+          ]
         },
-        keywords: tags.join(', '),
-        articleSection: section || article.niche,
-        wordCount: Math.floor((article.content || article.excerpt).split(' ').length)
-      } : {
-        potentialAction: {
-          '@type': 'SearchAction',
-          target: `${window.location.origin}/search?q={search_term_string}`,
-          'query-input': 'required name=search_term_string'
+        {
+          '@type': 'WebPage',
+          '@id': `${url}#webpage`,
+          url: url,
+          name: title,
+          description: description,
+          isPartOf: {
+            '@id': `${window.location.origin}/#website`
+          },
+          about: {
+            '@id': `${window.location.origin}/#organization`
+          },
+          primaryImageOfPage: {
+            '@type': 'ImageObject',
+            url: image.startsWith('http') ? image : `${window.location.origin}${image}`
+          }
         }
-      })
+      ]
     };
 
     structuredDataScript.textContent = JSON.stringify(structuredData);

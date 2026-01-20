@@ -9,6 +9,8 @@ import { mapContentToArticles } from '@/lib/contentMapper';
 import { Skeleton } from '@/components/ui/skeleton';
 import { ArticleCard } from '@/components/articles/ArticleCard';
 import { AdPlacement } from '@/components/ads/AdPlacement';
+import { SEOHead } from '@/components/seo/SEOHead';
+import { Link } from 'react-router-dom';
 
 const Index = () => {
   const { data: allContent, isLoading: loadingAll } = usePublishedContent(20);
@@ -86,6 +88,33 @@ const Index = () => {
 
   return (
     <Layout>
+      {/* SEO Meta Tags */}
+      <SEOHead
+        title="The Grid Nexus - Tech • Security • Gaming Intelligence | Breaking News & Expert Analysis"
+        description="The Grid Nexus: Your trusted source for breaking technology news, in-depth cybersecurity analysis, and expert gaming guides. Stay ahead with AI-powered insights, security intelligence, and comprehensive tech coverage."
+        keywords={[
+          'technology news',
+          'cybersecurity',
+          'gaming',
+          'tech intelligence',
+          'security analysis',
+          'gaming news',
+          'AI technology',
+          'tech trends',
+          'cyber threats',
+          'gaming hardware',
+          'tech reviews',
+          'security updates',
+          'gaming industry',
+          'tech innovation'
+        ]}
+        url={window.location.href}
+        type="website"
+      />
+
+      {/* Main H1 Heading - Hidden visually but present for SEO */}
+      <h1 className="sr-only">The Grid Nexus: Technology, Cybersecurity, and Gaming Intelligence</h1>
+
       {/* Rotating Hero Section with the 5 main articles */}
       {rotatingArticles.length > 0 && (
         <RotatingHeroSection articles={rotatingArticles} autoRotateInterval={8000} />
@@ -98,8 +127,15 @@ const Index = () => {
             <div className="flex items-center justify-between mb-8">
               <div>
                 <h2 className="font-display font-bold text-3xl mb-2">More Featured Articles</h2>
-                <p className="text-muted-foreground">Explore our comprehensive coverage</p>
+                <p className="text-muted-foreground">Explore our comprehensive coverage of technology, cybersecurity, and gaming</p>
               </div>
+              <Link 
+                to="/blog-series" 
+                className="text-primary hover:underline text-sm font-medium"
+                aria-label="View all articles in blog series"
+              >
+                View All Articles →
+              </Link>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {allArticles.slice(5, 11).map((article) => (
@@ -132,11 +168,24 @@ const Index = () => {
       {/* Newsletter Section */}
       <section className="py-16 bg-muted/30">
         <div className="container max-w-4xl mx-auto px-4 text-center">
-          <h2 className="text-3xl font-bold mb-4">Stay Informed</h2>
+          <h2 className="text-3xl font-bold mb-4">Stay Informed with The Grid Nexus</h2>
           <p className="text-muted-foreground mb-8">
-            Get personalized tech, security, and gaming insights delivered to your inbox.
+            Get personalized technology news, cybersecurity updates, and gaming insights delivered to your inbox.
           </p>
           <NewsletterForm variant="advanced" />
+          {/* Internal Links for SEO */}
+          <div className="mt-8 pt-8 border-t border-border">
+            <p className="text-sm text-muted-foreground mb-4">Explore our content:</p>
+            <div className="flex flex-wrap justify-center gap-4 text-sm">
+              <Link to="/tech" className="text-primary hover:underline">Technology News</Link>
+              <span className="text-muted-foreground">•</span>
+              <Link to="/security" className="text-primary hover:underline">Cybersecurity</Link>
+              <span className="text-muted-foreground">•</span>
+              <Link to="/gaming" className="text-primary hover:underline">Gaming</Link>
+              <span className="text-muted-foreground">•</span>
+              <Link to="/blog-series" className="text-primary hover:underline">All Articles</Link>
+            </div>
+          </div>
         </div>
       </section>
     </Layout>
