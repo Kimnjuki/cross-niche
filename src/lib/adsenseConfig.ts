@@ -7,7 +7,7 @@
 
 export const ADSENSE_CONFIG = {
   // Your AdSense Publisher ID (from the script tag)
-  clientId: 'ca-pub-5474544069931649',
+  clientId: 'ca-pub-9278124025449370',
   
   // Ad Slot IDs - Replace these with your actual ad unit IDs from AdSense
   adSlots: {

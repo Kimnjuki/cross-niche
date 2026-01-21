@@ -132,7 +132,7 @@ export function AdSenseAd({
       <ins
         className={adClass}
         style={adStyle}
-        data-ad-client="ca-pub-5474544069931649"
+        data-ad-client="ca-pub-9278124025449370"
         data-ad-slot={adSlot}
         data-ad-format={adFormat}
         data-full-width-responsive={fullWidthResponsive ? 'true' : 'false'}
