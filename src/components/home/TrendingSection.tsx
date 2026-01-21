@@ -15,8 +15,8 @@ export function TrendingSection({ articles }: TrendingSectionProps) {
             <TrendingUp className="h-6 w-6 text-primary-foreground" />
           </div>
           <div>
-            <h2 className="font-display font-bold text-2xl">Trending Now</h2>
-            <p className="text-muted-foreground text-sm">Most popular across all categories</p>
+            <h2 className="font-display font-bold text-2xl">Trending Technology and Cybersecurity News</h2>
+            <p className="text-muted-foreground text-sm">Most popular articles on artificial intelligence, machine learning, cybersecurity, cloud computing, and gaming</p>
           </div>
         </div>
 

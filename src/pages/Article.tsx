@@ -8,17 +8,25 @@ import { Button } from '@/components/ui/button';
 import { CommentSection } from '@/components/comments/CommentSection';
 import { ArticleCard } from '@/components/articles/ArticleCard';
 import { Skeleton } from '@/components/ui/skeleton';
-import { 
-  ArrowLeft, 
-  Clock, 
-  Bookmark, 
-  Shield, 
+import {
+  ArrowLeft,
+  Clock,
+  Bookmark,
+  Shield,
   AlertTriangle,
   Twitter,
   Facebook,
   Linkedin
 } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
+import { useReadingTracker, useUserBehavior } from '@/hooks/useUserBehavior';
+import { AITools } from '@/components/ai/AITools';
+import { EnhancedShareBar } from '@/components/sharing/EnhancedShareBar';
+import { SEOHead } from '@/components/seo/SEOHead';
+import { Breadcrumbs } from '@/components/seo/Breadcrumbs';
+import { FAQSection } from '@/components/seo/FAQSection';
+import { LazyImage } from '@/components/ui/lazy-image';
+import { AdPlacement } from '@/components/ads/AdPlacement';
 import { cn } from '@/lib/utils';
 import type { Article as ArticleType } from '@/types';
 
@@ -34,18 +42,18 @@ const nicheRoutes = { tech: '/tech', security: '/security', gaming: '/gaming' };
 export default function Article() {
   const { id } = useParams<{ id: string }>();
   const { user, toggleBookmark } = useAuth();
-  
+
   // Try to fetch from Supabase by slug
   const { data: contentData, isLoading } = useContentBySlug(id || '');
-  
+
   // Get related content based on feed
   const feedSlug = contentData?.feed_slug || '';
   const { data: relatedContent } = useContentByFeed(feedSlug, 4);
-  
+
   // Map Supabase content to Article type, fallback to mock
   let article: ArticleType | undefined;
   let relatedArticles: ArticleType[] = [];
-  
+
   if (contentData) {
     article = mapContentToArticle(contentData);
     relatedArticles = relatedContent
@@ -58,6 +66,10 @@ export default function Article() {
       .filter(a => a.niche === article?.niche && a.id !== id)
       .slice(0, 3);
   }
+
+  // Track user behavior and reading progress
+  const { trackArticleBookmark, trackArticleShare } = useUserBehavior(user?.id || 'demo-user');
+  useReadingTracker(article!, user?.id || 'demo-user');
 
   if (isLoading) {
     return (
@@ -99,18 +111,52 @@ export default function Article() {
       linkedin: `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}`,
     };
     window.open(shareUrls[platform as keyof typeof shareUrls], '_blank');
+
+    // Track share behavior
+    trackArticleShare(article);
+  };
+
+  const handleBookmark = async () => {
+    await toggleBookmark(article.id);
+    // Track bookmark behavior
+    trackArticleBookmark(article);
   };
 
   return (
     <Layout>
+      {/* SEO and Social Media Meta Tags */}
+      <SEOHead
+        title={`${article.title} - The Grid Nexus`}
+        description={article.excerpt}
+        keywords={article.tags}
+        image={article.imageUrl}
+        url={window.location.href}
+        type="article"
+        article={article}
+        publishedTime={article.publishedAt}
+        author={article.author}
+        section={article.niche}
+        tags={article.tags}
+      />
+
       <article className="container mx-auto px-4 py-8">
-        {/* Back Link */}
+        {/* Breadcrumbs */}
+        <Breadcrumbs
+          items={[
+            { label: 'Home', href: '/' },
+            { label: nicheLabels[article.niche], href: nicheRoutes[article.niche] },
+            { label: article.title, href: window.location.pathname },
+          ]}
+        />
+        
+        {/* Back Link with Descriptive Anchor Text */}
         <Link 
           to={nicheRoutes[article.niche]} 
           className={cn('inline-flex items-center gap-2 mb-6 hover:opacity-80 transition-opacity', styles.color)}
+          aria-label={`View more ${nicheLabels[article.niche]} articles`}
         >
           <ArrowLeft className="h-4 w-4" />
-          Back to {nicheLabels[article.niche]}
+          View more {nicheLabels[article.niche]} articles
         </Link>
 
         {/* Header */}
@@ -154,48 +200,52 @@ export default function Article() {
 
         {/* Featured Image */}
         <div className="max-w-4xl mb-8">
-          <img
+          <LazyImage
             src={article.imageUrl}
             alt={article.title}
-            className="w-full aspect-video object-cover rounded-xl"
+            className="w-full aspect-video rounded-xl"
           />
         </div>
 
-        {/* Action Bar */}
-        <div className="max-w-4xl mb-8 flex items-center justify-between border-y border-border py-4">
-          <div className="flex items-center gap-2">
-            <span className="text-sm text-muted-foreground mr-2">Share:</span>
-            <Button variant="ghost" size="icon" onClick={() => handleShare('twitter')}>
-              <Twitter className="h-4 w-4" />
-            </Button>
-            <Button variant="ghost" size="icon" onClick={() => handleShare('facebook')}>
-              <Facebook className="h-4 w-4" />
-            </Button>
-            <Button variant="ghost" size="icon" onClick={() => handleShare('linkedin')}>
-              <Linkedin className="h-4 w-4" />
-            </Button>
+        {/* Enhanced Share Bar & Actions */}
+        <div className="max-w-4xl mb-8">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            {/* Enhanced Share Bar */}
+            <div className="lg:col-span-2">
+              <EnhancedShareBar article={article} variant="inline" />
+            </div>
+
+            {/* Bookmark Action */}
+            <div className="flex justify-end">
+              {user && (
+                <Button
+                  variant={isBookmarked ? 'default' : 'outline'}
+                  size="lg"
+                  onClick={handleBookmark}
+                  className="gap-2 w-full lg:w-auto"
+                >
+                  <Bookmark className={cn('h-5 w-5', isBookmarked && 'fill-current')} />
+                  {isBookmarked ? 'Saved' : 'Save Article'}
+                </Button>
+              )}
+            </div>
           </div>
-          {user && (
-            <Button
-              variant={isBookmarked ? 'default' : 'outline'}
-              size="sm"
-              onClick={async () => await toggleBookmark(article.id)}
-              className="gap-2"
-            >
-              <Bookmark className={cn('h-4 w-4', isBookmarked && 'fill-current')} />
-              {isBookmarked ? 'Saved' : 'Save'}
-            </Button>
-          )}
         </div>
+
+        {/* Floating Share Bar */}
+        <EnhancedShareBar article={article} variant="floating" className="hidden lg:block" />
 
         {/* Content */}
         <div className="max-w-4xl mb-12">
           <div className="prose prose-lg max-w-none">
-            <div 
+            <div
               className="text-lg leading-relaxed text-foreground"
               dangerouslySetInnerHTML={{ __html: article.content || article.excerpt }}
             />
           </div>
+
+          {/* In-Article Ad - Mid Content */}
+          <AdPlacement position="in-article" />
 
           {/* Tags */}
           {article.tags.length > 0 && (
@@ -207,22 +257,61 @@ export default function Article() {
           )}
         </div>
 
+        {/* AI Tools */}
+        <div className="max-w-4xl mb-12">
+          <AITools
+            articleContent={article.content || article.excerpt}
+            articleTitle={article.title}
+          />
+        </div>
+
         {/* Comments */}
         <div className="max-w-4xl mb-16">
           <CommentSection articleId={article.id} />
         </div>
 
-        {/* Related Articles */}
+        {/* Related Articles with Descriptive Internal Links */}
         {relatedArticles.length > 0 && (
           <section className="border-t border-border pt-12">
-            <h2 className="font-display font-bold text-2xl mb-8">Related Articles</h2>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <h2 className="font-display font-bold text-2xl mb-4">Related {nicheLabels[article.niche]} Articles</h2>
+            <p className="text-muted-foreground mb-8">
+              Explore more {nicheLabels[article.niche].toLowerCase()} content and stay updated with the latest {article.niche === 'tech' ? 'technology' : article.niche === 'security' ? 'cybersecurity' : 'gaming'} news and insights.
+            </p>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
               {relatedArticles.map((related) => (
                 <ArticleCard key={related.id} article={related} />
               ))}
             </div>
+            <div className="text-center">
+              <Link
+                to={nicheRoutes[article.niche]}
+                className="text-primary hover:underline font-medium"
+                aria-label={`View all ${nicheLabels[article.niche]} articles`}
+              >
+                View all {nicheLabels[article.niche]} articles →
+              </Link>
+            </div>
           </section>
         )}
+
+        {/* FAQ Section for LSI Keywords */}
+        <FAQSection
+          faqs={[
+            {
+              question: `What is ${article.title}?`,
+              answer: article.excerpt || `Learn more about ${article.title} and stay informed with The Grid Nexus.`,
+            },
+            {
+              question: `How does this relate to ${article.niche === 'tech' ? 'technology' : article.niche === 'security' ? 'cybersecurity' : 'gaming'}?`,
+              answer: `This article is part of our ${nicheLabels[article.niche]} coverage, providing in-depth analysis and expert insights on ${article.niche === 'tech' ? 'technology trends and innovations' : article.niche === 'security' ? 'cybersecurity threats and best practices' : 'gaming news and industry updates'}.`,
+            },
+            {
+              question: 'Where can I find more related content?',
+              answer: `Explore our ${nicheLabels[article.niche]} section for more articles, or browse our complete blog series for comprehensive coverage across technology, cybersecurity, and gaming.`,
+            },
+          ]}
+          title={`Frequently Asked Questions about ${article.title}`}
+        />
       </article>
     </Layout>
   );

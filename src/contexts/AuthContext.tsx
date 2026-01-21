@@ -10,6 +10,11 @@ interface AuthContextType {
   signup: (email: string, password: string, name: string) => Promise<{ success: boolean; error?: string }>;
   logout: () => void;
   toggleBookmark: (articleId: string) => Promise<void>;
+  resetPassword: (email: string) => Promise<{ success: boolean; error?: string }>;
+  updatePassword: (newPassword: string) => Promise<{ success: boolean; error?: string }>;
+  signInWithGoogle: () => Promise<{ success: boolean; error?: string }>;
+  signInWithGitHub: () => Promise<{ success: boolean; error?: string }>;
+  resendVerificationEmail: () => Promise<{ success: boolean; error?: string }>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -75,13 +80,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   // Load bookmarks from Supabase
   const loadBookmarks = async (userId: string): Promise<string[]> => {
     if (!isSupabaseConfigured()) return [];
-    
+
     try {
       const { data, error } = await supabase
         .from('user_bookmarks')
         .select('content_id')
         .eq('user_id', userId);
-      
+
       if (error) throw error;
       return data?.map(b => b.content_id) || [];
     } catch (error) {
@@ -112,8 +117,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       }
 
       return { success: true };
-    } catch (error: any) {
-      return { success: false, error: error.message || 'An unexpected error occurred' };
+    } catch (error: unknown) {
+      const err = error as Error;
+      return { success: false, error: err.message || 'An unexpected error occurred' };
     }
   };
 
@@ -143,8 +149,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       }
 
       return { success: true };
-    } catch (error: any) {
-      return { success: false, error: error.message || 'An unexpected error occurred' };
+    } catch (error: unknown) {
+      const err = error as Error;
+      return { success: false, error: err.message || 'An unexpected error occurred' };
     }
   };
 
@@ -175,7 +182,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           .eq('id', existing.id);
 
         if (error) throw error;
-        
+
         setUser({
           ...user,
           bookmarks: user.bookmarks.filter(id => id !== articleId),
@@ -190,7 +197,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           });
 
         if (error) throw error;
-        
+
         setUser({
           ...user,
           bookmarks: [...user.bookmarks, articleId],
@@ -201,8 +208,132 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   };
 
+  const resetPassword = async (email: string): Promise<{ success: boolean; error?: string }> => {
+    if (!isSupabaseConfigured()) {
+      return { success: false, error: 'Supabase is not configured.' };
+    }
+
+    try {
+      const { error } = await supabase.auth.resetPasswordForEmail(email, {
+        redirectTo: `${window.location.origin}/auth/reset-password`,
+      });
+
+      if (error) {
+        return { success: false, error: error.message };
+      }
+
+      return { success: true };
+    } catch (error: unknown) {
+      const err = error as Error;
+      return { success: false, error: err.message || 'An unexpected error occurred' };
+    }
+  };
+
+  const updatePassword = async (newPassword: string): Promise<{ success: boolean; error?: string }> => {
+    if (!isSupabaseConfigured()) {
+      return { success: false, error: 'Supabase is not configured.' };
+    }
+
+    try {
+      const { error } = await supabase.auth.updateUser({
+        password: newPassword,
+      });
+
+      if (error) {
+        return { success: false, error: error.message };
+      }
+
+      return { success: true };
+    } catch (error: unknown) {
+      const err = error as Error;
+      return { success: false, error: err.message || 'An unexpected error occurred' };
+    }
+  };
+
+  const signInWithGoogle = async (): Promise<{ success: boolean; error?: string }> => {
+    if (!isSupabaseConfigured()) {
+      return { success: false, error: 'Supabase is not configured.' };
+    }
+
+    try {
+      const { error } = await supabase.auth.signInWithOAuth({
+        provider: 'google',
+        options: {
+          redirectTo: `${window.location.origin}/auth/callback`,
+        },
+      });
+
+      if (error) {
+        return { success: false, error: error.message };
+      }
+
+      return { success: true };
+    } catch (error: unknown) {
+      const err = error as Error;
+      return { success: false, error: err.message || 'An unexpected error occurred' };
+    }
+  };
+
+  const signInWithGitHub = async (): Promise<{ success: boolean; error?: string }> => {
+    if (!isSupabaseConfigured()) {
+      return { success: false, error: 'Supabase is not configured.' };
+    }
+
+    try {
+      const { error } = await supabase.auth.signInWithOAuth({
+        provider: 'github',
+        options: {
+          redirectTo: `${window.location.origin}/auth/callback`,
+        },
+      });
+
+      if (error) {
+        return { success: false, error: error.message };
+      }
+
+      return { success: true };
+    } catch (error: unknown) {
+      const err = error as Error;
+      return { success: false, error: err.message || 'An unexpected error occurred' };
+    }
+  };
+
+  const resendVerificationEmail = async (): Promise<{ success: boolean; error?: string }> => {
+    if (!isSupabaseConfigured() || !user) {
+      return { success: false, error: 'User not logged in or Supabase not configured.' };
+    }
+
+    try {
+      const { error } = await supabase.auth.resend({
+        type: 'signup',
+        email: user.email,
+      });
+
+      if (error) {
+        return { success: false, error: error.message };
+      }
+
+      return { success: true };
+    } catch (error: unknown) {
+      const err = error as Error;
+      return { success: false, error: err.message || 'An unexpected error occurred' };
+    }
+  };
+
   return (
-    <AuthContext.Provider value={{ user, isLoading, login, signup, logout, toggleBookmark }}>
+    <AuthContext.Provider value={{ 
+      user, 
+      isLoading, 
+      login, 
+      signup, 
+      logout, 
+      toggleBookmark,
+      resetPassword,
+      updatePassword,
+      signInWithGoogle,
+      signInWithGitHub,
+      resendVerificationEmail,
+    }}>
       {children}
     </AuthContext.Provider>
   );
