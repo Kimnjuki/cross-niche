@@ -178,11 +178,15 @@ export function ArticleCard({ article, variant = 'default' }: ArticleCardProps) 
         styles.glow,
         securityGlow
       )}>
-        <div className="relative aspect-video overflow-hidden">
+        <div className="relative aspect-video overflow-hidden" style={{ minHeight: '225px' }}>
           <img
             src={article.imageUrl}
             alt={article.title}
             className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+            width="800"
+            height="450"
+            loading="lazy"
+            decoding="async"
           />
           <div className="absolute top-3 left-3 right-3 flex justify-between items-start">
             <div className="flex gap-2 flex-wrap">

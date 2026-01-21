@@ -99,6 +99,9 @@ export function LazyImage({
           onError={handleError}
           loading="lazy"
           decoding="async"
+          width="1200"
+          height="675"
+          style={{ aspectRatio: '16/9' }}
         />
       )}
     </div>

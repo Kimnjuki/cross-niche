@@ -10,6 +10,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { ArticleCard } from '@/components/articles/ArticleCard';
 import { AdPlacement } from '@/components/ads/AdPlacement';
 import { SEOHead } from '@/components/seo/SEOHead';
+import { FAQSection } from '@/components/seo/FAQSection';
 import { Link } from 'react-router-dom';
 
 const Index = () => {
@@ -188,6 +189,36 @@ const Index = () => {
           </div>
         </div>
       </section>
+
+      {/* FAQ Section for LSI Keywords */}
+      <FAQSection
+        faqs={[
+          {
+            question: 'What is The Grid Nexus?',
+            answer: 'The Grid Nexus is your trusted source for breaking technology news, in-depth cybersecurity analysis, and expert gaming guides. We provide comprehensive coverage of the latest tech trends, security threats, and gaming innovations to help you stay ahead of the curve.',
+          },
+          {
+            question: 'What topics does The Grid Nexus cover?',
+            answer: 'We cover three main niches: Technology (Innovate) - latest hardware, software, and tech innovations; Cybersecurity (Secured) - security threats, best practices, and industry analysis; and Gaming (Play) - game reviews, hardware, esports, and gaming industry news.',
+          },
+          {
+            question: 'How often is content updated?',
+            answer: 'We publish fresh content daily, with comprehensive articles covering breaking news, in-depth analysis, and expert guides. Our team ensures you have access to the latest information in technology, cybersecurity, and gaming.',
+          },
+          {
+            question: 'Can I bookmark articles for later?',
+            answer: 'Yes! Registered users can bookmark articles to read later. Simply click the bookmark icon on any article card or article page to save it to your personal collection.',
+          },
+          {
+            question: 'How do I stay updated with new content?',
+            answer: 'You can subscribe to our newsletter to receive personalized tech, security, and gaming insights delivered directly to your inbox. We also recommend following us on social media for real-time updates.',
+          },
+          {
+            question: 'Is The Grid Nexus content free?',
+            answer: 'Yes, most of our content is free to access. We provide comprehensive articles, news, and guides at no cost. Some premium features may be available for registered users.',
+          },
+        ]}
+      />
     </Layout>
   );
 };
