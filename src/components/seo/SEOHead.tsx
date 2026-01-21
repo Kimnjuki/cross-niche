@@ -30,10 +30,13 @@ export function SEOHead({
   section,
   tags = []
 }: SEOHeadProps) {
+  // Ensure optimized values are calculated
+  const optimizedTitle = title.length > 75 ? title.substring(0, 72) + '...' : title;
+  const optimizedDescription = description.length > 160 ? description.substring(0, 157) + '...' : description;
 
   useEffect(() => {
-    // Update document title
-    document.title = title;
+    // Update document title (ensure it's under 75 characters for SEO)
+    document.title = optimizedTitle;
 
     // Update or create meta tags
     const updateMetaTag = (property: string, content: string, isProperty = false) => {
@@ -49,13 +52,13 @@ export function SEOHead({
     };
 
     // Basic meta tags
-    updateMetaTag('description', description);
+    updateMetaTag('description', optimizedDescription);
     updateMetaTag('keywords', [...keywords, ...tags].join(', '));
     updateMetaTag('author', author || 'The Grid Nexus');
 
     // Open Graph tags
-    updateMetaTag('og:title', title, true);
-    updateMetaTag('og:description', description, true);
+    updateMetaTag('og:title', optimizedTitle, true);
+    updateMetaTag('og:description', optimizedDescription, true);
     updateMetaTag('og:image', image.startsWith('http') ? image : `${window.location.origin}${image}`, true);
     updateMetaTag('og:url', url, true);
     updateMetaTag('og:type', type, true);
@@ -63,8 +66,8 @@ export function SEOHead({
 
     // Twitter Card tags
     updateMetaTag('twitter:card', 'summary_large_image');
-    updateMetaTag('twitter:title', title);
-    updateMetaTag('twitter:description', description);
+    updateMetaTag('twitter:title', optimizedTitle);
+    updateMetaTag('twitter:description', optimizedDescription);
     updateMetaTag('twitter:image', image.startsWith('http') ? image : `${window.location.origin}${image}`);
 
     // Article-specific meta tags
@@ -138,7 +141,7 @@ export function SEOHead({
           '@id': `${window.location.origin}/#website`,
           url: window.location.origin,
           name: 'The Grid Nexus',
-          description: description,
+          description: optimizedDescription,
           publisher: {
             '@id': `${window.location.origin}/#organization`
           },
@@ -169,8 +172,8 @@ export function SEOHead({
           '@type': 'WebPage',
           '@id': `${url}#webpage`,
           url: url,
-          name: title,
-          description: description,
+          name: optimizedTitle,
+          description: optimizedDescription,
           isPartOf: {
             '@id': `${window.location.origin}/#website`
           },
@@ -187,7 +190,7 @@ export function SEOHead({
 
     structuredDataScript.textContent = JSON.stringify(structuredData);
 
-  }, [title, description, keywords, image, url, type, article, publishedTime, modifiedTime, author, section, tags]);
+  }, [optimizedTitle, optimizedDescription, title, description, keywords, image, url, type, article, publishedTime, modifiedTime, author, section, tags]);
 
   return null; // This component doesn't render anything
 }

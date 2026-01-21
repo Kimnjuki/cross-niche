@@ -96,8 +96,8 @@ const Index = () => {
     <Layout>
       {/* SEO Meta Tags */}
       <SEOHead
-        title="The Grid Nexus - Tech • Security • Gaming Intelligence | Breaking News & Expert Analysis"
-        description="The Grid Nexus: Your trusted source for breaking technology news, in-depth cybersecurity analysis, and expert gaming guides. Stay ahead with AI-powered insights, security intelligence, and comprehensive tech coverage."
+        title="The Grid Nexus - Tech, Security & Gaming News"
+        description="Breaking technology news, cybersecurity analysis, and gaming guides. AI insights, security intelligence, and comprehensive tech coverage."
         keywords={[
           'artificial intelligence',
           'machine learning',
@@ -132,8 +132,17 @@ const Index = () => {
         type="website"
       />
 
-      {/* Main H1 Heading - Hidden visually but present for SEO */}
-      <h1 className="sr-only">The Grid Nexus: Technology, Cybersecurity, and Gaming Intelligence</h1>
+      {/* Main H1 Heading - Visible for SEO */}
+      <section className="container mx-auto px-4 py-8 text-center">
+        <h1 className="font-display font-bold text-4xl md:text-5xl mb-4">
+          Technology, Cybersecurity, and Gaming Intelligence
+        </h1>
+        <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+          Your trusted source for breaking technology news, in-depth cybersecurity analysis, 
+          and expert gaming guides. Stay ahead with artificial intelligence insights, 
+          machine learning trends, cloud computing updates, and comprehensive tech coverage.
+        </p>
+      </section>
 
       {/* Breaking News Section (TechCrunch-style) */}
       <BreakingNewsSection articles={allArticles} maxItems={6} />
@@ -149,8 +158,11 @@ const Index = () => {
           <div className="container mx-auto px-4">
             <div className="flex items-center justify-between mb-8">
               <div>
-                <h2 className="font-display font-bold text-3xl mb-2">More Featured Articles</h2>
-                <p className="text-muted-foreground">Explore our comprehensive coverage of technology, cybersecurity, and gaming</p>
+                <h2 className="font-display font-bold text-3xl mb-2">Featured Technology and Cybersecurity Articles</h2>
+                <p className="text-muted-foreground">
+                  Explore our comprehensive coverage of artificial intelligence, machine learning, 
+                  cloud computing, cybersecurity, gaming, blockchain, robotics, and latest tech news
+                </p>
               </div>
               <Link 
                 to="/blog-series" 
@@ -164,6 +176,22 @@ const Index = () => {
               {allArticles.slice(5, 11).map((article) => (
                 <ArticleCard key={article.id} article={article} />
               ))}
+            </div>
+            {/* Additional Internal Links */}
+            <div className="mt-8 pt-8 border-t border-border">
+              <div className="flex flex-wrap justify-center gap-4 text-sm">
+                <Link to="/tech" className="text-primary hover:underline">Technology News</Link>
+                <span className="text-muted-foreground">•</span>
+                <Link to="/security" className="text-primary hover:underline">Cybersecurity Updates</Link>
+                <span className="text-muted-foreground">•</span>
+                <Link to="/gaming" className="text-primary hover:underline">Gaming News</Link>
+                <span className="text-muted-foreground">•</span>
+                <Link to="/topics?q=artificial+intelligence" className="text-primary hover:underline">AI & Machine Learning</Link>
+                <span className="text-muted-foreground">•</span>
+                <Link to="/topics?q=cloud+computing" className="text-primary hover:underline">Cloud Computing</Link>
+                <span className="text-muted-foreground">•</span>
+                <Link to="/topics?q=blockchain" className="text-primary hover:underline">Blockchain Technology</Link>
+              </div>
             </div>
           </div>
         </section>
@@ -219,14 +247,15 @@ const Index = () => {
       {/* Newsletter Section */}
       <section className="py-16 bg-muted/30">
         <div className="container max-w-4xl mx-auto px-4 text-center">
-          <h2 className="text-3xl font-bold mb-4">Stay Informed with The Grid Nexus</h2>
+          <h2 className="text-3xl font-bold mb-4">Stay Informed with Latest Technology and Cybersecurity News</h2>
           <p className="text-muted-foreground mb-8">
-            Get personalized technology news, cybersecurity updates, and gaming insights delivered to your inbox.
+            Get personalized technology news, cybersecurity updates, artificial intelligence insights, 
+            machine learning trends, cloud computing news, and gaming guides delivered to your inbox.
           </p>
           <NewsletterForm variant="advanced" />
           {/* Internal Links for SEO */}
           <div className="mt-8 pt-8 border-t border-border">
-            <p className="text-sm text-muted-foreground mb-4">Explore our content:</p>
+            <p className="text-sm text-muted-foreground mb-4">Explore our technology, cybersecurity, and gaming content:</p>
             <div className="flex flex-wrap justify-center gap-4 text-sm">
               <Link to="/tech" className="text-primary hover:underline">Technology News</Link>
               <span className="text-muted-foreground">•</span>
@@ -235,6 +264,10 @@ const Index = () => {
               <Link to="/gaming" className="text-primary hover:underline">Gaming</Link>
               <span className="text-muted-foreground">•</span>
               <Link to="/blog-series" className="text-primary hover:underline">All Articles</Link>
+              <span className="text-muted-foreground">•</span>
+              <Link to="/topics" className="text-primary hover:underline">Topics</Link>
+              <span className="text-muted-foreground">•</span>
+              <Link to="/guides" className="text-primary hover:underline">Guides</Link>
             </div>
           </div>
         </div>
