@@ -11,6 +11,11 @@ import { ArticleCard } from '@/components/articles/ArticleCard';
 import { AdPlacement } from '@/components/ads/AdPlacement';
 import { SEOHead } from '@/components/seo/SEOHead';
 import { FAQSection } from '@/components/seo/FAQSection';
+import { BreakingNewsSection } from '@/components/home/BreakingNewsSection';
+import { ThreatIntelligenceDashboard } from '@/components/security/ThreatIntelligenceDashboard';
+import { TrendingTopicsWidget } from '@/components/home/TrendingTopicsWidget';
+import { StartupVCSection } from '@/components/startups/StartupVCSection';
+import { ProductReviewsSection } from '@/components/reviews/ProductReviewsSection';
 import { Link } from 'react-router-dom';
 
 const Index = () => {
@@ -94,15 +99,29 @@ const Index = () => {
         title="The Grid Nexus - Tech • Security • Gaming Intelligence | Breaking News & Expert Analysis"
         description="The Grid Nexus: Your trusted source for breaking technology news, in-depth cybersecurity analysis, and expert gaming guides. Stay ahead with AI-powered insights, security intelligence, and comprehensive tech coverage."
         keywords={[
-          'technology news',
+          'artificial intelligence',
+          'machine learning',
           'cybersecurity',
+          'cyber security',
+          'cloud computing',
           'gaming',
+          'blockchain',
+          'robotics',
+          'latest tech news',
+          'technology trends',
+          'data privacy',
+          'quantum computing',
+          'virtual reality',
+          'internet of things',
+          'big data',
+          'network security',
+          'cyber security news',
+          'gaming news',
+          'tech innovations 2026',
+          'cybersecurity threats latest',
+          'technology news',
           'tech intelligence',
           'security analysis',
-          'gaming news',
-          'AI technology',
-          'tech trends',
-          'cyber threats',
           'gaming hardware',
           'tech reviews',
           'security updates',
@@ -115,6 +134,9 @@ const Index = () => {
 
       {/* Main H1 Heading - Hidden visually but present for SEO */}
       <h1 className="sr-only">The Grid Nexus: Technology, Cybersecurity, and Gaming Intelligence</h1>
+
+      {/* Breaking News Section (TechCrunch-style) */}
+      <BreakingNewsSection articles={allArticles} maxItems={6} />
 
       {/* Rotating Hero Section with the 5 main articles */}
       {rotatingArticles.length > 0 && (
@@ -150,6 +172,20 @@ const Index = () => {
       {/* Trending Section */}
       <TrendingSection articles={trendingArticles} />
 
+      {/* Trending Topics Widget with High-Volume Keywords */}
+      <section className="py-8 bg-muted/30">
+        <div className="container mx-auto px-4">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <div className="lg:col-span-2">
+              <TrendingTopicsWidget />
+            </div>
+            <div className="lg:col-span-1">
+              <ThreatIntelligenceDashboard />
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Ad Placement - Between Sections */}
       <AdPlacement position="between-content" />
 
@@ -165,6 +201,20 @@ const Index = () => {
       <AdPlacement position="in-feed" />
 
       <NicheSection niche="gaming" articles={gamingArticles} />
+
+      {/* Startup & VC Section (TechCrunch-style) */}
+      <StartupVCSection articles={techArticles.filter(a => 
+        a.title.toLowerCase().includes('startup') || 
+        a.title.toLowerCase().includes('funding') ||
+        a.title.toLowerCase().includes('venture')
+      )} />
+
+      {/* Product Reviews Section (CNET-style) */}
+      <ProductReviewsSection articles={allArticles.filter(a => 
+        a.title.toLowerCase().includes('review') || 
+        a.title.toLowerCase().includes('comparison') ||
+        a.tags.some(tag => ['hardware', 'software', 'product'].includes(tag.toLowerCase()))
+      )} />
 
       {/* Newsletter Section */}
       <section className="py-16 bg-muted/30">

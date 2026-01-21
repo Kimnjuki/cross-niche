@@ -180,3 +180,4 @@ All analytics scripts are loaded asynchronously to minimize performance impact. 
 2. Consider lazy loading analytics
 3. Use tag manager (GTM) for better control
 
+

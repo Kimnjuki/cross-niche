@@ -20,6 +20,7 @@ import Contact from "./pages/Contact";
 import Privacy from "./pages/Privacy";
 import Terms from "./pages/Terms";
 import BlogSeries from "./pages/BlogSeries";
+import Topics from "./pages/Topics";
 import Profile from "./pages/Profile";
 import AuthCallback from "./pages/AuthCallback";
 import AuthConfirm from "./pages/AuthConfirm";
@@ -54,6 +55,7 @@ const App = () => (
             <Route path="/privacy" element={<Privacy />} />
             <Route path="/terms" element={<Terms />} />
             <Route path="/blog-series" element={<BlogSeries />} />
+            <Route path="/topics" element={<Topics />} />
             <Route path="/profile" element={<Profile />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />

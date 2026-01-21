@@ -130,3 +130,4 @@ server {
 - Images already had alt attributes (verified)
 - Internal linking structure was already good, just needed more explicit links
 
+

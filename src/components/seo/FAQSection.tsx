@@ -80,3 +80,4 @@ export function FAQSection({ faqs, title = 'Frequently Asked Questions', classNa
   );
 }
 
+
