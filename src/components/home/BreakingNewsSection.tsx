@@ -75,3 +75,4 @@ export function BreakingNewsSection({ articles, maxItems = 5 }: BreakingNewsSect
   );
 }
 
+
