@@ -15,12 +15,16 @@ import Bookmarks from "./pages/Bookmarks";
 import SecurityScore from "./pages/SecurityScore";
 import Disclosure from "./pages/Disclosure";
 import Roadmap from "./pages/Roadmap";
+import AIPulse from "./pages/AIPulse";
+import BreachSimulation from "./pages/BreachSimulation";
+import NexusIntersection from "./pages/NexusIntersection";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
 import Privacy from "./pages/Privacy";
 import Terms from "./pages/Terms";
 import BlogSeries from "./pages/BlogSeries";
 import Topics from "./pages/Topics";
+import Tutorials from "./pages/Tutorials";
 import Profile from "./pages/Profile";
 import AuthCallback from "./pages/AuthCallback";
 import AuthConfirm from "./pages/AuthConfirm";
@@ -50,12 +54,16 @@ const App = () => (
             <Route path="/security-score" element={<SecurityScore />} />
             <Route path="/disclosure" element={<Disclosure />} />
             <Route path="/roadmap" element={<Roadmap />} />
+            <Route path="/ai-pulse" element={<AIPulse />} />
+            <Route path="/breach-sim" element={<BreachSimulation />} />
+            <Route path="/nexus-intersection" element={<NexusIntersection />} />
             <Route path="/about" element={<About />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/privacy" element={<Privacy />} />
             <Route path="/terms" element={<Terms />} />
             <Route path="/blog-series" element={<BlogSeries />} />
             <Route path="/topics" element={<Topics />} />
+            <Route path="/tutorials" element={<Tutorials />} />
             <Route path="/profile" element={<Profile />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />

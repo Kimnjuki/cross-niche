@@ -1,8 +1,11 @@
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Layout } from '@/components/layout/Layout';
+import { SEOHead } from '@/components/seo/SEOHead';
 import { useAuth } from '@/contexts/AuthContext';
 import { mockArticles } from '@/data/mockData';
 import { ArticleGrid } from '@/components/articles/ArticleGrid';
+import { ViewToggle } from '@/components/ui/view-toggle';
 import { Button } from '@/components/ui/button';
 import { Bookmark } from 'lucide-react';
 import { useQuery } from '@tanstack/react-query';
@@ -11,6 +14,7 @@ import { mapContentToArticles } from '@/lib/contentMapper';
 import { Skeleton } from '@/components/ui/skeleton';
 
 export default function Bookmarks() {
+  const [viewMode, setViewMode] = useState<'grid' | 'list' | 'compact'>('grid');
   const { user, isLoading: authLoading } = useAuth();
 
   // Fetch bookmarked content from Supabase
@@ -80,6 +84,12 @@ export default function Bookmarks() {
 
   return (
     <Layout>
+      <SEOHead
+        title="Your Bookmarks | The Grid Nexus"
+        description="View your saved articles and bookmarks"
+        url={window.location.href}
+        noindex={true}
+      />
       <div className="container mx-auto px-4 py-12">
         <div className="mb-8">
           <h1 className="font-display font-bold text-4xl mb-2">Your Bookmarks</h1>
@@ -100,7 +110,12 @@ export default function Bookmarks() {
             </Button>
           </div>
         ) : (
-          <ArticleGrid articles={bookmarkedArticles} columns={3} />
+          <>
+            <div className="flex justify-end mb-6">
+              <ViewToggle value={viewMode} onChange={setViewMode} ariaLabel="Bookmarks layout" />
+            </div>
+            <ArticleGrid articles={bookmarkedArticles} columns={3} viewMode={viewMode} />
+          </>
         )}
       </div>
     </Layout>

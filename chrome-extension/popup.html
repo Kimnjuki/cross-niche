@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>The Grid Nexus Threat Score</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      width: 280px;
+      min-height: 120px;
+      margin: 0;
+      padding: 12px 16px;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      font-size: 13px;
+      color: #1a1a1a;
+      background: #fff;
+    }
+    .domain {
+      word-break: break-all;
+      color: #666;
+      font-size: 12px;
+      margin-bottom: 8px;
+    }
+    .score-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+    .score-badge {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 14px;
+      color: #fff;
+      flex-shrink: 0;
+    }
+    .score-badge.safe { background: #22c55e; }
+    .score-badge.caution { background: #eab308; color: #1a1a1a; }
+    .score-badge.high { background: #ef4444; }
+    .score-badge.unknown { background: #94a3b8; }
+    .score-label { font-weight: 600; }
+    .score-desc { color: #666; font-size: 12px; margin-top: 2px; }
+    .loading { color: #666; }
+    .error { color: #ef4444; font-size: 12px; }
+    .footer {
+      margin-top: 12px;
+      padding-top: 8px;
+      border-top: 1px solid #eee;
+      font-size: 11px;
+      color: #94a3b8;
+    }
+  </style>
+</head>
+<body>
+  <div class="domain" id="domain">—</div>
+  <div class="score-row">
+    <div class="score-badge unknown" id="badge">?</div>
+    <div>
+      <div class="score-label" id="label">Threat Score</div>
+      <div class="score-desc" id="desc">Click to check this domain</div>
+    </div>
+  </div>
+  <div id="message"></div>
+  <div class="footer">The Grid Nexus · nexus-005</div>
+  <script src="popup.js"></script>
+</body>
+</html>

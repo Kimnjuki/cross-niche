@@ -2,6 +2,8 @@ import { Layout } from '@/components/layout/Layout';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
+import { SEOHead } from '@/components/seo/SEOHead';
+import { Link } from 'react-router-dom';
 import { CheckCircle2, Circle, Clock, Zap, Users, BarChart3, Globe } from 'lucide-react';
 
 interface Feature {
@@ -227,6 +229,13 @@ const Roadmap = () => {
 
   return (
     <Layout>
+      <SEOHead
+        title="Product Roadmap | The Grid Nexus"
+        description="Explore our competitive advantages roadmap. See upcoming features for tech, security, and gaming intelligence platform."
+        keywords={['roadmap', 'features', 'product development', 'upcoming features', 'platform roadmap']}
+        url={window.location.href}
+        type="website"
+      />
       <div className="container mx-auto px-4 py-12">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-12">
@@ -234,6 +243,13 @@ const Roadmap = () => {
             <p className="text-xl text-muted-foreground">
               Building The Grid Nexus - A category-defining intelligence platform
             </p>
+            <div className="mt-6 flex flex-wrap justify-center gap-4 text-sm">
+              <Link to="/about" className="text-primary hover:underline">About Us</Link>
+              <span className="text-muted-foreground">•</span>
+              <Link to="/contact" className="text-primary hover:underline">Contact</Link>
+              <span className="text-muted-foreground">•</span>
+              <Link to="/blog-series" className="text-primary hover:underline">Latest Articles</Link>
+            </div>
           </div>
 
           {/* Phase Overview */}

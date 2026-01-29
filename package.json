@@ -8,7 +8,10 @@
     "build": "vite build",
     "build:dev": "vite build --mode development",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "import:csv": "node scripts/import-csv-to-convex.mjs",
+    "verify:convex": "node scripts/verify-supabase-convex.mjs",
+    "verify:convex-only": "node scripts/verify-supabase-convex.mjs --convex-only"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",
@@ -47,7 +50,9 @@
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "cmdk": "^1.1.1",
+    "convex": "^1.31.6",
     "date-fns": "^3.6.0",
+    "framer-motion": "^11.11.17",
     "embla-carousel-react": "^8.6.0",
     "input-otp": "^1.4.2",
     "lucide-react": "^0.462.0",

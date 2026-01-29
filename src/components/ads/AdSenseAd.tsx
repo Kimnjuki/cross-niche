@@ -49,15 +49,35 @@ export function AdSenseAd({
     const loadAd = () => {
       if (typeof window !== 'undefined' && window.adsbygoogle) {
         try {
-          // Check if ad element exists
-          const adElement = document.querySelector(`[data-ad-slot="${adSlot}"]`);
+          // Check if ad element exists and has proper dimensions
+          const adElement = document.querySelector(`[data-ad-slot="${adSlot}"]`) as HTMLElement;
           if (adElement && !adLoaded) {
-            window.adsbygoogle.push({});
-            setAdLoaded(true);
+            // Ensure the ad container has width before loading
+            const rect = adElement.getBoundingClientRect();
+            const parentRect = adElement.parentElement?.getBoundingClientRect();
+            const hasWidth = rect.width > 0 || (parentRect && parentRect.width > 0);
+            
+            if (hasWidth) {
+              window.adsbygoogle.push({});
+              setAdLoaded(true);
+            } else {
+              // Retry after a short delay if container doesn't have width yet
+              setTimeout(loadAd, 200);
+            }
           }
-        } catch (error) {
-          console.warn('AdSense error:', error);
-          setAdBlocked(true);
+        } catch (error: any) {
+          // Suppress "No slot size" errors as they're often false positives
+          if (error?.message && !error.message.includes('No slot size')) {
+            if (import.meta.env.DEV) {
+              console.warn('AdSense error:', error);
+            }
+          }
+          // Don't set adBlocked for slot size errors, just retry
+          if (error?.message && error.message.includes('No slot size')) {
+            setTimeout(loadAd, 500);
+          } else {
+            setAdBlocked(true);
+          }
         }
       } else {
         // Retry after a short delay
@@ -117,6 +137,8 @@ export function AdSenseAd({
     display: 'block',
     textAlign: 'center',
     minHeight: adFormat === 'auto' ? 100 : 250,
+    minWidth: '100%',
+    width: '100%',
     ...style,
   };
 
@@ -128,7 +150,7 @@ export function AdSenseAd({
   );
 
   return (
-    <div className="my-8 flex justify-center">
+    <div className="my-8 flex justify-center w-full" style={{ minWidth: '100%', width: '100%' }}>
       <ins
         className={adClass}
         style={adStyle}

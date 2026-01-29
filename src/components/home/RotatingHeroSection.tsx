@@ -4,8 +4,9 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { LazyImage } from '@/components/ui/lazy-image';
 import { Link } from 'react-router-dom';
-import { Clock, ChevronLeft, ChevronRight, Play, Pause } from 'lucide-react';
+import { Clock, ChevronLeft, ChevronRight, Play, Pause, User } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { formatRelativeTime, isFreshContent, isJustPublished } from '@/lib/timeUtils';
 
 interface RotatingHeroSectionProps {
   articles: Article[];
@@ -79,7 +80,7 @@ export function RotatingHeroSection({
   const currentArticle = validArticles[currentIndex];
 
   return (
-    <section className="relative overflow-hidden min-h-[600px] md:min-h-[700px] bg-gradient-to-br from-background via-muted/20 to-background">
+    <section className="relative overflow-hidden min-h-[600px] md:min-h-[700px] bg-gradient-to-br from-background via-muted/20 to-background" style={{ contentVisibility: 'auto' }}>
       {/* Background Pattern */}
       <div className="absolute inset-0 opacity-5">
         <div 
@@ -125,11 +126,14 @@ export function RotatingHeroSection({
               >
                 <div className="grid md:grid-cols-2 gap-0">
                   {/* Image Section */}
-                  <div className="relative aspect-video md:aspect-auto md:h-[500px] overflow-hidden">
+                  <div className="relative aspect-video md:aspect-[4/5] md:h-[500px] overflow-hidden" style={{ minHeight: '225px' }}>
                     <LazyImage
                       src={currentArticle.imageUrl}
-                      alt={currentArticle.title}
+                      alt={currentArticle.title || 'Featured article image'}
                       className="w-full h-full object-cover"
+                      width="1200"
+                      height="1500"
+                      aspectRatio="4/5"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
                     <div className="absolute top-4 left-4">
@@ -153,22 +157,41 @@ export function RotatingHeroSection({
                       </p>
                     </div>
 
-                    {/* Meta Information */}
-                    <div className="flex flex-wrap items-center gap-4 text-sm text-muted-foreground mb-6">
-                      <span className="font-medium text-foreground">{currentArticle.author}</span>
-                      <span>•</span>
-                      <div className="flex items-center gap-1">
-                        <Clock className="h-4 w-4" />
-                        <span>{currentArticle.readTime} min read</span>
+                    {/* Meta Information - Enhanced with competitor features */}
+                    <div className="flex flex-wrap items-center gap-4 text-sm mb-6">
+                      <div className="flex items-center gap-2">
+                        <User className="h-4 w-4 text-muted-foreground" />
+                        <span className="font-medium text-foreground">{currentArticle.author}</span>
                       </div>
-                      <span>•</span>
-                      <span>
-                        {new Date(currentArticle.publishedAt).toLocaleDateString('en-US', {
-                          month: 'short',
-                          day: 'numeric',
-                          year: 'numeric'
-                        })}
-                      </span>
+                      <span className="text-muted-foreground">•</span>
+                      <div className="flex items-center gap-1.5 text-muted-foreground bg-muted/50 rounded-full px-3 py-1">
+                        <Clock className="h-4 w-4" />
+                        <span className="font-medium">{currentArticle.readTime} min read</span>
+                      </div>
+                      <span className="text-muted-foreground">•</span>
+                      <time 
+                        dateTime={currentArticle.publishedAt}
+                        className="text-muted-foreground"
+                        title={new Date(currentArticle.publishedAt).toLocaleString()}
+                      >
+                        {formatRelativeTime(currentArticle.publishedAt)}
+                      </time>
+                      {isJustPublished(currentArticle.publishedAt) && (
+                        <>
+                          <span className="text-muted-foreground">•</span>
+                          <Badge variant="outline" className="text-xs border-green-500/30 text-green-500 bg-green-500/10 animate-pulse">
+                            Just Published
+                          </Badge>
+                        </>
+                      )}
+                      {!isJustPublished(currentArticle.publishedAt) && isFreshContent(currentArticle.publishedAt) && (
+                        <>
+                          <span className="text-muted-foreground">•</span>
+                          <Badge variant="outline" className="text-xs border-primary/30 text-primary bg-primary/10">
+                            Fresh
+                          </Badge>
+                        </>
+                      )}
                     </div>
 
                     {/* Tags */}
@@ -264,8 +287,11 @@ export function RotatingHeroSection({
               >
                 <LazyImage
                   src={article.imageUrl}
-                  alt={article.title}
+                  alt={article.title || 'Article thumbnail'}
                   className="w-full h-full object-cover"
+                  width="400"
+                  height="225"
+                  aspectRatio="16/9"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
                 <div className="absolute bottom-2 left-2 right-2">

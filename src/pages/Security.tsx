@@ -1,13 +1,18 @@
+import { useState } from 'react';
 import { Layout } from '@/components/layout/Layout';
 import { ArticleGrid } from '@/components/articles/ArticleGrid';
+import { ViewToggle } from '@/components/ui/view-toggle';
 import { mockArticles } from '@/data/mockData';
 import { useContentByFeed } from '@/hooks/useContent';
 import { mapContentToArticles } from '@/lib/contentMapper';
 import { Card, CardContent } from '@/components/ui/card';
 import { Shield, AlertTriangle, AlertCircle, CheckCircle } from 'lucide-react';
 import { Skeleton } from '@/components/ui/skeleton';
+import { SEOHead } from '@/components/seo/SEOHead';
+import { Link } from 'react-router-dom';
 
 export default function Security() {
+  const [viewMode, setViewMode] = useState<'grid' | 'list' | 'compact'>('grid');
   const { data: securityContent, isLoading } = useContentByFeed('secured', 20);
 
   const securityArticles = securityContent && securityContent.length > 0
@@ -19,6 +24,13 @@ export default function Security() {
 
   return (
     <Layout>
+      <SEOHead
+        title="Cybersecurity News & Threat Intelligence | The Grid Nexus"
+        description="Critical security news, threat intelligence, and protection guides. Stay informed about the latest vulnerabilities and how to protect your digital life."
+        keywords={['cybersecurity', 'security news', 'threat intelligence', 'cyber threats', 'data privacy', 'network security']}
+        url={window.location.href}
+        type="website"
+      />
       <div className="container mx-auto px-4 py-12">
         {/* Header */}
         <div className="mb-8">
@@ -34,6 +46,15 @@ export default function Security() {
           <p className="text-lg text-muted-foreground max-w-2xl">
             Critical security news, threat intelligence, and protection guides. Stay informed about the latest vulnerabilities and how to protect your digital life.
           </p>
+          <div className="mt-6 flex flex-wrap gap-4 text-sm">
+            <Link to="/topics?q=cybersecurity" className="text-primary hover:underline">Cybersecurity Topics</Link>
+            <span className="text-muted-foreground">•</span>
+            <Link to="/topics?q=data+privacy" className="text-primary hover:underline">Data Privacy</Link>
+            <span className="text-muted-foreground">•</span>
+            <Link to="/guides" className="text-primary hover:underline">Security Guides</Link>
+            <span className="text-muted-foreground">•</span>
+            <Link to="/blog-series" className="text-primary hover:underline">All Articles</Link>
+          </div>
         </div>
 
         {/* Threat Dashboard */}
@@ -73,6 +94,11 @@ export default function Security() {
           </Card>
         </div>
 
+        {/* View toggle (Ars / WIRED style) */}
+        <div className="flex justify-end mb-6">
+          <ViewToggle value={viewMode} onChange={setViewMode} ariaLabel="Article layout" />
+        </div>
+
         {/* Articles Grid */}
         {isLoading ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -81,7 +107,7 @@ export default function Security() {
             ))}
           </div>
         ) : (
-          <ArticleGrid articles={securityArticles} columns={3} />
+          <ArticleGrid articles={securityArticles} columns={3} viewMode={viewMode} />
         )}
       </div>
     </Layout>

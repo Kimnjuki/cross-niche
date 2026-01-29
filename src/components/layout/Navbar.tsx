@@ -17,9 +17,12 @@ const navLinks = [
   { href: '/tech', label: 'Innovate', color: 'text-tech' },
   { href: '/security', label: 'Secured', color: 'text-security' },
   { href: '/gaming', label: 'Play', color: 'text-gaming' },
+  { href: '/ai-pulse', label: 'AI Pulse', color: 'text-foreground' },
   { href: '/topics', label: 'Topics', color: 'text-foreground' },
   { href: '/guides', label: 'Guides', color: 'text-foreground' },
   { href: '/roadmap', label: 'Roadmap', color: 'text-foreground' },
+  { href: '/breach-sim', label: 'Breach Sim', color: 'text-foreground' },
+  { href: '/nexus-intersection', label: 'Nexus Intersection', color: 'text-foreground' },
 ];
 
 const roleFilters = [
@@ -46,10 +49,21 @@ const getBreadcrumbs = (pathname: string) => {
 
 export function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
+  const [searchOpen, setSearchOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
   const [selectedRole, setSelectedRole] = useState('all');
   const { user, logout } = useAuth();
   const location = useLocation();
   const navigate = useNavigate();
+
+  const handleSearchSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    const q = searchQuery.trim();
+    if (q) navigate(`/topics?q=${encodeURIComponent(q)}`);
+    setSearchOpen(false);
+    setSearchQuery('');
+    setIsOpen(false);
+  };
   
   const breadcrumbs = getBreadcrumbs(location.pathname);
   const showBreadcrumbs = location.pathname !== '/';
@@ -87,11 +101,29 @@ export function Navbar() {
               ))}
             </div>
 
-            {/* Desktop Actions */}
+            {/* Desktop Actions: prominent search (Verge / Ars style) */}
             <div className="hidden md:flex items-center gap-4">
-              <Button variant="ghost" size="icon">
-                <Search className="h-5 w-5" />
-              </Button>
+              {searchOpen ? (
+                <form onSubmit={handleSearchSubmit} className="flex items-center gap-2 animate-fade-in">
+                  <input
+                    type="search"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    placeholder="Search topics..."
+                    className="h-9 w-48 rounded-md border border-input bg-background px-3 py-1 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+                    autoFocus
+                    aria-label="Search"
+                  />
+                  <Button type="submit" size="sm">Search</Button>
+                  <Button type="button" variant="ghost" size="icon" onClick={() => { setSearchOpen(false); setSearchQuery(''); }}>
+                    <X className="h-4 w-4" />
+                  </Button>
+                </form>
+              ) : (
+                <Button variant="ghost" size="icon" onClick={() => setSearchOpen(true)} aria-label="Open search">
+                  <Search className="h-5 w-5" />
+                </Button>
+              )}
               {user ? (
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
@@ -196,6 +228,19 @@ export function Navbar() {
           {/* Mobile Navigation */}
           {isOpen && (
             <div className="md:hidden py-4 border-t border-border animate-fade-in">
+              <form onSubmit={handleSearchSubmit} className="px-2 pb-4 border-b border-border/50 mb-4">
+                <div className="flex gap-2">
+                  <input
+                    type="search"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    placeholder="Search topics..."
+                    className="flex-1 h-10 rounded-md border border-input bg-background px-3 text-sm"
+                    aria-label="Search"
+                  />
+                  <Button type="submit" size="sm">Search</Button>
+                </div>
+              </form>
               <div className="flex flex-col gap-4">
                 {navLinks.map((link) => (
                   <Link

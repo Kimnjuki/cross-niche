@@ -8,6 +8,9 @@ interface LazyImageProps {
   placeholder?: string;
   onLoad?: () => void;
   onError?: () => void;
+  width?: string | number;
+  height?: string | number;
+  aspectRatio?: string;
 }
 
 export function LazyImage({
@@ -16,7 +19,10 @@ export function LazyImage({
   className,
   placeholder,
   onLoad,
-  onError
+  onError,
+  width,
+  height,
+  aspectRatio
 }: LazyImageProps) {
   const [isLoaded, setIsLoaded] = useState(false);
   const [isInView, setIsInView] = useState(false);
@@ -53,16 +59,22 @@ export function LazyImage({
     onError?.();
   };
 
+  const finalAspectRatio = aspectRatio || '16/9';
+  const finalWidth = width || '1200';
+  const finalHeight = height || '675';
+
   return (
-    <div className={cn('relative overflow-hidden', className)} ref={imgRef}>
+    <div className={cn('relative overflow-hidden', className)} ref={imgRef} style={{ aspectRatio: finalAspectRatio, minHeight: height || '225px' }}>
       {/* Placeholder/Loading state */}
       {(!isLoaded || !isInView) && !hasError && (
-        <div className="absolute inset-0 bg-muted animate-pulse flex items-center justify-center">
+        <div className="absolute inset-0 bg-muted animate-pulse flex items-center justify-center" style={{ aspectRatio: finalAspectRatio }}>
           {placeholder ? (
             <img
               src={placeholder}
-              alt=""
+              alt="Loading placeholder"
               className="w-full h-full object-cover opacity-50"
+              loading="lazy"
+              decoding="async"
             />
           ) : (
             <div className="w-full h-full bg-muted flex items-center justify-center">
@@ -99,9 +111,9 @@ export function LazyImage({
           onError={handleError}
           loading="lazy"
           decoding="async"
-          width="1200"
-          height="675"
-          style={{ aspectRatio: '16/9' }}
+          width={finalWidth}
+          height={finalHeight}
+          style={{ aspectRatio: finalAspectRatio }}
         />
       )}
     </div>

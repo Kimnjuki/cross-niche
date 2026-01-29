@@ -1,0 +1,37 @@
+{
+  "manifest_version": 3,
+  "name": "The Grid Nexus Threat Score",
+  "version": "1.0.0",
+  "description": "Real-time domain threat score from The Grid Nexus. See Safe, Caution, or High Risk for the current tab.",
+  "permissions": [
+    "activeTab",
+    "tabs",
+    "scripting"
+  ],
+  "host_permissions": [
+    "https://thegridnexus.com/*"
+  ],
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "The Grid Nexus Threat Score",
+    "default_icon": {
+      "16": "icons/icon-16.png",
+      "48": "icons/icon-48.png"
+    }
+  },
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content_script.js"],
+      "run_at": "document_end"
+    }
+  ],
+  "icons": {
+    "16": "icons/icon-16.png",
+    "48": "icons/icon-48.png",
+    "128": "icons/icon-128.png"
+  }
+}

@@ -1,17 +1,72 @@
-User-agent: Googlebot
-Allow: /
+# The Grid Nexus - robots.txt (SEO-optimized)
+# https://thegridnexus.com
 
-User-agent: Bingbot
-Allow: /
-
-User-agent: Twitterbot
-Allow: /
-
-User-agent: facebookexternalhit
-Allow: /
-
+# Default: allow all crawlers, block sensitive paths
 User-agent: *
 Allow: /
+Allow: /tech
+Allow: /security
+Allow: /gaming
+Allow: /blog-series
+Allow: /topics
+Allow: /guides
+Allow: /tutorials
+Allow: /about
+Allow: /contact
+Allow: /privacy
+Allow: /terms
+Allow: /disclosure
+Allow: /roadmap
+Allow: /security-score
+Allow: /article/
+Disallow: /api/
+Disallow: /admin/
+Disallow: /profile
+Disallow: /auth
+Disallow: /auth/
+Disallow: /wp-admin/
+Disallow: /wp-includes/
+Disallow: /search/
+Disallow: /*?s=
 
-# Sitemap
+# Google
+User-agent: Googlebot
+Allow: /
+Disallow: /admin/
+Disallow: /profile
+Disallow: /auth
+User-agent: Googlebot-Image
+Allow: /
+User-agent: Googlebot-News
+Allow: /
+
+# Bing
+User-agent: Bingbot
+Allow: /
+Disallow: /admin/
+Disallow: /auth
+
+# Yandex
+User-agent: Yandex
+Allow: /
+
+# AI Crawlers
+User-agent: GPTBot
+Allow: /
+User-agent: ChatGPT-User
+Allow: /
+User-agent: PerplexityBot
+Allow: /
+User-agent: OAI-SearchBot
+Allow: /
+User-agent: anthropic-ai
+Allow: /
+User-agent: Claude-Web
+Allow: /
+User-agent: CCBot
+Allow: /
+User-agent: Applebot-Extended
+Allow: /
+
+# Sitemap (submit in Google Search Console & Bing Webmaster Tools)
 Sitemap: https://thegridnexus.com/sitemap.xml

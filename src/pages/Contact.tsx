@@ -6,6 +6,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { Mail, MessageSquare, Send } from 'lucide-react';
 import { useState } from 'react';
+import { SEOHead } from '@/components/seo/SEOHead';
 
 export default function Contact() {
   const [formData, setFormData] = useState({
@@ -47,6 +48,13 @@ export default function Contact() {
 
   return (
     <Layout>
+      <SEOHead
+        title="Contact Us | The Grid Nexus"
+        description="Get in touch with The Grid Nexus team. Tips, feedback, or partnership inquiries welcome. We respond within 24 hours."
+        keywords={['contact', 'get in touch', 'feedback', 'partnership', 'inquiry']}
+        url={window.location.href}
+        type="website"
+      />
       <div className="container mx-auto px-4 py-12">
         <div className="max-w-4xl mx-auto">
           {/* Header */}
@@ -54,7 +62,7 @@ export default function Contact() {
             <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-primary mb-4">
               <MessageSquare className="h-8 w-8 text-white" />
             </div>
-            <h1 className="font-display font-bold text-4xl mb-4">Get in Touch</h1>
+            <h1 className="font-display font-bold text-4xl mb-4">Contact The Grid Nexus</h1>
             <p className="text-xl text-muted-foreground">
               Have a question, suggestion, or feedback? We'd love to hear from you.
             </p>
@@ -203,6 +211,7 @@ export default function Contact() {
     </Layout>
   );
 }
+
 
 
 

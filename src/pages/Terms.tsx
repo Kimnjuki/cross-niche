@@ -1,10 +1,18 @@
 import { Layout } from '@/components/layout/Layout';
 import { FileText, Scale, AlertCircle } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
+import { SEOHead } from '@/components/seo/SEOHead';
 
 export default function Terms() {
   return (
     <Layout>
+      <SEOHead
+        title="Terms of Service | The Grid Nexus"
+        description="Terms and conditions for using The Grid Nexus. User guidelines, content usage policy, and disclaimer."
+        keywords={['terms of service', 'terms and conditions', 'user agreement', 'legal', 'disclaimer']}
+        url={window.location.href}
+        type="website"
+      />
       <div className="container mx-auto px-4 py-12">
         <div className="max-w-3xl mx-auto">
           {/* Header */}
@@ -152,6 +160,7 @@ export default function Terms() {
     </Layout>
   );
 }
+
 
 
 

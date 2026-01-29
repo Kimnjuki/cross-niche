@@ -124,19 +124,20 @@ export default function Article() {
 
   return (
     <Layout>
-      {/* SEO and Social Media Meta Tags */}
+      {/* SEO and Social Media Meta Tags - Auto-generates optimized title/description */}
       <SEOHead
-        title={`${article.title} - The Grid Nexus`}
-        description={article.excerpt}
+        title={undefined} // Let auto-generate handle it
+        description={undefined} // Let auto-generate handle it
         keywords={article.tags}
         image={article.imageUrl}
-        url={window.location.href}
+        url={`${window.location.origin}/article/${article.id}`}
         type="article"
         article={article}
         publishedTime={article.publishedAt}
         author={article.author}
         section={article.niche}
         tags={article.tags}
+        autoGenerate={true}
       />
 
       <article className="container mx-auto px-4 py-8">

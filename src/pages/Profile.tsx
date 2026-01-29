@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { SEOHead } from '@/components/seo/SEOHead';
 import { useAuth } from '@/contexts/AuthContext';
 import { isAdmin } from '@/lib/adminUtils';
 import { 
@@ -271,6 +272,12 @@ export default function Profile() {
 
   return (
     <Layout>
+      <SEOHead
+        title="User Profile | The Grid Nexus"
+        description="Manage your account settings and preferences"
+        url={window.location.href}
+        noindex={true}
+      />
       <div className="container mx-auto px-4 py-8 max-w-7xl">
         <div className="mb-8">
           <h1 className="font-display font-bold text-4xl md:text-5xl mb-4">

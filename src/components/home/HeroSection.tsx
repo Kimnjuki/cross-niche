@@ -23,7 +23,7 @@ export function HeroSection({ featuredArticle }: HeroSectionProps) {
   }, []);
 
   return (
-    <section className="relative overflow-hidden min-h-[600px] md:min-h-[700px]">
+    <section className="relative overflow-hidden min-h-[600px] md:min-h-[700px]" style={{ contentVisibility: 'auto' }}>
       {/* Background Image/Video Layer */}
       <div className="absolute inset-0 z-0">
         <div 
