@@ -106,3 +106,20 @@ git push origin master
 ```
 
 Then trigger a redeploy in your hosting panel so the live site (thegridnexus.com) uses the new code.
+
+---
+
+## Coolify-specific: Fix env var typo (if deployment failed)
+
+If the build log shows:
+
+```text
+/artifacts/build-time.env: line 5: CONVEX_SITE_URL.=https://...: No such file or directory
+```
+
+the env variable name has a **trailing dot**. In Coolify:
+
+1. Open your application → **Environment Variables**.
+2. Find the variable named **`CONVEX_SITE_URL.`** (with a dot).
+3. Rename it to **`CONVEX_SITE_URL`** (no dot) and save.
+4. Redeploy.
