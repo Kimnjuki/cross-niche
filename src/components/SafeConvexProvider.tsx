@@ -8,9 +8,15 @@ import { useMemo, type ReactNode } from "react";
 import { ConvexProvider, ConvexReactClient } from "convex/react";
 
 const url = (import.meta.env.VITE_CONVEX_URL ?? "").trim();
+const hasConvexUrl = url.length > 0 && url.startsWith("http");
 
-function createClient(): ConvexReactClient {
-  return new ConvexReactClient(url || "https://placeholder.invalid");
+function createClient(): ConvexReactClient | null {
+  if (!hasConvexUrl) return null;
+  try {
+    return new ConvexReactClient(url);
+  } catch {
+    return null;
+  }
 }
 
 interface SafeConvexProviderProps {
@@ -18,13 +24,7 @@ interface SafeConvexProviderProps {
 }
 
 export function SafeConvexProvider({ children }: SafeConvexProviderProps) {
-  const client = useMemo(() => {
-    try {
-      return createClient();
-    } catch {
-      return null;
-    }
-  }, []);
+  const client = useMemo(() => createClient(), []);
 
   if (!client) {
     return (

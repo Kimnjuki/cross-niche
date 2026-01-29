@@ -26,8 +26,18 @@ try {
 const rootEl = document.getElementById("root");
 if (!rootEl) throw new Error("Root element #root not found");
 
-createRoot(rootEl).render(
-  <ErrorBoundary>
-    <App />
-  </ErrorBoundary>
-);
+try {
+  createRoot(rootEl).render(
+    <ErrorBoundary>
+      <App />
+    </ErrorBoundary>
+  );
+} catch (mountError) {
+  console.error("App failed to mount:", mountError);
+  rootEl.innerHTML =
+    '<div style="min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;font-family:system-ui,sans-serif;background:#0f172a;color:#f8fafc;text-align:center">' +
+    '<h1 style="font-size:1.25rem;margin-bottom:8px">Something went wrong</h1>' +
+    '<p style="color:#94a3b8;margin-bottom:16px">The app could not load. Try a hard refresh (Ctrl+F5) or check the console.</p>' +
+    '<a href="/" style="padding:10px 20px;background:#3b82f6;color:white;border-radius:8px;text-decoration:none;font-weight:500">Reload</a>' +
+    '</div>';
+}
