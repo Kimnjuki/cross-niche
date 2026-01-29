@@ -13,7 +13,10 @@ const hasConvexUrl = url.length > 0 && url.startsWith("http");
 function createClient(): ConvexReactClient | null {
   if (!hasConvexUrl) return null;
   try {
-    return new ConvexReactClient(url);
+    return new ConvexReactClient(url, {
+      // Allow .convex.site URLs (HTTP Actions / preview) as well as .convex.cloud
+      skipConvexDeploymentUrlCheck: true,
+    });
   } catch {
     return null;
   }
