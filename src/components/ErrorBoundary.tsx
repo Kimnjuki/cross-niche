@@ -1,10 +1,10 @@
 /**
  * Catches React render errors so the app never shows a blank page after deployment.
  * Shows a minimal fallback UI with link to reload and home.
+ * Uses <a href> not <Link> because this renders outside BrowserRouter (wraps entire App).
  */
 
 import { Component, type ReactNode } from 'react';
-import { Link } from 'react-router-dom';
 
 interface Props {
   children: ReactNode;
@@ -52,8 +52,8 @@ export class ErrorBoundary extends Component<Props, State> {
             The page could not load. This can happen if the deployment is still updating or a script failed to load.
           </p>
           <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap', justifyContent: 'center' }}>
-            <Link
-              to="/"
+            <a
+              href="/"
               style={{
                 padding: '10px 20px',
                 background: 'var(--primary, #3b82f6)',
@@ -64,7 +64,7 @@ export class ErrorBoundary extends Component<Props, State> {
               }}
             >
               Go to homepage
-            </Link>
+            </a>
             <button
               type="button"
               onClick={() => window.location.reload()}

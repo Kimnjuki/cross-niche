@@ -1,0 +1,6 @@
+# Normalize line endings: checkout with CRLF on Windows, store as LF in repo
+* text=auto eol=lf
+
+# Binaries: no conversion
+*.{png,jpg,jpeg,gif,ico,webp,woff,woff2,ttf,eot} binary
+*.lockb binary

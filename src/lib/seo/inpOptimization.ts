@@ -188,8 +188,10 @@ export function measureINP() {
         if (entry.entryType === 'event' && 'duration' in entry) {
           const duration = entry.duration;
           
-          // Log slow interactions (> 200ms)
-          if (duration > 200) {
+          // Log only in development or for very slow interactions (> 1s) to avoid console noise
+          if (import.meta.env.DEV && duration > 200) {
+            console.warn(`Slow interaction detected: ${duration}ms`, entry);
+          } else if (duration > 1000) {
             console.warn(`Slow interaction detected: ${duration}ms`, entry);
           }
           
@@ -224,7 +226,7 @@ export function initINPOptimizations() {
   optimizeThirdPartyScripts();
   measureINP();
 
-  console.log('✅ INP optimizations initialized');
+  if (import.meta.env.DEV) console.log('✅ INP optimizations initialized');
 }
 
 
