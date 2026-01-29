@@ -1,7 +1,7 @@
 import type { ContentItem } from '@/hooks/useContent';
 import type { Article, Niche } from '@/types';
 
-// Map Supabase content to Article type used by components
+// Map Convex/database content to Article type used by components
 export function mapContentToArticle(content: ContentItem): Article {
   // Map database niche names to frontend niche types
   const databaseNicheToFrontend: Record<string, Niche> = {
@@ -57,6 +57,7 @@ export function mapContentToArticle(content: ContentItem): Article {
 
   return {
     id: content.id || '',
+    slug: content.slug || undefined,
     title: content.title || 'Untitled',
     excerpt,
     content: body,
@@ -65,8 +66,6 @@ export function mapContentToArticle(content: ContentItem): Article {
     publishedAt: content.published_at || new Date().toISOString(),
     readTime: content.read_time_minutes || 5,
     imageUrl: content.featured_image_url || '/placeholder.svg',
-    // Ensure imageUrl is always a valid URL for SEO
-    // If it's a relative path, it will be resolved by the browser
     tags,
     isSponsored: false,
     isFeatured: content.is_featured || false,

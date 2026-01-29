@@ -43,14 +43,14 @@ export default function Article() {
   const { id } = useParams<{ id: string }>();
   const { user, toggleBookmark } = useAuth();
 
-  // Try to fetch from Supabase by slug
+  // Fetch from Convex by slug
   const { data: contentData, isLoading } = useContentBySlug(id || '');
 
   // Get related content based on feed
   const feedSlug = contentData?.feed_slug || '';
   const { data: relatedContent } = useContentByFeed(feedSlug, 4);
 
-  // Map Supabase content to Article type, fallback to mock
+  // Map Convex content to Article type, fallback to mock
   let article: ArticleType | undefined;
   let relatedArticles: ArticleType[] = [];
 

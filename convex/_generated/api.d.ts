@@ -9,6 +9,7 @@
  */
 
 import type * as aiUpdates from "../aiUpdates.js";
+import type * as content from "../content.js";
 import type * as import_ from "../import.js";
 import type * as securityRatings from "../securityRatings.js";
 import type * as verify from "../verify.js";
@@ -21,6 +22,7 @@ import type {
 
 declare const fullApi: ApiFromModules<{
   aiUpdates: typeof aiUpdates;
+  content: typeof content;
   import: typeof import_;
   securityRatings: typeof securityRatings;
   verify: typeof verify;

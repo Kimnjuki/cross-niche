@@ -70,8 +70,8 @@ export default function Admin() {
       status: allArticles.length > 0 ? 'pass' : 'fail'
     },
     {
-      id: 'supabase',
-      label: 'Supabase connection',
+      id: 'convex',
+      label: 'Convex connection',
       check: () => allContent !== undefined,
       status: allContent !== undefined ? 'pass' : 'warning'
     }

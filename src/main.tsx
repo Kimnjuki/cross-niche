@@ -1,19 +1,33 @@
 import { createRoot } from "react-dom/client";
 import App from "./App.tsx";
 import "./index.css";
+import { ErrorBoundary } from "./components/ErrorBoundary";
 import { initExternalScriptErrorHandling } from "./lib/externalScriptHandler";
 import { initAllTracking } from "./lib/analytics/ga4";
 import { initINPOptimizations } from "./lib/seo/inpOptimization";
 
-// Initialize error handling for external scripts
-initExternalScriptErrorHandling();
-
-// Initialize Google Analytics 4 tracking
-if (import.meta.env.PROD) {
-  initAllTracking();
+// Never let init scripts block or break the app (critical for Coolify/deployment)
+try {
+  initExternalScriptErrorHandling();
+} catch {
+  // ignore
+}
+try {
+  if (import.meta.env.PROD) initAllTracking();
+} catch {
+  // ignore
+}
+try {
+  initINPOptimizations();
+} catch {
+  // ignore
 }
 
-// Initialize INP optimizations
-initINPOptimizations();
+const rootEl = document.getElementById("root");
+if (!rootEl) throw new Error("Root element #root not found");
 
-createRoot(document.getElementById("root")!).render(<App />);
+createRoot(rootEl).render(
+  <ErrorBoundary>
+    <App />
+  </ErrorBoundary>
+);

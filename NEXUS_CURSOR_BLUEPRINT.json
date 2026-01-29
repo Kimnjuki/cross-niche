@@ -1,0 +1,128 @@
+{
+  "project": "The Grid Nexus - Cursor AI Implementation Blueprint",
+  "version": "1.0.0",
+  "target_environment": "Cursor AI (Agentic Workflow / Composer)",
+  "features": [
+    {
+      "feature_id": "nexus-001",
+      "name": "Nexus Risk-to-Reward Gaming Index",
+      "goal": "Integrate a 'Privacy & Security' rating system into gaming review layouts.",
+      "implementation_steps": [
+        {
+          "step": 1,
+          "action": "Database Schema Creation",
+          "cursor_mode": "Chat (Cmd + L)",
+          "prompt": "@Codebase create a Prisma schema for a SecurityRating model. It should include fields for dataEncryption (boolean), accountMFA (boolean), dataSharingPolicy (enum), and an aggregate NexusSecurityScore (0-100)."
+        },
+        {
+          "step": 2,
+          "action": "UI Development",
+          "cursor_mode": "Composer (Cmd + I)",
+          "prompt": "Generate a React component GameSecurityCard.tsx that displays a radar chart comparing a game's 'Fun Factor' vs its 'Security Risk'. Use the @Nexus-Standard for styling."
+        },
+        {
+          "step": 3,
+          "action": "Logic Implementation",
+          "cursor_mode": "Composer (Cmd + I)",
+          "logic_formula": "$$S_{nexus} = \\frac{(E \\times 40) + (M \\times 30) + (P \\times 30)}{100}$$",
+          "prompt": "Implement logic to calculate NexusSecurityScore based on: E (Encryption), M (MFA status), and P (Privacy policy transparency)."
+        }
+      ]
+    },
+    {
+      "feature_id": "nexus-002",
+      "name": "Interactive AI-Pulse Roadmap",
+      "goal": "Develop a live-updating timeline for AI and Machine Learning tech trends.",
+      "implementation_steps": [
+        {
+          "step": 1,
+          "action": "Component Scaffolding",
+          "cursor_mode": "Composer (Cmd + I)",
+          "prompt": "Create a vertical interactive timeline component using Framer Motion. It should fetch data from our /api/ai-updates and allow users to filter by 'Productivity', 'Creative', or 'Gaming AI'."
+        },
+        {
+          "step": 2,
+          "action": "Real-time Refinement",
+          "cursor_mode": "Plan Mode",
+          "prompt": "Add a 'Hype vs. Utility' toggle. When 'Hype' is selected, dim the items that are just marketing fluff. When 'Utility' is selected, highlight items with confirmed machine learning benchmarks."
+        },
+        {
+          "step": 3,
+          "action": "Compatibility Testing",
+          "cursor_mode": "Cursor Browser (Cmd + Shift + B)",
+          "prompt": "Verify the animations and responsiveness on mobile viewports."
+        }
+      ]
+    },
+    {
+      "feature_id": "nexus-003",
+      "name": "The Breach Simulation",
+      "goal": "Create a text-based, interactive cybersecurity training module.",
+      "implementation_steps": [
+        {
+          "step": 1,
+          "action": "State Machine Logic",
+          "cursor_mode": "Terminal/Edit (Cmd + K)",
+          "target_file": "BreachSim.ts",
+          "prompt": "Create a state machine for a 'Data Breach Simulation'. Start at 'Phishing Email Received'. Options: 'Click Link', 'Report to IT', 'Delete'. Each choice should branch to a different security outcome."
+        },
+        {
+          "step": 2,
+          "action": "Gamification Layer",
+          "cursor_mode": "Chat (Cmd + L)",
+          "prompt": "Using @Codebase, create a 'Nexus XP' system. Users gain points for making secure choices in the simulation. Save progress to local storage."
+        },
+        {
+          "step": 3,
+          "action": "Visual Styling",
+          "cursor_mode": "Composer (Cmd + I)",
+          "prompt": "Design the UI to look like a Terminal interface (retro-green text on black). Add a progress bar that drains if the 'Breach Level' gets too high."
+        }
+      ]
+    },
+    {
+      "feature_id": "nexus-004",
+      "name": "Unified Cross-Section Reports",
+      "goal": "Link Tech, Security, and Gaming content through a unified dynamic template.",
+      "implementation_steps": [
+        {
+          "step": 1,
+          "action": "Template Design",
+          "cursor_mode": "Composer (Cmd + I)",
+          "prompt": "Build a Next.js dynamic route template [slug]/nexus-intersection. This page must pull 1 Tech article, 1 Security alert, and 1 Gaming guide and find a common keyword to link them in a 'Nexus Summary' at the top."
+        },
+        {
+          "step": 2,
+          "action": "Content Integration",
+          "cursor_mode": "@web feature",
+          "prompt": "@web search for the latest link between RTX 50-series and AI-driven password cracking. Generate a summary component that bridges these two topics for this template."
+        }
+      ]
+    },
+    {
+      "feature_id": "nexus-005",
+      "name": "User-Facing Threat Score Extension",
+      "goal": "Launch a Chrome Extension providing real-time domain threat scores.",
+      "implementation_steps": [
+        {
+          "step": 1,
+          "action": "Boilerplate Generation",
+          "cursor_mode": "Composer (Cmd + I)",
+          "prompt": "Generate a manifest.v3 Chrome Extension. It needs a content_script.js that reads the current URL and a popup.html that displays the TheGridNexus 'Threat Score' for that domain."
+        },
+        {
+          "step": 2,
+          "action": "API Integration",
+          "cursor_mode": "Edit (Cmd + K)",
+          "prompt": "Write a fetch function that sends the current domain to https://thegridnexus.com/api/threat-score and updates the popup icon to Green (Safe), Yellow (Caution), or Red (High Risk)."
+        },
+        {
+          "step": 3,
+          "action": "Security Compliance Audit",
+          "cursor_mode": "Cursor Subagent",
+          "prompt": "Run a security audit on this extension code. Ensure the API key is not exposed and the permissions are minimal according to Chrome Web Store standards."
+        }
+      ]
+    }
+  ]
+}

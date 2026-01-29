@@ -32,7 +32,6 @@ import { comprehensiveContentFix, quickFixAllContent } from '@/lib/comprehensive
 import { usePublishedContent } from '@/hooks/useContent';
 import { mapContentToArticles } from '@/lib/contentMapper';
 import { ContentEditor } from '@/components/admin/ContentEditor';
-import { supabase, isSupabaseConfigured } from '@/integrations/supabase/client';
 import { autoFixAndPublishAll } from '@/lib/autoFixAndPublish';
 
 export default function Profile() {
@@ -240,27 +239,9 @@ export default function Profile() {
   };
 
   const handleEditContent = async (article: any) => {
-    // Fetch full content from database
-    if (!isSupabaseConfigured()) {
-      toast.error('Supabase is not configured');
-      return;
-    }
-
-    try {
-      const { data: contentData, error } = await supabase
-        .from('content')
-        .select('*')
-        .eq('id', article.id)
-        .maybeSingle();
-
-      if (error) throw error;
-      if (contentData) {
-        setEditingContent(contentData);
-        setShowContentEditor(true);
-      }
-    } catch (error: any) {
-      toast.error('Failed to load article: ' + error.message);
-    }
+    // Content editing uses Convex; open editor with article data from props
+    setEditingContent(article);
+    setShowContentEditor(true);
   };
 
   const handleDeleteContent = async (contentId: string) => {

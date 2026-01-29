@@ -1,0 +1,6 @@
+id,title,slug,published_at,primary_niche,color_code,view_count
+87761caa-336c-43b3-b3d8-9f7f1e41c5c4,Brightspeed Breach: Crimson Collective Ransomware Exposes 1M+ Records,brightspeed-breach-crimson-collective-analysis,2026-01-14 00:00:00+00,Cybersecurity,#2E8B57,750
+9d8ab4fa-b32d-44fd-8139-527a1bd9adcc,CISA KEV Update: CVE-2026-20805 DWM Flaw Mandates Immediate Action,cisa-kev-update-dwm-exploit-february-deadline,2026-01-14 00:00:00+00,Cybersecurity,#2E8B57,620
+b2c3d4e5-f6a7-4b6c-9d0e-1f2a3b4c5d6e,NVIDIA RTX 50-Series Deep Dive,nvidia-rtx-50-series-deep-dive,2026-01-13 17:40:10.297198+00,Hardware,#4CAF50,1250
+c3d4e5f6-b7c8-4a9b-0d1e-2f3a4b5c6d7e,AI Cyber Threats 2026,ai-cyber-threats-2026-report,2026-01-13 17:40:10.297198+00,Artificial Intelligence,#2196F3,980
+c3d4e5f6-b7c8-4a9b-0d1e-2f3a4b5c6d7e,AI Cyber Threats 2026,ai-cyber-threats-2026-report,2026-01-13 17:40:10.297198+00,Cybersecurity,#2E8B57,980

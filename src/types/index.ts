@@ -2,6 +2,7 @@ export type Niche = 'tech' | 'security' | 'gaming';
 
 export interface Article {
   id: string;
+  slug?: string; // For SEO-friendly URLs; use in links when available
   title: string;
   excerpt: string;
   content: string;

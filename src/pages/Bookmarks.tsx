@@ -3,56 +3,28 @@ import { Link } from 'react-router-dom';
 import { Layout } from '@/components/layout/Layout';
 import { SEOHead } from '@/components/seo/SEOHead';
 import { useAuth } from '@/contexts/AuthContext';
-import { mockArticles } from '@/data/mockData';
 import { ArticleGrid } from '@/components/articles/ArticleGrid';
 import { ViewToggle } from '@/components/ui/view-toggle';
 import { Button } from '@/components/ui/button';
 import { Bookmark } from 'lucide-react';
-import { useQuery } from '@tanstack/react-query';
-import { supabase, isSupabaseConfigured } from '@/integrations/supabase/client';
-import { mapContentToArticles } from '@/lib/contentMapper';
-import { Skeleton } from '@/components/ui/skeleton';
+import type { Article } from '@/types';
 
 export default function Bookmarks() {
   const [viewMode, setViewMode] = useState<'grid' | 'list' | 'compact'>('grid');
   const { user, isLoading: authLoading } = useAuth();
 
-  // Fetch bookmarked content from Supabase
-  const { data: bookmarkedContent, isLoading: bookmarksLoading } = useQuery({
-    queryKey: ['bookmarks', user?.id],
-    queryFn: async () => {
-      if (!user || !isSupabaseConfigured()) return [];
-      
-      const { data: bookmarks, error } = await supabase
-        .from('user_bookmarks')
-        .select('content_id')
-        .eq('user_id', user.id);
-      
-      if (error) throw error;
-      if (!bookmarks || bookmarks.length === 0) return [];
-      
-      const contentIds = bookmarks.map(b => b.content_id);
-      const { data: content, error: contentError } = await supabase
-        .from('feed_content_view')
-        .select('*')
-        .in('id', contentIds)
-        .eq('status', 'published');
-      
-      if (contentError) throw contentError;
-      return content || [];
-    },
-    enabled: !!user && isSupabaseConfigured(),
-  });
+  // Bookmarks are not persisted (sign-in disabled)
+  const bookmarkedArticles: Article[] = [];
 
-  if (authLoading || bookmarksLoading) {
+  if (authLoading) {
     return (
       <Layout>
         <div className="container mx-auto px-4 py-12">
-          <Skeleton className="h-10 w-64 mb-4" />
-          <Skeleton className="h-6 w-48 mb-8" />
+          <div className="h-10 w-64 mb-4 bg-muted animate-pulse rounded" />
+          <div className="h-6 w-48 mb-8 bg-muted animate-pulse rounded" />
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {[1, 2, 3].map(i => (
-              <Skeleton key={i} className="h-64 w-full" />
+            {[1, 2, 3].map((i) => (
+              <div key={i} className="h-64 w-full bg-muted animate-pulse rounded" />
             ))}
           </div>
         </div>
@@ -76,11 +48,6 @@ export default function Bookmarks() {
       </Layout>
     );
   }
-
-  // Use Supabase content if available, otherwise fallback to mock data
-  const bookmarkedArticles = bookmarkedContent && bookmarkedContent.length > 0
-    ? mapContentToArticles(bookmarkedContent)
-    : mockArticles.filter(a => user.bookmarks.includes(a.id));
 
   return (
     <Layout>
