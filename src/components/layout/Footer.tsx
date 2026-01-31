@@ -33,11 +33,20 @@ export function Footer() {
               <Link to="/guides" className="text-muted-foreground hover:text-foreground transition-colors">
                 Guides & Tools
               </Link>
+              <Link to="/reviews" className="text-muted-foreground hover:text-foreground transition-colors">
+                Reviews
+              </Link>
+              <Link to="/media" className="text-muted-foreground hover:text-foreground transition-colors">
+                Video & Podcast
+              </Link>
               <Link to="/tutorials" className="text-muted-foreground hover:text-foreground transition-colors">
                 Tutorials
               </Link>
-              <Link to="/features" className="text-muted-foreground hover:text-foreground transition-colors">
-                Features
+              <Link to="/ai-pulse" className="text-muted-foreground hover:text-foreground transition-colors">
+                AI Pulse
+              </Link>
+              <Link to="/roadmap" className="text-muted-foreground hover:text-foreground transition-colors">
+                Roadmap & Features
               </Link>
             </div>
           </div>
@@ -46,8 +55,23 @@ export function Footer() {
           <div>
             <h4 className="font-display font-semibold mb-4">Resources</h4>
             <div className="flex flex-col gap-2">
-              <Link to="/pricing" className="text-muted-foreground hover:text-foreground transition-colors">
-                Pricing
+              <Link to="/topics" className="text-muted-foreground hover:text-foreground transition-colors">
+                Topics & Keywords
+              </Link>
+              <Link to="/blog-series" className="text-muted-foreground hover:text-foreground transition-colors">
+                Blog Series
+              </Link>
+              <Link to="/roadmap" className="text-muted-foreground hover:text-foreground transition-colors">
+                Roadmap
+              </Link>
+              <Link to="/security-score" className="text-muted-foreground hover:text-foreground transition-colors">
+                Security Score
+              </Link>
+              <Link to="/breach-sim" className="text-muted-foreground hover:text-foreground transition-colors">
+                Breach Simulation
+              </Link>
+              <Link to="/nexus-intersection" className="text-muted-foreground hover:text-foreground transition-colors">
+                Nexus Intersection
               </Link>
               <Link to="/about" className="text-muted-foreground hover:text-foreground transition-colors">
                 About Us
@@ -57,6 +81,12 @@ export function Footer() {
               </Link>
               <Link to="/privacy" className="text-muted-foreground hover:text-foreground transition-colors">
                 Privacy Policy
+              </Link>
+              <Link to="/terms" className="text-muted-foreground hover:text-foreground transition-colors">
+                Terms of Service
+              </Link>
+              <Link to="/disclosure" className="text-muted-foreground hover:text-foreground transition-colors">
+                Affiliate Disclosure
               </Link>
             </div>
           </div>
@@ -75,12 +105,21 @@ export function Footer() {
           <p className="text-muted-foreground text-sm">
             © {new Date().getFullYear()} The Grid Nexus. All rights reserved.
           </p>
-          <p className="text-muted-foreground text-sm">
-            Tech • Security • Gaming Intelligence •{' '}
-            <Link to="/disclosure" className="hover:text-foreground transition-colors">
-              Affiliate Disclosure
-            </Link>
-          </p>
+          <div className="flex flex-col md:flex-row items-center gap-4">
+            <p className="text-muted-foreground text-sm">
+              Tech • Security • Gaming Intelligence •{' '}
+              <Link to="/disclosure" className="hover:text-foreground transition-colors">
+                Affiliate Disclosure
+              </Link>
+            </p>
+            <a 
+              className="clickio-cmp-settings-text clickio-cmp-settings-display text-muted-foreground hover:text-foreground transition-colors text-sm" 
+              style={{display: 'none'}} 
+              href="#"
+            >
+              Your Privacy Choices
+            </a>
+          </div>
         </div>
       </div>
     </footer>

@@ -8,6 +8,8 @@ import { Input } from '@/components/ui/input';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { BookOpen, Wrench, Search, ExternalLink, Clock, AlertTriangle } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { SEOHead } from '@/components/seo/SEOHead';
+import { Link } from 'react-router-dom';
 
 const difficultyColors = {
   beginner: 'bg-gaming/10 text-gaming border-gaming/20',
@@ -34,6 +36,13 @@ export default function Guides() {
 
   return (
     <Layout>
+      <SEOHead
+        title="Tech Guides & Tools | The Grid Nexus"
+        description="Level up your skills with comprehensive guides and discover the best tools recommended by our experts. Tutorials, resources, and recommendations."
+        keywords={['tech guides', 'tutorials', 'tools', 'resources', 'how-to guides', 'expert recommendations']}
+        url={window.location.href}
+        type="website"
+      />
       <div className="container mx-auto px-4 py-12">
         {/* Header */}
         <div className="mb-8">
@@ -49,6 +58,15 @@ export default function Guides() {
           <p className="text-lg text-muted-foreground max-w-2xl">
             Level up your skills with our comprehensive guides and discover the best tools recommended by our experts.
           </p>
+          <div className="mt-6 flex flex-wrap gap-4 text-sm">
+            <Link to="/tech" className="text-primary hover:underline">Tech News</Link>
+            <span className="text-muted-foreground">•</span>
+            <Link to="/security" className="text-primary hover:underline">Security</Link>
+            <span className="text-muted-foreground">•</span>
+            <Link to="/gaming" className="text-primary hover:underline">Gaming</Link>
+            <span className="text-muted-foreground">•</span>
+            <Link to="/topics" className="text-primary hover:underline">Topics</Link>
+          </div>
         </div>
 
         <Tabs defaultValue="guides" className="space-y-8">
