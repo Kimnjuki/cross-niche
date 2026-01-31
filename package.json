@@ -15,7 +15,9 @@
     "test:e2e": "playwright test",
     "update:browsers": "npm exec update-browserslist-db@latest -- --update-db",
     "generate:sitemap": "node scripts/generate-sitemap.mjs",
-    "prebuild": "npm run generate:sitemap || true"
+    "generate:news-sitemap": "node scripts/generate-news-sitemap.mjs",
+    "generate:all-sitemaps": "npm run generate:sitemap && npm run generate:news-sitemap",
+    "prebuild": "npm run generate:all-sitemaps || true"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",

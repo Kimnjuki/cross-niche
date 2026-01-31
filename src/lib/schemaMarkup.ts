@@ -316,6 +316,151 @@ export function generateAllSchemas(options: {
 }
 
 /**
+ * Review Schema (for product/game reviews)
+ */
+export function generateReviewSchema(review: {
+  itemName: string;
+  itemType: 'Product' | 'VideoGame' | 'SoftwareApplication' | 'TechArticle';
+  reviewBody: string;
+  ratingValue: number;
+  bestRating?: number;
+  worstRating?: number;
+  author: string;
+  datePublished: string;
+  pros?: string[];
+  cons?: string[];
+  url: string;
+  imageUrl?: string;
+}) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'Review',
+    itemReviewed: {
+      '@type': review.itemType,
+      name: review.itemName,
+      ...(review.imageUrl && { image: review.imageUrl })
+    },
+    reviewBody: review.reviewBody,
+    reviewRating: {
+      '@type': 'Rating',
+      ratingValue: review.ratingValue,
+      bestRating: review.bestRating || 10,
+      worstRating: review.worstRating || 1
+    },
+    author: {
+      '@type': 'Person',
+      name: review.author,
+      url: `${BASE_URL}/author/${authorSlug(review.author) || 'editorial'}`
+    },
+    publisher: {
+      '@id': `${BASE_URL}/#organization`
+    },
+    datePublished: review.datePublished,
+    url: review.url.startsWith('http') ? review.url : `${BASE_URL}${review.url}`,
+    ...(review.pros && review.pros.length > 0 && {
+      positiveNotes: {
+        '@type': 'ItemList',
+        itemListElement: review.pros.map((pro, i) => ({
+          '@type': 'ListItem',
+          position: i + 1,
+          name: pro
+        }))
+      }
+    }),
+    ...(review.cons && review.cons.length > 0 && {
+      negativeNotes: {
+        '@type': 'ItemList',
+        itemListElement: review.cons.map((con, i) => ({
+          '@type': 'ListItem',
+          position: i + 1,
+          name: con
+        }))
+      }
+    })
+  };
+}
+
+/**
+ * Person/Author Schema (for E-E-A-T)
+ */
+export function generatePersonSchema(author: {
+  name: string;
+  jobTitle?: string;
+  description?: string;
+  imageUrl?: string;
+  sameAs?: string[];
+  expertise?: string[];
+}) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'Person',
+    '@id': `${BASE_URL}/author/${authorSlug(author.name) || 'editorial'}#person`,
+    name: author.name,
+    url: `${BASE_URL}/author/${authorSlug(author.name) || 'editorial'}`,
+    ...(author.jobTitle && { jobTitle: author.jobTitle }),
+    ...(author.description && { description: author.description }),
+    ...(author.imageUrl && {
+      image: {
+        '@type': 'ImageObject',
+        url: author.imageUrl.startsWith('http') ? author.imageUrl : `${BASE_URL}${author.imageUrl}`
+      }
+    }),
+    ...(author.sameAs && author.sameAs.length > 0 && { sameAs: author.sameAs }),
+    ...(author.expertise && author.expertise.length > 0 && {
+      knowsAbout: author.expertise
+    }),
+    worksFor: {
+      '@id': `${BASE_URL}/#organization`
+    }
+  };
+}
+
+/**
+ * SoftwareApplication Schema (for tool reviews/guides)
+ */
+export function generateSoftwareSchema(software: {
+  name: string;
+  description: string;
+  applicationCategory: string;
+  operatingSystem?: string;
+  offers?: {
+    price: number | string;
+    priceCurrency: string;
+  };
+  aggregateRating?: {
+    ratingValue: number;
+    ratingCount: number;
+  };
+  url?: string;
+}) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'SoftwareApplication',
+    name: software.name,
+    description: software.description,
+    applicationCategory: software.applicationCategory,
+    ...(software.operatingSystem && { operatingSystem: software.operatingSystem }),
+    ...(software.offers && {
+      offers: {
+        '@type': 'Offer',
+        price: software.offers.price,
+        priceCurrency: software.offers.priceCurrency
+      }
+    }),
+    ...(software.aggregateRating && {
+      aggregateRating: {
+        '@type': 'AggregateRating',
+        ratingValue: software.aggregateRating.ratingValue,
+        ratingCount: software.aggregateRating.ratingCount,
+        bestRating: 5,
+        worstRating: 1
+      }
+    }),
+    ...(software.url && { url: software.url })
+  };
+}
+
+/**
  * Render schema as JSON-LD script tag
  */
 export function renderSchemaScript(schema: any): string {

@@ -68,5 +68,10 @@ Allow: /
 User-agent: Applebot-Extended
 Allow: /
 
-# Sitemap (submit in Google Search Console & Bing Webmaster Tools)
+# Sitemaps (submit in Google Search Console & Bing Webmaster Tools)
 Sitemap: https://thegridnexus.com/sitemap.xml
+Sitemap: https://thegridnexus.com/sitemap-news.xml
+
+# AI/LLM Context File
+# For ChatGPT, Claude, Perplexity, and other AI assistants
+# See: https://thegridnexus.com/llms.txt
