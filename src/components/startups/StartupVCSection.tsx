@@ -88,7 +88,7 @@ export function StartupVCSection({ articles }: StartupVCSectionProps) {
             <h3 className="font-display font-bold text-xl mb-4">Related Startup Coverage</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {articles.slice(0, 3).map((article) => (
-                <ArticleCard key={article.id} article={article} />
+                <ArticleCard key={(article as Article & { _id?: string })?._id ?? article?.id ?? article?.slug ?? index} article={article} />
               ))}
             </div>
           </div>

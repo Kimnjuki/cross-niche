@@ -120,7 +120,7 @@ export function getBaseUrls(baseUrl: string = 'https://thegridnexus.com'): Sitem
  */
 export function articlesToSitemapUrls(articles: Article[], baseUrl: string = 'https://thegridnexus.com'): SitemapUrl[] {
   return articles.map(article => ({
-    loc: `${baseUrl}/article/${article.slug || article.id}`,
+    loc: `${baseUrl}/article/${article.slug ?? article.id ?? ''}`,
     lastmod: article.updatedAt 
       ? new Date(article.updatedAt).toISOString().split('T')[0]
       : new Date(article.publishedAt).toISOString().split('T')[0],

@@ -1,24 +1,35 @@
 /**
  * Wraps ConvexProvider so client creation runs inside React.
- * If ConvexReactClient throws (e.g. invalid URL), ErrorBoundary can catch it
- * and we show a fallback instead of a blank page after Coolify redeploy.
+ * When VITE_CONVEX_URL is not set or client creation throws, we still render
+ * the app with mock data (ConvexDisabledContext = true) so the UI always loads.
  */
 
-import { useMemo, type ReactNode } from "react";
+import { useMemo, createContext, useContext, type ReactNode } from "react";
 import { ConvexProvider, ConvexReactClient } from "convex/react";
 
-const url = (import.meta.env.VITE_CONVEX_URL ?? "").trim();
-const hasConvexUrl = url.length > 0 && url.startsWith("http");
+const rawUrl = (import.meta.env.VITE_CONVEX_URL ?? "").trim();
+const hasConvexUrl = rawUrl.length > 0 && rawUrl.startsWith("http");
+const PLACEHOLDER_URL = "https://no-convex-configured.convex.cloud";
 
-function createClient(): ConvexReactClient | null {
-  if (!hasConvexUrl) return null;
+export const ConvexDisabledContext = createContext<boolean>(false);
+
+function createClient(): { client: ConvexReactClient; disabled: boolean } {
+  let disabled = !hasConvexUrl;
+  let url = hasConvexUrl ? rawUrl : PLACEHOLDER_URL;
   try {
-    return new ConvexReactClient(url, {
-      // Allow .convex.site URLs (HTTP Actions / preview) as well as .convex.cloud
+    const client = new ConvexReactClient(url, {
       skipConvexDeploymentUrlCheck: true,
     });
-  } catch {
-    return null;
+    return { client, disabled };
+  } catch (err) {
+    try {
+      const fallback = new ConvexReactClient(PLACEHOLDER_URL, {
+        skipConvexDeploymentUrlCheck: true,
+      });
+      return { client: fallback, disabled: true };
+    } catch {
+      throw err;
+    }
   }
 }
 
@@ -26,44 +37,31 @@ interface SafeConvexProviderProps {
   children: ReactNode;
 }
 
-export function SafeConvexProvider({ children }: SafeConvexProviderProps) {
-  const client = useMemo(() => createClient(), []);
+const CONVEX_FALLBACK_KEY = "convexFallback";
 
-  if (!client) {
-    return (
-      <div
-        style={{
-          minHeight: "100vh",
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          justifyContent: "center",
-          padding: 24,
-          fontFamily: "system-ui, sans-serif",
-          background: "var(--background, #0f172a)",
-          color: "var(--foreground, #f8fafc)",
-        }}
-      >
-        <h1 style={{ fontSize: "1.5rem", marginBottom: 8 }}>Setup required</h1>
-        <p style={{ color: "var(--muted-foreground, #94a3b8)", marginBottom: 24, textAlign: "center" }}>
-          Set <code style={{ background: "#334155", padding: "2px 6px", borderRadius: 4 }}>VITE_CONVEX_URL</code> as a Build Time Variable in Coolify, then redeploy.
-        </p>
-        <a
-          href="/"
-          style={{
-            padding: "10px 20px",
-            background: "var(--primary, #3b82f6)",
-            color: "white",
-            borderRadius: 8,
-            textDecoration: "none",
-            fontWeight: 500,
-          }}
-        >
-          Reload
-        </a>
-      </div>
-    );
+function getConvexFallback(): boolean {
+  if (typeof window === "undefined") return false;
+  try {
+    if (sessionStorage.getItem(CONVEX_FALLBACK_KEY) === "1") return true;
+    if (new URLSearchParams(window.location.search).get("convex_fallback") === "1") return true;
+  } catch {
+    // ignore
   }
+  return false;
+}
 
-  return <ConvexProvider client={client}>{children}</ConvexProvider>;
+export function SafeConvexProvider({ children }: SafeConvexProviderProps) {
+  const { client, disabled } = useMemo(() => createClient(), []);
+  const forceFallback = useMemo(() => getConvexFallback(), []);
+  const isConvexDisabled = disabled || forceFallback;
+
+  return (
+    <ConvexDisabledContext.Provider value={isConvexDisabled}>
+      <ConvexProvider client={client}>{children}</ConvexProvider>
+    </ConvexDisabledContext.Provider>
+  );
+}
+
+export function useConvexDisabled(): boolean {
+  return useContext(ConvexDisabledContext);
 }

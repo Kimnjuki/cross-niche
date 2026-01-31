@@ -50,7 +50,7 @@ export function ProductReviewsSection({ articles }: ProductReviewsSectionProps) 
             </div>
           </div>
           <Button asChild variant="outline">
-            <Link to="/blog-series?category=reviews">
+            <Link to="/reviews">
               View All Reviews
               <ArrowRight className="h-4 w-4 ml-2" />
             </Link>
@@ -94,7 +94,7 @@ export function ProductReviewsSection({ articles }: ProductReviewsSectionProps) 
             <h3 className="font-display font-bold text-xl mb-4">Latest Reviews</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {articles.slice(0, 3).map((article) => (
-                <ArticleCard key={article.id} article={article} />
+                <ArticleCard key={(article as Article & { _id?: string })?._id ?? article?.id ?? article?.slug ?? index} article={article} />
               ))}
             </div>
           </div>

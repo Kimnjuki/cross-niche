@@ -147,7 +147,7 @@ export function auditContentPerformance(
   }
 
   return {
-    articleId: article.id,
+    articleId: (article as Article & { _id?: string })?._id ?? article?.id ?? article?.slug ?? '',
     title: article.title,
     status,
     recommendations,

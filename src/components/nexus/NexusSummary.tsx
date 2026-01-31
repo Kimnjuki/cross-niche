@@ -57,13 +57,15 @@ export function NexusSummary({ tech, security, gaming, commonKeyword, className 
           <strong className="text-foreground">{commonKeyword}</strong>. One article from each niche is shown below.
         </p>
         <ul className="space-y-2">
-          {items.map(({ article, niche }) => {
+          {items.map(({ article, niche }, index) => {
+            if (!article) return null;
             const config = nicheConfig[niche];
             const Icon = config.icon;
+            const articleId = (article as Article & { _id?: string })?._id ?? article?.id ?? article?.slug ?? '';
             return (
-              <li key={article.id}>
+              <li key={articleId || index}>
                 <Link
-                  to={`/article/${article.id}`}
+                  to={`/article/${article.slug ?? article.id ?? articleId}`}
                   className={cn(
                     'flex items-center gap-2 rounded-md px-3 py-2 text-sm transition-colors hover:bg-muted/50',
                     config.class

@@ -1,8 +1,9 @@
 import type { ContentItem } from '@/hooks/useContent';
 import type { Article, Niche } from '@/types';
 
-// Map Convex/database content to Article type used by components
-export function mapContentToArticle(content: ContentItem): Article {
+// Map Convex/database content to Article type used by components (returns null if content is falsy)
+export function mapContentToArticle(content: ContentItem | null | undefined): Article | null {
+  if (!content || typeof content !== 'object') return null;
   // Map database niche names to frontend niche types
   const databaseNicheToFrontend: Record<string, Niche> = {
     'Tech': 'tech',
@@ -55,15 +56,20 @@ export function mapContentToArticle(content: ContentItem): Article {
   // Handle body - use excerpt as fallback if body is missing
   const body = content.body || content.excerpt || content.summary || '';
 
+  const docId = content.id || (content as { _id?: string })._id || '';
+  if (!docId) return null;
+  const publishedAt =
+    content.published_at ?? content.created_at ?? new Date().toISOString();
   return {
-    id: content.id || '',
+    id: docId,
+    _id: docId, // Convex schema uses _id; expose for components that want to match Convex
     slug: content.slug || undefined,
     title: content.title || 'Untitled',
     excerpt,
     content: body,
     niche,
     author,
-    publishedAt: content.published_at || new Date().toISOString(),
+    publishedAt,
     readTime: content.read_time_minutes || 5,
     imageUrl: content.featured_image_url || '/placeholder.svg',
     tags,
@@ -74,7 +80,54 @@ export function mapContentToArticle(content: ContentItem): Article {
   };
 }
 
-// Map array of content items
-export function mapContentToArticles(content: ContentItem[]): Article[] {
-  return content.map(mapContentToArticle);
+// Map array of content items (skips null/undefined input items and mapped nulls)
+export function mapContentToArticles(content: ContentItem[] | null | undefined): Article[] {
+  if (!content || !Array.isArray(content)) return [];
+  return content
+    .map((c) => mapContentToArticle(c))
+    .filter((a): a is Article => a != null);
+}
+
+const nicheToFeedSlug: Record<string, string> = {
+  tech: 'innovate',
+  security: 'secured',
+  gaming: 'play',
+};
+
+// Convert Article to ContentItem (for mock/demo when Convex is not configured; returns null if article is falsy)
+export function articleToContentItem(article: Article | null | undefined): ContentItem | null {
+  if (!article || typeof article !== 'object') return null;
+  return {
+    id: (article as Article & { _id?: string })?._id ?? article.id ?? '',
+    title: article.title,
+    slug: article.slug ?? article.id ?? '',
+    body: article.content || null,
+    excerpt: article.excerpt || null,
+    summary: article.excerpt || null,
+    status: 'published',
+    published_at: article.publishedAt,
+    created_at: article.publishedAt,
+    updated_at: article.publishedAt,
+    featured_image_url: article.imageUrl,
+    read_time_minutes: article.readTime,
+    is_featured: article.isFeatured ?? false,
+    is_breaking: article.impactLevel === 'high',
+    security_score: article.securityScore ?? null,
+    content_type: 'article',
+    author_id: null,
+    author_name: article.author,
+    feed_slug: nicheToFeedSlug[article.niche] || 'innovate',
+    feed_name: article.niche === 'tech' ? 'Tech' : article.niche === 'security' ? 'Security' : 'Gaming',
+    feed_id: null,
+    niches: [article.niche === 'tech' ? 'Tech' : article.niche === 'security' ? 'Security' : 'Gaming'],
+    tags: article.tags || [],
+    view_count: 0,
+  };
+}
+
+export function articlesToContentItems(articles: Article[] | null | undefined): ContentItem[] {
+  if (!articles || !Array.isArray(articles)) return [];
+  return articles
+    .map(articleToContentItem)
+    .filter((c): c is ContentItem => c != null);
 }

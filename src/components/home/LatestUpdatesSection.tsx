@@ -64,7 +64,7 @@ export function LatestUpdatesSection({
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
             {filtered.map((article) => (
-              <ArticleCard key={article.id} article={article} />
+              <ArticleCard key={(article as Article & { _id?: string })?._id ?? article?.id ?? article?.slug ?? index} article={article} />
             ))}
           </div>
         </Tabs>

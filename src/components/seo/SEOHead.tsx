@@ -184,8 +184,8 @@ export function SEOHead({
       article: type === 'article' && article ? article : undefined,
       breadcrumbs: type === 'article' && article ? [
         { name: 'Home', url: '/' },
-        { name: article.niche === 'tech' ? 'Tech' : article.niche === 'security' ? 'Security' : 'Gaming', url: `/${article.niche}` },
-        { name: article.title, url: `/article/${article.id}` }
+        { name: (article.niche === 'tech' ? 'Tech' : article.niche === 'security' ? 'Security' : 'Gaming'), url: `/${article.niche}` },
+        { name: article.title ?? 'Article', url: `/article/${article.slug ?? article._id ?? article.id ?? ''}` }
       ] : undefined,
       faqs: faqs && faqs.length > 0 ? faqs : undefined,
       howTo,

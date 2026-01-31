@@ -519,7 +519,7 @@ export default function Admin() {
                   <div className="mt-4 space-y-2">
                     <div className="text-sm font-semibold">Article Titles:</div>
                     {allArticles.slice(0, 5).map((article) => (
-                      <div key={article.id} className="text-sm text-muted-foreground">
+                      <div key={(article as Article & { _id?: string })?._id ?? article?.id ?? article?.slug ?? index} className="text-sm text-muted-foreground">
                         • {article.title}
                       </div>
                     ))}

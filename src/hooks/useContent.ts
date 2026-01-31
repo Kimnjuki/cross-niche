@@ -1,5 +1,8 @@
 import { useQuery } from 'convex/react';
 import { api } from '../../convex/_generated/api';
+import { useConvexDisabled } from '@/components/SafeConvexProvider';
+import { articlesToContentItems, articleToContentItem } from '@/lib/contentMapper';
+import { mockArticles } from '@/data/mockData';
 
 // ContentItem type – compatible with Convex content query results
 export interface ContentItem {
@@ -67,62 +70,114 @@ function toContentItems(rows: unknown[] | undefined): ContentItem[] {
   return rows.map((r) => toContentItem(r as Record<string, unknown>)).filter((x): x is ContentItem => x != null);
 }
 
-// Fetch all published content from Convex
+// Fetch all published content from Convex (or mock when Convex not configured)
 export function usePublishedContent(limit = 20) {
-  const rows = useQuery(api.content.listPublished, { limit });
-  const data = toContentItems(rows ?? undefined);
-  return { data, isLoading: rows === undefined };
+  const isDisabled = useConvexDisabled();
+  const rows = useQuery(api.content.listPublished, isDisabled ? 'skip' : { limit });
+  const data = isDisabled
+    ? articlesToContentItems(mockArticles.slice(0, limit))
+    : toContentItems(rows ?? undefined);
+  return { data, isLoading: !isDisabled && rows === undefined };
 }
 
-// Fetch content by feed slug
+// Fetch content by feed slug (or mock when Convex not configured)
 export function useContentByFeed(feedSlug: string, limit = 20) {
-  const rows = useQuery(api.content.listByFeedSlug, { feedSlug, limit });
-  const data = toContentItems(rows ?? undefined);
-  return { data, isLoading: rows === undefined };
+  const isDisabled = useConvexDisabled();
+  const rows = useQuery(api.content.listByFeedSlug, isDisabled ? 'skip' : { feedSlug, limit });
+  const feedNiche = feedSlug === 'secured' ? 'security' : feedSlug === 'play' ? 'gaming' : 'tech';
+  const data = isDisabled
+    ? articlesToContentItems(mockArticles.filter((a) => a.niche === feedNiche).slice(0, limit))
+    : toContentItems(rows ?? undefined);
+  return { data, isLoading: !isDisabled && rows === undefined };
 }
 
-// Fetch content by niche name (filter client-side from published)
+// Fetch content by niche name (or mock when Convex not configured)
 export function useContentByNiche(nicheName: string, limit = 20) {
-  const rows = useQuery(api.content.listPublished, { limit: limit * 2 });
-  const filtered = (rows ?? []).filter((r: Record<string, unknown>) =>
-    (Array.isArray(r.niches) ? r.niches : []).some((n: string) => String(n).toLowerCase() === nicheName.toLowerCase())
-  ).slice(0, limit);
-  const data = toContentItems(filtered);
-  return { data, isLoading: rows === undefined };
+  const isDisabled = useConvexDisabled();
+  const rows = useQuery(api.content.listPublished, isDisabled ? 'skip' : { limit: limit * 2 });
+  const niche = nicheName.toLowerCase() === 'tech' ? 'tech' : nicheName.toLowerCase() === 'security' ? 'security' : 'gaming';
+  const data = isDisabled
+    ? articlesToContentItems(mockArticles.filter((a) => a.niche === niche).slice(0, limit))
+    : toContentItems(
+        (rows ?? []).filter((r: Record<string, unknown>) =>
+          (Array.isArray(r.niches) ? r.niches : []).some((n: string) => String(n).toLowerCase() === nicheName.toLowerCase())
+        ).slice(0, limit)
+      );
+  return { data, isLoading: !isDisabled && rows === undefined };
 }
 
-// Fetch featured content (filter client-side)
+// Fetch featured content (or mock when Convex not configured)
 export function useFeaturedContent(limit = 5) {
-  const rows = useQuery(api.content.listPublished, { limit: 50 });
-  const filtered = (rows ?? []).filter((r: Record<string, unknown>) => r.is_featured === true).slice(0, limit);
-  return { data: toContentItems(filtered), isLoading: rows === undefined };
+  const isDisabled = useConvexDisabled();
+  const rows = useQuery(api.content.listPublished, isDisabled ? 'skip' : { limit: 50 });
+  const data = isDisabled
+    ? articlesToContentItems(mockArticles.filter((a) => a.isFeatured).slice(0, limit))
+    : toContentItems((rows ?? []).filter((r: Record<string, unknown>) => r.is_featured === true).slice(0, limit));
+  return { data, isLoading: !isDisabled && rows === undefined };
 }
 
-// Fetch single content by slug
-export function useContentBySlug(slug: string, options?: { enabled?: boolean }) {
-  const enabled = (options?.enabled !== undefined ? options.enabled : !!slug) && slug.length > 0;
-  const row = useQuery(api.content.getBySlug, enabled ? { slug } : 'skip');
-  const data = row ? toContentItem(row as Record<string, unknown>) : null;
-  return { data, isLoading: enabled && row === undefined };
+// Fetch single content by slug or id (Convex uses slug; URL param may be id or slug)
+// Always fall back to mock when Convex returns null so full-view article always can show.
+export function useContentBySlug(slugOrId: string, options?: { enabled?: boolean }) {
+  const isDisabled = useConvexDisabled();
+  const enabled = (options?.enabled !== undefined ? options.enabled : !!slugOrId) && slugOrId.length > 0;
+  const row = useQuery(api.content.getBySlug, isDisabled || !enabled ? 'skip' : { slug: slugOrId });
+  const bySlugOrId = mockArticles.find((a) => (a.slug ?? a.id) === slugOrId);
+  const fromConvex = row != null ? toContentItem(row as Record<string, unknown>) : null;
+  const fromMock = bySlugOrId ? articleToContentItem(bySlugOrId) : null;
+  const data: ContentItem | null = fromConvex ?? fromMock;
+  // Don't block full view on loading when we have mock fallback (show article immediately)
+  const isLoading = !isDisabled && enabled && row === undefined && !fromMock;
+  return { data, isLoading };
 }
 
-// Fetch all niches from Convex
+// Mock niches when Convex not configured
+const MOCK_NICHES: Niche[] = [
+  { idNum: 1, name: 'Tech' },
+  { idNum: 2, name: 'Security' },
+  { idNum: 3, name: 'Gaming' },
+];
+
+// Fetch all niches from Convex (or mock when Convex not configured)
 export function useNiches() {
-  const rows = useQuery(api.content.listNiches, {});
-  const data = (rows ?? []) as Niche[];
-  return { data, isLoading: rows === undefined };
+  const isDisabled = useConvexDisabled();
+  const rows = useQuery(api.content.listNiches, isDisabled ? 'skip' : {});
+  const data = isDisabled ? MOCK_NICHES : (rows ?? []) as Niche[];
+  return { data, isLoading: !isDisabled && rows === undefined };
 }
 
-// Fetch all active feeds from Convex
+// Mock feeds when Convex not configured
+const MOCK_FEEDS: Feed[] = [
+  { _id: 'innovate', slug: 'innovate', name: 'Tech' },
+  { _id: 'secured', slug: 'secured', name: 'Security' },
+  { _id: 'play', slug: 'play', name: 'Gaming' },
+];
+
+// Fetch all active feeds from Convex (or mock when Convex not configured)
 export function useFeeds() {
-  const rows = useQuery(api.content.listFeeds, {});
-  const data = (rows ?? []) as Feed[];
-  return { data, isLoading: rows === undefined };
+  const isDisabled = useConvexDisabled();
+  const rows = useQuery(api.content.listFeeds, isDisabled ? 'skip' : {});
+  const data = isDisabled ? MOCK_FEEDS : (rows ?? []) as Feed[];
+  return { data, isLoading: !isDisabled && rows === undefined };
 }
 
-// Fetch trending content from Convex
+// Fetch trending content from Convex (or mock when Convex not configured)
 export function useTrendingContent(limit = 6) {
-  const rows = useQuery(api.content.listTrending, { limit });
-  const data = toContentItems(rows ?? undefined);
-  return { data, isLoading: rows === undefined };
+  const isDisabled = useConvexDisabled();
+  const rows = useQuery(api.content.listTrending, isDisabled ? 'skip' : { limit });
+  const data = isDisabled
+    ? articlesToContentItems(mockArticles.slice(0, limit))
+    : toContentItems(rows ?? undefined);
+  return { data, isLoading: !isDisabled && rows === undefined };
+}
+
+/** Diagnostics: published count and connection (for debugging why Convex articles don't show) */
+export function useContentDiagnostics() {
+  const isDisabled = useConvexDisabled();
+  const diagnostics = useQuery(api.content.diagnostics, isDisabled ? 'skip' : {});
+  return {
+    isConvexDisabled: isDisabled,
+    diagnostics: isDisabled ? null : diagnostics ?? null,
+    isLoading: !isDisabled && diagnostics === undefined,
+  };
 }

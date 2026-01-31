@@ -2,6 +2,8 @@ export type Niche = 'tech' | 'security' | 'gaming';
 
 export interface Article {
   id: string;
+  /** Convex document _id when content comes from Convex (same as id when mapped) */
+  _id?: string;
   slug?: string; // For SEO-friendly URLs; use in links when available
   title: string;
   excerpt: string;

@@ -33,6 +33,12 @@ export function Footer() {
               <Link to="/guides" className="text-muted-foreground hover:text-foreground transition-colors">
                 Guides & Tools
               </Link>
+              <Link to="/reviews" className="text-muted-foreground hover:text-foreground transition-colors">
+                Reviews
+              </Link>
+              <Link to="/media" className="text-muted-foreground hover:text-foreground transition-colors">
+                Video & Podcast
+              </Link>
               <Link to="/tutorials" className="text-muted-foreground hover:text-foreground transition-colors">
                 Tutorials
               </Link>

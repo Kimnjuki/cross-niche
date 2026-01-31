@@ -4,13 +4,15 @@ import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
 import { Bookmark, Clock, Shield, AlertTriangle, TrendingUp, User } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
-import { cn } from '@/lib/utils';
+import { cn, authorSlug } from '@/lib/utils';
 import { formatRelativeTime, isFreshContent, isNewContent, isJustPublished } from '@/lib/timeUtils';
 
 interface ArticleCardProps {
-  article: Article;
+  article: Article | null | undefined;
   variant?: 'default' | 'featured' | 'compact' | 'list';
 }
+
+const safeArticleId = (a: Article | null | undefined) => (a as Article & { _id?: string })?._id ?? a?.id ?? a?.slug ?? '';
 
 const nicheStyles = {
   tech: {
@@ -61,22 +63,25 @@ const getSecurityGlow = (score?: number): string => {
 
 export function ArticleCard({ article, variant = 'default' }: ArticleCardProps) {
   const { user, toggleBookmark } = useAuth();
-  const styles = nicheStyles[article.niche];
-  const isBookmarked = user?.bookmarks.includes(article.id);
+  if (!article) return null;
+
+  const articleId = safeArticleId(article);
+  const styles = nicheStyles[article.niche ?? 'tech'];
+  const isBookmarked = user?.bookmarks?.includes(articleId);
   const difficulty = getDifficultyLevel(article);
   const securityGlow = getSecurityGlow(article.securityScore);
 
   const handleBookmark = async (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    if (user) {
-      await toggleBookmark(article.id);
+    if (user && articleId) {
+      await toggleBookmark(articleId);
     }
   };
 
   if (variant === 'featured') {
     return (
-      <Link to={`/article/${article.slug || article.id}`}>
+      <Link to={`/article/${article.slug ?? article.id ?? articleId}`}>
         <Card className={cn(
           'group overflow-hidden border-0 bg-card transition-all duration-300 transform hover:scale-[1.02]',
           styles.accent,
@@ -113,7 +118,7 @@ export function ArticleCard({ article, variant = 'default' }: ArticleCardProps) 
                 {/* Author and timestamp */}
                 <div className="flex items-center gap-2 text-foreground/90 bg-background/60 backdrop-blur-sm rounded-full px-3 py-1">
                   <User className="h-3.5 w-3.5" />
-                  <span className="font-medium text-xs">{article.author}</span>
+                  <Link to={`/author/${authorSlug(article.author)}`} className="font-medium text-xs hover:underline">{article.author}</Link>
                   <span className="text-muted-foreground">•</span>
                   <time 
                     dateTime={article.publishedAt}
@@ -161,7 +166,7 @@ export function ArticleCard({ article, variant = 'default' }: ArticleCardProps) 
 
   if (variant === 'compact') {
     return (
-      <Link to={`/article/${article.slug || article.id}`}>
+      <Link to={`/article/${article.slug ?? article.id ?? articleId}`}>
         <div className="group flex gap-4 py-4 border-b border-border last:border-0 hover:bg-muted/30 transition-all duration-200">
           <div className="w-20 h-20 rounded-lg overflow-hidden flex-shrink-0" style={{ aspectRatio: '1/1' }}>
             <img
@@ -197,7 +202,7 @@ export function ArticleCard({ article, variant = 'default' }: ArticleCardProps) 
   // List variant: Ars Technica / WIRED style horizontal row, medium density
   if (variant === 'list') {
     return (
-      <Link to={`/article/${article.slug || article.id}`}>
+      <Link to={`/article/${article.slug ?? article.id ?? articleId}`}>
         <article className="group flex gap-6 py-5 border-b border-border last:border-0 hover:bg-muted/30 transition-all duration-200 rounded-lg px-2 -mx-2">
           <div className="w-44 sm:w-52 flex-shrink-0 rounded-lg overflow-hidden aspect-video bg-muted">
             <img
@@ -217,7 +222,7 @@ export function ArticleCard({ article, variant = 'default' }: ArticleCardProps) 
               </Badge>
               <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
                 <User className="h-3 w-3" />
-                <span>{article.author}</span>
+                <Link to={`/author/${authorSlug(article.author)}`} className="hover:underline">{article.author}</Link>
                 <span>·</span>
                 <time dateTime={article.publishedAt}>{formatRelativeTime(article.publishedAt)}</time>
               </div>
@@ -239,7 +244,7 @@ export function ArticleCard({ article, variant = 'default' }: ArticleCardProps) 
   }
 
   return (
-    <Link to={`/article/${article.slug || article.id}`}>
+    <Link to={`/article/${article.slug ?? article.id ?? articleId}`}>
       <Card className={cn(
         'group overflow-hidden border border-border bg-card transition-all duration-300 hover:border-border/80 transform hover:scale-[1.02]',
         styles.accent,
@@ -310,7 +315,7 @@ export function ArticleCard({ article, variant = 'default' }: ArticleCardProps) 
               {/* Author with icon (TechCrunch style) */}
               <div className="flex items-center gap-1.5 text-muted-foreground">
                 <User className="h-3.5 w-3.5" />
-                <span className="font-medium text-foreground">{article.author}</span>
+                <Link to={`/author/${authorSlug(article.author)}`} className="font-medium text-foreground hover:underline">{article.author}</Link>
               </div>
               <span className="text-muted-foreground">•</span>
               {/* Relative timestamp (TechCrunch/Ars Technica style) */}

@@ -1,22 +1,21 @@
 import { useParams, Link } from 'react-router-dom';
+import { useMemo } from 'react';
 import { Layout } from '@/components/layout/Layout';
 import { mockArticles } from '@/data/mockData';
-import { useContentBySlug, useContentByFeed } from '@/hooks/useContent';
+import { useContentBySlug, useContentByFeed, usePublishedContent } from '@/hooks/useContent';
 import { mapContentToArticle, mapContentToArticles } from '@/lib/contentMapper';
+import { NexusScrollBridge } from '@/components/nexus/NexusScrollBridge';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { CommentSection } from '@/components/comments/CommentSection';
 import { ArticleCard } from '@/components/articles/ArticleCard';
-import { Skeleton } from '@/components/ui/skeleton';
+import { ArticleSkeleton } from '@/components/articles/ArticleSkeleton';
 import {
   ArrowLeft,
   Clock,
   Bookmark,
   Shield,
   AlertTriangle,
-  Twitter,
-  Facebook,
-  Linkedin
 } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { useReadingTracker, useUserBehavior } from '@/hooks/useUserBehavior';
@@ -27,7 +26,7 @@ import { Breadcrumbs } from '@/components/seo/Breadcrumbs';
 import { FAQSection } from '@/components/seo/FAQSection';
 import { LazyImage } from '@/components/ui/lazy-image';
 import { AdPlacement } from '@/components/ads/AdPlacement';
-import { cn } from '@/lib/utils';
+import { cn, authorSlug } from '@/lib/utils';
 import type { Article as ArticleType } from '@/types';
 
 const nicheStyles = {
@@ -39,55 +38,75 @@ const nicheStyles = {
 const nicheLabels = { tech: 'Innovate', security: 'Secured', gaming: 'Play' };
 const nicheRoutes = { tech: '/tech', security: '/security', gaming: '/gaming' };
 
+// Safe article ID helper
+const getArticleId = (a: ArticleType | null | undefined): string =>
+  (a as ArticleType & { _id?: string })?._id ?? a?.id ?? a?.slug ?? '';
+
 export default function Article() {
   const { id } = useParams<{ id: string }>();
+  const slugOrId = (id ?? '').trim();
   const { user, toggleBookmark } = useAuth();
 
-  // Fetch from Convex by slug
-  const { data: contentData, isLoading } = useContentBySlug(id || '');
-
-  // Get related content based on feed
-  const feedSlug = contentData?.feed_slug || '';
+  // 1. ALL DATA FETCHING HOOKS FIRST (unconditionally, before any conditional returns)
+  const { data: contentData, isLoading } = useContentBySlug(slugOrId, { enabled: slugOrId.length > 0 });
+  const feedSlug = contentData?.feed_slug ?? '';
   const { data: relatedContent } = useContentByFeed(feedSlug, 4);
+  const { data: publishedForCross } = usePublishedContent(30);
 
-  // Map Convex content to Article type, fallback to mock
-  let article: ArticleType | undefined;
-  let relatedArticles: ArticleType[] = [];
+  // 2. MEMOIZED ARTICLE MAPPING
+  const article: ArticleType | null = useMemo(() => {
+    if (contentData) {
+      return mapContentToArticle(contentData) ?? null;
+    }
+    if (!slugOrId) return null;
+    return mockArticles.find((a) => (a?.slug ?? a?.id) === slugOrId) ?? null;
+  }, [contentData, slugOrId]);
 
-  if (contentData) {
-    article = mapContentToArticle(contentData);
-    relatedArticles = relatedContent
-      ? mapContentToArticles(relatedContent).filter(a => a.id !== id).slice(0, 3)
-      : [];
-  } else if (!isLoading) {
-    // Fallback to mock data
-    article = mockArticles.find(a => a.id === id);
-    relatedArticles = mockArticles
-      .filter(a => a.niche === article?.niche && a.id !== id)
+  // 3. SAFE ARTICLE ID (compute before using in hooks/memos)
+  const articleId = getArticleId(article);
+  const hasArticle = !!article && !!articleId;
+
+  // 4. RELATED ARTICLES (safe: returns [] if no article)
+  const relatedArticles = useMemo(() => {
+    if (!article) return [];
+    const list = contentData
+      ? (relatedContent ? mapContentToArticles(relatedContent) : [])
+      : mockArticles.filter((a) => a?.niche === article?.niche);
+    return list
+      .filter((a) => a && getArticleId(a) !== articleId)
       .slice(0, 3);
-  }
+  }, [contentData, relatedContent, article, articleId]);
 
-  // Track user behavior and reading progress
-  const { trackArticleBookmark, trackArticleShare } = useUserBehavior(user?.id || 'demo-user');
-  useReadingTracker(article!, user?.id || 'demo-user');
-
-  if (isLoading) {
-    return (
-      <Layout>
-        <div className="container mx-auto px-4 py-8">
-          <Skeleton className="h-8 w-32 mb-6" />
-          <Skeleton className="h-12 w-3/4 mb-4" />
-          <Skeleton className="h-6 w-1/2 mb-8" />
-          <Skeleton className="h-[400px] w-full mb-8" />
-          <Skeleton className="h-64 w-full" />
-        </div>
-      </Layout>
+  // 5. CROSS SECTION ARTICLE (safe: returns null if no article/articleId)
+  const crossSectionArticle = useMemo(() => {
+    if (!article || !articleId) return null;
+    const list = publishedForCross ? mapContentToArticles(publishedForCross) : [];
+    const other = list.find(
+      (a) => a && getArticleId(a) && a.niche !== article.niche && getArticleId(a) !== articleId
     );
+    return other && getArticleId(other) ? other : null;
+  }, [article, articleId, publishedForCross]);
+
+  // 6. BEHAVIOR TRACKING HOOKS (must always be called, unconditionally)
+  const { trackArticleBookmark, trackArticleShare } = useUserBehavior(user?.id ?? 'demo-user');
+
+  // 7. READING TRACKER (only track if article exists and has id)
+  useReadingTracker(hasArticle ? article : undefined, user?.id ?? 'demo-user');
+
+  // 8. LOADING STATE - AFTER ALL HOOKS
+  if (isLoading) {
+    return <ArticleSkeleton />;
   }
 
-  if (!article) {
+  // 9. NOT FOUND STATE - AFTER ALL HOOKS
+  if (!hasArticle) {
     return (
       <Layout>
+        <SEOHead
+          title="Article Not Found | The Grid Nexus"
+          description="The article you're looking for doesn't exist."
+          noindex={true}
+        />
         <div className="container mx-auto px-4 py-16 text-center">
           <h1 className="font-display font-bold text-4xl mb-4">Article Not Found</h1>
           <p className="text-muted-foreground mb-8">The article you're looking for doesn't exist.</p>
@@ -99,71 +118,74 @@ export default function Article() {
     );
   }
 
-  const styles = nicheStyles[article.niche];
-  const isBookmarked = user?.bookmarks.includes(article.id);
+  // 10. SAFE DERIVED VALUES (article is guaranteed to exist here)
+  const safeNiche: 'tech' | 'security' | 'gaming' =
+    article.niche === 'tech' || article.niche === 'security' || article.niche === 'gaming'
+      ? article.niche
+      : 'tech';
+  const styles = nicheStyles[safeNiche];
+  const tags = Array.isArray(article.tags) ? article.tags : [];
+  const isBookmarked = user?.bookmarks?.includes(articleId);
 
+  // 11. EVENT HANDLERS
   const handleShare = (platform: string) => {
     const url = window.location.href;
-    const text = article.title;
+    const text = article.title ?? '';
     const shareUrls = {
       twitter: `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`,
       facebook: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`,
       linkedin: `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}`,
     };
     window.open(shareUrls[platform as keyof typeof shareUrls], '_blank');
-
-    // Track share behavior
     trackArticleShare(article);
   };
 
   const handleBookmark = async () => {
-    await toggleBookmark(article.id);
-    // Track bookmark behavior
-    trackArticleBookmark(article);
+    if (articleId) {
+      await toggleBookmark(articleId);
+      trackArticleBookmark(article);
+    }
   };
 
+  // 12. RENDER (article is guaranteed to exist and have an ID)
   return (
     <Layout>
-      {/* SEO and Social Media Meta Tags - Auto-generates optimized title/description */}
       <SEOHead
-        title={undefined} // Let auto-generate handle it
-        description={undefined} // Let auto-generate handle it
-        keywords={article.tags}
-        image={article.imageUrl}
-        url={`${window.location.origin}/article/${article.id}`}
+        title={undefined}
+        description={undefined}
+        keywords={tags}
+        image={article.imageUrl ?? '/placeholder.svg'}
+        url={`${window.location.origin}/article/${article.slug ?? articleId}`}
         type="article"
         article={article}
         publishedTime={article.publishedAt}
-        author={article.author}
-        section={article.niche}
-        tags={article.tags}
+        author={article.author ?? 'Anonymous'}
+        section={safeNiche}
+        tags={tags}
         autoGenerate={true}
       />
 
       <article className="container mx-auto px-4 py-8">
-        {/* Breadcrumbs */}
         <Breadcrumbs
           items={[
             { label: 'Home', href: '/' },
-            { label: nicheLabels[article.niche], href: nicheRoutes[article.niche] },
-            { label: article.title, href: window.location.pathname },
+            { label: nicheLabels[safeNiche], href: nicheRoutes[safeNiche] },
+            { label: article.title ?? 'Untitled', href: window.location.pathname },
           ]}
         />
-        
-        {/* Back Link with Descriptive Anchor Text */}
-        <Link 
-          to={nicheRoutes[article.niche]} 
+
+        <Link
+          to={nicheRoutes[safeNiche]}
           className={cn('inline-flex items-center gap-2 mb-6 hover:opacity-80 transition-opacity', styles.color)}
-          aria-label={`View more ${nicheLabels[article.niche]} articles`}
+          aria-label={`View more ${nicheLabels[safeNiche]} articles`}
         >
           <ArrowLeft className="h-4 w-4" />
-          View more {nicheLabels[article.niche]} articles
+          View more {nicheLabels[safeNiche]} articles
         </Link>
 
-        {/* Header */}
         <header className="max-w-4xl mb-8">
           <div className="flex flex-wrap gap-2 mb-4">
-            <Badge className={styles.badge}>{nicheLabels[article.niche]}</Badge>
+            <Badge className={styles.badge}>{nicheLabels[safeNiche]}</Badge>
             {article.isSponsored && <Badge variant="secondary">Sponsored</Badge>}
             {article.impactLevel && (
               <Badge variant={article.impactLevel === 'high' ? 'destructive' : 'secondary'} className="gap-1">
@@ -178,45 +200,52 @@ export default function Article() {
               </Badge>
             )}
           </div>
-          
+
           <h1 className="font-display font-bold text-3xl md:text-5xl mb-4">
-            {article.title}
+            {article.title ?? 'Untitled'}
           </h1>
-          
+
           <p className="text-xl text-muted-foreground mb-6">
-            {article.excerpt}
+            {article.excerpt ?? ''}
           </p>
-          
+
           <div className="flex flex-wrap items-center gap-6 text-sm text-muted-foreground">
-            <span className="font-medium text-foreground">{article.author}</span>
-            <span>{new Date(article.publishedAt).toLocaleDateString('en-US', { 
-              month: 'long', day: 'numeric', year: 'numeric' 
-            })}</span>
+            <Link
+              to={`/author/${authorSlug(article.author ?? '')}`}
+              className="font-medium text-foreground hover:underline"
+            >
+              {article.author ?? 'Anonymous'}
+            </Link>
+            <span>
+              {article.publishedAt
+                ? new Date(article.publishedAt).toLocaleDateString('en-US', {
+                    month: 'long',
+                    day: 'numeric',
+                    year: 'numeric',
+                  })
+                : '—'}
+            </span>
             <span className="flex items-center gap-1">
               <Clock className="h-4 w-4" />
-              {article.readTime} min read
+              {article.readTime ?? 5} min read
             </span>
           </div>
         </header>
 
-        {/* Featured Image */}
         <div className="max-w-4xl mb-8">
           <LazyImage
-            src={article.imageUrl}
-            alt={article.title}
+            src={article.imageUrl ?? '/placeholder.svg'}
+            alt={article.title ?? 'Article'}
             className="w-full aspect-video rounded-xl"
           />
         </div>
 
-        {/* Enhanced Share Bar & Actions */}
         <div className="max-w-4xl mb-8">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            {/* Enhanced Share Bar */}
             <div className="lg:col-span-2">
               <EnhancedShareBar article={article} variant="inline" />
             </div>
 
-            {/* Bookmark Action */}
             <div className="flex justify-end">
               {user && (
                 <Button
@@ -233,85 +262,94 @@ export default function Article() {
           </div>
         </div>
 
-        {/* Floating Share Bar */}
         <EnhancedShareBar article={article} variant="floating" className="hidden lg:block" />
 
-        {/* Content */}
-        <div className="max-w-4xl mb-12">
-          <div className="prose prose-lg max-w-none">
-            <div
-              className="text-lg leading-relaxed text-foreground"
-              dangerouslySetInnerHTML={{ __html: article.content || article.excerpt }}
+        <NexusScrollBridge
+          currentNiche={safeNiche}
+          crossSectionArticle={crossSectionArticle}
+          className="max-w-4xl"
+        >
+          <div className="mb-12">
+            <div className="prose prose-lg max-w-none">
+              <div
+                className="text-lg leading-relaxed text-foreground"
+                dangerouslySetInnerHTML={{
+                  __html: (article.content ?? article.excerpt ?? '').trim() || '<p class="text-muted-foreground">No content available for this article.</p>',
+                }}
+              />
+            </div>
+
+            <AdPlacement position="in-article" />
+
+            {tags.length > 0 && (
+              <div className="flex flex-wrap gap-2 mt-8">
+                {tags.map((tag) => (
+                  <Badge key={tag} variant="outline">{tag}</Badge>
+                ))}
+              </div>
+            )}
+          </div>
+
+          <div className="mb-12">
+            <AITools
+              articleContent={article.content ?? article.excerpt ?? ''}
+              articleTitle={article.title ?? 'Article'}
             />
           </div>
 
-          {/* In-Article Ad - Mid Content */}
-          <AdPlacement position="in-article" />
+          <div className="mb-16">
+            <CommentSection articleId={articleId} />
+          </div>
 
-          {/* Tags */}
-          {article.tags.length > 0 && (
-            <div className="flex flex-wrap gap-2 mt-8">
-              {article.tags.map((tag) => (
-                <Badge key={tag} variant="outline">{tag}</Badge>
-              ))}
-            </div>
+          {relatedArticles.length > 0 && (
+            <section className="border-t border-border pt-12">
+              <h2 className="font-display font-bold text-2xl mb-4">
+                Related {nicheLabels[safeNiche]} Articles
+              </h2>
+              <p className="text-muted-foreground mb-8">
+                Explore more {nicheLabels[safeNiche].toLowerCase()} content and stay updated with the latest{' '}
+                {safeNiche === 'tech' ? 'technology' : safeNiche === 'security' ? 'cybersecurity' : 'gaming'}{' '}
+                news and insights.
+              </p>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                {relatedArticles
+                  .filter((r): r is ArticleType => r != null && !!getArticleId(r))
+                  .map((related) => (
+                    <ArticleCard
+                      key={getArticleId(related) || related.title}
+                      article={related}
+                    />
+                  ))}
+              </div>
+              <div className="text-center">
+                <Link
+                  to={nicheRoutes[safeNiche]}
+                  className="text-primary hover:underline font-medium"
+                  aria-label={`View all ${nicheLabels[safeNiche]} articles`}
+                >
+                  View all {nicheLabels[safeNiche]} articles →
+                </Link>
+              </div>
+            </section>
           )}
-        </div>
+        </NexusScrollBridge>
 
-        {/* AI Tools */}
-        <div className="max-w-4xl mb-12">
-          <AITools
-            articleContent={article.content || article.excerpt}
-            articleTitle={article.title}
-          />
-        </div>
-
-        {/* Comments */}
-        <div className="max-w-4xl mb-16">
-          <CommentSection articleId={article.id} />
-        </div>
-
-        {/* Related Articles with Descriptive Internal Links */}
-        {relatedArticles.length > 0 && (
-          <section className="border-t border-border pt-12">
-            <h2 className="font-display font-bold text-2xl mb-4">Related {nicheLabels[article.niche]} Articles</h2>
-            <p className="text-muted-foreground mb-8">
-              Explore more {nicheLabels[article.niche].toLowerCase()} content and stay updated with the latest {article.niche === 'tech' ? 'technology' : article.niche === 'security' ? 'cybersecurity' : 'gaming'} news and insights.
-            </p>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-              {relatedArticles.map((related) => (
-                <ArticleCard key={related.id} article={related} />
-              ))}
-            </div>
-            <div className="text-center">
-              <Link
-                to={nicheRoutes[article.niche]}
-                className="text-primary hover:underline font-medium"
-                aria-label={`View all ${nicheLabels[article.niche]} articles`}
-              >
-                View all {nicheLabels[article.niche]} articles →
-              </Link>
-            </div>
-          </section>
-        )}
-
-        {/* FAQ Section for LSI Keywords */}
         <FAQSection
           faqs={[
             {
-              question: `What is ${article.title}?`,
-              answer: article.excerpt || `Learn more about ${article.title} and stay informed with The Grid Nexus.`,
+              question: `What is ${article.title ?? 'this article'}?`,
+              answer: article.excerpt || 'Learn more with The Grid Nexus.',
             },
             {
-              question: `How does this relate to ${article.niche === 'tech' ? 'technology' : article.niche === 'security' ? 'cybersecurity' : 'gaming'}?`,
-              answer: `This article is part of our ${nicheLabels[article.niche]} coverage, providing in-depth analysis and expert insights on ${article.niche === 'tech' ? 'technology trends and innovations' : article.niche === 'security' ? 'cybersecurity threats and best practices' : 'gaming news and industry updates'}.`,
+              question: `How does this relate to ${safeNiche === 'tech' ? 'technology' : safeNiche === 'security' ? 'cybersecurity' : 'gaming'}?`,
+              answer: `This article is part of our ${nicheLabels[safeNiche]} coverage.`,
             },
             {
               question: 'Where can I find more related content?',
-              answer: `Explore our ${nicheLabels[article.niche]} section for more articles, or browse our complete blog series for comprehensive coverage across technology, cybersecurity, and gaming.`,
+              answer: `Explore our ${nicheLabels[safeNiche]} section or the full blog series.`,
             },
           ]}
-          title={`Frequently Asked Questions about ${article.title}`}
+          title={`Frequently Asked Questions about ${article.title ?? 'this article'}`}
         />
       </article>
     </Layout>

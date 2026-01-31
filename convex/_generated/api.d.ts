@@ -11,6 +11,7 @@
 import type * as aiUpdates from "../aiUpdates.js";
 import type * as content from "../content.js";
 import type * as import_ from "../import.js";
+import type * as insertFeaturedArticle from "../insertFeaturedArticle.js";
 import type * as securityRatings from "../securityRatings.js";
 import type * as verify from "../verify.js";
 
@@ -24,6 +25,7 @@ declare const fullApi: ApiFromModules<{
   aiUpdates: typeof aiUpdates;
   content: typeof content;
   import: typeof import_;
+  insertFeaturedArticle: typeof insertFeaturedArticle;
   securityRatings: typeof securityRatings;
   verify: typeof verify;
 }>;

@@ -22,7 +22,7 @@ export function ArticleGrid({ articles, columns = 3, viewMode = 'grid' }: Articl
     return (
       <div className="flex flex-col">
         {articles.map((article) => (
-          <ArticleCard key={article.id} article={article} variant={cardVariant} />
+          <ArticleCard key={(article as Article & { _id?: string })?._id ?? article?.id ?? article?.slug ?? index} article={article} variant={cardVariant} />
         ))}
       </div>
     );
@@ -31,7 +31,7 @@ export function ArticleGrid({ articles, columns = 3, viewMode = 'grid' }: Articl
   return (
     <div className={`grid grid-cols-1 ${gridCols[columns]} gap-6`}>
       {articles.map((article) => (
-        <ArticleCard key={article.id} article={article} variant={cardVariant} />
+        <ArticleCard key={(article as Article & { _id?: string })?._id ?? article?.id ?? article?.slug ?? index} article={article} variant={cardVariant} />
       ))}
     </div>
   );

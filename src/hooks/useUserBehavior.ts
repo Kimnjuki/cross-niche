@@ -14,74 +14,80 @@ export function useUserBehavior(userId: string = 'demo-user') {
   );
 
   const trackArticleView = useCallback(
-    (article: Article) => {
+    (article: Article | null | undefined) => {
+      if (!article) return;
       trackBehavior({
-        articleId: article.id,
+        articleId: article._id ?? article.id ?? article.slug ?? '',
         action: 'view',
-        niche: article.niche,
-        tags: article.tags,
+        niche: article.niche ?? 'tech',
+        tags: Array.isArray(article.tags) ? article.tags : [],
       });
     },
     [trackBehavior]
   );
 
   const trackArticleRead = useCallback(
-    (article: Article, timeSpent?: number, scrollDepth?: number) => {
+    (article: Article | null | undefined, timeSpent?: number, scrollDepth?: number) => {
+      if (!article) return;
       trackBehavior({
-        articleId: article.id,
+        articleId: article._id ?? article.id ?? article.slug ?? '',
         action: 'read',
         timeSpent,
         scrollDepth,
-        niche: article.niche,
-        tags: article.tags,
+        niche: article.niche ?? 'tech',
+        tags: Array.isArray(article.tags) ? article.tags : [],
       });
     },
     [trackBehavior]
   );
 
   const trackArticleBookmark = useCallback(
-    (article: Article) => {
+    (article: Article | null | undefined) => {
+      if (!article) return;
       trackBehavior({
-        articleId: article.id,
+        articleId: article._id ?? article.id ?? article.slug ?? '',
         action: 'bookmark',
-        niche: article.niche,
-        tags: article.tags,
+        niche: article.niche ?? 'tech',
+        tags: Array.isArray(article.tags) ? article.tags : [],
       });
     },
     [trackBehavior]
   );
 
   const trackArticleLike = useCallback(
-    (article: Article) => {
+    (article: Article | null | undefined) => {
+      if (!article) return;
       trackBehavior({
-        articleId: article.id,
+        articleId: article._id ?? article.id ?? article.slug ?? '',
         action: 'like',
-        niche: article.niche,
-        tags: article.tags,
+        niche: article.niche ?? 'tech',
+        tags: Array.isArray(article.tags) ? article.tags : [],
       });
     },
     [trackBehavior]
   );
 
   const trackArticleShare = useCallback(
-    (article: Article) => {
+    (article: Article | null | undefined) => {
+      if (!article) return;
       trackBehavior({
-        articleId: article.id,
+        articleId: article._id ?? article.id ?? article.slug ?? '',
         action: 'share',
-        niche: article.niche,
-        tags: article.tags,
+        niche: article.niche ?? 'tech',
+        tags: Array.isArray(article.tags) ? article.tags : [],
       });
     },
     [trackBehavior]
   );
 
   const trackArticleComment = useCallback(
-    (article: Article) => {
+    (article: Article | null | undefined) => {
+      if (!article) return;
       trackBehavior({
-        articleId: article.id,
+        articleId: article._id ?? article.id ?? article.slug ?? '',
         action: 'comment',
-        niche: article.niche,
-        tags: article.tags,
+        niche: article.niche ?? 'tech',
+        tags: Array.isArray(article.tags) ? article.tags : [],
       });
     },
     [trackBehavior]
@@ -98,11 +104,14 @@ export function useUserBehavior(userId: string = 'demo-user') {
   };
 }
 
-// Hook for tracking reading progress and time spent
-export function useReadingTracker(article: Article, userId: string = 'demo-user') {
+// Hook for tracking reading progress and time spent (no-op when article is undefined)
+export function useReadingTracker(article: Article | undefined, userId: string = 'demo-user') {
   const { trackArticleRead } = useUserBehavior(userId);
 
   useEffect(() => {
+    // Hard guard: never touch article properties if missing or partial (avoids Hook Dead Zone crash)
+    if (!article || !(article._id ?? article.id ?? article.slug)) return;
+
     let startTime = Date.now();
     let scrollDepth = 0;
     let hasTrackedView = false;

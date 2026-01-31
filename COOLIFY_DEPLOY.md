@@ -105,7 +105,7 @@ The app is built so the homepage **always shows** after redeploy:
 - **Loading timeout** – If Convex is slow or not configured, the homepage shows mock content after ~2.5 seconds so the feed is never stuck on loading.
 - **Init scripts** – Analytics and other inits are wrapped in try/catch so a failing script cannot block the app from rendering.
 
-**If the homepage is blank:** set `VITE_CONVEX_URL` as a **Build Time Variable** in Coolify (see below). Use a single `=` (e.g. value `https://your-deployment.convex.site`). Then redeploy.
+**Changes not appearing after redeploy?** The app now runs in **demo mode** when `VITE_CONVEX_URL` is not set: the full UI (including Grid Nexus layout) and sample data are shown so you always see your latest code. To get **live data** from Convex, set `VITE_CONVEX_URL` as a Build Time Variable (see below) and redeploy. You will no longer see a "Setup required" block; you will see a thin amber "Demo mode" banner at the top until Convex is configured.
 
 ## Docker build uses Node (not Bun)
 
@@ -114,20 +114,40 @@ The Dockerfile uses **Node 22** and **npm** with `package-lock.json`. Do not swi
 - `Outdated lockfile version: failed to parse lockfile: 'bun.lockb'`
 - `No version matching "^4.20.0" found for specifier "rollup"`
 
+## Convex connection and why changes may not appear
+
+1. **Code not on GitHub** – Coolify builds from your Git repo. Commit and push from Cursor, then in Coolify use **Source → Update to latest commit** and **Force Rebuild**.
+2. **Build skipped** – If the commit SHA did not change, Coolify may skip the build. Use **Force Rebuild** so a full Vite build runs.
+3. **Convex not set** – If `VITE_CONVEX_URL` is missing at build time, the app still loads in **demo mode** (sample data + full UI). Set it as a Build Time Variable to connect to your Convex deployment and get live data.
+4. **Browser cache** – After deploy, open the site in **Incognito** or hard refresh (`Ctrl+F5` / `Cmd+Shift+R`).
+
 ## Build-time variables in Coolify
 
 Set these as **Build Time Variables** (not runtime). Use a **single** `=` between key and value.
 
 | Key | Example value |
 |-----|----------------|
-| `VITE_CONVEX_URL` | `https://canny-mule-83.convex.site` |
+| `VITE_CONVEX_URL` | `https://canny-mule-83.convex.cloud` (use your **Deployment URL** from Convex dashboard, not the HTTP Actions URL) |
 
-**Important:** In Coolify, the value must be exactly the URL with **no double equals**. Wrong: `VITE_CONVEX_URL==https://...`. Correct: key `VITE_CONVEX_URL`, value `https://canny-mule-83.convex.site`.
+**Important:** In Coolify, the value must be exactly the URL with **no double equals**. Wrong: `VITE_CONVEX_URL==https://...`. Correct: key `VITE_CONVEX_URL`, value `https://canny-mule-83.convex.cloud`. Use the **Deployment URL** (`.convex.cloud`), not the HTTP Actions URL (`.convex.site`). Get it from the [Convex dashboard](https://dashboard.convex.dev) (your project → Settings → Deployment URL).
 
 Optional:
 
 - `VITE_APP_URL` — e.g. `https://thegridnexus.com`
 - Supabase vars if you still use auth/bookmarks: `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY` (or `VITE_SUPABASE_URL`, `VITE_SUPABASE_PUBLISHABLE_KEY`)
+
+## Docker build warnings (SecretsUsedInArgOrEnv)
+
+If the deployment log shows:
+
+**`SecretsUsedInArgOrEnv: Do not use ARG or ENV instructions for sensitive data (ARG "production_deploy_key")`**
+
+Coolify injects `production_deploy_key` and other build args into the Dockerfile at build time. This repo’s Dockerfile does **not** define or reference `production_deploy_key`; Coolify adds it. The warning is informational. To reduce or avoid it:
+
+- **Do not** add any secret values (API keys, deploy keys) to the Dockerfile in this repo.
+- Configure **Build Time Variables** only in Coolify (e.g. `VITE_CONVEX_URL`). Use Coolify’s secret management (e.g. secret files or env files) for sensitive values if your Coolify version supports it, so secrets are not passed as ARG/ENV.
+
+The app will still build and run; the warning does not block deployment.
 
 ## After changing the Dockerfile
 

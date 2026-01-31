@@ -29,10 +29,10 @@ export function BreakingNewsSection({ articles, maxItems = 5 }: BreakingNewsSect
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {breakingNews.map((article, index) => (
+          {breakingNews.filter((a): a is Article => a != null && !!(a.id ?? a.slug)).map((article, index) => (
             <Link
-              key={article.id}
-              to={`/article/${article.slug || article.id}`}
+              key={article.id ?? article.slug ?? index}
+              to={`/article/${article.slug ?? article.id ?? ''}`}
               className={cn(
                 'group p-4 rounded-lg border border-border hover:border-primary transition-all',
                 'bg-card hover:bg-muted/50'

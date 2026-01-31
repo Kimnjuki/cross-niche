@@ -11,7 +11,8 @@
     "preview": "vite preview",
     "import:csv": "node scripts/import-csv-to-convex.mjs",
     "verify:convex": "node scripts/verify-supabase-convex.mjs",
-    "verify:convex-only": "node scripts/verify-supabase-convex.mjs --convex-only"
+    "verify:convex-only": "node scripts/verify-supabase-convex.mjs --convex-only",
+    "test:e2e": "playwright test"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",
@@ -72,6 +73,7 @@
     "zod": "^3.25.76"
   },
   "devDependencies": {
+    "@playwright/test": "^1.49.0",
     "@eslint/js": "^9.32.0",
     "@tailwindcss/typography": "^0.5.16",
     "@types/node": "^22.16.5",

@@ -6,7 +6,7 @@ import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useContentByFeed, usePublishedContent } from '@/hooks/useContent';
-import { mapContentToArticle } from '@/lib/contentMapper';
+import { mapContentToArticles } from '@/lib/contentMapper';
 import { LazyImage } from '@/components/ui/lazy-image';
 import { SEOHead } from '@/components/seo/SEOHead';
 import { Link } from 'react-router-dom';
@@ -42,11 +42,11 @@ export default function BlogSeries() {
   const { data: securityContent, isLoading: isLoadingSecurity } = useContentByFeed('secured', 50);
   const { data: gamingContent, isLoading: isLoadingGaming } = useContentByFeed('play', 50);
 
-  // Map content to articles
-  const allArticles: Article[] = allContent ? allContent.map(mapContentToArticle) : [];
-  const techArticles: Article[] = techContent ? techContent.map(mapContentToArticle) : [];
-  const securityArticles: Article[] = securityContent ? securityContent.map(mapContentToArticle) : [];
-  const gamingArticles: Article[] = gamingContent ? gamingContent.map(mapContentToArticle) : [];
+  // Map content to articles (mapContentToArticles filters nulls)
+  const allArticles: Article[] = allContent ? mapContentToArticles(allContent) : [];
+  const techArticles: Article[] = techContent ? mapContentToArticles(techContent) : [];
+  const securityArticles: Article[] = securityContent ? mapContentToArticles(securityContent) : [];
+  const gamingArticles: Article[] = gamingContent ? mapContentToArticles(gamingContent) : [];
 
   // Get articles based on selected niche
   const getFilteredArticles = (): Article[] => {
@@ -301,7 +301,7 @@ export default function BlogSeries() {
 
                   {/* Read More Button */}
                   <Button asChild className="w-full md:w-auto">
-                    <Link to={`/article/${currentArticle.id}`}>
+                    <Link to={`/article/${currentArticle.slug || currentArticle.id}`}>
                       Read Full Article →
                     </Link>
                   </Button>
@@ -316,7 +316,7 @@ export default function BlogSeries() {
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                   {filteredArticles.map((article, index) => (
                     <Card
-                      key={article.id}
+                      key={(article as Article & { _id?: string })?._id ?? article?.id ?? article?.slug ?? index}
                       className={cn(
                         "cursor-pointer transition-all hover:shadow-lg",
                         index === currentIndex && "ring-2 ring-primary",

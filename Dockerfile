@@ -1,4 +1,6 @@
 # Stage 1: Build — use Node + npm (package-lock.json). Do not use Bun in Docker.
+# Note: Coolify may inject ARGs (e.g. production_deploy_key). Do not add secrets here;
+# set VITE_* and other build args in Coolify Build Time Variables only.
 FROM node:22-alpine AS build-stage
 
 WORKDIR /app

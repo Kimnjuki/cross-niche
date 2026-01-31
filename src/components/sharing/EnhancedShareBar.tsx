@@ -21,10 +21,12 @@ import { cn } from '@/lib/utils';
 import type { Article } from '@/types';
 
 interface EnhancedShareBarProps {
-  article: Article;
+  article: Article | null | undefined;
   className?: string;
   variant?: 'inline' | 'floating' | 'sticky';
 }
+
+const safeArticleId = (a: Article | null | undefined) => a?._id ?? a?.id ?? a?.slug ?? '';
 
 export function EnhancedShareBar({ article, className, variant = 'inline' }: EnhancedShareBarProps) {
   const [isVisible, setIsVisible] = useState(variant !== 'floating');
@@ -33,11 +35,11 @@ export function EnhancedShareBar({ article, className, variant = 'inline' }: Enh
   const [copiedText, setCopiedText] = useState<string | null>(null);
   const { toast } = useToast();
 
-  // Mock social proof data
+  // Mock social proof data (safe id so we never read .id on undefined)
   useEffect(() => {
     setViewCount(Math.floor(Math.random() * 10000) + 1000);
     setShareCount(Math.floor(Math.random() * 500) + 50);
-  }, [article.id]);
+  }, [safeArticleId(article)]);
 
   // Floating share bar logic
   useEffect(() => {
@@ -55,9 +57,11 @@ export function EnhancedShareBar({ article, className, variant = 'inline' }: Enh
     }
   }, [variant]);
 
+  if (!article) return null;
+
   const articleUrl = window.location.href;
-  const articleTitle = article.title;
-  const articleExcerpt = article.excerpt.substring(0, 150) + '...';
+  const articleTitle = article.title ?? '';
+  const articleExcerpt = (article.excerpt ?? '').substring(0, 150) + '...';
 
   const shareUrls = {
     twitter: `https://twitter.com/intent/tweet?text=${encodeURIComponent(articleTitle)}&url=${encodeURIComponent(articleUrl)}&via=TheGridNexus`,

@@ -640,7 +640,7 @@ export default function Profile() {
                   ) : (
                     <div className="space-y-4">
                       {allArticles.map((article) => (
-                        <div key={article.id} className="flex items-center justify-between p-4 border rounded-lg">
+                        <div key={(article as Article & { _id?: string })?._id ?? article?.id ?? article?.slug ?? index} className="flex items-center justify-between p-4 border rounded-lg">
                           <div className="flex-1">
                             <h3 className="font-semibold">{article.title}</h3>
                             <p className="text-sm text-muted-foreground">
@@ -658,7 +658,7 @@ export default function Profile() {
                             <Button
                               variant="outline"
                               size="sm"
-                              onClick={() => handleDeleteContent(article.id)}
+                              onClick={() => handleDeleteContent((article as Article & { _id?: string })?._id ?? article?.id ?? article?.slug ?? '')}
                             >
                               <Trash2 className="h-4 w-4" />
                             </Button>

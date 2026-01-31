@@ -19,10 +19,13 @@ export default defineConfig(({ mode }) => ({
     outDir: "dist",
     sourcemap: false,
     minify: "esbuild",
+    chunkSizeWarningLimit: 600,
     rollupOptions: {
       output: {
         manualChunks: {
           vendor: ['react', 'react-dom', 'react-router-dom'],
+          convex: ['convex/react', 'convex'],
+          ui: ['framer-motion', '@radix-ui/react-slot', '@radix-ui/react-tooltip'],
         },
       },
     },

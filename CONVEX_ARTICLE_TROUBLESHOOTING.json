@@ -1,0 +1,373 @@
+{
+  "title": "Convex Article Display - Troubleshooting Guide",
+  "version": "1.0",
+  "last_updated": "2026-01-30",
+
+  "common_issues": [
+    {
+      "issue_id": "001",
+      "problem": "Articles not showing on homepage - only seeing mock/sample data",
+      "symptoms": [
+        "\"Demo mode: showing sample data\" banner appears",
+        "Only mock articles display",
+        "Newly added Convex content not visible"
+      ],
+      "root_cause": "Convex is disabled - VITE_CONVEX_URL not set at build time",
+      "detection": {
+        "check": "Look for demo mode banner or add ?debug=content to URL",
+        "expected": "Convex should be enabled with valid URL"
+      },
+      "fix": {
+        "steps": [
+          "In Coolify (or build system), set Build Time Variable: VITE_CONVEX_URL = https://canny-mule-83.convex.cloud",
+          "For local dev, add to .env or .env.local file",
+          "Redeploy application",
+          "Clear browser cache and reload"
+        ],
+        "verification": "Demo mode banner should disappear; ?debug=content should show Convex URL and disabled: false"
+      },
+      "priority": "CRITICAL"
+    },
+    {
+      "issue_id": "002",
+      "problem": "Backend functions not available - content.ts not deployed",
+      "symptoms": [
+        "Frontend gets no data or errors",
+        "Console shows API errors",
+        "Published content returns empty/undefined"
+      ],
+      "root_cause": "Convex functions (listPublished, getBySlug, listByFeedSlug) not deployed to production",
+      "detection": {
+        "check": "Convex Dashboard → Functions tab → Check for content:listPublished, content:getBySlug, content:listByFeedSlug",
+        "expected": "All three functions should be listed"
+      },
+      "fix": {
+        "steps": [
+          "Run: npx convex deploy",
+          "When prompted, answer 'y' to push to production",
+          "Verify in Convex Dashboard that functions appear under 'Available functions'",
+          "Test by running listPublished manually in dashboard"
+        ],
+        "verification": "Functions visible in dashboard; homepage loads Convex data"
+      },
+      "priority": "CRITICAL"
+    },
+    {
+      "issue_id": "003",
+      "problem": "Content added to wrong deployment",
+      "symptoms": [
+        "Mutation ran successfully but content not showing",
+        "Content visible in dev but not production (or vice versa)"
+      ],
+      "root_cause": "insertFeaturedArticle mutation run on different deployment than website uses",
+      "detection": {
+        "check": "Compare deployment URL in Convex Dashboard with VITE_CONVEX_URL in build settings",
+        "deployments": {
+          "dev_example": "intent-akita-728",
+          "prod_example": "canny-mule-83"
+        }
+      },
+      "fix": {
+        "steps": [
+          "Identify which deployment your site uses (check VITE_CONVEX_URL)",
+          "In Convex Dashboard, switch to correct project/deployment",
+          "Navigate to Functions → insertFeaturedArticle",
+          "Click Run (no arguments needed)",
+          "Alternative: npx convex run insertFeaturedArticle:insertFeaturedArticle '{}' (ensure correct deployment selected)"
+        ],
+        "verification": "Content appears on homepage after refresh"
+      },
+      "priority": "HIGH"
+    },
+    {
+      "issue_id": "004",
+      "problem": "Article page shows 404 - article not found",
+      "symptoms": [
+        "Homepage shows article but clicking leads to 404",
+        "Direct URL to /article/[id] fails"
+      ],
+      "root_cause": "URL uses Convex _id instead of slug, or getBySlug can't find article",
+      "detection": {
+        "check": "Inspect article link - should use slug, not _id",
+        "correct_format": "/article/peak-viewers-arm-ambitions-vr-reality-check-2026",
+        "incorrect_format": "/article/k123abc456def"
+      },
+      "fix": {
+        "steps": [
+          "Ensure article has a slug field in Convex",
+          "Use articleLink(article) helper which returns article.slug || article.id",
+          "Verify article status is 'published' in Convex DB",
+          "Check that getBySlug query filters by status === 'published'",
+          "Update all article links to use slug, not _id"
+        ],
+        "verification": "Article page loads when clicking from homepage"
+      },
+      "priority": "HIGH"
+    },
+    {
+      "issue_id": "005",
+      "problem": "Gaming section empty - no 'play' feed articles",
+      "symptoms": [
+        "Gaming block on homepage shows no content or fallback",
+        "useContentByFeed('play', 5) returns empty"
+      ],
+      "root_cause": "No feed with slug 'play' or no contentFeeds linking articles to play feed",
+      "detection": {
+        "check": "Query Convex DB: feeds table for slug='play', contentFeeds table for that feed's _id",
+        "expected": "Feed exists and contentFeeds entries link to content items"
+      },
+      "fix": {
+        "steps": [
+          "Run insertFeaturedArticle mutation (creates 'play' feed if missing)",
+          "Verify feeds table has entry with slug='play'",
+          "Verify contentFeeds table has entries linking play feed to content",
+          "Check that linked content has status='published'"
+        ],
+        "verification": "Gaming section shows articles on homepage"
+      },
+      "priority": "MEDIUM"
+    },
+    {
+      "issue_id": "006",
+      "problem": "Article not published - draft or missing publishedAt",
+      "symptoms": [
+        "Article exists in Convex but doesn't appear on site",
+        "Other articles show but this specific one doesn't"
+      ],
+      "root_cause": "Article status is not 'published' or publishedAt field missing/invalid",
+      "detection": {
+        "check": "Inspect article in Convex DB",
+        "required_fields": {
+          "status": "published",
+          "publishedAt": "number (milliseconds since epoch) or Date.now()"
+        }
+      },
+      "fix": {
+        "steps": [
+          "Update article in Convex: set status: 'published'",
+          "Set publishedAt: Date.now() or specific timestamp in milliseconds",
+          "Ensure listPublished index exists on publishedAt field",
+          "Verify article meets all publication requirements"
+        ],
+        "verification": "Article appears in listPublished results and on homepage"
+      },
+      "priority": "MEDIUM"
+    },
+    {
+      "issue_id": "007",
+      "problem": "Empty feeds or niches - article not categorized",
+      "symptoms": [
+        "Article shows but not in correct category",
+        "Feed-specific queries return nothing"
+      ],
+      "root_cause": "contentFeeds or contentNiches tables empty/not linked, or feeds/niches tables not seeded",
+      "detection": {
+        "check": "Query contentFeeds and contentNiches for the article's contentId",
+        "expected": "Entries exist linking article to appropriate feeds and niches"
+      },
+      "fix": {
+        "steps": [
+          "Run insertFeaturedArticle which creates feeds/niches automatically",
+          "Manually seed feeds and niches tables if needed",
+          "Create contentFeeds entries: { contentId: [article._id], feedId: [feed._id] }",
+          "Create contentNiches entries with weights: Gaming=3, Tech=1",
+          "Verify linkages in Convex dashboard"
+        ],
+        "verification": "Article appears in correct feed queries and niche filters"
+      },
+      "priority": "MEDIUM"
+    }
+  ],
+
+  "deployment_checklist": {
+    "description": "Complete checklist to ensure Convex articles appear on homepage",
+    "steps": [
+      {
+        "step": 1,
+        "task": "Set Build Time Variable",
+        "actions": [
+          "In Coolify or build system, add: VITE_CONVEX_URL = https://[your-deployment].convex.cloud",
+          "For local: add to .env or .env.local",
+          "Redeploy application"
+        ],
+        "validation": "Check built JS contains Convex URL"
+      },
+      {
+        "step": 2,
+        "task": "Deploy Convex Functions",
+        "actions": [
+          "Run: npx convex deploy",
+          "Confirm push to production when prompted",
+          "Verify in dashboard: content:listPublished, content:getBySlug, content:listByFeedSlug exist"
+        ],
+        "validation": "All functions listed in Available Functions"
+      },
+      {
+        "step": 3,
+        "task": "Run Mutation on Correct Deployment",
+        "actions": [
+          "Identify production deployment (check VITE_CONVEX_URL)",
+          "Switch to that deployment in Convex Dashboard",
+          "Functions → insertFeaturedArticle → Run",
+          "Or CLI: npx convex run insertFeaturedArticle:insertFeaturedArticle '{}'"
+        ],
+        "validation": "Content created in correct deployment"
+      },
+      {
+        "step": 4,
+        "task": "Verify No Demo Mode",
+        "actions": [
+          "Load homepage",
+          "Check for 'Demo mode: showing sample data' banner",
+          "Should NOT appear if steps 1-3 completed correctly"
+        ],
+        "validation": "No demo mode banner visible"
+      },
+      {
+        "step": 5,
+        "task": "Optional: Content Diagnostics",
+        "actions": [
+          "Add ?debug=content to homepage URL",
+          "Review diagnostic info: Convex URL, disabled status, published count"
+        ],
+        "validation": "Shows Convex enabled, URL correct, published count > 0"
+      }
+    ]
+  },
+
+  "data_flow": {
+    "description": "Understanding the complete data flow",
+    "pipeline": [
+      { "stage": 1, "component": "Convex DB", "tables": ["content", "contentFeeds", "contentNiches", "feeds", "niches"] },
+      { "stage": 2, "component": "Backend Queries", "file": "convex/content.ts", "functions": ["listPublished", "listByFeedSlug", "getBySlug"] },
+      { "stage": 3, "component": "React Hooks", "file": "src/hooks/useContent.ts", "hooks": ["usePublishedContent", "useContentByFeed", "useContentBySlug"] },
+      { "stage": 4, "component": "SafeConvexProvider", "file": "src/components/SafeConvexProvider.tsx", "logic": "If VITE_CONVEX_URL not set → disabled → mock data only" },
+      { "stage": 5, "component": "Content Mapper", "file": "src/lib/contentMapper.ts", "functions": ["mapContentToArticles", "mapContentToArticle"] },
+      { "stage": 6, "component": "UI Components", "files": ["Index.tsx", "Article.tsx"], "components": ["MasterBentoHero", "ArticleCard"] }
+    ]
+  },
+
+  "key_files_reference": {
+    "SafeConvexProvider": {
+      "path": "src/components/SafeConvexProvider.tsx",
+      "role": "Sets Convex disabled when no URL/fallback; all hooks respect this",
+      "key_logic": "disabled = true when VITE_CONVEX_URL empty at build time or convex_fallback flag set"
+    },
+    "useContent": {
+      "path": "src/hooks/useContent.ts",
+      "role": "Custom hooks for fetching content",
+      "hooks": ["usePublishedContent", "useContentByFeed", "useContentBySlug"],
+      "fallback": "When disabled, return mock data from src/data/mockData.ts"
+    },
+    "Index": {
+      "path": "src/pages/Index.tsx",
+      "role": "Homepage logic",
+      "key_logic": "hasConvexData && !useFallback → use Convex; otherwise → mockArticles"
+    },
+    "Article": {
+      "path": "src/pages/Article.tsx",
+      "role": "Single article page",
+      "key_logic": "useContentBySlug(id) where id must be article slug (not _id)"
+    },
+    "contentMapper": {
+      "path": "src/lib/contentMapper.ts",
+      "role": "Convert Convex ContentItem to Article format",
+      "maps": ["niches", "feed_slug", "slug", "etc."]
+    },
+    "content.ts": {
+      "path": "convex/content.ts",
+      "role": "Backend queries - must be deployed",
+      "functions": ["listPublished", "listByFeedSlug", "getBySlug"]
+    },
+    "insertFeaturedArticle": {
+      "path": "convex/insertFeaturedArticle.ts",
+      "role": "Mutation to insert sample article",
+      "creates": ["featured article", "play feed", "contentNiches with Gaming=3, Tech=1"]
+    }
+  },
+
+  "environment_variables": {
+    "VITE_CONVEX_URL": {
+      "type": "Build Time Variable",
+      "required": true,
+      "format": "https://[deployment-name].convex.cloud",
+      "examples": ["https://canny-mule-83.convex.cloud", "https://intent-akita-728.convex.cloud"],
+      "where_to_set": ["Coolify: Build Time Variables section", "Local: .env or .env.local file"],
+      "note": "Must be set at BUILD time, not runtime. Requires redeploy after change."
+    }
+  },
+
+  "debugging_tips": {
+    "demo_mode_banner": {
+      "appears_when": "Convex is disabled",
+      "text": "Demo mode: showing sample data",
+      "fix": "Set VITE_CONVEX_URL and redeploy"
+    },
+    "debug_query_param": {
+      "usage": "Add ?debug=content to homepage URL",
+      "shows": ["Convex URL", "disabled status", "published count"],
+      "helpful_for": "Confirming Convex connection and data availability"
+    },
+    "console_errors": {
+      "check": "Browser console for API errors",
+      "common_errors": [
+        "Function not found → redeploy Convex functions",
+        "Network error → check VITE_CONVEX_URL",
+        "Undefined data → check mutation run on correct deployment"
+      ]
+    },
+    "convex_dashboard": {
+      "url": "https://dashboard.convex.dev",
+      "useful_tabs": ["Functions → verify deployed functions", "Data → inspect tables and documents", "Logs → see query execution"]
+    }
+  },
+
+  "article_requirements": {
+    "required_fields": {
+      "status": { "value": "published", "note": "Only published articles appear on site" },
+      "publishedAt": { "type": "number", "format": "milliseconds since epoch", "example": "Date.now() or 1706640000000" },
+      "slug": { "type": "string", "format": "kebab-case", "example": "peak-viewers-arm-ambitions-vr-reality-check-2026", "note": "Used in URL: /article/[slug]" },
+      "title": { "type": "string", "required": true },
+      "excerpt": { "type": "string", "required": true }
+    },
+    "optional_linkages": {
+      "contentFeeds": "Links article to feeds (e.g., 'play' feed)",
+      "contentNiches": "Links article to niches with weights (Gaming=3, Tech=1)"
+    }
+  },
+
+  "homepage_display_conditions": {
+    "convex_articles_show_when": [
+      "Convex is NOT disabled (VITE_CONVEX_URL set at build time)",
+      "api.content.listPublished is deployed on same Convex deployment",
+      "Convex DB has at least one published document in content table",
+      "No convex_fallback flag or sessionStorage override"
+    ],
+    "gaming_section_shows_when": [
+      "All conditions above, plus:",
+      "Feed with slug='play' exists in feeds table",
+      "contentFeeds entries link play feed to content items",
+      "Linked content has status='published'"
+    ]
+  },
+
+  "quick_fixes": {
+    "no_articles_showing": [
+      "Check demo mode banner → if present, set VITE_CONVEX_URL and redeploy",
+      "Run: npx convex deploy",
+      "Run mutation on correct deployment",
+      "Clear browser cache"
+    ],
+    "specific_article_404": [
+      "Verify article has slug field",
+      "Check article status is 'published'",
+      "Use slug in URL, not _id",
+      "Verify getBySlug deployed"
+    ],
+    "gaming_section_empty": [
+      "Run insertFeaturedArticle mutation",
+      "Verify play feed exists",
+      "Check contentFeeds linkages"
+    ]
+  }
+}

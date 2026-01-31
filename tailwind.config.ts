@@ -16,7 +16,8 @@ export default {
     extend: {
       fontFamily: {
         sans: ['Inter', 'system-ui', 'sans-serif'],
-        display: ['Space Grotesk', 'system-ui', 'sans-serif'],
+        display: ['Space Grotesk', 'Satoshi', 'system-ui', 'sans-serif'],
+        mono: ['JetBrains Mono', 'Fira Code', 'monospace'],
       },
       colors: {
         border: "hsl(var(--border))",
@@ -113,6 +114,10 @@ export default {
           "0%": { transform: "translateX(100%)" },
           "100%": { transform: "translateX(-100%)" },
         },
+        "scanline": {
+          "0%": { transform: "translateY(-100%)", opacity: "0.4" },
+          "100%": { transform: "translateY(100vh)", opacity: "0.4" },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
@@ -122,6 +127,7 @@ export default {
         "pulse-glow": "pulse-glow 2s ease-in-out infinite",
         "reveal": "reveal 0.6s ease-out",
         "ticker-scroll": "ticker-scroll 30s linear infinite",
+        "scanline": "scanline 4s linear infinite",
       },
       transitionProperty: {
         "scale-hover": "transform",

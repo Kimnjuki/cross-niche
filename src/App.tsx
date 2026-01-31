@@ -29,6 +29,9 @@ import Tutorials from "./pages/Tutorials";
 import Profile from "./pages/Profile";
 import AuthCallback from "./pages/AuthCallback";
 import AuthConfirm from "./pages/AuthConfirm";
+import Reviews from "./pages/Reviews";
+import Author from "./pages/Author";
+import Media from "./pages/Media";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -66,6 +69,9 @@ const App = () => (
             <Route path="/blog-series" element={<BlogSeries />} />
             <Route path="/topics" element={<Topics />} />
             <Route path="/tutorials" element={<Tutorials />} />
+            <Route path="/reviews" element={<Reviews />} />
+            <Route path="/author/:authorSlug" element={<Author />} />
+            <Route path="/media" element={<Media />} />
             <Route path="/profile" element={<Profile />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />

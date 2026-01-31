@@ -5,12 +5,15 @@
 
 import { useState, useEffect } from 'react';
 import { Layout } from '@/components/layout/Layout';
-import { usePublishedContent, useTrendingContent, useFeeds } from '@/hooks/useContent';
+import { usePublishedContent, useTrendingContent, useFeeds, useContentByFeed, useContentDiagnostics } from '@/hooks/useContent';
+import { useConvexDisabled } from '@/components/SafeConvexProvider';
 import { mapContentToArticles } from '@/lib/contentMapper';
 import { mockArticles } from '@/data/mockData';
 import { ArticleCard } from '@/components/articles/ArticleCard';
 import { LazyImage } from '@/components/ui/lazy-image';
 import { NewsletterForm } from '@/components/newsletter/NewsletterForm';
+import { BreakingNewsSection } from '@/components/home/BreakingNewsSection';
+import { MasterBentoHero } from '@/components/home/MasterBentoHero';
 import { SEOHead } from '@/components/seo/SEOHead';
 import { Link } from 'react-router-dom';
 import { Clock, User, TrendingUp, Rss, ChevronRight } from 'lucide-react';
@@ -26,15 +29,26 @@ const FEED_SLUGS = [
   { slug: 'play', label: 'Gaming', path: '/gaming' },
 ];
 
-function articleLink(article: Article) {
-  return `/article/${article.slug || article.id}`;
+function articleLink(article: Article | null | undefined): string {
+  if (!article) return '/';
+  return `/article/${article.slug ?? article.id ?? ''}`;
+}
+
+function safeArticleId(article: Article | null | undefined): string {
+  return (article as Article & { _id?: string })?._id ?? article?.id ?? article?.slug ?? '';
 }
 
 export default function Index() {
+  const isConvexDisabled = useConvexDisabled();
   const { data: published, isLoading: loadingPublished } = usePublishedContent(24);
   const { data: trending, isLoading: loadingTrending } = useTrendingContent(6);
   const { data: feeds } = useFeeds();
+  const { data: techFeed } = useContentByFeed('innovate', 5);
+  const { data: securityFeed } = useContentByFeed('secured', 5);
+  const { data: gamingFeed } = useContentByFeed('play', 5);
+  const { diagnostics } = useContentDiagnostics();
   const [timedOut, setTimedOut] = useState(false);
+  const showDebugContent = typeof window !== 'undefined' && new URLSearchParams(window.location.search).get('debug') === 'content';
 
   useEffect(() => {
     const t = setTimeout(() => setTimedOut(true), LOAD_TIMEOUT_MS);
@@ -47,6 +61,8 @@ export default function Index() {
     hasConvexData && !useFallback
       ? mapContentToArticles(published)
       : mockArticles;
+  /** Shown when Convex is connected but returned no articles (so we're showing mock) */
+  const showEmptyConvexNotice = useFallback && !isConvexDisabled;
 
   const sortedArticles = [...articles].sort((a, b) => {
     return new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime();
@@ -57,6 +73,9 @@ export default function Index() {
   const topStory = sortedArticles[0];
   const mainFeed = sortedArticles.slice(1, 11);
   const isLoading = loadingPublished && !useFallback;
+  const techArticles: Article[] = techFeed && techFeed.length > 0 ? mapContentToArticles(techFeed) : sortedArticles.filter(a => a.niche === 'tech').slice(0, 3);
+  const securityArticles: Article[] = securityFeed && securityFeed.length > 0 ? mapContentToArticles(securityFeed) : sortedArticles.filter(a => a.niche === 'security').slice(0, 3);
+  const gamingArticles: Article[] = gamingFeed && gamingFeed.length > 0 ? mapContentToArticles(gamingFeed) : sortedArticles.filter(a => a.niche === 'gaming').slice(0, 3);
 
   return (
     <Layout>
@@ -81,6 +100,114 @@ export default function Index() {
           <p className="text-center text-sm text-muted-foreground">
             Technology, Security & Gaming Intelligence · Breaking news, analysis, and guides
           </p>
+        </div>
+      </section>
+
+      {/* Notice when Convex is connected but returned no articles (so new content won't show until mutation + deploy) */}
+      {showEmptyConvexNotice && (
+        <section className="bg-blue-500/10 border-b border-blue-500/20 px-4 py-3">
+          <div className="container mx-auto max-w-7xl text-center text-sm text-blue-800 dark:text-blue-200">
+            <strong>No articles in Convex yet.</strong> Deploy content functions (<code className="bg-blue-500/20 px-1 rounded">npx convex deploy</code>) and run <code className="bg-blue-500/20 px-1 rounded">insertFeaturedArticle</code> in the Convex dashboard so new content appears here. See <code className="bg-blue-500/20 px-1 rounded">ARTICLE_DISPLAY_ANALYSIS.md</code> for the full checklist.
+          </div>
+        </section>
+      )}
+
+      {/* Optional content diagnostics (?debug=content) */}
+      {showDebugContent && (
+        <section className="bg-muted/50 border-b border-border px-4 py-3 text-xs font-mono">
+          <div className="container mx-auto max-w-7xl">
+            <strong>Content debug:</strong> Convex disabled={String(isConvexDisabled)} · published count={published?.length ?? '—'} · diagnostics={diagnostics ? JSON.stringify(diagnostics) : 'loading…'}
+          </div>
+        </section>
+      )}
+
+      {/* Breaking news (The Hacker News / TechCrunch style) */}
+      <BreakingNewsSection articles={sortedArticles} maxItems={6} />
+
+      {/* Grid Nexus 2026 – Master Bento Hero (5-cell dynamic grid) */}
+      {topStory && (
+        <section className="py-6 md:py-8">
+          <MasterBentoHero
+            mainStory={topStory}
+            securityCell={
+              securityArticles[0]
+                ? {
+                    article: securityArticles[0],
+                    label: 'Secured',
+                    badgeClass: 'bg-security/90 text-security-foreground',
+                  }
+                : undefined
+            }
+            gamingCell={
+              gamingArticles[0]
+                ? {
+                    article: gamingArticles[0],
+                    label: 'Play',
+                    badgeClass: 'bg-gaming/90 text-gaming-foreground',
+                  }
+                : undefined
+            }
+            bottomLeft={
+              sortedArticles[4]
+                ? {
+                    article: sortedArticles[4],
+                    label: techArticles[1] ? 'Tech' : securityArticles[1] ? 'Security' : 'Gaming',
+                    badgeClass: 'bg-tech/90 text-tech-foreground',
+                  }
+                : undefined
+            }
+            bottomRight={
+              sortedArticles[5]
+                ? {
+                    article: sortedArticles[5],
+                    label: gamingArticles[1] ? 'Gaming' : techArticles[1] ? 'Tech' : 'Security',
+                    badgeClass: 'bg-gaming/90 text-gaming-foreground',
+                  }
+                : undefined
+            }
+          />
+        </section>
+      )}
+
+      {/* Latest in Tech | Security | Gaming (three-column) */}
+      <section className="border-b border-border bg-muted/10 py-8" aria-label="Latest by category">
+        <div className="container mx-auto px-4 max-w-7xl">
+          <h2 className="font-display font-bold text-lg mb-6 text-foreground">Latest by category</h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="rounded-lg border border-border bg-card p-4">
+              <Link to="/tech" className="font-semibold text-tech hover:underline mb-3 block">Tech</Link>
+              <ul className="space-y-2">
+                {(techArticles.length ? techArticles : sortedArticles.filter(a => a.niche === 'tech').slice(0, 3)).slice(0, 3).filter((a): a is Article => a != null).map((a, i) => (
+                  <li key={safeArticleId(a) || i}>
+                    <Link to={articleLink(a)} className="text-sm line-clamp-2 hover:text-primary hover:underline">{a.title}</Link>
+                  </li>
+                ))}
+              </ul>
+              <Link to="/tech" className="text-xs text-primary hover:underline mt-2 inline-block">View all →</Link>
+            </div>
+            <div className="rounded-lg border border-border bg-card p-4">
+              <Link to="/security" className="font-semibold text-security hover:underline mb-3 block">Security</Link>
+              <ul className="space-y-2">
+                {(securityArticles.length ? securityArticles : sortedArticles.filter(a => a.niche === 'security').slice(0, 3)).slice(0, 3).filter((a): a is Article => a != null).map((a, i) => (
+                  <li key={safeArticleId(a) || i}>
+                    <Link to={articleLink(a)} className="text-sm line-clamp-2 hover:text-primary hover:underline">{a.title}</Link>
+                  </li>
+                ))}
+              </ul>
+              <Link to="/security" className="text-xs text-primary hover:underline mt-2 inline-block">View all →</Link>
+            </div>
+            <div className="rounded-lg border border-border bg-card p-4">
+              <Link to="/gaming" className="font-semibold text-gaming hover:underline mb-3 block">Gaming</Link>
+              <ul className="space-y-2">
+                {(gamingArticles.length ? gamingArticles : sortedArticles.filter(a => a.niche === 'gaming').slice(0, 3)).slice(0, 3).filter((a): a is Article => a != null).map((a, i) => (
+                  <li key={safeArticleId(a) || i}>
+                    <Link to={articleLink(a)} className="text-sm line-clamp-2 hover:text-primary hover:underline">{a.title}</Link>
+                  </li>
+                ))}
+              </ul>
+              <Link to="/gaming" className="text-xs text-primary hover:underline mt-2 inline-block">View all →</Link>
+            </div>
+          </div>
         </div>
       </section>
 
@@ -145,10 +272,10 @@ export default function Index() {
                     </li>
                   ))}
                 </ul>
-              ) : (
+              )               : (
                 <ul className="space-y-4">
-                  {mainFeed.map((article) => (
-                    <li key={article.id}>
+                  {mainFeed.filter((a): a is Article => a != null).map((article, i) => (
+                    <li key={safeArticleId(article) || i}>
                       <ArticleCard article={article} variant="list" />
                     </li>
                   ))}
@@ -202,10 +329,10 @@ export default function Index() {
                     </li>
                   ))}
                 </ul>
-              ) : (
+              )               : (
                 <ul className="space-y-2">
-                  {trendingArticles.slice(0, 5).map((article, i) => (
-                    <li key={article.id}>
+                  {trendingArticles.slice(0, 5).filter((a): a is Article => a != null).map((article, i) => (
+                    <li key={safeArticleId(article) || i}>
                       <Link
                         to={articleLink(article)}
                         className="flex gap-3 py-2 group text-sm"

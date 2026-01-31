@@ -147,7 +147,7 @@ export class ContentRecommender {
 
       if (score > 0.1) { // Only recommend if score is meaningful
         recommendations.push({
-          articleId: article.id,
+          articleId: (article as Article & { _id?: string })?._id ?? article?.id ?? article?.slug ?? '',
           score: Math.min(score, 1),
           reason,
           confidence,
@@ -161,8 +161,9 @@ export class ContentRecommender {
   }
 
   private calculateBehaviorScore(article: Article, userBehaviors: UserBehavior[]): number {
+    const articleId = (article as Article & { _id?: string })?._id ?? article?.id ?? article?.slug ?? '';
     const relevantBehaviors = userBehaviors.filter(b =>
-      b.articleId === article.id ||
+      b.articleId === articleId ||
       (b.tags && article.tags.some(tag => b.tags!.includes(tag))) ||
       b.niche === article.niche
     );
@@ -243,7 +244,7 @@ export class ReadingTimePredictor {
     baseTime *= nicheMultiplier[article.niche];
 
     return {
-      articleId: article.id,
+      articleId: (article as Article & { _id?: string })?._id ?? article?.id ?? article?.slug ?? '',
       predictedTime: Math.max(Math.round(baseTime), 1), // At least 1 minute
       factors: {
         wordCount,
@@ -300,8 +301,8 @@ export class SemanticSimilarityEngine {
     const totalSimilarity = (tagSimilarity * 0.6) + (contentSimilarity * 0.4);
 
     return {
-      sourceArticleId: article1.id,
-      targetArticleId: article2.id,
+      sourceArticleId: (article1 as Article & { _id?: string })?._id ?? article1?.id ?? article1?.slug ?? '',
+      targetArticleId: (article2 as Article & { _id?: string })?._id ?? article2?.id ?? article2?.slug ?? '',
       similarity: totalSimilarity,
       commonTags,
       commonEntities,
@@ -309,8 +310,9 @@ export class SemanticSimilarityEngine {
   }
 
   findRelatedArticles(sourceArticle: Article, allArticles: Article[], limit = 5): Article[] {
+    const sourceId = (sourceArticle as Article & { _id?: string })?._id ?? sourceArticle?.id ?? sourceArticle?.slug ?? '';
     const similarities = allArticles
-      .filter(article => article.id !== sourceArticle.id)
+      .filter(article => ((article as Article & { _id?: string })?._id ?? article?.id ?? article?.slug ?? '') !== sourceId)
       .map(article => ({
         article,
         similarity: this.calculateSimilarity(sourceArticle, article).similarity,

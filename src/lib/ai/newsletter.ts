@@ -148,7 +148,8 @@ export class NewsletterCurationEngine {
       }
 
       // Reading history filter (avoid recently read articles)
-      if (subscriberProfile?.readingHistory.includes(article.id)) {
+      const articleId = (article as Article & { _id?: string })?._id ?? article?.id ?? article?.slug ?? '';
+      if (subscriberProfile?.readingHistory.includes(articleId)) {
         return false;
       }
 

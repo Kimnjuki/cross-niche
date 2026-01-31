@@ -56,6 +56,7 @@ export default defineSchema({
     .index("by_username", ["username"]),
 
   // ─── Content (core) ─────────────────────────────────────────────────────
+  // For listPublished/listTrending: set publishedAt (ms) on published items so by_status_published_at ordering is correct.
   content: defineTable({
     title: v.string(),
     slug: v.string(),
@@ -65,7 +66,7 @@ export default defineSchema({
     status: v.string(), // "draft" | "published" | "archived"
     isPremium: v.optional(v.boolean()),
     securityScore: v.optional(v.number()), // 1–5
-    publishedAt: v.optional(v.number()), // ms (Convex uses numbers for dates in indexes)
+    publishedAt: v.optional(v.number()), // ms; required for published items when using by_status_published_at
     subtitle: v.optional(v.string()),
     metaTitle: v.optional(v.string()),
     focusKeyword: v.optional(v.string()),

@@ -4,6 +4,7 @@
  */
 
 import type { Article } from '@/types';
+import { authorSlug } from '@/lib/utils';
 
 const BASE_URL = 'https://thegridnexus.com';
 
@@ -70,12 +71,13 @@ type ArticleWithSlug = Article & { slug?: string; updatedAt?: string; summary?: 
 /**
  * Article Schema
  */
-export function generateArticleSchema(article: ArticleWithSlug) {
-  const publishedDate = new Date(article.publishedAt).toISOString();
+export function generateArticleSchema(article: ArticleWithSlug | null | undefined) {
+  if (!article) return null;
+  const publishedDate = new Date(article.publishedAt ?? Date.now()).toISOString();
   const modifiedDate = article.updatedAt
     ? new Date(article.updatedAt).toISOString()
     : publishedDate;
-  const articleId = article.slug || article.id;
+  const articleId = (article as Article & { _id?: string }).slug ?? (article as Article & { _id?: string })._id ?? article.id ?? '';
 
   return {
     '@context': 'https://schema.org',
@@ -98,7 +100,7 @@ export function generateArticleSchema(article: ArticleWithSlug) {
     author: {
       '@type': 'Person',
       name: article.author || 'The Grid Nexus Editorial Team',
-      url: `${BASE_URL}/author/${article.author?.toLowerCase().replace(/\s+/g, '-') || 'editorial'}`
+      url: `${BASE_URL}/author/${authorSlug(article.author || '') || 'editorial'}`
     },
     publisher: {
       '@id': `${BASE_URL}/#organization`
@@ -121,10 +123,11 @@ export function generateArticleSchema(article: ArticleWithSlug) {
  */
 export function generateNewsArticleSchema(article: ArticleWithSlug) {
   const base = generateArticleSchema(article);
+  if (!base) return null;
   return {
     ...base,
     '@type': 'NewsArticle',
-    datePublished: new Date(article.publishedAt).toISOString(),
+    datePublished: new Date(article.publishedAt ?? Date.now()).toISOString(),
     ...(article.impactLevel === 'high' && { dateline: 'Breaking' })
   };
 }
@@ -285,7 +288,8 @@ export function generateAllSchemas(options: {
   if (options.article) {
     const art = options.article as ArticleWithSlug;
     const isNews = art.impactLevel === 'high' || (art as { isBreaking?: boolean }).isBreaking;
-    schemas.push(isNews ? generateNewsArticleSchema(art) : generateArticleSchema(art));
+    const articleSchema = isNews ? generateNewsArticleSchema(art) : generateArticleSchema(art);
+    if (articleSchema != null) schemas.push(articleSchema);
   }
 
   // Add Breadcrumbs if present

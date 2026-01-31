@@ -28,10 +28,12 @@ const nicheStyles = {
   gaming: { badge: 'bg-gaming/10 text-gaming border-gaming/20', accent: 'hover:border-gaming/40' },
 };
 
-function ArticleTile({ article, niche }: { article: Article; niche: 'tech' | 'security' | 'gaming' }) {
+function ArticleTile({ article, niche }: { article: Article | null | undefined; niche: 'tech' | 'security' | 'gaming' }) {
+  if (!article) return null;
   const styles = nicheStyles[niche];
+  const articleId = (article as Article & { _id?: string })?._id ?? article?.id ?? article?.slug ?? '';
   return (
-    <Link to={`/article/${article.id}`}>
+    <Link to={`/article/${article.slug ?? article.id ?? articleId}`}>
       <Card className={cn('overflow-hidden h-full transition-all border-2', styles.accent)}>
         <div className="aspect-video relative overflow-hidden bg-muted">
           <LazyImage

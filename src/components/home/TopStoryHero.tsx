@@ -17,15 +17,17 @@ const nicheStyles: Record<string, { badge: string; label: string }> = {
 };
 
 interface TopStoryHeroProps {
-  article: Article;
+  article: Article | null | undefined;
 }
 
 export function TopStoryHero({ article }: TopStoryHeroProps) {
+  if (!article) return null;
   const style = nicheStyles[article.niche] ?? nicheStyles.tech;
+  const articleId = (article as Article & { _id?: string })?._id ?? article?.id ?? article?.slug ?? '';
 
   return (
     <section className="relative overflow-hidden min-h-[60vh] max-h-[70vh] flex flex-col" aria-label="Top story">
-      <Link to={`/article/${article.id}`} className="block flex-1 min-h-0 group">
+      <Link to={`/article/${article.slug ?? article.id ?? articleId}`} className="block flex-1 min-h-0 group">
         <div className="absolute inset-0">
           <LazyImage
             src={article.imageUrl}
@@ -51,7 +53,7 @@ export function TopStoryHero({ article }: TopStoryHeroProps) {
             <div className="flex flex-wrap items-center gap-4 text-sm text-white/80">
               <span className="flex items-center gap-1.5">
                 <User className="h-4 w-4" />
-                {article.author}
+                <Link to={`/author/${authorSlug(article.author)}`} className="hover:underline">{article.author}</Link>
               </span>
               <span className="flex items-center gap-1.5">
                 <Clock className="h-4 w-4" />

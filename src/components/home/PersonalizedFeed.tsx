@@ -130,7 +130,7 @@ export function PersonalizedFeed({ userId = 'demo-user', maxArticles = 6 }: Pers
       ) : (
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
           {articles.map((article) => (
-            <Card key={article.id} className="hover:shadow-lg transition-shadow">
+            <Card key={(article as Article & { _id?: string })?._id ?? article?.id ?? article?.slug ?? index} className="hover:shadow-lg transition-shadow">
               <CardHeader className="pb-3">
                 <div className="flex items-start justify-between">
                   <Badge variant="outline" className="text-xs capitalize">
@@ -142,7 +142,7 @@ export function PersonalizedFeed({ userId = 'demo-user', maxArticles = 6 }: Pers
                   </div>
                 </div>
                 <CardTitle className="text-lg leading-tight">
-                  <Link to={`/article/${article.id}`} className="hover:text-primary transition-colors">
+                  <Link to={`/article/${article.slug ?? article.id ?? ''}`} className="hover:text-primary transition-colors">
                     {article.title}
                   </Link>
                 </CardTitle>
@@ -171,9 +171,9 @@ export function PersonalizedFeed({ userId = 'demo-user', maxArticles = 6 }: Pers
                     {Math.round(article.recommendationScore * 100)}% match
                   </span>
                   <Button asChild size="sm" variant="ghost">
-                    <Link to={`/article/${article.id}`}>
-                      Read More
-                    </Link>
+<Link to={`/article/${article.slug ?? article.id ?? ''}`}>
+                    Read More
+                  </Link>
                   </Button>
                 </div>
               </CardContent>

@@ -304,7 +304,7 @@ export function NewsletterForm({ variant = 'default' }: NewsletterFormProps) {
                         </div>
                         <div className="space-y-3">
                           {preview.articles.map((article) => (
-                            <div key={article.id} className="border rounded-lg p-3">
+                            <div key={(article as Article & { _id?: string })?._id ?? article?.id ?? article?.slug ?? index} className="border rounded-lg p-3">
                               <h4 className="font-medium">{article.title}</h4>
                               <p className="text-sm text-muted-foreground mt-1">
                                 {article.excerpt.substring(0, 100)}...

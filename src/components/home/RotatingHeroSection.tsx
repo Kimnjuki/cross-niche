@@ -207,7 +207,7 @@ export function RotatingHeroSection({
 
                     {/* CTA Button */}
                     <Button asChild size="lg" className="w-full md:w-auto">
-                      <Link to={`/article/${currentArticle.id}`}>
+                      <Link to={`/article/${currentArticle.slug || currentArticle.id}`}>
                         Read Full Article →
                       </Link>
                     </Button>
@@ -259,7 +259,7 @@ export function RotatingHeroSection({
           <div className="flex items-center justify-center gap-2 mt-6">
             {validArticles.map((article, index) => (
               <button
-                key={article.id}
+                key={(article as Article & { _id?: string })?._id ?? article?.id ?? article?.slug ?? index}
                 onClick={() => handleGoToIndex(index)}
                 className={cn(
                   "h-2 rounded-full transition-all duration-300",
@@ -276,7 +276,7 @@ export function RotatingHeroSection({
           <div className="grid grid-cols-2 md:grid-cols-5 gap-4 mt-8">
             {validArticles.map((article, index) => (
               <button
-                key={article.id}
+                key={(article as Article & { _id?: string })?._id ?? article?.id ?? article?.slug ?? index}
                 onClick={() => handleGoToIndex(index)}
                 className={cn(
                   "relative aspect-video rounded-lg overflow-hidden border-2 transition-all duration-300",
