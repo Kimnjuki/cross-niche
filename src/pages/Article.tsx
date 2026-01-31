@@ -67,22 +67,44 @@ export default function Article() {
   const articleId = getArticleId(article);
   const hasArticle = !!article && !!articleId;
 
-  // 4. RELATED ARTICLES (safe: returns [] if no article)
+  // 4. RELATED ARTICLES (always returns at least 3 articles for internal linking / SEO)
   const relatedArticles = useMemo(() => {
     if (!article) return [];
-    const list = contentData
-      ? (relatedContent ? mapContentToArticles(relatedContent) : [])
-      : mockArticles.filter((a) => a?.niche === article?.niche);
-    return list
-      .filter((a) => a && getArticleId(a) !== articleId)
+    
+    // Get Convex related articles if available
+    const convexArticles = relatedContent ? mapContentToArticles(relatedContent) : [];
+    
+    // Get mock articles from same niche as fallback
+    const mockFallback = mockArticles.filter((a) => a?.niche === article?.niche);
+    
+    // Combine: prefer Convex, fallback to mock
+    const combined = [...convexArticles, ...mockFallback];
+    
+    // Filter out current article and duplicates, take up to 3
+    const seen = new Set<string>();
+    return combined
+      .filter((a) => {
+        if (!a) return false;
+        const id = getArticleId(a);
+        if (!id || id === articleId || seen.has(id)) return false;
+        seen.add(id);
+        return true;
+      })
       .slice(0, 3);
-  }, [contentData, relatedContent, article, articleId]);
+  }, [relatedContent, article, articleId]);
 
-  // 5. CROSS SECTION ARTICLE (safe: returns null if no article/articleId)
+  // 5. CROSS SECTION ARTICLE (for cross-niche internal linking / SEO)
   const crossSectionArticle = useMemo(() => {
     if (!article || !articleId) return null;
-    const list = publishedForCross ? mapContentToArticles(publishedForCross) : [];
-    const other = list.find(
+    
+    // Get Convex articles if available
+    const convexArticles = publishedForCross ? mapContentToArticles(publishedForCross) : [];
+    
+    // Combine with mock articles as fallback
+    const combined = [...convexArticles, ...mockArticles];
+    
+    // Find an article from a DIFFERENT niche (cross-section linking)
+    const other = combined.find(
       (a) => a && getArticleId(a) && a.niche !== article.niche && getArticleId(a) !== articleId
     );
     return other && getArticleId(other) ? other : null;

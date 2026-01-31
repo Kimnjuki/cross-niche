@@ -13,7 +13,9 @@
     "verify:convex": "node scripts/verify-supabase-convex.mjs",
     "verify:convex-only": "node scripts/verify-supabase-convex.mjs --convex-only",
     "test:e2e": "playwright test",
-    "update:browsers": "npm exec update-browserslist-db@latest -- --update-db"
+    "update:browsers": "npm exec update-browserslist-db@latest -- --update-db",
+    "generate:sitemap": "node scripts/generate-sitemap.mjs",
+    "prebuild": "npm run generate:sitemap || true"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",
