@@ -4,7 +4,7 @@
  * Threat Radar, AI Pulse, Gaming Ticker. backdrop-blur-xl, 1px border-r.
  */
 
-import { useState } from 'react';
+import { useState, type ReactNode } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { Shield, Cpu, Gamepad2 } from 'lucide-react';
@@ -108,7 +108,7 @@ function Section({
   accentClass,
 }: {
   expanded: boolean;
-  icon: React.ReactNode;
+  icon: ReactNode;
   label: string;
   items: TickerItem[];
   accentClass: string;

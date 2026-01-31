@@ -1,11 +1,11 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, type CSSProperties } from 'react';
 import { cn } from '@/lib/utils';
 import { hasAdConsent } from '@/lib/adsenseConfig';
 
 interface AdSenseAdProps {
   adSlot: string;
   adFormat?: 'auto' | 'rectangle' | 'vertical' | 'horizontal';
-  style?: React.CSSProperties;
+  style?: CSSProperties;
   className?: string;
   responsive?: boolean;
   fullWidthResponsive?: boolean;
@@ -133,7 +133,7 @@ export function AdSenseAd({
     return null;
   }
 
-  const adStyle: React.CSSProperties = {
+  const adStyle: CSSProperties = {
     display: 'block',
     textAlign: 'center',
     minHeight: adFormat === 'auto' ? 100 : 250,

@@ -4,7 +4,7 @@
  * recommendation linking current topic to another pillar (e.g. Gaming → Security).
  */
 
-import { useRef, useState, useEffect } from 'react';
+import { useRef, useState, useEffect, type ReactNode } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { useInView } from 'framer-motion';
@@ -98,7 +98,7 @@ function CrossSectionRecommendation({
 }
 
 interface NexusScrollBridgeProps {
-  children: React.ReactNode;
+  children: ReactNode;
   /** Current article/category niche */
   currentNiche: Niche;
   /** Cross-section recommendation (article from another pillar) */

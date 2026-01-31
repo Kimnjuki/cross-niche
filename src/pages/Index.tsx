@@ -3,7 +3,6 @@
  * Data from Convex; safe fallbacks so the page always displays (incl. after Coolify redeploy).
  */
 
-import { useState, useEffect } from 'react';
 import { Layout } from '@/components/layout/Layout';
 import { usePublishedContent, useTrendingContent, useFeeds, useContentByFeed, useContentDiagnostics } from '@/hooks/useContent';
 import { useConvexDisabled } from '@/components/SafeConvexProvider';
@@ -20,8 +19,6 @@ import { Clock, User, TrendingUp, Rss, ChevronRight } from 'lucide-react';
 import { Skeleton } from '@/components/ui/skeleton';
 import { formatRelativeTime } from '@/lib/timeUtils';
 import type { Article } from '@/types';
-
-const LOAD_TIMEOUT_MS = 2500;
 
 const FEED_SLUGS = [
   { slug: 'innovate', label: 'Tech', path: '/tech' },
@@ -47,23 +44,11 @@ export default function Index() {
   const { data: securityFeed } = useContentByFeed('secured', 5);
   const { data: gamingFeed } = useContentByFeed('play', 5);
   const { diagnostics } = useContentDiagnostics();
-  const [timedOut, setTimedOut] = useState(false);
   const showDebugContent = typeof window !== 'undefined' && new URLSearchParams(window.location.search).get('debug') === 'content';
 
-  useEffect(() => {
-    const t = setTimeout(() => setTimedOut(true), LOAD_TIMEOUT_MS);
-    return () => clearTimeout(t);
-  }, []);
-
+  // Unified Resolution: show Convex data when available, mock articles otherwise (no delay, no instructional message)
   const hasConvexData = published && published.length > 0;
-  const useFallback = timedOut && !hasConvexData;
-  const articles: Article[] =
-    hasConvexData && !useFallback
-      ? mapContentToArticles(published)
-      : mockArticles;
-  /** Shown when Convex is connected but returned no articles (so we're showing mock) */
-  const showEmptyConvexNotice = useFallback && !isConvexDisabled;
-
+  const articles: Article[] = hasConvexData ? mapContentToArticles(published) : mockArticles;
   const sortedArticles = [...articles].sort((a, b) => {
     return new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime();
   });
@@ -72,7 +57,8 @@ export default function Index() {
     trending && trending.length > 0 ? mapContentToArticles(trending) : sortedArticles.slice(0, 6);
   const topStory = sortedArticles[0];
   const mainFeed = sortedArticles.slice(1, 11);
-  const isLoading = loadingPublished && !useFallback;
+  // No loading skeleton when using mock fallback - show content immediately
+  const isLoading = hasConvexData && loadingPublished;
   const techArticles: Article[] = techFeed && techFeed.length > 0 ? mapContentToArticles(techFeed) : sortedArticles.filter(a => a.niche === 'tech').slice(0, 3);
   const securityArticles: Article[] = securityFeed && securityFeed.length > 0 ? mapContentToArticles(securityFeed) : sortedArticles.filter(a => a.niche === 'security').slice(0, 3);
   const gamingArticles: Article[] = gamingFeed && gamingFeed.length > 0 ? mapContentToArticles(gamingFeed) : sortedArticles.filter(a => a.niche === 'gaming').slice(0, 3);
@@ -102,15 +88,6 @@ export default function Index() {
           </p>
         </div>
       </section>
-
-      {/* Notice when Convex is connected but returned no articles (so new content won't show until mutation + deploy) */}
-      {showEmptyConvexNotice && (
-        <section className="bg-blue-500/10 border-b border-blue-500/20 px-4 py-3">
-          <div className="container mx-auto max-w-7xl text-center text-sm text-blue-800 dark:text-blue-200">
-            <strong>No articles in Convex yet.</strong> Deploy content functions (<code className="bg-blue-500/20 px-1 rounded">npx convex deploy</code>) and run <code className="bg-blue-500/20 px-1 rounded">insertFeaturedArticle</code> in the Convex dashboard so new content appears here. See <code className="bg-blue-500/20 px-1 rounded">ARTICLE_DISPLAY_ANALYSIS.md</code> for the full checklist.
-          </div>
-        </section>
-      )}
 
       {/* Optional content diagnostics (?debug=content) */}
       {showDebugContent && (

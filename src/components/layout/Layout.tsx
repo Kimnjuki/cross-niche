@@ -1,3 +1,4 @@
+import { type ReactNode } from 'react';
 import { Navbar } from './Navbar';
 import { Footer } from './Footer';
 import { GlobalPulseSidebar } from './GlobalPulseSidebar';
@@ -6,7 +7,7 @@ import { CookieConsent } from '@/components/consent/CookieConsent';
 import { useConvexDisabled } from '@/components/SafeConvexProvider';
 
 interface LayoutProps {
-  children: React.ReactNode;
+  children: ReactNode;
   /** Show Grid Nexus left rail (Threat Radar, AI Pulse, Gaming Ticker). Default: true. */
   showPulseSidebar?: boolean;
 }

@@ -27,6 +27,7 @@ import { FAQSection } from '@/components/seo/FAQSection';
 import { LazyImage } from '@/components/ui/lazy-image';
 import { AdPlacement } from '@/components/ads/AdPlacement';
 import { cn, authorSlug } from '@/lib/utils';
+import { prepareArticleContent } from '@/lib/markdownToHtml';
 import type { Article as ArticleType } from '@/types';
 
 const nicheStyles = {
@@ -272,9 +273,9 @@ export default function Article() {
           <div className="mb-12">
             <div className="prose prose-lg max-w-none">
               <div
-                className="text-lg leading-relaxed text-foreground"
+                className="text-lg leading-relaxed text-foreground article-content"
                 dangerouslySetInnerHTML={{
-                  __html: (article.content ?? article.excerpt ?? '').trim() || '<p class="text-muted-foreground">No content available for this article.</p>',
+                  __html: prepareArticleContent(article.content) || prepareArticleContent(article.excerpt) || '<p class="text-muted-foreground">No content available for this article.</p>',
                 }}
               />
             </div>

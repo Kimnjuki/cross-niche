@@ -19,13 +19,24 @@ export default defineConfig(({ mode }) => ({
     outDir: "dist",
     sourcemap: false,
     minify: "esbuild",
-    chunkSizeWarningLimit: 600,
+    chunkSizeWarningLimit: 800,
     rollupOptions: {
       output: {
         manualChunks: {
           vendor: ['react', 'react-dom', 'react-router-dom'],
           convex: ['convex/react', 'convex'],
           ui: ['framer-motion', '@radix-ui/react-slot', '@radix-ui/react-tooltip'],
+          icons: ['lucide-react'],
+          radix: [
+            '@radix-ui/react-dialog',
+            '@radix-ui/react-dropdown-menu',
+            '@radix-ui/react-tabs',
+            '@radix-ui/react-accordion',
+            '@radix-ui/react-popover',
+            '@radix-ui/react-select',
+          ],
+          charts: ['recharts'],
+          editor: ['@tiptap/react', '@tiptap/starter-kit', '@tiptap/extension-placeholder'],
         },
       },
     },

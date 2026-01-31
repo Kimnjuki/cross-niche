@@ -12,7 +12,8 @@
     "import:csv": "node scripts/import-csv-to-convex.mjs",
     "verify:convex": "node scripts/verify-supabase-convex.mjs",
     "verify:convex-only": "node scripts/verify-supabase-convex.mjs --convex-only",
-    "test:e2e": "playwright test"
+    "test:e2e": "playwright test",
+    "update:browsers": "npm exec update-browserslist-db@latest -- --update-db"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",

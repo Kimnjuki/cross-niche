@@ -4,7 +4,7 @@
  * and Hype vs Utility toggle.
  */
 
-import { useState, useMemo } from 'react';
+import { useState, useMemo, type ElementType } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -20,7 +20,7 @@ interface AIPulseTimelineProps {
   className?: string;
 }
 
-const CATEGORY_OPTIONS: { value: AICategory | 'all'; label: string; icon: React.ElementType }[] = [
+const CATEGORY_OPTIONS: { value: AICategory | 'all'; label: string; icon: ElementType }[] = [
   { value: 'all', label: 'All', icon: Sparkles },
   { value: 'productivity', label: 'Productivity', icon: Zap },
   { value: 'creative', label: 'Creative', icon: Palette },
