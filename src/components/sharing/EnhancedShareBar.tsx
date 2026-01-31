@@ -111,7 +111,7 @@ export function EnhancedShareBar({ article, className, variant = 'inline' }: Enh
     return `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(articleUrl)}`;
   };
 
-  const handleTextSelection = React.useCallback(() => {
+  const handleTextSelection = useCallback(() => {
     const selection = window.getSelection();
     if (selection && selection.toString().length > 10) {
       const selectedText = selection.toString();
