@@ -3,7 +3,7 @@ import { Layout } from '@/components/layout/Layout';
 import { ArticleGrid } from '@/components/articles/ArticleGrid';
 import { ViewToggle } from '@/components/ui/view-toggle';
 import { mockArticles } from '@/data/mockData';
-import { useContentByFeed } from '@/hooks/useContent';
+import { useContentByNicheId } from '@/hooks/useContent';
 import { mapContentToArticles } from '@/lib/contentMapper';
 import { Card, CardContent } from '@/components/ui/card';
 import { Shield, AlertTriangle, AlertCircle, CheckCircle } from 'lucide-react';
@@ -13,7 +13,7 @@ import { Link } from 'react-router-dom';
 
 export default function Security() {
   const [viewMode, setViewMode] = useState<'grid' | 'list' | 'compact'>('grid');
-  const { data: securityContent, isLoading } = useContentByFeed('secured', 20);
+  const { data: securityContent, isLoading } = useContentByNicheId(2, 20);
 
   const securityArticles = securityContent && securityContent.length > 0
     ? mapContentToArticles(securityContent)

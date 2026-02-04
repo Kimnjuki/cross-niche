@@ -86,9 +86,7 @@
     <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=optional" />
     <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&display=optional" />
 
-    <!-- Google AdSense -->
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9278124025449370"
-     crossorigin="anonymous"></script>
+    <!-- Google AdSense: deferred to not block LCP (loaded after DOMContentLoaded) -->
 
     <!-- Clickio Consent CSS -->
     <style>body.clickio-cmp-in-scope .clickio-cmp-settings-display { display: inherit !important; }</style>
@@ -126,21 +124,49 @@
         //]]>
     </script>
 
-    <!-- Clickio Consent Main tag -->
-    <script async type="text/javascript" src="//clickiocmp.com/t/consent_247023.js"></script>
+    <!-- Clickio, AdSense, Ahrefs: deferred to not block LCP -->
 
-    <!-- Ahrefs Web Analytics -->
-    <script src="https://analytics.ahrefs.com/analytics.js" data-key="aNTResFK8mO8Rf5gt0QKdw" async></script>
+    <!-- Schema.org JSON-LD (static, visible to crawlers before JS) -->
+    <script type="application/ld+json">
+    {"@context":"https://schema.org","@graph":[{"@type":"Organization","@id":"https://thegridnexus.com/#organization","name":"The Grid Nexus","url":"https://thegridnexus.com","logo":{"@type":"ImageObject","url":"https://thegridnexus.com/logo.png","width":512,"height":512},"sameAs":["https://twitter.com/thegridnexus","https://facebook.com/thegridnexus","https://linkedin.com/company/thegridnexus"],"description":"Tech, Security & Gaming Intelligence - Breaking news, expert analysis, and comprehensive guides."},{"@type":"WebSite","@id":"https://thegridnexus.com/#website","url":"https://thegridnexus.com","name":"The Grid Nexus","description":"Breaking technology news, cybersecurity analysis, and gaming guides. AI insights, security intelligence, and tech coverage.","publisher":{"@id":"https://thegridnexus.com/#organization"},"potentialAction":{"@type":"SearchAction","target":{"@type":"EntryPoint","urlTemplate":"https://thegridnexus.com/topics?q={search_term_string}"},"query-input":"required name=search_term_string"},"inLanguage":"en-US"}]}
+    </script>
   </head>
 
   <body>
+    <a href="#main-content" class="skip-link">Skip to content</a>
     <div id="root">
-      <div style="min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;font-family:system-ui,sans-serif;background:#0f172a;color:#f8fafc;text-align:center">
-        <h1 style="font-size:1.5rem;margin-bottom:8px">The Grid Nexus</h1>
-        <p style="color:#94a3b8;margin-bottom:16px">Loading…</p>
-        <p style="font-size:0.875rem;color:#64748b">If this doesn’t change, check the console or try a hard refresh (Ctrl+F5).</p>
+      <div id="static-shell" style="min-height:100vh;font-family:system-ui,sans-serif;background:#0f172a;color:#f8fafc">
+        <header style="border-bottom:1px solid rgba(148,163,184,0.2);padding:1rem 1.5rem"><nav aria-label="Main navigation" style="max-width:80rem;margin:0 auto;display:flex;flex-wrap:wrap;gap:1rem;align-items:center"><a href="/" style="font-weight:700;font-size:1.25rem;color:#f8fafc;text-decoration:none">The Grid Nexus</a><a href="/tech" style="color:#94a3b8;text-decoration:none">Tech</a><a href="/security" style="color:#94a3b8;text-decoration:none">Security</a><a href="/gaming" style="color:#94a3b8;text-decoration:none">Gaming</a><a href="/news" style="color:#94a3b8;text-decoration:none">News</a><a href="/topics" style="color:#94a3b8;text-decoration:none">Topics</a><a href="/guides" style="color:#94a3b8;text-decoration:none">Guides</a><a href="/about" style="color:#94a3b8;text-decoration:none">About</a></nav></header>
+        <main id="main-content" style="max-width:80rem;margin:0 auto;padding:2rem 1.5rem">
+          <h1 style="font-size:2rem;margin-bottom:0.5rem">The Grid Nexus</h1>
+          <p style="font-size:1.125rem;color:#94a3b8;margin-bottom:1.5rem">Tech, Security &amp; Gaming News | Expert Analysis</p>
+        <p style="color:#cbd5e1;line-height:1.6;margin-bottom:2rem">Breaking technology news, cybersecurity analysis, and gaming guides. AI insights, security intelligence, and tech coverage. Stay ahead of the curve.</p>
+          <section aria-label="Explore sections" style="margin-bottom:2rem">
+            <h2 style="font-size:1.25rem;margin-bottom:1rem;color:#f8fafc">Explore</h2>
+            <ul style="list-style:none;padding:0;margin:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:0.75rem">
+              <li><a href="/tech" style="color:#60a5fa;text-decoration:none">Tech News &amp; Innovation</a></li>
+              <li><a href="/security" style="color:#60a5fa;text-decoration:none">Cybersecurity &amp; Threats</a></li>
+              <li><a href="/gaming" style="color:#60a5fa;text-decoration:none">Gaming &amp; Esports</a></li>
+              <li><a href="/news" style="color:#60a5fa;text-decoration:none">Breaking News</a></li>
+              <li><a href="/topics" style="color:#60a5fa;text-decoration:none">Topics &amp; Tags</a></li>
+              <li><a href="/guides" style="color:#60a5fa;text-decoration:none">Guides &amp; Tutorials</a></li>
+            </ul>
+          </section>
+          <p style="font-size:0.875rem;color:#64748b">Loading full experience...</p>
+        </main>
       </div>
     </div>
+    <noscript>
+      <div style="padding:2rem;text-align:center;background:#0f172a;color:#f8fafc;font-family:system-ui,sans-serif">
+        <p style="margin-bottom:1rem">JavaScript is disabled. The full site requires JavaScript for the interactive experience.</p>
+        <p>You can still browse: <a href="/tech" style="color:#60a5fa">Tech</a> · <a href="/security" style="color:#60a5fa">Security</a> · <a href="/gaming" style="color:#60a5fa">Gaming</a> · <a href="/news" style="color:#60a5fa">News</a> · <a href="/topics" style="color:#60a5fa">Topics</a> · <a href="/guides" style="color:#60a5fa">Guides</a></p>
+      </div>
+    </noscript>
+    <style>.skip-link{position:absolute;left:-9999px;z-index:9999;padding:1rem 1.5rem;background:#3b82f6;color:white;text-decoration:none;font-weight:600}.skip-link:focus{left:0;top:0}</style>
     <script type="module" src="/src/main.tsx"></script>
+    <!-- Defer third-party scripts until after page is interactive (Core Web Vitals) -->
+    <script>
+      (function(){function d(){var s=document.createElement('script');s.src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9278124025449370';s.crossOrigin='anonymous';s.async=true;document.body.appendChild(s);s=document.createElement('script');s.src='//clickiocmp.com/t/consent_247023.js';s.async=true;document.body.appendChild(s);s=document.createElement('script');s.src='https://analytics.ahrefs.com/analytics.js';s.setAttribute('data-key','aNTResFK8mO8Rf5gt0QKdw');s.async=true;document.body.appendChild(s);}if(document.readyState==='complete')d();else window.addEventListener('load',d);})();
+    </script>
   </body>
 </html>

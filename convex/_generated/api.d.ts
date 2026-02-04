@@ -9,10 +9,15 @@
  */
 
 import type * as aiUpdates from "../aiUpdates.js";
+import type * as articles from "../articles.js";
 import type * as content from "../content.js";
+import type * as crons from "../crons.js";
 import type * as import_ from "../import.js";
+import type * as ingest from "../ingest.js";
 import type * as insertFeaturedArticle from "../insertFeaturedArticle.js";
+import type * as newsIngestor from "../newsIngestor.js";
 import type * as securityRatings from "../securityRatings.js";
+import type * as seed from "../seed.js";
 import type * as verify from "../verify.js";
 
 import type {
@@ -23,10 +28,15 @@ import type {
 
 declare const fullApi: ApiFromModules<{
   aiUpdates: typeof aiUpdates;
+  articles: typeof articles;
   content: typeof content;
+  crons: typeof crons;
   import: typeof import_;
+  ingest: typeof ingest;
   insertFeaturedArticle: typeof insertFeaturedArticle;
+  newsIngestor: typeof newsIngestor;
   securityRatings: typeof securityRatings;
+  seed: typeof seed;
   verify: typeof verify;
 }>;
 

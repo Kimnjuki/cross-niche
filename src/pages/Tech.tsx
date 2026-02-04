@@ -3,7 +3,7 @@ import { Layout } from '@/components/layout/Layout';
 import { ArticleGrid } from '@/components/articles/ArticleGrid';
 import { ViewToggle } from '@/components/ui/view-toggle';
 import { mockArticles } from '@/data/mockData';
-import { useContentByFeed } from '@/hooks/useContent';
+import { useContentByNicheId } from '@/hooks/useContent';
 import { mapContentToArticles } from '@/lib/contentMapper';
 import { Cpu } from 'lucide-react';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -12,7 +12,7 @@ import { Link } from 'react-router-dom';
 
 export default function Tech() {
   const [viewMode, setViewMode] = useState<'grid' | 'list' | 'compact'>('grid');
-  const { data: techContent, isLoading } = useContentByFeed('innovate', 20);
+  const { data: techContent, isLoading } = useContentByNicheId(1, 20);
 
   const techArticles = techContent && techContent.length > 0
     ? mapContentToArticles(techContent)

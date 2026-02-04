@@ -179,7 +179,7 @@ export function SEOHead({
       canonicalLink.href = url.split('?')[0].split('#')[0].replace(/\/$/, '') || url;
     }
 
-    // Structured Data (JSON-LD) - Use comprehensive schema generator
+    // Structured Data (JSON-LD) - Article + Organization for ranking (schema.org)
     const schemas = generateAllSchemas({
       article: type === 'article' && article ? article : undefined,
       breadcrumbs: type === 'article' && article ? [
@@ -197,11 +197,11 @@ export function SEOHead({
       } : undefined
     });
 
-    // Remove existing schema scripts (except legacy)
-    const existingSchemas = document.querySelectorAll('script[type="application/ld+json"]:not([id="legacy-schema"])');
+    // Remove existing schema scripts
+    const existingSchemas = document.querySelectorAll('script[type="application/ld+json"]');
     existingSchemas.forEach(script => script.remove());
 
-    // Add new schema scripts
+    // Output schemas (Organization + Article always included for technical health)
     schemas.forEach((schema, index) => {
       const script = document.createElement('script');
       script.type = 'application/ld+json';
@@ -210,45 +210,16 @@ export function SEOHead({
       document.head.appendChild(script);
     });
 
-    // Legacy structured data (keep for backward compatibility)
-    let structuredDataScript = document.querySelector('script[type="application/ld+json"][id="legacy-schema"]') as HTMLScriptElement;
+    // WebPage/WebSite @graph for non-article pages (Organization included)
+    let structuredDataScript = document.querySelector('script[type="application/ld+json"][id="schema-graph"]') as HTMLScriptElement;
     if (!structuredDataScript) {
       structuredDataScript = document.createElement('script');
       structuredDataScript.type = 'application/ld+json';
-      structuredDataScript.id = 'legacy-schema';
+      structuredDataScript.id = 'schema-graph';
       document.head.appendChild(structuredDataScript);
     }
 
-    const structuredData = type === 'article' && article ? {
-      '@context': 'https://schema.org',
-      '@type': 'Article',
-      headline: article.title,
-      name: title,
-      description: description,
-      url: url,
-      image: image.startsWith('http') ? image : `${window.location.origin}${image}`,
-      datePublished: article.publishedAt,
-      dateModified: modifiedTime || article.publishedAt,
-      author: {
-        '@type': 'Person',
-        name: author || article.author
-      },
-      publisher: {
-        '@type': 'Organization',
-        name: 'The Grid Nexus',
-        logo: {
-          '@type': 'ImageObject',
-          url: `${window.location.origin}/logo.png`
-        }
-      },
-      keywords: tags.join(', '),
-      articleSection: section || article.niche,
-      wordCount: Math.floor((article.content || article.excerpt).split(' ').length),
-      mainEntityOfPage: {
-        '@type': 'WebPage',
-        '@id': url
-      }
-    } : {
+    const structuredData = type === 'article' && article ? null : {
       '@context': 'https://schema.org',
       '@graph': [
         {
@@ -303,7 +274,11 @@ export function SEOHead({
       ]
     };
 
-    structuredDataScript.textContent = JSON.stringify(structuredData);
+    if (structuredData) {
+      structuredDataScript.textContent = JSON.stringify(structuredData);
+    } else {
+      structuredDataScript.textContent = '';
+    }
 
   }, [optimizedTitle, optimizedDescription, title, description, keywords, image, url, type, article, publishedTime, modifiedTime, author, section, tags, noindex, faqs, howTo]);
 

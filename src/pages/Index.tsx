@@ -4,7 +4,7 @@
  */
 
 import { Layout } from '@/components/layout/Layout';
-import { usePublishedContent, useTrendingContent, useFeeds, useContentByFeed, useContentDiagnostics } from '@/hooks/useContent';
+import { usePublishedContent, useLatestContent, useTrendingContent, useFeeds, useContentByFeed, useContentDiagnostics } from '@/hooks/useContent';
 import { useConvexDisabled } from '@/components/SafeConvexProvider';
 import { mapContentToArticles } from '@/lib/contentMapper';
 import { mockArticles } from '@/data/mockData';
@@ -13,6 +13,7 @@ import { LazyImage } from '@/components/ui/lazy-image';
 import { NewsletterForm } from '@/components/newsletter/NewsletterForm';
 import { BreakingNewsSection } from '@/components/home/BreakingNewsSection';
 import { MasterBentoHero } from '@/components/home/MasterBentoHero';
+import { NewsFeed } from '@/components/news/NewsFeed';
 import { SEOHead } from '@/components/seo/SEOHead';
 import { Link } from 'react-router-dom';
 import { Clock, User, TrendingUp, Rss, ChevronRight } from 'lucide-react';
@@ -35,9 +36,18 @@ function safeArticleId(article: Article | null | undefined): string {
   return (article as Article & { _id?: string })?._id ?? article?.id ?? article?.slug ?? '';
 }
 
+/**
+ * Homepage data checklist:
+ * - Primary feed: all published/new articles (usePublishedContent) so all articles are visible.
+ * - Sorted by publishedAt desc so newly added articles appear at the top.
+ * - Breaking News: receives sortedArticles (newest first); component takes first maxItems.
+ * - Hero/Slider (MasterBentoHero): topStory = sortedArticles[0] = newest article.
+ * - Main feed list: mainFeed = sortedArticles.slice(1, 11) = next 10 newest.
+ */
 export default function Index() {
   const isConvexDisabled = useConvexDisabled();
-  const { data: published, isLoading: loadingPublished } = usePublishedContent(24);
+  const { data: published, isLoading: loadingPublished } = usePublishedContent(50);
+  const { data: latest, isLoading: loadingLatest } = useLatestContent(10);
   const { data: trending, isLoading: loadingTrending } = useTrendingContent(6);
   const { data: feeds } = useFeeds();
   const { data: techFeed } = useContentByFeed('innovate', 5);
@@ -46,19 +56,30 @@ export default function Index() {
   const { diagnostics } = useContentDiagnostics();
   const showDebugContent = typeof window !== 'undefined' && new URLSearchParams(window.location.search).get('debug') === 'content';
 
-  // Unified Resolution: show Convex data when available, mock articles otherwise (no delay, no instructional message)
-  const hasConvexData = published && published.length > 0;
-  const articles: Article[] = hasConvexData ? mapContentToArticles(published) : mockArticles;
+  if (typeof window !== 'undefined') {
+    console.log('[Index] content query lengths:', {
+      published: published?.length ?? '—',
+      latest: latest?.length ?? '—',
+      trending: trending?.length ?? '—',
+      techFeed: techFeed?.length ?? '—',
+      securityFeed: securityFeed?.length ?? '—',
+      gamingFeed: gamingFeed?.length ?? '—',
+    });
+  }
+
+  const hasPublishedData = published && published.length > 0;
+  const articles: Article[] = hasPublishedData ? mapContentToArticles(published) : mockArticles;
   const sortedArticles = [...articles].sort((a, b) => {
     return new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime();
   });
 
   const trendingArticles: Article[] =
     trending && trending.length > 0 ? mapContentToArticles(trending) : sortedArticles.slice(0, 6);
+  const latestArticles: Article[] =
+    latest && latest.length > 0 ? mapContentToArticles(latest) : sortedArticles.slice(0, 10);
   const topStory = sortedArticles[0];
   const mainFeed = sortedArticles.slice(1, 11);
-  // No loading skeleton when using mock fallback - show content immediately
-  const isLoading = hasConvexData && loadingPublished;
+  const isLoading = hasPublishedData && loadingPublished;
   const techArticles: Article[] = techFeed && techFeed.length > 0 ? mapContentToArticles(techFeed) : sortedArticles.filter(a => a.niche === 'tech').slice(0, 3);
   const securityArticles: Article[] = securityFeed && securityFeed.length > 0 ? mapContentToArticles(securityFeed) : sortedArticles.filter(a => a.niche === 'security').slice(0, 3);
   const gamingArticles: Article[] = gamingFeed && gamingFeed.length > 0 ? mapContentToArticles(gamingFeed) : sortedArticles.filter(a => a.niche === 'gaming').slice(0, 3);
@@ -93,7 +114,7 @@ export default function Index() {
       {showDebugContent && (
         <section className="bg-muted/50 border-b border-border px-4 py-3 text-xs font-mono">
           <div className="container mx-auto max-w-7xl">
-            <strong>Content debug:</strong> Convex disabled={String(isConvexDisabled)} · published count={published?.length ?? '—'} · diagnostics={diagnostics ? JSON.stringify(diagnostics) : 'loading…'}
+            <strong>Content debug:</strong> Convex disabled={String(isConvexDisabled)} · published={published?.length ?? '—'} · latest={latest?.length ?? '—'} · diagnostics={diagnostics ? JSON.stringify(diagnostics) : 'loading…'}
           </div>
         </section>
       )}
@@ -145,6 +166,13 @@ export default function Index() {
           />
         </section>
       )}
+
+      {/* Live Wire – API-ingested news feed */}
+      <section className="border-b border-border bg-muted/5" aria-label="Live Wire news feed">
+        <div className="container mx-auto px-4 max-w-7xl">
+          <NewsFeed limit={9} title="Live Wire" showTitle />
+        </div>
+      </section>
 
       {/* Latest in Tech | Security | Gaming (three-column) */}
       <section className="border-b border-border bg-muted/10 py-8" aria-label="Latest by category">
@@ -249,9 +277,63 @@ export default function Index() {
                     </li>
                   ))}
                 </ul>
-              )               : (
+              ) : mainFeed.filter((a): a is Article => a != null).length === 0 ? (
+                <>
+                  <p className="text-muted-foreground py-6 text-center">Stay tuned — new articles are on the way.</p>
+                  <div className="rounded-lg border border-border bg-muted/30 p-6" aria-label="Browse categories">
+                    <h3 className="font-semibold text-sm text-foreground mb-3">Browse Categories</h3>
+                    <div className="flex flex-wrap gap-3">
+                      <Link to="/tech" className="text-sm text-tech hover:underline">Tech</Link>
+                      <span className="text-muted-foreground">·</span>
+                      <Link to="/security" className="text-sm text-security hover:underline">Security</Link>
+                      <span className="text-muted-foreground">·</span>
+                      <Link to="/gaming" className="text-sm text-gaming hover:underline">Gaming</Link>
+                      <span className="text-muted-foreground">·</span>
+                      <Link to="/explore" className="text-sm text-primary hover:underline">All Articles</Link>
+                    </div>
+                  </div>
+                </>
+              ) : (
                 <ul className="space-y-4">
                   {mainFeed.filter((a): a is Article => a != null).map((article, i) => (
+                    <li key={safeArticleId(article) || i}>
+                      <ArticleCard article={article} variant="list" />
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </section>
+
+            {/* Latest from the Community */}
+            <section aria-label="Latest from the Community" className="mt-8">
+              <h2 className="font-display font-bold text-lg text-foreground mb-4">Latest from the Community</h2>
+              {loadingLatest ? (
+                <ul className="space-y-4">
+                  {[1, 2, 3].map((i) => (
+                    <li key={i}>
+                      <Skeleton className="h-20 w-full rounded-lg" />
+                    </li>
+                  ))}
+                </ul>
+              ) : latestArticles.length === 0 ? (
+                <>
+                  <p className="text-muted-foreground py-6 text-center">No recent articles yet. Check back soon.</p>
+                  <div className="rounded-lg border border-border bg-muted/30 p-4">
+                    <h3 className="font-semibold text-sm text-foreground mb-2">Browse Categories</h3>
+                    <div className="flex flex-wrap gap-2 text-sm">
+                      <Link to="/tech" className="text-tech hover:underline">Tech</Link>
+                      <span className="text-muted-foreground">·</span>
+                      <Link to="/security" className="text-security hover:underline">Security</Link>
+                      <span className="text-muted-foreground">·</span>
+                      <Link to="/gaming" className="text-gaming hover:underline">Gaming</Link>
+                      <span className="text-muted-foreground">·</span>
+                      <Link to="/explore" className="text-primary hover:underline">All Articles</Link>
+                    </div>
+                  </div>
+                </>
+              ) : (
+                <ul className="space-y-4">
+                  {latestArticles.filter((a): a is Article => a != null).map((article, i) => (
                     <li key={safeArticleId(article) || i}>
                       <ArticleCard article={article} variant="list" />
                     </li>

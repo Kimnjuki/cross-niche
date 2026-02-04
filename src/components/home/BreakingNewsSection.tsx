@@ -10,8 +10,8 @@ interface BreakingNewsSectionProps {
 }
 
 export function BreakingNewsSection({ articles, maxItems = 5 }: BreakingNewsSectionProps) {
-  // Get most recent articles (breaking news)
-  const breakingNews = articles
+  // Newest first (copy before sort to avoid mutating parent); take first maxItems
+  const breakingNews = [...articles]
     .sort((a, b) => new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime())
     .slice(0, maxItems);
 

@@ -11,6 +11,8 @@ interface LazyImageProps {
   width?: string | number;
   height?: string | number;
   aspectRatio?: string;
+  /** Above-the-fold / LCP image: eager load, fetchPriority high, no IntersectionObserver delay */
+  priority?: boolean;
 }
 
 export function LazyImage({
@@ -22,14 +24,16 @@ export function LazyImage({
   onError,
   width,
   height,
-  aspectRatio
+  aspectRatio,
+  priority = false
 }: LazyImageProps) {
   const [isLoaded, setIsLoaded] = useState(false);
-  const [isInView, setIsInView] = useState(false);
+  const [isInView, setIsInView] = useState(priority);
   const [hasError, setHasError] = useState(false);
   const imgRef = useRef<HTMLImageElement>(null);
 
   useEffect(() => {
+    if (priority) return;
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
@@ -109,8 +113,9 @@ export function LazyImage({
           )}
           onLoad={handleLoad}
           onError={handleError}
-          loading="lazy"
+          loading={priority ? 'eager' : 'lazy'}
           decoding="async"
+          fetchPriority={priority ? 'high' : undefined}
           width={finalWidth}
           height={finalHeight}
           style={{ aspectRatio: finalAspectRatio }}

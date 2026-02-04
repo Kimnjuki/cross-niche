@@ -1,15 +1,63 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react-swc";
 import path from "path";
+import fs from "fs";
 import { componentTagger } from "lovable-tagger";
 
 // https://vitejs.dev/config/
-export default defineConfig(({ mode }) => ({
+export default defineConfig(({ mode }) => {
+  const isProd = mode === "production";
+  // Load prerender routes: static + article routes from prerender-routes.json (generated in prebuild)
+  let prerenderRoutes = [
+    "/",
+    "/tech",
+    "/security",
+    "/gaming",
+    "/news",
+    "/topics",
+    "/guides",
+    "/about",
+    "/contact",
+    "/privacy",
+    "/terms",
+    "/roadmap",
+    "/blog-series",
+  ];
+  try {
+    const routesPath = path.join(__dirname, "prerender-routes.json");
+    const routesJson = fs.readFileSync(routesPath, "utf8");
+    prerenderRoutes = JSON.parse(routesJson);
+  } catch {
+    // Use static routes only if file not found
+  }
+
+  const plugins: unknown[] = [
+    react(),
+    mode === "development" && componentTagger(),
+  ].filter(Boolean);
+
+  // Prerender plugin: add in prod when PRERENDER!=0 (requires vite-plugin-prerender + Puppeteer)
+  if (isProd && process.env.PRERENDER !== "0") {
+    try {
+      // eslint-disable-next-line @typescript-eslint/no-require-imports
+      const vitePrerender = require("vite-plugin-prerender");
+      plugins.push(
+        vitePrerender.default({
+          staticDir: path.join(__dirname, "dist"),
+          routes: prerenderRoutes,
+        })
+      );
+    } catch {
+      // Skip if plugin not installed
+    }
+  }
+
+  return {
   server: {
     host: "::",
     port: 8080,
   },
-  plugins: [react(), mode === "development" && componentTagger()].filter(Boolean),
+  plugins,
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
@@ -42,4 +90,5 @@ export default defineConfig(({ mode }) => ({
     },
   },
   base: "/",
-}));
+};
+});

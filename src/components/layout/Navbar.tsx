@@ -17,6 +17,7 @@ const navLinks = [
   { href: '/tech', label: 'Innovate', color: 'text-tech' },
   { href: '/security', label: 'Secured', color: 'text-security' },
   { href: '/gaming', label: 'Play', color: 'text-gaming' },
+  { href: '/explore', label: 'Explore', color: 'text-foreground' },
   { href: '/ai-pulse', label: 'AI Pulse', color: 'text-foreground' },
   { href: '/topics', label: 'Topics', color: 'text-foreground' },
   { href: '/guides', label: 'Guides', color: 'text-foreground' },

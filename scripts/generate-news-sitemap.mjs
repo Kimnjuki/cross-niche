@@ -1,12 +1,18 @@
 #!/usr/bin/env node
 /**
  * Google News Sitemap Generator
- * 
- * Generates sitemap-news.xml specifically for Google News
- * Only includes articles from the last 48 hours (Google News requirement)
- * 
+ *
+ * Generates sitemap-news.xml for Google News (articles from last 48 hours).
+ * Set VITE_CONVEX_URL in env or .env so the script can reach your Convex deployment.
+ *
  * Run with: npm run generate:news-sitemap
  */
+
+try {
+  await import('dotenv/config');
+} catch {
+  // dotenv optional
+}
 
 import { ConvexHttpClient } from 'convex/browser';
 import { api } from '../convex/_generated/api.js';
@@ -105,23 +111,23 @@ async function main() {
     // Connect to Convex
     const client = new ConvexHttpClient(CONVEX_URL);
     
-    // Fetch recent published articles (limit to recent for news)
-    const articles = await client.query(api.content.listPublished, { limit: 100 });
-    console.log(`   Found ${articles?.length || 0} published articles in Convex`);
+    // Fetch visible articles (published + new); filter to last 48h below
+    const articles = await client.query(api.content.listAll, { limit: 100 });
+    console.log(`   Found ${articles?.length ?? 0} articles in Convex`);
 
     if (articles && articles.length > 0) {
       // Filter to only include articles from last 48 hours
       for (const article of articles) {
-        const publishedAt = article.published_at || article.publishedAt || article._creationTime;
-        
-        if (!article.slug || !publishedAt) continue;
+        const publishedAt = article.published_at ?? article.publishedAt ?? article._creationTime;
+        const slug = article.slug ?? article.id ?? article._id;
+        if (!slug || !publishedAt) continue;
         
         if (isWithin48Hours(publishedAt)) {
           newsArticles.push({
-            slug: article.slug,
-            title: article.title || 'Untitled',
+            slug: String(slug),
+            title: article.title ?? 'Untitled',
             publishedAt,
-            keywords: article.tags || [],
+            keywords: article.tags ?? [],
           });
         }
       }

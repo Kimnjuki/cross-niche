@@ -24,6 +24,7 @@ import Contact from "./pages/Contact";
 import Privacy from "./pages/Privacy";
 import Terms from "./pages/Terms";
 import BlogSeries from "./pages/BlogSeries";
+import Explore from "./pages/Explore";
 import Topics from "./pages/Topics";
 import Tutorials from "./pages/Tutorials";
 import Profile from "./pages/Profile";
@@ -32,6 +33,7 @@ import AuthConfirm from "./pages/AuthConfirm";
 import Reviews from "./pages/Reviews";
 import Author from "./pages/Author";
 import Media from "./pages/Media";
+import News from "./pages/News";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -67,11 +69,13 @@ const App = () => (
             <Route path="/privacy" element={<Privacy />} />
             <Route path="/terms" element={<Terms />} />
             <Route path="/blog-series" element={<BlogSeries />} />
+            <Route path="/explore" element={<Explore />} />
             <Route path="/topics" element={<Topics />} />
             <Route path="/tutorials" element={<Tutorials />} />
             <Route path="/reviews" element={<Reviews />} />
             <Route path="/author/:authorSlug" element={<Author />} />
             <Route path="/media" element={<Media />} />
+            <Route path="/news" element={<News />} />
             <Route path="/profile" element={<Profile />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />

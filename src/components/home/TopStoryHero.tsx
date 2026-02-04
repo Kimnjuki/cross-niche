@@ -31,6 +31,7 @@ export function TopStoryHero({ article }: TopStoryHeroProps) {
         <div className="absolute inset-0">
           <LazyImage
             src={article.imageUrl}
+            priority
             alt={article.title}
             className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
             width={1920}

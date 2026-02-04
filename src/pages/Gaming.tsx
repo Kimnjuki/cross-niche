@@ -4,7 +4,7 @@ import { ArticleGrid } from '@/components/articles/ArticleGrid';
 import { ViewToggle } from '@/components/ui/view-toggle';
 import { GameSecurityCard } from '@/components/games/GameSecurityCard';
 import { mockArticles } from '@/data/mockData';
-import { useContentByFeed } from '@/hooks/useContent';
+import { useContentByNicheId } from '@/hooks/useContent';
 import { mapContentToArticles } from '@/lib/contentMapper';
 import { Badge } from '@/components/ui/badge';
 import { Gamepad2, Shield, Info } from 'lucide-react';
@@ -21,7 +21,7 @@ const SAMPLE_SECURITY_RATINGS = [
 
 export default function Gaming() {
   const [viewMode, setViewMode] = useState<'grid' | 'list' | 'compact'>('grid');
-  const { data: gamingContent, isLoading } = useContentByFeed('play', 20);
+  const { data: gamingContent, isLoading } = useContentByNicheId(3, 20);
 
   const gamingArticles = gamingContent && gamingContent.length > 0
     ? mapContentToArticles(gamingContent)

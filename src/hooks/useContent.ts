@@ -80,6 +80,16 @@ export function usePublishedContent(limit = 20) {
   return { data, isLoading: !isDisabled && rows === undefined };
 }
 
+/** Visible content for homepage: published + featured only, newest first (getVisibleContent). */
+export function useVisibleContent(limit = 24) {
+  const isDisabled = useConvexDisabled();
+  const rows = useQuery(api.content.getVisibleContent, isDisabled ? 'skip' : { limit });
+  const data = isDisabled
+    ? articlesToContentItems(mockArticles.filter((a) => a.isFeatured).slice(0, limit))
+    : toContentItems(rows ?? undefined);
+  return { data, isLoading: !isDisabled && rows === undefined };
+}
+
 // Fetch content by feed slug (or mock when Convex not configured)
 export function useContentByFeed(feedSlug: string, limit = 20) {
   const isDisabled = useConvexDisabled();
@@ -106,14 +116,49 @@ export function useContentByNiche(nicheName: string, limit = 20) {
   return { data, isLoading: !isDisabled && rows === undefined };
 }
 
-// Fetch featured content (or mock when Convex not configured)
-export function useFeaturedContent(limit = 5) {
+/** Content by niche ID (1=Tech, 2=Security, 3=Gaming). Uses getContentByNiche. */
+export function useContentByNicheId(nicheId: number, limit = 30) {
   const isDisabled = useConvexDisabled();
-  const rows = useQuery(api.content.listPublished, isDisabled ? 'skip' : { limit: 50 });
+  const rows = useQuery(api.content.getContentByNiche, isDisabled ? 'skip' : { nicheId, limit });
+  const feedNiche = nicheId === 2 ? 'security' : nicheId === 3 ? 'gaming' : 'tech';
+  const data = isDisabled
+    ? articlesToContentItems(mockArticles.filter((a) => a.niche === feedNiche).slice(0, limit))
+    : toContentItems(rows ?? undefined);
+  return { data, isLoading: !isDisabled && rows === undefined };
+}
+
+/** Featured content for homepage: published + isFeatured, sorted by publishedAt desc (getFeaturedContent). */
+export function useFeaturedContent(limit = 24) {
+  const isDisabled = useConvexDisabled();
+  const rows = useQuery(api.content.getFeaturedContent, isDisabled ? 'skip' : { limit });
   const data = isDisabled
     ? articlesToContentItems(mockArticles.filter((a) => a.isFeatured).slice(0, limit))
-    : toContentItems((rows ?? []).filter((r: Record<string, unknown>) => r.is_featured === true).slice(0, limit));
+    : toContentItems(rows ?? undefined);
   return { data, isLoading: !isDisabled && rows === undefined };
+}
+
+/** Latest N published articles regardless of featured (getLatestContent). */
+export function useLatestContent(limit = 10) {
+  const isDisabled = useConvexDisabled();
+  const rows = useQuery(api.content.getLatestContent, isDisabled ? 'skip' : { limit });
+  const data = isDisabled
+    ? articlesToContentItems(mockArticles.slice(0, limit))
+    : toContentItems(rows ?? undefined);
+  return { data, isLoading: !isDisabled && rows === undefined };
+}
+
+/** All published content for archive/explore (getAllPublishedContent). */
+export function useAllPublishedContent(limit = 30) {
+  const isDisabled = useConvexDisabled();
+  const result = useQuery(api.content.getAllPublishedContent, isDisabled ? 'skip' : { limit });
+  const data = isDisabled
+    ? articlesToContentItems(mockArticles.slice(0, limit))
+    : toContentItems(result?.items ?? undefined);
+  return {
+    data,
+    isLoading: !isDisabled && result === undefined,
+    nextCursor: result?.nextCursor ?? null,
+  };
 }
 
 // Fetch single content by slug or id (Convex uses slug; URL param may be id or slug)
@@ -169,6 +214,14 @@ export function useTrendingContent(limit = 6) {
     ? articlesToContentItems(mockArticles.slice(0, limit))
     : toContentItems(rows ?? undefined);
   return { data, isLoading: !isDisabled && rows === undefined };
+}
+
+/** Related content by shared tags (Internal Linking Bridge for orphan page fix) */
+export function useRelatedContent(slug: string, limit = 6) {
+  const isDisabled = useConvexDisabled();
+  const rows = useQuery(api.content.getRelated, isDisabled || !slug ? 'skip' : { slug, limit });
+  const data = toContentItems(rows ?? []);
+  return { data, isLoading: !isDisabled && slug && rows === undefined };
 }
 
 /** Diagnostics: published count and connection (for debugging why Convex articles don't show) */

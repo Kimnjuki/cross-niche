@@ -82,6 +82,7 @@ export function MasterBentoHero({
             ) : (
               <LazyImage
                 src={mainStory.imageUrl}
+                priority
                 alt={mainStory.title}
                 className="w-full h-full object-cover"
                 width={960}

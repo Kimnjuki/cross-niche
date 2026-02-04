@@ -57,13 +57,14 @@ export default defineSchema({
 
   // ─── Content (core) ─────────────────────────────────────────────────────
   // For listPublished/listTrending: set publishedAt (ms) on published items so by_status_published_at ordering is correct.
+  // News Agency Ingestion: externalId, source, isAutomated, originalUrl for NewsAPI/Reuters ingested content.
   content: defineTable({
     title: v.string(),
     slug: v.string(),
     body: v.string(),
     summary: v.optional(v.string()),
     authorId: v.optional(v.string()), // Supabase user UUID (or Convex users._id if you migrate users)
-    status: v.string(), // "draft" | "published" | "archived"
+    status: v.string(), // "draft" | "published" | "new" | "archived" | "unlisted"
     isPremium: v.optional(v.boolean()),
     securityScore: v.optional(v.number()), // 1–5
     publishedAt: v.optional(v.number()), // ms; required for published items when using by_status_published_at
@@ -78,11 +79,18 @@ export default defineSchema({
     isFeatured: v.optional(v.boolean()),
     isBreaking: v.optional(v.boolean()),
     contentType: v.optional(v.string()),
+    // News Agency Ingestion Pipeline
+    externalId: v.optional(v.string()), // NewsAPI article URL or ID for deduplication
+    source: v.optional(v.string()), // e.g. "Reuters", "TechCrunch"
+    isAutomated: v.optional(v.boolean()), // true for API-ingested content
+    originalUrl: v.optional(v.string()), // Link to original article at source
   })
     .index("by_slug", ["slug"])
     .index("by_status", ["status"])
     .index("by_status_published_at", ["status", "publishedAt"])
-    .index("by_legacy_id", ["legacyId"]),
+    .index("by_legacy_id", ["legacyId"])
+    .index("by_externalId", ["externalId"])
+    .index("by_publishedAt", ["publishedAt"]),
 
   // ─── Content ↔ Niches (many-to-many) ─────────────────────────────────────
   contentNiches: defineTable({
@@ -164,6 +172,19 @@ export default defineSchema({
   })
     .index("by_content", ["contentId"])
     .index("by_game_slug", ["gameSlug"]),
+
+  // ─── Multi-source news feed (NewsAPI + GNews) ───────────────────────────
+  // Dual-index: by_url (deduplication) + by_publishedAt (sorting). Used by ingest + getLatestFeed.
+  articles: defineTable({
+    title: v.string(),
+    url: v.string(),
+    summary: v.string(),
+    source: v.string(),
+    imageUrl: v.optional(v.string()),
+    publishedAt: v.number(), // Unix timestamp (ms) for precise sorting
+  })
+    .index("by_url", ["url"])
+    .index("by_publishedAt", ["publishedAt"]),
 
   // ─── AI-Pulse Roadmap (nexus-002) ──────────────────────────────────────
   // Live-updating timeline: AI/ML tech trends. category = Productivity | Creative | Gaming AI.

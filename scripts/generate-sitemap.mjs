@@ -1,16 +1,23 @@
 #!/usr/bin/env node
 /**
  * Sitemap Generator Script
- * 
+ *
  * Generates sitemap.xml from Convex database content.
  * Run with: npm run generate:sitemap
- * 
+ * Set VITE_CONVEX_URL in env or .env so the script can reach your Convex deployment.
+ *
  * This script:
- * 1. Fetches all published articles from Convex
+ * 1. Fetches all visible articles (status published|new) via api.content.listAll
  * 2. Generates canonical URLs using article.slug (not id)
  * 3. Creates XML sitemap with proper lastmod, changefreq, priority
  * 4. Writes to public/sitemap.xml
  */
+
+try {
+  await import('dotenv/config');
+} catch {
+  // dotenv optional; rely on process.env.VITE_CONVEX_URL from shell/build
+}
 
 import { ConvexHttpClient } from 'convex/browser';
 import { api } from '../convex/_generated/api.js';
@@ -126,14 +133,14 @@ async function main() {
     // Connect to Convex
     const client = new ConvexHttpClient(CONVEX_URL);
     
-    // Fetch published articles
-    const articles = await client.query(api.content.listPublished, { limit: 500 });
-    console.log(`   Found ${articles?.length || 0} published articles in Convex`);
+    // Fetch all visible articles (published + new) for sitemap
+    const articles = await client.query(api.content.listAll, { limit: 500 });
+    console.log(`   Found ${articles?.length ?? 0} published/new articles in Convex`);
 
     if (articles && articles.length > 0) {
       for (const article of articles) {
-        // Use slug as the canonical URL (NEVER use id if slug exists)
-        const slug = article.slug || article._id || article.id;
+        // Use slug as the canonical URL (content table has slug, title, published_at/_creationTime)
+        const slug = article.slug ?? article.id ?? article._id;
         if (!slug) {
           console.warn(`   ⚠️ Skipping article without slug: ${article.title}`);
           continue;

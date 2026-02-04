@@ -2,7 +2,7 @@ import { useParams, Link } from 'react-router-dom';
 import { useMemo } from 'react';
 import { Layout } from '@/components/layout/Layout';
 import { mockArticles } from '@/data/mockData';
-import { useContentBySlug, useContentByFeed, usePublishedContent } from '@/hooks/useContent';
+import { useContentBySlug, useContentByFeed, usePublishedContent, useRelatedContent } from '@/hooks/useContent';
 import { mapContentToArticle, mapContentToArticles } from '@/lib/contentMapper';
 import { NexusScrollBridge } from '@/components/nexus/NexusScrollBridge';
 import { Badge } from '@/components/ui/badge';
@@ -53,6 +53,7 @@ export default function Article() {
   const feedSlug = contentData?.feed_slug ?? '';
   const { data: relatedContent } = useContentByFeed(feedSlug, 4);
   const { data: publishedForCross } = usePublishedContent(30);
+  const { data: relatedByTags } = useRelatedContent(slugOrId, 6);
 
   // 2. MEMOIZED ARTICLE MAPPING
   const article: ArticleType | null = useMemo(() => {
@@ -67,20 +68,12 @@ export default function Article() {
   const articleId = getArticleId(article);
   const hasArticle = !!article && !!articleId;
 
-  // 4. RELATED ARTICLES (always returns at least 3 articles for internal linking / SEO)
+  // 4. RELATED ARTICLES (feed-based fallback)
   const relatedArticles = useMemo(() => {
     if (!article) return [];
-    
-    // Get Convex related articles if available
     const convexArticles = relatedContent ? mapContentToArticles(relatedContent) : [];
-    
-    // Get mock articles from same niche as fallback
     const mockFallback = mockArticles.filter((a) => a?.niche === article?.niche);
-    
-    // Combine: prefer Convex, fallback to mock
     const combined = [...convexArticles, ...mockFallback];
-    
-    // Filter out current article and duplicates, take up to 3
     const seen = new Set<string>();
     return combined
       .filter((a) => {
@@ -90,8 +83,31 @@ export default function Article() {
         seen.add(id);
         return true;
       })
-      .slice(0, 3);
+      .slice(0, 6);
   }, [relatedContent, article, articleId]);
+
+  // 4b. RELATED INTELLIGENCE (tag-based from Convex, fixes orphan pages)
+  const relatedIntelligence = useMemo(() => {
+    const byTags = relatedByTags ? mapContentToArticles(relatedByTags) : [];
+    const seen = new Set<string>();
+    const fromTags = byTags.filter((a) => {
+      if (!a) return false;
+      const id = getArticleId(a);
+      if (!id || id === articleId || seen.has(id)) return false;
+      seen.add(id);
+      return true;
+    });
+    if (fromTags.length >= 3) return fromTags.slice(0, 6);
+    for (const a of relatedArticles) {
+      const id = getArticleId(a);
+      if (id && !seen.has(id)) {
+        seen.add(id);
+        fromTags.push(a);
+        if (fromTags.length >= 6) break;
+      }
+    }
+    return fromTags;
+  }, [relatedByTags, relatedArticles, articleId]);
 
   // 5. CROSS SECTION ARTICLE (for cross-niche internal linking / SEO)
   const crossSectionArticle = useMemo(() => {
@@ -324,18 +340,16 @@ export default function Article() {
             <CommentSection articleId={articleId} />
           </div>
 
-          {relatedArticles.length > 0 && (
-            <section className="border-t border-border pt-12">
+          {relatedIntelligence.length > 0 && (
+            <section className="border-t border-border pt-12" aria-label="Related Intelligence">
               <h2 className="font-display font-bold text-2xl mb-4">
-                Related {nicheLabels[safeNiche]} Articles
+                Related Intelligence
               </h2>
               <p className="text-muted-foreground mb-8">
-                Explore more {nicheLabels[safeNiche].toLowerCase()} content and stay updated with the latest{' '}
-                {safeNiche === 'tech' ? 'technology' : safeNiche === 'security' ? 'cybersecurity' : 'gaming'}{' '}
-                news and insights.
+                Discover connected coverage across tech, security, and gaming. Every article links to related content for deeper exploration.
               </p>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-                {relatedArticles
+                {relatedIntelligence
                   .filter((r): r is ArticleType => r != null && !!getArticleId(r))
                   .map((related) => (
                     <ArticleCard

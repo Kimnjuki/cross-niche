@@ -115,33 +115,74 @@ export function optimizeMetaDescription(description: string, maxLength: number =
   return description.substring(0, maxLength - 3) + '...';
 }
 
+/** Current year for freshness signals (CTR boost) */
+const CURRENT_YEAR = new Date().getFullYear().toString();
+
 /**
- * Generate SEO-friendly title for article
+ * Append CTR-boost modifiers to title: [Bracket], (Year).
+ * Spec: "Incorporate {Year}, {Numbers}, and {Sentiment} into all Meta Titles"
+ */
+function appendCTRModifier(base: string, article: {
+  title: string;
+  niche?: string;
+  tags?: string[];
+}): string {
+  const { title, niche, tags } = article;
+  const t = title.toLowerCase();
+  const allTags = (tags ?? []).map((x) => x.toLowerCase()).join(' ');
+
+  let modifier = '';
+  if (t.includes('guide') || t.includes('how to') || t.includes('tutorial') || allTags.includes('guide')) {
+    modifier = ' [Guide]';
+  } else if (t.includes('review') || t.includes(' vs ') || allTags.includes('review')) {
+    modifier = ` [${CURRENT_YEAR} Review]`;
+  } else if (t.includes('breaking') || t.includes('alert') || allTags.includes('breaking')) {
+    modifier = ' [Breaking]';
+  } else if (niche === 'security' && (t.includes('vulnerability') || t.includes('breach') || t.includes('zero-day'))) {
+    modifier = ' [Security Alert]';
+  } else if (t.includes('best') || t.includes('top ') || /\d+ best|\d+ top/i.test(t)) {
+    modifier = ` [${CURRENT_YEAR}]`;
+  } else {
+    modifier = ` (${CURRENT_YEAR} Update)`;
+  }
+
+  const sep = base.lastIndexOf(' | ');
+  if (sep > 0) {
+    const beforeBrand = base.slice(0, sep);
+    const brandPart = base.slice(sep);
+    return beforeBrand + modifier + brandPart;
+  }
+  return base + modifier;
+}
+
+/**
+ * Generate SEO-friendly title for article (with dynamic CTR modifiers)
  */
 export function generateArticleTitle(article: {
   title: string;
   niche?: string;
   isBreaking?: boolean;
   tags?: string[];
+  contentType?: string;
 }): string {
   const { title, niche, isBreaking, tags } = article;
   const brand = 'The Grid Nexus';
-  
-  // Extract primary keyword from title or tags
-  const primaryKeyword = tags?.[0] || niche || 'Tech News';
-  
+  const primaryKeyword = tags?.[0] || (niche === 'tech' ? 'Tech' : niche === 'security' ? 'Security' : 'Gaming') || 'Tech News';
+
+  let base: string;
   if (isBreaking) {
-    return titleFormulas.urgency('Breaking', primaryKeyword, title, brand);
+    base = `Breaking: ${title} | ${brand}`;
+  } else {
+    const numberMatch = title.match(/\d+/);
+    if (numberMatch) {
+      base = `${title} | ${brand}`;
+    } else {
+      base = `${primaryKeyword}: ${title} | ${brand}`;
+    }
   }
-  
-  // Check if title contains numbers
-  const numberMatch = title.match(/\d+/);
-  if (numberMatch) {
-    return titleFormulas.numberDriven(numberMatch[0], primaryKeyword, title, '2026', brand);
-  }
-  
-  // Default: keyword first formula
-  return titleFormulas.keywordFirst(primaryKeyword, title, brand);
+
+  const withModifier = appendCTRModifier(base, article);
+  return optimizeTitle(withModifier, 60);
 }
 
 /**
