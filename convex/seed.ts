@@ -156,3 +156,25 @@ export const seedInitialArticles = mutation({
     return { inserted, skipped };
   },
 });
+
+/** Seed AI-Pulse Roadmap (nexus-002) updates. Run: seed → seedAIPulseUpdates → Run */
+const AI_PULSE_SEED = [
+  { title: 'LLM coding assistants hit 40% task completion in benchmarks', description: 'Independent study shows coding agents completing real dev tasks with measurable accuracy; benchmarks published.', category: 'productivity' as const, publishedAt: Date.now() - 2 * 86400000, isHype: false, hasBenchmarks: true },
+  { title: 'New "AI-powered" IDE plugin announced', description: 'Vendor announces AI features with no disclosed benchmarks or evaluation methodology.', category: 'productivity' as const, publishedAt: Date.now() - 5 * 86400000, isHype: true, hasBenchmarks: false },
+  { title: 'Image models surpass human preference on design tasks', description: 'Peer-reviewed benchmark: design quality and user preference scores for creative tools.', category: 'creative' as const, publishedAt: Date.now() - 7 * 86400000, isHype: false, hasBenchmarks: true },
+  { title: 'AI art tool "revolutionary" launch', description: 'Marketing campaign for new creative tool; no third-party benchmarks available.', category: 'creative' as const, publishedAt: Date.now() - 10 * 86400000, isHype: true, hasBenchmarks: false },
+  { title: 'NPC dialogue systems: benchmark suite for gaming AI', description: 'Academic benchmark for in-game dialogue coherence and player satisfaction; multiple games evaluated.', category: 'gaming_ai' as const, publishedAt: Date.now() - 12 * 86400000, isHype: false, hasBenchmarks: true },
+  { title: 'Game studio announces "next-gen AI" for upcoming title', description: 'Press release with no technical details or performance metrics.', category: 'gaming_ai' as const, publishedAt: Date.now() - 14 * 86400000, isHype: true, hasBenchmarks: false },
+];
+
+export const seedAIPulseUpdates = mutation({
+  args: {},
+  handler: async (ctx) => {
+    const existing = await ctx.db.query('aiUpdates').take(1);
+    if (existing.length > 0) return { inserted: 0, message: 'aiUpdates already seeded' };
+    for (const row of AI_PULSE_SEED) {
+      await ctx.db.insert('aiUpdates', row);
+    }
+    return { inserted: AI_PULSE_SEED.length, message: 'AI Pulse updates seeded' };
+  },
+});

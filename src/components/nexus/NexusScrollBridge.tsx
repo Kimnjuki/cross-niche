@@ -10,6 +10,7 @@ import { Link } from 'react-router-dom';
 import { useInView } from 'framer-motion';
 import { LazyImage } from '@/components/ui/lazy-image';
 import { cn } from '@/lib/utils';
+import { getPlaceholderByNiche } from '@/lib/placeholderImages';
 import type { Article, Niche } from '@/types';
 
 const PILLAR_LABELS: Record<Niche, string> = {
@@ -60,7 +61,7 @@ function CrossSectionRecommendation({
     >
       <div className="sm:w-32 shrink-0 rounded-lg overflow-hidden bg-muted aspect-video sm:aspect-square">
         <LazyImage
-          src={recommended?.imageUrl ?? '/placeholder.svg'}
+          src={recommended?.imageUrl ?? getPlaceholderByNiche(recommended?.niche)}
           alt={recommended?.title ?? 'Article'}
           className="w-full h-full object-cover"
           width={128}

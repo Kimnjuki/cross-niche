@@ -6,9 +6,12 @@ import { Layout } from '@/components/layout/Layout';
 import { AIPulseTimeline } from '@/components/ai/AIPulseTimeline';
 import { SEOHead } from '@/components/seo/SEOHead';
 import { Sparkles, BarChart3 } from 'lucide-react';
-import { SAMPLE_AI_UPDATES } from '@/data/aiUpdates';
+import { useAIPulse } from '@/hooks/useAIPulse';
+import { Skeleton } from '@/components/ui/skeleton';
 
 export default function AIPulse() {
+  const { items, isLoading, isConvex } = useAIPulse();
+
   return (
     <Layout>
       <SEOHead
@@ -36,10 +39,21 @@ export default function AIPulse() {
           <div className="flex items-center gap-2 text-sm text-muted-foreground">
             <BarChart3 className="h-4 w-4" />
             <span>Updates ordered by date (newest first). Responsive on mobile.</span>
+            {isConvex && (
+              <span className="text-xs text-primary">· Live from Convex</span>
+            )}
           </div>
         </header>
 
-        <AIPulseTimeline items={SAMPLE_AI_UPDATES} />
+        {isLoading ? (
+          <div className="space-y-4">
+            {[1, 2, 3, 4].map((i) => (
+              <Skeleton key={i} className="h-32 w-full rounded-lg" />
+            ))}
+          </div>
+        ) : (
+          <AIPulseTimeline items={items} />
+        )}
       </div>
     </Layout>
   );

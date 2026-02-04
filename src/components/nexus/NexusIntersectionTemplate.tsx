@@ -11,6 +11,7 @@ import { Cpu, Shield, Gamepad2, ArrowRight } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import type { Article } from '@/types';
 import { LazyImage } from '@/components/ui/lazy-image';
+import { getPlaceholderByNiche } from '@/lib/placeholderImages';
 
 interface NexusIntersectionTemplateProps {
   tech: Article | null;
@@ -37,7 +38,7 @@ function ArticleTile({ article, niche }: { article: Article | null | undefined; 
       <Card className={cn('overflow-hidden h-full transition-all border-2', styles.accent)}>
         <div className="aspect-video relative overflow-hidden bg-muted">
           <LazyImage
-            src={article.imageUrl || '/placeholder.svg'}
+            src={article.imageUrl || getPlaceholderByNiche(article.niche)}
             alt={article.title}
             className="w-full h-full object-cover"
           />

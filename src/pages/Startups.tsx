@@ -18,6 +18,7 @@ import {
   MapPin
 } from 'lucide-react';
 import { LazyImage } from '@/components/ui/lazy-image';
+import { getPlaceholderImage } from '@/lib/placeholderImages';
 import type { StartupProfile } from '@/types';
 
 /**
@@ -61,7 +62,7 @@ const mockStartups: StartupProfile[] = [
       twitter: '@quantumsecure',
       linkedin: 'company/quantumsecure-ai'
     },
-    logo: '/placeholder.svg',
+    logo: getPlaceholderImage('security'),
     images: [],
     tags: ['AI', 'Security', 'Enterprise'],
     lastUpdated: '2024-01-15'
@@ -98,7 +99,7 @@ const mockStartups: StartupProfile[] = [
     socialLinks: {
       twitter: '@gameflow'
     },
-    logo: '/placeholder.svg',
+    logo: getPlaceholderImage('gaming'),
     images: [],
     tags: ['Gaming', 'Analytics', 'Esports'],
     lastUpdated: '2023-11-20'

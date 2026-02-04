@@ -6,7 +6,8 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { BookOpen, Wrench, Search, ExternalLink, Clock, AlertTriangle } from 'lucide-react';
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
+import { BookOpen, Wrench, Search, ExternalLink, Clock, AlertTriangle, ChevronDown, ListOrdered } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { SEOHead } from '@/components/seo/SEOHead';
 import { Link } from 'react-router-dom';
@@ -26,6 +27,7 @@ const nicheColors = {
 export default function Guides() {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedDifficulty, setSelectedDifficulty] = useState<string | null>(null);
+  const [expandedGuide, setExpandedGuide] = useState<string | null>(null);
 
   const filteredGuides = mockGuides.filter(guide => {
     const matchesSearch = guide.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -113,7 +115,7 @@ export default function Guides() {
             {/* Guides Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {filteredGuides.map((guide) => (
-                <Card key={guide.id} className="group hover:border-primary/50 transition-colors">
+                <Card key={guide.id} className="group hover:border-primary/50 transition-colors overflow-hidden">
                   <CardHeader>
                     <div className="flex gap-2 mb-2">
                       <Badge className={cn(difficultyColors[guide.difficulty], 'capitalize')}>
@@ -127,8 +129,8 @@ export default function Guides() {
                       {guide.title}
                     </CardTitle>
                   </CardHeader>
-                  <CardContent>
-                    <p className="text-muted-foreground text-sm mb-4">{guide.description}</p>
+                  <CardContent className="space-y-4">
+                    <p className="text-muted-foreground text-sm">{guide.description}</p>
                     <div className="flex items-center gap-4 text-sm text-muted-foreground">
                       <span className="flex items-center gap-1">
                         <Clock className="h-4 w-4" />
@@ -136,6 +138,30 @@ export default function Guides() {
                       </span>
                       <span>{guide.platform.join(', ')}</span>
                     </div>
+                    <Collapsible open={expandedGuide === guide.id} onOpenChange={(o) => setExpandedGuide(o ? guide.id : null)}>
+                      <CollapsibleTrigger asChild>
+                        <Button variant="ghost" size="sm" className="w-full justify-between gap-2 text-left h-auto py-2">
+                          <span className="flex items-center gap-2">
+                            <ListOrdered className="h-4 w-4" />
+                            View steps ({guide.steps.length})
+                          </span>
+                          <ChevronDown className={cn('h-4 w-4 transition-transform', expandedGuide === guide.id && 'rotate-180')} />
+                        </Button>
+                      </CollapsibleTrigger>
+                      <CollapsibleContent>
+                        <ol className="mt-2 space-y-1.5 pl-4 list-decimal text-sm text-muted-foreground">
+                          {guide.steps.map((step, i) => (
+                            <li key={i}>{step}</li>
+                          ))}
+                        </ol>
+                      </CollapsibleContent>
+                    </Collapsible>
+                    <Button variant="outline" size="sm" asChild className="w-full gap-2">
+                      <Link to="/tutorials">
+                        Related tutorials
+                        <ExternalLink className="h-3.5 w-3.5" />
+                      </Link>
+                    </Button>
                   </CardContent>
                 </Card>
               ))}

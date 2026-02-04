@@ -4,7 +4,7 @@ import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
 import { SEOHead } from '@/components/seo/SEOHead';
 import { Link } from 'react-router-dom';
-import { CheckCircle2, Circle, Clock, Zap, Users, BarChart3, Globe } from 'lucide-react';
+import { CheckCircle2, Circle, Clock, Zap, Users, BarChart3, Globe, ExternalLink } from 'lucide-react';
 
 interface Feature {
   id: string;
@@ -16,10 +16,47 @@ interface Feature {
   tier: 1 | 2 | 3;
   estimatedEffort: string;
   businessValue: string;
+  liveUrl?: string;
 }
 
 const competitiveAdvantages: Feature[] = [
-  // TIER 1: Competitive Moats
+  // TIER 1: Competitive Moats (some implemented - link to live pages)
+  {
+    id: 'ai-pulse-roadmap',
+    title: 'AI-Pulse Roadmap',
+    description: 'Live-updating timeline for AI/ML tech trends. Filter by Productivity, Creative, Gaming AI. Hype vs Utility toggle.',
+    status: 'completed',
+    priority: 'high',
+    phase: 1,
+    tier: 1,
+    estimatedEffort: 'Medium',
+    businessValue: 'Unique AI intelligence hub competitors lack',
+    liveUrl: '/ai-pulse',
+  },
+  {
+    id: 'breach-simulation',
+    title: 'Breach Simulation (nexus-003)',
+    description: 'Interactive cybersecurity training: Phishing Email → choices branch to security outcomes. Nexus XP, terminal UI.',
+    status: 'completed',
+    priority: 'high',
+    phase: 1,
+    tier: 1,
+    estimatedEffort: 'Medium',
+    businessValue: 'Gamified security training differentiator',
+    liveUrl: '/breach-sim',
+  },
+  {
+    id: 'nexus-intersection',
+    title: 'Nexus Intersection (nexus-004)',
+    description: 'Cross-section: 1 Tech + 1 Security + 1 Gaming linked by common keyword. Unified intelligence view.',
+    status: 'completed',
+    priority: 'high',
+    phase: 1,
+    tier: 1,
+    estimatedEffort: 'Medium',
+    businessValue: 'Cross-niche connection discovery',
+    liveUrl: '/nexus-intersection',
+  },
   {
     id: 'intelligence-graph',
     title: 'Cross-Niche Intelligence Graph',
@@ -307,9 +344,17 @@ const Roadmap = () => {
                     </CardHeader>
                     <CardContent>
                       <CardDescription className="mb-4">{feature.description}</CardDescription>
-                      <div className="text-sm">
+                      <div className="text-sm mb-3">
                         <strong>Business Value:</strong> {feature.businessValue}
                       </div>
+                      {feature.liveUrl && (
+                        <Link
+                          to={feature.liveUrl}
+                          className="inline-flex items-center gap-1.5 text-sm text-primary hover:underline font-medium"
+                        >
+                          Try it live <ExternalLink className="h-3.5 w-3.5" />
+                        </Link>
+                      )}
                     </CardContent>
                   </Card>
                 ))}
@@ -347,9 +392,17 @@ const Roadmap = () => {
                     </CardHeader>
                     <CardContent>
                       <CardDescription className="mb-4">{feature.description}</CardDescription>
-                      <div className="text-sm">
+                      <div className="text-sm mb-3">
                         <strong>Business Value:</strong> {feature.businessValue}
                       </div>
+                      {feature.liveUrl && (
+                        <Link
+                          to={feature.liveUrl}
+                          className="inline-flex items-center gap-1.5 text-sm text-primary hover:underline font-medium"
+                        >
+                          Try it live <ExternalLink className="h-3.5 w-3.5" />
+                        </Link>
+                      )}
                     </CardContent>
                   </Card>
                 ))}
@@ -387,9 +440,17 @@ const Roadmap = () => {
                     </CardHeader>
                     <CardContent>
                       <CardDescription className="mb-4">{feature.description}</CardDescription>
-                      <div className="text-sm">
+                      <div className="text-sm mb-3">
                         <strong>Business Value:</strong> {feature.businessValue}
                       </div>
+                      {feature.liveUrl && (
+                        <Link
+                          to={feature.liveUrl}
+                          className="inline-flex items-center gap-1.5 text-sm text-primary hover:underline font-medium"
+                        >
+                          Try it live <ExternalLink className="h-3.5 w-3.5" />
+                        </Link>
+                      )}
                     </CardContent>
                   </Card>
                 ))}

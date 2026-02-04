@@ -5,7 +5,9 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "dev:convex": "cross-env VITE_CONVEX_URL=https://intent-akita-728.convex.cloud vite",
     "build": "vite build",
+    "build:convex": "cross-env VITE_CONVEX_URL=https://intent-akita-728.convex.cloud vite build",
     "build:dev": "vite build --mode development",
     "lint": "eslint .",
     "preview": "vite preview",

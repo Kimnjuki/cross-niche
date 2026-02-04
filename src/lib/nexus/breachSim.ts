@@ -20,6 +20,7 @@ export interface BreachState {
   isTerminal: boolean; // no more choices (success/fail end)
 }
 
+export const BREACH_START_STATE_IDS = ['phishing_received', 'usb_found', 'password_prompt'] as const;
 export const BREACH_START_STATE_ID = 'phishing_received';
 
 const states: Record<string, BreachState> = {
@@ -107,14 +108,85 @@ const states: Record<string, BreachState> = {
     isTerminal: true,
     choices: [],
   },
+  // Additional scenario: USB drive found
+  usb_found: {
+    id: 'usb_found',
+    title: 'Unknown USB Drive Found',
+    body: 'A colleague left an unlabeled USB drive on your desk. It could contain work files—or malware. What do you do?',
+    isTerminal: false,
+    choices: [
+      {
+        id: 'plug_usb',
+        label: 'Plug in to check contents',
+        nextStateId: 'malware_triggered',
+        xpDelta: 0,
+        breachDelta: 40,
+        feedback: 'The USB contained malware. Never plug in unknown devices.',
+      },
+      {
+        id: 'hand_to_it',
+        label: 'Hand to IT Security',
+        nextStateId: 'reported_safe',
+        xpDelta: 45,
+        breachDelta: -15,
+        feedback: 'IT confirmed it was a test. You passed the security awareness check.',
+      },
+      {
+        id: 'discard_usb',
+        label: 'Discard in secure bin',
+        nextStateId: 'deleted_safe',
+        xpDelta: 30,
+        breachDelta: -5,
+        feedback: 'Safe choice. When in doubt, don\'t plug it in.',
+      },
+    ],
+  },
+  // Additional scenario: weak password prompt
+  password_prompt: {
+    id: 'password_prompt',
+    title: 'Password Reset Request',
+    body: 'You received an email asking you to reset your password via a link. The sender looks like your IT department, but the domain is slightly off (it-support@comp4ny.com).',
+    isTerminal: false,
+    choices: [
+      {
+        id: 'click_reset',
+        label: 'Click the reset link',
+        nextStateId: 'malware_triggered',
+        xpDelta: 0,
+        breachDelta: 45,
+        feedback: 'Phishing site captured your credentials. Always use the official portal.',
+      },
+      {
+        id: 'verify_first',
+        label: 'Call IT to verify',
+        nextStateId: 'reported_safe',
+        xpDelta: 55,
+        breachDelta: -20,
+        feedback: 'IT confirmed it was phishing. You avoided a credential compromise.',
+      },
+      {
+        id: 'ignore_email',
+        label: 'Ignore and use company portal',
+        nextStateId: 'contained',
+        xpDelta: 40,
+        breachDelta: -10,
+        feedback: 'You went directly to the real portal. Smart move.',
+      },
+    ],
+  },
 };
 
 export function getBreachState(stateId: string): BreachState | undefined {
   return states[stateId];
 }
 
-export function getInitialState(): BreachState {
-  return states[BREACH_START_STATE_ID];
+export function getInitialState(scenarioId?: string): BreachState {
+  const id = scenarioId && states[scenarioId] ? scenarioId : BREACH_START_STATE_ID;
+  return states[id];
+}
+
+export function getScenarioIds(): string[] {
+  return [...BREACH_START_STATE_IDS];
 }
 
 export function getChoice(stateId: string, choiceId: string): BreachChoice | undefined {

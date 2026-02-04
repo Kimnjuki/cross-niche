@@ -13,6 +13,7 @@ import { Link } from 'react-router-dom';
 import { ChevronLeft, ChevronRight, Clock, Calendar } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import type { Article } from '@/types';
+import { getPlaceholderImage } from '@/lib/placeholderImages';
 
 const nicheStyles = {
   tech: { 
@@ -128,7 +129,7 @@ export default function BlogSeries() {
               <strong>Artificial intelligence</strong> is reshaping how the <strong>industry</strong> builds products and defends against <strong>cyber</strong> threats. From <strong>ai in cybersecurity</strong> to <strong>ai technology</strong> in games, the <strong>use of ai</strong> is everywhere. <strong>AI agents</strong> and <strong>ai system</strong>s help detect <strong>malware</strong> and <strong>malicious software</strong>, while <strong>cybersecurity solutions</strong> leverage <strong>cloud security</strong> and <strong>network security</strong> to protect <strong>personal information</strong>.
             </p>
             <figure className="my-6 rounded-xl overflow-hidden border border-border">
-              <LazyImage src="/placeholder.svg" alt="Artificial intelligence and cybersecurity technologies" className="w-full aspect-video object-cover" />
+              <LazyImage src={getPlaceholderImage('ai')} alt="Artificial intelligence and cybersecurity technologies" className="w-full aspect-video object-cover" />
               <figcaption className="text-sm text-muted-foreground px-4 py-2 bg-muted">AI and security technologies in the industry</figcaption>
             </figure>
             <p className="mb-4">
@@ -140,7 +141,7 @@ export default function BlogSeries() {
               <strong>Cybersecurity in gaming</strong> is critical for the <strong>gaming industry</strong>. <strong>Online gaming</strong> and <strong>gaming accounts</strong> are frequent targets; <strong>cyber threats</strong> and <strong>attacks</strong> on <strong>popular games</strong> can compromise <strong>personal information</strong>. The <strong>gaming community</strong> and <strong>game developers</strong> need <strong>skills</strong> and <strong>technologies</strong> to harden <strong>security</strong> and reduce <strong>vulnerabilities</strong>.
             </p>
             <figure className="my-6 rounded-xl overflow-hidden border border-border">
-              <LazyImage src="/placeholder.svg" alt="Cybersecurity in gaming and online gaming platforms" className="w-full aspect-video object-cover" />
+              <LazyImage src={getPlaceholderImage('cyber')} alt="Cybersecurity in gaming and online gaming platforms" className="w-full aspect-video object-cover" />
               <figcaption className="text-sm text-muted-foreground px-4 py-2 bg-muted">Security for gaming platforms and gamers</figcaption>
             </figure>
             <p className="mb-4">
@@ -152,7 +153,7 @@ export default function BlogSeries() {
               <strong>Ai in cybersecurity</strong> enables faster detection of <strong>malicious software</strong> and <strong>cyber attacks</strong>. <strong>AI technology</strong> and <strong>ai agents</strong> analyse <strong>attack surface</strong> and <strong>vulnerabilities</strong> to improve <strong>security</strong>. The <strong>use of ai</strong> in <strong>cybersecurity solutions</strong> supports <strong>cloud security</strong> and <strong>network security</strong>, helping the <strong>industry</strong> respond to <strong>cyber threats</strong> and <strong>security breaches</strong>.
             </p>
             <figure className="my-6 rounded-xl overflow-hidden border border-border">
-              <LazyImage src="/placeholder.svg" alt="AI in cybersecurity and defence technologies" className="w-full aspect-video object-cover" />
+              <LazyImage src={getPlaceholderImage('ai')} alt="AI in cybersecurity and defence technologies" className="w-full aspect-video object-cover" />
               <figcaption className="text-sm text-muted-foreground px-4 py-2 bg-muted">AI and defence in security</figcaption>
             </figure>
 
@@ -161,7 +162,7 @@ export default function BlogSeries() {
               <strong>Cyber</strong> threats targeting the <strong>gaming industry</strong> include <strong>data breaches</strong>, <strong>malware</strong>, and <strong>cyberattacks</strong> on <strong>gaming platforms</strong> and <strong>gaming accounts</strong>. <strong>Gaming companies</strong> such as <strong>Riot Games</strong> and other <strong>game developers</strong> work to protect <strong>gamers</strong> and the <strong>gaming community</strong>. <strong>Cybersecurity in gaming</strong> and <strong>online gaming</strong> <strong>security</strong> rely on <strong>technologies</strong> and <strong>skills</strong> to safeguard <strong>personal information</strong> and the <strong>gaming experience</strong> on <strong>popular games</strong>.
             </p>
             <figure className="my-6 rounded-xl overflow-hidden border border-border">
-              <LazyImage src="/placeholder.svg" alt="Cyber threats and gaming industry security" className="w-full aspect-video object-cover" />
+              <LazyImage src={getPlaceholderImage('cyber')} alt="Cyber threats and gaming industry security" className="w-full aspect-video object-cover" />
               <figcaption className="text-sm text-muted-foreground px-4 py-2 bg-muted">Cyber risk and gaming platforms</figcaption>
             </figure>
 
@@ -170,7 +171,7 @@ export default function BlogSeries() {
               <strong>Technologies</strong> for <strong>defence</strong> against <strong>malware</strong> and <strong>malicious software</strong> are essential across <strong>security</strong>, <strong>cybersecurity</strong>, and <strong>gaming</strong>. <strong>Cybersecurity solutions</strong> combine <strong>ai technology</strong>, <strong>cloud security</strong>, and <strong>network security</strong> to reduce <strong>cybersecurity risks</strong> and <strong>cyber risk</strong>. <strong>Cybercriminals</strong> and <strong>attacks</strong> target <strong>vulnerabilities</strong>; the <strong>industry</strong> must keep <strong>skills</strong> and <strong>technologies</strong> up to date to prevent <strong>security breaches</strong> and <strong>data breaches</strong>.
             </p>
             <figure className="my-6 rounded-xl overflow-hidden border border-border">
-              <LazyImage src="/placeholder.svg" alt="Technologies and malware defence in security" className="w-full aspect-video object-cover" />
+              <LazyImage src={getPlaceholderImage('security')} alt="Technologies and malware defence in security" className="w-full aspect-video object-cover" />
               <figcaption className="text-sm text-muted-foreground px-4 py-2 bg-muted">Malware defence and security technologies</figcaption>
             </figure>
 
@@ -179,7 +180,7 @@ export default function BlogSeries() {
               The <strong>industry</strong> continues to adopt <strong>security</strong> and <strong>cybersecurity</strong> best practices. <strong>Gaming companies</strong>, <strong>game developers</strong>, and <strong>online gaming platforms</strong> invest in <strong>cybersecurity solutions</strong> to protect <strong>gamers</strong> and <strong>players</strong>. <strong>Cybersecurity in gaming</strong> and <strong>ai in cybersecurity</strong> are key <strong>technologies</strong> for defending against <strong>cyber threats</strong>, <strong>cyber attacks</strong>, and <strong>malware</strong>, ensuring a safer <strong>gaming experience</strong> and <strong>gaming community</strong>.
             </p>
             <figure className="my-6 rounded-xl overflow-hidden border border-border">
-              <LazyImage src="/placeholder.svg" alt="Industry security and gaming community best practices" className="w-full aspect-video object-cover" />
+              <LazyImage src={getPlaceholderImage('default')} alt="Industry security and gaming community best practices" className="w-full aspect-video object-cover" />
               <figcaption className="text-sm text-muted-foreground px-4 py-2 bg-muted">Industry and gaming security best practices</figcaption>
             </figure>
             <p className="mb-4">

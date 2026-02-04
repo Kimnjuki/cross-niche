@@ -9,6 +9,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Video, Headphones, Play, ExternalLink } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { getPlaceholderImage } from '@/lib/placeholderImages';
 
 const PLACEHOLDER_VIDEOS = [
   {
@@ -16,7 +17,7 @@ const PLACEHOLDER_VIDEOS = [
     title: 'AI Security in 2026: What You Need to Know',
     description: 'Expert roundtable on AI-driven threats and defenses.',
     duration: '24:00',
-    thumbnail: '/placeholder.svg',
+    thumbnail: getPlaceholderImage('security'),
     category: 'Security',
   },
   {
@@ -24,7 +25,7 @@ const PLACEHOLDER_VIDEOS = [
     title: 'Next-Gen GPUs Compared',
     description: 'Benchmarks and real-world performance for the latest graphics cards.',
     duration: '18:30',
-    thumbnail: '/placeholder.svg',
+    thumbnail: getPlaceholderImage('tech'),
     category: 'Tech',
   },
   {
@@ -32,7 +33,7 @@ const PLACEHOLDER_VIDEOS = [
     title: 'Gaming Security: Protecting Your Account',
     description: 'Best practices for keeping your gaming accounts and gear secure.',
     duration: '12:15',
-    thumbnail: '/placeholder.svg',
+    thumbnail: getPlaceholderImage('gaming'),
     category: 'Gaming',
   },
 ];

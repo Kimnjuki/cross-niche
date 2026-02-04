@@ -133,7 +133,17 @@ If `disabled: true` or `published: 0`, follow sections 3 and 4.2.
 
 ---
 
-## 7. Recommended Order of Operations
+## 7. Pipeline / Terminal Commands (VITE_CONVEX_URL)
+
+| Command | Purpose |
+|---------|---------|
+| `npm run dev:convex` | Local dev with `VITE_CONVEX_URL=https://intent-akita-728.convex.cloud` |
+| `npm run build:convex` | Production build with Convex URL set |
+| Coolify Build Time Variable | Set `VITE_CONVEX_URL` = `https://intent-akita-728.convex.cloud` |
+
+---
+
+## 8. Recommended Order of Operations
 
 1. Commit and push all changes to GitHub
 2. In Coolify: Update to latest commit → Force Rebuild

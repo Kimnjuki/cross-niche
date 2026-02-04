@@ -1,5 +1,6 @@
 import type { ContentItem } from '@/hooks/useContent';
 import type { Article, Niche } from '@/types';
+import { getPlaceholderByNiche } from '@/lib/placeholderImages';
 
 // Map Convex/database content to Article type used by components (returns null if content is falsy)
 export function mapContentToArticle(content: ContentItem | null | undefined): Article | null {
@@ -71,7 +72,7 @@ export function mapContentToArticle(content: ContentItem | null | undefined): Ar
     author,
     publishedAt,
     readTime: content.read_time_minutes || 5,
-    imageUrl: content.featured_image_url || '/placeholder.svg',
+    imageUrl: content.featured_image_url || getPlaceholderByNiche(niche),
     tags,
     isSponsored: false,
     isFeatured: content.is_featured || false,

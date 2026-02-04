@@ -1,6 +1,8 @@
 /**
  * Tutorial type and mock data for the Tutorials page.
+ * Placeholder images from Picsum Photos (free, themed).
  */
+import { getPlaceholderImage } from '@/lib/placeholderImages';
 
 export type Tutorial = {
   id: string;
@@ -35,7 +37,7 @@ export const mockTutorials: Tutorial[] = [
       'Disable programs you don\'t need at startup',
       'Restart and measure boot time',
     ],
-    imageUrl: '/placeholder.svg',
+    imageUrl: getPlaceholderImage('tech'),
     featured: true,
     views: 12500,
   },
@@ -55,7 +57,7 @@ export const mockTutorials: Tutorial[] = [
       'Use Malwarebytes or similar for second opinion',
       'Reset browser and clear temp files',
     ],
-    imageUrl: '/placeholder.svg',
+    imageUrl: getPlaceholderImage('security'),
     featured: true,
     views: 8200,
   },
@@ -75,7 +77,7 @@ export const mockTutorials: Tutorial[] = [
       'Lower in-game graphics (shadows, reflections)',
       'Disable background apps while gaming',
     ],
-    imageUrl: '/placeholder.svg',
+    imageUrl: getPlaceholderImage('gaming'),
     featured: false,
     views: 15400,
   },
@@ -95,7 +97,7 @@ export const mockTutorials: Tutorial[] = [
       'Use chown/chmod if needed for specific folders',
       'Restart and verify',
     ],
-    imageUrl: '/placeholder.svg',
+    imageUrl: getPlaceholderImage('tech'),
     featured: false,
     views: 4200,
   },
@@ -115,7 +117,7 @@ export const mockTutorials: Tutorial[] = [
       'Enable WPA3 or WPA2 and strong passphrase',
       'Disable WPS and remote admin if not needed',
     ],
-    imageUrl: '/placeholder.svg',
+    imageUrl: getPlaceholderImage('security'),
     featured: true,
     views: 6800,
   },
@@ -135,7 +137,7 @@ export const mockTutorials: Tutorial[] = [
       'Create bootable USB and install Linux',
       'Configure GRUB bootloader',
     ],
-    imageUrl: '/placeholder.svg',
+    imageUrl: getPlaceholderImage('tech'),
     featured: false,
     views: 3100,
   },

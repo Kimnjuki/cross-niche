@@ -27,6 +27,7 @@ import { FAQSection } from '@/components/seo/FAQSection';
 import { LazyImage } from '@/components/ui/lazy-image';
 import { AdPlacement } from '@/components/ads/AdPlacement';
 import { cn, authorSlug } from '@/lib/utils';
+import { getPlaceholderByNiche } from '@/lib/placeholderImages';
 import { prepareArticleContent } from '@/lib/markdownToHtml';
 import type { Article as ArticleType } from '@/types';
 
@@ -193,7 +194,7 @@ export default function Article() {
         title={undefined}
         description={undefined}
         keywords={tags}
-        image={article.imageUrl ?? '/placeholder.svg'}
+        image={article.imageUrl ?? getPlaceholderByNiche(article.niche)}
         url={`${window.location.origin}/article/${article.slug ?? articleId}`}
         type="article"
         article={article}
@@ -273,7 +274,7 @@ export default function Article() {
 
         <div className="max-w-4xl mb-8">
           <LazyImage
-            src={article.imageUrl ?? '/placeholder.svg'}
+            src={article.imageUrl ?? getPlaceholderByNiche(article.niche)}
             alt={article.title ?? 'Article'}
             className="w-full aspect-video rounded-xl"
           />
