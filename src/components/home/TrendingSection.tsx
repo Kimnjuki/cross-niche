@@ -15,15 +15,15 @@ export function TrendingSection({ articles }: TrendingSectionProps) {
             <TrendingUp className="h-6 w-6 text-primary-foreground" />
           </div>
           <div>
-            <h2 className="font-display font-bold text-2xl">Trending Now</h2>
-            <p className="text-muted-foreground text-sm">Most popular across all categories</p>
+            <h2 className="font-display font-bold text-2xl">Trending Technology and Cybersecurity News</h2>
+            <p className="text-muted-foreground text-sm">Most popular articles on artificial intelligence, machine learning, cybersecurity, cloud computing, and gaming</p>
           </div>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           <div className="space-y-0">
             {articles.slice(0, 4).map((article, index) => (
-              <div key={article.id} className="flex items-start gap-4">
+              <div key={(article as Article & { _id?: string })?._id ?? article?.id ?? article?.slug ?? index} className="flex items-start gap-4">
                 <span className="font-display font-bold text-4xl text-muted-foreground/30 w-8">
                   {index + 1}
                 </span>
@@ -35,7 +35,7 @@ export function TrendingSection({ articles }: TrendingSectionProps) {
           </div>
           <div className="hidden lg:grid grid-cols-2 gap-4">
             {articles.slice(4, 6).map((article) => (
-              <ArticleCard key={article.id} article={article} />
+              <ArticleCard key={(article as Article & { _id?: string })?._id ?? article?.id ?? article?.slug ?? index} article={article} />
             ))}
           </div>
         </div>

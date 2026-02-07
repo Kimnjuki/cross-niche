@@ -4,45 +4,93 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "@/contexts/AuthContext";
+import { SafeConvexProvider } from "@/components/SafeConvexProvider";
 import Index from "./pages/Index";
 import Auth from "./pages/Auth";
 import Tech from "./pages/Tech";
 import Security from "./pages/Security";
 import Gaming from "./pages/Gaming";
 import Guides from "./pages/Guides";
+import GuideDetail from "./pages/GuideDetail";
 import Article from "./pages/Article";
 import Bookmarks from "./pages/Bookmarks";
 import SecurityScore from "./pages/SecurityScore";
 import Disclosure from "./pages/Disclosure";
+import Roadmap from "./pages/Roadmap";
+import AIPulse from "./pages/AIPulse";
+import BreachSimulation from "./pages/BreachSimulation";
+import NexusIntersection from "./pages/NexusIntersection";
+import About from "./pages/About";
+import Editorial from "./pages/Editorial";
+import Contact from "./pages/Contact";
+import Privacy from "./pages/Privacy";
+import Terms from "./pages/Terms";
+import BlogSeries from "./pages/BlogSeries";
+import Explore from "./pages/Explore";
+import Topics from "./pages/Topics";
+import Tutorials from "./pages/Tutorials";
+import Profile from "./pages/Profile";
+import AuthCallback from "./pages/AuthCallback";
+import AuthConfirm from "./pages/AuthConfirm";
+import Reviews from "./pages/Reviews";
+import Author from "./pages/Author";
+import Media from "./pages/Media";
+import News from "./pages/News";
 import NotFound from "./pages/NotFound";
+import { GA4PageTracker } from "./components/analytics/GA4PageTracker";
 
 const queryClient = new QueryClient();
 
 const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <AuthProvider>
-      <TooltipProvider>
-        <Toaster />
-        <Sonner />
-        <BrowserRouter>
+  <SafeConvexProvider>
+    <QueryClientProvider client={queryClient}>
+      <AuthProvider>
+        <TooltipProvider>
+          <Toaster />
+          <Sonner />
+          <BrowserRouter>
+          <GA4PageTracker />
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/auth" element={<Auth />} />
+            <Route path="/auth/callback" element={<AuthCallback />} />
+            <Route path="/auth/confirm" element={<AuthConfirm />} />
+            <Route path="/auth/reset-password" element={<Auth />} />
             <Route path="/tech" element={<Tech />} />
             <Route path="/security" element={<Security />} />
             <Route path="/gaming" element={<Gaming />} />
             <Route path="/guides" element={<Guides />} />
+            <Route path="/guides/:id" element={<GuideDetail />} />
             <Route path="/article/:id" element={<Article />} />
             <Route path="/bookmarks" element={<Bookmarks />} />
             <Route path="/security-score" element={<SecurityScore />} />
             <Route path="/disclosure" element={<Disclosure />} />
+            <Route path="/roadmap" element={<Roadmap />} />
+            <Route path="/ai-pulse" element={<AIPulse />} />
+            <Route path="/breach-sim" element={<BreachSimulation />} />
+            <Route path="/nexus-intersection" element={<NexusIntersection />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/editorial" element={<Editorial />} />
+            <Route path="/contact" element={<Contact />} />
+            <Route path="/privacy" element={<Privacy />} />
+            <Route path="/terms" element={<Terms />} />
+            <Route path="/blog-series" element={<BlogSeries />} />
+            <Route path="/explore" element={<Explore />} />
+            <Route path="/topics" element={<Topics />} />
+            <Route path="/tutorials" element={<Tutorials />} />
+            <Route path="/reviews" element={<Reviews />} />
+            <Route path="/author/:authorSlug" element={<Author />} />
+            <Route path="/media" element={<Media />} />
+            <Route path="/news" element={<News />} />
+            <Route path="/profile" element={<Profile />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
-        </BrowserRouter>
-      </TooltipProvider>
-    </AuthProvider>
-  </QueryClientProvider>
+          </BrowserRouter>
+        </TooltipProvider>
+      </AuthProvider>
+    </QueryClientProvider>
+  </SafeConvexProvider>
 );
 
 export default App;
