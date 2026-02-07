@@ -23,16 +23,18 @@ import { fileURLToPath } from 'url';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const BASE_URL = 'https://thegridnexus.com';
-const CONVEX_URL = process.env.VITE_CONVEX_URL || 'https://canny-mule-83.convex.cloud';
+// Ensure consistent Convex URL
+const CONVEX_URL = process.env.VITE_CONVEX_URL || 'https://intent-akita-728.convex.cloud';
+
+// Validate URL matches expected deployment
+if (!CONVEX_URL.includes('intent-akita-728')) {
+  console.warn(`⚠️  Warning: VITE_CONVEX_URL (${CONVEX_URL}) does not match expected deployment (intent-akita-728)`);
+}
 const PUBLICATION_NAME = 'The Grid Nexus';
 const PUBLICATION_LANGUAGE = 'en';
 
-// Mock articles for fallback (last 48 hours requirement means these won't show in prod)
-const MOCK_NEWS_ARTICLES = [
-  { slug: 'tech-1', title: 'Apple Vision Pro 2: Revolutionary Spatial Computing Arrives', publishedAt: new Date().toISOString(), keywords: ['Apple', 'VR', 'AR', 'Hardware'] },
-  { slug: 'sec-1', title: 'Critical Zero-Day Vulnerability Affects Millions of Routers', publishedAt: new Date().toISOString(), keywords: ['Vulnerability', 'Router', 'Security'] },
-  { slug: 'game-1', title: 'Elden Ring 2: FromSoftware Announces Sequel', publishedAt: new Date().toISOString(), keywords: ['Gaming', 'Elden Ring', 'FromSoftware'] },
-];
+// Do NOT use mock articles - causes "Non-canonical page in sitemap" in Ahrefs.
+// Only include real Convex articles to avoid 404s and canonical mismatches.
 
 /**
  * Escape XML special characters
@@ -137,10 +139,9 @@ async function main() {
     console.warn(`   ⚠️ Could not fetch from Convex: ${error.message}`);
   }
 
-  // If no recent Convex articles, use mock data for demo purposes
+  // Do NOT add mock articles - only real Convex content to avoid Ahrefs "Non-canonical page in sitemap"
   if (newsArticles.length === 0) {
-    console.log('   No recent Convex articles, using mock data...');
-    newsArticles = MOCK_NEWS_ARTICLES;
+    console.log('   No recent Convex articles. News sitemap will be empty (valid XML, no phantom URLs).');
   }
 
   // Generate XML

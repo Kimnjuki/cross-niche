@@ -224,13 +224,21 @@ export function useRelatedContent(slug: string, limit = 6) {
   return { data, isLoading: !isDisabled && slug && rows === undefined };
 }
 
-/** Diagnostics: published count and connection (for debugging why Convex articles don't show) */
+/** Production hostname: hide all debug/diagnostics UI (AdSense + technical sanitization). */
+function isProductionHost(): boolean {
+  if (typeof window === 'undefined') return false;
+  return window.location.hostname === 'thegridnexus.com';
+}
+
+/** Diagnostics: published count and connection (for debugging why Convex articles don't show).
+ * On production (thegridnexus.com), returns null diagnostics so no "Content debug" / "Demo mode" UI is shown. */
 export function useContentDiagnostics() {
   const isDisabled = useConvexDisabled();
   const diagnostics = useQuery(api.content.diagnostics, isDisabled ? 'skip' : {});
+  const hideForProduction = isProductionHost();
   return {
     isConvexDisabled: isDisabled,
-    diagnostics: isDisabled ? null : diagnostics ?? null,
-    isLoading: !isDisabled && diagnostics === undefined,
+    diagnostics: hideForProduction || isDisabled ? null : diagnostics ?? null,
+    isLoading: !hideForProduction && !isDisabled && diagnostics === undefined,
   };
 }

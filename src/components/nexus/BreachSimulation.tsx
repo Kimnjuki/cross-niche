@@ -8,8 +8,12 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { getInitialState, applyChoice, getScenarioIds, type BreachState, type BreachChoice } from '@/lib/nexus/breachSim';
 import { getStoredNexusXP, addNexusXP, getStoredHighScore, updateHighScore } from '@/lib/nexus/nexusXP';
+import { getStats, recordGame, getAchievements, type BreachStats } from '@/lib/nexus/breachStats';
 import { cn } from '@/lib/utils';
-import { Shield, RotateCcw, Mail, Usb, Key } from 'lucide-react';
+import { Shield, RotateCcw, Mail, Usb, Key, Trophy, BarChart3, Award } from 'lucide-react';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Badge } from '@/components/ui/badge';
 
 const BREACH_MAX = 100;
 const BREACH_GAME_OVER = 100;
@@ -18,6 +22,9 @@ const SCENARIO_LABELS: Record<string, { label: string; icon: typeof Mail }> = {
   phishing_received: { label: 'Phishing Email', icon: Mail },
   usb_found: { label: 'USB Drive', icon: Usb },
   password_prompt: { label: 'Password Phish', icon: Key },
+  social_engineering: { label: 'Social Engineering', icon: Shield },
+  public_wifi: { label: 'Public WiFi', icon: Shield },
+  suspicious_download: { label: 'Suspicious Download', icon: Shield },
 };
 
 export function BreachSimulation() {
@@ -27,10 +34,18 @@ export function BreachSimulation() {
   const [xp, setXp] = useState(0);
   const [highScore, setHighScore] = useState(0);
   const [feedback, setFeedback] = useState<string | null>(null);
+  const [stats, setStats] = useState<BreachStats>(getStats());
+  const [achievements, setAchievements] = useState(getAchievements());
+  const [showStats, setShowStats] = useState(false);
+  const [choicesCount, setChoicesCount] = useState(0);
+  const [secureChoicesCount, setSecureChoicesCount] = useState(0);
+  const [gameStartBreach, setGameStartBreach] = useState(0);
 
   useEffect(() => {
     setXp(getStoredNexusXP());
     setHighScore(getStoredHighScore());
+    setStats(getStats());
+    setAchievements(getAchievements());
   }, []);
 
   const handleChoice = useCallback((choice: BreachChoice) => {
@@ -39,6 +54,10 @@ export function BreachSimulation() {
     if (!result) return;
 
     setFeedback(choice.feedback);
+    setChoicesCount(c => c + 1);
+    if (result.xpDelta > 0) {
+      setSecureChoicesCount(c => c + 1);
+    }
 
     const newBreach = Math.max(0, Math.min(BREACH_MAX, breachLevel + result.breachDelta));
     setBreachLevel(newBreach);
@@ -50,17 +69,31 @@ export function BreachSimulation() {
     // Brief delay so user sees feedback, then transition
     window.setTimeout(() => {
       setState(result.nextState);
-      if (result.nextState.id === 'full_breach') setBreachLevel(BREACH_MAX);
+      if (result.nextState.id === 'full_breach') {
+        setBreachLevel(BREACH_MAX);
+        // Record game completion
+        const finalStats = recordGame(scenarioId, BREACH_MAX, result.xpDelta, choicesCount + 1, secureChoicesCount + (result.xpDelta > 0 ? 1 : 0));
+        setStats(finalStats);
+        setAchievements(getAchievements());
+      } else if (result.nextState.isTerminal) {
+        // Record successful completion
+        const finalStats = recordGame(scenarioId, newBreach, result.xpDelta, choicesCount + 1, secureChoicesCount + (result.xpDelta > 0 ? 1 : 0));
+        setStats(finalStats);
+        setAchievements(getAchievements());
+      }
       setFeedback(null);
     }, 800);
-  }, [state, breachLevel]);
+  }, [state, breachLevel, scenarioId, choicesCount, secureChoicesCount]);
 
   const handleRestart = useCallback((newScenarioId?: string) => {
     const nextScenario = newScenarioId ?? scenarioId;
     setScenarioId(nextScenario);
     setState(getInitialState(nextScenario));
     setBreachLevel(0);
+    setGameStartBreach(0);
     setFeedback(null);
+    setChoicesCount(0);
+    setSecureChoicesCount(0);
   }, [scenarioId]);
 
   const isGameOver = breachLevel >= BREACH_GAME_OVER || state.id === 'full_breach';
@@ -225,10 +258,104 @@ export function BreachSimulation() {
       </div>
 
       {/* Footer */}
-      <div className="px-4 py-2 border-t border-[#33ff33]/20 flex items-center gap-2 text-xs text-[#33ff33]/60">
-        <Shield className="h-3 w-3" />
-        <span>The Grid Nexus — Breach Simulation (nexus-003). Secure choices earn Nexus XP.</span>
+      <div className="px-4 py-2 border-t border-[#33ff33]/20 flex items-center justify-between gap-2 text-xs text-[#33ff33]/60">
+        <div className="flex items-center gap-2">
+          <Shield className="h-3 w-3" />
+          <span>The Grid Nexus — Breach Simulation (nexus-003). Secure choices earn Nexus XP.</span>
+        </div>
+        <Button
+          variant="ghost"
+          size="sm"
+          onClick={() => setShowStats(!showStats)}
+          className={cn('h-7 text-xs gap-1.5', terminalGreen, 'hover:bg-[#33ff33]/10')}
+        >
+          <BarChart3 className="h-3 w-3" />
+          Stats
+        </Button>
       </div>
+
+      {/* Stats & Achievements Panel */}
+      {showStats && (
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: 10 }}
+          className="mt-4 rounded-lg border-2 border-[#33ff33]/30 bg-black/50 p-4"
+        >
+          <Tabs defaultValue="stats" className="w-full">
+            <TabsList className="grid w-full grid-cols-2 mb-4 bg-black/50">
+              <TabsTrigger value="stats" className="gap-2 text-xs">
+                <BarChart3 className="h-3 w-3" />
+                Statistics
+              </TabsTrigger>
+              <TabsTrigger value="achievements" className="gap-2 text-xs">
+                <Trophy className="h-3 w-3" />
+                Achievements
+              </TabsTrigger>
+            </TabsList>
+
+            <TabsContent value="stats" className="space-y-3">
+              <div className="grid grid-cols-2 gap-3 text-xs">
+                <div className={cn('p-2 rounded border border-[#33ff33]/20', terminalBg)}>
+                  <div className={cn(terminalGreen)}>Total Games</div>
+                  <div className="text-lg font-bold">{stats.totalGames}</div>
+                </div>
+                <div className={cn('p-2 rounded border border-[#33ff33]/20', terminalBg)}>
+                  <div className={cn(terminalGreen)}>Total XP</div>
+                  <div className="text-lg font-bold">{stats.totalXP}</div>
+                </div>
+                <div className={cn('p-2 rounded border border-[#33ff33]/20', terminalBg)}>
+                  <div className={cn(terminalGreen)}>Perfect Runs</div>
+                  <div className="text-lg font-bold">{stats.perfectRuns}</div>
+                </div>
+                <div className={cn('p-2 rounded border border-[#33ff33]/20', terminalBg)}>
+                  <div className={cn(terminalGreen)}>Scenarios</div>
+                  <div className="text-lg font-bold">{stats.scenariosCompleted.length}/6</div>
+                </div>
+              </div>
+              <div className={cn('p-2 rounded border border-[#33ff33]/20 text-xs', terminalBg)}>
+                <div className={cn(terminalGreen, 'mb-1')}>Success Rate</div>
+                <div className="text-sm">
+                  {stats.totalChoices > 0
+                    ? Math.round((stats.secureChoices / stats.totalChoices) * 100)
+                    : 0}% secure choices
+                </div>
+              </div>
+            </TabsContent>
+
+            <TabsContent value="achievements" className="space-y-2">
+              <div className="grid grid-cols-1 gap-2 max-h-64 overflow-y-auto">
+                {achievements.map((ach) => (
+                  <div
+                    key={ach.id}
+                    className={cn(
+                      'p-2 rounded border text-xs',
+                      ach.unlocked
+                        ? 'border-[#33ff33]/40 bg-[#33ff33]/5'
+                        : 'border-[#33ff33]/10 bg-black/30 opacity-60',
+                      terminalBg
+                    )}
+                  >
+                    <div className="flex items-start gap-2">
+                      {ach.unlocked ? (
+                        <Award className={cn('h-4 w-4 mt-0.5', terminalGreen)} />
+                      ) : (
+                        <Award className="h-4 w-4 mt-0.5 text-gray-500" />
+                      )}
+                      <div className="flex-1">
+                        <div className={cn('font-semibold', ach.unlocked ? terminalGreen : 'text-gray-400')}>
+                          {ach.name}
+                        </div>
+                        <div className="text-[#33ff33]/70 text-[10px]">{ach.description}</div>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </TabsContent>
+          </Tabs>
+        </motion.div>
+      )}
     </div>
   );
 }

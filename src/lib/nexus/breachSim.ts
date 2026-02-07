@@ -20,7 +20,14 @@ export interface BreachState {
   isTerminal: boolean; // no more choices (success/fail end)
 }
 
-export const BREACH_START_STATE_IDS = ['phishing_received', 'usb_found', 'password_prompt'] as const;
+export const BREACH_START_STATE_IDS = [
+  'phishing_received',
+  'usb_found',
+  'password_prompt',
+  'social_engineering',
+  'public_wifi',
+  'suspicious_download',
+] as const;
 export const BREACH_START_STATE_ID = 'phishing_received';
 
 const states: Record<string, BreachState> = {
@@ -171,6 +178,105 @@ const states: Record<string, BreachState> = {
         xpDelta: 40,
         breachDelta: -10,
         feedback: 'You went directly to the real portal. Smart move.',
+      },
+    ],
+  },
+  // Additional scenario: Social engineering call
+  social_engineering: {
+    id: 'social_engineering',
+    title: 'Suspicious Phone Call',
+    body: 'Someone claiming to be from IT calls you, saying your account was compromised. They ask you to verify your password over the phone to "secure your account".',
+    isTerminal: false,
+    choices: [
+      {
+        id: 'give_password',
+        label: 'Provide password to verify',
+        nextStateId: 'full_breach',
+        xpDelta: 0,
+        breachDelta: 50,
+        feedback: 'Never share passwords over the phone. IT never asks for passwords.',
+      },
+      {
+        id: 'hang_up_call_it',
+        label: 'Hang up and call IT directly',
+        nextStateId: 'reported_safe',
+        xpDelta: 60,
+        breachDelta: -20,
+        feedback: 'You verified with IT. This was a social engineering attempt.',
+      },
+      {
+        id: 'ask_for_id',
+        label: 'Ask for employee ID and verify',
+        nextStateId: 'contained',
+        xpDelta: 50,
+        breachDelta: -10,
+        feedback: 'Good verification practice. The caller hung up when asked for ID.',
+      },
+    ],
+  },
+  // Additional scenario: Public WiFi
+  public_wifi: {
+    id: 'public_wifi',
+    title: 'Public WiFi Network',
+    body: 'You\'re at a coffee shop and see a WiFi network called "Free_Public_WiFi". You need to check work email urgently.',
+    isTerminal: false,
+    choices: [
+      {
+        id: 'connect_public',
+        label: 'Connect to public WiFi',
+        nextStateId: 'malware_triggered',
+        xpDelta: 0,
+        breachDelta: 30,
+        feedback: 'Public WiFi can be monitored. Use VPN or mobile hotspot.',
+      },
+      {
+        id: 'use_vpn',
+        label: 'Use company VPN first',
+        nextStateId: 'contained',
+        xpDelta: 45,
+        breachDelta: -10,
+        feedback: 'VPN encrypts your connection. Safe choice.',
+      },
+      {
+        id: 'use_hotspot',
+        label: 'Use mobile hotspot',
+        nextStateId: 'reported_safe',
+        xpDelta: 40,
+        breachDelta: -15,
+        feedback: 'Mobile hotspot is more secure than public WiFi.',
+      },
+    ],
+  },
+  // Additional scenario: Suspicious download
+  suspicious_download: {
+    id: 'suspicious_download',
+    title: 'Unexpected Download Prompt',
+    body: 'A popup appears while browsing, claiming you need to install a "security update" to continue. The download file is named "update.exe" from an unknown source.',
+    isTerminal: false,
+    choices: [
+      {
+        id: 'download_file',
+        label: 'Download and install',
+        nextStateId: 'malware_triggered',
+        xpDelta: 0,
+        breachDelta: 40,
+        feedback: 'Never install software from untrusted sources. This was malware.',
+      },
+      {
+        id: 'close_popup',
+        label: 'Close popup and continue',
+        nextStateId: 'contained',
+        xpDelta: 35,
+        breachDelta: -5,
+        feedback: 'Good instinct. Legitimate updates come through official channels.',
+      },
+      {
+        id: 'check_with_it',
+        label: 'Check with IT first',
+        nextStateId: 'reported_safe',
+        xpDelta: 50,
+        breachDelta: -15,
+        feedback: 'IT confirmed it was a phishing popup. You avoided malware.',
       },
     ],
   },

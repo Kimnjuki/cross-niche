@@ -185,7 +185,7 @@ export function PersonalizedFeed({ userId = 'demo-user', maxArticles = 6 }: Pers
       {articles.length > 0 && (
         <div className="text-center">
           <Button variant="outline" asChild>
-            <Link to="/feed">
+            <Link to="/explore">
               View All Recommendations
             </Link>
           </Button>

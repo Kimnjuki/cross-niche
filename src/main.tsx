@@ -5,6 +5,7 @@ import { ErrorBoundary } from "./components/ErrorBoundary";
 import { initExternalScriptErrorHandling } from "./lib/externalScriptHandler";
 import { initAllTracking } from "./lib/analytics/ga4";
 import { initINPOptimizations } from "./lib/seo/inpOptimization";
+import { initCoreWebVitals } from "./lib/seo/coreWebVitals";
 
 // Never let init scripts block or break the app (critical for Coolify/deployment)
 try {
@@ -19,6 +20,11 @@ try {
 }
 try {
   initINPOptimizations();
+} catch {
+  // ignore
+}
+try {
+  if (import.meta.env.PROD) initCoreWebVitals();
 } catch {
   // ignore
 }

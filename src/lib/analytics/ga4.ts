@@ -1,6 +1,7 @@
 /**
  * Google Analytics 4 Implementation
  * Comprehensive event tracking for SEO and content performance
+ * Aligned with index.html gtag (G-TJ1VXE91NE) - avoids duplicate script load
  */
 
 declare global {
@@ -10,47 +11,126 @@ declare global {
   }
 }
 
-// GA4 Measurement ID - Replace with your actual ID
-const GA4_MEASUREMENT_ID = import.meta.env.VITE_GA4_MEASUREMENT_ID || 'G-XXXXXXXXXX';
+// GA4 Measurement ID - must match index.html; env override for flexibility
+const GA4_MEASUREMENT_ID = import.meta.env.VITE_GA4_MEASUREMENT_ID || 'G-TJ1VXE91NE';
 
 /**
- * Initialize GA4
+ * Initialize GA4 - uses existing gtag from index.html when present
  */
 export function initGA4() {
   if (typeof window === 'undefined') return;
 
-  // Load gtag script
-  const script1 = document.createElement('script');
-  script1.async = true;
-  script1.src = `https://www.googletagmanager.com/gtag/js?id=${GA4_MEASUREMENT_ID}`;
-  document.head.appendChild(script1);
-
-  // Initialize dataLayer
+  // Ensure dataLayer exists (index.html may have already initialized)
   window.dataLayer = window.dataLayer || [];
-  window.gtag = function() {
-    window.dataLayer.push(arguments);
-  };
+  if (typeof window.gtag !== 'function') {
+    window.gtag = function () {
+      window.dataLayer.push(arguments);
+    };
+  }
 
-  // Configure GA4
+  // Only load script if gtag.js not already loaded (index.html loads it)
+  const existingScript = document.querySelector(`script[src*="googletagmanager.com/gtag/js"]`);
+  if (!existingScript) {
+    const script = document.createElement('script');
+    script.async = true;
+    script.src = `https://www.googletagmanager.com/gtag/js?id=${GA4_MEASUREMENT_ID}`;
+    document.head.appendChild(script);
+  }
+
+  // Configure GA4 (safe to call multiple times)
   window.gtag('js', new Date());
   window.gtag('config', GA4_MEASUREMENT_ID, {
     send_page_view: true,
     page_path: window.location.pathname,
     page_title: document.title,
-    page_location: window.location.href
+    page_location: window.location.href,
   });
 }
 
 /**
- * Track page view
+ * Track page view with enhanced landing page context
  */
-export function trackPageView(path: string, title?: string) {
+export function trackPageView(path: string, title?: string, pageType?: string) {
   if (typeof window === 'undefined' || !window.gtag) return;
 
-  window.gtag('config', GA4_MEASUREMENT_ID, {
+  // Determine page type if not provided
+  const detectedPageType = pageType || detectPageType(path);
+  
+  // Determine content group for GA4 reporting
+  const contentGroup = getContentGroup(path);
+
+  const config: Record<string, any> = {
     page_path: path,
     page_title: title || document.title,
-    page_location: window.location.href
+    page_location: window.location.href,
+    page_type: detectedPageType,
+    content_group: contentGroup,
+  };
+
+  window.gtag('config', GA4_MEASUREMENT_ID, config);
+
+  // Also send as event for better filtering in GA4
+  trackEvent('page_view', {
+    page_path: path,
+    page_title: title || document.title,
+    page_type: detectedPageType,
+    content_group: contentGroup,
+    event_label: title || path,
+  });
+}
+
+/**
+ * Detect page type from path
+ */
+function detectPageType(path: string): string {
+  if (path === '/') return 'homepage';
+  if (path.startsWith('/article/')) return 'article';
+  if (path.startsWith('/tech')) return 'category';
+  if (path.startsWith('/security')) return 'category';
+  if (path.startsWith('/gaming')) return 'category';
+  if (path.startsWith('/news')) return 'category';
+  if (path.startsWith('/topics')) return 'topics';
+  if (path.startsWith('/guides')) return 'guides';
+  if (path.startsWith('/blog-series')) return 'blog-series';
+  return 'other';
+}
+
+/**
+ * Get content group for GA4 reporting
+ */
+function getContentGroup(path: string): string {
+  if (path === '/') return 'homepage';
+  if (path.startsWith('/tech')) return 'tech';
+  if (path.startsWith('/security')) return 'security';
+  if (path.startsWith('/gaming')) return 'gaming';
+  if (path.startsWith('/news')) return 'news';
+  if (path.startsWith('/article/')) {
+    // Extract niche from article if possible
+    return 'articles';
+  }
+  return 'other';
+}
+
+/**
+ * Track landing page engagement (for category/homepage pages)
+ */
+export function trackLandingPageEngagement(
+  pagePath: string,
+  pageType: 'homepage' | 'category',
+  engagementData?: {
+    articlesViewed?: number;
+    timeOnPage?: number;
+    scrollDepth?: number;
+  }
+) {
+  trackEvent('landing_page_engagement', {
+    page_path: pagePath,
+    page_type: pageType,
+    content_group: getContentGroup(pagePath),
+    articles_viewed: engagementData?.articlesViewed || 0,
+    time_on_page: engagementData?.timeOnPage || 0,
+    scroll_depth: engagementData?.scrollDepth || 0,
+    event_label: pagePath,
   });
 }
 
@@ -181,7 +261,7 @@ export function trackExternalLinks() {
 }
 
 /**
- * Track social shares
+ * Track social shares - uses GA4 recommended share event
  */
 export function trackSocialShare(platform: string, articleId?: string, articleTitle?: string) {
   trackEvent('share', {
@@ -189,19 +269,57 @@ export function trackSocialShare(platform: string, articleId?: string, articleTi
     content_type: 'article',
     item_id: articleId,
     content_title: articleTitle,
-    event_label: `Share on ${platform}`
+    event_label: `Share on ${platform}`,
   });
 }
 
 /**
- * Track newsletter signup
+ * Track newsletter signup - uses GA4 recommended event generate_lead
  */
 export function trackNewsletterSignup(source?: string) {
-  trackEvent('newsletter_signup', {
+  const params = {
     event_category: 'conversion',
-    value: 5, // Estimated value in dollars
+    value: 5,
     source: source || 'unknown',
-    event_label: 'Newsletter subscription'
+    event_label: 'Newsletter subscription',
+  };
+  trackEvent('generate_lead', params);
+  trackEvent('newsletter_signup', params); // Custom event for flexibility
+}
+
+/**
+ * Track article view - GA4 recommended view_item for content
+ */
+export function trackArticleView(articleId: string, articleTitle: string, niche?: string) {
+  trackEvent('view_item', {
+    content_type: 'article',
+    item_id: articleId,
+    item_name: articleTitle,
+    content_group: niche || 'tech',
+    event_label: articleTitle,
+  });
+  trackEvent('article_view', {
+    article_id: articleId,
+    article_title: articleTitle,
+    niche: niche || 'tech',
+    event_label: articleTitle,
+  });
+}
+
+/**
+ * Track related article click (internal navigation)
+ */
+export function trackRelatedArticleClick(
+  sourceArticleId: string,
+  targetArticleId: string,
+  targetTitle?: string
+) {
+  trackEvent('related_article_click', {
+    source_article_id: sourceArticleId,
+    target_article_id: targetArticleId,
+    target_title: targetTitle,
+    event_category: 'engagement',
+    event_label: targetTitle || targetArticleId,
   });
 }
 

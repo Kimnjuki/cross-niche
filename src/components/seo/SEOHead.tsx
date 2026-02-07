@@ -1,7 +1,17 @@
 import { useEffect } from 'react';
 import type { Article } from '@/types';
 import { optimizeTitle, optimizeMetaDescription, generateArticleTitle, generateArticleMetaDescription } from '@/lib/seoUtils';
-import { generateAllSchemas } from '@/lib/schemaMarkup';
+import { generateAllSchemas, generatePersonSchema } from '@/lib/schemaMarkup';
+
+/** Person/author for E-E-A-T schema on author pages */
+interface PersonSchema {
+  name: string;
+  jobTitle?: string;
+  description?: string;
+  imageUrl?: string;
+  sameAs?: string[];
+  expertise?: string[];
+}
 
 interface SEOHeadProps {
   title?: string;
@@ -22,6 +32,8 @@ interface SEOHeadProps {
   faqs?: Array<{ question: string; answer: string }>;
   /** HowTo for guides/tutorials schema */
   howTo?: { name: string; description: string; steps: Array<{ name: string; text: string; image?: string }>; totalTime?: string };
+  /** Person schema for author pages (E-E-A-T) */
+  person?: PersonSchema;
 }
 
 export function SEOHead({
@@ -40,7 +52,8 @@ export function SEOHead({
   autoGenerate = true,
   noindex = false,
   faqs,
-  howTo
+  howTo,
+  person
 }: SEOHeadProps) {
   // Auto-generate optimized title and description for articles if enabled
   const title = type === 'article' && article && autoGenerate
@@ -180,7 +193,7 @@ export function SEOHead({
     }
 
     // Structured Data (JSON-LD) - Article + Organization for ranking (schema.org)
-    const schemas = generateAllSchemas({
+    let schemas = generateAllSchemas({
       article: type === 'article' && article ? article : undefined,
       breadcrumbs: type === 'article' && article ? [
         { name: 'Home', url: '/' },
@@ -196,6 +209,11 @@ export function SEOHead({
         url: url
       } : undefined
     });
+
+    // Add Person schema for author pages (E-E-A-T)
+    if (person) {
+      schemas = [...schemas, generatePersonSchema(person)];
+    }
 
     // Remove existing schema scripts
     const existingSchemas = document.querySelectorAll('script[type="application/ld+json"]');
@@ -235,7 +253,7 @@ export function SEOHead({
             '@type': 'SearchAction',
             target: {
               '@type': 'EntryPoint',
-              urlTemplate: `${window.location.origin}/search?q={search_term_string}`
+              urlTemplate: `${window.location.origin}/topics?q={search_term_string}`
             },
             'query-input': 'required name=search_term_string'
           }
@@ -280,7 +298,7 @@ export function SEOHead({
       structuredDataScript.textContent = '';
     }
 
-  }, [optimizedTitle, optimizedDescription, title, description, keywords, image, url, type, article, publishedTime, modifiedTime, author, section, tags, noindex, faqs, howTo]);
+  }, [optimizedTitle, optimizedDescription, title, description, keywords, image, url, type, article, publishedTime, modifiedTime, author, section, tags, noindex, faqs, howTo, person]);
 
   return null; // This component doesn't render anything
 }

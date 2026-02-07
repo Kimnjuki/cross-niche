@@ -188,6 +188,7 @@ export default defineSchema({
 
   // ─── AI-Pulse Roadmap (nexus-002) ──────────────────────────────────────
   // Live-updating timeline: AI/ML tech trends. category = Productivity | Creative | Gaming AI.
+  // Enhanced with benchmarks, features, competitive analysis, and future predictions.
   aiUpdates: defineTable({
     title: v.string(),
     description: v.string(),
@@ -196,8 +197,64 @@ export default defineSchema({
     isHype: v.boolean(), // marketing fluff → dim when Hype view
     hasBenchmarks: v.boolean(), // confirmed ML benchmarks → highlight when Utility view
     sourceUrl: v.optional(v.string()),
+    // Enhanced fields for comprehensive roadmap
+    benchmarks: v.optional(v.array(v.object({
+      name: v.string(),
+      score: v.number(),
+      unit: v.optional(v.string()),
+      source: v.optional(v.string()),
+    }))),
+    features: v.optional(v.array(v.object({
+      name: v.string(),
+      description: v.string(),
+      sector: v.string(), // "gaming" | "security" | "productivity" | "creative" | "other"
+      impact: v.string(), // "high" | "medium" | "low"
+    }))),
+    competitiveAnalysis: v.optional(v.array(v.object({
+      company: v.string(),
+      similarFeature: v.optional(v.string()),
+      differentiation: v.optional(v.string()),
+      gap: v.optional(v.string()),
+    }))),
+    futurePrediction: v.optional(v.object({
+      timeframe: v.string(), // "short" | "medium" | "long"
+      prediction: v.string(),
+      confidence: v.string(), // "high" | "medium" | "low"
+      implications: v.optional(v.array(v.string())),
+    })),
   })
     .index("by_category", ["category"])
     .index("by_category_published_at", ["category", "publishedAt"])
     .index("by_published_at", ["publishedAt"]),
+
+  // ─── Guides & Tutorials ───────────────────────────────────────────────
+  guides: defineTable({
+    title: v.string(),
+    slug: v.string(),
+    description: v.string(),
+    nicheId: v.number(), // 1=Tech, 2=Security, 3=Gaming
+    difficulty: v.string(), // "beginner" | "intermediate" | "advanced"
+    platform: v.array(v.string()), // ["PC", "Console", "Mobile"]
+    steps: v.array(v.string()), // Step-by-step instructions
+    readTime: v.number(), // minutes
+    publishedAt: v.number(), // ms
+    isPublished: v.optional(v.boolean()),
+    featuredImageUrl: v.optional(v.string()),
+  })
+    .index("by_slug", ["slug"])
+    .index("by_niche", ["nicheId"])
+    .index("by_difficulty", ["difficulty"])
+    .index("by_published_at", ["publishedAt"]),
+
+  // ─── Guide Progress Tracking ──────────────────────────────────────────
+  guideProgress: defineTable({
+    userId: v.string(), // User identifier (can be session-based)
+    guideId: v.id("guides"),
+    completedSteps: v.array(v.number()), // Indices of completed steps
+    completedAt: v.optional(v.number()), // ms when fully completed
+    lastAccessedAt: v.number(), // ms
+  })
+    .index("by_user", ["userId"])
+    .index("by_guide", ["guideId"])
+    .index("by_user_guide", ["userId", "guideId"]),
 });

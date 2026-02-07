@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Layout } from '@/components/layout/Layout';
-import { mockGuides, mockTools } from '@/data/mockData';
+import { mockTools } from '@/data/mockData';
+import { useGuides } from '@/hooks/useGuides';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -11,6 +12,7 @@ import { BookOpen, Wrench, Search, ExternalLink, Clock, AlertTriangle, ChevronDo
 import { cn } from '@/lib/utils';
 import { SEOHead } from '@/components/seo/SEOHead';
 import { Link } from 'react-router-dom';
+import { Skeleton } from '@/components/ui/skeleton';
 
 const difficultyColors = {
   beginner: 'bg-gaming/10 text-gaming border-gaming/20',
@@ -24,16 +26,22 @@ const nicheColors = {
   gaming: 'bg-gaming/10 text-gaming',
 };
 
+const nicheIdMap: Record<string, number> = {
+  tech: 1,
+  security: 2,
+  gaming: 3,
+};
+
 export default function Guides() {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedDifficulty, setSelectedDifficulty] = useState<string | null>(null);
   const [expandedGuide, setExpandedGuide] = useState<string | null>(null);
+  const { guides, isLoading } = useGuides(undefined, selectedDifficulty || undefined);
 
-  const filteredGuides = mockGuides.filter(guide => {
+  const filteredGuides = guides.filter(guide => {
     const matchesSearch = guide.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
                          guide.description.toLowerCase().includes(searchQuery.toLowerCase());
-    const matchesDifficulty = !selectedDifficulty || guide.difficulty === selectedDifficulty;
-    return matchesSearch && matchesDifficulty;
+    return matchesSearch;
   });
 
   return (
@@ -113,59 +121,72 @@ export default function Guides() {
             </div>
 
             {/* Guides Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {filteredGuides.map((guide) => (
-                <Card key={guide.id} className="group hover:border-primary/50 transition-colors overflow-hidden">
-                  <CardHeader>
-                    <div className="flex gap-2 mb-2">
-                      <Badge className={cn(difficultyColors[guide.difficulty], 'capitalize')}>
-                        {guide.difficulty}
-                      </Badge>
-                      <Badge className={nicheColors[guide.niche]} variant="outline">
-                        {guide.niche}
-                      </Badge>
-                    </div>
-                    <CardTitle className="font-display text-lg group-hover:text-primary transition-colors">
-                      {guide.title}
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent className="space-y-4">
-                    <p className="text-muted-foreground text-sm">{guide.description}</p>
-                    <div className="flex items-center gap-4 text-sm text-muted-foreground">
-                      <span className="flex items-center gap-1">
-                        <Clock className="h-4 w-4" />
-                        {guide.readTime} min
-                      </span>
-                      <span>{guide.platform.join(', ')}</span>
-                    </div>
-                    <Collapsible open={expandedGuide === guide.id} onOpenChange={(o) => setExpandedGuide(o ? guide.id : null)}>
-                      <CollapsibleTrigger asChild>
-                        <Button variant="ghost" size="sm" className="w-full justify-between gap-2 text-left h-auto py-2">
-                          <span className="flex items-center gap-2">
-                            <ListOrdered className="h-4 w-4" />
-                            View steps ({guide.steps.length})
-                          </span>
-                          <ChevronDown className={cn('h-4 w-4 transition-transform', expandedGuide === guide.id && 'rotate-180')} />
-                        </Button>
-                      </CollapsibleTrigger>
-                      <CollapsibleContent>
-                        <ol className="mt-2 space-y-1.5 pl-4 list-decimal text-sm text-muted-foreground">
-                          {guide.steps.map((step, i) => (
-                            <li key={i}>{step}</li>
-                          ))}
-                        </ol>
-                      </CollapsibleContent>
-                    </Collapsible>
-                    <Button variant="outline" size="sm" asChild className="w-full gap-2">
-                      <Link to="/tutorials">
-                        Related tutorials
-                        <ExternalLink className="h-3.5 w-3.5" />
-                      </Link>
-                    </Button>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
+            {isLoading ? (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {[1, 2, 3, 4, 5, 6].map((i) => (
+                  <Skeleton key={i} className="h-64 rounded-lg" />
+                ))}
+              </div>
+            ) : filteredGuides.length === 0 ? (
+              <div className="text-center py-12 text-muted-foreground">
+                <BookOpen className="h-12 w-12 mx-auto mb-4 opacity-50" />
+                <p>No guides found matching your criteria.</p>
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {filteredGuides.map((guide) => (
+                  <Card key={guide.id} className="group hover:border-primary/50 transition-colors overflow-hidden">
+                    <CardHeader>
+                      <div className="flex gap-2 mb-2">
+                        <Badge className={cn(difficultyColors[guide.difficulty], 'capitalize')}>
+                          {guide.difficulty}
+                        </Badge>
+                        <Badge className={nicheColors[guide.niche]} variant="outline">
+                          {guide.niche}
+                        </Badge>
+                      </div>
+                      <CardTitle className="font-display text-lg group-hover:text-primary transition-colors">
+                        {guide.title}
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent className="space-y-4">
+                      <p className="text-muted-foreground text-sm">{guide.description}</p>
+                      <div className="flex items-center gap-4 text-sm text-muted-foreground">
+                        <span className="flex items-center gap-1">
+                          <Clock className="h-4 w-4" />
+                          {guide.readTime} min
+                        </span>
+                        <span>{guide.platform.join(', ')}</span>
+                      </div>
+                      <Collapsible open={expandedGuide === guide.id} onOpenChange={(o) => setExpandedGuide(o ? guide.id : null)}>
+                        <CollapsibleTrigger asChild>
+                          <Button variant="ghost" size="sm" className="w-full justify-between gap-2 text-left h-auto py-2">
+                            <span className="flex items-center gap-2">
+                              <ListOrdered className="h-4 w-4" />
+                              View steps ({guide.steps.length})
+                            </span>
+                            <ChevronDown className={cn('h-4 w-4 transition-transform', expandedGuide === guide.id && 'rotate-180')} />
+                          </Button>
+                        </CollapsibleTrigger>
+                        <CollapsibleContent>
+                          <ol className="mt-2 space-y-1.5 pl-4 list-decimal text-sm text-muted-foreground">
+                            {guide.steps.map((step, i) => (
+                              <li key={i}>{step}</li>
+                            ))}
+                          </ol>
+                        </CollapsibleContent>
+                      </Collapsible>
+                      <Button variant="outline" size="sm" asChild className="w-full gap-2">
+                        <Link to={`/guides/${guide.id}`}>
+                          View full guide
+                          <ExternalLink className="h-3.5 w-3.5" />
+                        </Link>
+                      </Button>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            )}
           </TabsContent>
 
           <TabsContent value="tools" className="space-y-6">

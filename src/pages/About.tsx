@@ -20,20 +20,19 @@ export default function About() {
           <div className="text-center mb-12">
             <h1 className="text-4xl font-bold mb-4">About The Grid Nexus</h1>
             <p className="text-xl text-muted-foreground">
-              Where AI innovation, cybersecurity threats, and gaming technology converge
+              Demystifying complex trends in technology, cybersecurity, and gaming
             </p>
           </div>
 
           <div className="prose prose-lg max-w-none mb-12">
             <p className="text-lg leading-relaxed mb-6">
-              The Grid Nexus is a comprehensive intelligence hub designed for professionals, 
-              researchers, and enthusiasts who need to stay ahead of the rapidly evolving landscape 
-              where technology, security, and gaming intersect.
+              The Grid Nexus is a premier digital publication established in 2026, dedicated to demystifying complex trends in technology, cybersecurity, and gaming. Managed by Kim Njuki, our mission is to provide actionable intelligence for the digital age.
             </p>
             <p className="text-lg leading-relaxed mb-6">
               We aggregate, analyze, and curate content from across these three critical domains, 
               providing actionable insights, expert analysis, and real-time intelligence to help 
-              you make informed decisions in an increasingly complex digital world.
+              you make informed decisions in an increasingly complex digital world. For transparency, you can reach us at{' '}
+              <a href="mailto:kimnjuki2@gmail.com" className="text-primary hover:underline">kimnjuki2@gmail.com</a>.
             </p>
           </div>
 

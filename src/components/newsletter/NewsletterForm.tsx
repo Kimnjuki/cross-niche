@@ -11,6 +11,7 @@ import { NewsletterSubscriber, NewsletterFrequency, NewsletterType, Niche } from
 import { Mail, Check, Settings, Eye } from 'lucide-react';
 import { newsletterEngine } from '@/lib/ai/newsletter';
 import { mockArticles } from '@/data/mockData';
+import { trackNewsletterSignup } from '@/lib/analytics/ga4';
 
 interface NewsletterFormProps {
   variant?: 'default' | 'compact' | 'hero' | 'inline' | 'advanced';
@@ -68,6 +69,7 @@ export function NewsletterForm({ variant = 'default' }: NewsletterFormProps) {
         isActive: true,
       };
       setSubscribers([...subscribers, newSubscriber]);
+      trackNewsletterSignup(variant);
       toast({
         title: 'Welcome aboard!',
         description: 'You\'ve been subscribed to our personalized newsletter.',

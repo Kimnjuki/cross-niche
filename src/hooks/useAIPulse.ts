@@ -17,6 +17,10 @@ function convexToAIUpdate(row: {
   isHype: boolean;
   hasBenchmarks: boolean;
   sourceUrl?: string;
+  benchmarks?: Array<{ name: string; score: number; unit?: string; source?: string }>;
+  features?: Array<{ name: string; description: string; sector: string; impact: string }>;
+  competitiveAnalysis?: Array<{ company: string; similarFeature?: string; differentiation?: string; gap?: string }>;
+  futurePrediction?: { timeframe: string; prediction: string; confidence: string; implications?: string[] };
 }): AIUpdate {
   return {
     id: row._id,
@@ -27,6 +31,30 @@ function convexToAIUpdate(row: {
     isHype: row.isHype,
     hasBenchmarks: row.hasBenchmarks,
     sourceUrl: row.sourceUrl,
+    benchmarks: row.benchmarks?.map(b => ({
+      name: b.name,
+      score: b.score,
+      unit: b.unit,
+      source: b.source,
+    })),
+    features: row.features?.map(f => ({
+      name: f.name,
+      description: f.description,
+      sector: f.sector as AIUpdate['features'] extends Array<infer T> ? T['sector'] : never,
+      impact: f.impact as 'high' | 'medium' | 'low',
+    })),
+    competitiveAnalysis: row.competitiveAnalysis?.map(c => ({
+      company: c.company,
+      similarFeature: c.similarFeature,
+      differentiation: c.differentiation,
+      gap: c.gap,
+    })),
+    futurePrediction: row.futurePrediction ? {
+      timeframe: row.futurePrediction.timeframe as 'short' | 'medium' | 'long',
+      prediction: row.futurePrediction.prediction,
+      confidence: row.futurePrediction.confidence as 'high' | 'medium' | 'low',
+      implications: row.futurePrediction.implications,
+    } : undefined,
   };
 }
 

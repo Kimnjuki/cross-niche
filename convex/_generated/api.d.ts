@@ -12,6 +12,7 @@ import type * as aiUpdates from "../aiUpdates.js";
 import type * as articles from "../articles.js";
 import type * as content from "../content.js";
 import type * as crons from "../crons.js";
+import type * as guides from "../guides.js";
 import type * as import_ from "../import.js";
 import type * as ingest from "../ingest.js";
 import type * as insertFeaturedArticle from "../insertFeaturedArticle.js";
@@ -31,6 +32,7 @@ declare const fullApi: ApiFromModules<{
   articles: typeof articles;
   content: typeof content;
   crons: typeof crons;
+  guides: typeof guides;
   import: typeof import_;
   ingest: typeof ingest;
   insertFeaturedArticle: typeof insertFeaturedArticle;

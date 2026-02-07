@@ -4,6 +4,8 @@
  */
 
 import { useEffect } from 'react';
+import { Layout } from '@/components/layout/Layout';
+import { SEOHead } from '@/components/seo/SEOHead';
 import { usePublishedContent } from '@/hooks/useContent';
 import { generateCompleteSitemap } from '@/lib/sitemapGenerator';
 import { mapContentToArticles } from '@/lib/contentMapper';
@@ -14,7 +16,9 @@ export default function Sitemap() {
   useEffect(() => {
     if (content) {
       const articles = mapContentToArticles(content);
-      const sitemapXML = generateCompleteSitemap(articles);
+      // Note: generateCompleteSitemap expects specific Article type
+      // For now, sitemap is generated statically in public/sitemap.xml
+      // This component is for human-readable sitemap page
       
       // Set content type and return XML
       const blob = new Blob([sitemapXML], { type: 'application/xml' });
@@ -27,8 +31,29 @@ export default function Sitemap() {
   }, [content]);
 
   // This component should ideally be server-side rendered
-  // For now, return a simple response
-  return null;
+  // For now, return a simple response with SEO
+  return (
+    <Layout>
+      <SEOHead
+        title="Sitemap | The Grid Nexus"
+        description="Complete sitemap of all articles, guides, and pages on The Grid Nexus. Find tech, security, and gaming content."
+        keywords={['sitemap', 'site map', 'all pages', 'content index']}
+        url={typeof window !== 'undefined' ? window.location.href : ''}
+        type="website"
+      />
+      <div className="container mx-auto px-4 py-12">
+        <h1 className="font-display font-bold text-4xl mb-4">Sitemap</h1>
+        <p className="text-muted-foreground mb-8">
+          Complete index of all content on The Grid Nexus. For XML sitemap, visit{' '}
+          <a href="/sitemap.xml" className="text-primary hover:underline">/sitemap.xml</a>
+        </p>
+        <p className="text-sm text-muted-foreground">
+          This page is for human visitors. Search engines should use the XML sitemap at{' '}
+          <a href="/sitemap.xml" className="text-primary hover:underline">/sitemap.xml</a>
+        </p>
+      </div>
+    </Layout>
+  );
 }
 
 /**

@@ -50,7 +50,7 @@ export default function Contact() {
     <Layout>
       <SEOHead
         title="Contact Us | The Grid Nexus"
-        description="Get in touch with The Grid Nexus team. Tips, feedback, or partnership inquiries welcome. We respond within 24 hours."
+        description="Contact The Grid Nexus for inquiries, press, and data correction requests. We respond within 48 hours."
         keywords={['contact', 'get in touch', 'feedback', 'partnership', 'inquiry']}
         url={window.location.href}
         type="website"
@@ -83,8 +83,8 @@ export default function Contact() {
                     <div>
                       <h3 className="font-semibold mb-1">Email</h3>
                       <p className="text-muted-foreground text-sm">
-                        <a href="mailto:contact@nexusmedia.com" className="hover:text-primary">
-                          contact@nexusmedia.com
+                        <a href="mailto:kimnjuki2@gmail.com" className="hover:text-primary">
+                          kimnjuki2@gmail.com
                         </a>
                       </p>
                     </div>
@@ -98,8 +98,7 @@ export default function Contact() {
                 </CardHeader>
                 <CardContent>
                   <p className="text-muted-foreground">
-                    We typically respond to inquiries within 24-48 hours during business days. 
-                    For urgent matters, please mark your message as urgent.
+                    We respond within 48 hours. For urgent matters, please mark your message as urgent.
                   </p>
                 </CardContent>
               </Card>
@@ -109,6 +108,7 @@ export default function Contact() {
                   <CardTitle>What We Can Help With</CardTitle>
                 </CardHeader>
                 <CardContent>
+                  <p className="text-muted-foreground text-sm mb-2">Inquiries, press, and data correction requests.</p>
                   <ul className="space-y-2 text-muted-foreground text-sm">
                     <li>• General inquiries and feedback</li>
                     <li>• Content suggestions and submissions</li>

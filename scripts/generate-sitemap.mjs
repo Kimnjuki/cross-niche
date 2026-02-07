@@ -28,23 +28,13 @@ import { fileURLToPath } from 'url';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const BASE_URL = 'https://thegridnexus.com';
-const CONVEX_URL = process.env.VITE_CONVEX_URL || 'https://canny-mule-83.convex.cloud';
+// Ensure consistent Convex URL
+const CONVEX_URL = process.env.VITE_CONVEX_URL || 'https://intent-akita-728.convex.cloud';
 
-// Mock article slugs for fallback when Convex is empty
-const MOCK_ARTICLES = [
-  { slug: 'tech-1', publishedAt: '2024-12-18', isFeatured: true },
-  { slug: 'tech-2', publishedAt: '2024-12-17', isFeatured: false },
-  { slug: 'tech-3', publishedAt: '2024-12-16', isFeatured: false },
-  { slug: 'tech-4', publishedAt: '2024-12-15', isFeatured: false },
-  { slug: 'sec-1', publishedAt: '2024-12-18', isFeatured: true },
-  { slug: 'sec-2', publishedAt: '2024-12-17', isFeatured: false },
-  { slug: 'sec-3', publishedAt: '2024-12-16', isFeatured: false },
-  { slug: 'sec-4', publishedAt: '2024-12-15', isFeatured: false },
-  { slug: 'game-1', publishedAt: '2024-12-18', isFeatured: true },
-  { slug: 'game-2', publishedAt: '2024-12-17', isFeatured: false },
-  { slug: 'game-3', publishedAt: '2024-12-16', isFeatured: false },
-  { slug: 'game-4', publishedAt: '2024-12-15', isFeatured: false },
-];
+// Validate URL matches expected deployment
+if (!CONVEX_URL.includes('intent-akita-728')) {
+  console.warn(`⚠️  Warning: VITE_CONVEX_URL (${CONVEX_URL}) does not match expected deployment (intent-akita-728)`);
+}
 
 /**
  * Format date as YYYY-MM-DD for sitemap
@@ -78,17 +68,24 @@ function getStaticPages() {
     { loc: `${BASE_URL}/tech`, lastmod: today, changefreq: 'daily', priority: 0.9 },
     { loc: `${BASE_URL}/security`, lastmod: today, changefreq: 'daily', priority: 0.9 },
     { loc: `${BASE_URL}/gaming`, lastmod: today, changefreq: 'daily', priority: 0.9 },
+    { loc: `${BASE_URL}/news`, lastmod: today, changefreq: 'daily', priority: 0.9 },
     { loc: `${BASE_URL}/blog-series`, lastmod: today, changefreq: 'daily', priority: 0.8 },
+    { loc: `${BASE_URL}/explore`, lastmod: today, changefreq: 'daily', priority: 0.85 },
     { loc: `${BASE_URL}/topics`, lastmod: today, changefreq: 'daily', priority: 0.9 },
     { loc: `${BASE_URL}/guides`, lastmod: today, changefreq: 'weekly', priority: 0.7 },
     { loc: `${BASE_URL}/tutorials`, lastmod: today, changefreq: 'weekly', priority: 0.7 },
     { loc: `${BASE_URL}/roadmap`, lastmod: today, changefreq: 'weekly', priority: 0.6 },
+    { loc: `${BASE_URL}/ai-pulse`, lastmod: today, changefreq: 'weekly', priority: 0.7 },
+    { loc: `${BASE_URL}/breach-sim`, lastmod: today, changefreq: 'monthly', priority: 0.6 },
+    { loc: `${BASE_URL}/nexus-intersection`, lastmod: today, changefreq: 'daily', priority: 0.75 },
     { loc: `${BASE_URL}/security-score`, lastmod: today, changefreq: 'weekly', priority: 0.7 },
+    { loc: `${BASE_URL}/reviews`, lastmod: today, changefreq: 'weekly', priority: 0.6 },
     { loc: `${BASE_URL}/about`, lastmod: today, changefreq: 'monthly', priority: 0.5 },
     { loc: `${BASE_URL}/contact`, lastmod: today, changefreq: 'monthly', priority: 0.4 },
     { loc: `${BASE_URL}/privacy`, lastmod: today, changefreq: 'monthly', priority: 0.3 },
     { loc: `${BASE_URL}/terms`, lastmod: today, changefreq: 'monthly', priority: 0.3 },
     { loc: `${BASE_URL}/disclosure`, lastmod: today, changefreq: 'monthly', priority: 0.3 },
+    { loc: `${BASE_URL}/editorial`, lastmod: today, changefreq: 'monthly', priority: 0.4 },
   ];
 }
 
@@ -178,22 +175,11 @@ async function main() {
     console.log('   Adding mock articles as fallback...');
   }
 
-  // If no articles from Convex, add mock articles as fallback
+  // Do NOT add mock articles when Convex fails - only include real content to avoid
+  // "Non-canonical page in sitemap" and 404s. Static pages + real Convex articles only.
   const articleUrlCount = urls.filter(u => u.loc.includes('/article/')).length;
   if (articleUrlCount === 0) {
-    console.log('   No Convex articles found, adding mock articles...');
-    for (const mock of MOCK_ARTICLES) {
-      const canonicalUrl = `${BASE_URL}/article/${mock.slug}`;
-      if (!seenUrls.has(canonicalUrl)) {
-        seenUrls.add(canonicalUrl);
-        urls.push({
-          loc: canonicalUrl,
-          lastmod: formatDate(mock.publishedAt),
-          changefreq: 'weekly',
-          priority: mock.isFeatured ? 0.9 : 0.7
-        });
-      }
-    }
+    console.log('   No Convex articles found. Sitemap will contain static pages only (no phantom article URLs).');
   }
 
   // Generate XML

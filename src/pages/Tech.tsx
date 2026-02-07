@@ -20,6 +20,7 @@ export default function Tech() {
 
   return (
     <Layout>
+      <LandingPageTracker pageType="category" articlesViewed={techArticles.length} />
       <SEOHead
         title="Technology News & Innovation | The Grid Nexus"
         description="Latest technology news, hardware reviews, and innovation insights. Stay ahead with cutting-edge processors, AI developments, and tech industry analysis."
@@ -39,9 +40,14 @@ export default function Tech() {
               <p className="text-muted-foreground">Technology, Hardware & Innovation</p>
             </div>
           </div>
-          <p className="text-lg text-muted-foreground max-w-2xl">
-            Stay ahead with the latest in technology news, hardware reviews, and industry analysis. From cutting-edge processors to breakthrough AI developments.
-          </p>
+          <div className="prose prose-lg max-w-2xl">
+            <p className="text-lg text-muted-foreground mb-4">
+              Stay ahead of the curve with comprehensive technology news, in-depth hardware reviews, and expert analysis of the latest innovations. From cutting-edge processors and AI breakthroughs to cloud computing and emerging tech trends, we deliver actionable insights for professionals and enthusiasts alike.
+            </p>
+            <p className="text-base text-muted-foreground">
+              Our technology coverage spans artificial intelligence, machine learning, cloud infrastructure, cybersecurity tools, and the evolving landscape of digital transformation. Whether you're tracking the latest GPU releases, understanding quantum computing advances, or exploring the future of software development, you'll find authoritative coverage here.
+            </p>
+          </div>
           <div className="mt-6 flex flex-wrap gap-4 text-sm">
             <Link to="/topics?q=artificial+intelligence" className="text-primary hover:underline">AI & Machine Learning</Link>
             <span className="text-muted-foreground">•</span>

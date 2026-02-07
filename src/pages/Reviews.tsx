@@ -32,6 +32,12 @@ export default function Reviews() {
         keywords={['product reviews', 'tech reviews', 'gaming reviews', 'hardware comparison', 'buying guide']}
       />
       <div className="container mx-auto px-4 py-8">
+        <div className="mb-8">
+          <h1 className="font-display font-bold text-4xl mb-2">Product & Game Reviews</h1>
+          <p className="text-muted-foreground text-lg max-w-2xl">
+            Expert reviews of tech hardware, security tools, and gaming gear. Honest comparisons and buying guides to help you make informed decisions.
+          </p>
+        </div>
         <ProductReviewsSection articles={reviewArticles.length > 0 ? reviewArticles : allArticles.slice(0, 12)} />
       </div>
     </Layout>

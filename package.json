@@ -4,6 +4,9 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
+    "analyze-seo": "node scripts/process-screaming-frog-report.mjs",
+    "audit-seo": "node scripts/seo-audit.mjs",
+    "keyword-research": "node scripts/keyword-research-tool.mjs",
     "dev": "vite",
     "dev:convex": "cross-env VITE_CONVEX_URL=https://intent-akita-728.convex.cloud vite",
     "build": "vite build",
@@ -14,6 +17,7 @@
     "import:csv": "node scripts/import-csv-to-convex.mjs",
     "verify:convex": "node scripts/verify-supabase-convex.mjs",
     "verify:convex-only": "node scripts/verify-supabase-convex.mjs --convex-only",
+    "verify:convex-config": "node --env-file=.env.local --env-file=.env scripts/verify-convex-config.mjs",
     "test:e2e": "playwright test",
     "update:browsers": "npm exec update-browserslist-db@latest -- --update-db",
     "generate:sitemap": "node scripts/generate-sitemap.mjs",
@@ -22,7 +26,10 @@
     "generate:prerender-routes": "node scripts/generate-prerender-routes.mjs",
     "sanity:content": "convex run content:sanityCheckContent",
     "prebuild": "(npm run generate:all-sitemaps && npm run generate:prerender-routes) || true",
-    "build:no-prerender": "cross-env PRERENDER=0 vite build"
+    "build:no-prerender": "cross-env PRERENDER=0 vite build",
+    "predeploy:convex": "node --env-file=.env.local --env-file=.env scripts/check-convex-deploy-key.mjs",
+    "deploy:convex": "npm run predeploy:convex && npx convex deploy --yes",
+    "migrate:convex": "node --env-file=.env.local --env-file=.env scripts/migrate-to-intent-akita-728.mjs"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",
@@ -62,8 +69,8 @@
     "cmdk": "^1.1.1",
     "convex": "^1.31.6",
     "date-fns": "^3.6.0",
-    "framer-motion": "^11.11.17",
     "embla-carousel-react": "^8.6.0",
+    "framer-motion": "^11.11.17",
     "input-otp": "^1.4.2",
     "lucide-react": "^0.462.0",
     "next-themes": "^0.3.0",
@@ -83,24 +90,26 @@
     "zod": "^3.25.76"
   },
   "devDependencies": {
-    "@playwright/test": "^1.49.0",
     "@eslint/js": "^9.32.0",
+    "@playwright/test": "^1.49.0",
     "@tailwindcss/typography": "^0.5.16",
     "@types/node": "^22.16.5",
     "@types/react": "^18.3.23",
     "@types/react-dom": "^18.3.7",
     "@vitejs/plugin-react-swc": "^3.11.0",
     "autoprefixer": "^10.4.21",
+    "cross-env": "^7.0.3",
+    "csv-parse": "^5.6.0",
     "eslint": "^9.32.0",
     "eslint-plugin-react-hooks": "^5.2.0",
     "eslint-plugin-react-refresh": "^0.4.20",
+    "glob": "^13.0.1",
     "globals": "^15.15.0",
     "lovable-tagger": "^1.1.13",
     "postcss": "^8.5.6",
     "tailwindcss": "^3.4.17",
     "typescript": "^5.8.3",
     "typescript-eslint": "^8.38.0",
-    "cross-env": "^7.0.3",
     "vite": "^5.4.19",
     "vite-plugin-prerender": "^1.0.8"
   }

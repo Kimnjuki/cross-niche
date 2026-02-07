@@ -10,6 +10,8 @@ import { formatRelativeTime, isFreshContent, isNewContent, isJustPublished } fro
 interface ArticleCardProps {
   article: Article | null | undefined;
   variant?: 'default' | 'featured' | 'compact' | 'list';
+  /** Called when user clicks the card (e.g. for related-article analytics) */
+  onArticleClick?: () => void;
 }
 
 const safeArticleId = (a: Article | null | undefined) => (a as Article & { _id?: string })?._id ?? a?.id ?? a?.slug ?? '';
@@ -61,7 +63,7 @@ const getSecurityGlow = (score?: number): string => {
   return 'shadow-[0_0_15px_rgba(234,179,8,0.4)]';
 };
 
-export function ArticleCard({ article, variant = 'default' }: ArticleCardProps) {
+export function ArticleCard({ article, variant = 'default', onArticleClick }: ArticleCardProps) {
   const { user, toggleBookmark } = useAuth();
   if (!article) return null;
 
@@ -81,7 +83,7 @@ export function ArticleCard({ article, variant = 'default' }: ArticleCardProps) 
 
   if (variant === 'featured') {
     return (
-      <Link to={`/article/${article.slug ?? article.id ?? articleId}`}>
+      <Link to={`/article/${article.slug ?? article.id ?? articleId}`} onClick={onArticleClick}>
         <Card className={cn(
           'group overflow-hidden border-0 bg-card transition-all duration-300 transform hover:scale-[1.02]',
           styles.accent,
@@ -166,7 +168,7 @@ export function ArticleCard({ article, variant = 'default' }: ArticleCardProps) 
 
   if (variant === 'compact') {
     return (
-      <Link to={`/article/${article.slug ?? article.id ?? articleId}`}>
+      <Link to={`/article/${article.slug ?? article.id ?? articleId}`} onClick={onArticleClick}>
         <div className="group flex gap-4 py-4 border-b border-border last:border-0 hover:bg-muted/30 transition-all duration-200">
           <div className="w-20 h-20 rounded-lg overflow-hidden flex-shrink-0" style={{ aspectRatio: '1/1' }}>
             <img
@@ -202,7 +204,7 @@ export function ArticleCard({ article, variant = 'default' }: ArticleCardProps) 
   // List variant: Ars Technica / WIRED style horizontal row, medium density
   if (variant === 'list') {
     return (
-      <Link to={`/article/${article.slug ?? article.id ?? articleId}`}>
+      <Link to={`/article/${article.slug ?? article.id ?? articleId}`} onClick={onArticleClick}>
         <article className="group flex gap-6 py-5 border-b border-border last:border-0 hover:bg-muted/30 transition-all duration-200 rounded-lg px-2 -mx-2">
           <div className="w-44 sm:w-52 flex-shrink-0 rounded-lg overflow-hidden aspect-video bg-muted">
             <img
@@ -244,7 +246,7 @@ export function ArticleCard({ article, variant = 'default' }: ArticleCardProps) 
   }
 
   return (
-    <Link to={`/article/${article.slug ?? article.id ?? articleId}`}>
+    <Link to={`/article/${article.slug ?? article.id ?? articleId}`} onClick={onArticleClick}>
       <Card className={cn(
         'group overflow-hidden border border-border bg-card transition-all duration-300 hover:border-border/80 transform hover:scale-[1.02]',
         styles.accent,

@@ -30,6 +30,12 @@ export function Footer() {
               <Link to="/gaming" className="text-muted-foreground hover:text-gaming transition-colors">
                 Gaming
               </Link>
+              <Link to="/news" className="text-muted-foreground hover:text-foreground transition-colors">
+                Breaking News
+              </Link>
+              <Link to="/explore" className="text-muted-foreground hover:text-foreground transition-colors">
+                Explore
+              </Link>
               <Link to="/guides" className="text-muted-foreground hover:text-foreground transition-colors">
                 Guides & Tools
               </Link>
@@ -75,6 +81,9 @@ export function Footer() {
               </Link>
               <Link to="/about" className="text-muted-foreground hover:text-foreground transition-colors">
                 About Us
+              </Link>
+              <Link to="/editorial" className="text-muted-foreground hover:text-foreground transition-colors">
+                Editorial Policy
               </Link>
               <Link to="/contact" className="text-muted-foreground hover:text-foreground transition-colors">
                 Contact

@@ -127,9 +127,9 @@ Set these as **Build Time Variables** (not runtime). Use a **single** `=` betwee
 
 | Key | Example value |
 |-----|----------------|
-| `VITE_CONVEX_URL` | `https://canny-mule-83.convex.cloud` (use your **Deployment URL** from Convex dashboard, not the HTTP Actions URL) |
+| `VITE_CONVEX_URL` | `https://intent-akita-728.convex.cloud` (official production deployment URL) |
 
-**Important:** In Coolify, the value must be exactly the URL with **no double equals**. Wrong: `VITE_CONVEX_URL==https://...`. Correct: key `VITE_CONVEX_URL`, value `https://canny-mule-83.convex.cloud`. Use the **Deployment URL** (`.convex.cloud`), not the HTTP Actions URL (`.convex.site`). Get it from the [Convex dashboard](https://dashboard.convex.dev) (your project → Settings → Deployment URL).
+**Important:** In Coolify, the value must be exactly the URL with **no double equals**. Wrong: `VITE_CONVEX_URL==https://...`. Correct: key `VITE_CONVEX_URL`, value `https://intent-akita-728.convex.cloud`. Use the **Deployment URL** (`.convex.cloud`), not the HTTP Actions URL (`.convex.site`). Get it from the [Convex dashboard](https://dashboard.convex.dev) (your project → Settings → Deployment URL).
 
 Optional:
 

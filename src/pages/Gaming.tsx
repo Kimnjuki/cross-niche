@@ -29,6 +29,7 @@ export default function Gaming() {
 
   return (
     <Layout>
+      <LandingPageTracker pageType="category" articlesViewed={gamingArticles.length} />
       <SEOHead
         title="Gaming News & Reviews | The Grid Nexus"
         description="Your ultimate gaming destination. Reviews, news, esports coverage, and exclusive security ratings for every game."
@@ -48,9 +49,14 @@ export default function Gaming() {
               <p className="text-muted-foreground">Gaming & Esports</p>
             </div>
           </div>
-          <p className="text-lg text-muted-foreground max-w-2xl">
-            Your ultimate gaming destination. Reviews, news, esports coverage, and exclusive security ratings for every game.
-          </p>
+          <div className="prose prose-lg max-w-2xl">
+            <p className="text-lg text-muted-foreground mb-4">
+              Your ultimate destination for gaming news, reviews, esports coverage, and exclusive security ratings. We cover everything from AAA releases and indie gems to gaming hardware, industry trends, and the intersection of gaming and cybersecurity.
+            </p>
+            <p className="text-base text-muted-foreground">
+              Beyond reviews and news, we provide unique insights into gaming security practices, data privacy, and account protection. Our Nexus Security Score rates every game's security posture, helping you make informed decisions about which games protect your data and privacy. Whether you're a casual player or competitive esports enthusiast, find the coverage you need here.
+            </p>
+          </div>
           <div className="mt-6 flex flex-wrap gap-4 text-sm">
             <Link to="/topics?q=gaming" className="text-primary hover:underline">Gaming Topics</Link>
             <span className="text-muted-foreground">•</span>

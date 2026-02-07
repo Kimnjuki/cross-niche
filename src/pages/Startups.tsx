@@ -5,6 +5,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { SEOHead } from '@/components/seo/SEOHead';
 import {
   TrendingUp,
   Building2,
@@ -143,6 +144,13 @@ export default function Startups() {
 
   return (
     <Layout>
+      <SEOHead
+        title="Startup Funding & VC News | The Grid Nexus"
+        description="Track startup funding rounds, valuations, and VC news in tech, security, and gaming. TechCrunch-style startup intelligence and analysis."
+        keywords={['startup funding', 'venture capital', 'VC news', 'startup valuations', 'tech startups', 'funding rounds']}
+        url={typeof window !== 'undefined' ? window.location.href : ''}
+        type="website"
+      />
       <div className="container mx-auto px-4 py-12">
         {/* Header */}
         <div className="mb-8">

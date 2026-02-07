@@ -10,7 +10,8 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
-import { Sparkles, BarChart3, Palette, Gamepad2, Zap, CheckCircle2 } from 'lucide-react';
+import { Input } from '@/components/ui/input';
+import { Sparkles, BarChart3, Palette, Gamepad2, Zap, CheckCircle2, Search, TrendingUp, Award } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import type { AIUpdate, AICategory } from '@/data/aiUpdates';
 import { formatDistanceToNow } from 'date-fns';
@@ -30,48 +31,88 @@ const CATEGORY_OPTIONS: { value: AICategory | 'all'; label: string; icon: Elemen
 export function AIPulseTimeline({ items, className }: AIPulseTimelineProps) {
   const [category, setCategory] = useState<AICategory | 'all'>('all');
   const [viewMode, setViewMode] = useState<'hype' | 'utility'>('utility');
+  const [searchQuery, setSearchQuery] = useState('');
 
   const filtered = useMemo(() => {
     let list = items;
-    if (category !== 'all') list = list.filter((i) => i.category === category);
+    
+    // Filter by category
+    if (category !== 'all') {
+      list = list.filter((i) => i.category === category);
+    }
+    
+    // Filter by search query
+    if (searchQuery.trim()) {
+      const query = searchQuery.toLowerCase();
+      list = list.filter((i) => 
+        i.title.toLowerCase().includes(query) ||
+        i.description.toLowerCase().includes(query) ||
+        i.features?.some(f => f.name.toLowerCase().includes(query) || f.description.toLowerCase().includes(query)) ||
+        i.benchmarks?.some(b => b.name.toLowerCase().includes(query))
+      );
+    }
+    
+    // Sort by date (newest first)
     return [...list].sort((a, b) => b.publishedAt - a.publishedAt);
-  }, [items, category]);
+  }, [items, category, searchQuery]);
 
   return (
     <div className={cn('space-y-6', className)}>
-      {/* Filter: Productivity | Creative | Gaming AI */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-        <Tabs value={category} onValueChange={(v) => setCategory(v as AICategory | 'all')}>
-          <TabsList className="grid w-full grid-cols-4 sm:w-auto sm:inline-grid">
-            {CATEGORY_OPTIONS.map((opt) => {
-              const Icon = opt.icon;
-              return (
-                <TabsTrigger key={opt.value} value={opt.value} className="gap-1.5 text-xs sm:text-sm">
-                  <Icon className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
-                  {opt.label}
-                </TabsTrigger>
-              );
-            })}
-          </TabsList>
-        </Tabs>
-
-        {/* Hype vs Utility toggle */}
-        <div className="flex items-center gap-2">
-          <span className="text-sm text-muted-foreground whitespace-nowrap">View:</span>
-          <ToggleGroup
-            type="single"
-            value={viewMode}
-            onValueChange={(v) => v && setViewMode(v as 'hype' | 'utility')}
-            className="gap-0"
-          >
-            <ToggleGroupItem value="hype" aria-label="Hype view" className="text-xs sm:text-sm">
-              Hype
-            </ToggleGroupItem>
-            <ToggleGroupItem value="utility" aria-label="Utility view" className="text-xs sm:text-sm">
-              Utility
-            </ToggleGroupItem>
-          </ToggleGroup>
+      {/* Search and Filters */}
+      <div className="space-y-4">
+        {/* Search Bar */}
+        <div className="relative">
+          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+          <Input
+            type="text"
+            placeholder="Search AI updates, features, benchmarks..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="pl-10"
+          />
         </div>
+
+        {/* Category Filter and View Mode */}
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+          <Tabs value={category} onValueChange={(v) => setCategory(v as AICategory | 'all')}>
+            <TabsList className="grid w-full grid-cols-4 sm:w-auto sm:inline-grid">
+              {CATEGORY_OPTIONS.map((opt) => {
+                const Icon = opt.icon;
+                return (
+                  <TabsTrigger key={opt.value} value={opt.value} className="gap-1.5 text-xs sm:text-sm">
+                    <Icon className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
+                    {opt.label}
+                  </TabsTrigger>
+                );
+              })}
+            </TabsList>
+          </Tabs>
+
+          {/* Hype vs Utility toggle */}
+          <div className="flex items-center gap-2">
+            <span className="text-sm text-muted-foreground whitespace-nowrap">View:</span>
+            <ToggleGroup
+              type="single"
+              value={viewMode}
+              onValueChange={(v) => v && setViewMode(v as 'hype' | 'utility')}
+              className="gap-0"
+            >
+              <ToggleGroupItem value="hype" aria-label="Hype view" className="text-xs sm:text-sm">
+                Hype
+              </ToggleGroupItem>
+              <ToggleGroupItem value="utility" aria-label="Utility view" className="text-xs sm:text-sm">
+                Utility
+              </ToggleGroupItem>
+            </ToggleGroup>
+          </div>
+        </div>
+
+        {/* Results count */}
+        {searchQuery && (
+          <p className="text-sm text-muted-foreground">
+            Found {filtered.length} result{filtered.length !== 1 ? 's' : ''} for "{searchQuery}"
+          </p>
+        )}
       </div>
 
       {/* Vertical timeline */}
@@ -118,13 +159,13 @@ export function AIPulseTimeline({ items, className }: AIPulseTimelineProps) {
 
                   <Card
                     className={cn(
-                      'transition-all duration-200',
+                      'transition-all duration-200 hover:shadow-md',
                       isDimmed && 'opacity-60',
                       isHighlighted && 'border-primary/50 bg-primary/5 dark:bg-primary/10'
                     )}
                   >
                     <CardContent className="p-4 sm:p-5">
-                      <div className="flex flex-wrap items-center gap-2 mb-2">
+                      <div className="flex flex-wrap items-center gap-2 mb-3">
                         <Badge
                           variant="outline"
                           className={cn(
@@ -150,12 +191,51 @@ export function AIPulseTimeline({ items, className }: AIPulseTimelineProps) {
                             Marketing
                           </Badge>
                         )}
+                        {item.benchmarks && item.benchmarks.length > 0 && (
+                          <Badge variant="outline" className="text-xs gap-1 text-primary">
+                            <Award className="h-3 w-3" />
+                            {item.benchmarks.length} metric{item.benchmarks.length !== 1 ? 's' : ''}
+                          </Badge>
+                        )}
                         <span className="text-xs text-muted-foreground ml-auto">
-                          {formatDistanceToNow(item.publishedAt, { addSuffix: true })}
+                          {formatDistanceToNow(new Date(item.publishedAt), { addSuffix: true })}
                         </span>
                       </div>
-                      <h3 className="font-semibold text-base sm:text-lg mb-1">{item.title}</h3>
-                      <p className="text-sm text-muted-foreground">{item.description}</p>
+                      <h3 className="font-semibold text-base sm:text-lg mb-2">{item.title}</h3>
+                      <p className="text-sm text-muted-foreground mb-3">{item.description}</p>
+                      
+                      {/* Benchmarks Display */}
+                      {item.benchmarks && item.benchmarks.length > 0 && (
+                        <div className="mt-3 pt-3 border-t border-border">
+                          <div className="flex items-center gap-2 mb-2">
+                            <TrendingUp className="h-4 w-4 text-primary" />
+                            <span className="text-xs font-semibold">ML Benchmarks:</span>
+                          </div>
+                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                            {item.benchmarks.map((benchmark, idx) => (
+                              <div key={idx} className="text-xs bg-muted/50 rounded px-2 py-1">
+                                <span className="font-medium">{benchmark.name}:</span>{' '}
+                                <span className="text-primary">{benchmark.score}{benchmark.unit || ''}</span>
+                                {benchmark.source && (
+                                  <span className="text-muted-foreground ml-1">({benchmark.source})</span>
+                                )}
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+                      
+                      {/* Source Link */}
+                      {item.sourceUrl && (
+                        <a
+                          href={item.sourceUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-xs text-primary hover:underline mt-2 inline-block"
+                        >
+                          View source →
+                        </a>
+                      )}
                     </CardContent>
                   </Card>
                 </motion.li>

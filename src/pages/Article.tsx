@@ -1,5 +1,5 @@
 import { useParams, Link } from 'react-router-dom';
-import { useMemo } from 'react';
+import { useMemo, useEffect } from 'react';
 import { Layout } from '@/components/layout/Layout';
 import { mockArticles } from '@/data/mockData';
 import { useContentBySlug, useContentByFeed, usePublishedContent, useRelatedContent } from '@/hooks/useContent';
@@ -27,8 +27,15 @@ import { FAQSection } from '@/components/seo/FAQSection';
 import { LazyImage } from '@/components/ui/lazy-image';
 import { AdPlacement } from '@/components/ads/AdPlacement';
 import { cn, authorSlug } from '@/lib/utils';
+import {
+  trackArticleView,
+  trackArticleReadTime,
+  trackSocialShare,
+  trackRelatedArticleClick,
+} from '@/lib/analytics/ga4';
 import { getPlaceholderByNiche } from '@/lib/placeholderImages';
 import { prepareArticleContent } from '@/lib/markdownToHtml';
+import { getRelatedClusterContent } from '@/lib/seo/topicClusters';
 import type { Article as ArticleType } from '@/types';
 
 const nicheStyles = {
@@ -130,6 +137,13 @@ export default function Article() {
   // 6. BEHAVIOR TRACKING HOOKS (must always be called, unconditionally)
   const { trackArticleBookmark, trackArticleShare } = useUserBehavior(user?.id ?? 'demo-user');
 
+  // 6b. GA4 article tracking (when article is loaded)
+  useEffect(() => {
+    if (!hasArticle || !article) return;
+    trackArticleView(articleId, article.title ?? 'Untitled', article.niche);
+    trackArticleReadTime(articleId, article.readTime ?? 5);
+  }, [hasArticle, article, articleId]);
+
   // 7. READING TRACKER (only track if article exists and has id)
   useReadingTracker(hasArticle ? article : undefined, user?.id ?? 'demo-user');
 
@@ -178,6 +192,7 @@ export default function Article() {
     };
     window.open(shareUrls[platform as keyof typeof shareUrls], '_blank');
     trackArticleShare(article);
+    trackSocialShare(platform, articleId, article.title ?? undefined);
   };
 
   const handleBookmark = async () => {
@@ -341,6 +356,47 @@ export default function Article() {
             <CommentSection articleId={articleId} />
           </div>
 
+          {/* Topic Cluster Links - Hub-and-Spoke Internal Linking */}
+          {(() => {
+            const cluster = getRelatedClusterContent(
+              article.tags || [],
+              safeNiche
+            );
+            if (cluster) {
+              return (
+                <section className="border-t border-border pt-12 mb-12" aria-label="Topic Cluster">
+                  <h2 className="font-display font-bold text-2xl mb-4">
+                    Explore {cluster.hub.title}
+                  </h2>
+                  <p className="text-muted-foreground mb-6">
+                    Dive deeper into this topic with our comprehensive coverage:
+                  </p>
+                  <div className="bg-muted/30 rounded-lg p-6 mb-6">
+                    <h3 className="font-semibold text-lg mb-4">
+                      <Link to={cluster.hub.url} className="text-primary hover:underline">
+                        {cluster.hub.title} →
+                      </Link>
+                    </h3>
+                    <p className="text-muted-foreground mb-4">{cluster.hub.description}</p>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                      {cluster.spokes.map((spoke, idx) => (
+                        <Link
+                          key={idx}
+                          to={spoke.url}
+                          className="text-sm text-primary hover:underline flex items-center gap-2"
+                        >
+                          <span>•</span>
+                          <span>{spoke.title}</span>
+                        </Link>
+                      ))}
+                    </div>
+                  </div>
+                </section>
+              );
+            }
+            return null;
+          })()}
+
           {relatedIntelligence.length > 0 && (
             <section className="border-t border-border pt-12" aria-label="Related Intelligence">
               <h2 className="font-display font-bold text-2xl mb-4">
@@ -356,6 +412,13 @@ export default function Article() {
                     <ArticleCard
                       key={getArticleId(related) || related.title}
                       article={related}
+                      onArticleClick={() =>
+                        trackRelatedArticleClick(
+                          articleId,
+                          getArticleId(related),
+                          related.title ?? undefined
+                        )
+                      }
                     />
                   ))}
               </div>

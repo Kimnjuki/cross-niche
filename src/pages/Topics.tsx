@@ -68,7 +68,7 @@ export default function Topics() {
     <Layout>
       <SEOHead
         title="Technology Topics & Keywords - The Grid Nexus"
-        description="Explore trending technology topics including artificial intelligence, machine learning, cybersecurity, cloud computing, gaming, blockchain, and more. Find the latest news and insights on high-volume search keywords."
+        description="Explore trending technology topics: AI, machine learning, cybersecurity, cloud computing, gaming, and blockchain. Latest news and insights."
         keywords={[
           'artificial intelligence',
           'machine learning',

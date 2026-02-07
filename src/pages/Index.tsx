@@ -4,8 +4,7 @@
  */
 
 import { Layout } from '@/components/layout/Layout';
-import { usePublishedContent, useLatestContent, useTrendingContent, useFeeds, useContentByFeed, useContentDiagnostics } from '@/hooks/useContent';
-import { useConvexDisabled } from '@/components/SafeConvexProvider';
+import { usePublishedContent, useLatestContent, useTrendingContent, useFeeds, useContentByFeed } from '@/hooks/useContent';
 import { mapContentToArticles } from '@/lib/contentMapper';
 import { mockArticles } from '@/data/mockData';
 import { ArticleCard } from '@/components/articles/ArticleCard';
@@ -45,7 +44,6 @@ function safeArticleId(article: Article | null | undefined): string {
  * - Main feed list: mainFeed = sortedArticles.slice(1, 11) = next 10 newest.
  */
 export default function Index() {
-  const isConvexDisabled = useConvexDisabled();
   const { data: published, isLoading: loadingPublished } = usePublishedContent(50);
   const { data: latest, isLoading: loadingLatest } = useLatestContent(10);
   const { data: trending, isLoading: loadingTrending } = useTrendingContent(6);
@@ -53,8 +51,6 @@ export default function Index() {
   const { data: techFeed } = useContentByFeed('innovate', 5);
   const { data: securityFeed } = useContentByFeed('secured', 5);
   const { data: gamingFeed } = useContentByFeed('play', 5);
-  const { diagnostics } = useContentDiagnostics();
-  const showDebugContent = typeof window !== 'undefined' && new URLSearchParams(window.location.search).get('debug') === 'content';
 
   if (typeof window !== 'undefined') {
     console.log('[Index] content query lengths:', {
@@ -86,6 +82,7 @@ export default function Index() {
 
   return (
     <Layout>
+      <LandingPageTracker pageType="homepage" articlesViewed={sortedArticles.length} />
       <SEOHead
         title="The Grid Nexus – Tech, Security & Gaming News"
         description="Breaking technology news, cybersecurity analysis, and gaming guides. One hub for tech, security, and gaming intelligence."
@@ -109,15 +106,6 @@ export default function Index() {
           </p>
         </div>
       </section>
-
-      {/* Optional content diagnostics (?debug=content) */}
-      {showDebugContent && (
-        <section className="bg-muted/50 border-b border-border px-4 py-3 text-xs font-mono">
-          <div className="container mx-auto max-w-7xl">
-            <strong>Content debug:</strong> Convex disabled={String(isConvexDisabled)} · published={published?.length ?? '—'} · latest={latest?.length ?? '—'} · diagnostics={diagnostics ? JSON.stringify(diagnostics) : 'loading…'}
-          </div>
-        </section>
-      )}
 
       {/* Breaking news (The Hacker News / TechCrunch style) */}
       <BreakingNewsSection articles={sortedArticles} maxItems={6} />
@@ -450,7 +438,7 @@ export default function Index() {
         <div className="container mx-auto px-4 max-w-2xl text-center">
           <h2 className="font-display font-bold text-xl text-foreground mb-2">The Grid Nexus</h2>
           <p className="text-sm text-muted-foreground mb-6">
-            One hub for technology, cybersecurity, and gaming. No content-loading diagnostics — just the feed.
+            One hub for technology, cybersecurity, and gaming. Breaking news, analysis, and guides.
           </p>
           <div className="flex flex-wrap justify-center gap-4 text-sm">
             <Link to="/about" className="text-primary hover:underline">About</Link>

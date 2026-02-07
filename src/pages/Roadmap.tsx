@@ -1,10 +1,14 @@
+import { useState, useMemo } from 'react';
 import { Layout } from '@/components/layout/Layout';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
 import { SEOHead } from '@/components/seo/SEOHead';
 import { Link } from 'react-router-dom';
-import { CheckCircle2, Circle, Clock, Zap, Users, BarChart3, Globe, ExternalLink } from 'lucide-react';
+import { CheckCircle2, Circle, Clock, Zap, Users, BarChart3, Globe, ExternalLink, Filter, X } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { cn } from '@/lib/utils';
 
 interface Feature {
   id: string;
@@ -218,6 +222,35 @@ const competitiveAdvantages: Feature[] = [
 ];
 
 const Roadmap = () => {
+  const [searchQuery, setSearchQuery] = useState('');
+  const [statusFilter, setStatusFilter] = useState<Feature['status'] | 'all'>('all');
+  const [tierFilter, setTierFilter] = useState<Feature['tier'] | 'all'>('all');
+  const [phaseFilter, setPhaseFilter] = useState<number | 'all'>('all');
+
+  const filteredFeatures = useMemo(() => {
+    return competitiveAdvantages.filter((feature) => {
+      const matchesSearch = searchQuery === '' || 
+        feature.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        feature.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        feature.businessValue.toLowerCase().includes(searchQuery.toLowerCase());
+      
+      const matchesStatus = statusFilter === 'all' || feature.status === statusFilter;
+      const matchesTier = tierFilter === 'all' || feature.tier === tierFilter;
+      const matchesPhase = phaseFilter === 'all' || feature.phase === phaseFilter;
+
+      return matchesSearch && matchesStatus && matchesTier && matchesPhase;
+    });
+  }, [searchQuery, statusFilter, tierFilter, phaseFilter]);
+
+  const hasActiveFilters = statusFilter !== 'all' || tierFilter !== 'all' || phaseFilter !== 'all' || searchQuery !== '';
+
+  const clearFilters = () => {
+    setSearchQuery('');
+    setStatusFilter('all');
+    setTierFilter('all');
+    setPhaseFilter('all');
+  };
+
   const getStatusIcon = (status: Feature['status']) => {
     switch (status) {
       case 'completed':
@@ -289,6 +322,86 @@ const Roadmap = () => {
             </div>
           </div>
 
+          {/* Filters */}
+          <div className="mb-8 space-y-4">
+            <div className="flex items-center gap-3">
+              <Filter className="h-5 w-5 text-muted-foreground" />
+              <h2 className="text-lg font-semibold">Filters</h2>
+              {hasActiveFilters && (
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={clearFilters}
+                  className="h-7 text-xs gap-1"
+                >
+                  <X className="h-3 w-3" />
+                  Clear all
+                </Button>
+              )}
+            </div>
+            
+            <div className="flex flex-col sm:flex-row gap-4">
+              {/* Search */}
+              <div className="flex-1">
+                <Input
+                  placeholder="Search features..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="w-full"
+                />
+              </div>
+
+              {/* Status Filter */}
+              <div className="flex gap-2 flex-wrap">
+                {(['all', 'completed', 'in-progress', 'planned'] as const).map((status) => (
+                  <Button
+                    key={status}
+                    variant={statusFilter === status ? 'default' : 'outline'}
+                    size="sm"
+                    onClick={() => setStatusFilter(status)}
+                    className="capitalize"
+                  >
+                    {status === 'all' ? 'All Status' : status.replace('-', ' ')}
+                  </Button>
+                ))}
+              </div>
+
+              {/* Tier Filter */}
+              <div className="flex gap-2 flex-wrap">
+                {(['all', 1, 2, 3] as const).map((tier) => (
+                  <Button
+                    key={tier}
+                    variant={tierFilter === tier ? 'default' : 'outline'}
+                    size="sm"
+                    onClick={() => setTierFilter(tier)}
+                  >
+                    {tier === 'all' ? 'All Tiers' : `Tier ${tier}`}
+                  </Button>
+                ))}
+              </div>
+
+              {/* Phase Filter */}
+              <div className="flex gap-2 flex-wrap">
+                {(['all', ...phases.map(p => p.id)] as const).map((phase) => (
+                  <Button
+                    key={phase}
+                    variant={phaseFilter === phase ? 'default' : 'outline'}
+                    size="sm"
+                    onClick={() => setPhaseFilter(phase)}
+                  >
+                    {phase === 'all' ? 'All Phases' : `Phase ${phase}`}
+                  </Button>
+                ))}
+              </div>
+            </div>
+
+            {hasActiveFilters && (
+              <div className="text-sm text-muted-foreground">
+                Showing {filteredFeatures.length} of {competitiveAdvantages.length} features
+              </div>
+            )}
+          </div>
+
           {/* Phase Overview */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
             {phases.map((phase) => (
@@ -324,7 +437,7 @@ const Roadmap = () => {
               </div>
 
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                {competitiveAdvantages.filter(f => f.tier === 1).map((feature) => (
+                {filteredFeatures.filter(f => f.tier === 1).map((feature) => (
                   <Card key={feature.id} className="relative">
                     <CardHeader>
                       <div className="flex items-start justify-between">
@@ -372,7 +485,7 @@ const Roadmap = () => {
               </div>
 
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                {competitiveAdvantages.filter(f => f.tier === 2).map((feature) => (
+                {filteredFeatures.filter(f => f.tier === 2).map((feature) => (
                   <Card key={feature.id} className="relative">
                     <CardHeader>
                       <div className="flex items-start justify-between">
@@ -420,7 +533,7 @@ const Roadmap = () => {
               </div>
 
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                {competitiveAdvantages.filter(f => f.tier === 3).map((feature) => (
+                {filteredFeatures.filter(f => f.tier === 3).map((feature) => (
                   <Card key={feature.id} className="relative">
                     <CardHeader>
                       <div className="flex items-start justify-between">
@@ -464,7 +577,7 @@ const Roadmap = () => {
               <CardContent className="pt-6">
                 <div className="text-center">
                   <div className="text-3xl font-bold text-green-500">
-                    {competitiveAdvantages.filter(f => f.status === 'completed').length}
+                    {filteredFeatures.filter(f => f.status === 'completed').length}
                   </div>
                   <p className="text-sm text-muted-foreground">Completed Features</p>
                 </div>
@@ -475,7 +588,7 @@ const Roadmap = () => {
               <CardContent className="pt-6">
                 <div className="text-center">
                   <div className="text-3xl font-bold text-blue-500">
-                    {competitiveAdvantages.filter(f => f.status === 'in-progress').length}
+                    {filteredFeatures.filter(f => f.status === 'in-progress').length}
                   </div>
                   <p className="text-sm text-muted-foreground">In Progress</p>
                 </div>
@@ -486,7 +599,7 @@ const Roadmap = () => {
               <CardContent className="pt-6">
                 <div className="text-center">
                   <div className="text-3xl font-bold text-gray-500">
-                    {competitiveAdvantages.filter(f => f.status === 'planned').length}
+                    {filteredFeatures.filter(f => f.status === 'planned').length}
                   </div>
                   <p className="text-sm text-muted-foreground">Planned Features</p>
                 </div>
@@ -497,9 +610,11 @@ const Roadmap = () => {
               <CardContent className="pt-6">
                 <div className="text-center">
                   <div className="text-3xl font-bold">
-                    {Math.round((competitiveAdvantages.filter(f => f.status === 'completed').length / competitiveAdvantages.length) * 100)}%
+                    {filteredFeatures.length > 0 
+                      ? Math.round((filteredFeatures.filter(f => f.status === 'completed').length / filteredFeatures.length) * 100)
+                      : 0}%
                   </div>
-                  <p className="text-sm text-muted-foreground">Overall Progress</p>
+                  <p className="text-sm text-muted-foreground">Filtered Progress</p>
                 </div>
               </CardContent>
             </Card>
