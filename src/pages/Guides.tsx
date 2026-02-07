@@ -47,11 +47,46 @@ export default function Guides() {
   return (
     <Layout>
       <SEOHead
-        title="Tech Guides & Tools | The Grid Nexus"
-        description="Level up your skills with comprehensive guides and discover the best tools recommended by our experts. Tutorials, resources, and recommendations."
-        keywords={['tech guides', 'tutorials', 'tools', 'resources', 'how-to guides', 'expert recommendations']}
+        title="Tech Guides 2026 - Gaming, Cybersecurity & AI Tutorials | The Grid Nexus"
+        description="Master tech skills with comprehensive 2026 guides. Step-by-step tutorials for gaming, cybersecurity, AI implementation, and more. Expert insights, proven strategies, and beginner-friendly resources. Updated February 2026."
+        keywords={[
+          'tech guides 2026',
+          'gaming tutorials',
+          'cybersecurity how-to',
+          'AI implementation guides',
+          'tech learning resources',
+          'how to secure your network from ransomware attacks 2026',
+          'step by step guide to building gaming pc',
+          'best practices for AI integration in business',
+          'complete guide to understanding zero trust security',
+          'beginner friendly machine learning tutorial',
+          'how to optimize game performance on low end pc',
+          'comprehensive guide to cloud security architecture',
+          'what is breach and attack simulation explained',
+          'how to protect against phishing attacks for beginners',
+          'tech tutorials',
+          'programming guides',
+          'security best practices',
+          'gaming setup guides',
+          'AI tutorials',
+          'cybersecurity training',
+        ]}
         url={window.location.href}
         type="website"
+        faqs={[
+          {
+            question: 'What types of guides are available?',
+            answer: 'We offer comprehensive guides covering gaming tutorials, cybersecurity how-to guides, AI implementation guides, tech learning resources, and step-by-step tutorials for various technology topics.',
+          },
+          {
+            question: 'Are the guides suitable for beginners?',
+            answer: 'Yes! Our guides are categorized by difficulty level (beginner, intermediate, advanced) and include step-by-step instructions with prerequisites clearly marked.',
+          },
+          {
+            question: 'How often are guides updated?',
+            answer: 'Our guides are regularly updated to reflect the latest best practices and technology changes. Each guide displays a "Last Updated" timestamp.',
+          },
+        ]}
       />
       <div className="container mx-auto px-4 py-12">
         {/* Header */}
@@ -65,9 +100,16 @@ export default function Guides() {
               <p className="text-muted-foreground">Tutorials, Resources & Recommendations</p>
             </div>
           </div>
-          <p className="text-lg text-muted-foreground max-w-2xl">
-            Level up your skills with our comprehensive guides and discover the best tools recommended by our experts.
-          </p>
+          <div className="prose prose-lg max-w-3xl">
+            <p className="text-lg text-muted-foreground mb-4">
+              Master technology skills with our comprehensive guides covering gaming, cybersecurity, AI implementation, and more. 
+              Each guide includes step-by-step instructions, expert insights, and proven strategies to help you succeed.
+            </p>
+            <p className="text-base text-muted-foreground">
+              Whether you're building a gaming PC, securing your network from ransomware, or implementing AI in your business, 
+              our guides provide the knowledge and tools you need. All guides are regularly updated with the latest best practices and technology trends.
+            </p>
+          </div>
           <div className="mt-6 flex flex-wrap gap-4 text-sm">
             <Link to="/tech" className="text-primary hover:underline">Tech News</Link>
             <span className="text-muted-foreground">•</span>

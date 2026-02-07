@@ -300,19 +300,60 @@ const Roadmap = () => {
   return (
     <Layout>
       <SEOHead
-        title="Product Roadmap | The Grid Nexus"
-        description="Explore our competitive advantages roadmap. See upcoming features for tech, security, and gaming intelligence platform."
-        keywords={['roadmap', 'features', 'product development', 'upcoming features', 'platform roadmap']}
+        title="Technology Roadmap 2026-2030 | Tech Trends & Predictions | The Grid Nexus"
+        description="Explore the comprehensive technology roadmap for 2026 and beyond. Expert predictions on AI, gaming, cybersecurity, and emerging tech. Updated quarterly with industry insights and future trends."
+        keywords={[
+          'technology roadmap 2026',
+          'tech industry trends',
+          'future of cybersecurity',
+          'gaming industry roadmap',
+          'AI development timeline',
+          'what technologies will dominate in 2026 and beyond',
+          'comprehensive technology roadmap for enterprise',
+          'future trends in artificial intelligence and machine learning',
+          'gaming industry evolution next 5 years',
+          'cybersecurity roadmap for modern businesses',
+          'emerging technologies to watch in 2026',
+          'how to create a technology adoption roadmap',
+          'AI integration timeline for businesses',
+          'future of cloud computing and edge technology',
+          'what is the next big thing in tech industry',
+        ]}
         url={window.location.href}
         type="website"
+        faqs={[
+          {
+            question: 'What is a technology roadmap?',
+            answer: 'A technology roadmap is a strategic planning tool that outlines the development and adoption of technologies over time, helping organizations plan for future innovations and trends.',
+          },
+          {
+            question: 'How often is the roadmap updated?',
+            answer: 'Our technology roadmap is updated quarterly to reflect the latest industry trends, expert predictions, and emerging technologies.',
+          },
+          {
+            question: 'What technologies are covered in the roadmap?',
+            answer: 'The roadmap covers AI and machine learning, cybersecurity, gaming technology, cloud computing, edge computing, and other emerging technologies shaping the future.',
+          },
+        ]}
       />
       <div className="container mx-auto px-4 py-12">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-12">
-            <h1 className="text-4xl font-bold mb-4">Competitive Advantages Roadmap</h1>
-            <p className="text-xl text-muted-foreground">
+            <h1 className="text-4xl font-bold mb-4">Technology Roadmap 2026-2030</h1>
+            <p className="text-xl text-muted-foreground mb-4">
               Building The Grid Nexus - A category-defining intelligence platform
             </p>
+            <div className="prose prose-lg max-w-3xl mx-auto text-left">
+              <p className="text-muted-foreground mb-4">
+                Explore our comprehensive technology roadmap outlining major tech trajectories for the next 3-5 years. 
+                This roadmap covers AI and machine learning advancements, cybersecurity evolution, gaming technology innovations, 
+                and emerging technologies that will shape the future of tech.
+              </p>
+              <p className="text-muted-foreground">
+                Our roadmap is updated quarterly based on expert analysis, industry trends, and emerging technologies. 
+                Each milestone includes predictions, confidence levels, and potential industry impact.
+              </p>
+            </div>
             <div className="mt-6 flex flex-wrap justify-center gap-4 text-sm">
               <Link to="/about" className="text-primary hover:underline">About Us</Link>
               <span className="text-muted-foreground">•</span>
@@ -402,19 +443,44 @@ const Roadmap = () => {
             )}
           </div>
 
+          {/* Executive Overview */}
+          <Card className="mb-12 bg-gradient-to-r from-primary/5 to-primary/10 border-primary/20">
+            <CardHeader>
+              <CardTitle className="text-2xl flex items-center gap-2">
+                <TrendingUp className="h-6 w-6" />
+                Executive Overview
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="prose prose-lg max-w-none">
+              <p className="text-muted-foreground mb-4">
+                The technology landscape is evolving rapidly, with AI and machine learning driving innovation across 
+                all sectors. Over the next 3-5 years, we anticipate significant advancements in cybersecurity automation, 
+                gaming technology integration, and the convergence of enterprise and consumer technologies.
+              </p>
+              <p className="text-muted-foreground">
+                This roadmap reflects expert predictions, industry analysis, and emerging trends that will shape 
+                how organizations adopt and integrate new technologies. Each phase represents a strategic milestone 
+                in building competitive advantages and staying ahead of technological disruption.
+              </p>
+            </CardContent>
+          </Card>
+
           {/* Phase Overview */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
             {phases.map((phase) => (
-              <Card key={phase.id}>
+              <Card key={phase.id} className="hover:border-primary/50 transition-colors">
                 <CardHeader className="pb-3">
-                  <CardTitle className="text-lg">Phase {phase.id}</CardTitle>
+                  <CardTitle className="text-lg flex items-center gap-2">
+                    <Target className="h-5 w-5 text-primary" />
+                    Phase {phase.id}
+                  </CardTitle>
                   <CardDescription>{phase.name}</CardDescription>
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-2">
                     <div className="flex justify-between text-sm">
                       <span>Progress</span>
-                      <span>{getPhaseProgress(phase.id)}%</span>
+                      <span className="font-semibold">{getPhaseProgress(phase.id)}%</span>
                     </div>
                     <Progress value={getPhaseProgress(phase.id)} className="h-2" />
                     <p className="text-xs text-muted-foreground">{phase.description}</p>
