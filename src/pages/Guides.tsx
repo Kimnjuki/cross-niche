@@ -1,116 +1,117 @@
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { Layout } from '@/components/layout/Layout';
-import { mockTools } from '@/data/mockData';
-import { useGuides } from '@/hooks/useGuides';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
-import { BookOpen, Wrench, Search, ExternalLink, Clock, AlertTriangle, ChevronDown, ListOrdered } from 'lucide-react';
+import { BookOpen, Search, ExternalLink, Clock, Zap, Shield, Gamepad2, TrendingUp, Lightbulb, CheckCircle2, ArrowRight } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { SEOHead } from '@/components/seo/SEOHead';
 import { Link } from 'react-router-dom';
-import { Skeleton } from '@/components/ui/skeleton';
+import { howToGuides, getGuidesByCategory, searchGuides, type HowToGuide } from '@/data/howToGuides';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 
 const difficultyColors = {
-  beginner: 'bg-gaming/10 text-gaming border-gaming/20',
+  beginner: 'bg-green-500/10 text-green-600 border-green-500/20',
   intermediate: 'bg-yellow-500/10 text-yellow-500 border-yellow-500/20',
-  advanced: 'bg-security/10 text-security border-security/20',
+  advanced: 'bg-red-500/10 text-red-600 border-red-500/20',
 };
 
-const nicheColors = {
-  tech: 'bg-tech/10 text-tech',
-  security: 'bg-security/10 text-security',
-  gaming: 'bg-gaming/10 text-gaming',
+const categoryColors = {
+  tech: 'bg-blue-500/10 text-blue-600 border-blue-500/20',
+  security: 'bg-red-500/10 text-red-600 border-red-500/20',
+  gaming: 'bg-purple-500/10 text-purple-600 border-purple-500/20',
 };
 
-const nicheIdMap: Record<string, number> = {
-  tech: 1,
-  security: 2,
-  gaming: 3,
+const categoryIcons = {
+  tech: Zap,
+  security: Shield,
+  gaming: Gamepad2,
 };
 
 export default function Guides() {
   const [searchQuery, setSearchQuery] = useState('');
-  const [selectedDifficulty, setSelectedDifficulty] = useState<string | null>(null);
-  const [expandedGuide, setExpandedGuide] = useState<string | null>(null);
-  const { guides, isLoading } = useGuides(undefined, selectedDifficulty || undefined);
+  const [selectedCategory, setSelectedCategory] = useState<'all' | 'tech' | 'security' | 'gaming'>('all');
+  const [selectedDifficulty, setSelectedDifficulty] = useState<'all' | 'beginner' | 'intermediate' | 'advanced'>('all');
 
-  const filteredGuides = guides.filter(guide => {
-    const matchesSearch = guide.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                         guide.description.toLowerCase().includes(searchQuery.toLowerCase());
-    return matchesSearch;
-  });
+  const filteredGuides = useMemo(() => {
+    let guides = searchQuery ? searchGuides(searchQuery) : howToGuides;
+    
+    if (selectedCategory !== 'all') {
+      guides = guides.filter(g => g.category === selectedCategory);
+    }
+    
+    if (selectedDifficulty !== 'all') {
+      guides = guides.filter(g => g.difficulty === selectedDifficulty);
+    }
+    
+    return guides;
+  }, [searchQuery, selectedCategory, selectedDifficulty]);
+
+  const techGuides = getGuidesByCategory('tech');
+  const securityGuides = getGuidesByCategory('security');
+  const gamingGuides = getGuidesByCategory('gaming');
 
   return (
     <Layout>
       <SEOHead
-        title="Tech Guides 2026 - Gaming, Cybersecurity & AI Tutorials | The Grid Nexus"
-        description="Master tech skills with comprehensive 2026 guides. Step-by-step tutorials for gaming, cybersecurity, AI implementation, and more. Expert insights, proven strategies, and beginner-friendly resources. Updated February 2026."
+        title="How-To Guides 2026: Tech, Security & Gaming Solutions | The Grid Nexus"
+        description="Solve the most searched tech, security, and gaming questions with our comprehensive how-to guides. Unique tricks, modern solutions, and step-by-step tutorials. Updated February 2026."
         keywords={[
-          'tech guides 2026',
-          'gaming tutorials',
-          'cybersecurity how-to',
-          'AI implementation guides',
-          'tech learning resources',
-          'how to secure your network from ransomware attacks 2026',
-          'step by step guide to building gaming pc',
-          'best practices for AI integration in business',
-          'complete guide to understanding zero trust security',
-          'beginner friendly machine learning tutorial',
-          'how to optimize game performance on low end pc',
-          'comprehensive guide to cloud security architecture',
-          'what is breach and attack simulation explained',
-          'how to protect against phishing attacks for beginners',
-          'tech tutorials',
-          'programming guides',
-          'security best practices',
-          'gaming setup guides',
-          'AI tutorials',
-          'cybersecurity training',
+          'how to speed up windows 11',
+          'how to fix slow internet connection',
+          'how to build a gaming pc step by step',
+          'how to protect against ransomware attacks',
+          'how to secure wifi network',
+          'how to increase fps in games',
+          'how to reduce lag in games',
+          'windows 11 optimization guide',
+          'internet troubleshooting guide',
+          'gaming pc building tutorial',
+          'ransomware protection guide',
+          'wifi security setup',
+          'fps optimization guide',
+          'game lag reduction',
+          'tech how-to guides',
+          'security tutorials',
+          'gaming guides',
+          'step by step tech solutions',
+          'unique tech tricks',
+          'modern tech solutions',
         ]}
         url={window.location.href}
         type="website"
         faqs={[
           {
-            question: 'What types of guides are available?',
-            answer: 'We offer comprehensive guides covering gaming tutorials, cybersecurity how-to guides, AI implementation guides, tech learning resources, and step-by-step tutorials for various technology topics.',
+            question: 'What makes these guides unique?',
+            answer: 'Our guides include unique tricks and modern solutions that go beyond basic tutorials. We compare traditional vs modern approaches and provide proven methods used by experts.',
           },
           {
-            question: 'Are the guides suitable for beginners?',
-            answer: 'Yes! Our guides are categorized by difficulty level (beginner, intermediate, advanced) and include step-by-step instructions with prerequisites clearly marked.',
+            question: 'Are these guides based on real search queries?',
+            answer: 'Yes! All guides are based on the most searched questions and queries in tech, security, and gaming. We solve real problems people search for daily.',
           },
           {
             question: 'How often are guides updated?',
-            answer: 'Our guides are regularly updated to reflect the latest best practices and technology changes. Each guide displays a "Last Updated" timestamp.',
+            answer: 'Guides are updated monthly to reflect the latest best practices, new tools, and emerging solutions. Each guide shows the last updated date.',
           },
         ]}
       />
       <div className="container mx-auto px-4 py-12">
-        {/* Header */}
-        <div className="mb-8">
-          <div className="flex items-center gap-3 mb-4">
-            <div className="p-3 rounded-xl bg-primary">
-              <BookOpen className="h-8 w-8 text-primary-foreground" />
-            </div>
-            <div>
-              <h1 className="font-display font-bold text-4xl">Guides & Tools</h1>
-              <p className="text-muted-foreground">Tutorials, Resources & Recommendations</p>
+        {/* Hero Section */}
+        <div className="mb-12 text-center">
+          <div className="flex items-center justify-center gap-3 mb-6">
+            <div className="p-4 rounded-2xl bg-gradient-to-br from-primary/20 to-primary/10">
+              <BookOpen className="h-12 w-12 text-primary" />
             </div>
           </div>
-          <div className="prose prose-lg max-w-3xl">
-            <p className="text-lg text-muted-foreground mb-4">
-              Master technology skills with our comprehensive guides covering gaming, cybersecurity, AI implementation, and more. 
-              Each guide includes step-by-step instructions, expert insights, and proven strategies to help you succeed.
-            </p>
-            <p className="text-base text-muted-foreground">
-              Whether you're building a gaming PC, securing your network from ransomware, or implementing AI in your business, 
-              our guides provide the knowledge and tools you need. All guides are regularly updated with the latest best practices and technology trends.
-            </p>
-          </div>
-          <div className="mt-6 flex flex-wrap gap-4 text-sm">
+          <h1 className="font-display font-bold text-5xl mb-4 bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">
+            How-To Guides
+          </h1>
+          <p className="text-xl text-muted-foreground max-w-3xl mx-auto mb-6">
+            Solve the most searched questions in tech, security, and gaming with unique tricks and modern solutions
+          </p>
+          <div className="flex flex-wrap justify-center gap-4 text-sm">
             <Link to="/tech" className="text-primary hover:underline">Tech News</Link>
             <span className="text-muted-foreground">•</span>
             <Link to="/security" className="text-primary hover:underline">Security</Link>
@@ -121,163 +122,259 @@ export default function Guides() {
           </div>
         </div>
 
-        <Tabs defaultValue="guides" className="space-y-8">
-          <TabsList className="grid w-full max-w-md grid-cols-2">
-            <TabsTrigger value="guides" className="gap-2">
-              <BookOpen className="h-4 w-4" />
-              Guides
-            </TabsTrigger>
-            <TabsTrigger value="tools" className="gap-2">
-              <Wrench className="h-4 w-4" />
-              Tools
-            </TabsTrigger>
-          </TabsList>
+        {/* Featured Comparison Alert */}
+        <Alert className="mb-8 border-primary/20 bg-primary/5">
+          <TrendingUp className="h-4 w-4" />
+          <AlertTitle>Modern Solutions vs Traditional Methods</AlertTitle>
+          <AlertDescription>
+            Our guides compare traditional approaches with modern solutions, showing you the advantages of updated techniques. 
+            Each guide includes unique tricks used by experts in the field.
+          </AlertDescription>
+        </Alert>
 
-          <TabsContent value="guides" className="space-y-6">
-            {/* Search & Filter */}
-            <div className="flex flex-col sm:flex-row gap-4">
-              <div className="relative flex-1">
-                <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                <Input
-                  placeholder="Search guides..."
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  className="pl-10"
-                />
+        {/* Category Stats */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+          <Card className="border-blue-500/20">
+            <CardHeader>
+              <div className="flex items-center gap-3">
+                <div className="p-2 rounded-lg bg-blue-500/10">
+                  <Zap className="h-6 w-6 text-blue-600" />
+                </div>
+                <div>
+                  <CardTitle className="text-lg">Tech Guides</CardTitle>
+                  <CardDescription>{techGuides.length} comprehensive guides</CardDescription>
+                </div>
               </div>
-              <div className="flex gap-2">
-                {['beginner', 'intermediate', 'advanced'].map((difficulty) => (
-                  <Button
-                    key={difficulty}
-                    variant={selectedDifficulty === difficulty ? 'default' : 'outline'}
-                    size="sm"
-                    onClick={() => setSelectedDifficulty(
-                      selectedDifficulty === difficulty ? null : difficulty
-                    )}
-                    className="capitalize"
-                  >
-                    {difficulty}
-                  </Button>
-                ))}
+            </CardHeader>
+            <CardContent>
+              <p className="text-sm text-muted-foreground">
+                Windows optimization, internet troubleshooting, PC building, and more
+              </p>
+            </CardContent>
+          </Card>
+
+          <Card className="border-red-500/20">
+            <CardHeader>
+              <div className="flex items-center gap-3">
+                <div className="p-2 rounded-lg bg-red-500/10">
+                  <Shield className="h-6 w-6 text-red-600" />
+                </div>
+                <div>
+                  <CardTitle className="text-lg">Security Guides</CardTitle>
+                  <CardDescription>{securityGuides.length} security solutions</CardDescription>
+                </div>
               </div>
+            </CardHeader>
+            <CardContent>
+              <p className="text-sm text-muted-foreground">
+                Ransomware protection, WiFi security, network hardening, and more
+              </p>
+            </CardContent>
+          </Card>
+
+          <Card className="border-purple-500/20">
+            <CardHeader>
+              <div className="flex items-center gap-3">
+                <div className="p-2 rounded-lg bg-purple-500/10">
+                  <Gamepad2 className="h-6 w-6 text-purple-600" />
+                </div>
+                <div>
+                  <CardTitle className="text-lg">Gaming Guides</CardTitle>
+                  <CardDescription>{gamingGuides.length} performance guides</CardDescription>
+                </div>
+              </div>
+            </CardHeader>
+            <CardContent>
+              <p className="text-sm text-muted-foreground">
+                FPS optimization, lag reduction, PC building for gaming, and more
+              </p>
+            </CardContent>
+          </Card>
+        </div>
+
+        {/* Search & Filters */}
+        <div className="mb-8 space-y-4">
+          <div className="relative">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+            <Input
+              placeholder="Search guides by question, problem, or topic..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="pl-10 h-12 text-lg"
+            />
+          </div>
+
+          <div className="flex flex-wrap gap-3">
+            <Tabs value={selectedCategory} onValueChange={(v) => setSelectedCategory(v as typeof selectedCategory)}>
+              <TabsList>
+                <TabsTrigger value="all">All Categories</TabsTrigger>
+                <TabsTrigger value="tech" className="gap-2">
+                  <Zap className="h-4 w-4" />
+                  Tech
+                </TabsTrigger>
+                <TabsTrigger value="security" className="gap-2">
+                  <Shield className="h-4 w-4" />
+                  Security
+                </TabsTrigger>
+                <TabsTrigger value="gaming" className="gap-2">
+                  <Gamepad2 className="h-4 w-4" />
+                  Gaming
+                </TabsTrigger>
+              </TabsList>
+            </Tabs>
+
+            <div className="flex gap-2">
+              {(['all', 'beginner', 'intermediate', 'advanced'] as const).map((difficulty) => (
+                <Button
+                  key={difficulty}
+                  variant={selectedDifficulty === difficulty ? 'default' : 'outline'}
+                  size="sm"
+                  onClick={() => setSelectedDifficulty(difficulty)}
+                  className="capitalize"
+                >
+                  {difficulty === 'all' ? 'All Levels' : difficulty}
+                </Button>
+              ))}
             </div>
+          </div>
 
-            {/* Guides Grid */}
-            {isLoading ? (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {[1, 2, 3, 4, 5, 6].map((i) => (
-                  <Skeleton key={i} className="h-64 rounded-lg" />
-                ))}
-              </div>
-            ) : filteredGuides.length === 0 ? (
-              <div className="text-center py-12 text-muted-foreground">
-                <BookOpen className="h-12 w-12 mx-auto mb-4 opacity-50" />
-                <p>No guides found matching your criteria.</p>
-              </div>
-            ) : (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {filteredGuides.map((guide) => (
-                  <Card key={guide.id} className="group hover:border-primary/50 transition-colors overflow-hidden">
-                    <CardHeader>
-                      <div className="flex gap-2 mb-2">
+          {filteredGuides.length > 0 && (
+            <p className="text-sm text-muted-foreground">
+              Found {filteredGuides.length} guide{filteredGuides.length !== 1 ? 's' : ''} matching your criteria
+            </p>
+          )}
+        </div>
+
+        {/* Guides Grid */}
+        {filteredGuides.length === 0 ? (
+          <Card className="text-center py-12">
+            <CardContent>
+              <BookOpen className="h-16 w-16 mx-auto mb-4 text-muted-foreground opacity-50" />
+              <h3 className="text-xl font-semibold mb-2">No guides found</h3>
+              <p className="text-muted-foreground mb-4">
+                Try adjusting your search or filters
+              </p>
+              <Button onClick={() => {
+                setSearchQuery('');
+                setSelectedCategory('all');
+                setSelectedDifficulty('all');
+              }}>
+                Clear filters
+              </Button>
+            </CardContent>
+          </Card>
+        ) : (
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            {filteredGuides.map((guide) => {
+              const CategoryIcon = categoryIcons[guide.category];
+              return (
+                <Card key={guide.id} className="group hover:border-primary/50 transition-all hover:shadow-lg">
+                  <CardHeader>
+                    <div className="flex items-start justify-between gap-4 mb-3">
+                      <div className="flex gap-2 flex-wrap">
+                        <Badge className={cn(categoryColors[guide.category], 'capitalize')}>
+                          <CategoryIcon className="h-3 w-3 mr-1" />
+                          {guide.category}
+                        </Badge>
                         <Badge className={cn(difficultyColors[guide.difficulty], 'capitalize')}>
                           {guide.difficulty}
                         </Badge>
-                        <Badge className={nicheColors[guide.niche]} variant="outline">
-                          {guide.niche}
-                        </Badge>
                       </div>
-                      <CardTitle className="font-display text-lg group-hover:text-primary transition-colors">
-                        {guide.title}
-                      </CardTitle>
-                    </CardHeader>
-                    <CardContent className="space-y-4">
-                      <p className="text-muted-foreground text-sm">{guide.description}</p>
-                      <div className="flex items-center gap-4 text-sm text-muted-foreground">
-                        <span className="flex items-center gap-1">
-                          <Clock className="h-4 w-4" />
-                          {guide.readTime} min
-                        </span>
-                        <span>{guide.platform.join(', ')}</span>
-                      </div>
-                      <Collapsible open={expandedGuide === guide.id} onOpenChange={(o) => setExpandedGuide(o ? guide.id : null)}>
-                        <CollapsibleTrigger asChild>
-                          <Button variant="ghost" size="sm" className="w-full justify-between gap-2 text-left h-auto py-2">
-                            <span className="flex items-center gap-2">
-                              <ListOrdered className="h-4 w-4" />
-                              View steps ({guide.steps.length})
-                            </span>
-                            <ChevronDown className={cn('h-4 w-4 transition-transform', expandedGuide === guide.id && 'rotate-180')} />
-                          </Button>
-                        </CollapsibleTrigger>
-                        <CollapsibleContent>
-                          <ol className="mt-2 space-y-1.5 pl-4 list-decimal text-sm text-muted-foreground">
-                            {guide.steps.map((step, i) => (
-                              <li key={i}>{step}</li>
-                            ))}
-                          </ol>
-                        </CollapsibleContent>
-                      </Collapsible>
-                      <Button variant="outline" size="sm" asChild className="w-full gap-2">
-                        <Link to={`/guides/${guide.id}`}>
-                          View full guide
-                          <ExternalLink className="h-3.5 w-3.5" />
-                        </Link>
-                      </Button>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
-            )}
-          </TabsContent>
-
-          <TabsContent value="tools" className="space-y-6">
-            {/* Tools Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {mockTools.map((tool) => (
-                <Card key={tool.id} className="group">
-                  <CardHeader>
-                    <div className="flex items-start justify-between">
-                      <div>
-                        <CardTitle className="font-display text-lg flex items-center gap-2">
-                          {tool.name}
-                          {tool.isAffiliate && (
-                            <Badge variant="secondary" className="text-xs">
-                              <AlertTriangle className="h-3 w-3 mr-1" />
-                              Affiliate
-                            </Badge>
-                          )}
-                        </CardTitle>
-                        <Badge className={cn(nicheColors[tool.niche], 'mt-2')} variant="outline">
-                          {tool.niche}
-                        </Badge>
+                      <div className="flex items-center gap-1 text-sm text-muted-foreground">
+                        <Clock className="h-4 w-4" />
+                        {guide.readTime} min
                       </div>
                     </div>
+                    <CardTitle className="text-xl mb-2 group-hover:text-primary transition-colors">
+                      {guide.title}
+                    </CardTitle>
+                    <CardDescription className="text-base">
+                      {guide.description}
+                    </CardDescription>
                   </CardHeader>
-                  <CardContent>
-                    <p className="text-muted-foreground text-sm mb-4">{tool.description}</p>
-                    <Button asChild variant="outline" className="w-full gap-2">
-                      <a href={tool.url} target="_blank" rel="noopener noreferrer">
-                        Visit Website
-                        <ExternalLink className="h-4 w-4" />
-                      </a>
+                  <CardContent className="space-y-4">
+                    {/* Search Query */}
+                    <div className="bg-muted/50 rounded-lg p-3">
+                      <p className="text-xs font-semibold text-muted-foreground mb-1">Solves:</p>
+                      <p className="text-sm font-medium">"{guide.searchQuery}"</p>
+                    </div>
+
+                    {/* Unique Trick */}
+                    {guide.uniqueTrick && (
+                      <Alert className="border-yellow-500/20 bg-yellow-500/5">
+                        <Lightbulb className="h-4 w-4 text-yellow-600" />
+                        <AlertTitle className="text-sm">Unique Trick</AlertTitle>
+                        <AlertDescription className="text-sm">
+                          {guide.uniqueTrick}
+                        </AlertDescription>
+                      </Alert>
+                    )}
+
+                    {/* Comparison */}
+                    {guide.comparison && (
+                      <div className="border rounded-lg p-4 space-y-2">
+                        <p className="text-xs font-semibold text-muted-foreground mb-2">Traditional vs Modern:</p>
+                        <div className="grid grid-cols-2 gap-2 text-xs">
+                          <div>
+                            <p className="font-semibold text-muted-foreground">Traditional:</p>
+                            <p>{guide.comparison.traditional}</p>
+                          </div>
+                          <div>
+                            <p className="font-semibold text-primary">Modern:</p>
+                            <p>{guide.comparison.modern}</p>
+                          </div>
+                        </div>
+                        <div className="pt-2 border-t">
+                          <p className="text-xs font-semibold text-green-600">Advantage: {guide.comparison.advantage}</p>
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Steps Preview */}
+                    <div>
+                      <p className="text-sm font-semibold mb-2">Steps ({guide.steps.length}):</p>
+                      <ol className="space-y-1 text-sm text-muted-foreground">
+                        {guide.steps.slice(0, 3).map((step, i) => (
+                          <li key={i} className="flex items-start gap-2">
+                            <span className="font-semibold text-primary">{i + 1}.</span>
+                            <span>{step.title}</span>
+                          </li>
+                        ))}
+                        {guide.steps.length > 3 && (
+                          <li className="text-primary font-medium">
+                            + {guide.steps.length - 3} more steps...
+                          </li>
+                        )}
+                      </ol>
+                    </div>
+
+                    {/* Prerequisites */}
+                    {guide.prerequisites.length > 0 && (
+                      <div>
+                        <p className="text-xs font-semibold text-muted-foreground mb-1">Prerequisites:</p>
+                        <div className="flex flex-wrap gap-1">
+                          {guide.prerequisites.map((req, i) => (
+                            <Badge key={i} variant="outline" className="text-xs">
+                              {req}
+                            </Badge>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+
+                    {/* CTA */}
+                    <Button asChild className="w-full group/btn" size="lg">
+                      <Link to={`/guides/${guide.id}`}>
+                        View Complete Guide
+                        <ArrowRight className="h-4 w-4 ml-2 group-hover/btn:translate-x-1 transition-transform" />
+                      </Link>
                     </Button>
                   </CardContent>
                 </Card>
-              ))}
-            </div>
-
-            {/* Affiliate Disclosure */}
-            <div className="bg-muted/50 rounded-lg p-4 text-sm text-muted-foreground">
-              <p>
-                <strong>Disclosure:</strong> Some links on this page are affiliate links. We may earn a commission if you make a purchase through these links, at no additional cost to you.{' '}
-                <a href="/disclosure" className="text-primary hover:underline">
-                  Learn more
-                </a>
-              </p>
-            </div>
-          </TabsContent>
-        </Tabs>
+              );
+            })}
+          </div>
+        )}
       </div>
     </Layout>
   );

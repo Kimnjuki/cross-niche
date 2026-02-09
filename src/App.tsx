@@ -17,9 +17,6 @@ import Bookmarks from "./pages/Bookmarks";
 import SecurityScore from "./pages/SecurityScore";
 import Disclosure from "./pages/Disclosure";
 import Roadmap from "./pages/Roadmap";
-import AIPulse from "./pages/AIPulse";
-import BreachSimulation from "./pages/BreachSimulation";
-import NexusIntersection from "./pages/NexusIntersection";
 import About from "./pages/About";
 import Editorial from "./pages/Editorial";
 import Contact from "./pages/Contact";
@@ -66,9 +63,6 @@ const App = () => (
             <Route path="/security-score" element={<SecurityScore />} />
             <Route path="/disclosure" element={<Disclosure />} />
             <Route path="/roadmap" element={<Roadmap />} />
-            <Route path="/ai-pulse" element={<AIPulse />} />
-            <Route path="/breach-sim" element={<BreachSimulation />} />
-            <Route path="/nexus-intersection" element={<NexusIntersection />} />
             <Route path="/about" element={<About />} />
             <Route path="/editorial" element={<Editorial />} />
             <Route path="/contact" element={<Contact />} />

@@ -37,7 +37,7 @@ const defaultThreats: TickerItem[] = [
 ];
 
 const defaultAiPulse: TickerItem[] = [
-  { id: '1', text: 'Nexus AI: 3 cross-pillar links found', href: '/nexus-intersection', time: 'Live' },
+  { id: '1', text: 'Latest tech guides available', href: '/guides', time: 'Live' },
   { id: '2', text: 'Personalized feed updated', time: '5m ago' },
   { id: '3', text: 'Trending: AI regulation', href: '/tech', time: '15m ago' },
 ];

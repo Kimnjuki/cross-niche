@@ -48,9 +48,6 @@ export function Footer() {
               <Link to="/tutorials" className="text-muted-foreground hover:text-foreground transition-colors">
                 Tutorials
               </Link>
-              <Link to="/ai-pulse" className="text-muted-foreground hover:text-foreground transition-colors">
-                AI Pulse
-              </Link>
               <Link to="/roadmap" className="text-muted-foreground hover:text-foreground transition-colors">
                 Roadmap & Features
               </Link>
@@ -72,12 +69,6 @@ export function Footer() {
               </Link>
               <Link to="/security-score" className="text-muted-foreground hover:text-foreground transition-colors">
                 Security Score
-              </Link>
-              <Link to="/breach-sim" className="text-muted-foreground hover:text-foreground transition-colors">
-                Breach Simulation
-              </Link>
-              <Link to="/nexus-intersection" className="text-muted-foreground hover:text-foreground transition-colors">
-                Nexus Intersection
               </Link>
               <Link to="/about" className="text-muted-foreground hover:text-foreground transition-colors">
                 About Us

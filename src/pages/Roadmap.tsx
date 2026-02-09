@@ -5,7 +5,7 @@ import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
 import { SEOHead } from '@/components/seo/SEOHead';
 import { Link } from 'react-router-dom';
-import { CheckCircle2, Circle, Clock, Zap, Users, BarChart3, Globe, ExternalLink, Filter, X } from 'lucide-react';
+import { CheckCircle2, Circle, Clock, Zap, Users, BarChart3, Globe, ExternalLink, Filter, X, TrendingUp, Target } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { cn } from '@/lib/utils';
@@ -24,43 +24,7 @@ interface Feature {
 }
 
 const competitiveAdvantages: Feature[] = [
-  // TIER 1: Competitive Moats (some implemented - link to live pages)
-  {
-    id: 'ai-pulse-roadmap',
-    title: 'AI-Pulse Roadmap',
-    description: 'Live-updating timeline for AI/ML tech trends. Filter by Productivity, Creative, Gaming AI. Hype vs Utility toggle.',
-    status: 'completed',
-    priority: 'high',
-    phase: 1,
-    tier: 1,
-    estimatedEffort: 'Medium',
-    businessValue: 'Unique AI intelligence hub competitors lack',
-    liveUrl: '/ai-pulse',
-  },
-  {
-    id: 'breach-simulation',
-    title: 'Breach Simulation (nexus-003)',
-    description: 'Interactive cybersecurity training: Phishing Email → choices branch to security outcomes. Nexus XP, terminal UI.',
-    status: 'completed',
-    priority: 'high',
-    phase: 1,
-    tier: 1,
-    estimatedEffort: 'Medium',
-    businessValue: 'Gamified security training differentiator',
-    liveUrl: '/breach-sim',
-  },
-  {
-    id: 'nexus-intersection',
-    title: 'Nexus Intersection (nexus-004)',
-    description: 'Cross-section: 1 Tech + 1 Security + 1 Gaming linked by common keyword. Unified intelligence view.',
-    status: 'completed',
-    priority: 'high',
-    phase: 1,
-    tier: 1,
-    estimatedEffort: 'Medium',
-    businessValue: 'Cross-niche connection discovery',
-    liveUrl: '/nexus-intersection',
-  },
+  // TIER 1: Competitive Moats
   {
     id: 'intelligence-graph',
     title: 'Cross-Niche Intelligence Graph',
