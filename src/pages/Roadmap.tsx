@@ -9,6 +9,9 @@ import { CheckCircle2, Circle, Clock, Zap, Users, BarChart3, Globe, ExternalLink
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { RoadmapKanban } from '@/components/roadmap/RoadmapKanban';
+import { RoadmapVoting } from '@/components/roadmap/RoadmapVoting';
 import { cn } from '@/lib/utils';
 
 interface Feature {
@@ -481,8 +484,20 @@ const Roadmap = () => {
             ))}
           </div>
 
-          {/* Features by Tier */}
-          <div className="space-y-12">
+          {/* View Toggle: List vs Kanban */}
+          <Tabs defaultValue="list" className="mb-8">
+            <TabsList>
+              <TabsTrigger value="list">List View</TabsTrigger>
+              <TabsTrigger value="kanban">Kanban Board</TabsTrigger>
+            </TabsList>
+
+            <TabsContent value="kanban" className="mt-6">
+              <RoadmapKanban features={filteredFeatures} />
+            </TabsContent>
+
+            <TabsContent value="list" className="mt-6">
+              {/* Features by Tier */}
+              <div className="space-y-12">
             {/* Tier 1 */}
             <div>
               <div className="flex items-center gap-3 mb-6">
@@ -496,7 +511,7 @@ const Roadmap = () => {
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 {filteredFeatures.filter(f => f.tier === 1).map((feature) => (
                   <Card key={feature.id} className="relative">
-                    <CardHeader>
+                    <CardHeader className="pb-3">
                       <div className="flex items-start justify-between">
                         <div className="flex items-center gap-3">
                           {getStatusIcon(feature.status)}
@@ -517,14 +532,17 @@ const Roadmap = () => {
                       <div className="text-sm mb-3">
                         <strong>Business Value:</strong> {feature.businessValue}
                       </div>
-                      {feature.liveUrl && (
-                        <Link
-                          to={feature.liveUrl}
-                          className="inline-flex items-center gap-1.5 text-sm text-primary hover:underline font-medium"
-                        >
-                          Try it live <ExternalLink className="h-3.5 w-3.5" />
-                        </Link>
-                      )}
+                      <div className="flex items-center justify-between mt-4 pt-4 border-t">
+                        {feature.liveUrl && (
+                          <Link
+                            to={feature.liveUrl}
+                            className="inline-flex items-center gap-1.5 text-sm text-primary hover:underline font-medium"
+                          >
+                            Try it live <ExternalLink className="h-3.5 w-3.5" />
+                          </Link>
+                        )}
+                        <RoadmapVoting featureId={feature.id} />
+                      </div>
                     </CardContent>
                   </Card>
                 ))}
@@ -565,14 +583,17 @@ const Roadmap = () => {
                       <div className="text-sm mb-3">
                         <strong>Business Value:</strong> {feature.businessValue}
                       </div>
-                      {feature.liveUrl && (
-                        <Link
-                          to={feature.liveUrl}
-                          className="inline-flex items-center gap-1.5 text-sm text-primary hover:underline font-medium"
-                        >
-                          Try it live <ExternalLink className="h-3.5 w-3.5" />
-                        </Link>
-                      )}
+                      <div className="flex items-center justify-between mt-4 pt-4 border-t">
+                        {feature.liveUrl && (
+                          <Link
+                            to={feature.liveUrl}
+                            className="inline-flex items-center gap-1.5 text-sm text-primary hover:underline font-medium"
+                          >
+                            Try it live <ExternalLink className="h-3.5 w-3.5" />
+                          </Link>
+                        )}
+                        <RoadmapVoting featureId={feature.id} />
+                      </div>
                     </CardContent>
                   </Card>
                 ))}
@@ -613,20 +634,25 @@ const Roadmap = () => {
                       <div className="text-sm mb-3">
                         <strong>Business Value:</strong> {feature.businessValue}
                       </div>
-                      {feature.liveUrl && (
-                        <Link
-                          to={feature.liveUrl}
-                          className="inline-flex items-center gap-1.5 text-sm text-primary hover:underline font-medium"
-                        >
-                          Try it live <ExternalLink className="h-3.5 w-3.5" />
-                        </Link>
-                      )}
+                      <div className="flex items-center justify-between mt-4 pt-4 border-t">
+                        {feature.liveUrl && (
+                          <Link
+                            to={feature.liveUrl}
+                            className="inline-flex items-center gap-1.5 text-sm text-primary hover:underline font-medium"
+                          >
+                            Try it live <ExternalLink className="h-3.5 w-3.5" />
+                          </Link>
+                        )}
+                        <RoadmapVoting featureId={feature.id} />
+                      </div>
                     </CardContent>
                   </Card>
                 ))}
               </div>
             </div>
           </div>
+            </TabsContent>
+          </Tabs>
 
           {/* Summary Stats */}
           <div className="mt-16 space-y-6">

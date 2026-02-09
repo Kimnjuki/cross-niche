@@ -257,4 +257,46 @@ export default defineSchema({
     .index("by_user", ["userId"])
     .index("by_guide", ["guideId"])
     .index("by_user_guide", ["userId", "guideId"]),
+
+  // ─── Roadmap Voting System ─────────────────────────────────────────────
+  roadmapVotes: defineTable({
+    featureId: v.string(), // ID of the roadmap feature
+    userId: v.string(), // User or session identifier
+    voteType: v.union(v.literal("upvote"), v.literal("downvote")),
+    votedAt: v.number(), // ms timestamp
+  })
+    .index("by_feature", ["featureId"])
+    .index("by_user", ["userId"])
+    .index("by_feature_user", ["featureId", "userId"]),
+
+  // ─── User Gamification (XP, Levels, Badges) ───────────────────────────
+  userGamification: defineTable({
+    userId: v.string(), // User identifier
+    xp: v.number(), // Total XP points
+    level: v.number(), // Current level
+    currentStreak: v.number(), // Days of consecutive activity
+    longestStreak: v.number(), // Best streak achieved
+    lastActivityDate: v.number(), // ms timestamp of last activity
+    badges: v.array(v.string()), // Array of badge IDs earned
+    achievements: v.array(v.object({
+      id: v.string(),
+      unlockedAt: v.number(), // ms timestamp
+      progress: v.optional(v.number()), // Progress percentage if applicable
+    })),
+  })
+    .index("by_user", ["userId"])
+    .index("by_level", ["level"])
+    .index("by_xp", ["xp"]),
+
+  // ─── User Preferences ──────────────────────────────────────────────────
+  userPreferences: defineTable({
+    userId: v.string(),
+    theme: v.optional(v.union(v.literal("light"), v.literal("dark"), v.literal("system"))),
+    emailNotifications: v.optional(v.boolean()),
+    pushNotifications: v.optional(v.boolean()),
+    digestFrequency: v.optional(v.union(v.literal("daily"), v.literal("weekly"), v.literal("monthly"), v.literal("never"))),
+    preferredTopics: v.optional(v.array(v.string())), // Array of topic IDs
+    savedSearches: v.optional(v.array(v.string())), // Array of search queries
+  })
+    .index("by_user", ["userId"]),
 });
