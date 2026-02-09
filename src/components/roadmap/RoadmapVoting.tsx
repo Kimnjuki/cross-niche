@@ -5,11 +5,12 @@
 
 import { useState, useEffect } from 'react';
 import { useMutation, useQuery } from 'convex/react';
-import { api } from '@/convex/_generated/api';
+import { api } from '../../../convex/_generated/api';
 import { Button } from '@/components/ui/button';
 import { ThumbsUp, ThumbsDown } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useAuth } from '@/contexts/AuthContext';
+import { useConvexDisabled } from '@/components/SafeConvexProvider';
 
 interface RoadmapVotingProps {
   featureId: string;
@@ -18,11 +19,18 @@ interface RoadmapVotingProps {
 
 export function RoadmapVoting({ featureId, className }: RoadmapVotingProps) {
   const { user } = useAuth();
+  const isConvexDisabled = useConvexDisabled();
   const userId = user?.id || `session-${localStorage.getItem('sessionId') || 'anonymous'}`;
   
-  const votes = useQuery(api.roadmapVotes.getFeatureVotes, { featureId });
-  const userVote = useQuery(api.roadmapVotes.getUserVote, { featureId, userId });
-  const voteMutation = useMutation(api.roadmapVotes.vote);
+  const votes = !isConvexDisabled 
+    ? useQuery(api.roadmapVotes.getFeatureVotes, { featureId })
+    : null;
+  const userVote = !isConvexDisabled
+    ? useQuery(api.roadmapVotes.getUserVote, { featureId, userId })
+    : null;
+  const voteMutation = !isConvexDisabled
+    ? useMutation(api.roadmapVotes.vote)
+    : null;
 
   const [isVoting, setIsVoting] = useState(false);
 
@@ -34,6 +42,9 @@ export function RoadmapVoting({ featureId, className }: RoadmapVotingProps) {
   }, []);
 
   const handleVote = async (voteType: 'upvote' | 'downvote') => {
+    if (!voteMutation || isConvexDisabled) {
+      return;
+    }
     setIsVoting(true);
     try {
       await voteMutation({
@@ -51,13 +62,29 @@ export function RoadmapVoting({ featureId, className }: RoadmapVotingProps) {
   const upvoted = userVote === 'upvote';
   const downvoted = userVote === 'downvote';
 
+  // Show disabled state if Convex is not available
+  if (isConvexDisabled) {
+    return (
+      <div className={cn('flex items-center gap-2 opacity-50', className)}>
+        <Button variant="outline" size="sm" disabled className="gap-1.5">
+          <ThumbsUp className="h-4 w-4" />
+          <span className="font-semibold">0</span>
+        </Button>
+        <Button variant="outline" size="sm" disabled className="gap-1.5">
+          <ThumbsDown className="h-4 w-4" />
+          <span className="font-semibold">0</span>
+        </Button>
+      </div>
+    );
+  }
+
   return (
     <div className={cn('flex items-center gap-2', className)}>
       <Button
         variant={upvoted ? 'default' : 'outline'}
         size="sm"
         onClick={() => handleVote('upvote')}
-        disabled={isVoting}
+        disabled={isVoting || !voteMutation}
         className={cn(
           'gap-1.5',
           upvoted && 'bg-green-600 hover:bg-green-700'
@@ -71,7 +98,7 @@ export function RoadmapVoting({ featureId, className }: RoadmapVotingProps) {
         variant={downvoted ? 'default' : 'outline'}
         size="sm"
         onClick={() => handleVote('downvote')}
-        disabled={isVoting}
+        disabled={isVoting || !voteMutation}
         className={cn(
           'gap-1.5',
           downvoted && 'bg-red-600 hover:bg-red-700'

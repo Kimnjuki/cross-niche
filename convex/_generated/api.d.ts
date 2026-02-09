@@ -17,6 +17,7 @@ import type * as import_ from "../import.js";
 import type * as ingest from "../ingest.js";
 import type * as insertFeaturedArticle from "../insertFeaturedArticle.js";
 import type * as newsIngestor from "../newsIngestor.js";
+import type * as roadmapVotes from "../roadmapVotes.js";
 import type * as securityRatings from "../securityRatings.js";
 import type * as seed from "../seed.js";
 import type * as verify from "../verify.js";
@@ -37,6 +38,7 @@ declare const fullApi: ApiFromModules<{
   ingest: typeof ingest;
   insertFeaturedArticle: typeof insertFeaturedArticle;
   newsIngestor: typeof newsIngestor;
+  roadmapVotes: typeof roadmapVotes;
   securityRatings: typeof securityRatings;
   seed: typeof seed;
   verify: typeof verify;
