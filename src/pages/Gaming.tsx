@@ -11,6 +11,7 @@ import { Gamepad2, Shield, Info } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Skeleton } from '@/components/ui/skeleton';
 import { SEOHead } from '@/components/seo/SEOHead';
+import { LandingPageTracker } from '@/components/analytics/LandingPageTracker';
 
 // Sample security ratings for Nexus Risk-to-Reward (nexus-001). Replace with Convex useQuery(api.securityRatings.list) when frontend uses Convex.
 const SAMPLE_SECURITY_RATINGS = [
