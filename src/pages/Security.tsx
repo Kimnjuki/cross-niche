@@ -10,6 +10,7 @@ import { Shield, AlertTriangle, AlertCircle, CheckCircle } from 'lucide-react';
 import { Skeleton } from '@/components/ui/skeleton';
 import { SEOHead } from '@/components/seo/SEOHead';
 import { Link } from 'react-router-dom';
+import { LandingPageTracker } from '@/components/analytics/LandingPageTracker';
 
 export default function Security() {
   const [viewMode, setViewMode] = useState<'grid' | 'list' | 'compact'>('grid');

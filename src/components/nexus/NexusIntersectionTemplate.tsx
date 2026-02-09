@@ -38,7 +38,7 @@ function ArticleTile({ article, niche }: { article: Article | null | undefined; 
       <Card className={cn('overflow-hidden h-full transition-all border-2', styles.accent)}>
         <div className="aspect-video relative overflow-hidden bg-muted">
           <LazyImage
-            src={article.imageUrl || getPlaceholderByNiche(article.niche)}
+            src={article.imageUrl || getPlaceholderByNiche(article.niche, articleId)}
             alt={article.title}
             className="w-full h-full object-cover"
           />

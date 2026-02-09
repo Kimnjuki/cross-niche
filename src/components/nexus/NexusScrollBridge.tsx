@@ -61,7 +61,7 @@ function CrossSectionRecommendation({
     >
       <div className="sm:w-32 shrink-0 rounded-lg overflow-hidden bg-muted aspect-video sm:aspect-square">
         <LazyImage
-          src={recommended?.imageUrl ?? getPlaceholderByNiche(recommended?.niche)}
+          src={recommended?.imageUrl ?? getPlaceholderByNiche(recommended?.niche, recommended?.id ?? recommended?.slug)}
           alt={recommended?.title ?? 'Article'}
           className="w-full h-full object-cover"
           width={128}

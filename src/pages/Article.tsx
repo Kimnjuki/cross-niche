@@ -209,7 +209,7 @@ export default function Article() {
         title={undefined}
         description={undefined}
         keywords={tags}
-        image={article.imageUrl ?? getPlaceholderByNiche(article.niche)}
+        image={article.imageUrl ?? getPlaceholderByNiche(article.niche, article.slug ?? article.id)}
         url={`${window.location.origin}/article/${article.slug ?? articleId}`}
         type="article"
         article={article}
@@ -289,7 +289,7 @@ export default function Article() {
 
         <div className="max-w-4xl mb-8">
           <LazyImage
-            src={article.imageUrl ?? getPlaceholderByNiche(article.niche)}
+            src={article.imageUrl ?? getPlaceholderByNiche(article.niche, article.slug ?? article.id)}
             alt={article.title ?? 'Article'}
             className="w-full aspect-video rounded-xl"
           />

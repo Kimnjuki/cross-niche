@@ -72,7 +72,7 @@ export function mapContentToArticle(content: ContentItem | null | undefined): Ar
     author,
     publishedAt,
     readTime: content.read_time_minutes || 5,
-    imageUrl: content.featured_image_url || getPlaceholderByNiche(niche),
+    imageUrl: content.featured_image_url || getPlaceholderByNiche(niche, docId),
     tags,
     isSponsored: false,
     isFeatured: content.is_featured || false,
