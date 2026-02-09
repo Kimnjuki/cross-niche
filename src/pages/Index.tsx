@@ -14,6 +14,7 @@ import { BreakingNewsSection } from '@/components/home/BreakingNewsSection';
 import { MasterBentoHero } from '@/components/home/MasterBentoHero';
 import { NewsFeed } from '@/components/news/NewsFeed';
 import { SEOHead } from '@/components/seo/SEOHead';
+import { LandingPageTracker } from '@/components/analytics/LandingPageTracker';
 import { Link } from 'react-router-dom';
 import { Clock, User, TrendingUp, Rss, ChevronRight } from 'lucide-react';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -52,7 +53,8 @@ export default function Index() {
   const { data: securityFeed } = useContentByFeed('secured', 5);
   const { data: gamingFeed } = useContentByFeed('play', 5);
 
-  if (typeof window !== 'undefined') {
+  // Debug logging (only in development)
+  if (typeof window !== 'undefined' && import.meta.env.DEV) {
     console.log('[Index] content query lengths:', {
       published: published?.length ?? '—',
       latest: latest?.length ?? '—',

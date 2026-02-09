@@ -5,9 +5,10 @@ import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
 import { SEOHead } from '@/components/seo/SEOHead';
 import { Link } from 'react-router-dom';
-import { CheckCircle2, Circle, Clock, Zap, Users, BarChart3, Globe, ExternalLink, Filter, X, TrendingUp, Target } from 'lucide-react';
+import { CheckCircle2, Circle, Clock, Zap, Users, BarChart3, Globe, ExternalLink, Filter, X, TrendingUp, Target, Download, ArrowUpDown, Calendar } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { cn } from '@/lib/utils';
 
 interface Feature {
@@ -190,6 +191,8 @@ const Roadmap = () => {
   const [statusFilter, setStatusFilter] = useState<Feature['status'] | 'all'>('all');
   const [tierFilter, setTierFilter] = useState<Feature['tier'] | 'all'>('all');
   const [phaseFilter, setPhaseFilter] = useState<number | 'all'>('all');
+  const [sortBy, setSortBy] = useState<'priority' | 'phase' | 'tier' | 'status'>('priority');
+  const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc');
 
   const filteredFeatures = useMemo(() => {
     return competitiveAdvantages.filter((feature) => {
@@ -354,6 +357,30 @@ const Roadmap = () => {
                   onChange={(e) => setSearchQuery(e.target.value)}
                   className="w-full"
                 />
+              </div>
+
+              {/* Sort */}
+              <div className="flex gap-2">
+                <Select value={sortBy} onValueChange={(v) => setSortBy(v as typeof sortBy)}>
+                  <SelectTrigger className="w-[140px]">
+                    <ArrowUpDown className="h-4 w-4 mr-2" />
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="priority">Priority</SelectItem>
+                    <SelectItem value="phase">Phase</SelectItem>
+                    <SelectItem value="tier">Tier</SelectItem>
+                    <SelectItem value="status">Status</SelectItem>
+                  </SelectContent>
+                </Select>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc')}
+                  className="px-3"
+                >
+                  {sortOrder === 'asc' ? '↑' : '↓'}
+                </Button>
               </div>
 
               {/* Status Filter */}
@@ -602,49 +629,101 @@ const Roadmap = () => {
           </div>
 
           {/* Summary Stats */}
-          <div className="mt-16 grid grid-cols-1 md:grid-cols-4 gap-6">
-            <Card>
-              <CardContent className="pt-6">
-                <div className="text-center">
-                  <div className="text-3xl font-bold text-green-500">
-                    {filteredFeatures.filter(f => f.status === 'completed').length}
+          <div className="mt-16 space-y-6">
+            <div className="flex items-center justify-between">
+              <h2 className="text-2xl font-bold">Roadmap Statistics</h2>
+              <Button variant="outline" size="sm" className="gap-2">
+                <Download className="h-4 w-4" />
+                Export Roadmap
+              </Button>
+            </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+              <Card className="hover:border-green-500/50 transition-colors">
+                <CardContent className="pt-6">
+                  <div className="text-center">
+                    <div className="text-3xl font-bold text-green-500 mb-1">
+                      {filteredFeatures.filter(f => f.status === 'completed').length}
+                    </div>
+                    <p className="text-sm text-muted-foreground">Completed Features</p>
+                    <Progress 
+                      value={filteredFeatures.length > 0 
+                        ? (filteredFeatures.filter(f => f.status === 'completed').length / filteredFeatures.length) * 100
+                        : 0} 
+                      className="h-1 mt-2"
+                    />
                   </div>
-                  <p className="text-sm text-muted-foreground">Completed Features</p>
-                </div>
-              </CardContent>
-            </Card>
+                </CardContent>
+              </Card>
 
-            <Card>
-              <CardContent className="pt-6">
-                <div className="text-center">
-                  <div className="text-3xl font-bold text-blue-500">
-                    {filteredFeatures.filter(f => f.status === 'in-progress').length}
+              <Card className="hover:border-blue-500/50 transition-colors">
+                <CardContent className="pt-6">
+                  <div className="text-center">
+                    <div className="text-3xl font-bold text-blue-500 mb-1">
+                      {filteredFeatures.filter(f => f.status === 'in-progress').length}
+                    </div>
+                    <p className="text-sm text-muted-foreground">In Progress</p>
+                    <Progress 
+                      value={filteredFeatures.length > 0 
+                        ? (filteredFeatures.filter(f => f.status === 'in-progress').length / filteredFeatures.length) * 100
+                        : 0} 
+                      className="h-1 mt-2"
+                    />
                   </div>
-                  <p className="text-sm text-muted-foreground">In Progress</p>
-                </div>
-              </CardContent>
-            </Card>
+                </CardContent>
+              </Card>
 
-            <Card>
-              <CardContent className="pt-6">
-                <div className="text-center">
-                  <div className="text-3xl font-bold text-gray-500">
-                    {filteredFeatures.filter(f => f.status === 'planned').length}
+              <Card className="hover:border-gray-500/50 transition-colors">
+                <CardContent className="pt-6">
+                  <div className="text-center">
+                    <div className="text-3xl font-bold text-gray-500 mb-1">
+                      {filteredFeatures.filter(f => f.status === 'planned').length}
+                    </div>
+                    <p className="text-sm text-muted-foreground">Planned Features</p>
+                    <Progress 
+                      value={filteredFeatures.length > 0 
+                        ? (filteredFeatures.filter(f => f.status === 'planned').length / filteredFeatures.length) * 100
+                        : 0} 
+                      className="h-1 mt-2"
+                    />
                   </div>
-                  <p className="text-sm text-muted-foreground">Planned Features</p>
-                </div>
-              </CardContent>
-            </Card>
+                </CardContent>
+              </Card>
 
-            <Card>
-              <CardContent className="pt-6">
-                <div className="text-center">
-                  <div className="text-3xl font-bold">
-                    {filteredFeatures.length > 0 
-                      ? Math.round((filteredFeatures.filter(f => f.status === 'completed').length / filteredFeatures.length) * 100)
-                      : 0}%
+              <Card className="hover:border-primary/50 transition-colors">
+                <CardContent className="pt-6">
+                  <div className="text-center">
+                    <div className="text-3xl font-bold text-primary mb-1">
+                      {filteredFeatures.length > 0 
+                        ? Math.round((filteredFeatures.filter(f => f.status === 'completed').length / filteredFeatures.length) * 100)
+                        : 0}%
+                    </div>
+                    <p className="text-sm text-muted-foreground">Overall Progress</p>
+                    <Progress 
+                      value={filteredFeatures.length > 0 
+                        ? (filteredFeatures.filter(f => f.status === 'completed').length / filteredFeatures.length) * 100
+                        : 0} 
+                      className="h-1 mt-2"
+                    />
                   </div>
-                  <p className="text-sm text-muted-foreground">Filtered Progress</p>
+                </CardContent>
+              </Card>
+            </div>
+
+            {/* Quarterly Update Info */}
+            <Card className="border-dashed">
+              <CardContent className="pt-6">
+                <div className="flex items-start gap-3">
+                  <Calendar className="h-5 w-5 text-primary mt-0.5" />
+                  <div>
+                    <h3 className="font-semibold mb-1">Last Updated</h3>
+                    <p className="text-sm text-muted-foreground">
+                      This roadmap is updated quarterly. Last update: {new Date().toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}
+                    </p>
+                    <p className="text-xs text-muted-foreground mt-2">
+                      Next update scheduled for: {new Date(new Date().setMonth(new Date().getMonth() + 3)).toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}
+                    </p>
+                  </div>
                 </div>
               </CardContent>
             </Card>
