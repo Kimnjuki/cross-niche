@@ -33,6 +33,7 @@ import Reviews from "./pages/Reviews";
 import Author from "./pages/Author";
 import Media from "./pages/Media";
 import News from "./pages/News";
+import Sitemap from "./pages/Sitemap";
 import NotFound from "./pages/NotFound";
 import { GA4PageTracker } from "./components/analytics/GA4PageTracker";
 import { ThemeProvider } from "./components/theme/ThemeProvider";
@@ -78,6 +79,7 @@ const App = () => (
             <Route path="/author/:authorSlug" element={<Author />} />
             <Route path="/media" element={<Media />} />
             <Route path="/news" element={<News />} />
+            <Route path="/sitemap" element={<Sitemap />} />
             <Route path="/profile" element={<Profile />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />

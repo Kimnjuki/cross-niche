@@ -58,6 +58,9 @@ export function Footer() {
           <div>
             <h4 className="font-display font-semibold mb-4">Resources</h4>
             <div className="flex flex-col gap-2">
+              <Link to="/sitemap" className="text-muted-foreground hover:text-foreground transition-colors">
+                Sitemap
+              </Link>
               <Link to="/topics" className="text-muted-foreground hover:text-foreground transition-colors">
                 Topics & Keywords
               </Link>

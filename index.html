@@ -1,14 +1,19 @@
 <!doctype html>
 <html lang="en">
   <head>
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-TJ1VXE91NE"></script>
+    <!-- Google tag (gtag.js) - wrapped so failures do not break page (Ahrefs "broken JavaScript") -->
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-
-      gtag('config', 'G-TJ1VXE91NE');
+      try {
+        var s = document.createElement('script');
+        s.async = true;
+        s.src = 'https://www.googletagmanager.com/gtag/js?id=G-TJ1VXE91NE';
+        s.onerror = function() {};
+        document.head.appendChild(s);
+        gtag('js', new Date());
+        gtag('config', 'G-TJ1VXE91NE');
+      } catch (e) {}
     </script>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes" />
@@ -89,10 +94,9 @@
     <!-- Clickio Consent CSS -->
     <style>body.clickio-cmp-in-scope .clickio-cmp-settings-display { display: inherit !important; }</style>
 
-    <!-- Default Consent Mode config -->
+    <!-- Default Consent Mode config (guarded so missing gtag does not break page) -->
     <script>
-        //<![CDATA[
-        gtag('consent', 'default', {
+        if (typeof gtag === 'function') gtag('consent', 'default', {
             'ad_storage': 'granted',
             'analytics_storage': 'granted',
             'functionality_storage': 'granted',
@@ -102,7 +106,7 @@
             'ad_personalization': 'granted',
             'wait_for_update': 1500
         });
-        gtag('consent', 'default', {
+        if (typeof gtag === 'function') gtag('consent', 'default', {
             'region': ['AT', 'BE', 'BG', 'HR', 'CY', 'CZ', 'DK', 'EE', 'FI', 'FR', 'DE', 'GR', 'HU', 'IS', 'IE', 'IT', 'LV', 'LI', 'LT', 'LU', 'MT', 'NL', 'NO', 'PL', 'PT', 'RO', 'SK', 'SI', 'ES', 'SE', 'GB', 'CH'],
             'ad_storage': 'denied',
             'analytics_storage': 'denied',
@@ -113,13 +117,14 @@
             'ad_personalization': 'denied',
             'wait_for_update': 1500
         });
-        gtag('set', 'ads_data_redaction', true);
-        gtag('set', 'url_passthrough', true);
+        if (typeof gtag === 'function') { gtag('set', 'ads_data_redaction', true); gtag('set', 'url_passthrough', true); }
         (function(){
-            const s={adStorage:{storageName:"ad_storage",serialNumber:0},analyticsStorage:{storageName:"analytics_storage",serialNumber:1},functionalityStorage:{storageName:"functionality_storage",serialNumber:2},personalizationStorage:{storageName:"personalization_storage",serialNumber:3},securityStorage:{storageName:"security_storage",serialNumber:4},adUserData:{storageName:"ad_user_data",serialNumber:5},adPersonalization:{storageName:"ad_personalization",serialNumber:6}};let c=localStorage.getItem("__lxG__consent__v2");if(c){c=JSON.parse(c);if(c&&c.cls_val)c=c.cls_val;if(c)c=c.split("|");if(c&&c.length&&typeof c[14]!==undefined){c=c[14].split("").map(e=>e-0);if(c.length){let t={};Object.values(s).sort((e,t)=>e.serialNumber-t.serialNumber).forEach(e=>{t[e.storageName]=c[e.serialNumber]?"granted":"denied"});gtag("consent","update",t)}}}
-            if(Math.random() < 0.05) {if (window.dataLayer && (window.dataLayer.some(e => e[0] === 'js' && e[1] instanceof Date) || window.dataLayer.some(e => e['event'] === 'gtm.js' && e['gtm.start'] == true ))) {document.head.appendChild(document.createElement('img')).src = "//clickiocdn.com/utr/gtag/?sid=247023";}}
+            try {
+                if (typeof gtag !== 'function') return;
+                var s={adStorage:{storageName:"ad_storage",serialNumber:0},analyticsStorage:{storageName:"analytics_storage",serialNumber:1},functionalityStorage:{storageName:"functionality_storage",serialNumber:2},personalizationStorage:{storageName:"personalization_storage",serialNumber:3},securityStorage:{storageName:"security_storage",serialNumber:4},adUserData:{storageName:"ad_user_data",serialNumber:5},adPersonalization:{storageName:"ad_personalization",serialNumber:6}};var c=localStorage.getItem("__lxG__consent__v2");if(c){try{c=JSON.parse(c);if(c&&c.cls_val)c=c.cls_val;if(c)c=c.split("|");if(c&&c.length&&typeof c[14]!==undefined){c=c[14].split("").map(function(e){return e-0;});if(c.length){var t={};Object.values(s).sort(function(e,t){return e.serialNumber-t.serialNumber}).forEach(function(e){t[e.storageName]=c[e.serialNumber]?"granted":"denied";});gtag("consent","update",t);}}}catch(err){}}
+                if(Math.random() < 0.05 && window.dataLayer){try{document.head.appendChild(document.createElement('img')).src = "//clickiocdn.com/utr/gtag/?sid=247023";}catch(err){}}}
+            } catch (e) {}
         })();
-        //]]>
     </script>
 
     <!-- Clickio, AdSense, Ahrefs: deferred to not block LCP -->
@@ -177,9 +182,26 @@
     </noscript>
     <style>.skip-link{position:absolute;left:-9999px;z-index:9999;padding:1rem 1.5rem;background:#3b82f6;color:white;text-decoration:none;font-weight:600}.skip-link:focus{left:0;top:0}</style>
     <script type="module" src="/src/main.tsx"></script>
-    <!-- Defer third-party scripts until after page is interactive (Core Web Vitals). Wrapped in try/catch to prevent broken JS errors. -->
+    <!-- Defer third-party scripts; each load wrapped so one failure does not break page (Ahrefs "Page has broken JavaScript") -->
     <script>
-      (function(){function d(){try{var s=document.createElement('script');s.src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9278124025449370';s.crossOrigin='anonymous';s.async=true;s.onerror=function(){};document.body.appendChild(s);}catch(e){}try{var c=document.createElement('script');c.src='//clickiocmp.com/t/consent_247023.js';c.async=true;c.onerror=function(){};document.body.appendChild(c);}catch(e){}try{var a=document.createElement('script');a.src='https://analytics.ahrefs.com/analytics.js';a.setAttribute('data-key','aNTResFK8mO8Rf5gt0QKdw');a.async=true;a.onerror=function(){};document.body.appendChild(a);}catch(e){}}if(document.readyState==='complete')d();else window.addEventListener('load',d);})();
+      (function(){
+        function loadScript(src, opts) {
+          try {
+            var s = document.createElement('script');
+            s.async = true;
+            s.src = src;
+            s.onerror = function() {};
+            if (opts) for (var k in opts) s.setAttribute(k, opts[k]);
+            (document.body || document.documentElement).appendChild(s);
+          } catch (e) {}
+        }
+        function run() {
+          loadScript('https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9278124025449370', { crossOrigin: 'anonymous' });
+          loadScript('//clickiocmp.com/t/consent_247023.js');
+          loadScript('https://analytics.ahrefs.com/analytics.js', { 'data-key': 'aNTResFK8mO8Rf5gt0QKdw' });
+        }
+        if (document.readyState === 'complete') run(); else window.addEventListener('load', run);
+      })();
     </script>
   </body>
 </html>

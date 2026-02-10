@@ -22,6 +22,7 @@ Allow: /editorial
 Allow: /roadmap
 Allow: /security-score
 Allow: /article/
+Allow: /sitemap
 Disallow: /api/
 Disallow: /admin/
 Disallow: /profile

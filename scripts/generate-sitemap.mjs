@@ -86,6 +86,7 @@ function getStaticPages() {
     { loc: `${BASE_URL}/terms`, lastmod: today, changefreq: 'monthly', priority: 0.3 },
     { loc: `${BASE_URL}/disclosure`, lastmod: today, changefreq: 'monthly', priority: 0.3 },
     { loc: `${BASE_URL}/editorial`, lastmod: today, changefreq: 'monthly', priority: 0.4 },
+    { loc: `${BASE_URL}/sitemap`, lastmod: today, changefreq: 'weekly', priority: 0.4 },
   ];
 }
 
