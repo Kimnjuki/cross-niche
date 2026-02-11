@@ -18,6 +18,7 @@ export interface Article {
   isFeatured?: boolean;
   securityScore?: number; // For gaming articles
   impactLevel?: 'high' | 'medium' | 'low'; // For security articles
+  viewCount?: number; // Article view count for analytics
 }
 
 export interface Guide {

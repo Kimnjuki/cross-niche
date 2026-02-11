@@ -83,7 +83,7 @@ export default function Index() {
   const gamingArticles: Article[] = gamingFeed && gamingFeed.length > 0 ? mapContentToArticles(gamingFeed) : sortedArticles.filter(a => a.niche === 'gaming').slice(0, 3);
 
   return (
-    <Layout>
+    <Layout showPulseSidebar={false}>
       <LandingPageTracker pageType="homepage" articlesViewed={sortedArticles.length} />
       <SEOHead
         title="The Grid Nexus – Tech, Security & Gaming News"
@@ -434,25 +434,6 @@ export default function Index() {
           </aside>
         </div>
       </div>
-
-      {/* Bottom CTA */}
-      <section className="border-t border-border bg-muted/20 py-10">
-        <div className="container mx-auto px-4 max-w-2xl text-center">
-          <h2 className="font-display font-bold text-xl text-foreground mb-2">The Grid Nexus</h2>
-          <p className="text-sm text-muted-foreground mb-6">
-            One hub for technology, cybersecurity, and gaming. Breaking news, analysis, and guides.
-          </p>
-          <div className="flex flex-wrap justify-center gap-4 text-sm">
-            <Link to="/about" className="text-primary hover:underline">About</Link>
-            <span className="text-muted-foreground">·</span>
-            <Link to="/contact" className="text-primary hover:underline">Contact</Link>
-            <span className="text-muted-foreground">·</span>
-            <Link to="/privacy" className="text-primary hover:underline">Privacy</Link>
-            <span className="text-muted-foreground">·</span>
-            <Link to="/terms" className="text-primary hover:underline">Terms</Link>
-          </div>
-        </div>
-      </section>
     </Layout>
   );
 }

@@ -5,14 +5,18 @@ import { TrendingTopicsWidget } from '@/components/home/TrendingTopicsWidget';
 import { SEOHead } from '@/components/seo/SEOHead';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Hash, TrendingUp, Search, Filter, X, Clock, Eye, ArrowRight, Sparkles } from 'lucide-react';
+import { Hash, TrendingUp, Search, Filter, X, Clock, Eye, ArrowRight, Sparkles, BarChart3, Users, Zap, Globe, Target, Calendar, Download, Share2, BookmarkPlus, RefreshCw, ChevronRight, Star, Flame, Rocket } from 'lucide-react';
 import { usePublishedContent, useTrendingContent } from '@/hooks/useContent';
 import { mapContentToArticles } from '@/lib/contentMapper';
 import { ArticleCard } from '@/components/articles/ArticleCard';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Progress } from '@/components/ui/progress';
 import { formatRelativeTime } from '@/lib/timeUtils';
+import { cn } from '@/lib/utils';
+import { motion } from 'framer-motion';
 import type { Article } from '@/types';
 
 // High-volume keywords organized by category
@@ -71,6 +75,9 @@ export default function Topics() {
   const query = searchParams.get('q') || '';
   const [searchInput, setSearchInput] = useState(query);
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+  const [sortBy, setSortBy] = useState<'relevance' | 'trending' | 'recent' | 'popular'>('relevance');
+  const [viewMode, setViewMode] = useState<'grid' | 'list' | 'compact'>('grid');
+  const [savedTopics, setSavedTopics] = useState<string[]>([]);
   
   const { data: allContent, isLoading: loadingContent } = usePublishedContent(100);
   const { data: trendingContent, isLoading: loadingTrending } = useTrendingContent(10);
@@ -90,6 +97,79 @@ export default function Topics() {
       article.niche?.toLowerCase().includes(lowerQuery)
     );
   }, [query, allArticles]);
+
+  // Filter and sort articles
+  const processedArticles = useMemo(() => {
+    let articles = query ? filteredArticles : allArticles;
+    
+    // Sort articles
+    switch (sortBy) {
+      case 'trending':
+        articles.sort((a, b) => (b.viewCount || 0) - (a.viewCount || 0));
+        break;
+      case 'recent':
+        articles.sort((a, b) => new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime());
+        break;
+      case 'popular':
+        articles.sort((a, b) => (b.viewCount || 0) - (a.viewCount || 0));
+        break;
+      case 'relevance':
+      default:
+        if (query) {
+          articles.sort((a, b) => {
+            const aScore = getRelevanceScore(a, query);
+            const bScore = getRelevanceScore(b, query);
+            return bScore - aScore;
+          });
+        }
+        break;
+    }
+    
+    return articles;
+  }, [query, filteredArticles, allArticles, sortBy]);
+
+  // Calculate relevance score for search
+  const getRelevanceScore = (article: Article, query: string): number => {
+    const lowerQuery = query.toLowerCase();
+    let score = 0;
+    
+    if (article.title.toLowerCase().includes(lowerQuery)) score += 10;
+    if (article.excerpt?.toLowerCase().includes(lowerQuery)) score += 5;
+    if (article.tags.some(tag => tag.toLowerCase().includes(lowerQuery))) score += 3;
+    if (article.niche?.toLowerCase().includes(lowerQuery)) score += 2;
+    
+    return score;
+  };
+
+  // Toggle saved topic
+  const toggleSavedTopic = (keyword: string) => {
+    setSavedTopics(prev => 
+      prev.includes(keyword) 
+        ? prev.filter(k => k !== keyword)
+        : [...prev, keyword]
+    );
+  };
+
+  // Get topic statistics
+  const getTopicStats = (keyword: string) => {
+    const relatedArticles = allArticles.filter(article => 
+      article.title.toLowerCase().includes(keyword.toLowerCase()) ||
+      article.excerpt?.toLowerCase().includes(keyword.toLowerCase()) ||
+      article.tags.some(tag => tag.toLowerCase().includes(keyword.toLowerCase()))
+    );
+    
+    const totalViews = relatedArticles.reduce((sum, article) => sum + (article.viewCount || 0), 0);
+    const recentCount = relatedArticles.filter(article => 
+      new Date(article.publishedAt) > new Date(Date.now() - 7 * 24 * 60 * 60 * 1000)
+    ).length;
+    
+    return {
+      articleCount: relatedArticles.length,
+      totalViews,
+      recentCount,
+      isTrending: recentCount >= 3
+    };
+  };
 
   // Filter categories if selected
   const displayedCategories = useMemo(() => {
@@ -179,7 +259,7 @@ export default function Topics() {
             </div>
           </div>
 
-          {/* Search Bar */}
+          {/* Enhanced Search Bar with Suggestions */}
           <form onSubmit={handleSearch} className="max-w-2xl mx-auto mb-6">
             <div className="relative">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
@@ -188,52 +268,144 @@ export default function Topics() {
                 placeholder="Search topics, keywords, or browse categories..."
                 value={searchInput}
                 onChange={(e) => setSearchInput(e.target.value)}
-                className="pl-10 pr-10 h-12 text-lg"
+                className="pl-10 pr-20 h-12 text-lg"
               />
-              {searchInput && (
-                <Button
-                  type="button"
-                  variant="ghost"
-                  size="sm"
-                  onClick={clearSearch}
-                  className="absolute right-1 top-1/2 -translate-y-1/2 h-8 w-8 p-0"
-                >
-                  <X className="h-4 w-4" />
+              <div className="absolute right-1 top-1/2 -translate-y-1/2 flex gap-1">
+                {searchInput && (
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    size="sm"
+                    onClick={clearSearch}
+                    className="h-8 w-8 p-0"
+                  >
+                    <X className="h-4 w-4" />
+                  </Button>
+                )}
+                <Button type="submit" size="sm" className="h-8 px-3">
+                  Search
                 </Button>
-              )}
+              </div>
             </div>
-            <div className="flex justify-center gap-2 mt-3">
-              <Button type="submit" size="sm">
-                Search Topics
-              </Button>
-              {query && (
-                <Button type="button" variant="outline" size="sm" onClick={clearSearch}>
-                  Clear
-                </Button>
-              )}
-            </div>
+            
+            {/* Search Suggestions */}
+            {searchInput && (
+              <div className="absolute z-10 w-full max-w-2xl mx-auto mt-1 bg-background border border-border rounded-lg shadow-lg">
+                <div className="p-2">
+                  <p className="text-xs text-muted-foreground mb-2 px-2">Popular suggestions:</p>
+                  <div className="flex flex-wrap gap-1">
+                    {allKeywords
+                      .filter(k => k.toLowerCase().includes(searchInput.toLowerCase()))
+                      .slice(0, 5)
+                      .map((keyword, i) => (
+                        <Button
+                          key={i}
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => navigate(`/topics?q=${encodeURIComponent(keyword)}`)}
+                          className="h-6 px-2 text-xs"
+                        >
+                          {keyword}
+                        </Button>
+                      ))}
+                  </div>
+                </div>
+              </div>
+            )}
           </form>
 
-          {/* Quick Stats */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 max-w-3xl mx-auto mb-8">
-            <Card>
+          {/* Enhanced Quick Stats */}
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-4 max-w-4xl mx-auto mb-8">
+            <Card className="hover:border-primary/50 transition-colors">
               <CardContent className="pt-6 text-center">
-                <div className="text-2xl font-bold text-primary">{allKeywords.length}+</div>
+                <div className="flex items-center justify-center mb-2">
+                  <Hash className="h-5 w-5 text-primary mr-2" />
+                  <div className="text-2xl font-bold text-primary">{allKeywords.length}+</div>
+                </div>
                 <div className="text-sm text-muted-foreground">Keywords</div>
+                <div className="text-xs text-muted-foreground mt-1">Across all categories</div>
               </CardContent>
             </Card>
-            <Card>
+            <Card className="hover:border-primary/50 transition-colors">
               <CardContent className="pt-6 text-center">
-                <div className="text-2xl font-bold text-primary">{Object.keys(keywordCategories).length}</div>
+                <div className="flex items-center justify-center mb-2">
+                  <Target className="h-5 w-5 text-primary mr-2" />
+                  <div className="text-2xl font-bold text-primary">{Object.keys(keywordCategories).length}</div>
+                </div>
                 <div className="text-sm text-muted-foreground">Categories</div>
+                <div className="text-xs text-muted-foreground mt-1">Organized topics</div>
               </CardContent>
             </Card>
-            <Card>
+            <Card className="hover:border-primary/50 transition-colors">
               <CardContent className="pt-6 text-center">
-                <div className="text-2xl font-bold text-primary">{allArticles.length}</div>
+                <div className="flex items-center justify-center mb-2">
+                  <Globe className="h-5 w-5 text-primary mr-2" />
+                  <div className="text-2xl font-bold text-primary">{allArticles.length}</div>
+                </div>
                 <div className="text-sm text-muted-foreground">Articles</div>
+                <div className="text-xs text-muted-foreground mt-1">Comprehensive coverage</div>
               </CardContent>
             </Card>
+            <Card className="hover:border-primary/50 transition-colors">
+              <CardContent className="pt-6 text-center">
+                <div className="flex items-center justify-center mb-2">
+                  <Flame className="h-5 w-5 text-primary mr-2" />
+                  <div className="text-2xl font-bold text-primary">{trendingArticles.length}</div>
+                </div>
+                <div className="text-sm text-muted-foreground">Trending</div>
+                <div className="text-xs text-muted-foreground mt-1">Hot topics right now</div>
+              </CardContent>
+            </Card>
+          </div>
+
+          {/* Action Bar */}
+          <div className="flex flex-wrap items-center justify-center gap-3 mb-8">
+            <Select value={sortBy} onValueChange={(v) => setSortBy(v as typeof sortBy)}>
+              <SelectTrigger className="w-[140px]">
+                <BarChart3 className="h-4 w-4 mr-2" />
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="relevance">Relevance</SelectItem>
+                <SelectItem value="trending">Trending</SelectItem>
+                <SelectItem value="recent">Recent</SelectItem>
+                <SelectItem value="popular">Popular</SelectItem>
+              </SelectContent>
+            </Select>
+            
+            <div className="flex gap-1">
+              <Button
+                variant={viewMode === 'grid' ? 'default' : 'outline'}
+                size="sm"
+                onClick={() => setViewMode('grid')}
+              >
+                Grid
+              </Button>
+              <Button
+                variant={viewMode === 'list' ? 'default' : 'outline'}
+                size="sm"
+                onClick={() => setViewMode('list')}
+              >
+                List
+              </Button>
+              <Button
+                variant={viewMode === 'compact' ? 'default' : 'outline'}
+                size="sm"
+                onClick={() => setViewMode('compact')}
+              >
+                Compact
+              </Button>
+            </div>
+            
+            <Button variant="outline" size="sm" className="gap-2">
+              <Download className="h-4 w-4" />
+              Export
+            </Button>
+            
+            <Button variant="outline" size="sm" className="gap-2">
+              <Share2 className="h-4 w-4" />
+              Share
+            </Button>
           </div>
         </div>
 
@@ -316,9 +488,10 @@ export default function Topics() {
           </div>
         ) : (
           <Tabs defaultValue="categories" className="space-y-8">
-            <TabsList className="grid w-full max-w-md mx-auto grid-cols-2">
+            <TabsList className="grid w-full max-w-lg mx-auto grid-cols-3">
               <TabsTrigger value="categories">Categories</TabsTrigger>
               <TabsTrigger value="trending">Trending</TabsTrigger>
+              <TabsTrigger value="analytics">Analytics</TabsTrigger>
             </TabsList>
 
             <TabsContent value="categories" className="space-y-8">
@@ -356,24 +529,83 @@ export default function Topics() {
                     </div>
                   </CardHeader>
                   <CardContent>
-                    <div className="flex flex-wrap gap-2">
-                      {keywords.map((item, index) => (
-                        <Link
-                          key={index}
-                          to={`/topics?q=${encodeURIComponent(item.keyword)}`}
-                          className="group inline-flex items-center gap-1.5 px-4 py-2 rounded-full border border-border hover:border-primary hover:bg-primary/5 transition-all"
-                        >
-                          <Hash className="h-3.5 w-3.5 text-muted-foreground group-hover:text-primary" />
-                          <span className="text-sm font-medium group-hover:text-primary">
-                            {item.keyword}
-                          </span>
-                          {item.volume && (
-                            <Badge variant="secondary" className="text-xs ml-1">
-                              {item.volume}
-                            </Badge>
-                          )}
-                        </Link>
-                      ))}
+                    <div className="space-y-4">
+                      {keywords.map((item, index) => {
+                        const stats = getTopicStats(item.keyword);
+                        const isSaved = savedTopics.includes(item.keyword);
+                        
+                        return (
+                          <motion.div
+                            key={index}
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ delay: index * 0.05 }}
+                            className="group"
+                          >
+                            <div className="flex items-center justify-between p-3 rounded-lg border border-border hover:border-primary/50 hover:bg-primary/5 transition-all">
+                              <div className="flex items-center gap-3 flex-1">
+                                <div className="flex items-center gap-2">
+                                  <Hash className="h-4 w-4 text-muted-foreground group-hover:text-primary" />
+                                  <Link
+                                    to={`/topics?q=${encodeURIComponent(item.keyword)}`}
+                                    className="font-medium hover:text-primary transition-colors"
+                                  >
+                                    {item.keyword}
+                                  </Link>
+                                </div>
+                                
+                                <div className="flex items-center gap-2">
+                                  {stats.isTrending && (
+                                    <Badge variant="default" className="text-xs gap-1">
+                                      <Flame className="h-3 w-3" />
+                                      Trending
+                                    </Badge>
+                                  )}
+                                  <Badge variant="secondary" className="text-xs">
+                                    {stats.articleCount} articles
+                                  </Badge>
+                                  {item.volume && (
+                                    <Badge variant="outline" className="text-xs">
+                                      {item.volume}
+                                    </Badge>
+                                  )}
+                                </div>
+                              </div>
+                              
+                              <div className="flex items-center gap-2">
+                                <div className="text-xs text-muted-foreground">
+                                  {stats.totalViews.toLocaleString()} views
+                                </div>
+                                <Button
+                                  variant="ghost"
+                                  size="sm"
+                                  onClick={() => toggleSavedTopic(item.keyword)}
+                                  className="h-8 w-8 p-0"
+                                >
+                                  <BookmarkPlus className={cn(
+                                    "h-4 w-4",
+                                    isSaved ? "text-primary fill-primary" : "text-muted-foreground"
+                                  )} />
+                                </Button>
+                                <Link
+                                  to={`/topics?q=${encodeURIComponent(item.keyword)}`}
+                                  className="h-8 w-8 p-0 rounded-full border border-border hover:border-primary hover:bg-primary/10 transition-colors flex items-center justify-center"
+                                >
+                                  <ArrowRight className="h-4 w-4 text-muted-foreground group-hover:text-primary" />
+                                </Link>
+                              </div>
+                            </div>
+                            
+                            {/* Progress bar for topic popularity */}
+                            <div className="px-3">
+                              <Progress 
+                                value={Math.min((stats.totalViews / 10000) * 100, 100)} 
+                                className="h-1" 
+                              />
+                            </div>
+                          </motion.div>
+                        );
+                      })}
                     </div>
                   </CardContent>
                 </Card>
@@ -433,6 +665,134 @@ export default function Topics() {
               </Card>
 
               <TrendingTopicsWidget />
+            </TabsContent>
+            
+            <TabsContent value="analytics" className="space-y-6">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                {/* Top Performing Topics */}
+                <Card>
+                  <CardHeader>
+                    <div className="flex items-center gap-3">
+                      <Rocket className="h-5 w-5 text-primary" />
+                      <CardTitle>Top Performing Topics</CardTitle>
+                    </div>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="space-y-3">
+                      {allKeywords
+                        .map(keyword => ({ keyword, ...getTopicStats(keyword) }))
+                        .sort((a, b) => b.totalViews - a.totalViews)
+                        .slice(0, 10)
+                        .map((topic, index) => (
+                          <div key={topic.keyword} className="flex items-center justify-between p-2 rounded-lg hover:bg-muted/50 transition-colors">
+                            <div className="flex items-center gap-3">
+                              <div className="w-6 h-6 rounded-full bg-primary/10 flex items-center justify-center text-xs font-semibold text-primary">
+                                {index + 1}
+                              </div>
+                              <Link
+                                to={`/topics?q=${encodeURIComponent(topic.keyword)}`}
+                                className="font-medium hover:text-primary transition-colors"
+                              >
+                                {topic.keyword}
+                              </Link>
+                            </div>
+                            <div className="flex items-center gap-2">
+                              <Badge variant="outline" className="text-xs">
+                                {topic.articleCount} articles
+                              </Badge>
+                              <span className="text-xs text-muted-foreground">
+                                {topic.totalViews.toLocaleString()} views
+                              </span>
+                            </div>
+                          </div>
+                        ))}
+                    </div>
+                  </CardContent>
+                </Card>
+
+                {/* Recent Activity */}
+                <Card>
+                  <CardHeader>
+                    <div className="flex items-center gap-3">
+                      <Calendar className="h-5 w-5 text-primary" />
+                      <CardTitle>Recent Activity</CardTitle>
+                    </div>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="space-y-3">
+                      {allKeywords
+                        .map(keyword => ({ keyword, ...getTopicStats(keyword) }))
+                        .filter(topic => topic.recentCount > 0)
+                        .sort((a, b) => b.recentCount - a.recentCount)
+                        .slice(0, 10)
+                        .map((topic, index) => (
+                          <div key={topic.keyword} className="flex items-center justify-between p-2 rounded-lg hover:bg-muted/50 transition-colors">
+                            <div className="flex items-center gap-3">
+                              <div className="w-6 h-6 rounded-full bg-green-500/10 flex items-center justify-center text-xs font-semibold text-green-600">
+                                {index + 1}
+                              </div>
+                              <Link
+                                to={`/topics?q=${encodeURIComponent(topic.keyword)}`}
+                                className="font-medium hover:text-primary transition-colors"
+                              >
+                                {topic.keyword}
+                              </Link>
+                            </div>
+                            <div className="flex items-center gap-2">
+                              <Badge variant="secondary" className="text-xs gap-1">
+                                <Sparkles className="h-3 w-3" />
+                                {topic.recentCount} new
+                              </Badge>
+                              {topic.isTrending && (
+                                <Badge variant="default" className="text-xs gap-1">
+                                  <Flame className="h-3 w-3" />
+                                  Hot
+                                </Badge>
+                              )}
+                            </div>
+                          </div>
+                        ))}
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
+              
+              {/* Saved Topics */}
+              {savedTopics.length > 0 && (
+                <Card>
+                  <CardHeader>
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-3">
+                        <BookmarkPlus className="h-5 w-5 text-primary" />
+                        <CardTitle>Saved Topics</CardTitle>
+                      </div>
+                      <Button variant="outline" size="sm" onClick={() => setSavedTopics([])}>
+                        Clear all
+                      </Button>
+                    </div>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="flex flex-wrap gap-2">
+                      {savedTopics.map((topic, index) => (
+                        <div key={index} className="group inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-border bg-primary/5">
+                          <Hash className="h-3.5 w-3.5 text-primary" />
+                          <span className="text-sm font-medium text-primary">
+                            {topic}
+                          </span>
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => toggleSavedTopic(topic)}
+                            className="h-5 w-5 p-0 rounded-full hover:bg-primary/20"
+                          >
+                            <X className="h-3 w-3" />
+                          </Button>
+                        </div>
+                      ))}
+                    </div>
+                  </CardContent>
+                </Card>
+              )}
             </TabsContent>
           </Tabs>
         )}
