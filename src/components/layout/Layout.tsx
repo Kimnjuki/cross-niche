@@ -11,7 +11,7 @@ interface LayoutProps {
   showPulseSidebar?: boolean;
 }
 
-export function Layout({ children, showPulseSidebar = true }: LayoutProps) {
+export function Layout({ children, showPulseSidebar = false }: LayoutProps) {
   return (
     <div className="min-h-screen flex flex-col">
       {showPulseSidebar && <GlobalPulseSidebar />}

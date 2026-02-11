@@ -18,11 +18,10 @@ import { EnhancedSearch } from '@/components/search/EnhancedSearch';
 import { SEOHead } from '@/components/seo/SEOHead';
 import { LandingPageTracker } from '@/components/analytics/LandingPageTracker';
 import { Breadcrumbs } from '@/components/navigation/Breadcrumbs';
-import { Link, useNavigate } from 'react-router-dom';
-import { Clock, User, TrendingUp, Rss, ChevronRight, Star, TrendingUp as TrendingIcon, Menu, X, Search } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { Clock, User, TrendingUp, Rss, ChevronRight, Star, TrendingUp as TrendingIcon, Search } from 'lucide-react';
 import { Skeleton } from '@/components/ui/skeleton';
 import { formatRelativeTime } from '@/lib/timeUtils';
-import { useState, useEffect } from 'react';
 import type { Article } from '@/types';
 
 const FEED_SLUGS = [
@@ -50,15 +49,12 @@ function safeArticleId(article: Article | null | undefined): string {
  */
 export default function Index() {
   const { data: published, isLoading: loadingPublished } = usePublishedContent(50);
-  const { data: latest, isLoading: loadingLatest } = useLatestContent(10);
-  const { data: trending, isLoading: loadingTrending } = useTrendingContent(6);
+  const { data: latest, isLoading: loadingLatest } = useLatestContent(20);
+  const { data: trending, isLoading: loadingTrending } = useTrendingContent(12);
   const { data: feeds } = useFeeds();
-  const { data: techFeed } = useContentByFeed('innovate', 5);
-  const { data: securityFeed } = useContentByFeed('secured', 5);
-  const { data: gamingFeed } = useContentByFeed('play', 5);
-  const [isScrolled, setIsScrolled] = useState(false);
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const navigate = useNavigate();
+  const { data: techFeed } = useContentByFeed('innovate', 10);
+  const { data: securityFeed } = useContentByFeed('secured', 10);
+  const { data: gamingFeed } = useContentByFeed('play', 10);
 
   // Debug logging (only in development)
   if (typeof window !== 'undefined' && import.meta.env.DEV) {
@@ -91,41 +87,6 @@ export default function Index() {
 
   return (
     <Layout showPulseSidebar={false}>
-      {/* Sticky Navigation Header */}
-      <header className={`sticky top-0 left-0 right-0 z-40 w-full bg-background/95 backdrop-blur-sm border-b border-border transition-all duration-300 ${
-        isScrolled ? 'shadow-md' : 'shadow-sm'
-      }`}>
-        <div className="container mx-auto px-4 py-3">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-4">
-              <Link to="/" className="flex items-center gap-2 text-foreground hover:text-primary transition-colors">
-                <div className="w-8 h-8 bg-gradient-to-br from-primary/20 to-primary rounded-lg flex items-center justify-center">
-                  <span className="text-primary-foreground font-bold text-lg">GN</span>
-                </div>
-                <span className="font-display font-bold text-xl">The Grid Nexus</span>
-              </Link>
-              
-              <button
-                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                className="md:hidden p-2 text-muted-foreground hover:text-foreground"
-              >
-                <Menu className="h-5 w-5" />
-              </button>
-            </div>
-            
-            <div className="hidden md:flex items-center gap-4">
-              <nav className="flex items-center gap-6 text-sm">
-                <Link to="/tech" className="text-muted-foreground hover:text-tech transition-colors">Tech</Link>
-                <Link to="/security" className="text-muted-foreground hover:text-security transition-colors">Security</Link>
-                <Link to="/gaming" className="text-muted-foreground hover:text-gaming transition-colors">Gaming</Link>
-                <Link to="/topics" className="text-muted-foreground hover:text-primary transition-colors">Topics</Link>
-                <Link to="/roadmap" className="text-muted-foreground hover:text-primary transition-colors">Roadmap</Link>
-              </nav>
-            </div>
-          </div>
-        </div>
-      </header>
-
       <LandingPageTracker pageType="homepage" articlesViewed={sortedArticles.length} />
       <SEOHead
         title="The Grid Nexus – Tech, Security & Gaming News"
@@ -437,9 +398,10 @@ export default function Index() {
               <EnhancedSearch 
                 placeholder="Search articles, topics, authors..."
                 onSearch={(query) => {
-                  // Navigate to search results
+                  // Search functionality - navigate to search results
                   if (query.trim()) {
-                    navigate(`/search?q=${encodeURIComponent(query.trim())}`);
+                    console.log('Search for:', query.trim());
+                    // TODO: Implement search navigation
                   }
                 }}
               />
