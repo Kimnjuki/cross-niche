@@ -19,7 +19,7 @@ import { SEOHead } from '@/components/seo/SEOHead';
 import { LandingPageTracker } from '@/components/analytics/LandingPageTracker';
 import { Breadcrumbs } from '@/components/navigation/Breadcrumbs';
 import { Link, useNavigate } from 'react-router-dom';
-import { Clock, User, TrendingUp, Rss, ChevronRight, Star, TrendingUp as TrendingIcon, Menu, X } from 'lucide-react';
+import { Clock, User, TrendingUp, Rss, ChevronRight, Star, TrendingUp as TrendingIcon, Menu, X, Search } from 'lucide-react';
 import { Skeleton } from '@/components/ui/skeleton';
 import { formatRelativeTime } from '@/lib/timeUtils';
 import { useState, useEffect } from 'react';
