@@ -206,6 +206,38 @@
     </noscript>
     <style>.skip-link{position:absolute;left:-9999px;z-index:9999;padding:1rem 1.5rem;background:#3b82f6;color:white;text-decoration:none;font-weight:600}.skip-link:focus{left:0;top:0}</style>
     <script type="module" src="/assets/index-DM7rCW1a.js"></script>
+    <!-- Fallback for development or build issues -->
+    <script>
+      // Fallback if main script fails to load
+      window.addEventListener('DOMContentLoaded', function() {
+        if (!window.__VITE_APP_LOADED__) {
+          console.warn('Main script failed to load, attempting fallback...');
+          // Try to load any available script files
+          const scripts = [
+            '/assets/index-DM7rCW1a.js',
+            '/assets/index-DM7rCW1a.js',
+            '/assets/index.js'
+          ];
+          
+          let loaded = false;
+          scripts.forEach(function(src) {
+            const script = document.createElement('script');
+            script.type = 'module';
+            script.src = src;
+            script.onload = function() {
+              if (!loaded) {
+                loaded = true;
+                console.log('Fallback script loaded:', src);
+              }
+            };
+            script.onerror = function() {
+              console.error('Failed to load fallback script:', src);
+            };
+            document.head.appendChild(script);
+          });
+        }
+      });
+    </script>
     <!-- Defer third-party scripts; each load wrapped so one failure does not break page (Ahrefs "Page has broken JavaScript") -->
     <script>
       (function(){
