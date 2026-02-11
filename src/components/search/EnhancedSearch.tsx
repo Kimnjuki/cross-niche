@@ -89,6 +89,8 @@ export function EnhancedSearch({ placeholder = "Search articles, topics, authors
           <input
             ref={searchRef}
             type="text"
+            id="enhanced-search-input"
+            name="enhanced-search"
             value={query}
             onChange={(e) => handleInputChange(e.target.value)}
             onKeyDown={handleKeyDown}

@@ -106,6 +106,8 @@ export function Navbar() {
                 <form onSubmit={handleSearchSubmit} className="flex items-center gap-2 animate-fade-in">
                   <input
                     type="search"
+                    id="navbar-search-desktop"
+                    name="navbar-search-desktop"
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                     placeholder="Search topics..."
@@ -232,11 +234,13 @@ export function Navbar() {
                 <div className="flex gap-2">
                   <input
                     type="search"
+                    id="navbar-search-mobile"
+                    name="navbar-search-mobile"
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                     placeholder="Search topics..."
-                    className="flex-1 h-10 rounded-md border border-input bg-background px-3 text-sm"
-                    aria-label="Search"
+                    className="flex-1 h-9 rounded-md border border-input bg-background px-3 py-1 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+                    aria-label="Mobile search"
                   />
                   <Button type="submit" size="sm">Search</Button>
                 </div>

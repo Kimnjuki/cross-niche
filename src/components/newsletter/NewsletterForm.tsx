@@ -7,7 +7,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Badge } from '@/components/ui/badge';
 import { useLocalStorage } from '@/hooks/useLocalStorage';
 import { useToast } from '@/hooks/use-toast';
-import { NewsletterSubscriber, NewsletterFrequency, NewsletterType, Niche } from '@/types';
+import { NewsletterSubscriber, NewsletterFrequency, NewsletterType, Niche, Article } from '@/types';
 import { Mail, Check, Settings, Eye } from 'lucide-react';
 import { newsletterEngine } from '@/lib/ai/newsletter';
 import { mockArticles } from '@/data/mockData';
@@ -126,10 +126,12 @@ export function NewsletterForm({ variant = 'default' }: NewsletterFormProps) {
           <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
           <Input
             type="email"
+            id="newsletter-email-input"
+            name="newsletter-email"
             placeholder="Enter your email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="pl-10 h-12 bg-background/10 border-border/50 text-foreground placeholder:text-muted-foreground"
+            className="flex-1"
             required
           />
         </div>
@@ -145,6 +147,8 @@ export function NewsletterForm({ variant = 'default' }: NewsletterFormProps) {
       <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-3 max-w-lg mx-auto">
         <Input
           type="email"
+          id="newsletter-email-inline"
+          name="newsletter-email-inline"
           placeholder="Enter your email address"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
@@ -163,10 +167,12 @@ export function NewsletterForm({ variant = 'default' }: NewsletterFormProps) {
       <form onSubmit={handleSubmit} className="flex gap-2">
         <Input
           type="email"
+          id="newsletter-email-compact"
+          name="newsletter-email-compact"
           placeholder="your@email.com"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          className="flex-1"
+          className="flex-1 h-10"
           required
         />
         <Button type="submit" size="sm" disabled={isSubmitting}>
@@ -184,9 +190,12 @@ export function NewsletterForm({ variant = 'default' }: NewsletterFormProps) {
             <label className="text-sm font-medium">Email Address</label>
             <Input
               type="email"
+              id="newsletter-email-advanced"
+              name="newsletter-email-advanced"
               placeholder="Enter your email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
+              className="w-full"
               required
             />
           </div>
@@ -305,8 +314,8 @@ export function NewsletterForm({ variant = 'default' }: NewsletterFormProps) {
                           </div>
                         </div>
                         <div className="space-y-3">
-                          {preview.articles.map((article) => (
-                            <div key={(article as Article & { _id?: string })?._id ?? article?.id ?? article?.slug ?? index} className="border rounded-lg p-3">
+                          {preview.articles.map((article, idx) => (
+                            <div key={(article as Article & { _id?: string })?._id ?? article?.id ?? article?.slug ?? idx} className="border rounded-lg p-3">
                               <h4 className="font-medium">{article.title}</h4>
                               <p className="text-sm text-muted-foreground mt-1">
                                 {article.excerpt.substring(0, 100)}...
