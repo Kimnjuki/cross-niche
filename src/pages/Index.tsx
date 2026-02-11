@@ -100,12 +100,56 @@ export default function Index() {
         type="website"
       />
 
-      {/* Tagline strip */}
+      {/* Tagline strip with RSS feeds */}
       <section className="border-b border-border/50 bg-muted/30">
         <div className="container mx-auto px-4 py-3 max-w-7xl">
-          <p className="text-center text-sm text-muted-foreground">
-            Technology, Security & Gaming Intelligence · Breaking news, analysis, and guides
-          </p>
+          <div className="flex flex-col md:flex-row justify-between items-center gap-4">
+            <p className="text-center text-sm text-muted-foreground">
+              Technology, Security & Gaming Intelligence · Breaking news, analysis, and guides
+            </p>
+            <div className="flex items-center gap-4">
+              <a 
+                href="/rss.xml" 
+                className="text-muted-foreground hover:text-primary transition-colors flex items-center gap-1 text-xs"
+                title="RSS Feed"
+              >
+                <Rss className="h-3 w-3" />
+                RSS
+              </a>
+              <a 
+                href="/tech/rss.xml" 
+                className="text-muted-foreground hover:text-tech transition-colors text-xs"
+                title="Tech RSS Feed"
+              >
+                Tech
+              </a>
+              <a 
+                href="/security/rss.xml" 
+                className="text-muted-foreground hover:text-security transition-colors text-xs"
+                title="Security RSS Feed"
+              >
+                Security
+              </a>
+              <a 
+                href="/gaming/rss.xml" 
+                className="text-muted-foreground hover:text-gaming transition-colors text-xs"
+                title="Gaming RSS Feed"
+              >
+                Gaming
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Breaking News Banner */}
+      <section className="bg-red-50 border-b border-red-200">
+        <div className="container mx-auto px-4 py-3">
+          <div className="flex items-center gap-3">
+            <div className="w-2 h-2 bg-red-600 rounded-full animate-pulse" />
+            <h2 className="text-red-800 font-bold text-lg">Breaking News Alert</h2>
+            <p className="text-red-700 text-sm">Critical security updates and major tech announcements</p>
+          </div>
         </div>
       </section>
 

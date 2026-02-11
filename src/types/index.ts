@@ -16,6 +16,7 @@ export interface Article {
   tags: string[];
   isSponsored?: boolean;
   isFeatured?: boolean;
+  isBreaking?: boolean; // For breaking news articles
   securityScore?: number; // For gaming articles
   impactLevel?: 'high' | 'medium' | 'low'; // For security articles
   viewCount?: number; // Article view count for analytics
