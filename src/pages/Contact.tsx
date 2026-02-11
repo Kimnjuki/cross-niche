@@ -27,7 +27,9 @@ export default function Contact() {
     await new Promise(resolve => setTimeout(resolve, 1000));
 
     // In a real application, you would send this to your backend
-    console.log('Form submitted:', formData);
+    if (import.meta.env.DEV) {
+      console.log('Form submitted:', formData);
+    }
     
     setIsSubmitting(false);
     setSubmitStatus('success');
