@@ -13,12 +13,16 @@ import { NewsletterForm } from '@/components/newsletter/NewsletterForm';
 import { BreakingNewsSection } from '@/components/home/BreakingNewsSection';
 import { MasterBentoHero } from '@/components/home/MasterBentoHero';
 import { NewsFeed } from '@/components/news/NewsFeed';
+import { LiveFeedWidget } from '@/components/home/LiveFeedWidget';
+import { EnhancedSearch } from '@/components/search/EnhancedSearch';
 import { SEOHead } from '@/components/seo/SEOHead';
 import { LandingPageTracker } from '@/components/analytics/LandingPageTracker';
+import { Breadcrumbs } from '@/components/navigation/Breadcrumbs';
 import { Link } from 'react-router-dom';
-import { Clock, User, TrendingUp, Rss, ChevronRight } from 'lucide-react';
+import { Clock, User, TrendingUp, Rss, ChevronRight, Star, TrendingUp as TrendingIcon, Menu, X } from 'lucide-react';
 import { Skeleton } from '@/components/ui/skeleton';
 import { formatRelativeTime } from '@/lib/timeUtils';
+import { useState, useEffect } from 'react';
 import type { Article } from '@/types';
 
 const FEED_SLUGS = [
@@ -84,6 +88,41 @@ export default function Index() {
 
   return (
     <Layout showPulseSidebar={false}>
+      {/* Sticky Navigation Header */}
+      <header className={`sticky top-0 left-0 right-0 z-40 w-full bg-background/95 backdrop-blur-sm border-b border-border transition-all duration-300 ${
+        isScrolled ? 'shadow-md' : 'shadow-sm'
+      }`}>
+        <div className="container mx-auto px-4 py-3">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-4">
+              <Link to="/" className="flex items-center gap-2 text-foreground hover:text-primary transition-colors">
+                <div className="w-8 h-8 bg-gradient-to-br from-primary/20 to-primary rounded-lg flex items-center justify-center">
+                  <span className="text-primary-foreground font-bold text-lg">GN</span>
+                </div>
+                <span className="font-display font-bold text-xl">The Grid Nexus</span>
+              </Link>
+              
+              <button
+                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                className="md:hidden p-2 text-muted-foreground hover:text-foreground"
+              >
+                <Menu className="h-5 w-5" />
+              </button>
+            </div>
+            
+            <div className="hidden md:flex items-center gap-4">
+              <nav className="flex items-center gap-6 text-sm">
+                <Link to="/tech" className="text-muted-foreground hover:text-tech transition-colors">Tech</Link>
+                <Link to="/security" className="text-muted-foreground hover:text-security transition-colors">Security</Link>
+                <Link to="/gaming" className="text-muted-foreground hover:text-gaming transition-colors">Gaming</Link>
+                <Link to="/topics" className="text-muted-foreground hover:text-primary transition-colors">Topics</Link>
+                <Link to="/roadmap" className="text-muted-foreground hover:text-primary transition-colors">Roadmap</Link>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </header>
+
       <LandingPageTracker pageType="homepage" articlesViewed={sortedArticles.length} />
       <SEOHead
         title="The Grid Nexus – Tech, Security & Gaming News"
@@ -155,6 +194,13 @@ export default function Index() {
 
       {/* Breaking news (The Hacker News / TechCrunch style) */}
       <BreakingNewsSection articles={sortedArticles} maxItems={6} />
+
+      {/* Live Feed Widget */}
+      <section className="border-b border-border bg-muted/5">
+        <div className="container mx-auto px-4 max-w-7xl">
+          <LiveFeedWidget articles={sortedArticles.slice(0, 8)} maxItems={8} />
+        </div>
+      </section>
 
       {/* Grid Nexus 2026 – Master Bento Hero (5-cell dynamic grid) */}
       {topStory && (
@@ -380,11 +426,20 @@ export default function Index() {
           {/* Sidebar – 1/3 */}
           <aside className="space-y-6" aria-label="Sidebar">
             {/* Feed navigation */}
-            <section className="rounded-lg border border-border bg-card p-4">
+            <div className="rounded-lg border border-border bg-card p-4">
               <h3 className="font-semibold text-sm text-foreground mb-3 flex items-center gap-2">
-                <Rss className="h-4 w-4 text-muted-foreground" />
-                Feeds
+                <Search className="h-4 w-4 text-muted-foreground" />
+                Enhanced Search
               </h3>
+              <EnhancedSearch 
+                placeholder="Search articles, topics, authors..."
+                onSearch={(query) => {
+                  // Navigate to search results
+                  if (query.trim()) {
+                    navigate(`/search?q=${encodeURIComponent(query.trim())}`);
+                  }
+                }}
+              />
               <nav className="space-y-1">
                 {feeds && feeds.length > 0
                   ? feeds.slice(0, 6).map((feed) => (
