@@ -35,6 +35,10 @@ import Media from "./pages/Media";
 import News from "./pages/News";
 import Sitemap from "./pages/Sitemap";
 import NotFound from "./pages/NotFound";
+import SubscriptionPlans from "./pages/SubscriptionPlans";
+import SubscriptionManagement from "./pages/SubscriptionManagement";
+import CommunityForums from "./pages/CommunityForums";
+import SecurityScanner from "./pages/SecurityScanner";
 import { GA4PageTracker } from "./components/analytics/GA4PageTracker";
 import { ThemeProvider } from "./components/theme/ThemeProvider";
 
@@ -81,6 +85,13 @@ const App = () => (
             <Route path="/news" element={<News />} />
             <Route path="/sitemap" element={<Sitemap />} />
             <Route path="/profile" element={<Profile />} />
+            <Route path="/subscription" element={<SubscriptionPlans />} />
+            <Route path="/subscription/management" element={<SubscriptionManagement />} />
+            <Route path="/billing" element={<SubscriptionManagement />} />
+            <Route path="/settings" element={<SubscriptionManagement />} />
+            <Route path="/forums" element={<CommunityForums />} />
+            <Route path="/tools/security-scanner" element={<SecurityScanner />} />
+            <Route path="/tools" element={<SecurityScanner />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
