@@ -18,7 +18,7 @@ import { EnhancedSearch } from '@/components/search/EnhancedSearch';
 import { SEOHead } from '@/components/seo/SEOHead';
 import { LandingPageTracker } from '@/components/analytics/LandingPageTracker';
 import { Breadcrumbs } from '@/components/navigation/Breadcrumbs';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Clock, User, TrendingUp, Rss, ChevronRight, Star, TrendingUp as TrendingIcon, Menu, X } from 'lucide-react';
 import { Skeleton } from '@/components/ui/skeleton';
 import { formatRelativeTime } from '@/lib/timeUtils';
@@ -56,6 +56,9 @@ export default function Index() {
   const { data: techFeed } = useContentByFeed('innovate', 5);
   const { data: securityFeed } = useContentByFeed('secured', 5);
   const { data: gamingFeed } = useContentByFeed('play', 5);
+  const [isScrolled, setIsScrolled] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const navigate = useNavigate();
 
   // Debug logging (only in development)
   if (typeof window !== 'undefined' && import.meta.env.DEV) {
@@ -426,7 +429,7 @@ export default function Index() {
           {/* Sidebar – 1/3 */}
           <aside className="space-y-6" aria-label="Sidebar">
             {/* Feed navigation */}
-            <div className="rounded-lg border border-border bg-card p-4">
+            <section className="rounded-lg border border-border bg-card p-4">
               <h3 className="font-semibold text-sm text-foreground mb-3 flex items-center gap-2">
                 <Search className="h-4 w-4 text-muted-foreground" />
                 Enhanced Search
