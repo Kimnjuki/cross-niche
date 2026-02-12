@@ -235,6 +235,8 @@ export default function SubscriptionManagement() {
                             <div className="space-y-2">
                               <label className="text-sm font-medium">Card Number</label>
                               <input 
+                                id="card-number"
+                                name="card-number"
                                 type="text" 
                                 className="w-full p-2 border rounded-md"
                                 placeholder="1234 5678 9012 3456"
@@ -243,6 +245,8 @@ export default function SubscriptionManagement() {
                             <div className="space-y-2">
                               <label className="text-sm font-medium">Name on Card</label>
                               <input 
+                                id="card-name"
+                                name="card-name"
                                 type="text" 
                                 className="w-full p-2 border rounded-md"
                                 placeholder="John Doe"
@@ -251,6 +255,8 @@ export default function SubscriptionManagement() {
                             <div className="space-y-2">
                               <label className="text-sm font-medium">Expiry Date</label>
                               <input 
+                                id="expiry-date"
+                                name="expiry-date"
                                 type="text" 
                                 className="w-full p-2 border rounded-md"
                                 placeholder="MM/YY"
@@ -259,6 +265,8 @@ export default function SubscriptionManagement() {
                             <div className="space-y-2">
                               <label className="text-sm font-medium">CVV</label>
                               <input 
+                                id="cvv"
+                                name="cvv"
                                 type="text" 
                                 className="w-full p-2 border rounded-md"
                                 placeholder="123"

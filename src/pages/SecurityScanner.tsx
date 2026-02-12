@@ -187,6 +187,8 @@ export default function SecurityScanner() {
                           <label className="text-sm font-medium">Website URL to Scan</label>
                           <div className="flex gap-2">
                             <input
+                              id="scan-url"
+                              name="scan-url"
                               type="url"
                               placeholder="https://example.com"
                               value={scanUrl}

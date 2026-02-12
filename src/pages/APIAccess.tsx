@@ -20,7 +20,9 @@ import {
   FileText,
   Terminal,
   Settings,
-  ExternalLink
+  ExternalLink,
+  MessageSquare,
+  Eye
 } from 'lucide-react';
 
 export default function APIAccess() {
@@ -337,6 +339,8 @@ curl -H "Authorization: Bearer your-api-key-here" \\
                           <div className="space-y-4">
                             <div className="flex gap-2">
                               <input
+                                id="api-key"
+                                name="api-key"
                                 type="password"
                                 placeholder="Enter your API key"
                                 value={apiKey}
