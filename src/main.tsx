@@ -38,7 +38,12 @@ try {
 }
 
 const rootEl = document.getElementById("root");
-if (!rootEl) throw new Error("Root element #root not found");
+if (!rootEl) {
+  console.error("Root element #root not found");
+  throw new Error("Root element #root not found");
+}
+
+console.log("Root element found, attempting to render React app...");
 
 try {
   createRoot(rootEl).render(
@@ -49,8 +54,9 @@ try {
   
   // Mark app as successfully loaded
   window.__VITE_APP_LOADED__ = true;
+  console.log("React app rendered successfully");
 } catch (error) {
   console.error('Failed to render app:', error);
   // Fallback rendering
-  rootEl.innerHTML = '<div style="padding: 20px; text-align: center;">Loading...</div>';
+  rootEl.innerHTML = '<div style="padding: 20px; text-align: center; color: red;">Error loading app. Check console for details.</div>';
 }
