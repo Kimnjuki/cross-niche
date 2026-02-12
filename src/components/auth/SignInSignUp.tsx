@@ -24,9 +24,9 @@ export const SignInSignUp: React.FC = () => {
   const [mode, setMode] = useState<'signin' | 'signup'>('signin');
   const { isSignedIn } = useUser();
 
-  if (isSignedIn) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
+  return (
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900">
+      {isSignedIn ? (
         <GlassCard className="p-8 max-w-md w-full mx-4">
           <div className="text-center">
             <h2 className="text-2xl font-bold text-white mb-4">Welcome Back!</h2>
@@ -51,22 +51,17 @@ export const SignInSignUp: React.FC = () => {
             </a>
           </div>
         </GlassCard>
-      </div>
-    );
-  }
-
-  return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900">
-      <div className="w-full max-w-md mx-4">
-        {/* Logo and Header */}
-        <div className="text-center mb-8">
-          <div className="flex items-center justify-center gap-3 mb-4">
-            <Shield className="w-10 h-10 text-nexus-cyan" />
-            <h1 className="text-3xl font-bold text-white">GridNexus</h1>
-          </div>
-          <p className="text-gray-400">
-            {mode === 'signin' ? 'Sign in to your account' : 'Create your account'}
-          </p>
+      ) : (
+        <div className="w-full max-w-md mx-4">
+          {/* Logo and Header */}
+          <div className="text-center mb-8">
+            <div className="flex items-center justify-center gap-3 mb-4">
+              <Shield className="w-10 h-10 text-nexus-cyan" />
+              <h1 className="text-3xl font-bold text-white">GridNexus</h1>
+            </div>
+            <p className="text-gray-400">
+              {mode === 'signin' ? 'Sign in to your account' : 'Create your account'}
+            </p>
         </div>
 
         <GlassCard className="p-8">
@@ -184,7 +179,8 @@ export const SignInSignUp: React.FC = () => {
             Privacy Policy
           </a>
         </div>
-      </div>
+        </div>
+      )}
     </div>
   );
 };
