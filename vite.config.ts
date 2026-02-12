@@ -87,6 +87,10 @@ export default defineConfig(({ mode }: ConfigEnv) => {
             charts: ['recharts'],
             editor: ['@tiptap/react', '@tiptap/starter-kit', '@tiptap/extension-placeholder'],
           },
+          // Add cache-busting to filenames
+          entryFileNames: `assets/[name]-[hash].js`,
+          chunkFileNames: `assets/[name]-[hash].js`,
+          assetFileNames: `assets/[name]-[hash].[ext]`,
         },
       },
     },

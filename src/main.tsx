@@ -8,12 +8,20 @@ import { initINPOptimizations } from "./lib/seo/inpOptimization";
 import { initCoreWebVitals } from "./lib/seo/coreWebVitals";
 import "./sentry";
 
+// Build timestamp for cache busting
+const BUILD_TIMESTAMP = Date.now();
+console.log(`🚀 GridNexus Build: ${new Date(BUILD_TIMESTAMP).toISOString()}`);
+
 // Declare global variable for app loaded state
 declare global {
   interface Window {
     __VITE_APP_LOADED__?: boolean;
+    __GRIDNEXUS_BUILD__?: number;
   }
 }
+
+// Set build timestamp globally
+window.__GRIDNEXUS_BUILD__ = BUILD_TIMESTAMP;
 
 // Never let init scripts block or break the app (critical for Coolify/deployment)
 try {
