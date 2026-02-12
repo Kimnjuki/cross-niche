@@ -1,48 +1,103 @@
 /**
- * Theme Toggle Button Component
+ * Theme Toggle Button Component - Enhanced with Glass Morphism
  */
 
-import { Moon, Sun, Monitor } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
-import { useTheme } from './ThemeProvider';
+import React, { useState, useEffect } from 'react';
+import { Sun, Moon, Monitor } from 'lucide-react';
+import { GlassCard } from '@/components/design-system/GlassCard';
+import { cn } from '@/lib/utils';
 
-export function ThemeToggle() {
-  const { theme, setTheme } = useTheme();
+type Theme = 'light' | 'dark' | 'system';
+
+export const ThemeToggle: React.FC = () => {
+  const [theme, setTheme] = useState<Theme>('system');
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+    const savedTheme = localStorage.getItem('theme') as Theme;
+    if (savedTheme) {
+      setTheme(savedTheme);
+      applyTheme(savedTheme);
+    } else {
+      setTheme('system');
+      applyTheme('system');
+    }
+  }, []);
+
+  const applyTheme = (newTheme: Theme) => {
+    const root = window.document.documentElement;
+    
+    if (newTheme === 'system') {
+      const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      root.classList.remove('light', 'dark');
+      root.classList.add(systemTheme);
+    } else {
+      root.classList.remove('light', 'dark', 'system');
+      root.classList.add(newTheme);
+    }
+  };
+
+  const handleThemeChange = (newTheme: Theme) => {
+    setTheme(newTheme);
+    localStorage.setItem('theme', newTheme);
+    applyTheme(newTheme);
+  };
+
+  const getCurrentThemeIcon = () => {
+    if (!mounted) return Monitor;
+    
+    if (theme === 'light') return Sun;
+    if (theme === 'dark') return Moon;
+    
+    // System theme - check current system preference
+    const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    return systemTheme === 'dark' ? Moon : Sun;
+  };
+
+  const getCurrentThemeLabel = () => {
+    if (!mounted) return 'System';
+    
+    if (theme === 'light') return 'Light';
+    if (theme === 'dark') return 'Dark';
+    
+    const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    return systemTheme === 'dark' ? 'Dark' : 'Light';
+  };
+
+  const Icon = getCurrentThemeIcon();
+
+  if (!mounted) {
+    return (
+      <div className="w-10 h-10 bg-white/10 rounded-lg animate-pulse"></div>
+    );
+  }
 
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button variant="outline" size="icon" className="h-9 w-9">
-          {theme === 'light' ? (
-            <Sun className="h-4 w-4" />
-          ) : theme === 'dark' ? (
-            <Moon className="h-4 w-4" />
-          ) : (
-            <Monitor className="h-4 w-4" />
-          )}
-          <span className="sr-only">Toggle theme</span>
-        </Button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent align="end">
-        <DropdownMenuItem onClick={() => setTheme('light')}>
-          <Sun className="mr-2 h-4 w-4" />
-          <span>Light</span>
-        </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => setTheme('dark')}>
-          <Moon className="mr-2 h-4 w-4" />
-          <span>Dark</span>
-        </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => setTheme('system')}>
-          <Monitor className="mr-2 h-4 w-4" />
-          <span>System</span>
-        </DropdownMenuItem>
-      </DropdownMenuContent>
-    </DropdownMenu>
+    <div className="relative group">
+      <GlassCard className="p-2 hover:scale-105 transition-all duration-300">
+        <button
+          onClick={() => {
+            const themes: Theme[] = ['light', 'dark', 'system'];
+            const currentIndex = themes.indexOf(theme);
+            const nextIndex = (currentIndex + 1) % themes.length;
+            handleThemeChange(themes[nextIndex]);
+          }}
+          className="flex items-center justify-center w-6 h-6 text-gray-400 hover:text-white transition-colors"
+          title={`Current theme: ${getCurrentThemeLabel()}. Click to change.`}
+        >
+          <Icon className="w-4 h-4" />
+        </button>
+      </GlassCard>
+
+      {/* Tooltip */}
+      <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none">
+        <GlassCard className="px-3 py-2 text-xs text-white whitespace-nowrap">
+          Theme: {getCurrentThemeLabel()}
+        </GlassCard>
+      </div>
+    </div>
   );
-}
+};
+
+export default ThemeToggle;

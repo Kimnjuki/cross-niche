@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Shield, CheckCircle, AlertTriangle, XCircle, TrendingUp, Lock, Eye, Database, Wifi, ChevronRight, Calculator, Download } from 'lucide-react';
-import { GlassCard } from '@/components/ui/GlassCard';
+import { GlassCard } from '@/components/design-system/GlassCard';
 import { cn } from '@/lib/utils';
 
 interface SecurityCategory {
