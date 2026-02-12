@@ -5,6 +5,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { SafeConvexProvider } from "@/components/SafeConvexProvider";
+import { EnhancedErrorBoundary } from "@/components/error/EnhancedErrorBoundary";
 import Index from "./pages/Index";
 import IndexSimple from "./pages/IndexSimple";
 import EnhancedIndex from "./pages/EnhancedIndex";
@@ -51,17 +52,19 @@ import { ThemeProvider } from "./components/theme/ThemeProvider";
 const queryClient = new QueryClient();
 
 const App = () => (
-  <SafeConvexProvider>
-    <QueryClientProvider client={queryClient}>
-      <ThemeProvider>
-        <AuthProvider>
-          <TooltipProvider>
-            <Toaster />
-            <Sonner />
-            <BrowserRouter>
-            <GA4PageTracker />
-          <Routes>
-            <Route path="/" element={<Index />} />
+  <EnhancedErrorBoundary>
+    <SafeConvexProvider>
+      <QueryClientProvider client={queryClient}>
+        <ThemeProvider>
+          <AuthProvider>
+            <TooltipProvider>
+              <Toaster />
+              <Sonner />
+              <BrowserRouter>
+              <GA4PageTracker />
+            <Routes>
+            <Route path="/" element={<IndexSimple />} />
+            <Route path="/original" element={<Index />} />
             <Route path="/simple" element={<IndexSimple />} />
             <Route path="/enhanced" element={<EnhancedIndex />} />
             <Route path="/enhanced-simple" element={<EnhancedIndexSimple />} />
@@ -113,6 +116,7 @@ const App = () => (
       </ThemeProvider>
     </QueryClientProvider>
   </SafeConvexProvider>
+  </EnhancedErrorBoundary>
 );
 
 export default App;
