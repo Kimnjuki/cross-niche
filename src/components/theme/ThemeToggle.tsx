@@ -67,12 +67,6 @@ export const ThemeToggle: React.FC = () => {
 
   const Icon = getCurrentThemeIcon();
 
-  if (!mounted) {
-    return (
-      <div className="w-10 h-10 bg-white/10 rounded-lg animate-pulse"></div>
-    );
-  }
-
   return (
     <div className="relative group">
       <GlassCard className="p-2 hover:scale-105 transition-all duration-300">
@@ -86,7 +80,11 @@ export const ThemeToggle: React.FC = () => {
           className="flex items-center justify-center w-6 h-6 text-gray-400 hover:text-white transition-colors"
           title={`Current theme: ${getCurrentThemeLabel()}. Click to change.`}
         >
-          <Icon className="w-4 h-4" />
+          {!mounted ? (
+            <div className="w-4 h-4 bg-white/10 rounded animate-pulse"></div>
+          ) : (
+            <Icon className="w-4 h-4" />
+          )}
         </button>
       </GlassCard>
 
