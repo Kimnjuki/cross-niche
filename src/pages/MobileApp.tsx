@@ -14,8 +14,6 @@ import {
   Star, 
   Monitor, 
   Settings, 
-  Apple, 
-  Android, 
   Wifi, 
   Battery,
   Globe,
@@ -87,7 +85,7 @@ export default function MobileApp() {
     {
       id: 'ios',
       name: 'iOS',
-      icon: <Apple className="h-12 w-12" />,
+      icon: <Smartphone className="h-12 w-12" />,
       description: 'Native iOS app with Swift and SwiftUI',
       features: ['push', 'offline', 'security', 'dashboard', 'performance'],
       downloadUrl: 'https://apps.apple.com/app/thegridnexus',
@@ -99,7 +97,7 @@ export default function MobileApp() {
     {
       id: 'android',
       name: 'Android',
-      icon: <Android className="h-12 w-12" />,
+      icon: <Smartphone className="h-12 w-12" />,
       description: 'Native Android app with Kotlin and Jetpack Compose',
       features: ['push', 'offline', 'security', 'dashboard', 'performance'],
       downloadUrl: 'https://play.google.com/store/apps/details?id=com.thegridnexus',
@@ -214,11 +212,11 @@ export default function MobileApp() {
 
             <div className="flex justify-center gap-4 mb-8">
               <Button size="lg" className="px-8">
-                <Apple className="h-5 w-5 mr-2" />
+                <Smartphone className="h-5 w-5 mr-2" />
                 Download for iOS
               </Button>
               <Button size="lg" className="px-8">
-                <Android className="h-5 w-5 mr-2" />
+                <Smartphone className="h-5 w-5 mr-2" />
                 Download for Android
               </Button>
             </div>
@@ -366,7 +364,7 @@ export default function MobileApp() {
                         <div className="bg-gradient-to-br from-muted to-muted/50 rounded-lg p-8">
                           <div className="bg-white rounded-lg shadow-lg overflow-hidden">
                             <img 
-                              src={`https://picsum.photos/seed/thegridnexus${index}/400/300.jpg`}
+                              src={`https://picsum.photos/seed/thegridnexus${screenshot.title.toLowerCase()}/400/300.jpg`}
                               alt={screenshot.title}
                               className="w-full h-auto"
                             />
@@ -437,11 +435,11 @@ export default function MobileApp() {
                 </p>
                 <div className="flex justify-center gap-4">
                   <Button size="lg" className="px-8">
-                    <Apple className="h-5 w-5 mr-2" />
+                    <Smartphone className="h-5 w-5 mr-2" />
                     Download for iOS
                   </Button>
                   <Button size="lg" className="px-8">
-                    <Android className="h-5 w-5 mr-2" />
+                    <Smartphone className="h-5 w-5 mr-2" />
                     Download for Android
                   </Button>
                 </div>
