@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { MessageSquare, Users, Hash, Clock, TrendingUp, Star, Pin, Lock, Eye, ThumbsUp, ThumbsDown, Reply } from 'lucide-react';
+import { MessageSquare, Users, Hash, Clock, TrendingUp, Star, Pin, Lock, Eye, ThumbsUp, ThumbsDown, Reply, Settings } from 'lucide-react';
 
 export default function CommunityForums() {
   const [activeTab, setActiveTab] = useState('forums');
@@ -100,32 +100,22 @@ export default function CommunityForums() {
                             {forum.isLocked ? 'Locked' : 'Open'}
                           </Badge>
                         </div>
-                      </div>
-
-                      <div className="flex items-center gap-4 text-sm text-muted-foreground">
-                        <div className="flex items-center gap-2">
-                          <MessageSquare className="h-4 w-4" />
-                          <span>{forum.posts} posts</span>
+                        <div className="flex items-center gap-4 text-sm text-muted-foreground">
+                          <div className="flex items-center gap-2">
+                            <MessageSquare className="h-4 w-4" />
+                            <span>{forum.posts} posts</span>
+                          </div>
                         </div>
-                        <div className="flex items-center gap-2">
-                          <TrendingUp className="h-4 w-4" />
-                          <span>{forum.views} views</span>
-                        </div>
-                        <div className="flex items-center gap-2">
-                          <Clock className="h-4 w-4" />
-                          <span>{forum.lastActivity}</span>
+                        <div className="flex flex-wrap gap-2 mt-2">
+                          {forum.tags.map((tag) => (
+                            <Badge key={tag} variant="secondary" className="text-xs">
+                              {tag}
+                            </Badge>
+                          ))}
                         </div>
                       </div>
-
-                      <div className="flex flex-wrap gap-2 mt-2">
-                        {forum.tags.map((tag) => (
-                          <Badge key={tag} variant="secondary" className="text-xs">
-                            {tag}
-                          </Badge>
-                        ))}
-                      </div>
-                    </div>
-                  ))}
+                    ))}
+                  </div>
                 </CardContent>
               </Card>
             </div>
