@@ -48,6 +48,10 @@ import MobileApp from "./pages/MobileApp";
 import PodcastPlatform from "./pages/PodcastPlatform.tsx";
 import { GA4PageTracker } from "./components/analytics/GA4PageTracker";
 import { ThemeProvider } from "./components/theme/ThemeProvider";
+import AdvancedSearch from "./components/search/AdvancedSearch";
+import LiveUpdatesFeed from "./components/live/LiveUpdatesFeed";
+import AIPulseEngine from "./components/ai/AIPulseEngine";
+import SignInSignUp from "./components/auth/SignInSignUp";
 
 const queryClient = new QueryClient();
 
@@ -107,6 +111,11 @@ const App = () => (
             <Route path="/api" element={<APIAccess />} />
             <Route path="/mobile" element={<MobileApp />} />
             <Route path="/podcasts" element={<PodcastPlatform />} />
+            <Route path="/search" element={<AdvancedSearch />} />
+            <Route path="/live-updates" element={<LiveUpdatesFeed />} />
+            <Route path="/ai-pulse" element={<AIPulseEngine />} />
+            <Route path="/signin" element={<SignInSignUp />} />
+            <Route path="/signup" element={<SignInSignUp />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>

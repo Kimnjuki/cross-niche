@@ -47,32 +47,107 @@ export default function IndexSimple() {
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link
-                to="/security"
-                className="px-8 py-4 bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-lg font-semibold hover:shadow-lg hover:shadow-blue-400/25 transition-all duration-300 flex items-center justify-center gap-2"
+                to="/search"
+                className="px-8 py-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg font-semibold hover:from-blue-700 hover:to-purple-700 transition-all duration-300 shadow-lg hover:shadow-xl"
               >
-                <Shield className="w-5 h-5" />
-                Security Tools
+                Advanced Search
               </Link>
-              
               <Link
-                to="/tech"
-                className="px-8 py-4 border border-blue-400/30 text-blue-400 rounded-lg font-semibold hover:bg-blue-400 hover:text-white transition-all duration-300 flex items-center justify-center gap-2"
+                to="/ai-pulse"
+                className="px-8 py-4 bg-gradient-to-r from-green-600 to-teal-600 text-white rounded-lg font-semibold hover:from-green-700 hover:to-teal-700 transition-all duration-300 shadow-lg hover:shadow-xl"
               >
-                <Brain className="w-5 h-5" />
-                Tech News
+                AI Pulse
               </Link>
-              
               <Link
-                to="/gaming"
-                className="px-8 py-4 border border-purple-400/30 text-purple-400 rounded-lg font-semibold hover:bg-purple-400 hover:text-white transition-all duration-300 flex items-center justify-center gap-2"
+                to="/live-updates"
+                className="px-8 py-4 bg-gradient-to-r from-orange-600 to-red-600 text-white rounded-lg font-semibold hover:from-orange-700 hover:to-red-700 transition-all duration-300 shadow-lg hover:shadow-xl"
               >
-                <Gamepad2 className="w-5 h-5" />
-                Gaming
+                Live Updates
               </Link>
             </div>
           </div>
         </div>
       </div>
+
+      {/* Advanced Features Section */}
+      <section className="py-16 bg-gray-50 dark:bg-gray-800">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">
+              Advanced Features
+            </h2>
+            <p className="text-xl text-gray-600 dark:text-gray-400 max-w-3xl mx-auto">
+              Experience cutting-edge technology with our AI-powered features and real-time updates
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <Link
+              to="/search"
+              className="group p-6 bg-white dark:bg-gray-900 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-200 dark:border-gray-700"
+            >
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-12 h-12 bg-blue-100 dark:bg-blue-900 rounded-lg flex items-center justify-center">
+                  <svg className="w-6 h-6 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                  </svg>
+                </div>
+                <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Advanced Search</h3>
+              </div>
+              <p className="text-gray-600 dark:text-gray-400">
+                Smart search with AI-powered suggestions and advanced filtering
+              </p>
+            </Link>
+
+            <Link
+              to="/ai-pulse"
+              className="group p-6 bg-white dark:bg-gray-900 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-200 dark:border-gray-700"
+            >
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-12 h-12 bg-green-100 dark:bg-green-900 rounded-lg flex items-center justify-center">
+                  <Brain className="w-6 h-6 text-green-600 dark:text-green-400" />
+                </div>
+                <h3 className="text-lg font-semibold text-gray-900 dark:text-white">AI Pulse</h3>
+              </div>
+              <p className="text-gray-600 dark:text-gray-400">
+                Personalized recommendations powered by artificial intelligence
+              </p>
+            </Link>
+
+            <Link
+              to="/live-updates"
+              className="group p-6 bg-white dark:bg-gray-900 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-200 dark:border-gray-700"
+            >
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-12 h-12 bg-orange-100 dark:bg-orange-900 rounded-lg flex items-center justify-center">
+                  <svg className="w-6 h-6 text-orange-600 dark:text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                  </svg>
+                </div>
+                <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Live Updates</h3>
+              </div>
+              <p className="text-gray-600 dark:text-gray-400">
+                Real-time news and breaking updates as they happen
+              </p>
+            </Link>
+
+            <Link
+              to="/security-score"
+              className="group p-6 bg-white dark:bg-gray-900 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-200 dark:border-gray-700"
+            >
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-12 h-12 bg-red-100 dark:bg-red-900 rounded-lg flex items-center justify-center">
+                  <Shield className="w-6 h-6 text-red-600 dark:text-red-400" />
+                </div>
+                <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Security Score</h3>
+              </div>
+              <p className="text-gray-600 dark:text-gray-400">
+                Comprehensive security assessment and recommendations
+              </p>
+            </Link>
+          </div>
+        </div>
+      </section>
 
       {/* Featured Story */}
       {topStory && (
