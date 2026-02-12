@@ -86,7 +86,7 @@ export function usePublishedContent(limit = 20) {
   const rows = useQuery(api.content.listPublished, isDisabled ? 'skip' : { limit });
   const data = isDisabled
     ? articlesToContentItems(mockArticles.slice(0, limit))
-    : toContentItems(rows ?? undefined);
+    : toContentItems(Array.isArray(rows) ? rows : []);
   
   // Cache the result
   if (data && !isDisabled) {
@@ -99,21 +99,51 @@ export function usePublishedContent(limit = 20) {
 /** Visible content for homepage: published + featured only, newest first (getVisibleContent). */
 export function useVisibleContent(limit = 24) {
   const isDisabled = useConvexDisabled();
+  
+  // Try to get from cache first
+  const cacheKey = `visible-content-${limit}`;
+  const cachedData = contentCache.get(cacheKey);
+  
+  if (cachedData && !isDisabled) {
+    return { data: cachedData, isLoading: false };
+  }
+  
   const rows = useQuery(api.content.getVisibleContent, isDisabled ? 'skip' : { limit });
   const data = isDisabled
     ? articlesToContentItems(mockArticles.filter((a) => a.isFeatured).slice(0, limit))
-    : toContentItems(rows ?? undefined);
+    : toContentItems(Array.isArray(rows) ? rows : []);
+  
+  // Cache the result
+  if (data && !isDisabled) {
+    contentCache.set(cacheKey, data, 30000);
+  }
+  
   return { data, isLoading: !isDisabled && rows === undefined };
 }
 
 // Fetch content by feed slug (or mock when Convex not configured)
 export function useContentByFeed(feedSlug: string, limit = 20) {
   const isDisabled = useConvexDisabled();
+  
+  // Try to get from cache first
+  const cacheKey = `content-by-feed-${feedSlug}-${limit}`;
+  const cachedData = contentCache.get(cacheKey);
+  
+  if (cachedData && !isDisabled) {
+    return { data: cachedData, isLoading: false };
+  }
+  
   const rows = useQuery(api.content.listByFeedSlug, isDisabled ? 'skip' : { feedSlug, limit });
   const feedNiche = feedSlug === 'secured' ? 'security' : feedSlug === 'play' ? 'gaming' : 'tech';
   const data = isDisabled
     ? articlesToContentItems(mockArticles.filter((a) => a.niche === feedNiche).slice(0, limit))
-    : toContentItems(rows ?? undefined);
+    : toContentItems(Array.isArray(rows) ? rows : []);
+  
+  // Cache the result
+  if (data && !isDisabled) {
+    contentCache.set(cacheKey, data, 30000);
+  }
+  
   return { data, isLoading: !isDisabled && rows === undefined };
 }
 
@@ -150,21 +180,51 @@ export function useContentByNiche(nicheName: string, limit = 20) {
 /** Content by niche ID (1=Tech, 2=Security, 3=Gaming). Uses getContentByNiche. */
 export function useContentByNicheId(nicheId: number, limit = 30) {
   const isDisabled = useConvexDisabled();
+  
+  // Try to get from cache first
+  const cacheKey = `content-by-niche-id-${nicheId}-${limit}`;
+  const cachedData = contentCache.get(cacheKey);
+  
+  if (cachedData && !isDisabled) {
+    return { data: cachedData, isLoading: false };
+  }
+  
   const rows = useQuery(api.content.getContentByNiche, isDisabled ? 'skip' : { nicheId, limit });
   const feedNiche = nicheId === 2 ? 'security' : nicheId === 3 ? 'gaming' : 'tech';
   const data = isDisabled
     ? articlesToContentItems(mockArticles.filter((a) => a.niche === feedNiche).slice(0, limit))
-    : toContentItems(rows ?? undefined);
+    : toContentItems(rows ?? []);
+  
+  // Cache the result
+  if (data && !isDisabled) {
+    contentCache.set(cacheKey, data, 30000);
+  }
+  
   return { data, isLoading: !isDisabled && rows === undefined };
 }
 
 /** Featured content for homepage: published + isFeatured, sorted by publishedAt desc (getFeaturedContent). */
 export function useFeaturedContent(limit = 24) {
   const isDisabled = useConvexDisabled();
+  
+  // Try to get from cache first
+  const cacheKey = `featured-content-${limit}`;
+  const cachedData = contentCache.get(cacheKey);
+  
+  if (cachedData && !isDisabled) {
+    return { data: cachedData, isLoading: false };
+  }
+  
   const rows = useQuery(api.content.getFeaturedContent, isDisabled ? 'skip' : { limit });
   const data = isDisabled
     ? articlesToContentItems(mockArticles.filter((a) => a.isFeatured).slice(0, limit))
-    : toContentItems(rows ?? undefined);
+    : toContentItems(rows ?? []);
+  
+  // Cache the result
+  if (data && !isDisabled) {
+    contentCache.set(cacheKey, data, 30000);
+  }
+  
   return { data, isLoading: !isDisabled && rows === undefined };
 }
 
@@ -183,7 +243,7 @@ export function useLatestContent(limit = 10) {
   const rows = useQuery(api.content.getLatestContent, isDisabled ? 'skip' : { limit });
   const data = isDisabled
     ? articlesToContentItems(mockArticles.slice(0, limit))
-    : toContentItems(rows ?? undefined);
+    : toContentItems(rows ?? []);
   
   // Cache the result
   if (data && !isDisabled) {
