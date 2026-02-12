@@ -6,6 +6,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { SafeConvexProvider } from "@/components/SafeConvexProvider";
 import Index from "./pages/Index";
+import IndexSimple from "./pages/IndexSimple";
 import EnhancedIndex from "./pages/EnhancedIndex";
 import EnhancedIndexSimple from "./pages/EnhancedIndexSimple";
 import Auth from "./pages/Auth";
@@ -61,6 +62,7 @@ const App = () => (
             <GA4PageTracker />
           <Routes>
             <Route path="/" element={<Index />} />
+            <Route path="/simple" element={<IndexSimple />} />
             <Route path="/enhanced" element={<EnhancedIndex />} />
             <Route path="/enhanced-simple" element={<EnhancedIndexSimple />} />
             <Route path="/auth" element={<Auth />} />
