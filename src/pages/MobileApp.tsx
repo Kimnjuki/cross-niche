@@ -142,7 +142,7 @@ export default function MobileApp() {
     {
       name: 'Sarah Chen',
       role: 'Security Analyst',
-      content: 'The mobile app keeps me updated on security threats while I\\'m on the go. The instant notifications have saved me from potential attacks multiple times.',
+      content: 'The mobile app keeps me updated on security threats while I\'m on the go. The instant notifications have saved me from potential attacks multiple times.',
       rating: 5,
       platform: 'iOS'
     },
