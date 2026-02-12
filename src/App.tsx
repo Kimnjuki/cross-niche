@@ -44,7 +44,7 @@ import CommunityForums from "./pages/CommunityForums";
 import SecurityScanner from "./pages/SecurityScanner";
 import APIAccess from "./pages/APIAccess";
 import MobileApp from "./pages/MobileApp";
-import PodcastPlatform from "./pages/PodcastPlatform";
+import PodcastPlatform from "./pages/PodcastPlatform.tsx";
 import { GA4PageTracker } from "./components/analytics/GA4PageTracker";
 import { ThemeProvider } from "./components/theme/ThemeProvider";
 
