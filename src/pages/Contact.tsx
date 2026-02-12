@@ -136,10 +136,11 @@ export default function Contact() {
                       id="name"
                       name="name"
                       type="text"
+                      placeholder="Your name"
                       required
+                      aria-required="true"
                       value={formData.name}
                       onChange={handleChange}
-                      placeholder="Your name"
                     />
                   </div>
 
@@ -150,9 +151,9 @@ export default function Contact() {
                       name="email"
                       type="email"
                       required
+                      aria-required="true"
                       value={formData.email}
                       onChange={handleChange}
-                      placeholder="your.email@example.com"
                     />
                   </div>
 
@@ -163,9 +164,9 @@ export default function Contact() {
                       name="subject"
                       type="text"
                       required
+                      aria-required="true"
                       value={formData.subject}
                       onChange={handleChange}
-                      placeholder="What's this about?"
                     />
                   </div>
 
@@ -175,10 +176,10 @@ export default function Contact() {
                       id="message"
                       name="message"
                       required
+                      aria-required="true"
                       rows={6}
                       value={formData.message}
                       onChange={handleChange}
-                      placeholder="Tell us what's on your mind..."
                     />
                   </div>
 
