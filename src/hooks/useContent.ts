@@ -3,6 +3,7 @@ import { api } from '../../convex/_generated/api';
 import { useConvexDisabled } from '@/components/SafeConvexProvider';
 import { articlesToContentItems, articleToContentItem } from '@/lib/contentMapper';
 import { mockArticles } from '@/data/mockData';
+import { contentCache } from './useContentCache';
 
 // ContentItem type – compatible with Convex content query results
 export interface ContentItem {
@@ -73,10 +74,25 @@ function toContentItems(rows: unknown[] | undefined): ContentItem[] {
 // Fetch all published content from Convex (or mock when Convex not configured)
 export function usePublishedContent(limit = 20) {
   const isDisabled = useConvexDisabled();
+  
+  // Try to get from cache first
+  const cacheKey = `published-content-${limit}`;
+  const cachedData = contentCache.get(cacheKey);
+  
+  if (cachedData && !isDisabled) {
+    return { data: cachedData, isLoading: false };
+  }
+  
   const rows = useQuery(api.content.listPublished, isDisabled ? 'skip' : { limit });
   const data = isDisabled
     ? articlesToContentItems(mockArticles.slice(0, limit))
     : toContentItems(rows ?? undefined);
+  
+  // Cache the result
+  if (data && !isDisabled) {
+    contentCache.set(cacheKey, data, 30000); // Cache for 30 seconds
+  }
+  
   return { data, isLoading: !isDisabled && rows === undefined };
 }
 
@@ -104,6 +120,15 @@ export function useContentByFeed(feedSlug: string, limit = 20) {
 // Fetch content by niche name (or mock when Convex not configured)
 export function useContentByNiche(nicheName: string, limit = 20) {
   const isDisabled = useConvexDisabled();
+  
+  // Try to get from cache first
+  const cacheKey = `content-by-niche-${nicheName}-${limit}`;
+  const cachedData = contentCache.get(cacheKey);
+  
+  if (cachedData && !isDisabled) {
+    return { data: cachedData, isLoading: false };
+  }
+  
   const rows = useQuery(api.content.listPublished, isDisabled ? 'skip' : { limit: limit * 2 });
   const niche = nicheName.toLowerCase() === 'tech' ? 'tech' : nicheName.toLowerCase() === 'security' ? 'security' : 'gaming';
   const data = isDisabled
@@ -113,6 +138,12 @@ export function useContentByNiche(nicheName: string, limit = 20) {
           (Array.isArray(r.niches) ? r.niches : []).some((n: string) => String(n).toLowerCase() === nicheName.toLowerCase())
         ).slice(0, limit)
       );
+  
+  // Cache the result
+  if (data && !isDisabled) {
+    contentCache.set(cacheKey, data, 30000); // Cache for 30 seconds
+  }
+  
   return { data, isLoading: !isDisabled && rows === undefined };
 }
 
@@ -140,10 +171,25 @@ export function useFeaturedContent(limit = 24) {
 /** Latest N published articles regardless of featured (getLatestContent). */
 export function useLatestContent(limit = 10) {
   const isDisabled = useConvexDisabled();
+  
+  // Try to get from cache first
+  const cacheKey = `latest-content-${limit}`;
+  const cachedData = contentCache.get(cacheKey);
+  
+  if (cachedData && !isDisabled) {
+    return { data: cachedData, isLoading: false };
+  }
+  
   const rows = useQuery(api.content.getLatestContent, isDisabled ? 'skip' : { limit });
   const data = isDisabled
     ? articlesToContentItems(mockArticles.slice(0, limit))
     : toContentItems(rows ?? undefined);
+  
+  // Cache the result
+  if (data && !isDisabled) {
+    contentCache.set(cacheKey, data, 30000); // Cache for 30 seconds
+  }
+  
   return { data, isLoading: !isDisabled && rows === undefined };
 }
 
