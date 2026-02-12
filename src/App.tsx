@@ -7,6 +7,7 @@ import { AuthProvider } from "@/contexts/AuthContext";
 import { SafeConvexProvider } from "@/components/SafeConvexProvider";
 import Index from "./pages/Index";
 import EnhancedIndex from "./pages/EnhancedIndex";
+import EnhancedIndexSimple from "./pages/EnhancedIndexSimple";
 import Auth from "./pages/Auth";
 import Tech from "./pages/Tech";
 import Security from "./pages/Security";
@@ -61,6 +62,7 @@ const App = () => (
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/enhanced" element={<EnhancedIndex />} />
+            <Route path="/enhanced-simple" element={<EnhancedIndexSimple />} />
             <Route path="/auth" element={<Auth />} />
             <Route path="/auth/callback" element={<AuthCallback />} />
             <Route path="/auth/confirm" element={<AuthConfirm />} />
