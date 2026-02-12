@@ -1,11 +1,18 @@
 import { createRoot } from "react-dom/client";
 import App from "./App.tsx";
-import "./index.css";
+import "./styles/globals.css";
 import { ErrorBoundary } from "./components/ErrorBoundary";
 import { initExternalScriptErrorHandling } from "./lib/externalScriptHandler";
 import { initAllTracking } from "./lib/analytics/ga4";
 import { initINPOptimizations } from "./lib/seo/inpOptimization";
 import { initCoreWebVitals } from "./lib/seo/coreWebVitals";
+
+// Declare global variable for app loaded state
+declare global {
+  interface Window {
+    __VITE_APP_LOADED__?: boolean;
+  }
+}
 
 // Never let init scripts block or break the app (critical for Coolify/deployment)
 try {
@@ -38,6 +45,9 @@ try {
       <App />
     </ErrorBoundary>
   );
+  
+  // Mark app as successfully loaded
+  window.__VITE_APP_LOADED__ = true;
 } catch (error) {
   console.error('Failed to render app:', error);
   // Fallback rendering

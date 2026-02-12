@@ -205,7 +205,9 @@
       </div>
     </noscript>
     <style>.skip-link{position:absolute;left:-9999px;z-index:9999;padding:1rem 1.5rem;background:#3b82f6;color:white;text-decoration:none;font-weight:600}.skip-link:focus{left:0;top:0}</style>
+    <!-- Development/Production script loading -->
     <script type="module" src="/src/main.tsx"></script>
+    
     <!-- Fallback for development or build issues -->
     <script>
       // Fallback if main script fails to load
@@ -214,7 +216,6 @@
           console.warn('Main script failed to load, attempting fallback...');
           // Try to load any available script files
           const scripts = [
-            '/src/main.tsx',
             '/src/main.tsx',
             '/assets/index.js'
           ];
