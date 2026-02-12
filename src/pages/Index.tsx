@@ -1,28 +1,40 @@
 /**
- * Homepage – news-style layout with main feed + sidebars.
- * Data from Convex; safe fallbacks so the page always displays (incl. after Coolify redeploy).
+ * Enhanced Homepage – GridNexus Design System Implementation
+ * Technical precision meets visual boldness. Clean, fast, intelligent.
  */
 
-import { Layout } from '@/components/layout/Layout';
-import { usePublishedContent, useLatestContent, useTrendingContent, useFeeds, useContentByFeed } from '@/hooks/useContent';
-import { mapContentToArticles } from '@/lib/contentMapper';
-import { mockArticles } from '@/data/mockData';
-import { ArticleCard } from '@/components/articles/ArticleCard';
-import { LazyImage } from '@/components/ui/lazy-image';
-import { NewsletterForm } from '@/components/newsletter/NewsletterForm';
-import { BreakingNewsSection } from '@/components/home/BreakingNewsSection';
-import { MasterBentoHero } from '@/components/home/MasterBentoHero';
-import { NewsFeed } from '@/components/news/NewsFeed';
-import { LiveFeedWidget } from '@/components/home/LiveFeedWidget';
-import { EnhancedSearch } from '@/components/search/EnhancedSearch';
-import { SEOHead } from '@/components/seo/SEOHead';
-import { LandingPageTracker } from '@/components/analytics/LandingPageTracker';
-import { Breadcrumbs } from '@/components/navigation/Breadcrumbs';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Clock, User, TrendingUp, Rss, ChevronRight, Star, TrendingUp as TrendingIcon, Search } from 'lucide-react';
-import { Skeleton } from '@/components/ui/skeleton';
-import { formatRelativeTime } from '@/lib/timeUtils';
-import type { Article } from '@/types';
+import { 
+  Search, 
+  Menu, 
+  X, 
+  Sun, 
+  Moon, 
+  Shield, 
+  Brain, 
+  Activity, 
+  TrendingUp, 
+  AlertTriangle,
+  Play,
+  ChevronRight,
+  Zap,
+  Eye,
+  MessageSquare,
+  Share2,
+  Bookmark,
+  Cpu,
+  Gamepad2,
+  Lock,
+  Wifi
+} from 'lucide-react';
+import { GlassCard } from '@/components/ui/GlassCard';
+import { ArticleCard } from '@/components/ui/ArticleCard';
+import { AISummary } from '@/components/ai/AISummary';
+import { SecurityScoreCalculator } from '@/components/security/SecurityScoreCalculator';
+import { BreachSimulator } from '@/components/security/BreachSimulator';
+import { LiveUpdates } from '@/components/live/LiveUpdates';
+import { cn } from '@/lib/utils';
 
 const FEED_SLUGS = [
   { slug: 'innovate', label: 'Tech', path: '/tech' },

@@ -1,11 +1,12 @@
 import { createRoot } from "react-dom/client";
 import App from "./App.tsx";
 import "./styles/globals.css";
-import { ErrorBoundary } from "./components/ErrorBoundary";
+import ErrorBoundary from "./components/error/ErrorBoundary";
 import { initExternalScriptErrorHandling } from "./lib/externalScriptHandler";
 import { initAllTracking } from "./lib/analytics/ga4";
 import { initINPOptimizations } from "./lib/seo/inpOptimization";
 import { initCoreWebVitals } from "./lib/seo/coreWebVitals";
+import "./sentry";
 
 // Declare global variable for app loaded state
 declare global {

@@ -3,6 +3,8 @@ import react from "@vitejs/plugin-react-swc";
 import path from "path";
 import fs from "fs";
 import { componentTagger } from "lovable-tagger";
+// @ts-ignore
+import sentryVitePlugin from "@sentry/vite-plugin";
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }: ConfigEnv) => {
@@ -35,6 +37,10 @@ export default defineConfig(({ mode }: ConfigEnv) => {
   const plugins = [
     react(),
     mode === "development" && componentTagger(),
+    isProd && sentryVitePlugin({
+      org: "gridnexus",
+      project: "gridnexus-web",
+    }),
   ];
 
   // Prerender plugin: add in prod when PRERENDER!=0 (requires vite-plugin-prerender + Puppeteer)
