@@ -1,11 +1,11 @@
-import { defineConfig, type UserConfig } from "vite";
+import { defineConfig, type UserConfig as ViteUserConfig } from "vite";
 import react from "@vitejs/plugin-react-swc";
 import path from "path";
 import fs from "fs";
 import { componentTagger } from "lovable-tagger";
 
 // https://vitejs.dev/config/
-export default defineConfig(({ mode }: UserConfig) => {
+export default defineConfig(({ mode }: ViteUserConfig) => {
   const isProd = mode === "production";
   
   // Load prerender routes: static + article routes from prerender-routes.json (generated in prebuild)
