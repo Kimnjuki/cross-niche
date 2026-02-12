@@ -307,7 +307,7 @@ export default function SubscriptionManagement() {
                                 {invoice.status}
                               </Badge>
                             </div>
-                            <div className="font-semibold">${invoice.amount}</div>
+                            <div className="font-semibold">{invoice.amount}</div>
                           </div>
                           <div className="text-sm text-muted-foreground mb-2">{invoice.description}</div>
                           <div className="flex gap-2">
@@ -321,7 +321,7 @@ export default function SubscriptionManagement() {
                             </Button>
                           </div>
                         </CardContent>
-                        </Card>
+                      </Card>
                       ))}
                       
                       <div className="mt-6 text-center">
