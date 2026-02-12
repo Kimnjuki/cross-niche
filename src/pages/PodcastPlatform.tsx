@@ -49,9 +49,9 @@ export default function PodcastPlatform() {
       publishDate: '2026-02-10',
       imageUrl: 'https://picsum.photos/seed/tech-talk/400/300.jpg',
       audioUrl: 'https://example.com/audio/tech-talk.mp3',
-      episodes: 24
+      episodes: 24,
       downloads: 1234,
-      rating: 4.8
+      rating: 4.8,
       tags: ['technology', 'ai', 'innovation']
     },
     {
