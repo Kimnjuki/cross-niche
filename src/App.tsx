@@ -52,6 +52,7 @@ import AdvancedSearch from "./components/search/AdvancedSearch";
 import LiveUpdatesFeed from "./components/live/LiveUpdatesFeed";
 import AIPulseEngine from "./components/ai/AIPulseEngine";
 import SignInSignUp from "./components/auth/SignInSignUp";
+import TestFeatures from "./pages/TestFeatures";
 
 const queryClient = new QueryClient();
 
@@ -116,6 +117,7 @@ const App = () => (
             <Route path="/ai-pulse" element={<AIPulseEngine />} />
             <Route path="/signin" element={<SignInSignUp />} />
             <Route path="/signup" element={<SignInSignUp />} />
+            <Route path="/test-features" element={<TestFeatures />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
