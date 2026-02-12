@@ -17,7 +17,8 @@ import {
   Zap,
   Lock,
   Unlock,
-  RefreshCw
+  RefreshCw,
+  Settings
 } from 'lucide-react';
 
 export default function SecurityScanner() {

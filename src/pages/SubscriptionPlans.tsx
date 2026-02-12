@@ -315,3 +315,5 @@ export function SubscriptionPlans() {
     </div>
   );
 }
+
+export default SubscriptionPlans;
