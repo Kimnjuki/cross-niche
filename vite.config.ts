@@ -1,12 +1,13 @@
-import { defineConfig } from "vite";
+import { defineConfig, type UserConfig } from "vite";
 import react from "@vitejs/plugin-react-swc";
 import path from "path";
 import fs from "fs";
 import { componentTagger } from "lovable-tagger";
 
 // https://vitejs.dev/config/
-export default defineConfig(({ mode }) => {
+export default defineConfig(({ mode }: UserConfig) => {
   const isProd = mode === "production";
+  
   // Load prerender routes: static + article routes from prerender-routes.json (generated in prebuild)
   let prerenderRoutes = [
     "/",
@@ -31,10 +32,10 @@ export default defineConfig(({ mode }) => {
     // Use static routes only if file not found
   }
 
-  const plugins: unknown[] = [
+  const plugins = [
     react(),
     mode === "development" && componentTagger(),
-  ].filter(Boolean);
+  ];
 
   // Prerender plugin: add in prod when PRERENDER!=0 (requires vite-plugin-prerender + Puppeteer)
   if (isProd && process.env.PRERENDER !== "0") {
@@ -53,42 +54,42 @@ export default defineConfig(({ mode }) => {
   }
 
   return {
-  server: {
-    host: "::",
-    port: 8080,
-  },
-  plugins,
-  resolve: {
-    alias: {
-      "@": path.resolve(__dirname, "./src"),
+    server: {
+      host: "::",
+      port: 8080,
     },
-  },
-  build: {
-    outDir: "dist",
-    sourcemap: false,
-    minify: "esbuild",
-    chunkSizeWarningLimit: 800,
-    rollupOptions: {
-      output: {
-        manualChunks: {
-          vendor: ['react', 'react-dom', 'react-router-dom'],
-          convex: ['convex/react', 'convex'],
-          ui: ['framer-motion', '@radix-ui/react-slot', '@radix-ui/react-tooltip'],
-          icons: ['lucide-react'],
-          radix: [
-            '@radix-ui/react-dialog',
-            '@radix-ui/react-dropdown-menu',
-            '@radix-ui/react-tabs',
-            '@radix-ui/react-accordion',
-            '@radix-ui/react-popover',
-            '@radix-ui/react-select',
-          ],
-          charts: ['recharts'],
-          editor: ['@tiptap/react', '@tiptap/starter-kit', '@tiptap/extension-placeholder'],
+    plugins,
+    resolve: {
+      alias: {
+        "@": path.resolve(__dirname, "./src"),
+      },
+    },
+    build: {
+      outDir: "dist",
+      sourcemap: !isProd,
+      minify: isProd ? "esbuild" : false,
+      chunkSizeWarningLimit: 800,
+      rollupOptions: {
+        output: {
+          manualChunks: {
+            vendor: ['react', 'react-dom', 'react-router-dom'],
+            convex: ['convex/react', 'convex'],
+            ui: ['framer-motion', '@radix-ui/react-slot', '@radix-ui/react-tooltip'],
+            icons: ['lucide-react'],
+            radix: [
+              '@radix-ui/react-dialog',
+              '@radix-ui/react-dropdown-menu',
+              '@radix-ui/react-tabs',
+              '@radix-ui/react-accordion',
+              '@radix-ui/react-popover',
+              '@radix-ui/react-select',
+            ],
+            charts: ['recharts'],
+            editor: ['@tiptap/react', '@tiptap/starter-kit', '@tiptap/extension-placeholder'],
+          },
         },
       },
     },
-  },
-  base: "/",
-};
+    base: "/",
+  };
 });
