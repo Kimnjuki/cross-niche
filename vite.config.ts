@@ -37,21 +37,21 @@ export default defineConfig(({ mode }: ConfigEnv) => {
     mode === "development" && componentTagger(),
   ];
 
-  // Prerender plugin: add in prod when PRERENDER!=0 (requires vite-plugin-prerender + Puppeteer)
-  if (isProd && process.env.PRERENDER !== "0") {
-    try {
-      // eslint-disable-next-line @typescript-eslint/no-require-imports
-      const vitePrerender = require("vite-plugin-prerender");
-      plugins.push(
-        vitePrerender.default({
-          staticDir: path.join(__dirname, "dist"),
-          routes: prerenderRoutes,
-        })
-      );
-    } catch {
-      // Skip if plugin not installed
-    }
-  }
+  // Prerender plugin: DISABLED TEMPORARILY to fix React loading issue
+  // if (isProd && process.env.PRERENDER !== "0") {
+  //   try {
+  //     // eslint-disable-next-line @typescript-eslint/no-require-imports
+  //     const vitePrerender = require("vite-plugin-prerender");
+  //     plugins.push(
+  //       vitePrerender.default({
+  //         staticDir: path.join(__dirname, "dist"),
+  //         routes: prerenderRoutes,
+  //       })
+  //     );
+  //   } catch {
+  //     // Skip if plugin not installed
+  //   }
+  // }
 
   return {
     server: {
