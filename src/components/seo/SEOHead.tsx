@@ -41,7 +41,7 @@ export function SEOHead({
   description: providedDescription,
   keywords = ['technology', 'cybersecurity', 'gaming', 'AI', 'tech news', 'security', 'intelligence'],
   image = '/og-image.jpg',
-  url = window.location.href,
+  url = typeof window !== 'undefined' ? window.location.href : '',
   type = 'website',
   article,
   publishedTime,
@@ -103,7 +103,7 @@ export function SEOHead({
     // Open Graph tags (complete set for Ahrefs/social)
     updateMetaTag('og:title', optimizedTitle, true);
     updateMetaTag('og:description', optimizedDescription, true);
-    const ogImage = image.startsWith('http') ? image : `${window.location.origin}${image}`;
+    const ogImage = image.startsWith('http') ? image : (typeof window !== 'undefined' ? `${window.location.origin}${image}` : image);
     updateMetaTag('og:image', ogImage, true);
     if (ogImage.startsWith('https://')) {
       updateMetaTag('og:image:secure_url', ogImage, true);
@@ -116,8 +116,8 @@ export function SEOHead({
       try {
         const parsed = new URL(url.split('?')[0].split('#')[0]);
         const pathname = parsed.pathname || '/';
-        const isHome = pathname === '/' || pathname === '';
-        return isHome ? `${parsed.origin}/` : `${parsed.origin}${pathname.replace(/\/$/, '') || pathname}`;
+        // Use the exact current URL for Open Graph
+        return `${parsed.origin}${pathname}`;
       } catch {
         return url.split('?')[0].split('#')[0];
       }
@@ -141,7 +141,7 @@ export function SEOHead({
     updateMetaTag('twitter:card', 'summary_large_image');
     updateMetaTag('twitter:title', optimizedTitle);
     updateMetaTag('twitter:description', optimizedDescription);
-    const twitterImage = image.startsWith('http') ? image : `${window.location.origin}${image}`;
+    const twitterImage = image.startsWith('http') ? image : (typeof window !== 'undefined' ? `${window.location.origin}${image}` : image);
     updateMetaTag('twitter:image', twitterImage);
     updateMetaTag('twitter:image:alt', optimizedTitle);
     updateMetaTag('twitter:site', '@thegridnexus');
@@ -176,7 +176,7 @@ export function SEOHead({
       robotsMeta.content = 'noindex, nofollow';
     }
 
-    // Canonical URL - consistent format: homepage with trailing slash, other pages without (matches sitemap)
+    // Canonical URL - use the current page URL without query parameters or fragments
     let canonicalLink = document.querySelector('link[rel="canonical"]') as HTMLLinkElement;
     if (!canonicalLink) {
       canonicalLink = document.createElement('link');
@@ -186,10 +186,10 @@ export function SEOHead({
     try {
       const parsed = new URL(url.split('?')[0].split('#')[0]);
       const pathname = parsed.pathname || '/';
-      const isHome = pathname === '/' || pathname === '';
-      canonicalLink.href = isHome ? `${parsed.origin}/` : `${parsed.origin}${pathname.replace(/\/$/, '') || pathname}`;
+      // Use the exact current URL without modification for canonical
+      canonicalLink.href = `${parsed.origin}${pathname}`;
     } catch {
-      canonicalLink.href = url.split('?')[0].split('#')[0].replace(/\/$/, '') || url;
+      canonicalLink.href = url.split('?')[0].split('#')[0];
     }
 
     // Structured Data (JSON-LD) - Article + Organization for ranking (schema.org)
@@ -202,7 +202,7 @@ export function SEOHead({
       ] : undefined,
       faqs: faqs && faqs.length > 0 ? faqs : undefined,
       howTo,
-      isHomepage: url === window.location.origin || url === `${window.location.origin}/`,
+      isHomepage: typeof window !== 'undefined' && (url === window.location.origin || url === `${window.location.origin}/`),
       category: type === 'website' && !article ? {
         name: title,
         description: description,
@@ -242,30 +242,30 @@ export function SEOHead({
       '@graph': [
         {
           '@type': 'WebSite',
-          '@id': `${window.location.origin}/#website`,
-          url: window.location.origin,
+          '@id': typeof window !== 'undefined' ? `${window.location.origin}/#website` : '#website',
+          url: typeof window !== 'undefined' ? window.location.origin : '',
           name: 'The Grid Nexus',
           description: optimizedDescription,
           publisher: {
-            '@id': `${window.location.origin}/#organization`
+            '@id': typeof window !== 'undefined' ? `${window.location.origin}/#organization` : '#organization'
           },
           potentialAction: {
             '@type': 'SearchAction',
             target: {
               '@type': 'EntryPoint',
-              urlTemplate: `${window.location.origin}/topics?q={search_term_string}`
+              urlTemplate: typeof window !== 'undefined' ? `${window.location.origin}/topics?q={search_term_string}` : '/topics?q={search_term_string}'
             },
             'query-input': 'required name=search_term_string'
           }
         },
         {
           '@type': 'Organization',
-          '@id': `${window.location.origin}/#organization`,
+          '@id': typeof window !== 'undefined' ? `${window.location.origin}/#organization` : '#organization',
           name: 'The Grid Nexus',
-          url: window.location.origin,
+          url: typeof window !== 'undefined' ? window.location.origin : '',
           logo: {
             '@type': 'ImageObject',
-            url: `${window.location.origin}/logo.png`
+            url: typeof window !== 'undefined' ? `${window.location.origin}/logo.png` : '/logo.png'
           },
           sameAs: [
             'https://twitter.com/thegridnexus',
@@ -279,14 +279,14 @@ export function SEOHead({
           name: optimizedTitle,
           description: optimizedDescription,
           isPartOf: {
-            '@id': `${window.location.origin}/#website`
+            '@id': typeof window !== 'undefined' ? `${window.location.origin}/#website` : '#website'
           },
           about: {
-            '@id': `${window.location.origin}/#organization`
+            '@id': typeof window !== 'undefined' ? `${window.location.origin}/#organization` : '#organization'
           },
           primaryImageOfPage: {
             '@type': 'ImageObject',
-            url: image.startsWith('http') ? image : `${window.location.origin}${image}`
+            url: image.startsWith('http') ? image : (typeof window !== 'undefined' ? `${window.location.origin}${image}` : image)
           }
         }
       ]
