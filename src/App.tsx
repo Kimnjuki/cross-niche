@@ -58,75 +58,43 @@ const queryClient = new QueryClient();
 
 const App = () => (
   <EnhancedErrorBoundary>
-    <SafeConvexProvider>
-      <QueryClientProvider client={queryClient}>
-        <ThemeProvider>
-          <AuthProvider>
-            <TooltipProvider>
-              <Toaster />
-              <Sonner />
-              <BrowserRouter>
-              <GA4PageTracker />
-            <Routes>
-            <Route path="/" element={<IndexSimple />} />
-            <Route path="/original" element={<Index />} />
-            <Route path="/simple" element={<IndexSimple />} />
-            <Route path="/enhanced" element={<EnhancedIndex />} />
-            <Route path="/enhanced-simple" element={<EnhancedIndexSimple />} />
-            <Route path="/auth" element={<Auth />} />
-            <Route path="/auth/callback" element={<AuthCallback />} />
-            <Route path="/auth/confirm" element={<AuthConfirm />} />
-            <Route path="/auth/reset-password" element={<Auth />} />
-            <Route path="/tech" element={<Tech />} />
-            <Route path="/security" element={<Security />} />
-            <Route path="/gaming" element={<Gaming />} />
-            <Route path="/guides" element={<Guides />} />
-            <Route path="/guides/:id" element={<GuideDetail />} />
-            <Route path="/article/:id" element={<Article />} />
-            <Route path="/bookmarks" element={<Bookmarks />} />
-            <Route path="/security-score" element={<SecurityScore />} />
-            <Route path="/disclosure" element={<Disclosure />} />
-            <Route path="/roadmap" element={<Roadmap />} />
-            <Route path="/about" element={<About />} />
-            <Route path="/editorial" element={<Editorial />} />
-            <Route path="/contact" element={<Contact />} />
-            <Route path="/privacy" element={<Privacy />} />
-            <Route path="/terms" element={<Terms />} />
-            <Route path="/blog-series" element={<BlogSeries />} />
-            <Route path="/explore" element={<Explore />} />
-            <Route path="/topics" element={<Topics />} />
-            <Route path="/tutorials" element={<Tutorials />} />
-            <Route path="/reviews" element={<Reviews />} />
-            <Route path="/author/:authorSlug" element={<Author />} />
-            <Route path="/media" element={<Media />} />
-            <Route path="/news" element={<News />} />
-            <Route path="/sitemap" element={<Sitemap />} />
-            <Route path="/profile" element={<Profile />} />
-            <Route path="/subscription" element={<SubscriptionPlans />} />
-            <Route path="/subscription/management" element={<SubscriptionManagement />} />
-            <Route path="/billing" element={<SubscriptionManagement />} />
-            <Route path="/settings" element={<SubscriptionManagement />} />
-            <Route path="/forums" element={<CommunityForums />} />
-            <Route path="/tools/security-scanner" element={<SecurityScanner />} />
-            <Route path="/tools" element={<SecurityScanner />} />
-            <Route path="/api" element={<APIAccess />} />
-            <Route path="/mobile" element={<MobileApp />} />
-            <Route path="/podcasts" element={<PodcastPlatform />} />
-            <Route path="/search" element={<AdvancedSearch />} />
-            <Route path="/live-updates" element={<LiveUpdatesFeed />} />
-            <Route path="/ai-pulse" element={<AIPulseEngine />} />
-            <Route path="/signin" element={<SignInSignUp />} />
-            <Route path="/signup" element={<SignInSignUp />} />
-            <Route path="/test-features" element={<TestFeatures />} />
-            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-          </BrowserRouter>
-        </TooltipProvider>
-      </AuthProvider>
-      </ThemeProvider>
+    <QueryClientProvider client={queryClient}>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={
+            <div className="min-h-screen bg-gray-900 text-white p-8">
+              <h1 className="text-4xl font-bold mb-4">GridNexus - Debug Mode</h1>
+              <p>React is loading successfully!</p>
+              <div className="mt-8 space-y-4">
+                <a href="/test-features" className="text-blue-400 hover:text-blue-300 underline block">
+                  Test Features →
+                </a>
+                <a href="/search" className="text-green-400 hover:text-green-300 underline block">
+                  Advanced Search →
+                </a>
+                <a href="/ai-pulse" className="text-purple-400 hover:text-purple-300 underline block">
+                  AI Pulse →
+                </a>
+              </div>
+            </div>
+          } />
+          <Route path="/test-features" element={<TestFeatures />} />
+          <Route path="/search" element={
+            <div className="min-h-screen bg-gray-900 text-white p-8">
+              <h1 className="text-4xl font-bold mb-4">Advanced Search</h1>
+              <p>Search component loading test...</p>
+            </div>
+          } />
+          <Route path="/ai-pulse" element={
+            <div className="min-h-screen bg-gray-900 text-white p-8">
+              <h1 className="text-4xl font-bold mb-4">AI Pulse</h1>
+              <p>AI Pulse component loading test...</p>
+            </div>
+          } />
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </BrowserRouter>
     </QueryClientProvider>
-  </SafeConvexProvider>
   </EnhancedErrorBoundary>
 );
 
