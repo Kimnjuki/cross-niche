@@ -308,19 +308,18 @@ export default function SubscriptionManagement() {
                               </Badge>
                             </div>
                             <div className="font-semibold">{invoice.amount}</div>
-                          </div>
-                          <div className="text-sm text-muted-foreground mb-2">{invoice.description}</div>
-                          <div className="flex gap-2">
-                            <Button variant="outline" size="sm">
-                              <Download className="h-4 w-4 mr-2" />
-                              Download PDF
-                            </Button>
-                            <Button variant="outline" size="sm">
-                              <HelpCircle className="h-4 w-4 mr-2" />
-                              Get Help
-                            </Button>
-                          </div>
-                        </CardContent>
+                            <div className="text-sm text-muted-foreground mb-2">{invoice.description}</div>
+                            <div className="flex gap-2">
+                              <Button variant="outline" size="sm">
+                                <Download className="h-4 w-4 mr-2" />
+                                Download PDF
+                              </Button>
+                              <Button variant="outline" size="sm">
+                                <HelpCircle className="h-4 w-4 mr-2" />
+                                Get Help
+                              </Button>
+                            </div>
+                          </CardContent>
                       </Card>
                       ))}
                       
