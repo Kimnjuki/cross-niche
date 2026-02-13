@@ -16,7 +16,8 @@ if (import.meta.env.PROD && import.meta.env.VITE_SENTRY_DSN) {
     environment: import.meta.env.MODE,
     release: `gridnexus@${import.meta.env.VITE_APP_VERSION || '1.0.0'}`,
   });
-} else if (import.meta.env.PROD) {
+} else if (import.meta.env.PROD && !import.meta.env.DEV) {
+  // Only show warning in production, not in development
   console.warn('Sentry DSN not set. Error monitoring disabled.');
 }
 

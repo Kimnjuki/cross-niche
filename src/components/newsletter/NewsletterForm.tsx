@@ -350,6 +350,8 @@ export function NewsletterForm({ variant = 'default' }: NewsletterFormProps) {
       <form onSubmit={handleSubmit} className="space-y-4">
         <Input
           type="email"
+          id="newsletter-email-default"
+          name="newsletter-email-default"
           placeholder="Enter your email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
