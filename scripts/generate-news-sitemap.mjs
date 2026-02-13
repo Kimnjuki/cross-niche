@@ -114,7 +114,7 @@ async function main() {
     const client = new ConvexHttpClient(CONVEX_URL);
     
     // Fetch visible articles (published + new); filter to last 48h below
-    const articles = await client.query(api.content.listAll, { limit: 100 });
+    const articles = await client.query(api.content.listAll, {});
     console.log(`   Found ${articles?.length ?? 0} articles in Convex`);
 
     if (articles && articles.length > 0) {

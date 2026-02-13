@@ -132,7 +132,7 @@ async function main() {
     const client = new ConvexHttpClient(CONVEX_URL);
     
     // Fetch all visible articles (published + new) for sitemap
-    const articles = await client.query(api.content.listAll, { limit: 500 });
+    const articles = await client.query(api.content.listAll, {});
     console.log(`   Found ${articles?.length ?? 0} published/new articles in Convex`);
 
     if (articles && articles.length > 0) {
