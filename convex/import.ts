@@ -27,6 +27,18 @@ const userRow = v.object({
   bio: v.optional(v.string()),
   avatarUrl: v.optional(v.string()),
   socialLinks: v.optional(v.any()),
+  // CRITICAL: Add new user fields
+  emailVerified: v.optional(v.boolean()),
+  phoneNumber: v.optional(v.string()),
+  location: v.optional(v.string()),
+  websiteUrl: v.optional(v.string()),
+  twitterHandle: v.optional(v.string()),
+  linkedinUrl: v.optional(v.string()),
+  githubUrl: v.optional(v.string()),
+  createdAt: v.number(),
+  lastLoginAt: v.optional(v.number()),
+  isActive: v.optional(v.boolean()),
+  isBanned: v.optional(v.boolean()),
 });
 
 const contentRow = v.object({
@@ -49,7 +61,15 @@ const contentRow = v.object({
   featuredImageUrl: v.optional(v.string()),
   isFeatured: v.optional(v.boolean()),
   isBreaking: v.optional(v.boolean()),
-  contentType: v.optional(v.string()),
+  contentType: v.optional(v.union(v.literal("article"), v.literal("review"), v.literal("guide"), v.literal("news"), v.literal("opinion"))),
+  // CRITICAL: Add new content fields
+  seoDescription: v.optional(v.string()),
+  canonicalUrl: v.optional(v.string()),
+  schema_org: v.optional(v.any()),
+  lastModifiedAt: v.optional(v.number()),
+  lastModifiedBy: v.optional(v.string()),
+  isDeleted: v.optional(v.boolean()),
+  deletedAt: v.optional(v.number()),
 });
 
 const contentNicheRow = v.object({
@@ -115,6 +135,18 @@ export const insertUsersBatch = mutation({
         bio: row.bio ?? undefined,
         avatarUrl: row.avatarUrl ?? undefined,
         socialLinks: row.socialLinks ?? undefined,
+        // CRITICAL: Handle new user fields
+        emailVerified: row.emailVerified ?? false,
+        phoneNumber: row.phoneNumber ?? undefined,
+        location: row.location ?? undefined,
+        websiteUrl: row.websiteUrl ?? undefined,
+        twitterHandle: row.twitterHandle ?? undefined,
+        linkedinUrl: row.linkedinUrl ?? undefined,
+        githubUrl: row.githubUrl ?? undefined,
+        createdAt: row.createdAt ?? Date.now(),
+        lastLoginAt: row.lastLoginAt ?? undefined,
+        isActive: row.isActive ?? true,
+        isBanned: row.isBanned ?? false,
       });
       ids.push(id);
     }

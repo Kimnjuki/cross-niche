@@ -50,10 +50,26 @@ export default defineSchema({
     bio: v.optional(v.string()),
     avatarUrl: v.optional(v.string()),
     socialLinks: v.optional(v.any()), // JSON
+    // CRITICAL: Add missing user fields for complete auth
+    emailVerified: v.optional(v.boolean()),
+    phoneNumber: v.optional(v.string()),
+    location: v.optional(v.string()),
+    websiteUrl: v.optional(v.string()),
+    twitterHandle: v.optional(v.string()),
+    linkedinUrl: v.optional(v.string()),
+    githubUrl: v.optional(v.string()),
+    createdAt: v.optional(v.number()), // ms timestamp
+    lastLoginAt: v.optional(v.number()), // ms timestamp
+    isActive: v.optional(v.boolean()),
+    isBanned: v.optional(v.boolean()),
   })
     .index("by_supabase_user_id", ["supabaseUserId"])
     .index("by_email", ["email"])
-    .index("by_username", ["username"]),
+    .index("by_username", ["username"])
+    // CRITICAL: Add user performance indexes
+    .index("by_created_at", ["createdAt"])
+    .index("by_last_login", ["lastLoginAt"])
+    .index("by_is_active", ["isActive"]),
 
   // ─── Content (core) ─────────────────────────────────────────────────────
   // For listPublished/listTrending: set publishedAt (ms) on published items so by_status_published_at ordering is correct.
@@ -78,7 +94,28 @@ export default defineSchema({
     featuredImageUrl: v.optional(v.string()),
     isFeatured: v.optional(v.boolean()),
     isBreaking: v.optional(v.boolean()),
-    contentType: v.optional(v.string()),
+    contentType: v.optional(
+    v.union(
+      v.literal("article"),
+      v.literal("review"), 
+      v.literal("guide"),
+      v.literal("news"),
+      v.literal("opinion"),
+      v.literal("technology"),
+      v.literal("security"),
+      v.literal("gaming"),
+      v.literal("feature"),
+      v.literal("tutorial")
+    )
+  ),
+    // CRITICAL: Add default values for undefined prevention
+    seoDescription: v.optional(v.string()),
+    canonicalUrl: v.optional(v.string()),
+    schema_org: v.optional(v.any()),
+    lastModifiedAt: v.optional(v.number()),
+    lastModifiedBy: v.optional(v.string()),
+    isDeleted: v.optional(v.boolean()),
+    deletedAt: v.optional(v.number()),
     // News Agency Ingestion Pipeline
     externalId: v.optional(v.string()), // NewsAPI article URL or ID for deduplication
     source: v.optional(v.string()), // e.g. "Reuters", "TechCrunch"
@@ -90,7 +127,12 @@ export default defineSchema({
     .index("by_status_published_at", ["status", "publishedAt"])
     .index("by_legacy_id", ["legacyId"])
     .index("by_externalId", ["externalId"])
-    .index("by_publishedAt", ["publishedAt"]),
+    .index("by_publishedAt", ["publishedAt"])
+    // CRITICAL: Add composite indexes for performance
+    .index("by_author_status", ["authorId", "status"])
+    .index("by_is_featured", ["isFeatured", "publishedAt"])
+    .index("by_is_breaking", ["isBreaking", "publishedAt"])
+    .index("by_is_premium", ["isPremium", "publishedAt"]),
 
   // ─── Content ↔ Niches (many-to-many) ─────────────────────────────────────
   contentNiches: defineTable({
@@ -126,10 +168,19 @@ export default defineSchema({
     parentCommentId: v.optional(v.id("comments")),
     body: v.string(),
     isFlagged: v.optional(v.boolean()),
+    // CRITICAL: Add missing timestamps
+    createdAt: v.number(), // ms timestamp
+    editedAt: v.optional(v.number()), // ms timestamp
+    likes: v.optional(v.number()),
+    isEdited: v.optional(v.boolean()),
+    isDeleted: v.optional(v.boolean()),
   })
     .index("by_content", ["contentId"])
     .index("by_user", ["userId"])
-    .index("by_parent", ["parentCommentId"]),
+    .index("by_parent", ["parentCommentId"])
+    // CRITICAL: Add composite indexes for performance
+    .index("by_user_created", ["userId", "createdAt"])
+    .index("by_content_created", ["contentId", "createdAt"]),
 
   // ─── User bookmarks (content ids) ───────────────────────────────────────
   userBookmarks: defineTable({

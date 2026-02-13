@@ -26,7 +26,7 @@ export const insertFeaturedArticle = mutation({
         "A deep dive into Mobile Legends' viewership dominance, the Windows 11 ARM revolution, and the structural shifts at Meta's VR studios.",
       body: `## The Mobile Takeover: Esports' New Hierarchy\n\nAs we push into early 2026, the digital landscape is being reshaped by two conflicting forces: the explosive growth of global esports and a ruthless corporate thinning of the immersive tech sector. **Mobile Legends: Bang Bang (MLBB)** has shattered the ceiling, clocking a staggering **5.6 million peak concurrent viewers**.\n\n## The ARM Renaissance: Xbox on Windows 11\n\nThe integration of Windows 11 on ARM PCs (Snapdragon X Elite) has finally matured. The Xbox App now runs with 'near-native' performance, finally making AAA gaming on ARM a reality. This shift allows for 20-hour battery life without sacrificing blocks in Minecraft.\n\n## The VR Winter: Meta's Structural Pivot\n\nMeta continues its 'Year of Efficiency,' impacting Seattle-based VR studios like Camouflaj. As resources divert to 'Orion' AR glasses, the VR gaming sector faces a prestige content vacuum.\n\n## The Verdict: Navigating the Nexus\n\nThe industry is bifurcating. Follow the efficiency—whether it is 5-minute mobile matches or 20-hour laptop batteries, the Grid rewards accessibility over brute force.`,
       status: "published",
-      contentType: "feature",
+      contentType: "article",
       publishedAt: Date.now(),
       isFeatured: true,
       isBreaking: false,
@@ -36,6 +36,25 @@ export const insertFeaturedArticle = mutation({
       focusKeyword: "Mobile Legends Esports 2026",
       metaTitle: "Esports Viewership and ARM PC Trends 2026 | The Grid Nexus",
       securityScore: 8.2,
+      seoDescription: "Analysis of Mobile Legends esports viewership, Windows 11 ARM gaming performance, and Meta VR gaming developments for 2026.",
+      canonicalUrl: "https://thegridnexus.com/esports-viewership-arm-pc-trends-2026",
+      schema_org: {
+        "@type": "Article",
+        "headline": "Esports Viewership and ARM PC Trends 2026 | The Grid Nexus",
+        "description": "In-depth analysis of Mobile Legends esports dominance, ARM PC gaming revolution, and Meta VR gaming structural changes.",
+        "author": {
+          "@type": "Organization",
+          "name": "The Grid Nexus Team"
+        },
+        "publisher": {
+          "@type": "Organization",
+          "name": "The Grid Nexus"
+        }
+      },
+      lastModifiedAt: Date.now(),
+      lastModifiedBy: "system",
+      isDeleted: false,
+      deletedAt: undefined,
     });
 
     // 2. Viewership table data

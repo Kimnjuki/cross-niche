@@ -83,7 +83,7 @@ export function usePublishedContent(limit = 20) {
     return { data: cachedData, isLoading: false };
   }
   
-  const rows = useQuery(api.content.listPublished, isDisabled ? 'skip' : { limit });
+  const rows = useQuery(api.content.getPublishedContent, isDisabled ? 'skip' : { limit });
   const data = isDisabled
     ? articlesToContentItems(mockArticles.slice(0, limit))
     : toContentItems(Array.isArray(rows) ? rows : []);
@@ -133,7 +133,7 @@ export function useContentByFeed(feedSlug: string, limit = 20) {
     return { data: cachedData, isLoading: false };
   }
   
-  const rows = useQuery(api.content.listByFeedSlug, isDisabled ? 'skip' : { feedSlug, limit });
+  const rows = useQuery(api.content.getContentByFeed, isDisabled ? 'skip' : { feedSlug, limit });
   const feedNiche = feedSlug === 'secured' ? 'security' : feedSlug === 'play' ? 'gaming' : 'tech';
   const data = isDisabled
     ? articlesToContentItems(mockArticles.filter((a) => a.niche === feedNiche).slice(0, limit))
@@ -159,7 +159,7 @@ export function useContentByNiche(nicheName: string, limit = 20) {
     return { data: cachedData, isLoading: false };
   }
   
-  const rows = useQuery(api.content.listPublished, isDisabled ? 'skip' : { limit: limit * 2 });
+  const rows = useQuery(api.content.getPublishedContent, isDisabled ? 'skip' : { limit: limit * 2 });
   const niche = nicheName.toLowerCase() === 'tech' ? 'tech' : nicheName.toLowerCase() === 'security' ? 'security' : 'gaming';
   const data = isDisabled
     ? articlesToContentItems(mockArticles.filter((a) => a.niche === niche).slice(0, limit))
@@ -189,7 +189,7 @@ export function useContentByNicheId(nicheId: number, limit = 30) {
     return { data: cachedData, isLoading: false };
   }
   
-  const rows = useQuery(api.content.getContentByNiche, isDisabled ? 'skip' : { nicheId, limit });
+  const rows = useQuery(api.content.getContentByNiche, isDisabled ? 'skip' : { niche: nicheId === 2 ? 'security' : nicheId === 3 ? 'gaming' : 'tech', limit });
   const feedNiche = nicheId === 2 ? 'security' : nicheId === 3 ? 'gaming' : 'tech';
   const data = isDisabled
     ? articlesToContentItems(mockArticles.filter((a) => a.niche === feedNiche).slice(0, limit))
@@ -256,14 +256,13 @@ export function useLatestContent(limit = 10) {
 /** All published content for archive/explore (getAllPublishedContent). */
 export function useAllPublishedContent(limit = 30) {
   const isDisabled = useConvexDisabled();
-  const result = useQuery(api.content.getAllPublishedContent, isDisabled ? 'skip' : { limit });
+  const result = useQuery(api.content.listAll, isDisabled ? 'skip' : {});
   const data = isDisabled
     ? articlesToContentItems(mockArticles.slice(0, limit))
-    : toContentItems(result?.items ?? undefined);
+    : toContentItems(result?.slice(0, limit) ?? []);
   return {
     data,
     isLoading: !isDisabled && result === undefined,
-    nextCursor: result?.nextCursor ?? null,
   };
 }
 
@@ -272,7 +271,7 @@ export function useAllPublishedContent(limit = 30) {
 export function useContentBySlug(slugOrId: string, options?: { enabled?: boolean }) {
   const isDisabled = useConvexDisabled();
   const enabled = (options?.enabled !== undefined ? options.enabled : !!slugOrId) && slugOrId.length > 0;
-  const row = useQuery(api.content.getBySlug, isDisabled || !enabled ? 'skip' : { slug: slugOrId });
+  const row = useQuery(api.content.getContentBySlug, isDisabled || !enabled ? 'skip' : { slug: slugOrId });
   const bySlugOrId = mockArticles.find((a) => (a.slug ?? a.id) === slugOrId);
   const fromConvex = row != null ? toContentItem(row as Record<string, unknown>) : null;
   const fromMock = bySlugOrId ? articleToContentItem(bySlugOrId) : null;
@@ -315,7 +314,7 @@ export function useFeeds() {
 // Fetch trending content from Convex (or mock when Convex not configured)
 export function useTrendingContent(limit = 6) {
   const isDisabled = useConvexDisabled();
-  const rows = useQuery(api.content.listTrending, isDisabled ? 'skip' : { limit });
+  const rows = useQuery(api.content.getTrendingContent, isDisabled ? 'skip' : { limit });
   const data = isDisabled
     ? articlesToContentItems(mockArticles.slice(0, limit))
     : toContentItems(rows ?? undefined);
@@ -325,7 +324,7 @@ export function useTrendingContent(limit = 6) {
 /** Related content by shared tags (Internal Linking Bridge for orphan page fix) */
 export function useRelatedContent(slug: string, limit = 6) {
   const isDisabled = useConvexDisabled();
-  const rows = useQuery(api.content.getRelated, isDisabled || !slug ? 'skip' : { slug, limit });
+  const rows = useQuery(api.content.getRelated, isDisabled || !slug ? 'skip' : { contentId: slug as any, limit });
   const data = toContentItems(rows ?? []);
   return { data, isLoading: !isDisabled && slug && rows === undefined };
 }

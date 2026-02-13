@@ -35,68 +35,12 @@ import { SecurityScoreCalculator } from '@/components/security/SecurityScoreCalc
 import { BreachSimulator } from '@/components/security/BreachSimulator';
 import { LiveUpdates } from '@/components/live/LiveUpdates';
 import { cn } from '@/lib/utils';
-import { 
-  usePublishedContent,
-  useLatestContent,
-  useTrendingContent,
-  useFeeds,
-  useContentByFeed
-} from '@/hooks/useContent';
-import { mockArticles } from '@/data/mockData';
-
-// Define Article type based on ContentItem
-interface Article {
-  _id?: string;
-  _creationTime: number;
-  title: string;
-  slug: string;
-  body: string;
-  summary?: string;
-  subtitle?: string;
-  publishedAt?: number;
-  authorId?: string;
-  isFeatured?: boolean;
-  isBreaking?: boolean;
-  isPremium?: boolean;
-  securityScore?: number;
-  contentType?: string;
-  wordCount?: number;
-  viewCount?: number;
-  id?: string;
-  niche?: string;
-}
 
 const FEED_SLUGS = [
   { slug: 'innovate', label: 'Tech', path: '/tech' },
   { slug: 'secured', label: 'Security', path: '/security' },
   { slug: 'play', label: 'Gaming', path: '/gaming' },
 ];
-
-const NAVIGATION = FEED_SLUGS;
-
-// Helper function to convert content items to articles
-function mapContentToArticles(contentItems: any[]): Article[] {
-  return contentItems.map((item: any) => ({
-    _id: item._id,
-    _creationTime: item._creationTime,
-    title: item.title,
-    slug: item.slug,
-    body: item.body,
-    summary: item.summary,
-    subtitle: item.subtitle,
-    publishedAt: item.publishedAt,
-    authorId: item.authorId,
-    isFeatured: item.isFeatured,
-    isBreaking: item.isBreaking,
-    isPremium: item.isPremium,
-    securityScore: item.securityScore,
-    contentType: item.contentType,
-    wordCount: item.wordCount,
-    viewCount: item.viewCount,
-    id: item.id,
-    niche: item.niche
-  }));
-}
 
 function articleLink(article: Article | null | undefined): string {
   if (!article) return '/';
@@ -123,80 +67,6 @@ export default function Index() {
   const { data: techFeed } = useContentByFeed('innovate', 10);
   const { data: securityFeed } = useContentByFeed('secured', 10);
   const { data: gamingFeed } = useContentByFeed('play', 10);
-  
-  console.log('Published data:', published);
-  console.log('Loading:', loadingPublished);
-  
-  if (loadingPublished) {
-    return (
-      <div style={{ padding: '2rem', textAlign: 'center' }}>
-        <h1>Loading content...</h1>
-      </div>
-    );
-  }
-  
-  if (!published || published.length === 0) {
-    return (
-      <div style={{ padding: '2rem', textAlign: 'center' }}>
-        <h1>No content found</h1>
-        <p>Run admin functions to populate content</p>
-      </div>
-    );
-  }
-  
-  return (
-    <div style={{ padding: '2rem' }}>
-      <h1 style={{ fontSize: '2rem', marginBottom: '1rem' }}>The Grid Nexus</h1>
-      <p style={{ fontSize: '1.125rem', color: '#94a3b8', marginBottom: '1.5rem' }}>
-        Tech, Security & Gaming News | Expert Analysis
-      </p>
-      <p style={{ color: '#cbd5e1', lineHeight: '1.6', marginBottom: '2rem' }}>
-        Breaking technology news, cybersecurity analysis, and gaming guides. AI insights, security intelligence, and tech coverage. Stay ahead of the curve.
-      </p>
-      
-      <div style={{ marginBottom: '2rem' }}>
-        <h2 style={{ fontSize: '1.25rem', marginBottom: '1rem', color: '#f8fafc' }}>
-          Latest Articles ({published?.length || 0})
-        </h2>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: '1rem' }}>
-          {(published || []).slice(0, 12).map((article) => (
-            <div key={article._id || article.slug} style={{ 
-              border: '1px solid #e2e8f0', 
-              borderRadius: '8px', 
-              padding: '1rem',
-              backgroundColor: '#ffffff'
-            }}>
-              <h3 style={{ margin: '0 0 0.5rem 0', fontSize: '1.125rem' }}>
-                {article.title}
-              </h3>
-              <p style={{ margin: '0 0 1rem 0', color: '#64748b', fontSize: '0.875rem' }}>
-                {article.summary || article.subtitle}
-              </p>
-              <div style={{ fontSize: '0.75rem', color: '#94a3b8' }}>
-                {new Date(article.publishedAt).toLocaleDateString()} • {article.wordCount || 0} words
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-      
-      <section aria-label="Explore sections" style={{ marginBottom: '2rem' }}>
-        <h2 style={{ fontSize: '1.25rem', marginBottom: '1rem', color: '#f8fafc' }}>
-          Explore
-        </h2>
-        <ul style={{ listStyle: 'none', padding: '0', margin: '0', display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: '0.75rem' }}>
-          {NAVIGATION.map((nav) => (
-            <li key={nav.slug}>
-              <a href={nav.path} style={{ color: '#60a5fa', textDecoration: 'none' }}>
-                {nav.label}
-              </a>
-            </li>
-          ))}
-        </ul>
-      </section>
-    </div>
-  );
-}
 
   // Debug logging (only in development)
   if (typeof window !== 'undefined' && import.meta.env.DEV) {
@@ -211,15 +81,15 @@ export default function Index() {
   }
 
   const hasPublishedData = published && published.length > 0;
-  const articles: Article[] = hasPublishedData ? (published as any[]) : mockArticles;
+  const articles: Article[] = hasPublishedData ? mapContentToArticles(published) : mockArticles;
   const sortedArticles = [...articles].sort((a, b) => {
     return new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime();
   });
 
   const trendingArticles: Article[] =
-    trending && trending.length > 0 ? (trending as any[]) : sortedArticles.slice(0, 6);
+    trending && trending.length > 0 ? mapContentToArticles(trending) : sortedArticles.slice(0, 6);
   const latestArticles: Article[] =
-    latest && latest.length > 0 ? (latest as any[]) : sortedArticles.slice(0, 10);
+    latest && latest.length > 0 ? mapContentToArticles(latest) : sortedArticles.slice(0, 10);
   const topStory = sortedArticles[0];
   const mainFeed = sortedArticles.slice(1, 11);
   const isLoading = hasPublishedData && loadingPublished;

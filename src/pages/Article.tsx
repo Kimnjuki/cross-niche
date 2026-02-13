@@ -3,6 +3,7 @@ import { useMemo, useEffect } from 'react';
 import { Layout } from '@/components/layout/Layout';
 import { mockArticles } from '@/data/mockData';
 import { useContentBySlug, useContentByFeed, usePublishedContent, useRelatedContent } from '@/hooks/useContent';
+import type { ContentItem } from '@/hooks/useContent';
 import { mapContentToArticle, mapContentToArticles } from '@/lib/contentMapper';
 import { NexusScrollBridge } from '@/components/nexus/NexusScrollBridge';
 import { Badge } from '@/components/ui/badge';
@@ -54,7 +55,9 @@ const getArticleId = (a: ArticleType | null | undefined): string =>
 export default function Article() {
   const { id } = useParams<{ id: string }>();
   const slugOrId = (id ?? '').trim();
-  const { user, toggleBookmark } = useAuth();
+  
+  // 1. EARLY RETURN IF NO SLUG/ID (before any other hooks that depend on the data)
+  if (!slugOrId) return null;
 
   // 1. ALL DATA FETCHING HOOKS FIRST (unconditionally, before any conditional returns)
   const { data: contentData, isLoading } = useContentBySlug(slugOrId, { enabled: slugOrId.length > 0 });
@@ -62,6 +65,7 @@ export default function Article() {
   const { data: relatedContent } = useContentByFeed(feedSlug, 4);
   const { data: publishedForCross } = usePublishedContent(30);
   const { data: relatedByTags } = useRelatedContent(slugOrId, 6);
+  const { user, toggleBookmark } = useAuth();
 
   // 2. MEMOIZED ARTICLE MAPPING
   const article: ArticleType | null = useMemo(() => {
@@ -79,12 +83,12 @@ export default function Article() {
   // 4. RELATED ARTICLES (feed-based fallback)
   const relatedArticles = useMemo(() => {
     if (!article) return [];
-    const convexArticles = relatedContent ? mapContentToArticles(relatedContent) : [];
+    const convexArticles = relatedContent ? mapContentToArticles(relatedContent as ContentItem[]) : [];
     const mockFallback = mockArticles.filter((a) => a?.niche === article?.niche);
-    const combined = [...convexArticles, ...mockFallback];
+    const combined: ArticleType[] = [...convexArticles, ...mockFallback];
     const seen = new Set<string>();
     return combined
-      .filter((a) => {
+      .filter((a): a is ArticleType => {
         if (!a) return false;
         const id = getArticleId(a);
         if (!id || id === articleId || seen.has(id)) return false;
@@ -122,7 +126,7 @@ export default function Article() {
     if (!article || !articleId) return null;
     
     // Get Convex articles if available
-    const convexArticles = publishedForCross ? mapContentToArticles(publishedForCross) : [];
+    const convexArticles = publishedForCross ? mapContentToArticles(publishedForCross as ContentItem[]) : [];
     
     // Combine with mock articles as fallback
     const combined = [...convexArticles, ...mockArticles];

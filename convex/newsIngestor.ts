@@ -99,15 +99,15 @@ export const ingestFromNewsApi = internalAction({
           source: a.source?.name ?? "News",
           originalUrl: a.url,
           title: a.title,
+          slug: externalId, // Add required slug field
           body,
           summary: a.description ?? undefined,
           publishedAt,
-          author: a.author ?? undefined,
-          imageUrl: a.urlToImage ?? undefined,
-          category: CATEGORY_MAP[sourceName] ?? sourceName,
+          authorId: a.author ?? undefined, // Change to authorId
+          featuredImageUrl: a.urlToImage ?? undefined, // Change to featuredImageUrl
+          status: "published",
         });
-
-        if (result.success) totalIngested++;
+        if (result) totalIngested++; // Fix success check
       }
 
       await sleep(RATE_LIMIT_DELAY_MS);
@@ -160,14 +160,15 @@ export const runNewsIngestion = action({
           source: a.source?.name ?? "News",
           originalUrl: a.url,
           title: a.title,
+          slug: a.url, // Use URL as slug
           body: a.content || a.description || a.title,
           summary: a.description ?? undefined,
           publishedAt: new Date(a.publishedAt).getTime(),
-          author: a.author ?? undefined,
-          imageUrl: a.urlToImage ?? undefined,
-          category: category,
+          authorId: a.author ?? undefined,
+          featuredImageUrl: a.urlToImage ?? undefined,
+          status: "published",
         });
-        if (result.success) totalIngested++;
+        if (result) totalIngested++;
       }
       await sleep(RATE_LIMIT_DELAY_MS);
     }
