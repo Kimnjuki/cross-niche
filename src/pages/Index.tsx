@@ -117,12 +117,6 @@ function safeArticleId(article: Article | null | undefined): string {
  */
 export default function Index() {
   const { data: published, isLoading: loadingPublished } = usePublishedContent(50);
-  const { data: latest, isLoading: loadingLatest } = useLatestContent(20);
-  const { data: trending, isLoading: loadingTrending } = useTrendingContent(12);
-  const { data: feeds } = useFeeds();
-  const { data: techFeed } = useContentByFeed('innovate', 10);
-  const { data: securityFeed } = useContentByFeed('secured', 10);
-  const { data: gamingFeed } = useContentByFeed('play', 10);
   
   console.log('Published data:', published);
   console.log('Loading:', loadingPublished);
@@ -143,6 +137,14 @@ export default function Index() {
       </div>
     );
   }
+  
+  // Only call other hooks after early returns
+  const { data: latest, isLoading: loadingLatest } = useLatestContent(20);
+  const { data: trending, isLoading: loadingTrending } = useTrendingContent(12);
+  const { data: feeds } = useFeeds();
+  const { data: techFeed } = useContentByFeed('innovate', 10);
+  const { data: securityFeed } = useContentByFeed('secured', 10);
+  const { data: gamingFeed } = useContentByFeed('play', 10);
   
   return (
     <div style={{ padding: '2rem' }}>
