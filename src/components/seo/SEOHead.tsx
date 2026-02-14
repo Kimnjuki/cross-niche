@@ -186,8 +186,11 @@ export function SEOHead({
     try {
       const parsed = new URL(url.split('?')[0].split('#')[0]);
       const pathname = parsed.pathname || '/';
-      // Use the exact current URL without modification for canonical
-      canonicalLink.href = `${parsed.origin}${pathname}`;
+      // Use fixed production origin so canonical always matches sitemap (Ahrefs non-canonical fix)
+      const canonicalOrigin = typeof import.meta !== 'undefined' && import.meta.env?.PROD
+        ? 'https://thegridnexus.com'
+        : parsed.origin;
+      canonicalLink.href = `${canonicalOrigin}${pathname}`;
     } catch {
       canonicalLink.href = url.split('?')[0].split('#')[0];
     }

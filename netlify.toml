@@ -1,0 +1,20 @@
+# Build and publish
+[build]
+  publish = "dist"
+  command = "npm run build"
+
+# Headers for SEO crawlers (Ahrefs health: correct content types)
+[[headers]]
+  for = "/robots.txt"
+  [headers.values]
+    Content-Type = "text/plain; charset=utf-8"
+
+[[headers]]
+  for = "/sitemap.xml"
+  [headers.values]
+    Content-Type = "application/xml; charset=utf-8"
+
+[[headers]]
+  for = "/sitemap-news.xml"
+  [headers.values]
+    Content-Type = "application/xml; charset=utf-8"

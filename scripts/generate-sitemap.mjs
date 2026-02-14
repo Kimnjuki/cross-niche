@@ -27,7 +27,13 @@ import { fileURLToPath } from 'url';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
-const BASE_URL = 'https://thegridnexus.com';
+// Canonical site URL for sitemap (env override allowed; typo normalized for SEO)
+let BASE_URL = process.env.SITE_URL || process.env.BASE_URL || process.env.VITE_APP_URL || 'https://thegridnexus.com';
+BASE_URL = BASE_URL.replace(/https?:\/\/theegridnexus\.com\/?/i, 'https://thegridnexus.com/').replace(/\/$/, '') || 'https://thegridnexus.com';
+if (BASE_URL.includes('theegridnexus')) {
+  BASE_URL = 'https://thegridnexus.com';
+  console.warn('   ⚠️ Corrected site URL typo: theegridnexus → thegridnexus');
+}
 // Ensure consistent Convex URL
 const CONVEX_URL = process.env.VITE_CONVEX_URL || 'https://intent-akita-728.convex.cloud';
 
@@ -59,7 +65,8 @@ function escapeXml(str) {
 }
 
 /**
- * Get static pages for sitemap
+ * Get static pages for sitemap.
+ * Only include routes that exist in App.tsx to avoid 404s and "non-canonical page in sitemap" (Ahrefs).
  */
 function getStaticPages() {
   const today = formatDate(new Date());
@@ -77,15 +84,7 @@ function getStaticPages() {
     { loc: `${BASE_URL}/roadmap`, lastmod: today, changefreq: 'weekly', priority: 0.6 },
     { loc: `${BASE_URL}/ai-pulse`, lastmod: today, changefreq: 'weekly', priority: 0.7 },
     { loc: `${BASE_URL}/breach-sim`, lastmod: today, changefreq: 'monthly', priority: 0.6 },
-    { loc: `${BASE_URL}/nexus-intersection`, lastmod: today, changefreq: 'daily', priority: 0.75 },
     { loc: `${BASE_URL}/security-score`, lastmod: today, changefreq: 'weekly', priority: 0.7 },
-    { loc: `${BASE_URL}/reviews`, lastmod: today, changefreq: 'weekly', priority: 0.6 },
-    { loc: `${BASE_URL}/about`, lastmod: today, changefreq: 'monthly', priority: 0.5 },
-    { loc: `${BASE_URL}/contact`, lastmod: today, changefreq: 'monthly', priority: 0.4 },
-    { loc: `${BASE_URL}/privacy`, lastmod: today, changefreq: 'monthly', priority: 0.3 },
-    { loc: `${BASE_URL}/terms`, lastmod: today, changefreq: 'monthly', priority: 0.3 },
-    { loc: `${BASE_URL}/disclosure`, lastmod: today, changefreq: 'monthly', priority: 0.3 },
-    { loc: `${BASE_URL}/editorial`, lastmod: today, changefreq: 'monthly', priority: 0.4 },
     { loc: `${BASE_URL}/sitemap`, lastmod: today, changefreq: 'weekly', priority: 0.4 },
   ];
 }
@@ -144,7 +143,8 @@ async function main() {
           continue;
         }
 
-        const canonicalUrl = `${BASE_URL}/article/${slug}`;
+        let canonicalUrl = `${BASE_URL}/article/${slug}`;
+        canonicalUrl = canonicalUrl.replace(/theegridnexus\.com/gi, 'thegridnexus.com');
         
         // Skip if already in sitemap (avoid duplicates)
         if (seenUrls.has(canonicalUrl)) {

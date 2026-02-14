@@ -22,7 +22,12 @@ import { fileURLToPath } from 'url';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
-const BASE_URL = 'https://thegridnexus.com';
+let BASE_URL = process.env.SITE_URL || process.env.BASE_URL || process.env.VITE_APP_URL || 'https://thegridnexus.com';
+BASE_URL = BASE_URL.replace(/https?:\/\/theegridnexus\.com\/?/i, 'https://thegridnexus.com/').replace(/\/$/, '') || 'https://thegridnexus.com';
+if (BASE_URL.includes('theegridnexus')) {
+  BASE_URL = 'https://thegridnexus.com';
+  console.warn('   ⚠️ Corrected site URL typo: theegridnexus → thegridnexus');
+}
 // Ensure consistent Convex URL
 const CONVEX_URL = process.env.VITE_CONVEX_URL || 'https://intent-akita-728.convex.cloud';
 

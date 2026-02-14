@@ -1,4 +1,4 @@
-import { createRoot } from "react-dom/client";
+import { createRoot, hydrateRoot } from "react-dom/client";
 import App from "./App.tsx";
 import "./index.css";
 import "./styles/design-tokens.css";
@@ -52,16 +52,21 @@ if (!rootEl) {
   throw new Error("Root element #root not found");
 }
 
-try {
-  createRoot(rootEl).render(
-    <ErrorBoundary>
-      <App />
-    </ErrorBoundary>
-  );
+const app = (
+  <ErrorBoundary>
+    <App />
+  </ErrorBoundary>
+);
 
+try {
+  if (rootEl.hasChildNodes()) {
+    hydrateRoot(rootEl, app);
+  } else {
+    createRoot(rootEl).render(app);
+  }
   window.__VITE_APP_LOADED__ = true;
 } catch (error) {
   console.error('Failed to render app:', error);
-  // Fallback rendering
-  rootEl.innerHTML = '<div style="padding: 20px; text-align: center; color: red;">Error loading app. Check console for details.</div>';
+  rootEl.innerHTML = '';
+  createRoot(rootEl).render(app);
 }
