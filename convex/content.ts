@@ -1,13 +1,27 @@
 /**
  * Grid Nexus - Working Content Queries
  * Simplified queries that match the current schema
+ *
+ * Only content added to the database within the last RECENT_CONTENT_DAYS is shown
+ * (filters by _creationTime). Older content is hidden on all pages.
  */
 
 import { query, mutation } from "./_generated/server";
 import { v } from "convex/values";
 
+/** Only display content created within this many days (by _creationTime). */
+const RECENT_CONTENT_DAYS = 14;
+
+function getCreationTimeCutoff(): number {
+  return Date.now() - RECENT_CONTENT_DAYS * 24 * 60 * 60 * 1000;
+}
+
+function isRecentByCreation(doc: { _creationTime: number }): boolean {
+  return doc._creationTime >= getCreationTimeCutoff();
+}
+
 /**
- * Get all published content (excludes deleted). Newest first by publishedAt.
+ * Get all published content (excludes deleted, only recent by _creationTime). Newest first by publishedAt.
  */
 export const getPublishedContent = query({
   args: {
@@ -15,22 +29,26 @@ export const getPublishedContent = query({
   },
   handler: async (ctx, args) => {
     const limit = args.limit ?? 50;
+    const cutoff = getCreationTimeCutoff();
     const docs = await ctx.db
       .query("content")
       .withIndex("by_status_published_at", (q) => q.eq("status", "published"))
       .order("desc")
-      .take(limit * 2);
-    return docs.filter((d) => d.isDeleted !== true).slice(0, limit);
+      .take(limit * 3);
+    return docs
+      .filter((d) => d.isDeleted !== true && d._creationTime >= cutoff)
+      .slice(0, limit);
   },
 });
 
 /**
- * List all visible content (published + new only; excludes draft/archived/deleted).
+ * List all visible content (published + new only; excludes draft/archived/deleted; only recent by _creationTime).
  * Used for sitemaps and Explore/archive. Sorted by publishedAt desc so newest first.
  */
 export const listAll = query({
   args: {},
   handler: async (ctx) => {
+    const cutoff = getCreationTimeCutoff();
     const [published, newStatus] = await Promise.all([
       ctx.db
         .query("content")
@@ -44,14 +62,14 @@ export const listAll = query({
         .take(200),
     ]);
     const merged = [...published, ...newStatus]
-      .filter((c) => c.isDeleted !== true)
+      .filter((c) => c.isDeleted !== true && c._creationTime >= cutoff)
       .sort((a, b) => (b.publishedAt ?? b._creationTime ?? 0) - (a.publishedAt ?? a._creationTime ?? 0));
     return merged.slice(0, 200);
   },
 });
 
 /**
- * Get featured content (excludes deleted).
+ * Get featured content (excludes deleted; only recent by _creationTime).
  */
 export const getFeaturedContent = query({
   args: {
@@ -59,19 +77,20 @@ export const getFeaturedContent = query({
   },
   handler: async (ctx, args) => {
     const limit = args.limit ?? 10;
+    const cutoff = getCreationTimeCutoff();
     const docs = await ctx.db
       .query("content")
       .withIndex("by_status_published_at", (q) => q.eq("status", "published"))
       .order("desc")
-      .take(limit * 3);
+      .take(limit * 5);
     return docs
-      .filter((d) => d.isDeleted !== true && d.isFeatured === true)
+      .filter((d) => d.isDeleted !== true && d._creationTime >= cutoff && d.isFeatured === true)
       .slice(0, limit);
   },
 });
 
 /**
- * Get breaking news (excludes deleted).
+ * Get breaking news (excludes deleted; only recent by _creationTime).
  */
 export const getBreakingNews = query({
   args: {
@@ -79,13 +98,14 @@ export const getBreakingNews = query({
   },
   handler: async (ctx, args) => {
     const limit = args.limit ?? 5;
+    const cutoff = getCreationTimeCutoff();
     const docs = await ctx.db
       .query("content")
       .withIndex("by_status_published_at", (q) => q.eq("status", "published"))
       .order("desc")
-      .take(limit * 3);
+      .take(limit * 5);
     return docs
-      .filter((d) => d.isDeleted !== true && d.isBreaking === true)
+      .filter((d) => d.isDeleted !== true && d._creationTime >= cutoff && d.isBreaking === true)
       .slice(0, limit);
   },
 });
@@ -173,7 +193,7 @@ export const upsertIngestedContent = mutation({
 });
 
 /**
- * Get latest content (excludes deleted). Newest first.
+ * Get latest content (excludes deleted; only recent by _creationTime). Newest first.
  */
 export const getLatestContent = query({
   args: {
@@ -181,17 +201,20 @@ export const getLatestContent = query({
   },
   handler: async (ctx, args) => {
     const limit = args.limit ?? 20;
+    const cutoff = getCreationTimeCutoff();
     const docs = await ctx.db
       .query("content")
       .withIndex("by_status_published_at", (q) => q.eq("status", "published"))
       .order("desc")
-      .take(limit * 2);
-    return docs.filter((d) => d.isDeleted !== true).slice(0, limit);
+      .take(limit * 3);
+    return docs
+      .filter((d) => d.isDeleted !== true && d._creationTime >= cutoff)
+      .slice(0, limit);
   },
 });
 
 /**
- * Get content by slug. Returns null for draft, archived, or deleted so only visible articles are shown.
+ * Get content by slug. Returns null for draft, archived, deleted, or old (by _creationTime) so only recent visible articles are shown.
  */
 export const getContentBySlug = query({
   args: {
@@ -204,27 +227,31 @@ export const getContentBySlug = query({
       .first();
     if (!content || content.isDeleted === true) return null;
     if (content.status !== "published" && content.status !== "new" && content.status !== "unlisted") return null;
+    if (!isRecentByCreation(content)) return null;
     return content;
   },
 });
 
 /**
- * Get all published content for Explore (excludes deleted).
+ * Get all published content for Explore (excludes deleted; only recent by _creationTime).
  */
 export const getAllPublishedContent = query({
   args: {},
   handler: async (ctx) => {
+    const cutoff = getCreationTimeCutoff();
     const docs = await ctx.db
       .query("content")
       .withIndex("by_status_published_at", (q) => q.eq("status", "published"))
       .order("desc")
-      .take(150);
-    return docs.filter((d) => d.isDeleted !== true).slice(0, 100);
+      .take(200);
+    return docs
+      .filter((d) => d.isDeleted !== true && d._creationTime >= cutoff)
+      .slice(0, 100);
   },
 });
 
 /**
- * Get content by niche (excludes deleted).
+ * Get content by niche (excludes deleted; only recent by _creationTime).
  */
 export const getContentByNiche = query({
   args: {
@@ -233,17 +260,20 @@ export const getContentByNiche = query({
   },
   handler: async (ctx, args) => {
     const limit = args.limit ?? 20;
+    const cutoff = getCreationTimeCutoff();
     const docs = await ctx.db
       .query("content")
       .withIndex("by_status_published_at", (q) => q.eq("status", "published"))
       .order("desc")
-      .take(limit * 2);
-    return docs.filter((d) => d.isDeleted !== true).slice(0, limit);
+      .take(limit * 3);
+    return docs
+      .filter((d) => d.isDeleted !== true && d._creationTime >= cutoff)
+      .slice(0, limit);
   },
 });
 
 /**
- * Get trending content (excludes deleted). Sorted by publishedAt desc.
+ * Get trending content (excludes deleted; only recent by _creationTime). Sorted by publishedAt desc.
  */
 export const getTrendingContent = query({
   args: {
@@ -251,12 +281,15 @@ export const getTrendingContent = query({
   },
   handler: async (ctx, args) => {
     const limit = args.limit ?? 12;
+    const cutoff = getCreationTimeCutoff();
     const docs = await ctx.db
       .query("content")
       .withIndex("by_status_published_at", (q) => q.eq("status", "published"))
       .order("desc")
-      .take(limit * 2);
-    return docs.filter((d) => d.isDeleted !== true).slice(0, limit);
+      .take(limit * 3);
+    return docs
+      .filter((d) => d.isDeleted !== true && d._creationTime >= cutoff)
+      .slice(0, limit);
   },
 });
 
@@ -281,7 +314,7 @@ export const listFeeds = query({
 });
 
 /**
- * Get content by feed slug (excludes deleted).
+ * Get content by feed slug (excludes deleted; only recent by _creationTime).
  */
 export const getContentByFeed = query({
   args: {
@@ -290,17 +323,20 @@ export const getContentByFeed = query({
   },
   handler: async (ctx, args) => {
     const limit = args.limit ?? 10;
+    const cutoff = getCreationTimeCutoff();
     const docs = await ctx.db
       .query("content")
       .withIndex("by_status_published_at", (q) => q.eq("status", "published"))
       .order("desc")
-      .take(limit * 2);
-    return docs.filter((d) => d.isDeleted !== true).slice(0, limit);
+      .take(limit * 3);
+    return docs
+      .filter((d) => d.isDeleted !== true && d._creationTime >= cutoff)
+      .slice(0, limit);
   },
 });
 
 /**
- * Get visible content for homepage (excludes deleted). Newest first.
+ * Get visible content for homepage (excludes deleted; only recent by _creationTime). Newest first.
  */
 export const getVisibleContent = query({
   args: {
@@ -308,12 +344,15 @@ export const getVisibleContent = query({
   },
   handler: async (ctx, args) => {
     const limit = args.limit ?? 20;
+    const cutoff = getCreationTimeCutoff();
     const docs = await ctx.db
       .query("content")
       .withIndex("by_status_published_at", (q) => q.eq("status", "published"))
       .order("desc")
-      .take(limit * 2);
-    return docs.filter((d) => d.isDeleted !== true).slice(0, limit);
+      .take(limit * 3);
+    return docs
+      .filter((d) => d.isDeleted !== true && d._creationTime >= cutoff)
+      .slice(0, limit);
   },
 });
 
@@ -328,7 +367,7 @@ export const listTags = query({
 });
 
 /**
- * Get related content (excludes the current article and deleted).
+ * Get related content (excludes the current article, deleted, and old by _creationTime).
  */
 export const getRelated = query({
   args: {
@@ -337,31 +376,36 @@ export const getRelated = query({
   },
   handler: async (ctx, args) => {
     const limit = args.limit ?? 6;
+    const cutoff = getCreationTimeCutoff();
     const docs = await ctx.db
       .query("content")
       .withIndex("by_status_published_at", (q) => q.eq("status", "published"))
       .order("desc")
-      .take(limit + 20);
+      .take(limit + 30);
     return docs
-      .filter((d) => d._id !== args.contentId && d.isDeleted !== true)
+      .filter(
+        (d) =>
+          d._id !== args.contentId && d.isDeleted !== true && d._creationTime >= cutoff
+      )
       .slice(0, limit);
   },
 });
 
 /**
  * List ingested/automated news for NewsFeed (Live Wire).
- * Returns published content, preferring isAutomated items; excludes deleted.
+ * Returns published content, preferring isAutomated items; excludes deleted; only recent by _creationTime.
  */
 export const listIngestedNews = query({
   args: { limit: v.optional(v.number()) },
   handler: async (ctx, { limit = 24 }) => {
-    const cap = Math.min(limit * 3, 100);
+    const cap = Math.min(limit * 4, 100);
+    const cutoff = getCreationTimeCutoff();
     const docs = await ctx.db
       .query("content")
       .withIndex("by_status_published_at", (q) => q.eq("status", "published"))
       .order("desc")
       .take(cap);
-    const visible = docs.filter((d) => d.isDeleted !== true);
+    const visible = docs.filter((d) => d.isDeleted !== true && d._creationTime >= cutoff);
     const preferred = visible.filter((d) => d.isAutomated === true);
     const slice = preferred.length >= limit
       ? preferred.slice(0, limit)
