@@ -87,8 +87,8 @@ export default function IndexSimple() {
               className="group p-6 bg-white dark:bg-gray-900 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-200 dark:border-gray-700"
             >
               <div className="flex items-center gap-3 mb-4">
-                <div className="w-12 h-12 bg-blue-100 dark:bg-blue-900 rounded-lg flex items-center justify-center">
-                  <svg className="w-6 h-6 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div className="w-12 h-12 shrink-0 bg-blue-100 dark:bg-blue-900 rounded-lg flex items-center justify-center">
+                  <svg className="w-6 h-6 shrink-0 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden>
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                   </svg>
                 </div>
@@ -104,7 +104,7 @@ export default function IndexSimple() {
               className="group p-6 bg-white dark:bg-gray-900 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-200 dark:border-gray-700"
             >
               <div className="flex items-center gap-3 mb-4">
-                <div className="w-12 h-12 bg-green-100 dark:bg-green-900 rounded-lg flex items-center justify-center">
+                <div className="w-12 h-12 shrink-0 bg-green-100 dark:bg-green-900 rounded-lg flex items-center justify-center">
                   <Brain className="w-6 h-6 text-green-600 dark:text-green-400" />
                 </div>
                 <h3 className="text-lg font-semibold text-gray-900 dark:text-white">AI Pulse</h3>
@@ -119,8 +119,8 @@ export default function IndexSimple() {
               className="group p-6 bg-white dark:bg-gray-900 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-200 dark:border-gray-700"
             >
               <div className="flex items-center gap-3 mb-4">
-                <div className="w-12 h-12 bg-orange-100 dark:bg-orange-900 rounded-lg flex items-center justify-center">
-                  <svg className="w-6 h-6 text-orange-600 dark:text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div className="w-12 h-12 shrink-0 bg-orange-100 dark:bg-orange-900 rounded-lg flex items-center justify-center">
+                  <svg className="w-6 h-6 shrink-0 text-orange-600 dark:text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden>
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
                   </svg>
                 </div>
@@ -136,8 +136,8 @@ export default function IndexSimple() {
               className="group p-6 bg-white dark:bg-gray-900 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-200 dark:border-gray-700"
             >
               <div className="flex items-center gap-3 mb-4">
-                <div className="w-12 h-12 bg-red-100 dark:bg-red-900 rounded-lg flex items-center justify-center">
-                  <Shield className="w-6 h-6 text-red-600 dark:text-red-400" />
+                <div className="w-12 h-12 shrink-0 bg-red-100 dark:bg-red-900 rounded-lg flex items-center justify-center">
+                  <Shield className="w-6 h-6 shrink-0 text-red-600 dark:text-red-400" />
                 </div>
                 <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Security Score</h3>
               </div>
@@ -201,8 +201,8 @@ export default function IndexSimple() {
               className="group p-8 bg-white dark:bg-gray-800 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300"
             >
               <div className="flex items-center gap-3 mb-4">
-                <div className="w-12 h-12 bg-blue-100 dark:bg-blue-900 rounded-lg flex items-center justify-center">
-                  <Brain className="w-6 h-6 text-blue-600 dark:text-blue-400" />
+                <div className="w-12 h-12 shrink-0 bg-blue-100 dark:bg-blue-900 rounded-lg flex items-center justify-center">
+                  <Brain className="w-6 h-6 shrink-0 text-blue-600 dark:text-blue-400" />
                 </div>
                 <h3 className="text-xl font-semibold text-gray-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
                   Technology
@@ -218,8 +218,8 @@ export default function IndexSimple() {
               className="group p-8 bg-white dark:bg-gray-800 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300"
             >
               <div className="flex items-center gap-3 mb-4">
-                <div className="w-12 h-12 bg-red-100 dark:bg-red-900 rounded-lg flex items-center justify-center">
-                  <Shield className="w-6 h-6 text-red-600 dark:text-red-400" />
+                <div className="w-12 h-12 shrink-0 bg-red-100 dark:bg-red-900 rounded-lg flex items-center justify-center">
+                  <Shield className="w-6 h-6 shrink-0 text-red-600 dark:text-red-400" />
                 </div>
                 <h3 className="text-xl font-semibold text-gray-900 dark:text-white group-hover:text-red-600 dark:group-hover:text-red-400 transition-colors">
                   Security
@@ -235,8 +235,8 @@ export default function IndexSimple() {
               className="group p-8 bg-white dark:bg-gray-800 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300"
             >
               <div className="flex items-center gap-3 mb-4">
-                <div className="w-12 h-12 bg-purple-100 dark:bg-purple-900 rounded-lg flex items-center justify-center">
-                  <Gamepad2 className="w-6 h-6 text-purple-600 dark:text-purple-400" />
+                <div className="w-12 h-12 shrink-0 bg-purple-100 dark:bg-purple-900 rounded-lg flex items-center justify-center">
+                  <Gamepad2 className="w-6 h-6 shrink-0 text-purple-600 dark:text-purple-400" />
                 </div>
                 <h3 className="text-xl font-semibold text-gray-900 dark:text-white group-hover:text-purple-600 dark:group-hover:text-purple-400 transition-colors">
                   Gaming

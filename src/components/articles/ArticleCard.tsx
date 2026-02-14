@@ -42,7 +42,7 @@ const nicheLabels = {
 
 // Get difficulty level from article tags or content
 const getDifficultyLevel = (article: Article): 'beginner' | 'intermediate' | 'advanced' | null => {
-  const tags = article.tags.map(t => t.toLowerCase());
+  const tags = (article.tags ?? []).map(t => String(t).toLowerCase());
   if (tags.some(t => t.includes('beginner') || t.includes('basic') || t.includes('intro'))) {
     return 'beginner';
   }
@@ -103,7 +103,7 @@ export function ArticleCard({ article, variant = 'default', onArticleClick }: Ar
             />
             <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-background/50 to-transparent" />
             <div className="absolute top-4 left-4 flex gap-2">
-              <Badge className={styles.badge}>{nicheLabels[article.niche]}</Badge>
+              <Badge className={styles.badge}>{nicheLabels[article.niche ?? 'tech']}</Badge>
               {article.isSponsored && (
                 <Badge variant="secondary">Sponsored</Badge>
               )}
@@ -127,7 +127,7 @@ export function ArticleCard({ article, variant = 'default', onArticleClick }: Ar
                     className="text-xs text-muted-foreground"
                     title={new Date(article.publishedAt).toLocaleString()}
                   >
-                    {formatRelativeTime(article.publishedAt)}
+                    {formatRelativeTime(article.publishedAt ?? undefined)}
                   </time>
                 </div>
                 <div className="flex items-center gap-1 text-muted-foreground bg-background/60 backdrop-blur-sm rounded-full px-3 py-1">
@@ -185,7 +185,7 @@ export function ArticleCard({ article, variant = 'default', onArticleClick }: Ar
           <div className="flex-1 min-w-0">
             <div className="flex items-center gap-2 mb-2">
               <Badge className={cn('text-xs', styles.badge)} variant="outline">
-                {nicheLabels[article.niche]}
+                {nicheLabels[article.niche ?? 'tech']}
               </Badge>
               <div className="flex items-center gap-1 text-xs text-muted-foreground">
                 <Clock className="h-3 w-3" />
@@ -220,13 +220,13 @@ export function ArticleCard({ article, variant = 'default', onArticleClick }: Ar
           <div className="flex-1 min-w-0">
             <div className="flex items-center gap-2 mb-2 flex-wrap">
               <Badge className={cn('text-xs', styles.badge)} variant="outline">
-                {nicheLabels[article.niche]}
+                {nicheLabels[article.niche ?? 'tech']}
               </Badge>
               <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
                 <User className="h-3 w-3" />
                 <Link to={`/author/${authorSlug(article.author)}`} className="hover:underline">{article.author}</Link>
                 <span>·</span>
-                <time dateTime={article.publishedAt}>{formatRelativeTime(article.publishedAt)}</time>
+                <time dateTime={article.publishedAt}>{formatRelativeTime(article.publishedAt ?? undefined)}</time>
               </div>
             </div>
             <h3 className="font-display font-semibold text-lg mb-1 line-clamp-2 group-hover:text-primary transition-colors">
@@ -266,7 +266,7 @@ export function ArticleCard({ article, variant = 'default', onArticleClick }: Ar
           />
           <div className="absolute top-3 left-3 right-3 flex justify-between items-start">
             <div className="flex gap-2 flex-wrap">
-              <Badge className={styles.badge}>{nicheLabels[article.niche]}</Badge>
+              <Badge className={styles.badge}>{nicheLabels[article.niche ?? 'tech']}</Badge>
               {article.isSponsored && (
                 <Badge variant="secondary">Sponsored</Badge>
               )}
@@ -326,7 +326,7 @@ export function ArticleCard({ article, variant = 'default', onArticleClick }: Ar
                 className="text-muted-foreground"
                 title={new Date(article.publishedAt).toLocaleString()}
               >
-                {formatRelativeTime(article.publishedAt)}
+                {formatRelativeTime(article.publishedAt ?? undefined)}
               </time>
               {/* Fresh/New badges */}
               {isJustPublished(article.publishedAt) && (

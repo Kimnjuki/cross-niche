@@ -5,10 +5,12 @@
 
 /**
  * Format a date as relative time (e.g., "2 hours ago", "3 days ago")
- * Falls back to formatted date for older content
+ * Falls back to formatted date for older content. Accepts string or number (timestamp).
  */
-export function formatRelativeTime(dateString: string): string {
+export function formatRelativeTime(dateString: string | number | undefined | null): string {
+  if (dateString == null || dateString === '') return 'Unknown';
   const date = new Date(dateString);
+  if (Number.isNaN(date.getTime())) return 'Unknown';
   const now = new Date();
   const diffInMs = now.getTime() - date.getTime();
   const diffInSeconds = Math.floor(diffInMs / 1000);

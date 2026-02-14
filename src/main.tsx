@@ -10,7 +10,9 @@ import "./sentry";
 
 // Build timestamp for cache busting
 const BUILD_TIMESTAMP = Date.now();
-console.log(`🚀 GridNexus Build: ${new Date(BUILD_TIMESTAMP).toISOString()}`);
+if (import.meta.env.DEV) {
+  console.log(`🚀 GridNexus Build: ${new Date(BUILD_TIMESTAMP).toISOString()}`);
+}
 
 // Declare global variable for app loaded state
 declare global {
@@ -51,7 +53,9 @@ if (!rootEl) {
   throw new Error("Root element #root not found");
 }
 
-console.log("Root element found, attempting to render React app...");
+if (import.meta.env.DEV) {
+  console.log("Root element found, attempting to render React app...");
+}
 
 try {
   createRoot(rootEl).render(
@@ -59,10 +63,11 @@ try {
       <App />
     </ErrorBoundary>
   );
-  
-  // Mark app as successfully loaded
+
   window.__VITE_APP_LOADED__ = true;
-  console.log("React app rendered successfully");
+  if (import.meta.env.DEV) {
+    console.log("React app rendered successfully");
+  }
 } catch (error) {
   console.error('Failed to render app:', error);
   // Fallback rendering

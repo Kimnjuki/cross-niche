@@ -70,9 +70,9 @@ export default function Index() {
   const hasPublishedData = Array.isArray(published) && published.length > 0;
   const articles: Article[] = hasPublishedData ? mapContentToArticles(published as ContentItem[]) : mockArticles;
   const sortedArticles = [...articles].sort((a, b) => {
-    const aTime = typeof a.publishedAt === 'number' ? a.publishedAt : new Date(a.publishedAt as string).getTime();
-    const bTime = typeof b.publishedAt === 'number' ? b.publishedAt : new Date(b.publishedAt as string).getTime();
-    return bTime - aTime;
+    const aTime = a.publishedAt != null ? new Date(a.publishedAt as string | number).getTime() : 0;
+    const bTime = b.publishedAt != null ? new Date(b.publishedAt as string | number).getTime() : 0;
+    return (Number.isNaN(bTime) ? 0 : bTime) - (Number.isNaN(aTime) ? 0 : aTime);
   });
 
   const trendingArticles: Article[] =

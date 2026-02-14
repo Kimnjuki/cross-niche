@@ -70,8 +70,7 @@ const App = () => (
               <BrowserRouter>
                 <GA4PageTracker />
                 <Routes>
-                  <Route path="/" element={<IndexSimple />} />
-                  <Route path="/original" element={<Index />} />
+                  <Route path="/" element={<Index />} />
                   <Route path="/simple" element={<IndexSimple />} />
                   <Route path="/enhanced" element={<EnhancedIndex />} />
                   <Route path="/enhanced-simple" element={<EnhancedIndexSimple />} />
