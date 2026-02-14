@@ -196,11 +196,49 @@ export function NewsFeed({
     api.content.listIngestedNews,
     isConvexDisabled ? 'skip' : { limit }
   );
+  const publishedContent = useQuery(
+    api.content.getPublishedContent,
+    isConvexDisabled ? 'skip' : { limit: limit * 2 }
+  );
 
-  const items: NewsItem[] =
-    (articlesFeed?.length
-      ? articlesFeed.slice(0, limit).map(articleToNewsItem)
-      : (contentFeed ?? []) as NewsItem[]) ?? [];
+  const fromArticles: NewsItem[] = (articlesFeed ?? []).slice(0, limit).map(articleToNewsItem);
+  const fromIngested: NewsItem[] = (contentFeed ?? []) as NewsItem[];
+  const fromPublished = (publishedContent ?? []).map((d: Record<string, unknown>) => ({
+    _id: d._id ?? d.id,
+    id: String(d._id ?? d.id),
+    title: String(d.title ?? ''),
+    slug: String(d.slug ?? ''),
+    excerpt: d.summary != null ? String(d.summary) : null,
+    published_at: d.publishedAt != null ? new Date(Number(d.publishedAt)).toISOString() : null,
+    publishedAt: d.publishedAt != null ? Number(d.publishedAt) : null,
+    featured_image_url: d.featuredImageUrl != null ? String(d.featuredImageUrl) : null,
+    source: d.source != null ? String(d.source) : null,
+    isAutomated: false,
+    originalUrl: null,
+    feed_name: undefined,
+  })) as NewsItem[];
+
+  const seen = new Set<string>();
+  const merged: NewsItem[] = [];
+  for (const item of [...fromArticles, ...fromIngested]) {
+    const key = item.originalUrl || item.slug || item._id;
+    if (key && !seen.has(key)) {
+      seen.add(key);
+      merged.push(item);
+      if (merged.length >= limit) break;
+    }
+  }
+  if (merged.length < limit && fromPublished.length) {
+    for (const item of fromPublished) {
+      const key = item.slug || item._id;
+      if (key && !seen.has(key)) {
+        seen.add(key);
+        merged.push(item);
+        if (merged.length >= limit) break;
+      }
+    }
+  }
+  const items: NewsItem[] = merged;
 
   if (isConvexDisabled) {
     return (
@@ -215,7 +253,10 @@ export function NewsFeed({
     );
   }
 
-  const isLoading = articlesFeed === undefined && contentFeed === undefined;
+  const isLoading =
+    articlesFeed === undefined &&
+    contentFeed === undefined &&
+    publishedContent === undefined;
   const newsItems = items;
 
   return (

@@ -18,7 +18,7 @@ export function LiveFeedWidget({ articles, maxItems = 5 }: LiveFeedWidgetProps) 
           Live Feed
         </h3>
         <Link 
-          to="/live" 
+          to="/live-updates" 
           className="text-primary hover:underline text-sm flex items-center gap-1"
         >
           View All

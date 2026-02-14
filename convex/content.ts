@@ -351,6 +351,40 @@ export const getRelated = query({
 });
 
 /**
+ * List ingested/automated news for NewsFeed (Live Wire).
+ * Returns published content, preferring isAutomated items; falls back to latest published so the feed is never empty.
+ */
+export const listIngestedNews = query({
+  args: { limit: v.optional(v.number()) },
+  handler: async (ctx, { limit = 24 }) => {
+    const cap = Math.min(limit * 2, 100);
+    const docs = await ctx.db
+      .query("content")
+      .withIndex("by_status_published_at", (q) => q.eq("status", "published"))
+      .order("desc")
+      .take(cap);
+    const preferred = docs.filter((d) => d.isAutomated === true);
+    const slice = preferred.length >= limit
+      ? preferred.slice(0, limit)
+      : docs.slice(0, limit);
+    return slice.map((d) => ({
+      _id: d._id,
+      id: String(d._id),
+      title: d.title,
+      slug: d.slug,
+      excerpt: d.summary ?? null,
+      published_at: d.publishedAt != null ? new Date(d.publishedAt).toISOString() : null,
+      publishedAt: d.publishedAt ?? null,
+      featured_image_url: d.featuredImageUrl ?? null,
+      source: d.source ?? null,
+      isAutomated: d.isAutomated ?? false,
+      originalUrl: d.originalUrl ?? null,
+      feed_name: null as string | null,
+    }));
+  },
+});
+
+/**
  * Get diagnostics
  */
 export const diagnostics = query({

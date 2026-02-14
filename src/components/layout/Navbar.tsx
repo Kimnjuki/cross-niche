@@ -81,7 +81,7 @@ export function Navbar() {
             {/* Logo */}
             <Link to="/" className="flex items-center gap-2">
               <div className="w-8 h-8 rounded-lg gradient-hero" />
-              <span className="font-display font-bold text-xl">NexusMedia</span>
+              <span className="font-display font-bold text-xl">The Grid Nexus</span>
             </Link>
 
             {/* Desktop Navigation */}

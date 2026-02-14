@@ -7,7 +7,7 @@ interface CacheEntry<T> {
 
 class ContentCache {
   private cache = new Map<string, CacheEntry<any>>();
-  private readonly DEFAULT_TTL = 30000; // 30 seconds
+  private readonly DEFAULT_TTL = 5000; // 5 seconds – fresh articles on homepage/news
 
   set<T>(key: string, data: T, ttl: number = this.DEFAULT_TTL): void {
     this.cache.set(key, {
