@@ -1,13 +1,19 @@
+import { useState } from 'react';
 import { Layout } from '@/components/layout/Layout';
 import { ArticleGrid } from '@/components/articles/ArticleGrid';
+import { ViewToggle } from '@/components/ui/view-toggle';
 import { mockArticles } from '@/data/mockData';
-import { useContentByFeed } from '@/hooks/useContent';
+import { useContentByNicheId } from '@/hooks/useContent';
 import { mapContentToArticles } from '@/lib/contentMapper';
 import { Cpu } from 'lucide-react';
 import { Skeleton } from '@/components/ui/skeleton';
+import { SEOHead } from '@/components/seo/SEOHead';
+import { Link } from 'react-router-dom';
+import { LandingPageTracker } from '@/components/analytics/LandingPageTracker';
 
 export default function Tech() {
-  const { data: techContent, isLoading } = useContentByFeed('innovate', 20);
+  const [viewMode, setViewMode] = useState<'grid' | 'list' | 'compact'>('grid');
+  const { data: techContent, isLoading } = useContentByNicheId(1, 20);
 
   const techArticles = techContent && techContent.length > 0
     ? mapContentToArticles(techContent)
@@ -15,6 +21,14 @@ export default function Tech() {
 
   return (
     <Layout>
+      <LandingPageTracker pageType="category" articlesViewed={techArticles.length} />
+      <SEOHead
+        title="Technology News & Innovation | The Grid Nexus"
+        description="Latest technology news, hardware reviews, and innovation insights. Stay ahead with cutting-edge processors, AI developments, and tech industry analysis."
+        keywords={['technology news', 'tech innovation', 'hardware reviews', 'AI technology', 'tech trends', 'innovation']}
+        url={window.location.href}
+        type="website"
+      />
       <div className="container mx-auto px-4 py-12">
         {/* Header */}
         <div className="mb-12">
@@ -27,9 +41,28 @@ export default function Tech() {
               <p className="text-muted-foreground">Technology, Hardware & Innovation</p>
             </div>
           </div>
-          <p className="text-lg text-muted-foreground max-w-2xl">
-            Stay ahead with the latest in technology news, hardware reviews, and industry analysis. From cutting-edge processors to breakthrough AI developments.
-          </p>
+          <div className="prose prose-lg max-w-2xl">
+            <p className="text-lg text-muted-foreground mb-4">
+              Stay ahead of the curve with comprehensive technology news, in-depth hardware reviews, and expert analysis of the latest innovations. From cutting-edge processors and AI breakthroughs to cloud computing and emerging tech trends, we deliver actionable insights for professionals and enthusiasts alike.
+            </p>
+            <p className="text-base text-muted-foreground">
+              Our technology coverage spans artificial intelligence, machine learning, cloud infrastructure, cybersecurity tools, and the evolving landscape of digital transformation. Whether you're tracking the latest GPU releases, understanding quantum computing advances, or exploring the future of software development, you'll find authoritative coverage here.
+            </p>
+          </div>
+          <div className="mt-6 flex flex-wrap gap-4 text-sm">
+            <Link to="/topics?q=artificial+intelligence" className="text-primary hover:underline">AI & Machine Learning</Link>
+            <span className="text-muted-foreground">•</span>
+            <Link to="/topics?q=cloud+computing" className="text-primary hover:underline">Cloud Computing</Link>
+            <span className="text-muted-foreground">•</span>
+            <Link to="/guides" className="text-primary hover:underline">Tech Guides</Link>
+            <span className="text-muted-foreground">•</span>
+            <Link to="/blog-series" className="text-primary hover:underline">All Articles</Link>
+          </div>
+        </div>
+
+        {/* View toggle (Ars / WIRED style) */}
+        <div className="flex justify-end mb-6">
+          <ViewToggle value={viewMode} onChange={setViewMode} ariaLabel="Article layout" />
         </div>
 
         {/* Articles Grid */}
@@ -40,7 +73,7 @@ export default function Tech() {
             ))}
           </div>
         ) : (
-          <ArticleGrid articles={techArticles} columns={3} />
+          <ArticleGrid articles={techArticles} columns={3} viewMode={viewMode} />
         )}
       </div>
     </Layout>

@@ -1,28 +1,36 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Article } from '@/types';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
-import { Bookmark, Clock, Shield, AlertTriangle } from 'lucide-react';
+import { Bookmark, Clock, Shield, AlertTriangle, TrendingUp, User } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
-import { cn } from '@/lib/utils';
+import { cn, authorSlug } from '@/lib/utils';
+import { formatRelativeTime, isFreshContent, isNewContent, isJustPublished } from '@/lib/timeUtils';
 
 interface ArticleCardProps {
-  article: Article;
-  variant?: 'default' | 'featured' | 'compact';
+  article: Article | null | undefined;
+  variant?: 'default' | 'featured' | 'compact' | 'list';
+  /** Called when user clicks the card (e.g. for related-article analytics) */
+  onArticleClick?: () => void;
 }
+
+const safeArticleId = (a: Article | null | undefined) => (a as Article & { _id?: string })?._id ?? a?.id ?? a?.slug ?? '';
 
 const nicheStyles = {
   tech: {
     badge: 'bg-tech/10 text-tech border-tech/20',
     accent: 'group-hover:shadow-glow-tech',
+    glow: 'group-hover:shadow-[0_0_20px_rgba(14,165,233,0.3)]',
   },
   security: {
     badge: 'bg-security/10 text-security border-security/20',
     accent: 'group-hover:shadow-glow-security',
+    glow: 'group-hover:shadow-[0_0_20px_rgba(239,68,68,0.3)]',
   },
   gaming: {
     badge: 'bg-gaming/10 text-gaming border-gaming/20',
     accent: 'group-hover:shadow-glow-gaming',
+    glow: 'group-hover:shadow-[0_0_20px_rgba(34,197,94,0.3)]',
   },
 };
 
@@ -32,105 +40,258 @@ const nicheLabels = {
   gaming: 'Play',
 };
 
-export function ArticleCard({ article, variant = 'default' }: ArticleCardProps) {
+// Get difficulty level from article tags or content
+const getDifficultyLevel = (article: Article): 'beginner' | 'intermediate' | 'advanced' | null => {
+  const tags = (article.tags ?? []).map(t => String(t).toLowerCase());
+  if (tags.some(t => t.includes('beginner') || t.includes('basic') || t.includes('intro'))) {
+    return 'beginner';
+  }
+  if (tags.some(t => t.includes('advanced') || t.includes('expert') || t.includes('pro'))) {
+    return 'advanced';
+  }
+  if (tags.some(t => t.includes('intermediate') || t.includes('medium'))) {
+    return 'intermediate';
+  }
+  return null;
+};
+
+// Get security score glow color
+const getSecurityGlow = (score?: number): string => {
+  if (!score) return '';
+  if (score <= 2) return 'shadow-[0_0_15px_rgba(239,68,68,0.4)]';
+  if (score >= 4) return 'shadow-[0_0_15px_rgba(34,197,94,0.4)]';
+  return 'shadow-[0_0_15px_rgba(234,179,8,0.4)]';
+};
+
+export function ArticleCard({ article, variant = 'default', onArticleClick }: ArticleCardProps) {
   const { user, toggleBookmark } = useAuth();
-  const styles = nicheStyles[article.niche];
-  const isBookmarked = user?.bookmarks.includes(article.id);
+  const navigate = useNavigate();
+  if (!article) return null;
+
+  const articleId = safeArticleId(article);
+  const articleUrl = `/article/${article.slug ?? article.id ?? articleId}`;
+  const styles = nicheStyles[article.niche ?? 'tech'];
+  const isBookmarked = user?.bookmarks?.includes(articleId);
+  const difficulty = getDifficultyLevel(article);
+  const securityGlow = getSecurityGlow(article.securityScore);
+
+  const goToArticle = () => {
+    onArticleClick?.();
+    navigate(articleUrl);
+  };
 
   const handleBookmark = async (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    if (user) {
-      await toggleBookmark(article.id);
+    if (user && articleId) {
+      await toggleBookmark(articleId);
     }
   };
 
   if (variant === 'featured') {
     return (
-      <Link to={`/article/${article.id}`}>
-        <Card className={cn(
-          'group overflow-hidden border-0 bg-card transition-all duration-300',
-          styles.accent
-        )}>
-          <div className="relative aspect-[16/9] overflow-hidden">
-            <img
-              src={article.imageUrl}
-              alt={article.title}
-              className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-background/50 to-transparent" />
-            <div className="absolute top-4 left-4 flex gap-2">
-              <Badge className={styles.badge}>{nicheLabels[article.niche]}</Badge>
-              {article.isSponsored && (
-                <Badge variant="secondary">Sponsored</Badge>
-              )}
-            </div>
-            <div className="absolute bottom-4 left-4 right-4">
-              <h2 className="font-display font-bold text-2xl md:text-3xl mb-2 text-foreground">
-                {article.title}
-              </h2>
-              <p className="text-muted-foreground line-clamp-2 mb-3">
-                {article.excerpt}
-              </p>
-              <div className="flex items-center gap-4 text-sm text-muted-foreground">
-                <span>{article.author}</span>
-                <span className="flex items-center gap-1">
-                  <Clock className="h-4 w-4" />
-                  {article.readTime} min read
-                </span>
+      <Card
+        className={cn(
+          'group overflow-hidden border-0 bg-card cursor-pointer card-hover-lift-tokens',
+          styles.accent,
+          styles.glow,
+          securityGlow
+        )}
+        onClick={goToArticle}
+        role="button"
+        tabIndex={0}
+        onKeyDown={(e) => e.key === 'Enter' && goToArticle()}
+      >
+        <div className="relative aspect-[16/9] overflow-hidden" style={{ minHeight: '400px', aspectRatio: '16/9' }}>
+          <img
+            src={article.imageUrl}
+            alt={article.title}
+            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+            width="1200"
+            height="675"
+            loading="eager"
+            decoding="async"
+            style={{ aspectRatio: '16/9' }}
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-background/50 to-transparent" />
+          <div className="absolute top-4 left-4 flex gap-2">
+            <Badge className={styles.badge}>{nicheLabels[article.niche ?? 'tech']}</Badge>
+            {article.isSponsored && (
+              <Badge variant="secondary">Sponsored</Badge>
+            )}
+          </div>
+          <div className="absolute bottom-4 left-4 right-4">
+            <h2 className="font-display font-bold text-2xl md:text-3xl mb-2 text-foreground">
+              {article.title}
+            </h2>
+            <p className="text-muted-foreground line-clamp-2 mb-3">
+              {article.excerpt}
+            </p>
+            {/* Actionability Bar - Enhanced */}
+            <div className="flex items-center gap-4 text-sm flex-wrap">
+              {/* Author and timestamp - span prevents nested <a> */}
+              <div className="flex items-center gap-2 text-foreground/90 bg-background/60 backdrop-blur-sm rounded-full px-3 py-1" onClick={(e) => e.stopPropagation()}>
+                <User className="h-3.5 w-3.5" />
+                <Link to={`/author/${authorSlug(article.author)}`} className="font-medium text-xs hover:underline">{article.author}</Link>
+                <span className="text-muted-foreground">•</span>
+                <time 
+                  dateTime={article.publishedAt}
+                  className="text-xs text-muted-foreground"
+                  title={new Date(article.publishedAt).toLocaleString()}
+                >
+                  {formatRelativeTime(article.publishedAt ?? undefined)}
+                </time>
+              </div>
+                <div className="flex items-center gap-1 text-muted-foreground bg-background/60 backdrop-blur-sm rounded-full px-3 py-1">
+                  <Clock className="h-3.5 w-3.5" />
+                  <span className="font-medium">{article.readTime} min</span>
+                </div>
+                {difficulty && (
+                  <Badge 
+                    variant="outline" 
+                    className={cn(
+                      'text-xs',
+                      difficulty === 'beginner' && 'border-green-500/30 text-green-500 bg-green-500/10',
+                      difficulty === 'intermediate' && 'border-yellow-500/30 text-yellow-500 bg-yellow-500/10',
+                      difficulty === 'advanced' && 'border-red-500/30 text-red-500 bg-red-500/10'
+                    )}
+                  >
+                    {difficulty.charAt(0).toUpperCase() + difficulty.slice(1)}
+                  </Badge>
+                )}
+                {article.securityScore !== undefined && (
+                  <div className={cn(
+                    'flex items-center gap-1 bg-background/60 backdrop-blur-sm rounded-full px-3 py-1',
+                    article.securityScore <= 2 && 'text-red-500',
+                    article.securityScore >= 4 && 'text-green-500',
+                    article.securityScore === 3 && 'text-yellow-500'
+                  )}>
+                    <Shield className="h-3.5 w-3.5" />
+                    <span className="font-medium font-mono text-xs">{article.securityScore}/5</span>
+                  </div>
+                )}
               </div>
             </div>
           </div>
-        </Card>
-      </Link>
+      </Card>
     );
   }
 
   if (variant === 'compact') {
     return (
-      <Link to={`/article/${article.id}`}>
-        <div className="group flex gap-4 py-4 border-b border-border last:border-0">
-          <div className="w-20 h-20 rounded-lg overflow-hidden flex-shrink-0">
+      <Link to={articleUrl} onClick={onArticleClick}>
+        <div className="group flex gap-4 py-4 border-b border-border last:border-0 hover:bg-muted/30 transition-all duration-200">
+          <div className="w-20 h-20 rounded-lg overflow-hidden flex-shrink-0" style={{ aspectRatio: '1/1' }}>
             <img
               src={article.imageUrl}
               alt={article.title}
               className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+              width="80"
+              height="80"
+              loading="eager"
+              decoding="async"
+              style={{ aspectRatio: '1/1' }}
             />
           </div>
           <div className="flex-1 min-w-0">
-            <Badge className={cn('mb-2', styles.badge)} variant="outline">
-              {nicheLabels[article.niche]}
-            </Badge>
+            <div className="flex items-center gap-2 mb-2">
+              <Badge className={cn('text-xs', styles.badge)} variant="outline">
+                {nicheLabels[article.niche ?? 'tech']}
+              </Badge>
+              <div className="flex items-center gap-1 text-xs text-muted-foreground">
+                <Clock className="h-3 w-3" />
+                <span>{article.readTime} min</span>
+              </div>
+            </div>
             <h3 className="font-medium line-clamp-2 group-hover:text-primary transition-colors">
               {article.title}
             </h3>
-            <span className="text-sm text-muted-foreground">{article.readTime} min</span>
           </div>
         </div>
       </Link>
     );
   }
 
+  // List variant: Ars Technica / WIRED style horizontal row, medium density
+  if (variant === 'list') {
+    return (
+      <article
+        className="group flex gap-6 py-5 border-b border-border last:border-0 hover:bg-muted/30 transition-all duration-200 rounded-lg px-2 -mx-2 cursor-pointer"
+        onClick={goToArticle}
+        role="button"
+        tabIndex={0}
+        onKeyDown={(e) => e.key === 'Enter' && goToArticle()}
+      >
+        <div className="w-44 sm:w-52 flex-shrink-0 rounded-lg overflow-hidden aspect-video bg-muted">
+          <img
+            src={article.imageUrl}
+            alt={article.title}
+            className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+            width="208"
+            height="117"
+            loading="eager"
+            decoding="async"
+          />
+        </div>
+        <div className="flex-1 min-w-0">
+          <div className="flex items-center gap-2 mb-2 flex-wrap">
+            <Badge className={cn('text-xs', styles.badge)} variant="outline">
+              {nicheLabels[article.niche ?? 'tech']}
+            </Badge>
+            <div className="flex items-center gap-1.5 text-xs text-muted-foreground" onClick={(e) => e.stopPropagation()}>
+              <User className="h-3 w-3" />
+              <Link to={`/author/${authorSlug(article.author)}`} className="hover:underline">{article.author}</Link>
+              <span>·</span>
+              <time dateTime={article.publishedAt}>{formatRelativeTime(article.publishedAt ?? undefined)}</time>
+            </div>
+          </div>
+            <h3 className="font-display font-semibold text-lg mb-1 line-clamp-2 group-hover:text-primary transition-colors">
+              {article.title}
+            </h3>
+            <p className="text-muted-foreground text-sm line-clamp-2 mb-2">
+              {article.excerpt}
+            </p>
+            <div className="flex items-center gap-2 text-xs text-muted-foreground">
+              <Clock className="h-3.5 w-3.5" />
+              <span>{article.readTime} min read</span>
+            </div>
+          </div>
+      </article>
+    );
+  }
+
   return (
-    <Link to={`/article/${article.id}`}>
-      <Card className={cn(
-        'group overflow-hidden border border-border bg-card transition-all duration-300 hover:border-border/80',
-        styles.accent
-      )}>
-        <div className="relative aspect-video overflow-hidden">
+    <Card
+      className={cn(
+        'group overflow-hidden border border-border bg-card hover:border-border/80 cursor-pointer card-hover-lift-tokens',
+        styles.accent,
+        styles.glow,
+        securityGlow
+      )}
+      onClick={goToArticle}
+      role="button"
+      tabIndex={0}
+      onKeyDown={(e) => e.key === 'Enter' && goToArticle()}
+    >
+      <div className="relative aspect-video overflow-hidden" style={{ minHeight: '225px', aspectRatio: '16/9' }}>
           <img
             src={article.imageUrl}
             alt={article.title}
             className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+            width="800"
+            height="450"
+            loading="eager"
+            decoding="async"
+            style={{ aspectRatio: '16/9' }}
           />
           <div className="absolute top-3 left-3 right-3 flex justify-between items-start">
             <div className="flex gap-2 flex-wrap">
-              <Badge className={styles.badge}>{nicheLabels[article.niche]}</Badge>
+              <Badge className={styles.badge}>{nicheLabels[article.niche ?? 'tech']}</Badge>
               {article.isSponsored && (
                 <Badge variant="secondary">Sponsored</Badge>
               )}
               {article.impactLevel && (
-                <Badge 
+                <Badge
                   variant={article.impactLevel === 'high' ? 'destructive' : 'secondary'}
                   className="gap-1"
                 >
@@ -152,9 +313,14 @@ export function ArticleCard({ article, variant = 'default' }: ArticleCardProps) 
             )}
           </div>
           {article.securityScore !== undefined && (
-            <div className="absolute bottom-3 right-3 flex items-center gap-1 bg-background/90 backdrop-blur-sm rounded-full px-3 py-1">
-              <Shield className="h-4 w-4 text-gaming" />
-              <span className="text-sm font-medium">{article.securityScore}</span>
+            <div className={cn(
+              'absolute bottom-3 right-3 flex items-center gap-1 bg-background/90 backdrop-blur-sm rounded-full px-3 py-1',
+              article.securityScore <= 2 && 'text-red-500 shadow-[0_0_10px_rgba(239,68,68,0.5)]',
+              article.securityScore >= 4 && 'text-green-500 shadow-[0_0_10px_rgba(34,197,94,0.5)]',
+              article.securityScore === 3 && 'text-yellow-500 shadow-[0_0_10px_rgba(234,179,8,0.5)]'
+            )}>
+              <Shield className="h-4 w-4" />
+              <span className="text-sm font-medium font-mono">{article.securityScore}/5</span>
             </div>
           )}
         </div>
@@ -165,15 +331,72 @@ export function ArticleCard({ article, variant = 'default' }: ArticleCardProps) 
           <p className="text-muted-foreground text-sm line-clamp-2 mb-3">
             {article.excerpt}
           </p>
-          <div className="flex items-center justify-between text-sm text-muted-foreground">
-            <span>{article.author}</span>
-            <span className="flex items-center gap-1">
-              <Clock className="h-4 w-4" />
-              {article.readTime} min
-            </span>
+          {/* Actionability Bar - Enhanced with competitor features */}
+          <div className="flex items-center justify-between text-sm">
+            <div className="flex items-center gap-2">
+              {/* Author with icon (TechCrunch style) - span prevents nested <a> */}
+              <div className="flex items-center gap-1.5 text-muted-foreground" onClick={(e) => e.stopPropagation()}>
+                <User className="h-3.5 w-3.5" />
+                <Link to={`/author/${authorSlug(article.author)}`} className="font-medium text-foreground hover:underline">{article.author}</Link>
+              </div>
+              <span className="text-muted-foreground">•</span>
+              {/* Relative timestamp (TechCrunch/Ars Technica style) */}
+              <time 
+                dateTime={article.publishedAt}
+                className="text-muted-foreground"
+                title={new Date(article.publishedAt).toLocaleString()}
+              >
+                {formatRelativeTime(article.publishedAt ?? undefined)}
+              </time>
+              {/* Fresh/New badges */}
+              {isJustPublished(article.publishedAt) && (
+                <>
+                  <span className="text-muted-foreground">•</span>
+                  <Badge variant="outline" className="text-xs px-2 py-0.5 border-green-500/30 text-green-500 bg-green-500/10 animate-pulse">
+                    Just Published
+                  </Badge>
+                </>
+              )}
+              {!isJustPublished(article.publishedAt) && isFreshContent(article.publishedAt) && (
+                <>
+                  <span className="text-muted-foreground">•</span>
+                  <Badge variant="outline" className="text-xs px-2 py-0.5 border-primary/30 text-primary bg-primary/10">
+                    Fresh
+                  </Badge>
+                </>
+              )}
+              {!isFreshContent(article.publishedAt) && isNewContent(article.publishedAt) && (
+                <>
+                  <span className="text-muted-foreground">•</span>
+                  <Badge variant="outline" className="text-xs px-2 py-0.5 border-blue-500/30 text-blue-500 bg-blue-500/10">
+                    New
+                  </Badge>
+                </>
+              )}
+            </div>
+            <div className="flex items-center gap-3">
+              {/* Reading time (Ars Technica style - more prominent) */}
+              <div className="flex items-center gap-1.5 text-muted-foreground bg-muted/50 rounded-full px-2.5 py-1">
+                <Clock className="h-3.5 w-3.5" />
+                <span className="font-medium text-xs">{article.readTime} min</span>
+              </div>
+              {difficulty && (
+                <Badge 
+                  variant="outline" 
+                  className={cn(
+                    'text-xs px-2 py-0.5',
+                    difficulty === 'beginner' && 'border-green-500/30 text-green-500 bg-green-500/10',
+                    difficulty === 'intermediate' && 'border-yellow-500/30 text-yellow-500 bg-yellow-500/10',
+                    difficulty === 'advanced' && 'border-red-500/30 text-red-500 bg-red-500/10'
+                  )}
+                >
+                  {difficulty.charAt(0).toUpperCase() + difficulty.slice(1)}
+                </Badge>
+              )}
+            </div>
           </div>
         </CardContent>
-      </Card>
-    </Link>
+    </Card>
   );
 }
+
