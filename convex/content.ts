@@ -7,75 +7,86 @@ import { query, mutation } from "./_generated/server";
 import { v } from "convex/values";
 
 /**
- * Get all published content
+ * Get all published content (excludes deleted). Newest first by publishedAt.
  */
 export const getPublishedContent = query({
   args: {
     limit: v.optional(v.number()),
   },
   handler: async (ctx, args) => {
-    const limit = args.limit || 50;
-    
-    return await ctx.db
+    const limit = args.limit ?? 50;
+    const docs = await ctx.db
       .query("content")
-      .withIndex("by_status_published_at", (q) => 
-        q.eq("status", "published")
-      )
+      .withIndex("by_status_published_at", (q) => q.eq("status", "published"))
       .order("desc")
-      .take(limit);
+      .take(limit * 2);
+    return docs.filter((d) => d.isDeleted !== true).slice(0, limit);
   },
 });
 
 /**
- * List all content (for sitemaps and admin lists)
+ * List all visible content (published + new only; excludes draft/archived/deleted).
+ * Used for sitemaps and Explore/archive. Sorted by publishedAt desc so newest first.
  */
 export const listAll = query({
   args: {},
   handler: async (ctx) => {
-    // Used for sitemaps and admin lists
-    return await ctx.db.query("content").order("desc").take(100);
+    const [published, newStatus] = await Promise.all([
+      ctx.db
+        .query("content")
+        .withIndex("by_status_published_at", (q) => q.eq("status", "published"))
+        .order("desc")
+        .take(200),
+      ctx.db
+        .query("content")
+        .withIndex("by_status_published_at", (q) => q.eq("status", "new"))
+        .order("desc")
+        .take(200),
+    ]);
+    const merged = [...published, ...newStatus]
+      .filter((c) => c.isDeleted !== true)
+      .sort((a, b) => (b.publishedAt ?? b._creationTime ?? 0) - (a.publishedAt ?? a._creationTime ?? 0));
+    return merged.slice(0, 200);
   },
 });
 
 /**
- * Get featured content
+ * Get featured content (excludes deleted).
  */
 export const getFeaturedContent = query({
   args: {
     limit: v.optional(v.number()),
   },
   handler: async (ctx, args) => {
-    const limit = args.limit || 10;
-    
-    return await ctx.db
+    const limit = args.limit ?? 10;
+    const docs = await ctx.db
       .query("content")
-      .withIndex("by_status_published_at", (q) => 
-        q.eq("status", "published")
-      )
-      .filter((q) => q.eq("isFeatured", true as any))
+      .withIndex("by_status_published_at", (q) => q.eq("status", "published"))
       .order("desc")
-      .take(limit);
+      .take(limit * 3);
+    return docs
+      .filter((d) => d.isDeleted !== true && d.isFeatured === true)
+      .slice(0, limit);
   },
 });
 
 /**
- * Get breaking news
+ * Get breaking news (excludes deleted).
  */
 export const getBreakingNews = query({
   args: {
     limit: v.optional(v.number()),
   },
   handler: async (ctx, args) => {
-    const limit = args.limit || 5;
-    
-    return await ctx.db
+    const limit = args.limit ?? 5;
+    const docs = await ctx.db
       .query("content")
-      .withIndex("by_status_published_at", (q) => 
-        q.eq("status", "published")
-      )
-      .filter((q) => q.eq("isBreaking", true as any))
+      .withIndex("by_status_published_at", (q) => q.eq("status", "published"))
       .order("desc")
-      .take(limit);
+      .take(limit * 3);
+    return docs
+      .filter((d) => d.isDeleted !== true && d.isBreaking === true)
+      .slice(0, limit);
   },
 });
 
@@ -162,27 +173,25 @@ export const upsertIngestedContent = mutation({
 });
 
 /**
- * Get latest content (alias for getPublishedContent)
+ * Get latest content (excludes deleted). Newest first.
  */
 export const getLatestContent = query({
   args: {
     limit: v.optional(v.number()),
   },
   handler: async (ctx, args) => {
-    const limit = args.limit || 20;
-    
-    return await ctx.db
+    const limit = args.limit ?? 20;
+    const docs = await ctx.db
       .query("content")
-      .withIndex("by_status_published_at", (q) => 
-        q.eq("status", "published")
-      )
+      .withIndex("by_status_published_at", (q) => q.eq("status", "published"))
       .order("desc")
-      .take(limit);
+      .take(limit * 2);
+    return docs.filter((d) => d.isDeleted !== true).slice(0, limit);
   },
 });
 
 /**
- * Get content by slug
+ * Get content by slug. Returns null for draft, archived, or deleted so only visible articles are shown.
  */
 export const getContentBySlug = query({
   args: {
@@ -193,29 +202,29 @@ export const getContentBySlug = query({
       .query("content")
       .withIndex("by_slug", (q) => q.eq("slug", args.slug))
       .first();
-    
+    if (!content || content.isDeleted === true) return null;
+    if (content.status !== "published" && content.status !== "new" && content.status !== "unlisted") return null;
     return content;
   },
 });
 
 /**
- * Get all content (for diagnostics)
+ * Get all published content for Explore (excludes deleted).
  */
 export const getAllPublishedContent = query({
   args: {},
   handler: async (ctx) => {
-    return await ctx.db
+    const docs = await ctx.db
       .query("content")
-      .withIndex("by_status_published_at", (q) => 
-        q.eq("status", "published")
-      )
+      .withIndex("by_status_published_at", (q) => q.eq("status", "published"))
       .order("desc")
-      .take(100);
+      .take(150);
+    return docs.filter((d) => d.isDeleted !== true).slice(0, 100);
   },
 });
 
 /**
- * Get content by niche
+ * Get content by niche (excludes deleted).
  */
 export const getContentByNiche = query({
   args: {
@@ -223,36 +232,31 @@ export const getContentByNiche = query({
     limit: v.optional(v.number()),
   },
   handler: async (ctx, args) => {
-    const limit = args.limit || 20;
-    
-    // For now, return all published content (niche filtering can be added later)
-    return await ctx.db
+    const limit = args.limit ?? 20;
+    const docs = await ctx.db
       .query("content")
-      .withIndex("by_status_published_at", (q) => 
-        q.eq("status", "published")
-      )
+      .withIndex("by_status_published_at", (q) => q.eq("status", "published"))
       .order("desc")
-      .take(limit);
+      .take(limit * 2);
+    return docs.filter((d) => d.isDeleted !== true).slice(0, limit);
   },
 });
 
 /**
- * Get trending content (by view count)
+ * Get trending content (excludes deleted). Sorted by publishedAt desc.
  */
 export const getTrendingContent = query({
   args: {
     limit: v.optional(v.number()),
   },
   handler: async (ctx, args) => {
-    const limit = args.limit || 12;
-    
-    return await ctx.db
+    const limit = args.limit ?? 12;
+    const docs = await ctx.db
       .query("content")
-      .withIndex("by_status_published_at", (q) => 
-        q.eq("status", "published")
-      )
+      .withIndex("by_status_published_at", (q) => q.eq("status", "published"))
       .order("desc")
-      .take(limit);
+      .take(limit * 2);
+    return docs.filter((d) => d.isDeleted !== true).slice(0, limit);
   },
 });
 
@@ -277,7 +281,7 @@ export const listFeeds = query({
 });
 
 /**
- * Get content by feed slug
+ * Get content by feed slug (excludes deleted).
  */
 export const getContentByFeed = query({
   args: {
@@ -285,36 +289,31 @@ export const getContentByFeed = query({
     limit: v.optional(v.number()),
   },
   handler: async (ctx, args) => {
-    const limit = args.limit || 10;
-    
-    // For now, return all published content (feed filtering can be added later)
-    return await ctx.db
+    const limit = args.limit ?? 10;
+    const docs = await ctx.db
       .query("content")
-      .withIndex("by_status_published_at", (q) => 
-        q.eq("status", "published")
-      )
+      .withIndex("by_status_published_at", (q) => q.eq("status", "published"))
       .order("desc")
-      .take(limit);
+      .take(limit * 2);
+    return docs.filter((d) => d.isDeleted !== true).slice(0, limit);
   },
 });
 
 /**
- * Get visible content (published + featured)
+ * Get visible content for homepage (excludes deleted). Newest first.
  */
 export const getVisibleContent = query({
   args: {
     limit: v.optional(v.number()),
   },
   handler: async (ctx, args) => {
-    const limit = args.limit || 20;
-    
-    return await ctx.db
+    const limit = args.limit ?? 20;
+    const docs = await ctx.db
       .query("content")
-      .withIndex("by_status_published_at", (q) => 
-        q.eq("status", "published")
-      )
+      .withIndex("by_status_published_at", (q) => q.eq("status", "published"))
       .order("desc")
-      .take(limit);
+      .take(limit * 2);
+    return docs.filter((d) => d.isDeleted !== true).slice(0, limit);
   },
 });
 
@@ -329,7 +328,7 @@ export const listTags = query({
 });
 
 /**
- * Get related content
+ * Get related content (excludes the current article and deleted).
  */
 export const getRelated = query({
   args: {
@@ -337,36 +336,36 @@ export const getRelated = query({
     limit: v.optional(v.number()),
   },
   handler: async (ctx, args) => {
-    const limit = args.limit || 6;
-    
-    // For now, return other published content
-    return await ctx.db
+    const limit = args.limit ?? 6;
+    const docs = await ctx.db
       .query("content")
-      .withIndex("by_status_published_at", (q) => 
-        q.eq("status", "published")
-      )
+      .withIndex("by_status_published_at", (q) => q.eq("status", "published"))
       .order("desc")
-      .take(limit);
+      .take(limit + 20);
+    return docs
+      .filter((d) => d._id !== args.contentId && d.isDeleted !== true)
+      .slice(0, limit);
   },
 });
 
 /**
  * List ingested/automated news for NewsFeed (Live Wire).
- * Returns published content, preferring isAutomated items; falls back to latest published so the feed is never empty.
+ * Returns published content, preferring isAutomated items; excludes deleted.
  */
 export const listIngestedNews = query({
   args: { limit: v.optional(v.number()) },
   handler: async (ctx, { limit = 24 }) => {
-    const cap = Math.min(limit * 2, 100);
+    const cap = Math.min(limit * 3, 100);
     const docs = await ctx.db
       .query("content")
       .withIndex("by_status_published_at", (q) => q.eq("status", "published"))
       .order("desc")
       .take(cap);
-    const preferred = docs.filter((d) => d.isAutomated === true);
+    const visible = docs.filter((d) => d.isDeleted !== true);
+    const preferred = visible.filter((d) => d.isAutomated === true);
     const slice = preferred.length >= limit
       ? preferred.slice(0, limit)
-      : docs.slice(0, limit);
+      : visible.slice(0, limit);
     return slice.map((d) => ({
       _id: d._id,
       id: String(d._id),
