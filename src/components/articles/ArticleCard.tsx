@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Article } from '@/types';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
@@ -65,13 +65,20 @@ const getSecurityGlow = (score?: number): string => {
 
 export function ArticleCard({ article, variant = 'default', onArticleClick }: ArticleCardProps) {
   const { user, toggleBookmark } = useAuth();
+  const navigate = useNavigate();
   if (!article) return null;
 
   const articleId = safeArticleId(article);
+  const articleUrl = `/article/${article.slug ?? article.id ?? articleId}`;
   const styles = nicheStyles[article.niche ?? 'tech'];
   const isBookmarked = user?.bookmarks?.includes(articleId);
   const difficulty = getDifficultyLevel(article);
   const securityGlow = getSecurityGlow(article.securityScore);
+
+  const goToArticle = () => {
+    onArticleClick?.();
+    navigate(articleUrl);
+  };
 
   const handleBookmark = async (e: React.MouseEvent) => {
     e.preventDefault();
@@ -83,53 +90,58 @@ export function ArticleCard({ article, variant = 'default', onArticleClick }: Ar
 
   if (variant === 'featured') {
     return (
-      <Link to={`/article/${article.slug ?? article.id ?? articleId}`} onClick={onArticleClick}>
-        <Card className={cn(
-          'group overflow-hidden border-0 bg-card transition-all duration-300 transform hover:scale-[1.02]',
+      <Card
+        className={cn(
+          'group overflow-hidden border-0 bg-card transition-all duration-300 transform hover:scale-[1.02] cursor-pointer',
           styles.accent,
           styles.glow,
           securityGlow
-        )}>
-          <div className="relative aspect-[16/9] overflow-hidden" style={{ minHeight: '400px', aspectRatio: '16/9' }}>
-            <img
-              src={article.imageUrl}
-              alt={article.title}
-              className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-              width="1200"
-              height="675"
-              loading="lazy"
-              decoding="async"
-              style={{ aspectRatio: '16/9' }}
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-background/50 to-transparent" />
-            <div className="absolute top-4 left-4 flex gap-2">
-              <Badge className={styles.badge}>{nicheLabels[article.niche ?? 'tech']}</Badge>
-              {article.isSponsored && (
-                <Badge variant="secondary">Sponsored</Badge>
-              )}
-            </div>
-            <div className="absolute bottom-4 left-4 right-4">
-              <h2 className="font-display font-bold text-2xl md:text-3xl mb-2 text-foreground">
-                {article.title}
-              </h2>
-              <p className="text-muted-foreground line-clamp-2 mb-3">
-                {article.excerpt}
-              </p>
-              {/* Actionability Bar - Enhanced */}
-              <div className="flex items-center gap-4 text-sm flex-wrap">
-                {/* Author and timestamp */}
-                <div className="flex items-center gap-2 text-foreground/90 bg-background/60 backdrop-blur-sm rounded-full px-3 py-1">
-                  <User className="h-3.5 w-3.5" />
-                  <Link to={`/author/${authorSlug(article.author)}`} className="font-medium text-xs hover:underline">{article.author}</Link>
-                  <span className="text-muted-foreground">•</span>
-                  <time 
-                    dateTime={article.publishedAt}
-                    className="text-xs text-muted-foreground"
-                    title={new Date(article.publishedAt).toLocaleString()}
-                  >
-                    {formatRelativeTime(article.publishedAt ?? undefined)}
-                  </time>
-                </div>
+        )}
+        onClick={goToArticle}
+        role="button"
+        tabIndex={0}
+        onKeyDown={(e) => e.key === 'Enter' && goToArticle()}
+      >
+        <div className="relative aspect-[16/9] overflow-hidden" style={{ minHeight: '400px', aspectRatio: '16/9' }}>
+          <img
+            src={article.imageUrl}
+            alt={article.title}
+            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+            width="1200"
+            height="675"
+            loading="lazy"
+            decoding="async"
+            style={{ aspectRatio: '16/9' }}
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-background/50 to-transparent" />
+          <div className="absolute top-4 left-4 flex gap-2">
+            <Badge className={styles.badge}>{nicheLabels[article.niche ?? 'tech']}</Badge>
+            {article.isSponsored && (
+              <Badge variant="secondary">Sponsored</Badge>
+            )}
+          </div>
+          <div className="absolute bottom-4 left-4 right-4">
+            <h2 className="font-display font-bold text-2xl md:text-3xl mb-2 text-foreground">
+              {article.title}
+            </h2>
+            <p className="text-muted-foreground line-clamp-2 mb-3">
+              {article.excerpt}
+            </p>
+            {/* Actionability Bar - Enhanced */}
+            <div className="flex items-center gap-4 text-sm flex-wrap">
+              {/* Author and timestamp - span prevents nested <a> */}
+              <div className="flex items-center gap-2 text-foreground/90 bg-background/60 backdrop-blur-sm rounded-full px-3 py-1" onClick={(e) => e.stopPropagation()}>
+                <User className="h-3.5 w-3.5" />
+                <Link to={`/author/${authorSlug(article.author)}`} className="font-medium text-xs hover:underline">{article.author}</Link>
+                <span className="text-muted-foreground">•</span>
+                <time 
+                  dateTime={article.publishedAt}
+                  className="text-xs text-muted-foreground"
+                  title={new Date(article.publishedAt).toLocaleString()}
+                >
+                  {formatRelativeTime(article.publishedAt ?? undefined)}
+                </time>
+              </div>
                 <div className="flex items-center gap-1 text-muted-foreground bg-background/60 backdrop-blur-sm rounded-full px-3 py-1">
                   <Clock className="h-3.5 w-3.5" />
                   <span className="font-medium">{article.readTime} min</span>
@@ -161,14 +173,13 @@ export function ArticleCard({ article, variant = 'default', onArticleClick }: Ar
               </div>
             </div>
           </div>
-        </Card>
-      </Link>
+      </Card>
     );
   }
 
   if (variant === 'compact') {
     return (
-      <Link to={`/article/${article.slug ?? article.id ?? articleId}`} onClick={onArticleClick}>
+      <Link to={articleUrl} onClick={onArticleClick}>
         <div className="group flex gap-4 py-4 border-b border-border last:border-0 hover:bg-muted/30 transition-all duration-200">
           <div className="w-20 h-20 rounded-lg overflow-hidden flex-shrink-0" style={{ aspectRatio: '1/1' }}>
             <img
@@ -204,31 +215,36 @@ export function ArticleCard({ article, variant = 'default', onArticleClick }: Ar
   // List variant: Ars Technica / WIRED style horizontal row, medium density
   if (variant === 'list') {
     return (
-      <Link to={`/article/${article.slug ?? article.id ?? articleId}`} onClick={onArticleClick}>
-        <article className="group flex gap-6 py-5 border-b border-border last:border-0 hover:bg-muted/30 transition-all duration-200 rounded-lg px-2 -mx-2">
-          <div className="w-44 sm:w-52 flex-shrink-0 rounded-lg overflow-hidden aspect-video bg-muted">
-            <img
-              src={article.imageUrl}
-              alt={article.title}
-              className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
-              width="208"
-              height="117"
-              loading="lazy"
-              decoding="async"
-            />
-          </div>
-          <div className="flex-1 min-w-0">
-            <div className="flex items-center gap-2 mb-2 flex-wrap">
-              <Badge className={cn('text-xs', styles.badge)} variant="outline">
-                {nicheLabels[article.niche ?? 'tech']}
-              </Badge>
-              <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
-                <User className="h-3 w-3" />
-                <Link to={`/author/${authorSlug(article.author)}`} className="hover:underline">{article.author}</Link>
-                <span>·</span>
-                <time dateTime={article.publishedAt}>{formatRelativeTime(article.publishedAt ?? undefined)}</time>
-              </div>
+      <article
+        className="group flex gap-6 py-5 border-b border-border last:border-0 hover:bg-muted/30 transition-all duration-200 rounded-lg px-2 -mx-2 cursor-pointer"
+        onClick={goToArticle}
+        role="button"
+        tabIndex={0}
+        onKeyDown={(e) => e.key === 'Enter' && goToArticle()}
+      >
+        <div className="w-44 sm:w-52 flex-shrink-0 rounded-lg overflow-hidden aspect-video bg-muted">
+          <img
+            src={article.imageUrl}
+            alt={article.title}
+            className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+            width="208"
+            height="117"
+            loading="lazy"
+            decoding="async"
+          />
+        </div>
+        <div className="flex-1 min-w-0">
+          <div className="flex items-center gap-2 mb-2 flex-wrap">
+            <Badge className={cn('text-xs', styles.badge)} variant="outline">
+              {nicheLabels[article.niche ?? 'tech']}
+            </Badge>
+            <div className="flex items-center gap-1.5 text-xs text-muted-foreground" onClick={(e) => e.stopPropagation()}>
+              <User className="h-3 w-3" />
+              <Link to={`/author/${authorSlug(article.author)}`} className="hover:underline">{article.author}</Link>
+              <span>·</span>
+              <time dateTime={article.publishedAt}>{formatRelativeTime(article.publishedAt ?? undefined)}</time>
             </div>
+          </div>
             <h3 className="font-display font-semibold text-lg mb-1 line-clamp-2 group-hover:text-primary transition-colors">
               {article.title}
             </h3>
@@ -240,20 +256,24 @@ export function ArticleCard({ article, variant = 'default', onArticleClick }: Ar
               <span>{article.readTime} min read</span>
             </div>
           </div>
-        </article>
-      </Link>
+      </article>
     );
   }
 
   return (
-    <Link to={`/article/${article.slug ?? article.id ?? articleId}`} onClick={onArticleClick}>
-      <Card className={cn(
-        'group overflow-hidden border border-border bg-card transition-all duration-300 hover:border-border/80 transform hover:scale-[1.02]',
+    <Card
+      className={cn(
+        'group overflow-hidden border border-border bg-card transition-all duration-300 hover:border-border/80 transform hover:scale-[1.02] cursor-pointer',
         styles.accent,
         styles.glow,
         securityGlow
-      )}>
-        <div className="relative aspect-video overflow-hidden" style={{ minHeight: '225px', aspectRatio: '16/9' }}>
+      )}
+      onClick={goToArticle}
+      role="button"
+      tabIndex={0}
+      onKeyDown={(e) => e.key === 'Enter' && goToArticle()}
+    >
+      <div className="relative aspect-video overflow-hidden" style={{ minHeight: '225px', aspectRatio: '16/9' }}>
           <img
             src={article.imageUrl}
             alt={article.title}
@@ -314,8 +334,8 @@ export function ArticleCard({ article, variant = 'default', onArticleClick }: Ar
           {/* Actionability Bar - Enhanced with competitor features */}
           <div className="flex items-center justify-between text-sm">
             <div className="flex items-center gap-2">
-              {/* Author with icon (TechCrunch style) */}
-              <div className="flex items-center gap-1.5 text-muted-foreground">
+              {/* Author with icon (TechCrunch style) - span prevents nested <a> */}
+              <div className="flex items-center gap-1.5 text-muted-foreground" onClick={(e) => e.stopPropagation()}>
                 <User className="h-3.5 w-3.5" />
                 <Link to={`/author/${authorSlug(article.author)}`} className="font-medium text-foreground hover:underline">{article.author}</Link>
               </div>
@@ -376,8 +396,7 @@ export function ArticleCard({ article, variant = 'default', onArticleClick }: Ar
             </div>
           </div>
         </CardContent>
-      </Card>
-    </Link>
+    </Card>
   );
 }
 
