@@ -1,5 +1,6 @@
 import { UserBehavior, ContentRecommendation, PersonalizedFeed, Article, Niche, ReadingPrediction, SemanticSimilarity } from '@/types';
 import { mockArticles } from '@/data/mockData';
+import { safeRandomUUID } from '@/lib/utils';
 
 /**
  * AI-Powered Personalization Engine
@@ -19,7 +20,7 @@ export class UserBehaviorTracker {
   trackBehavior(behavior: Omit<UserBehavior, 'id' | 'timestamp'>) {
     const newBehavior: UserBehavior = {
       ...behavior,
-      id: crypto.randomUUID(),
+      id: safeRandomUUID(),
       timestamp: new Date().toISOString(),
     };
 

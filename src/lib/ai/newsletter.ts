@@ -1,5 +1,6 @@
 import { Article, NewsletterSubscriber, NewsletterType, NewsletterTemplate } from '@/types';
 import { mockArticles } from '@/data/mockData';
+import { safeRandomUUID } from '@/lib/utils';
 
 /**
  * AI-Powered Newsletter Curation Engine
@@ -76,7 +77,7 @@ export class NewsletterCurationEngine {
     const personalizationScore = this.calculatePersonalizationScore(curatedArticles, subscriber);
 
     return {
-      id: crypto.randomUUID(),
+      id: safeRandomUUID(),
       title: this.generateTitle(type, curatedArticles),
       type,
       articles: curatedArticles,

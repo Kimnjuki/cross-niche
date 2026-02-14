@@ -24,7 +24,7 @@ import {
   Award,
   Verified
 } from 'lucide-react';
-import { cn } from '@/lib/utils';
+import { cn, safeRandomUUID } from '@/lib/utils';
 import { Link } from 'react-router-dom';
 
 interface CommentSectionProps {
@@ -129,7 +129,7 @@ export function CommentSection({ articleId }: CommentSectionProps) {
     await new Promise(resolve => setTimeout(resolve, 300));
 
     const comment: Comment = {
-      id: crypto.randomUUID(),
+      id: safeRandomUUID(),
       articleId,
       userId: user.id,
       userName: user.name,
@@ -160,7 +160,7 @@ export function CommentSection({ articleId }: CommentSectionProps) {
     if (!user || !replyContent.trim()) return;
 
     const reply: Comment = {
-      id: crypto.randomUUID(),
+      id: safeRandomUUID(),
       articleId,
       userId: user.id,
       userName: user.name,

@@ -4,7 +4,7 @@
  * Hover-lift animations via Framer Motion.
  */
 
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Badge } from '@/components/ui/badge';
 import { LazyImage } from '@/components/ui/lazy-image';
@@ -54,6 +54,8 @@ export function MasterBentoHero({
   bottomRight,
   videoUrl,
 }: MasterBentoHeroProps) {
+  const navigate = useNavigate();
+
   return (
     <section
       className="grid grid-cols-12 gap-3 md:gap-4 max-w-7xl mx-auto px-4"
@@ -61,13 +63,18 @@ export function MasterBentoHero({
     >
       {/* Cell 1: Main – col-span-8 row-span-2, video/image overlay */}
       <motion.div
-        className="col-span-12 md:col-span-8 row-span-2 min-h-[280px] md:min-h-[360px] rounded-xl overflow-hidden"
+        className="col-span-12 md:col-span-8 row-span-2 min-h-[280px] md:min-h-[360px] rounded-xl overflow-hidden cursor-pointer"
         initial="rest"
         whileHover="hover"
         variants={hoverLift}
         transition={cellTransition}
+        onClick={() => navigate(articleLink(mainStory))}
+        role="button"
+        tabIndex={0}
+        onKeyDown={(e) => e.key === 'Enter' && navigate(articleLink(mainStory))}
+        aria-label={`Read article: ${mainStory.title}`}
       >
-        <Link to={articleLink(mainStory)} className="block relative w-full h-full min-h-[280px] md:min-h-[360px]">
+        <div className="block relative w-full h-full min-h-[280px] md:min-h-[360px]">
           <div className="absolute inset-0 bg-muted">
             {videoUrl ? (
               <video
@@ -99,7 +106,7 @@ export function MasterBentoHero({
               {mainStory.excerpt}
             </p>
             <div className="flex flex-wrap items-center gap-3 text-xs text-white/80">
-              <span className="flex items-center gap-1.5">
+              <span className="flex items-center gap-1.5" onClick={(e) => e.stopPropagation()}>
                 <User className="h-3.5 w-3.5" />
                 <Link to={`/author/${authorSlug(mainStory.author)}`} className="hover:underline">
                   {mainStory.author}
@@ -111,7 +118,7 @@ export function MasterBentoHero({
               </span>
             </div>
           </div>
-        </Link>
+        </div>
       </motion.div>
 
       {/* Cell 2: Security – col-span-4 row-span-1, pulsing LIVE badge */}

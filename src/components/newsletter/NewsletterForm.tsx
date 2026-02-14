@@ -12,6 +12,7 @@ import { Mail, Check, Settings, Eye } from 'lucide-react';
 import { newsletterEngine } from '@/lib/ai/newsletter';
 import { mockArticles } from '@/data/mockData';
 import { trackNewsletterSignup } from '@/lib/analytics/ga4';
+import { safeRandomUUID } from '@/lib/utils';
 
 interface NewsletterFormProps {
   variant?: 'default' | 'compact' | 'hero' | 'inline' | 'advanced';
@@ -59,7 +60,7 @@ export function NewsletterForm({ variant = 'default' }: NewsletterFormProps) {
       });
     } else {
       const newSubscriber: NewsletterSubscriber = {
-        id: crypto.randomUUID(),
+        id: safeRandomUUID(),
         email,
         subscribedAt: new Date().toISOString(),
         preferences,

@@ -307,12 +307,18 @@ export function useTrendingContent(limit = 6) {
   return { data, isLoading: !isDisabled && rows === undefined };
 }
 
-/** Related content by shared tags (Internal Linking Bridge for orphan page fix) */
-export function useRelatedContent(slug: string, limit = 6) {
+/** Related content by shared tags (Internal Linking Bridge for orphan page fix).
+ * contentId must be a Convex content document ID (from contentData.id when loaded from Convex), not a URL slug. */
+function isConvexContentId(id: string | null | undefined): id is string {
+  return typeof id === 'string' && id.length >= 20 && !/\s/.test(id);
+}
+
+export function useRelatedContent(contentId: string | null | undefined, limit = 6) {
   const isDisabled = useConvexDisabled();
-  const rows = useQuery(api.content.getRelated, isDisabled || !slug ? 'skip' : { contentId: slug as any, limit });
+  const skip = isDisabled || !isConvexContentId(contentId);
+  const rows = useQuery(api.content.getRelated, skip ? 'skip' : { contentId: contentId as any, limit });
   const data = toContentItems(rows ?? []);
-  return { data, isLoading: !isDisabled && slug && rows === undefined };
+  return { data, isLoading: !isDisabled && !skip && rows === undefined };
 }
 
 /** Production hostname: hide all debug/diagnostics UI (AdSense + technical sanitization). */

@@ -61,7 +61,8 @@ export default function Article() {
   const feedSlug = contentData?.feed_slug ?? '';
   const { data: relatedContent } = useContentByFeed(feedSlug, 4);
   const { data: publishedForCross } = usePublishedContent(30);
-  const { data: relatedByTags } = useRelatedContent(slugOrId, 6);
+  const convexContentId = contentData?.id ?? null;
+  const { data: relatedByTags } = useRelatedContent(convexContentId, 6);
   const { user, toggleBookmark } = useAuth();
 
   // 2. MEMOIZED ARTICLE MAPPING

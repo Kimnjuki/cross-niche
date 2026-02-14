@@ -92,7 +92,7 @@ export function ArticleCard({ article, variant = 'default', onArticleClick }: Ar
     return (
       <Card
         className={cn(
-          'group overflow-hidden border-0 bg-card transition-all duration-300 transform hover:scale-[1.02] cursor-pointer',
+          'group overflow-hidden border-0 bg-card cursor-pointer card-hover-lift-tokens',
           styles.accent,
           styles.glow,
           securityGlow
@@ -109,7 +109,7 @@ export function ArticleCard({ article, variant = 'default', onArticleClick }: Ar
             className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
             width="1200"
             height="675"
-            loading="lazy"
+            loading="eager"
             decoding="async"
             style={{ aspectRatio: '16/9' }}
           />
@@ -188,7 +188,7 @@ export function ArticleCard({ article, variant = 'default', onArticleClick }: Ar
               className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
               width="80"
               height="80"
-              loading="lazy"
+              loading="eager"
               decoding="async"
               style={{ aspectRatio: '1/1' }}
             />
@@ -229,7 +229,7 @@ export function ArticleCard({ article, variant = 'default', onArticleClick }: Ar
             className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
             width="208"
             height="117"
-            loading="lazy"
+            loading="eager"
             decoding="async"
           />
         </div>
@@ -263,7 +263,7 @@ export function ArticleCard({ article, variant = 'default', onArticleClick }: Ar
   return (
     <Card
       className={cn(
-        'group overflow-hidden border border-border bg-card transition-all duration-300 hover:border-border/80 transform hover:scale-[1.02] cursor-pointer',
+        'group overflow-hidden border border-border bg-card hover:border-border/80 cursor-pointer card-hover-lift-tokens',
         styles.accent,
         styles.glow,
         securityGlow
@@ -280,7 +280,7 @@ export function ArticleCard({ article, variant = 'default', onArticleClick }: Ar
             className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
             width="800"
             height="450"
-            loading="lazy"
+            loading="eager"
             decoding="async"
             style={{ aspectRatio: '16/9' }}
           />

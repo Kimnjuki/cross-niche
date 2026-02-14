@@ -1,18 +1,21 @@
 <!doctype html>
 <html lang="en">
   <head>
-    <!-- Google tag (gtag.js) - wrapped so failures do not break page (Ahrefs "broken JavaScript") -->
+    <!-- Google tag (gtag.js) - skip on localhost to avoid dev console noise -->
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       try {
-        var s = document.createElement('script');
-        s.async = true;
-        s.src = 'https://www.googletagmanager.com/gtag/js?id=G-TJ1VXE91NE';
-        s.onerror = function() {};
-        document.head.appendChild(s);
-        gtag('js', new Date());
-        gtag('config', 'G-TJ1VXE91NE');
+        var isLocal = /^localhost$|^127\.0\.0\.1$|^\[::1\]$/i.test(window.location.hostname || '');
+        if (!isLocal) {
+          var s = document.createElement('script');
+          s.async = true;
+          s.src = 'https://www.googletagmanager.com/gtag/js?id=G-TJ1VXE91NE';
+          s.onerror = function() {};
+          document.head.appendChild(s);
+          gtag('js', new Date());
+          gtag('config', 'G-TJ1VXE91NE');
+        }
       } catch (e) {}
     </script>
     <meta charset="UTF-8" />
@@ -238,9 +241,10 @@
         }
       });
     </script>
-    <!-- Defer third-party scripts; each load wrapped so one failure does not break page (Ahrefs "Page has broken JavaScript") -->
+    <!-- Defer third-party scripts; only load on non-localhost to avoid console noise (e.g. Ahrefs "Ignoring Event: localhost") -->
     <script>
       (function(){
+        var isLocalhost = /^localhost$|^127\.0\.0\.1$|^\[::1\]$/i.test(window.location.hostname || '');
         function loadScript(src, opts) {
           try {
             var s = document.createElement('script');
@@ -252,6 +256,7 @@
           } catch (e) {}
         }
         function run() {
+          if (isLocalhost) return;
           loadScript('https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9278124025449370', { crossOrigin: 'anonymous', referrerPolicy: 'no-referrer-when-downgrade' });
           loadScript('//clickiocmp.com/t/consent_247023.js', { crossOrigin: 'anonymous' });
           loadScript('https://analytics.ahrefs.com/analytics.js', { 'data-key': 'aNTResFK8mO8Rf5gt0QKdw', crossOrigin: 'anonymous' });

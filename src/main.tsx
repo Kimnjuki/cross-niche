@@ -1,5 +1,7 @@
 import { createRoot } from "react-dom/client";
 import App from "./App.tsx";
+import "./index.css";
+import "./styles/design-tokens.css";
 import "./styles/globals.css";
 import ErrorBoundary from "./components/error/ErrorBoundary";
 import { initExternalScriptErrorHandling } from "./lib/externalScriptHandler";
@@ -10,9 +12,6 @@ import "./sentry";
 
 // Build timestamp for cache busting
 const BUILD_TIMESTAMP = Date.now();
-if (import.meta.env.DEV) {
-  console.log(`🚀 GridNexus Build: ${new Date(BUILD_TIMESTAMP).toISOString()}`);
-}
 
 // Declare global variable for app loaded state
 declare global {
@@ -53,10 +52,6 @@ if (!rootEl) {
   throw new Error("Root element #root not found");
 }
 
-if (import.meta.env.DEV) {
-  console.log("Root element found, attempting to render React app...");
-}
-
 try {
   createRoot(rootEl).render(
     <ErrorBoundary>
@@ -65,9 +60,6 @@ try {
   );
 
   window.__VITE_APP_LOADED__ = true;
-  if (import.meta.env.DEV) {
-    console.log("React app rendered successfully");
-  }
 } catch (error) {
   console.error('Failed to render app:', error);
   // Fallback rendering

@@ -18,7 +18,7 @@
     --popover: 0 0% 100%;
     --popover-foreground: 220 30% 10%;
 
-    --primary: 199 89% 48%; /* #0ea5e9 */
+    --primary: 217 100% 50%; /* #0066FF - Electric blue (design analysis) */
     --primary-foreground: 0 0% 100%;
 
     --secondary: 220 15% 92%;
@@ -96,8 +96,8 @@
     /* Platform analysis: competitive design (Verge / Ars / WIRED) */
     --brand-primary: 217 100% 50%;
     --brand-secondary: 190 100% 50%;
-    --container-max: 1440px;
-    --content-max: 780px;
+    --container-max: 1280px;
+    --content-max: 65ch;
     --grid-gap: 24px;
     --text-hero: clamp(2.5rem, 5vw, 4.5rem);
     --text-h1: clamp(2rem, 3.5vw, 3rem);

@@ -225,8 +225,6 @@ export function initINPOptimizations() {
   preventLayoutShifts();
   optimizeThirdPartyScripts();
   measureINP();
-
-  if (import.meta.env.DEV) console.log('✅ INP optimizations initialized');
 }
 
 

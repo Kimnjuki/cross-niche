@@ -1,4 +1,3 @@
-import { lazy, Suspense } from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -10,63 +9,37 @@ import { EnhancedErrorBoundary } from "@/components/error/EnhancedErrorBoundary"
 import { GA4PageTracker } from "./components/analytics/GA4PageTracker";
 import { ThemeProvider } from "./components/theme/ThemeProvider";
 
-// Critical path: eager load
+// Eager-loaded routes (no lazy loading – exact same content as full page refresh)
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import ArticlePage from "./pages/Article";
-
-// Lazy-loaded routes (code splitting)
-const IndexSimple = lazy(() => import("./pages/IndexSimple"));
-const EnhancedIndex = lazy(() => import("./pages/EnhancedIndex"));
-const EnhancedIndexSimple = lazy(() => import("./pages/EnhancedIndexSimple"));
-const Auth = lazy(() => import("./pages/Auth"));
-const Tech = lazy(() => import("./pages/Tech"));
-const Security = lazy(() => import("./pages/Security"));
-const Gaming = lazy(() => import("./pages/Gaming"));
-const Guides = lazy(() => import("./pages/Guides"));
-const GuideDetail = lazy(() => import("./pages/GuideDetail"));
-const Bookmarks = lazy(() => import("./pages/Bookmarks"));
-const SecurityScore = lazy(() => import("./pages/SecurityScore"));
-const SecurityScoreCalculator = lazy(() => import("./components/security/SecurityScoreCalculator").then(m => ({ default: m.SecurityScoreCalculator })));
-const Disclosure = lazy(() => import("./pages/Disclosure"));
-const Roadmap = lazy(() => import("./pages/Roadmap"));
-const About = lazy(() => import("./pages/About"));
-const Editorial = lazy(() => import("./pages/Editorial"));
-const Contact = lazy(() => import("./pages/Contact"));
-const Privacy = lazy(() => import("./pages/Privacy"));
-const Terms = lazy(() => import("./pages/Terms"));
-const BlogSeries = lazy(() => import("./pages/BlogSeries"));
-const Explore = lazy(() => import("./pages/Explore"));
-const Topics = lazy(() => import("./pages/Topics"));
-const Tutorials = lazy(() => import("./pages/Tutorials"));
-const Profile = lazy(() => import("./pages/Profile"));
-const AuthCallback = lazy(() => import("./pages/AuthCallback"));
-const AuthConfirm = lazy(() => import("./pages/AuthConfirm"));
-const Reviews = lazy(() => import("./pages/Reviews"));
-const Author = lazy(() => import("./pages/Author"));
-const Media = lazy(() => import("./pages/Media"));
-const News = lazy(() => import("./pages/News"));
-const Sitemap = lazy(() => import("./pages/Sitemap"));
-const SubscriptionPlans = lazy(() => import("./pages/SubscriptionPlans"));
-const SubscriptionManagement = lazy(() => import("./pages/SubscriptionManagement"));
-const CommunityForums = lazy(() => import("./pages/CommunityForums"));
-const SecurityScanner = lazy(() => import("./pages/SecurityScanner"));
-const APIAccess = lazy(() => import("./pages/APIAccess"));
-const MobileApp = lazy(() => import("./pages/MobileApp"));
-const PodcastPlatform = lazy(() => import("./pages/PodcastPlatform"));
-const AdvancedSearch = lazy(() => import("./components/search/AdvancedSearch"));
-const LiveUpdatesFeed = lazy(() => import("./components/live/LiveUpdatesFeed"));
-const AIPulseEngine = lazy(() => import("./components/ai/AIPulseEngine"));
-const SignInSignUp = lazy(() => import("./components/auth/SignInSignUp"));
-const TestFeatures = lazy(() => import("./pages/TestFeatures"));
-
-function RouteFallback() {
-  return (
-    <div className="flex min-h-[40vh] items-center justify-center text-muted-foreground">
-      Loading…
-    </div>
-  );
-}
+import IndexSimple from "./pages/IndexSimple";
+import EnhancedIndex from "./pages/EnhancedIndex";
+import EnhancedIndexSimple from "./pages/EnhancedIndexSimple";
+import Tech from "./pages/Tech";
+import Security from "./pages/Security";
+import Gaming from "./pages/Gaming";
+import Guides from "./pages/Guides";
+import GuideDetail from "./pages/GuideDetail";
+import { SecurityScoreCalculator } from "./components/security/SecurityScoreCalculator";
+import Roadmap from "./pages/Roadmap";
+import BlogSeries from "./pages/BlogSeries";
+import Explore from "./pages/Explore";
+import Topics from "./pages/Topics";
+import Tutorials from "./pages/Tutorials";
+import News from "./pages/News";
+import SubscriptionPlans from "./pages/SubscriptionPlans";
+import SubscriptionManagement from "./pages/SubscriptionManagement";
+import CommunityForums from "./pages/CommunityForums";
+import SecurityScanner from "./pages/SecurityScanner";
+import APIAccess from "./pages/APIAccess";
+import MobileApp from "./pages/MobileApp";
+import PodcastPlatform from "./pages/PodcastPlatform";
+import AdvancedSearch from "./components/search/AdvancedSearch";
+import LiveUpdatesFeed from "./components/live/LiveUpdatesFeed";
+import AIPulseEngine from "./components/ai/AIPulseEngine";
+import SignInSignUp from "./components/auth/SignInSignUp";
+import TestFeatures from "./pages/TestFeatures";
 
 const queryClient = new QueryClient();
 
@@ -79,10 +52,9 @@ const App = () => (
             <TooltipProvider>
               <Toaster />
               <Sonner />
-              <BrowserRouter>
+              <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
                 <GA4PageTracker />
-                <Suspense fallback={<RouteFallback />}>
-                  <Routes>
+                <Routes>
                   <Route path="/" element={<Index />} />
                   <Route path="/simple" element={<IndexSimple />} />
                   <Route path="/enhanced" element={<EnhancedIndex />} />
@@ -122,8 +94,7 @@ const App = () => (
                   <Route path="/test-features" element={<TestFeatures />} />
                   {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                   <Route path="*" element={<NotFound />} />
-                  </Routes>
-                </Suspense>
+                </Routes>
               </BrowserRouter>
             </TooltipProvider>
           </AuthProvider>
