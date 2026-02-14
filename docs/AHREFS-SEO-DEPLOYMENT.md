@@ -5,6 +5,7 @@
 Static files in `public/` are copied to the root of `dist/` at build time. **Your server must serve these as static files**, not through the SPA fallback, so that:
 
 - `GET /robots.txt` → returns `dist/robots.txt` with `Content-Type: text/plain`
+- `GET /ads.txt` → returns `dist/ads.txt` with `Content-Type: text/plain` (required for AdSense)
 - `GET /sitemap.xml` → returns `dist/sitemap.xml` with `Content-Type: application/xml`
 - `GET /sitemap-news.xml` → returns `dist/sitemap-news.xml`
 
@@ -30,6 +31,10 @@ location = /sitemap-news.xml {
     alias /path/to/dist/sitemap-news.xml;
     add_header Content-Type "application/xml; charset=utf-8";
 }
+location = /ads.txt {
+    alias /path/to/dist/ads.txt;
+    add_header Content-Type "text/plain; charset=utf-8";
+}
 ```
 
 ### Apache
@@ -37,9 +42,13 @@ location = /sitemap-news.xml {
 Ensure `.htaccess` or vhost does not rewrite these to `index.html`:
 
 ```apache
-RewriteCond %{REQUEST_URI} ^/(robots\.txt|sitemap.*\.xml)$ [NC]
+RewriteCond %{REQUEST_URI} ^/(robots\.txt|ads\.txt|sitemap.*\.xml)$ [NC]
 RewriteRule ^ - [L]
 ```
+
+## Ads platform (Google AdSense)
+
+- **ads.txt** in `public/ads.txt` is copied to `dist/` and must be served at `https://yourdomain.com/ads.txt` with `Content-Type: text/plain`. Vercel and Netlify headers are set in `vercel.json` and `netlify.toml`. The publisher ID in `public/ads.txt` must match `src/lib/adsenseConfig.ts` and the AdSense script in `index.html` (e.g. `ca-pub-9278124025449370`). Add more lines if you use other ad networks (see [IAB ads.txt](https://iabtechlab.com/ads-txt/)).
 
 ## Sitemap and canonical (fix "Non-canonical page in sitemap")
 
