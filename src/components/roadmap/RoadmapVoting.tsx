@@ -1,6 +1,7 @@
 /**
  * Roadmap Feature Voting Component
  * Allows users to upvote/downvote roadmap features
+ * Hooks are never called conditionally: when Convex is disabled we render a separate subtree.
  */
 
 import { useState, useEffect } from 'react';
@@ -17,24 +18,29 @@ interface RoadmapVotingProps {
   className?: string;
 }
 
-export function RoadmapVoting({ featureId, className }: RoadmapVotingProps) {
-  const { user } = useAuth();
-  const isConvexDisabled = useConvexDisabled();
-  const userId = user?.id || `session-${localStorage.getItem('sessionId') || 'anonymous'}`;
-  
-  const votes = !isConvexDisabled 
-    ? useQuery(api.roadmapVotes.getFeatureVotes, { featureId })
-    : null;
-  const userVote = !isConvexDisabled
-    ? useQuery(api.roadmapVotes.getUserVote, { featureId, userId })
-    : null;
-  const voteMutation = !isConvexDisabled
-    ? useMutation(api.roadmapVotes.vote)
-    : null;
+function DisabledVotingUI({ className }: { className?: string }) {
+  return (
+    <div className={cn('flex items-center gap-2 opacity-50', className)}>
+      <Button variant="outline" size="sm" disabled className="gap-1.5">
+        <ThumbsUp className="h-4 w-4" />
+        <span className="font-semibold">0</span>
+      </Button>
+      <Button variant="outline" size="sm" disabled className="gap-1.5">
+        <ThumbsDown className="h-4 w-4" />
+        <span className="font-semibold">0</span>
+      </Button>
+    </div>
+  );
+}
 
+function RoadmapVotingConvex({ featureId, className }: RoadmapVotingProps) {
+  const { user } = useAuth();
+  const userId = user?.id || `session-${localStorage.getItem('sessionId') || 'anonymous'}`;
+  const votes = useQuery(api.roadmapVotes.getFeatureVotes, { featureId });
+  const userVote = useQuery(api.roadmapVotes.getUserVote, { featureId, userId });
+  const voteMutation = useMutation(api.roadmapVotes.vote);
   const [isVoting, setIsVoting] = useState(false);
 
-  // Initialize session ID if needed
   useEffect(() => {
     if (!localStorage.getItem('sessionId')) {
       localStorage.setItem('sessionId', `session-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`);
@@ -42,16 +48,9 @@ export function RoadmapVoting({ featureId, className }: RoadmapVotingProps) {
   }, []);
 
   const handleVote = async (voteType: 'upvote' | 'downvote') => {
-    if (!voteMutation || isConvexDisabled) {
-      return;
-    }
     setIsVoting(true);
     try {
-      await voteMutation({
-        featureId,
-        userId,
-        voteType,
-      });
+      await voteMutation({ featureId, userId, voteType });
     } catch (error) {
       console.error('Failed to vote:', error);
     } finally {
@@ -61,22 +60,6 @@ export function RoadmapVoting({ featureId, className }: RoadmapVotingProps) {
 
   const upvoted = userVote === 'upvote';
   const downvoted = userVote === 'downvote';
-
-  // Show disabled state if Convex is not available
-  if (isConvexDisabled) {
-    return (
-      <div className={cn('flex items-center gap-2 opacity-50', className)}>
-        <Button variant="outline" size="sm" disabled className="gap-1.5">
-          <ThumbsUp className="h-4 w-4" />
-          <span className="font-semibold">0</span>
-        </Button>
-        <Button variant="outline" size="sm" disabled className="gap-1.5">
-          <ThumbsDown className="h-4 w-4" />
-          <span className="font-semibold">0</span>
-        </Button>
-      </div>
-    );
-  }
 
   return (
     <div className={cn('flex items-center gap-2', className)}>
@@ -118,4 +101,12 @@ export function RoadmapVoting({ featureId, className }: RoadmapVotingProps) {
       )}
     </div>
   );
+}
+
+export function RoadmapVoting({ featureId, className }: RoadmapVotingProps) {
+  const isConvexDisabled = useConvexDisabled();
+  if (isConvexDisabled) {
+    return <DisabledVotingUI className={className} />;
+  }
+  return <RoadmapVotingConvex featureId={featureId} className={className} />;
 }

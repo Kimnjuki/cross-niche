@@ -57,11 +57,40 @@ export function EnhancedShareBar({ article, className, variant = 'inline' }: Enh
     }
   }, [variant]);
 
-  if (!article) return null;
+  // Derive values for hooks (safe when article is null — fixes React #300)
+  const articleUrl = typeof window !== 'undefined' ? window.location.href : '';
+  const articleTitle = article?.title ?? '';
+  const articleExcerpt = (article?.excerpt ?? '').substring(0, 150) + (article?.excerpt ? '...' : '');
 
-  const articleUrl = window.location.href;
-  const articleTitle = article.title ?? '';
-  const articleExcerpt = (article.excerpt ?? '').substring(0, 150) + '...';
+  const handleTextSelection = useCallback(() => {
+    const selection = window.getSelection();
+    if (selection && selection.toString().length > 10) {
+      const selectedText = selection.toString();
+      toast({
+        title: 'Text selected',
+        description: 'Click to tweet this selection',
+        action: (
+          <Button
+            size="sm"
+            onClick={() => {
+              const tweetText = `"${selectedText}" - ${articleTitle}`;
+              const tweetUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(tweetText)}&url=${encodeURIComponent(articleUrl)}&via=TheGridNexus`;
+              window.open(tweetUrl, '_blank', 'width=600,height=400');
+            }}
+          >
+            Tweet Selection
+          </Button>
+        ),
+      });
+    }
+  }, [articleTitle, articleUrl, toast]);
+
+  useEffect(() => {
+    document.addEventListener('selectionchange', handleTextSelection);
+    return () => document.removeEventListener('selectionchange', handleTextSelection);
+  }, [handleTextSelection]);
+
+  if (!article) return null;
 
   const shareUrls = {
     twitter: `https://twitter.com/intent/tweet?text=${encodeURIComponent(articleTitle)}&url=${encodeURIComponent(articleUrl)}&via=TheGridNexus`,
@@ -110,35 +139,6 @@ export function EnhancedShareBar({ article, className, variant = 'inline' }: Enh
     // Mock QR code generation - in real implementation, use a QR code library
     return `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(articleUrl)}`;
   };
-
-  const handleTextSelection = useCallback(() => {
-    const selection = window.getSelection();
-    if (selection && selection.toString().length > 10) {
-      const selectedText = selection.toString();
-      toast({
-        title: 'Text selected',
-        description: 'Click to tweet this selection',
-        action: (
-          <Button
-            size="sm"
-            onClick={() => {
-              const tweetText = `"${selectedText}" - ${articleTitle}`;
-              const tweetUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(tweetText)}&url=${encodeURIComponent(articleUrl)}&via=TheGridNexus`;
-              window.open(tweetUrl, '_blank', 'width=600,height=400');
-            }}
-          >
-            Tweet Selection
-          </Button>
-        ),
-      });
-    }
-  }, [articleTitle, articleUrl, toast]);
-
-  // Text selection listener
-  useEffect(() => {
-    document.addEventListener('selectionchange', handleTextSelection);
-    return () => document.removeEventListener('selectionchange', handleTextSelection);
-  }, [handleTextSelection]);
 
   if (variant === 'floating' && !isVisible) return null;
 

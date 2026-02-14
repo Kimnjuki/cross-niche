@@ -53,13 +53,10 @@ const getArticleId = (a: ArticleType | null | undefined): string =>
   (a as ArticleType & { _id?: string })?._id ?? a?.id ?? a?.slug ?? '';
 
 export default function Article() {
-  const { id } = useParams<{ id: string }>();
-  const slugOrId = (id ?? '').trim();
-  
-  // 1. EARLY RETURN IF NO SLUG/ID (before any other hooks that depend on the data)
-  if (!slugOrId) return null;
+  const params = useParams<{ slug?: string; id?: string }>();
+  const slugOrId = (params.slug ?? params.id ?? '').trim();
 
-  // 1. ALL DATA FETCHING HOOKS FIRST (unconditionally, before any conditional returns)
+  // All hooks must run unconditionally (no early return before hooks — fixes React #300)
   const { data: contentData, isLoading } = useContentBySlug(slugOrId, { enabled: slugOrId.length > 0 });
   const feedSlug = contentData?.feed_slug ?? '';
   const { data: relatedContent } = useContentByFeed(feedSlug, 4);
@@ -176,7 +173,7 @@ export default function Article() {
     );
   }
 
-  // 10. SAFE DERIVED VALUES (article is guaranteed to exist here)
+  // 11. SAFE DERIVED VALUES (article is guaranteed to exist here)
   const safeNiche: 'tech' | 'security' | 'gaming' =
     article.niche === 'tech' || article.niche === 'security' || article.niche === 'gaming'
       ? article.niche

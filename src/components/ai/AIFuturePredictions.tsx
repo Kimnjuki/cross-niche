@@ -40,6 +40,18 @@ export function AIFuturePredictions({ items }: AIFuturePredictionsProps) {
       });
   }, [items]);
 
+  const groupedByTimeframe = useMemo(() => {
+    const groups: Record<string, typeof predictions> = {
+      short: [],
+      medium: [],
+      long: [],
+    };
+    predictions.forEach((pred) => {
+      groups[pred.prediction.timeframe].push(pred);
+    });
+    return groups;
+  }, [predictions]);
+
   if (predictions.length === 0) {
     return (
       <div className="space-y-4">
@@ -58,20 +70,6 @@ export function AIFuturePredictions({ items }: AIFuturePredictionsProps) {
       </div>
     );
   }
-
-  const groupedByTimeframe = useMemo(() => {
-    const groups: Record<string, typeof predictions> = {
-      short: [],
-      medium: [],
-      long: [],
-    };
-
-    predictions.forEach((pred) => {
-      groups[pred.prediction.timeframe].push(pred);
-    });
-
-    return groups;
-  }, [predictions]);
 
   return (
     <div className="space-y-6">
