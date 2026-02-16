@@ -84,6 +84,46 @@ After marking 1–2 as Key events (e.g. `view_item`, `generate_lead`), “Key ev
 
 ---
 
+## Landing page engagement, funnels & bottlenecks (GA recommendations)
+
+The platform sends events so you can act on GA’s guidance: underperforming landing pages, user flow, content gaps, and drop-offs.
+
+### Landing page engagement
+
+- **Reports → Engagement → Landing page** (or **Pages and screens** with dimension **Landing page**): find pages with low average engagement time.
+- The app sends **`landing_page_engagement`** with `page_path`, `page_type` (homepage/category), `time_on_page`, **`engagement_time_msec`**, and `scroll_depth` when users stay 30s or leave. Use these to see which landing pages underperform and optimize content/UX there.
+- **`listing_page_view`** fires on `/`, `/tech`, `/security`, `/gaming`, `/news` so listing/landing behavior is visible in reports.
+
+### User flow and path exploration
+
+- **Explore → Path exploration**: see paths users take (e.g. Homepage → Tech → Article). Events like **`listing_page_view`**, **`page_view`**, **`view_item`** and **`landing_page_engagement`** feed into this so you can spot friction and drop-off.
+- Use Path exploration to see what users do after landing and whether they take the desired actions.
+
+### Content gaps: search (view_search_results)
+
+- **Reports → Engagement → Events** → filter by **`view_search_results`** (and **`view_search_results_meta`** with `results_count`) to see what users search for.
+- Fires when users see search results on **Advanced Search** (`/search`) and **Topics** (`/topics?q=...`). Use this to find content gaps and improve navigation and content.
+
+### Funnel Exploration and bottlenecks
+
+- **Reports → Explore → Funnel exploration** (or **Conversions → Funnels**): build a funnel with steps such as:
+  1. **`listing_page_view`** (or **Landing page** = your homepage/category)
+  2. **`view_item`** (article view)
+  3. **`generate_lead`** (e.g. newsletter)
+- Pinpoint where users drop off and improve those steps (copy, layout, technical).
+- **Reports → Life cycle → Engagement → Pages and screens**: find pages with low engagement rate, low user count, or low sessions and improve or fix those pages.
+
+### Technical performance
+
+- Slow loads are a common bottleneck. Use **GA4 Speed suggestions** (if enabled) and **PageSpeed Insights** to find and fix slow pages.
+- The app sends **Core Web Vitals** (LCP, INP, CLS) to GA4; use **Reports → Engagement → Events** (e.g. `core_web_vital`, `inp_measurement`) to segment by performance.
+
+### User explorer
+
+- **Explore → User explorer**: inspect individual user journeys. All events above (page_view, listing_page_view, view_item, view_search_results, etc.) are available per user to troubleshoot issues and understand high-value behavior.
+
+---
+
 ## Checklist After Deployment
 
 - [ ] Set `VITE_GA4_MEASUREMENT_ID` in production env (e.g. in Vercel/Netlify) so the built site uses your property.

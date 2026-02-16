@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { Layout } from '@/components/layout/Layout';
 import { Link, useSearchParams, useNavigate } from 'react-router-dom';
 import { TrendingTopicsWidget } from '@/components/home/TrendingTopicsWidget';
@@ -17,6 +17,7 @@ import { Progress } from '@/components/ui/progress';
 import { formatRelativeTime } from '@/lib/timeUtils';
 import { cn } from '@/lib/utils';
 import { motion } from 'framer-motion';
+import { trackViewSearchResults } from '@/lib/analytics/ga4';
 import type { Article } from '@/types';
 
 // High-volume keywords organized by category
@@ -185,6 +186,13 @@ export default function Topics() {
       navigate(`/topics?q=${encodeURIComponent(searchInput.trim())}`);
     }
   };
+
+  // GA4 view_search_results: content gap analysis (Reports > Engagement > Events)
+  useEffect(() => {
+    if (query.trim()) {
+      trackViewSearchResults(query, processedArticles.length);
+    }
+  }, [query, processedArticles.length]);
 
   const clearSearch = () => {
     setSearchInput('');

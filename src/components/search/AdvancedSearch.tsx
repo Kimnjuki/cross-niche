@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { 
-  Search, 
-  Filter, 
-  Calendar, 
-  Tag, 
+import {
+  Search,
+  Filter,
+  Calendar,
+  Tag,
   TrendingUp,
   Clock,
   Eye,
@@ -12,6 +12,7 @@ import {
 } from 'lucide-react';
 import { GlassCard } from '@/components/design-system/GlassCard';
 import { cn } from '@/lib/utils';
+import { trackViewSearchResults } from '@/lib/analytics/ga4';
 
 interface SearchFilters {
   category: string[];
@@ -124,6 +125,7 @@ export const AdvancedSearch: React.FC = () => {
     
     setResults(mockResults);
     setLoading(false);
+    trackViewSearchResults(searchQuery, mockResults.length);
   };
 
   // Get search suggestions

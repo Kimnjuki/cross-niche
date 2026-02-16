@@ -112,7 +112,8 @@ function getContentGroup(path: string): string {
 }
 
 /**
- * Track landing page engagement (for category/homepage pages)
+ * Track landing page engagement (for category/homepage pages).
+ * Use GA4 Reports > Engagement > Landing page to find underperforming pages.
  */
 export function trackLandingPageEngagement(
   pagePath: string,
@@ -123,14 +124,29 @@ export function trackLandingPageEngagement(
     scrollDepth?: number;
   }
 ) {
+  const timeOnPage = engagementData?.timeOnPage ?? 0;
   trackEvent('landing_page_engagement', {
     page_path: pagePath,
     page_type: pageType,
     content_group: getContentGroup(pagePath),
     articles_viewed: engagementData?.articlesViewed || 0,
-    time_on_page: engagementData?.timeOnPage || 0,
+    time_on_page: timeOnPage,
+    engagement_time_msec: timeOnPage * 1000,
     scroll_depth: engagementData?.scrollDepth || 0,
     event_label: pagePath,
+  });
+}
+
+/**
+ * Track listing page view (homepage, category list). For Funnel Exploration: step "Listing view".
+ */
+export function trackListingPageView(path: string) {
+  trackEvent('listing_page_view', {
+    page_path: path,
+    content_group: getContentGroup(path),
+    page_type: path === '/' ? 'homepage' : 'category',
+    event_category: 'funnel',
+    event_label: path,
   });
 }
 
@@ -324,13 +340,32 @@ export function trackRelatedArticleClick(
 }
 
 /**
- * Track search queries
+ * Track search queries (custom event).
  */
 export function trackSearch(query: string, resultsCount?: number) {
   trackEvent('search', {
     search_term: query,
     results_count: resultsCount || 0,
-    event_label: `Search: ${query}`
+    event_label: `Search: ${query}`,
+  });
+  trackViewSearchResults(query, resultsCount ?? 0);
+}
+
+/**
+ * GA4 recommended event: view_search_results. Use Reports > Engagement > Events
+ * to see what users search for → content gaps and navigation improvements.
+ */
+export function trackViewSearchResults(searchTerm: string, resultsCount: number) {
+  if (typeof window === 'undefined' || !window.gtag) return;
+  window.gtag('event', 'view_search_results', {
+    search_term: searchTerm,
+    event_category: 'search',
+    event_label: searchTerm,
+  });
+  trackEvent('view_search_results_meta', {
+    search_term: searchTerm,
+    results_count: resultsCount,
+    event_label: searchTerm,
   });
 }
 
