@@ -30,7 +30,7 @@ export default function Security() {
         title="Cybersecurity News & Threat Intelligence | The Grid Nexus"
         description="Critical security news, threat intelligence, and protection guides. Stay informed about the latest vulnerabilities and how to protect your digital life."
         keywords={['cybersecurity', 'security news', 'threat intelligence', 'cyber threats', 'data privacy', 'network security']}
-        url={window.location.href}
+        url={typeof window !== 'undefined' ? `${window.location.origin}/security` : '/security'}
         type="website"
       />
       <div className="container mx-auto px-4 py-12">
@@ -50,13 +50,15 @@ export default function Security() {
               Critical cybersecurity news, threat intelligence, and protection strategies to keep you informed and secure. We analyze the latest vulnerabilities, data breaches, and security incidents, providing actionable guidance for individuals and organizations navigating an increasingly complex threat landscape.
             </p>
             <p className="text-base text-muted-foreground">
-              From zero-day exploits and ransomware attacks to privacy regulations and security best practices, our coverage helps you understand emerging threats and implement effective defenses. Explore our interactive breach simulations, security guides, and expert analysis to strengthen your digital security posture.
+              From zero-day exploits and ransomware attacks to privacy regulations and security best practices, our coverage helps you understand emerging threats and implement effective defenses. Explore our interactive breach simulations, security guides, and expert analysis to strengthen your digital security posture. For official guidance on threats and hardening, see <a href="https://www.cisa.gov/" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">CISA</a> (Cybersecurity and Infrastructure Security Agency).
             </p>
           </div>
           <div className="mt-6 flex flex-wrap gap-4 text-sm">
             <Link to="/topics?q=cybersecurity" className="text-primary hover:underline">Cybersecurity Topics</Link>
             <span className="text-muted-foreground">•</span>
             <Link to="/topics?q=data+privacy" className="text-primary hover:underline">Data Privacy</Link>
+            <span className="text-muted-foreground">•</span>
+            <Link to="/security-score" className="text-primary hover:underline">Security Score</Link>
             <span className="text-muted-foreground">•</span>
             <Link to="/guides" className="text-primary hover:underline">Security Guides</Link>
             <span className="text-muted-foreground">•</span>
