@@ -1,8 +1,23 @@
-import { defineConfig, type ConfigEnv } from "vite";
+import { defineConfig, type ConfigEnv, loadEnv } from "vite";
 import react from "@vitejs/plugin-react-swc";
 import path from "path";
 import fs from "fs";
 import { componentTagger } from "lovable-tagger";
+
+/** Injects VITE_GA4_MEASUREMENT_ID into index.html at build (from .env). */
+function injectGa4Id(mode: string) {
+  return {
+    name: "inject-ga4-id",
+    transformIndexHtml: {
+      order: "pre",
+      handler(html: string) {
+        const env = loadEnv(mode, process.cwd(), "");
+        const gaId = env.VITE_GA4_MEASUREMENT_ID || "G-TJ1VXE91NE";
+        return html.replace(/%VITE_GA4_MEASUREMENT_ID%/g, gaId);
+      },
+    },
+  };
+}
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }: ConfigEnv) => {
@@ -33,6 +48,7 @@ export default defineConfig(({ mode }: ConfigEnv) => {
   }
 
   const plugins = [
+    injectGa4Id(mode),
     react(),
     mode === "development" && componentTagger(),
   ];

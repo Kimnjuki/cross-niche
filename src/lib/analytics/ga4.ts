@@ -288,7 +288,7 @@ export function trackNewsletterSignup(source?: string) {
 }
 
 /**
- * Track article view - GA4 recommended view_item for content
+ * Track article view - GA4 recommended view_item for content (mark as Key event in GA4 UI).
  */
 export function trackArticleView(articleId: string, articleTitle: string, niche?: string) {
   trackEvent('view_item', {
@@ -379,6 +379,25 @@ export function trackConversion(conversionName: string, value?: number, currency
   });
 }
 
+/** Fired once per session when user has been on site 10+ seconds (GA4 engaged-session threshold). */
+let engagedSessionEventFired = false;
+
+/**
+ * Fire engaged-session event at 10s so GA4 can count Engaged sessions and you can mark it as a Key event.
+ */
+function trackEngagedSessionThreshold() {
+  if (typeof window === 'undefined' || engagedSessionEventFired) return;
+  setTimeout(() => {
+    if (engagedSessionEventFired) return;
+    engagedSessionEventFired = true;
+    trackEvent('user_engagement', {
+      engagement_time_msec: 10000,
+      event_category: 'engagement',
+      event_label: '10s_engaged_session',
+    });
+  }, 10000);
+}
+
 /**
  * Initialize all tracking
  */
@@ -388,6 +407,7 @@ export function initAllTracking() {
   initGA4();
   trackScrollDepth();
   trackExternalLinks();
+  trackEngagedSessionThreshold();
 
   // Track initial page view
   trackPageView(window.location.pathname, document.title);

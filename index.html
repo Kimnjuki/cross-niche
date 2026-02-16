@@ -10,11 +10,11 @@
         if (!isLocal) {
           var s = document.createElement('script');
           s.async = true;
-          s.src = 'https://www.googletagmanager.com/gtag/js?id=G-TJ1VXE91NE';
+          s.src = 'https://www.googletagmanager.com/gtag/js?id=%VITE_GA4_MEASUREMENT_ID%';
           s.onerror = function() {};
           document.head.appendChild(s);
           gtag('js', new Date());
-          gtag('config', 'G-TJ1VXE91NE');
+          gtag('config', '%VITE_GA4_MEASUREMENT_ID%');
         }
       } catch (e) {}
     </script>
