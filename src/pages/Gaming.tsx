@@ -35,7 +35,7 @@ export default function Gaming() {
         title="Gaming News & Reviews | The Grid Nexus"
         description="Your ultimate gaming destination. Reviews, news, esports coverage, and exclusive security ratings for every game."
         keywords={['gaming news', 'game reviews', 'esports', 'gaming hardware', 'gaming security', 'game ratings']}
-        url={window.location.href}
+        url={typeof window !== 'undefined' ? `${window.location.origin}/gaming` : '/gaming'}
         type="website"
       />
       <div className="container mx-auto px-4 py-12">
@@ -46,8 +46,8 @@ export default function Gaming() {
               <Gamepad2 className="h-8 w-8 text-white" />
             </div>
             <div>
-              <h1 className="font-display font-bold text-4xl text-gaming">Play</h1>
-              <p className="text-muted-foreground">Gaming & Esports</p>
+              <h1 className="font-display font-bold text-4xl text-gaming">Gaming – News, Reviews & Esports</h1>
+              <p className="text-muted-foreground">Play. Explore. Stay secure.</p>
             </div>
           </div>
           <div className="prose prose-lg max-w-2xl">
@@ -55,7 +55,7 @@ export default function Gaming() {
               Your ultimate destination for gaming news, reviews, esports coverage, and exclusive security ratings. We cover everything from AAA releases and indie gems to gaming hardware, industry trends, and the intersection of gaming and cybersecurity.
             </p>
             <p className="text-base text-muted-foreground">
-              Beyond reviews and news, we provide unique insights into gaming security practices, data privacy, and account protection. Our Nexus Security Score rates every game's security posture, helping you make informed decisions about which games protect your data and privacy. Whether you're a casual player or competitive esports enthusiast, find the coverage you need here.
+              Beyond reviews and news, we provide unique insights into gaming security practices, data privacy, and account protection. Our Nexus Security Score rates every game's security posture, helping you make informed decisions about which games protect your data and privacy. Whether you're a casual player or competitive esports enthusiast, find the coverage you need here. For industry trends and market data, see the <a href="https://www.theesa.com/" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">Entertainment Software Association</a>.
             </p>
           </div>
           <div className="mt-6 flex flex-wrap gap-4 text-sm">
