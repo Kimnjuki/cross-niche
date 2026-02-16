@@ -3,6 +3,19 @@
   publish = "dist"
   command = "npm run build"
 
+# 301 redirect: www to non-www (avoids duplicate content; Seobility)
+[[redirects]]
+  from = "https://www.thegridnexus.com/*"
+  to = "https://thegridnexus.com/:splat"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "http://www.thegridnexus.com/*"
+  to = "https://thegridnexus.com/:splat"
+  status = 301
+  force = true
+
 # Headers for SEO crawlers (Ahrefs health: correct content types)
 [[headers]]
   for = "/robots.txt"

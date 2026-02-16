@@ -46,6 +46,19 @@ RewriteCond %{REQUEST_URI} ^/(robots\.txt|ads\.txt|sitemap.*\.xml)$ [NC]
 RewriteRule ^ - [L]
 ```
 
+## www vs non-www (301 redirects, Seobility)
+
+Use a single canonical host to avoid duplicate content. Redirect **www** to **non-www** (e.g. `https://www.thegridnexus.com` → `https://thegridnexus.com`) with **301**:
+
+- **Vercel**: `vercel.json` includes a redirect when `host` is `www.thegridnexus.com` to `https://thegridnexus.com/:path*` with `statusCode: 301`.
+- **Netlify**: `netlify.toml` has `[[redirects]]` for `https://www.thegridnexus.com/*` and `http://www.thegridnexus.com/*` to `https://thegridnexus.com/:splat` with `status = 301`.
+
+Ensure both www and non-www are added to your project domains so the redirect is applied.
+
+## Language markup (Seobility)
+
+Use **ISO 639-1** language codes in markup: `<html lang="en">`, `<meta name="language" content="en">`, and optionally `<meta http-equiv="Content-Language" content="en">`. Avoid full names like `"English"` in meta tags.
+
 ## Ads platform (Google AdSense)
 
 - **ads.txt** in `public/ads.txt` is copied to `dist/` and must be served at `https://yourdomain.com/ads.txt` with `Content-Type: text/plain`. Vercel and Netlify headers are set in `vercel.json` and `netlify.toml`. The publisher ID in `public/ads.txt` must match `src/lib/adsenseConfig.ts` and the AdSense script in `index.html` (e.g. `ca-pub-9278124025449370`). Add more lines if you use other ad networks (see [IAB ads.txt](https://iabtechlab.com/ads-txt/)).

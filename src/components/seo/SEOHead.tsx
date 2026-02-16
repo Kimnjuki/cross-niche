@@ -97,7 +97,7 @@ export function SEOHead({
     updateMetaTag('revisit-after', '1 days');
     updateMetaTag('distribution', 'global');
     updateMetaTag('rating', 'general');
-    updateMetaTag('language', 'English');
+    updateMetaTag('language', 'en');
     updateMetaTag('copyright', 'The Grid Nexus');
 
     // Open Graph tags (complete set for Ahrefs/social)
