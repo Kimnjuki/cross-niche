@@ -24,6 +24,13 @@ const navLinks = [
   { href: '/roadmap', label: 'Roadmap', color: 'text-foreground' },
 ];
 
+/** Primary CTAs for mobile: Tech, Security, Gaming first to reduce bounce and improve navigation. */
+const mobilePrimaryLinks = [
+  { href: '/tech', label: 'Tech', color: 'text-tech' },
+  { href: '/security', label: 'Security', color: 'text-security' },
+  { href: '/gaming', label: 'Gaming', color: 'text-gaming' },
+];
+
 const roleFilters = [
   { id: 'all', label: 'All Roles' },
   { id: 'streamer', label: 'Streamer' },
@@ -164,10 +171,13 @@ export function Navbar() {
               )}
             </div>
 
-            {/* Mobile Menu Button */}
+            {/* Mobile Menu Button – 44px min tap target (GA mobile UX) */}
             <button
-              className="md:hidden p-2"
+              type="button"
+              className="md:hidden min-h-[44px] min-w-[44px] flex items-center justify-center rounded-md -mr-2"
               onClick={() => setIsOpen(!isOpen)}
+              aria-label={isOpen ? 'Close menu' : 'Open menu'}
+              aria-expanded={isOpen}
             >
               {isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
             </button>
@@ -227,10 +237,27 @@ export function Navbar() {
             </div>
           )}
 
-          {/* Mobile Navigation */}
+          {/* Mobile Navigation – simplified, 44px tap targets, primary CTAs first (GA mobile) */}
           {isOpen && (
             <div className="md:hidden py-4 border-t border-border animate-fade-in">
+              <p className="px-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-3">Explore</p>
+              <div className="flex flex-col gap-1 mb-4">
+                {mobilePrimaryLinks.map((link) => (
+                  <Link
+                    key={link.href}
+                    to={link.href}
+                    onClick={() => setIsOpen(false)}
+                    className={cn(
+                      'min-h-[44px] flex items-center font-semibold text-base px-3 rounded-md active:bg-muted',
+                      location.pathname === link.href ? link.color : 'text-foreground'
+                    )}
+                  >
+                    {link.label}
+                  </Link>
+                ))}
+              </div>
               <form onSubmit={handleSearchSubmit} className="px-2 pb-4 border-b border-border/50 mb-4">
+                <label htmlFor="navbar-search-mobile" className="sr-only">Search topics</label>
                 <div className="flex gap-2">
                   <input
                     type="search"
@@ -239,20 +266,21 @@ export function Navbar() {
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                     placeholder="Search topics..."
-                    className="flex-1 h-9 rounded-md border border-input bg-background px-3 py-1 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+                    className="flex-1 min-h-[44px] text-base rounded-md border border-input bg-background px-3 py-2 ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
                     aria-label="Mobile search"
+                    autoComplete="off"
                   />
-                  <Button type="submit" size="sm">Search</Button>
+                  <Button type="submit" size="sm" className="min-h-[44px] shrink-0">Search</Button>
                 </div>
               </form>
-              <div className="flex flex-col gap-4">
-                {navLinks.map((link) => (
+              <div className="flex flex-col gap-1">
+                {navLinks.filter((l) => !mobilePrimaryLinks.some((p) => p.href === l.href)).map((link) => (
                   <Link
                     key={link.href}
                     to={link.href}
                     onClick={() => setIsOpen(false)}
                     className={cn(
-                      'font-medium py-2',
+                      'min-h-[44px] flex items-center font-medium text-base px-3 rounded-md active:bg-muted',
                       location.pathname === link.href ? link.color : 'text-muted-foreground'
                     )}
                   >
@@ -261,19 +289,13 @@ export function Navbar() {
                 ))}
                 {user ? (
                   <>
-                    <Link to="/profile" onClick={() => setIsOpen(false)} className="py-2">
-                      Profile
-                    </Link>
-                    <Link to="/bookmarks" onClick={() => setIsOpen(false)} className="py-2">
-                      Bookmarks
-                    </Link>
-                    <button onClick={() => { logout(); setIsOpen(false); }} className="py-2 text-left text-destructive">
-                      Logout
-                    </button>
+                    <Link to="/profile" onClick={() => setIsOpen(false)} className="min-h-[44px] flex items-center px-3 rounded-md active:bg-muted text-base">Profile</Link>
+                    <Link to="/bookmarks" onClick={() => setIsOpen(false)} className="min-h-[44px] flex items-center px-3 rounded-md active:bg-muted text-base">Bookmarks</Link>
+                    <button type="button" onClick={() => { logout(); setIsOpen(false); }} className="min-h-[44px] flex items-center px-3 rounded-md text-left text-destructive text-base">Logout</button>
                   </>
                 ) : (
-                  <Link to="/auth" onClick={() => setIsOpen(false)}>
-                    <Button className="w-full">Sign In</Button>
+                  <Link to="/auth" onClick={() => setIsOpen(false)} className="min-h-[44px] flex items-center mt-2">
+                    <Button className="w-full min-h-[44px] text-base">Sign In</Button>
                   </Link>
                 )}
               </div>

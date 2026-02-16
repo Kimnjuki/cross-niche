@@ -415,6 +415,24 @@
     }
   }
 
+  /* Mobile UX (GA recommendations): prevent iOS zoom on input focus, improve tap targets */
+  @media (max-width: 768px) {
+    input,
+    select,
+    textarea {
+      font-size: 16px !important;
+    }
+  }
+}
+
+@layer utilities {
+  .min-tap-target {
+    min-height: 44px;
+    min-width: 44px;
+  }
+}
+
+@layer base {
   /* Print styles for better printing experience */
   @media print {
     * {

@@ -295,6 +295,7 @@ export default function Auth() {
                       onChange={(e) => setName(e.target.value)}
                       required={!isLogin}
                       className="pl-10"
+                      autoComplete="name"
                     />
                   </div>
                 </div>
@@ -328,6 +329,7 @@ export default function Auth() {
                       required
                       minLength={6}
                       className="pl-10 pr-10"
+                      autoComplete={mode === 'reset-password' ? 'new-password' : isLogin ? 'current-password' : 'new-password'}
                     />
                     <button
                       type="button"
@@ -353,6 +355,7 @@ export default function Auth() {
                       required
                       minLength={6}
                       className="pl-10 pr-10"
+                      autoComplete="new-password"
                     />
                     <button
                       type="button"

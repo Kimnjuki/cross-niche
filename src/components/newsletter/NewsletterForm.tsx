@@ -132,11 +132,13 @@ export function NewsletterForm({ variant = 'default' }: NewsletterFormProps) {
             placeholder="Enter your email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="flex-1"
+            className="flex-1 min-h-[44px]"
             required
+            autoComplete="email"
+            inputMode="email"
           />
         </div>
-        <Button type="submit" size="lg" disabled={isSubmitting} className="h-12">
+        <Button type="submit" size="lg" disabled={isSubmitting} className="h-12 min-h-[44px]">
           {isSubmitting ? 'Subscribing...' : 'Subscribe'}
         </Button>
       </form>
@@ -153,10 +155,12 @@ export function NewsletterForm({ variant = 'default' }: NewsletterFormProps) {
           placeholder="Enter your email address"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          className="flex-1 h-12"
+          className="flex-1 h-12 min-h-[44px]"
           required
+          autoComplete="email"
+          inputMode="email"
         />
-        <Button type="submit" size="lg" disabled={isSubmitting} className="h-12 px-8">
+        <Button type="submit" size="lg" disabled={isSubmitting} className="h-12 min-h-[44px] px-8">
           {isSubmitting ? 'Subscribing...' : 'Subscribe'}
         </Button>
       </form>
@@ -173,10 +177,12 @@ export function NewsletterForm({ variant = 'default' }: NewsletterFormProps) {
           placeholder="your@email.com"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          className="flex-1 h-10"
+          className="flex-1 min-h-[44px]"
           required
+          autoComplete="email"
+          inputMode="email"
         />
-        <Button type="submit" size="sm" disabled={isSubmitting}>
+        <Button type="submit" size="sm" disabled={isSubmitting} className="min-h-[44px]">
           {isSubmitting ? <Check className="h-4 w-4" /> : 'Join'}
         </Button>
       </form>
@@ -196,8 +202,10 @@ export function NewsletterForm({ variant = 'default' }: NewsletterFormProps) {
               placeholder="Enter your email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full"
+              className="w-full min-h-[44px]"
               required
+              autoComplete="email"
+              inputMode="email"
             />
           </div>
 
@@ -356,7 +364,10 @@ export function NewsletterForm({ variant = 'default' }: NewsletterFormProps) {
           placeholder="Enter your email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
+          className="min-h-[44px]"
           required
+          autoComplete="email"
+          inputMode="email"
         />
 
         <div className="flex gap-2">

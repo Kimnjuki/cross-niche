@@ -117,6 +117,36 @@ export default function Index() {
         </div>
       </section>
 
+      {/* Mobile-only: Quick explore CTAs above the fold to reduce bounce (GA mobile recommendations) */}
+      <section className="md:hidden border-b border-border/50 bg-background" aria-label="Quick explore">
+        <div className="container mx-auto px-4 py-4 max-w-7xl">
+          <p className="text-sm font-medium text-muted-foreground mb-3">Explore by topic</p>
+          <div className="grid grid-cols-3 gap-3">
+            <Link
+              to="/tech"
+              className="min-h-[48px] flex items-center justify-center gap-1.5 rounded-lg border border-border bg-card px-3 py-3 text-sm font-semibold text-tech hover:bg-tech/10 hover:border-tech/30 transition-colors"
+            >
+              Tech
+              <ChevronRight className="h-4 w-4 shrink-0" />
+            </Link>
+            <Link
+              to="/security"
+              className="min-h-[48px] flex items-center justify-center gap-1.5 rounded-lg border border-border bg-card px-3 py-3 text-sm font-semibold text-security hover:bg-security/10 hover:border-security/30 transition-colors"
+            >
+              Security
+              <ChevronRight className="h-4 w-4 shrink-0" />
+            </Link>
+            <Link
+              to="/gaming"
+              className="min-h-[48px] flex items-center justify-center gap-1.5 rounded-lg border border-border bg-card px-3 py-3 text-sm font-semibold text-gaming hover:bg-gaming/10 hover:border-gaming/30 transition-colors"
+            >
+              Gaming
+              <ChevronRight className="h-4 w-4 shrink-0" />
+            </Link>
+          </div>
+        </div>
+      </section>
+
       {/* Breaking News Banner */}
       <section className="border-b border-border bg-destructive/10">
         <div className="container mx-auto px-4 py-3 max-w-7xl">
