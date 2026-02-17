@@ -185,6 +185,10 @@ body {
               color var(--duration-normal) var(--ease-standard);
 }
 
+.gradient-nexus-intelligence {
+  background: linear-gradient(90deg, #00E5FF 0%, #3B82F6 40%, #A855F7 100%);
+}
+
 #root {
   min-height: 100%;
 }

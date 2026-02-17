@@ -20,6 +20,7 @@ import { LandingPageTracker } from '@/components/analytics/LandingPageTracker';
 import { BreakingNewsSection } from '@/components/home/BreakingNewsSection';
 import { LiveFeedWidget } from '@/components/home/LiveFeedWidget';
 import { NewsFeed } from '@/components/news/NewsFeed';
+import { NewsGrid } from '@/components/news/NewsGrid';
 import { EnhancedSearch } from '@/components/search/EnhancedSearch';
 import { NewsletterForm } from '@/components/newsletter/NewsletterForm';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -187,7 +188,9 @@ export default function Index() {
                         Featured Intelligence
                       </span>
                       <h1 className="font-display font-extrabold text-2xl md:text-4xl lg:text-5xl leading-tight drop-shadow-lg line-clamp-2">
-                        {topStory.title}
+                        <span className="text-transparent bg-clip-text gradient-nexus-intelligence">
+                          {topStory.title}
+                        </span>
                       </h1>
                       <p className="text-sm md:text-base text-white/85 max-w-2xl line-clamp-3">
                         {topStory.excerpt}
@@ -256,6 +259,12 @@ export default function Index() {
       <section className="border-b border-border bg-muted/5" aria-label="Live Wire news feed">
         <div className="container mx-auto px-4 max-w-7xl">
           <NewsFeed limit={9} title="Live Wire" showTitle />
+        </div>
+      </section>
+
+      <section className="border-b border-border bg-background" aria-label="Nexus Intelligence grid">
+        <div className="container mx-auto px-4 max-w-7xl">
+          <NewsGrid limit={12} />
         </div>
       </section>
 
