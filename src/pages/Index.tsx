@@ -19,12 +19,12 @@ import { SEOHead } from '@/components/seo/SEOHead';
 import { LandingPageTracker } from '@/components/analytics/LandingPageTracker';
 import { BreakingNewsSection } from '@/components/home/BreakingNewsSection';
 import { LiveFeedWidget } from '@/components/home/LiveFeedWidget';
-import { MasterBentoHero } from '@/components/home/MasterBentoHero';
 import { NewsFeed } from '@/components/news/NewsFeed';
 import { EnhancedSearch } from '@/components/search/EnhancedSearch';
 import { NewsletterForm } from '@/components/newsletter/NewsletterForm';
 import { Skeleton } from '@/components/ui/skeleton';
 import { LazyImage } from '@/components/ui/lazy-image';
+import { ImageOverlay } from '@/components/ui/ImageOverlay';
 import { formatRelativeTime } from '@/lib/timeUtils';
 import { mapContentToArticles } from '@/lib/contentMapper';
 import { mockArticles } from '@/data/mockData';
@@ -167,14 +167,89 @@ export default function Index() {
       </section>
 
       {topStory && (
-        <section className="py-6 md:py-8">
-          <MasterBentoHero
-            mainStory={topStory}
-            securityCell={securityArticles[0] ? { article: securityArticles[0], label: 'Secured', badgeClass: 'bg-security/90 text-security-foreground' } : undefined}
-            gamingCell={gamingArticles[0] ? { article: gamingArticles[0], label: 'Play', badgeClass: 'bg-gaming/90 text-gaming-foreground' } : undefined}
-            bottomLeft={sortedArticles[4] ? { article: sortedArticles[4], label: techArticles[1] ? 'Tech' : securityArticles[1] ? 'Security' : 'Gaming', badgeClass: 'bg-tech/90 text-tech-foreground' } : undefined}
-            bottomRight={sortedArticles[5] ? { article: sortedArticles[5], label: gamingArticles[1] ? 'Gaming' : techArticles[1] ? 'Tech' : 'Security', badgeClass: 'bg-gaming/90 text-gaming-foreground' } : undefined}
-          />
+        <section className="py-8">
+          <div className="container mx-auto px-4 max-w-7xl">
+            <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
+              {/* Featured story – spans 8 columns, 600px height on desktop */}
+              <article className="md:col-span-8 h-[420px] md:h-[600px]">
+                <Link to={articleLink(topStory)} className="block h-full group">
+                  <ImageOverlay
+                    src={topStory.imageUrl}
+                    alt={topStory.title}
+                    width={960}
+                    height={600}
+                    aspectRatio="16/9"
+                    className="h-full"
+                  >
+                    <div className="pointer-events-auto text-white space-y-2">
+                      <span className="inline-flex items-center gap-2 text-[11px] font-semibold tracking-[0.18em] uppercase text-cyan-300">
+                        <span className="inline-block w-1.5 h-1.5 rounded-full bg-cyan-300 animate-pulse" />
+                        Featured Intelligence
+                      </span>
+                      <h1 className="font-display font-extrabold text-2xl md:text-4xl lg:text-5xl leading-tight drop-shadow-lg line-clamp-2">
+                        {topStory.title}
+                      </h1>
+                      <p className="text-sm md:text-base text-white/85 max-w-2xl line-clamp-3">
+                        {topStory.excerpt}
+                      </p>
+                      <div className="flex flex-wrap items-center gap-3 text-[11px] md:text-xs text-white/80">
+                        <span className="flex items-center gap-1.5">
+                          <User className="h-3.5 w-3.5" />
+                          {topStory.author}
+                        </span>
+                        <span className="flex items-center gap-1.5">
+                          <Clock className="h-3.5 w-3.5" />
+                          {formatRelativeTime(
+                            typeof topStory.publishedAt === 'number'
+                              ? new Date(topStory.publishedAt).toISOString()
+                              : String(topStory.publishedAt ?? '')
+                          )}{' '}
+                          · {topStory.readTime ?? 5} min read
+                        </span>
+                      </div>
+                    </div>
+                  </ImageOverlay>
+                </Link>
+              </article>
+
+              {/* Security Alerts stack – spans 4 columns, 3 cards tall */}
+              <aside className="md:col-span-4 h-[420px] md:h-[600px] grid grid-rows-3 gap-4">
+                {(securityArticles.length
+                  ? securityArticles
+                  : sortedArticles.filter((a) => a.niche === 'security')
+                )
+                  .slice(0, 3)
+                  .map((alert, index) => (
+                    <Link
+                      key={safeArticleId(alert) || index}
+                      to={articleLink(alert)}
+                      className="group relative flex flex-col justify-between overflow-hidden bg-card border border-border rounded-none px-4 py-3 hover:border-security hover:shadow-[0_0_24px_rgba(0,240,255,0.25)] transition-colors duration-200"
+                      aria-label={`Security alert: ${alert.title}`}
+                    >
+                      <div className="flex items-center justify-between mb-2">
+                        <span className="text-[11px] font-semibold tracking-[0.18em] uppercase text-cyan-300 flex items-center gap-1">
+                          <span className="inline-block w-1.5 h-1.5 rounded-full bg-cyan-300 animate-pulse" />
+                          Security Alert
+                        </span>
+                        <span className="text-[11px] text-muted-foreground">
+                          {formatRelativeTime(
+                            typeof alert.publishedAt === 'number'
+                              ? new Date(alert.publishedAt).toISOString()
+                              : String(alert.publishedAt ?? '')
+                          )}
+                        </span>
+                      </div>
+                      <h3 className="text-sm font-semibold text-foreground line-clamp-2 group-hover:text-security transition-colors">
+                        {alert.title}
+                      </h3>
+                      <p className="mt-1 text-xs text-muted-foreground line-clamp-2">
+                        {alert.excerpt}
+                      </p>
+                    </Link>
+                  ))}
+              </aside>
+            </div>
+          </div>
         </section>
       )}
 

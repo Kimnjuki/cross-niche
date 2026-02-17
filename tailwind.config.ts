@@ -26,8 +26,9 @@ export default {
     },
     extend: {
       fontFamily: {
-        sans: ['Inter', 'system-ui', 'sans-serif'],
-        display: ['Space Grotesk', 'Satoshi', 'system-ui', 'sans-serif'],
+        /* Wired-style: serif body, tight sans headings */
+        sans: ['IBM Plex Serif', 'system-ui', 'serif'],
+        display: ['Inter Tight', 'Space Grotesk', 'Satoshi', 'system-ui', 'sans-serif'],
         mono: ['JetBrains Mono', 'Fira Code', 'monospace'],
       },
       colors: {

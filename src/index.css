@@ -2,6 +2,8 @@
 @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&display=optional');
 @import url('https://api.fontshare.com/v2/css?f[]=satoshi@400,500,700,900&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter+Tight:wght@500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Serif:wght@400;500;600&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -9,11 +11,13 @@
 
 @layer base {
   :root {
-    --background: 220 20% 97%;
-    --foreground: 220 30% 10%;
+    /* Nexus Intelligence base – deep grid black */
+    --background: 240 6% 4%; /* ≈ #0A0A0B */
+    --foreground: 220 15% 92%;
 
-    --card: 0 0% 100%;
-    --card-foreground: 220 30% 10%;
+    /* Cards & surfaces – Nexus bento panels */
+    --card: 240 5% 9%; /* ≈ #141417 */
+    --card-foreground: 220 15% 92%;
 
     --popover: 0 0% 100%;
     --popover-foreground: 220 30% 10%;
@@ -21,11 +25,11 @@
     --primary: 217 100% 50%; /* #0066FF - Electric blue (design analysis) */
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 220 15% 92%;
-    --secondary-foreground: 220 30% 10%;
+    --secondary: 240 6% 7%;
+    --secondary-foreground: 220 15% 92%;
 
-    --muted: 220 15% 94%;
-    --muted-foreground: 220 10% 45%;
+    --muted: 240 4% 12%;
+    --muted-foreground: 220 10% 60%;
 
     --accent: 220 15% 92%;
     --accent-foreground: 220 30% 10%;
@@ -33,24 +37,27 @@
     --destructive: 0 85% 60%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 220 15% 88%;
-    --input: 220 15% 88%;
+    /* Neo-brutalist borders */
+    --border: 0 0% 18%; /* ≈ #2D2D2D */
+    --input: 0 0% 18%;
     --ring: 220 90% 50%;
 
     --radius: 0.75rem;
 
-    /* Niche Colors */
-    --tech: 220 90% 50%;
+    /* Niche Colors – Nexus palette */
+    --tech: 217 100% 52%; /* electric tech blue */
     --tech-foreground: 0 0% 100%;
-    --tech-muted: 220 70% 95%;
+    --tech-muted: 217 40% 18%;
 
-    --security: 0 75% 55%;
+    /* Security actions use cyber blue #00F0FF */
+    --security: 184 100% 50%;
     --security-foreground: 0 0% 100%;
-    --security-muted: 0 60% 95%;
+    --security-muted: 184 40% 18%;
 
-    --gaming: 145 70% 42%;
+    /* Gaming tags use neon pink #FF007A */
+    --gaming: 330 100% 50%;
     --gaming-foreground: 0 0% 100%;
-    --gaming-muted: 145 50% 94%;
+    --gaming-muted: 330 40% 18%;
 
     /* Gradient */
     --gradient-hero: linear-gradient(135deg, hsl(220 90% 50%) 0%, hsl(260 80% 55%) 50%, hsl(320 75% 55%) 100%);
@@ -89,8 +96,8 @@
     --nexus-glow-security: 0 0 20px rgba(0, 255, 65, 0.15);
     --nexus-glow-tech: 0 0 20px rgba(0, 240, 255, 0.15);
     --nexus-glow-gaming: 0 0 20px rgba(255, 0, 122, 0.15);
-    --nexus-font-display: 'Satoshi', system-ui, sans-serif;
-    --nexus-font-body: 'Inter', system-ui, sans-serif;
+    --nexus-font-display: 'Inter Tight', system-ui, sans-serif;
+    --nexus-font-body: 'IBM Plex Serif', system-ui, serif;
     --nexus-font-data: 'JetBrains Mono', monospace;
 
     /* Platform analysis: competitive design (Verge / Ars / WIRED) */
@@ -108,10 +115,10 @@
   }
 
   .dark {
-    --background: 220 25% 8%;
+    --background: 240 6% 4%;
     --foreground: 220 15% 95%;
 
-    --card: 220 25% 12%;
+    --card: 240 5% 9%;
     --card-foreground: 220 15% 95%;
 
     --popover: 220 25% 12%;
@@ -120,11 +127,11 @@
     --primary: 199 89% 48%; /* #0ea5e9 */
     --primary-foreground: 220 25% 8%;
 
-    --secondary: 220 20% 18%;
+    --secondary: 240 6% 7%;
     --secondary-foreground: 220 15% 95%;
 
-    --muted: 220 20% 18%;
-    --muted-foreground: 220 15% 60%;
+    --muted: 240 4% 12%;
+    --muted-foreground: 220 15% 65%;
 
     --accent: 220 20% 18%;
     --accent-foreground: 220 15% 95%;
@@ -132,19 +139,19 @@
     --destructive: 0 70% 50%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 220 20% 20%;
-    --input: 220 20% 20%;
+    --border: 0 0% 18%;
+    --input: 0 0% 18%;
     --ring: 220 90% 60%;
 
-    /* Niche Colors Dark */
-    --tech: 220 90% 60%;
-    --tech-muted: 220 40% 20%;
+    /* Niche Colors Dark – keep in sync with root */
+    --tech: 217 100% 56%;
+    --tech-muted: 217 40% 20%;
 
-    --security: 0 70% 55%;
-    --security-muted: 0 40% 20%;
+    --security: 184 100% 52%;
+    --security-muted: 184 40% 20%;
 
-    --gaming: 145 60% 50%;
-    --gaming-muted: 145 30% 18%;
+    --gaming: 330 100% 52%;
+    --gaming-muted: 330 40% 20%;
 
     --sidebar-background: 240 5.9% 10%;
     --sidebar-foreground: 240 4.8% 95.9%;
@@ -167,13 +174,20 @@
   }
 
   body {
-    @apply bg-background text-foreground font-sans antialiased;
-    font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    @apply bg-background text-foreground antialiased;
+    /* Wired-style body serif for long-form authority */
+    font-family: 'IBM Plex Serif', system-ui, -apple-system, BlinkMacSystemFont, 'Georgia', serif;
     font-display: optional;
   }
 
-  h1, h2, h3, h4, h5, h6 {
-    font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  h1, h2, h3 {
+    /* Inter Tight for primary headings */
+    font-family: 'Inter Tight', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-display: optional;
+  }
+
+  h4, h5, h6 {
+    font-family: 'Inter Tight', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
     font-display: optional;
   }
 

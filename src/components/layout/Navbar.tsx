@@ -13,6 +13,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { cn } from '@/lib/utils';
+import { LiveTicker } from '@/components/layout/LiveTicker';
 
 const navLinks = [
   { href: '/tech', label: 'Innovate', color: 'text-tech' },
@@ -182,6 +183,13 @@ export function Navbar() {
               {isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
             </button>
           </div>
+
+          {/* TechCrunch-style Live Ticker – homepage sub-navigation */}
+          {location.pathname === '/' && (
+            <div className="border-t border-border/60">
+              <LiveTicker />
+            </div>
+          )}
 
           {/* Breadcrumbs */}
           {showBreadcrumbs && (
