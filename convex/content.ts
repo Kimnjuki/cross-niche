@@ -192,6 +192,30 @@ export const upsertIngestedContent = mutation({
   },
 });
 
+export const updateSEOFields = mutation({
+  args: {
+    contentId: v.id("content"),
+    metaTitle: v.optional(v.string()),
+    seoDescription: v.optional(v.string()),
+    focusKeyword: v.optional(v.string()),
+    schema_org: v.optional(v.any()),
+  },
+  handler: async (ctx, args) => {
+    const existing = await ctx.db.get(args.contentId);
+    if (!existing) throw new Error("Content not found");
+
+    await ctx.db.patch(args.contentId, {
+      metaTitle: args.metaTitle,
+      seoDescription: args.seoDescription,
+      focusKeyword: args.focusKeyword,
+      schema_org: args.schema_org,
+      lastModifiedAt: Date.now(),
+    });
+
+    return { success: true };
+  },
+});
+
 /**
  * Get latest content (excludes deleted; only recent by _creationTime). Newest first.
  */
