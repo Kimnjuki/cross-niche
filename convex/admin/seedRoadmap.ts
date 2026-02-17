@@ -1,5 +1,5 @@
 import { internalAction } from "../_generated/server";
-import { api } from "../_generated/api";
+import { api, internal } from "../_generated/api";
 import { ROADMAP_PHASES, NICHE_CATEGORY_MAP } from "../roadmapData";
 
 export const seedRoadmapFeatures = internalAction({
@@ -34,13 +34,13 @@ export const seedRoadmapFeatures = internalAction({
         });
 
         const nicheId = NICHE_CATEGORY_MAP[feature.category] ?? 1;
-        await ctx.runMutation(api.roadmapInternal.ensureNicheLink, {
+        await ctx.runMutation(internal.roadmapInternal.ensureNicheLink, {
           contentId,
           nicheId,
         });
 
         for (const tagSlug of feature.tags) {
-          await ctx.runMutation(api.roadmapInternal.ensureTagLink, {
+          await ctx.runMutation(internal.roadmapInternal.ensureTagLink, {
             contentId,
             tagSlug,
           });
