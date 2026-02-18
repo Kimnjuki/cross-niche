@@ -216,6 +216,23 @@ export const updateSEOFields = mutation({
   },
 });
 
+export const incrementViewCount = mutation({
+  args: {
+    contentId: v.id("content"),
+  },
+  handler: async (ctx, args) => {
+    const existing = await ctx.db.get(args.contentId);
+    if (!existing) throw new Error("Content not found");
+
+    const current = (existing as any).viewCount ?? 0;
+    await ctx.db.patch(args.contentId, {
+      viewCount: current + 1,
+    } as any);
+
+    return { success: true, viewCount: current + 1 };
+  },
+});
+
 /**
  * Get latest content (excludes deleted; only recent by _creationTime). Newest first.
  */

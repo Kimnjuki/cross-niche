@@ -22,7 +22,8 @@ import Gaming from "./pages/Gaming";
 import Guides from "./pages/Guides";
 import GuideDetail from "./pages/GuideDetail";
 import { SecurityScoreCalculator } from "./components/security/SecurityScoreCalculator";
-import Roadmap from "./pages/Roadmap";
+import RoadmapV3 from "./pages/RoadmapV3";
+import RoadmapFeature from "./pages/RoadmapFeature";
 import BlogSeries from "./pages/BlogSeries";
 import Explore from "./pages/Explore";
 import Topics from "./pages/Topics";
@@ -75,7 +76,8 @@ const App = () => (
                   <Route path="/guides/:slug" element={<GuideDetail />} />
                   <Route path="/tutorials" element={<Tutorials />} />
                   <Route path="/blog-series" element={<BlogSeries />} />
-                  <Route path="/roadmap" element={<Roadmap />} />
+                  <Route path="/roadmap" element={<RoadmapV3 />} />
+                  <Route path="/roadmap/:featureId" element={<RoadmapFeature />} />
                   <Route path="/breach-sim" element={<SecurityScanner />} />
                   <Route path="/security-score" element={<SecurityScoreCalculator />} />
                   <Route path="/subscription" element={<SubscriptionPlans />} />

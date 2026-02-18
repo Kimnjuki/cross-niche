@@ -12,6 +12,7 @@ import { ThumbsUp, ThumbsDown } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useAuth } from '@/contexts/AuthContext';
 import { useConvexDisabled } from '@/components/SafeConvexProvider';
+import { toast } from '@/components/ui/use-toast';
 
 interface RoadmapVotingProps {
   featureId: string;
@@ -36,9 +37,11 @@ function DisabledVotingUI({ className }: { className?: string }) {
 function RoadmapVotingConvex({ featureId, className }: RoadmapVotingProps) {
   const { user } = useAuth();
   const userId = user?.id || `session-${localStorage.getItem('sessionId') || 'anonymous'}`;
-  const votes = useQuery(api.roadmapVotes.getFeatureVotes, { featureId });
-  const userVote = useQuery(api.roadmapVotes.getUserVote, { featureId, userId });
-  const voteMutation = useMutation(api.roadmapVotes.vote);
+  const votes = useQuery(api.roadmap.getFeatureVotes, { featureId });
+  const userVote = useQuery(api.roadmap.getUserVote, { featureId, userId });
+  const castVote = useMutation(api.roadmap.castVote);
+  const updateVote = useMutation(api.roadmap.updateVote);
+  const removeVote = useMutation(api.roadmap.removeVote);
   const [isVoting, setIsVoting] = useState(false);
 
   useEffect(() => {
@@ -50,7 +53,21 @@ function RoadmapVotingConvex({ featureId, className }: RoadmapVotingProps) {
   const handleVote = async (voteType: 'upvote' | 'downvote') => {
     setIsVoting(true);
     try {
-      await voteMutation({ featureId, userId, voteType });
+      if (userVote == null) {
+        await castVote({ featureId, userId, voteType, votedAt: Date.now() });
+        toast({
+          title: '+10 XP',
+          description: 'Vote recorded',
+        });
+        return;
+      }
+
+      if (userVote === voteType) {
+        await removeVote({ featureId, userId });
+        return;
+      }
+
+      await updateVote({ featureId, userId, voteType });
     } catch (error) {
       console.error('Failed to vote:', error);
     } finally {
@@ -67,7 +84,7 @@ function RoadmapVotingConvex({ featureId, className }: RoadmapVotingProps) {
         variant={upvoted ? 'default' : 'outline'}
         size="sm"
         onClick={() => handleVote('upvote')}
-        disabled={isVoting || !voteMutation}
+        disabled={isVoting}
         className={cn(
           'gap-1.5',
           upvoted && 'bg-green-600 hover:bg-green-700'
@@ -81,7 +98,7 @@ function RoadmapVotingConvex({ featureId, className }: RoadmapVotingProps) {
         variant={downvoted ? 'default' : 'outline'}
         size="sm"
         onClick={() => handleVote('downvote')}
-        disabled={isVoting || !voteMutation}
+        disabled={isVoting}
         className={cn(
           'gap-1.5',
           downvoted && 'bg-red-600 hover:bg-red-700'

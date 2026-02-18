@@ -79,6 +79,41 @@ export const getUserVotes = query({
   },
 });
 
+export const getFeatureVotes = query({
+  args: {
+    featureId: v.string(),
+  },
+  handler: async (ctx, args) => {
+    const votes = await ctx.db
+      .query("roadmapVotes")
+      .withIndex("by_feature", (q) => q.eq("featureId", args.featureId))
+      .collect();
+
+    const upvotes = votes.filter((vte) => vte.voteType === "upvote").length;
+    const downvotes = votes.filter((vte) => vte.voteType === "downvote").length;
+    return {
+      upvotes,
+      downvotes,
+      netVotes: upvotes - downvotes,
+      totalVotes: votes.length,
+    };
+  },
+});
+
+export const getUserVote = query({
+  args: {
+    featureId: v.string(),
+    userId: v.string(),
+  },
+  handler: async (ctx, args) => {
+    const existing = await ctx.db
+      .query("roadmapVotes")
+      .withIndex("by_feature_user", (q) => q.eq("featureId", args.featureId).eq("userId", args.userId))
+      .first();
+    return existing?.voteType ?? null;
+  },
+});
+
 export const castVote = mutation({
   args: {
     featureId: v.string(),
