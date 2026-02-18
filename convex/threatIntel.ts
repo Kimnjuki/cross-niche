@@ -52,6 +52,41 @@ export const upsertThreat = mutation({
       ...patch,
     });
 
+    const interestedUserIds = new Set<string>();
+    const cveIds = args.cveIds ?? [];
+    for (const cveId of cveIds) {
+      const subs = await ctx.db
+        .query("threatSubscriptions")
+        .withIndex("by_type_value", (q) => q.eq("type", "cve").eq("value", cveId))
+        .collect();
+      for (const s of subs) interestedUserIds.add(s.userId);
+    }
+
+    const tags = args.tags ?? [];
+    for (const tag of tags) {
+      const subs = await ctx.db
+        .query("threatSubscriptions")
+        .withIndex("by_type_value", (q) => q.eq("type", "tag").eq("value", tag))
+        .collect();
+      for (const s of subs) interestedUserIds.add(s.userId);
+    }
+
+    const createdAt = Date.now();
+    for (const userId of interestedUserIds) {
+      const exists = await ctx.db
+        .query("threatNotifications")
+        .withIndex("by_user_threat", (q) => q.eq("userId", userId).eq("threatId", id))
+        .first();
+      if (exists) continue;
+
+      await ctx.db.insert("threatNotifications", {
+        userId,
+        threatId: id,
+        createdAt,
+        reason: "subscription_match",
+      });
+    }
+
     return { id, inserted: true };
   },
 });

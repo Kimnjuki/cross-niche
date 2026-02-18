@@ -377,4 +377,26 @@ export default defineSchema({
     .index("by_source_id", ["source", "sourceId"])
     .index("by_published_at", ["publishedAt"])
     .index("by_severity_published", ["severity", "publishedAt"]),
+
+  // ─── Threat alert subscriptions & notifications ─────────────────────────
+  threatSubscriptions: defineTable({
+    userId: v.string(),
+    type: v.union(v.literal("cve"), v.literal("tag")),
+    value: v.string(),
+    createdAt: v.number(),
+  })
+    .index("by_user", ["userId"])
+    .index("by_type_value", ["type", "value"])
+    .index("by_user_type_value", ["userId", "type", "value"]),
+
+  threatNotifications: defineTable({
+    userId: v.string(),
+    threatId: v.id("threatIntel"),
+    createdAt: v.number(),
+    readAt: v.optional(v.number()),
+    reason: v.optional(v.string()),
+  })
+    .index("by_user_created", ["userId", "createdAt"])
+    .index("by_user_read", ["userId", "readAt"])
+    .index("by_user_threat", ["userId", "threatId"]),
 });

@@ -27,4 +27,11 @@ crons.interval(
   internal.threatIntelIngest.runKevIngestion
 );
 
+crons.interval(
+  "refresh-threat-intel-nvd",
+  { hours: 6 },
+  internal.threatIntelNvdIngest.runNvdIngestion,
+  { hoursBack: 24, maxResults: 200 }
+);
+
 export default crons;
