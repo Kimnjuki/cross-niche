@@ -33,6 +33,8 @@ import type * as roadmapVotes from "../roadmapVotes.js";
 import type * as securityRatings from "../securityRatings.js";
 import type * as seed from "../seed.js";
 import type * as semanticSearch from "../semanticSearch.js";
+import type * as threatIntel from "../threatIntel.js";
+import type * as threatIntelIngest from "../threatIntelIngest.js";
 import type * as users from "../users.js";
 import type * as verify from "../verify.js";
 
@@ -68,6 +70,8 @@ declare const fullApi: ApiFromModules<{
   securityRatings: typeof securityRatings;
   seed: typeof seed;
   semanticSearch: typeof semanticSearch;
+  threatIntel: typeof threatIntel;
+  threatIntelIngest: typeof threatIntelIngest;
   users: typeof users;
   verify: typeof verify;
 }>;

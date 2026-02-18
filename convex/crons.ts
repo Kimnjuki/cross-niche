@@ -21,4 +21,10 @@ crons.interval(
   internal.ingest.runIngestion
 );
 
+crons.interval(
+  "refresh-threat-intel-kev",
+  { hours: 6 },
+  internal.threatIntelIngest.runKevIngestion
+);
+
 export default crons;

@@ -350,4 +350,31 @@ export default defineSchema({
     savedSearches: v.optional(v.array(v.string())), // Array of search queries
   })
     .index("by_user", ["userId"]),
+
+  // ─── Threat Intelligence (external feeds) ───────────────────────────────
+  // Ingested from sources like CISA KEV. Used by Live Threat Dashboard.
+  threatIntel: defineTable({
+    source: v.string(), // e.g. "cisa_kev"
+    sourceId: v.string(), // stable unique ID from source
+    title: v.string(),
+    description: v.optional(v.string()),
+    severity: v.union(
+      v.literal("critical"),
+      v.literal("high"),
+      v.literal("medium"),
+      v.literal("low")
+    ),
+    category: v.optional(v.string()),
+    publishedAt: v.number(), // ms
+    url: v.optional(v.string()),
+    cveIds: v.optional(v.array(v.string())),
+    affected: v.optional(v.array(v.string())),
+    tags: v.optional(v.array(v.string())),
+    raw: v.optional(v.any()),
+    lastIngestedAt: v.number(),
+  })
+    .index("by_source", ["source"])
+    .index("by_source_id", ["source", "sourceId"])
+    .index("by_published_at", ["publishedAt"])
+    .index("by_severity_published", ["severity", "publishedAt"]),
 });

@@ -1,10 +1,13 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { Shield, AlertTriangle, TrendingUp, Clock, ExternalLink } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { cn } from '@/lib/utils';
+import { useQuery } from 'convex/react';
+import { api } from '../../../convex/_generated/api';
+import { useConvexDisabled } from '@/components/SafeConvexProvider';
 
 interface Threat {
   id: string;
@@ -66,11 +69,32 @@ const severityConfig = {
 
 export function ThreatIntelligenceDashboard() {
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
-  const categories = ['all', ...Array.from(new Set(mockThreats.map(t => t.category)))];
+  const isDisabled = useConvexDisabled();
+  const rows = useQuery(api.threatIntel.listLatest, isDisabled ? 'skip' : { limit: 50 });
+
+  const threats: Threat[] = useMemo(() => {
+    if (isDisabled) return mockThreats;
+    if (!rows) return mockThreats;
+    return rows.map((r) => ({
+      id: r._id,
+      title: r.title,
+      severity: r.severity,
+      category: r.category ?? 'Threat Intel',
+      description: r.description ?? '',
+      timestamp: new Date(r.publishedAt).toISOString(),
+      source: r.source,
+      affected: r.affected,
+    }));
+  }, [isDisabled, rows]);
+
+  const categories = useMemo(
+    () => ['all', ...Array.from(new Set(threats.map((t) => t.category)))],
+    [threats]
+  );
 
   const filteredThreats = selectedCategory === 'all'
-    ? mockThreats
-    : mockThreats.filter(t => t.category === selectedCategory);
+    ? threats
+    : threats.filter(t => t.category === selectedCategory);
 
   const getTimeAgo = (timestamp: string) => {
     const now = new Date();

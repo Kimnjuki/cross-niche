@@ -1,8 +1,11 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { AlertTriangle, TrendingUp, Shield } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { useQuery } from 'convex/react';
+import { api } from '../../../convex/_generated/api';
+import { useConvexDisabled } from '@/components/SafeConvexProvider';
 
 interface ThreatAlert {
   id: string;
@@ -28,10 +31,36 @@ const severityConfig = {
 };
 
 export function LiveThreatFeed() {
-  const [threats, setThreats] = useState<ThreatAlert[]>(mockThreats);
+  const isDisabled = useConvexDisabled();
+  const rows = useQuery(api.threatIntel.listFeed, isDisabled ? 'skip' : { limit: 5 });
+
+  const threats: ThreatAlert[] = useMemo(() => {
+    if (isDisabled) return mockThreats;
+    if (!rows) return mockThreats;
+
+    const now = Date.now();
+    const toTimeAgo = (publishedAt: number) => {
+      const diffMs = Math.max(0, now - publishedAt);
+      const mins = Math.floor(diffMs / 60000);
+      if (mins < 60) return `${Math.max(1, mins)}m ago`;
+      const hours = Math.floor(mins / 60);
+      if (hours < 24) return `${hours}h ago`;
+      const days = Math.floor(hours / 24);
+      return `${days}d ago`;
+    };
+
+    return rows.map((r) => ({
+      id: r._id,
+      title: r.title,
+      severity: r.severity,
+      timeAgo: toTimeAgo(r.publishedAt),
+    }));
+  }, [isDisabled, rows]);
+
   const [currentIndex, setCurrentIndex] = useState(0);
 
   useEffect(() => {
+    if (threats.length === 0) return;
     const interval = setInterval(() => {
       setCurrentIndex((prev) => (prev + 1) % threats.length);
     }, 3000); // Rotate every 3 seconds
