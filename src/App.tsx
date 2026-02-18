@@ -21,7 +21,6 @@ import Security from "./pages/Security";
 import Gaming from "./pages/Gaming";
 import Guides from "./pages/Guides";
 import GuideDetail from "./pages/GuideDetail";
-import { SecurityScoreCalculator } from "./components/security/SecurityScoreCalculator";
 import RoadmapV3 from "./pages/RoadmapV3";
 import RoadmapFeature from "./pages/RoadmapFeature";
 import BlogSeries from "./pages/BlogSeries";
@@ -29,6 +28,10 @@ import Explore from "./pages/Explore";
 import Topics from "./pages/Topics";
 import Tutorials from "./pages/Tutorials";
 import News from "./pages/News";
+import AIPulse from "./pages/AIPulse";
+import BreachSim from "./pages/BreachSim";
+import LiveThreatDashboard from "./pages/LiveThreatDashboard";
+import SecurityScore from "./pages/SecurityScore";
 import SubscriptionPlans from "./pages/SubscriptionPlans";
 import SubscriptionManagement from "./pages/SubscriptionManagement";
 import CommunityForums from "./pages/CommunityForums";
@@ -38,7 +41,6 @@ import MobileApp from "./pages/MobileApp";
 import PodcastPlatform from "./pages/PodcastPlatform";
 import AdvancedSearch from "./components/search/AdvancedSearch";
 import LiveUpdatesFeed from "./components/live/LiveUpdatesFeed";
-import AIPulseEngine from "./components/ai/AIPulseEngine";
 import SignInSignUp from "./components/auth/SignInSignUp";
 import TestFeatures from "./pages/TestFeatures";
 
@@ -78,8 +80,9 @@ const App = () => (
                   <Route path="/blog-series" element={<BlogSeries />} />
                   <Route path="/roadmap" element={<RoadmapV3 />} />
                   <Route path="/roadmap/:featureId" element={<RoadmapFeature />} />
-                  <Route path="/breach-sim" element={<SecurityScanner />} />
-                  <Route path="/security-score" element={<SecurityScoreCalculator />} />
+                  <Route path="/breach-sim" element={<BreachSim />} />
+                  <Route path="/security-score" element={<SecurityScore />} />
+                  <Route path="/live-threat-dashboard" element={<LiveThreatDashboard />} />
                   <Route path="/subscription" element={<SubscriptionPlans />} />
                   <Route path="/subscription/management" element={<SubscriptionManagement />} />
                   <Route path="/billing" element={<SubscriptionManagement />} />
@@ -92,7 +95,7 @@ const App = () => (
                   <Route path="/podcasts" element={<PodcastPlatform />} />
                   <Route path="/search" element={<AdvancedSearch />} />
                   <Route path="/live-updates" element={<LiveUpdatesFeed />} />
-                  <Route path="/ai-pulse" element={<AIPulseEngine />} />
+                  <Route path="/ai-pulse" element={<AIPulse />} />
                   <Route path="/signin" element={<SignInSignUp />} />
                   <Route path="/signup" element={<SignInSignUp />} />
                   <Route path="/test-features" element={<TestFeatures />} />
