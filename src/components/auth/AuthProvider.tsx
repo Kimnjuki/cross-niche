@@ -4,18 +4,24 @@ import { GlassCard } from '@/components/design-system/GlassCard';
 
 interface AuthProviderProps {
   children: React.ReactNode;
+  routerPush?: (to: string) => void;
+  routerReplace?: (to: string) => void;
 }
 
 const clerkFrontendApi = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
 
-export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
+export const AuthProvider: React.FC<AuthProviderProps> = ({ children, routerPush, routerReplace }) => {
   if (!clerkFrontendApi) {
     console.warn('Clerk publishable key not found. Authentication will be disabled.');
     return <>{children}</>;
   }
 
   return (
-    <ClerkProvider publishableKey={clerkFrontendApi}>
+    <ClerkProvider
+      publishableKey={clerkFrontendApi}
+      routerPush={routerPush}
+      routerReplace={routerReplace}
+    >
       <ClerkLoading>
         <div className="min-h-screen flex items-center justify-center">
           <GlassCard className="p-8">

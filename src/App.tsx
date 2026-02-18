@@ -2,7 +2,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate, useNavigate } from "react-router-dom";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { AuthProvider as ClerkAuthProvider } from "@/components/auth/AuthProvider";
 import { SafeConvexProvider } from "@/components/SafeConvexProvider";
@@ -48,17 +48,29 @@ import NewsletterVerify from "./pages/NewsletterVerify";
 
 const queryClient = new QueryClient();
 
+function RouterClerkProvider({ children }: { children: React.ReactNode }) {
+  const navigate = useNavigate();
+  return (
+    <ClerkAuthProvider
+      routerPush={(to) => navigate(to)}
+      routerReplace={(to) => navigate(to, { replace: true })}
+    >
+      {children}
+    </ClerkAuthProvider>
+  );
+}
+
 const App = () => (
   <EnhancedErrorBoundary>
-    <ClerkAuthProvider>
-      <SafeConvexProvider>
-        <QueryClientProvider client={queryClient}>
-          <ThemeProvider>
-            <AuthProvider>
-              <TooltipProvider>
-                <Toaster />
-                <Sonner />
-                <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
+    <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
+      <RouterClerkProvider>
+        <SafeConvexProvider>
+          <QueryClientProvider client={queryClient}>
+            <ThemeProvider>
+              <AuthProvider>
+                <TooltipProvider>
+                  <Toaster />
+                  <Sonner />
                   <GA4PageTracker />
                   <Routes>
                     <Route path="/" element={<Index />} />
@@ -107,13 +119,13 @@ const App = () => (
                     {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                     <Route path="*" element={<NotFound />} />
                   </Routes>
-                </BrowserRouter>
-              </TooltipProvider>
-            </AuthProvider>
-          </ThemeProvider>
-        </QueryClientProvider>
-      </SafeConvexProvider>
-    </ClerkAuthProvider>
+                </TooltipProvider>
+              </AuthProvider>
+            </ThemeProvider>
+          </QueryClientProvider>
+        </SafeConvexProvider>
+      </RouterClerkProvider>
+    </BrowserRouter>
   </EnhancedErrorBoundary>
 );
 
