@@ -61,7 +61,7 @@ export default function Profile() {
 
   // Redirect if not logged in
   if (!user) {
-    navigate('/auth');
+    navigate('/signin');
     return null;
   }
 

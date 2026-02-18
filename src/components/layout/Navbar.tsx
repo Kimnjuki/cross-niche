@@ -167,7 +167,7 @@ export function Navbar() {
                 </DropdownMenu>
               ) : (
                 <Button asChild>
-                  <Link to="/auth">Sign In</Link>
+                  <Link to="/signin">Sign In</Link>
                 </Button>
               )}
             </div>

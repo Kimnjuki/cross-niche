@@ -26,6 +26,7 @@ import type * as insertFeaturedArticle from "../insertFeaturedArticle.js";
 import type * as migrations_001_add_default_values from "../migrations/001_add_default_values.js";
 import type * as migrations_005_normalize_existing_data from "../migrations/005_normalize_existing_data.js";
 import type * as newsIngestor from "../newsIngestor.js";
+import type * as newsletter from "../newsletter.js";
 import type * as roadmap from "../roadmap.js";
 import type * as roadmapData from "../roadmapData.js";
 import type * as roadmapInternal from "../roadmapInternal.js";
@@ -65,6 +66,7 @@ declare const fullApi: ApiFromModules<{
   "migrations/001_add_default_values": typeof migrations_001_add_default_values;
   "migrations/005_normalize_existing_data": typeof migrations_005_normalize_existing_data;
   newsIngestor: typeof newsIngestor;
+  newsletter: typeof newsletter;
   roadmap: typeof roadmap;
   roadmapData: typeof roadmapData;
   roadmapInternal: typeof roadmapInternal;

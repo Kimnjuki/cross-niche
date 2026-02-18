@@ -13,6 +13,9 @@ import { newsletterEngine } from '@/lib/ai/newsletter';
 import { mockArticles } from '@/data/mockData';
 import { trackNewsletterSignup } from '@/lib/analytics/ga4';
 import { safeRandomUUID } from '@/lib/utils';
+import { useMutation } from 'convex/react';
+import { api } from '../../../convex/_generated/api';
+import { useConvexDisabled } from '@/components/SafeConvexProvider';
 
 interface NewsletterFormProps {
   variant?: 'default' | 'compact' | 'hero' | 'inline' | 'advanced';
@@ -28,6 +31,9 @@ export function NewsletterForm({ variant = 'default' }: NewsletterFormProps) {
   const [topicSubscriptions, setTopicSubscriptions] = useState<string[]>([]);
   const [subscribers, setSubscribers] = useLocalStorage<NewsletterSubscriber[]>('newsletter-subscribers', []);
   const { toast } = useToast();
+
+  const isConvexDisabled = useConvexDisabled();
+  const subscribe = useMutation(api.newsletter.subscribe);
 
   const availableTopics = [
     'AI & Machine Learning',
@@ -48,37 +54,67 @@ export function NewsletterForm({ variant = 'default' }: NewsletterFormProps) {
 
     setIsSubmitting(true);
 
-    // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 500));
+    try {
+      if (isConvexDisabled) {
+        // Fallback (no backend): persist locally
+        const existingSubscriber = subscribers.find((s) => s.email === email);
+        if (existingSubscriber) {
+          toast({
+            title: 'Already subscribed!',
+            description: 'This email is already on our list.',
+            variant: 'default',
+          });
+          return;
+        }
 
-    const existingSubscriber = subscribers.find(s => s.email === email);
-    if (existingSubscriber) {
-      toast({
-        title: 'Already subscribed!',
-        description: 'This email is already on our list.',
-        variant: 'default',
-      });
-    } else {
-      const newSubscriber: NewsletterSubscriber = {
-        id: safeRandomUUID(),
+        const newSubscriber: NewsletterSubscriber = {
+          id: safeRandomUUID(),
+          email,
+          subscribedAt: new Date().toISOString(),
+          preferences,
+          frequency,
+          newsletterTypes,
+          topicSubscriptions,
+          isActive: true,
+        };
+        setSubscribers([...subscribers, newSubscriber]);
+        trackNewsletterSignup(variant);
+        toast({
+          title: 'Subscribed!',
+          description: "You're subscribed (local mode).",
+        });
+        return;
+      }
+
+      const res = await subscribe({
         email,
-        subscribedAt: new Date().toISOString(),
         preferences,
         frequency,
         newsletterTypes,
         topicSubscriptions,
-        isActive: true,
-      };
-      setSubscribers([...subscribers, newSubscriber]);
-      trackNewsletterSignup(variant);
-      toast({
-        title: 'Welcome aboard!',
-        description: 'You\'ve been subscribed to our personalized newsletter.',
       });
-    }
 
-    setEmail('');
-    setIsSubmitting(false);
+      trackNewsletterSignup(variant);
+
+      if (res?.verificationToken) {
+        const verifyUrl = `${window.location.origin}/newsletter/verify?token=${encodeURIComponent(
+          res.verificationToken
+        )}`;
+        toast({
+          title: 'Check your email to verify',
+          description: `Verification link: ${verifyUrl}`,
+        });
+      } else {
+        toast({
+          title: 'Welcome aboard!',
+          description: "You're subscribed to our personalized newsletter.",
+        });
+      }
+
+      setEmail('');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleNicheChange = (niche: Niche, checked: boolean) => {

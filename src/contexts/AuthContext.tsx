@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { User } from '@/types';
+import { useClerk, useUser } from '@clerk/clerk-react';
 
 interface AuthContextType {
   user: User | null;
@@ -22,10 +23,37 @@ const AUTH_UNAVAILABLE = 'Sign-in is not available.';
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const { user: clerkUser, isLoaded } = useUser();
+  const clerk = useClerk();
 
   useEffect(() => {
+    if (!isLoaded) {
+      setIsLoading(true);
+      return;
+    }
+
+    if (!clerkUser) {
+      setUser(null);
+      setIsLoading(false);
+      return;
+    }
+
+    const email =
+      clerkUser.primaryEmailAddress?.emailAddress ??
+      clerkUser.emailAddresses?.[0]?.emailAddress ??
+      '';
+    const name = clerkUser.fullName ?? clerkUser.firstName ?? email ?? 'User';
+
+    setUser({
+      id: clerkUser.id,
+      email,
+      name,
+      avatar: clerkUser.imageUrl ?? undefined,
+      bookmarks: [],
+      createdAt: clerkUser.createdAt ? new Date(clerkUser.createdAt).toISOString() : new Date().toISOString(),
+    });
     setIsLoading(false);
-  }, []);
+  }, [clerkUser, isLoaded]);
 
   const login = async (): Promise<{ success: boolean; error?: string }> => {
     return { success: false, error: AUTH_UNAVAILABLE };
@@ -36,6 +64,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   };
 
   const logout = () => {
+    void clerk.signOut();
     setUser(null);
   };
 

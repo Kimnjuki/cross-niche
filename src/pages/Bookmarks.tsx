@@ -42,7 +42,7 @@ export default function Bookmarks() {
             Save articles to read later by signing in to your account.
           </p>
           <Button asChild>
-            <Link to="/auth">Sign In</Link>
+            <Link to="/signin">Sign In</Link>
           </Button>
         </div>
       </Layout>

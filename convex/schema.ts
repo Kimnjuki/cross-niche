@@ -389,6 +389,22 @@ export default defineSchema({
     .index("by_type_value", ["type", "value"])
     .index("by_user_type_value", ["userId", "type", "value"]),
 
+  // ─── Newsletter Subscribers ─────────────────────────────────────────────
+  newsletterSubscribers: defineTable({
+    email: v.string(),
+    subscribedAt: v.number(),
+    isActive: v.boolean(),
+    preferences: v.optional(v.array(v.string())),
+    frequency: v.optional(v.string()),
+    newsletterTypes: v.optional(v.array(v.string())),
+    topicSubscriptions: v.optional(v.array(v.string())),
+    verifiedAt: v.optional(v.number()),
+    verificationToken: v.optional(v.string()),
+  })
+    .index("by_email", ["email"])
+    .index("by_active", ["isActive"])
+    .index("by_verification_token", ["verificationToken"]),
+
   threatNotifications: defineTable({
     userId: v.string(),
     threatId: v.id("threatIntel"),
