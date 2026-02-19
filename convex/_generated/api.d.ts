@@ -36,6 +36,7 @@ import type * as securityRatings from "../securityRatings.js";
 import type * as seed from "../seed.js";
 import type * as seedAdditionalArticles from "../seedAdditionalArticles.js";
 import type * as seedAllFiveArticles from "../seedAllFiveArticles.js";
+import type * as seedContentNiches from "../seedContentNiches.js";
 import type * as seedFeaturedArticles from "../seedFeaturedArticles.js";
 import type * as seedTopArticles from "../seedTopArticles.js";
 import type * as semanticSearch from "../semanticSearch.js";
@@ -82,6 +83,7 @@ declare const fullApi: ApiFromModules<{
   seed: typeof seed;
   seedAdditionalArticles: typeof seedAdditionalArticles;
   seedAllFiveArticles: typeof seedAllFiveArticles;
+  seedContentNiches: typeof seedContentNiches;
   seedFeaturedArticles: typeof seedFeaturedArticles;
   seedTopArticles: typeof seedTopArticles;
   semanticSearch: typeof semanticSearch;
