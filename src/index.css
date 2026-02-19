@@ -11,36 +11,37 @@
 
 @layer base {
   :root {
-    /* Nexus Intelligence base – deep grid black */
-    --background: 240 6% 4%; /* ≈ #0A0A0B */
-    --foreground: 220 15% 92%;
+    /* Light editorial base (Ars/Verge-ish): clean paper + high-contrast type */
+    --background: 0 0% 100%;
+    --foreground: 222 47% 11%;
 
-    /* Cards & surfaces – Nexus bento panels */
-    --card: 240 5% 9%; /* ≈ #141417 */
-    --card-foreground: 220 15% 92%;
+    /* Cards & surfaces */
+    --card: 0 0% 100%;
+    --card-foreground: 222 47% 11%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 220 30% 10%;
+    --popover-foreground: 222 47% 11%;
 
-    --primary: 217 100% 50%; /* #0066FF - Electric blue (design analysis) */
+    /* Brand blue: strong but editorial (less neon) */
+    --primary: 221 83% 53%;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 240 6% 7%;
-    --secondary-foreground: 220 15% 92%;
+    --secondary: 210 40% 96%;
+    --secondary-foreground: 222 47% 11%;
 
-    --muted: 240 4% 12%;
-    --muted-foreground: 220 10% 60%;
+    --muted: 210 40% 96%;
+    --muted-foreground: 215 16% 47%;
 
-    --accent: 220 15% 92%;
-    --accent-foreground: 220 30% 10%;
+    --accent: 210 40% 96%;
+    --accent-foreground: 222 47% 11%;
 
-    --destructive: 0 85% 60%;
+    --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 100%;
 
-    /* Neo-brutalist borders */
-    --border: 0 0% 18%; /* ≈ #2D2D2D */
-    --input: 0 0% 18%;
-    --ring: 220 90% 50%;
+    /* Editorial borders: subtle, not heavy */
+    --border: 214 32% 91%;
+    --input: 214 32% 91%;
+    --ring: 221 83% 53%;
 
     --radius: 0.75rem;
 
@@ -59,11 +60,11 @@
     --gaming-foreground: 0 0% 100%;
     --gaming-muted: 330 40% 18%;
 
-    /* Gradient */
-    --gradient-hero: linear-gradient(135deg, hsl(220 90% 50%) 0%, hsl(260 80% 55%) 50%, hsl(320 75% 55%) 100%);
-    --gradient-tech: linear-gradient(135deg, hsl(220 90% 50%) 0%, hsl(240 80% 55%) 100%);
-    --gradient-security: linear-gradient(135deg, hsl(0 75% 55%) 0%, hsl(30 80% 50%) 100%);
-    --gradient-gaming: linear-gradient(135deg, hsl(145 70% 42%) 0%, hsl(175 70% 45%) 100%);
+    /* Gradients: restrained editorial accents (still colorful, less “cyber neon”) */
+    --gradient-hero: linear-gradient(135deg, hsl(221 83% 53%) 0%, hsl(259 83% 60%) 55%, hsl(289 85% 64%) 100%);
+    --gradient-tech: linear-gradient(135deg, hsl(221 83% 53%) 0%, hsl(234 89% 60%) 100%);
+    --gradient-security: linear-gradient(135deg, hsl(184 100% 40%) 0%, hsl(221 83% 53%) 100%);
+    --gradient-gaming: linear-gradient(135deg, hsl(330 100% 50%) 0%, hsl(289 85% 64%) 100%);
 
     /* Shadows */
     --shadow-sm: 0 1px 2px 0 hsl(220 30% 10% / 0.05);
