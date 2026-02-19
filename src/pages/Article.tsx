@@ -222,7 +222,7 @@ export default function Article() {
         autoGenerate={true}
       />
 
-      <article className="container mx-auto px-4 py-8">
+      <article className="container mx-auto px-4 py-8 bg-white text-slate-900">
         <Breadcrumbs
           items={[
             { label: 'Home', href: '/' },
@@ -329,7 +329,7 @@ export default function Article() {
           <div className="mb-12">
             <div className="prose prose-lg max-w-none">
               <div
-                className="text-lg leading-relaxed text-foreground article-content"
+                className="text-lg leading-relaxed text-slate-900 article-content"
                 dangerouslySetInnerHTML={{
                   __html: prepareArticleContent(article.content) || prepareArticleContent(article.excerpt) || '<p class="text-muted-foreground">No content available for this article.</p>',
                 }}

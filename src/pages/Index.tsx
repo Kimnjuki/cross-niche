@@ -277,7 +277,14 @@ export default function Index() {
         <div className="container mx-auto px-4 max-w-7xl">
           <h2 className="font-display font-bold text-lg mb-6 text-foreground">Latest by category</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="rounded-lg border border-border bg-card p-4">
+            <div
+              className="rounded-lg border border-border bg-card p-4"
+              style={{
+                background:
+                  'linear-gradient(45deg, #000850 0%, #000320 100%), radial-gradient(100% 225% at 100% 0%, #FF6928 0%, #000000 100%), linear-gradient(225deg, #FF7A00 0%, #000000 100%), linear-gradient(135deg, #CDFFEB 10%, #CDFFEB 35%, #009F9D 35%, #009F9D 60%, #07456F 60%, #07456F 67%, #0F0A3C 67%, #0F0A3C 100%)',
+                backgroundBlendMode: 'screen, overlay, hard-light, normal',
+              }}
+            >
               <Link to="/tech" className="font-semibold text-tech hover:underline mb-3 block">Tech</Link>
               <ul className="space-y-2">
                 {(techArticles.length ? techArticles : sortedArticles.filter(a => a.niche === 'tech').slice(0, 3)).slice(0, 3).filter((a): a is Article => a != null).map((a, i) => (
