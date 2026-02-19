@@ -5,6 +5,8 @@
 
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { useQuery } from 'convex/react';
+import { api } from '../../convex/_generated/api';
 import {
   Search,
   TrendingUp,
@@ -67,6 +69,9 @@ export default function Index() {
   const { data: techFeed } = useContentByFeed('innovate', 10);
   const { data: securityFeed } = useContentByFeed('secured', 10);
   const { data: gamingFeed } = useContentByFeed('play', 10);
+
+  const liveWireArticles = useQuery(api.articles.getLatestFeed, {});
+  const liveWireExcludeUrls = (liveWireArticles ?? []).slice(0, 9).map((a: any) => String(a.url ?? '')).filter(Boolean);
 
   const hasPublishedData = Array.isArray(published) && published.length > 0;
   const articles: Article[] = hasPublishedData ? mapContentToArticles(published as ContentItem[]) : mockArticles;
@@ -264,7 +269,7 @@ export default function Index() {
 
       <section className="border-b border-border bg-background" aria-label="Nexus Intelligence grid">
         <div className="container mx-auto px-4 max-w-7xl">
-          <NewsGrid limit={12} />
+          <NewsGrid limit={12} excludeUrls={liveWireExcludeUrls} />
         </div>
       </section>
 

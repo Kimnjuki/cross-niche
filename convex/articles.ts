@@ -40,12 +40,20 @@ export const getLatestFeed = query({
 
 /** Latest articles (newest at top). Uses by_publishedAt index with desc order. */
 export const getLatest = query({
-  args: { limit: v.optional(v.number()) },
-  handler: async (ctx, { limit = 30 }) => {
-    return await ctx.db
+  args: {
+    limit: v.optional(v.number()),
+    excludeUrls: v.optional(v.array(v.string())),
+  },
+  handler: async (ctx, { limit = 30, excludeUrls = [] }) => {
+    const exclude = new Set(excludeUrls);
+    const cap = Math.min(limit + excludeUrls.length + 50, 200);
+    const rows = await ctx.db
       .query("articles")
       .withIndex("by_publishedAt")
       .order("desc")
-      .take(limit);
+      .take(cap);
+
+    if (exclude.size === 0) return rows.slice(0, limit);
+    return rows.filter((r) => !exclude.has(r.url)).slice(0, limit);
   },
 });

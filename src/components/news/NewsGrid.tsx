@@ -57,15 +57,17 @@ export function NewsGrid({
   limit = 12,
   className,
   title = "Nexus Intelligence",
+  excludeUrls = [],
 }: {
   limit?: number;
   className?: string;
   title?: string;
+  excludeUrls?: string[];
 }) {
-  const items = useQuery(api.articles.getLatest, {});
+  const items = useQuery(api.articles.getLatest, { limit, excludeUrls });
 
   const isLoading = items === undefined;
-  const sliced: NewsRow[] = (items ?? []).slice(0, limit) as any;
+  const sliced: NewsRow[] = (items ?? []) as any;
 
   return (
     <section className={cn("py-10", className)} aria-label={title}>
