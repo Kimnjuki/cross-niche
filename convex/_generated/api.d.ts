@@ -14,6 +14,7 @@ import type * as aiAutomation from "../aiAutomation.js";
 import type * as aiUpdates from "../aiUpdates.js";
 import type * as articles from "../articles.js";
 import type * as bookmarks from "../bookmarks.js";
+import type * as cleanAndSeedArticles from "../cleanAndSeedArticles.js";
 import type * as comments from "../comments.js";
 import type * as content from "../content.js";
 import type * as crons from "../crons.js";
@@ -57,6 +58,7 @@ declare const fullApi: ApiFromModules<{
   aiUpdates: typeof aiUpdates;
   articles: typeof articles;
   bookmarks: typeof bookmarks;
+  cleanAndSeedArticles: typeof cleanAndSeedArticles;
   comments: typeof comments;
   content: typeof content;
   crons: typeof crons;
