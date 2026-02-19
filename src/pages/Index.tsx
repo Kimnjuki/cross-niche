@@ -62,13 +62,13 @@ function safeArticleId(article: Article | null | undefined): string {
  */
 export default function Index() {
   const navigate = useNavigate();
-  const { data: published, isLoading: loadingPublished } = usePublishedContent(50);
-  const { data: latest, isLoading: loadingLatest } = useLatestContent(20);
-  const { data: trending, isLoading: loadingTrending } = useTrendingContent(12);
+  const { data: published, isLoading: loadingPublished } = usePublishedContent(10);
+  const { data: latest, isLoading: loadingLatest } = useLatestContent(10);
+  const { data: trending, isLoading: loadingTrending } = useTrendingContent(6);
   const { data: feeds } = useFeeds();
-  const { data: techFeed } = useContentByFeed('innovate', 10);
-  const { data: securityFeed } = useContentByFeed('secured', 10);
-  const { data: gamingFeed } = useContentByFeed('play', 10);
+  const { data: techFeed } = useContentByFeed('innovate', 3);
+  const { data: securityFeed } = useContentByFeed('secured', 3);
+  const { data: gamingFeed } = useContentByFeed('play', 3);
 
   const liveWireArticles = useQuery(api.articles.getLatestFeed, {});
   const liveWireExcludeUrls = (liveWireArticles ?? []).slice(0, 9).map((a: any) => String(a.url ?? '')).filter(Boolean);
@@ -82,15 +82,15 @@ export default function Index() {
   });
 
   const trendingArticles: Article[] =
-    Array.isArray(trending) && trending.length > 0 ? mapContentToArticles(trending as ContentItem[]) : sortedArticles.slice(0, 6);
+    Array.isArray(trending) && trending.length > 0 ? mapContentToArticles(trending as ContentItem[]) : sortedArticles.slice(0, 3);
   const latestArticles: Article[] =
-    Array.isArray(latest) && latest.length > 0 ? mapContentToArticles(latest as ContentItem[]) : sortedArticles.slice(0, 10);
+    Array.isArray(latest) && latest.length > 0 ? mapContentToArticles(latest as ContentItem[]) : sortedArticles.slice(0, 3);
   const topStory = sortedArticles[0];
-  const mainFeed = sortedArticles.slice(1, 11);
+  const mainFeed = sortedArticles.slice(1, 4);
   const isLoading = loadingPublished;
-  const techArticles: Article[] = Array.isArray(techFeed) && techFeed.length ? mapContentToArticles(techFeed as ContentItem[]) : sortedArticles.filter(a => a.niche === 'tech').slice(0, 3);
-  const securityArticles: Article[] = Array.isArray(securityFeed) && securityFeed.length ? mapContentToArticles(securityFeed as ContentItem[]) : sortedArticles.filter(a => a.niche === 'security').slice(0, 3);
-  const gamingArticles: Article[] = Array.isArray(gamingFeed) && gamingFeed.length ? mapContentToArticles(gamingFeed as ContentItem[]) : sortedArticles.filter(a => a.niche === 'gaming').slice(0, 3);
+  const techArticles: Article[] = Array.isArray(techFeed) && techFeed.length ? mapContentToArticles(techFeed as ContentItem[]) : sortedArticles.filter(a => a.niche === 'tech').slice(0, 2);
+  const securityArticles: Article[] = Array.isArray(securityFeed) && securityFeed.length ? mapContentToArticles(securityFeed as ContentItem[]) : sortedArticles.filter(a => a.niche === 'security').slice(0, 2);
+  const gamingArticles: Article[] = Array.isArray(gamingFeed) && gamingFeed.length ? mapContentToArticles(gamingFeed as ContentItem[]) : sortedArticles.filter(a => a.niche === 'gaming').slice(0, 2);
 
   return (
     <Layout showPulseSidebar={false}>

@@ -14,7 +14,7 @@ import { Link } from 'react-router-dom';
 import { Archive, ChevronRight } from 'lucide-react';
 
 export default function Explore() {
-  const { data: allContent, isLoading } = useAllPublishedContent(50);
+  const { data: allContent, isLoading } = useAllPublishedContent(10);
   const articles = allContent ? mapContentToArticles(allContent) : [];
 
   return (
