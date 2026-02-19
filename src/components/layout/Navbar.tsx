@@ -83,13 +83,13 @@ export function Navbar() {
 
   return (
     <>
-      <nav className="sticky top-0 z-50 bg-background/80 backdrop-blur-lg border-b border-border">
+      <nav className="sticky top-0 z-50 bg-background/90 text-foreground backdrop-blur-lg border-b border-border">
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between h-16">
             {/* Logo */}
             <Link to="/" className="flex items-center gap-2">
               <div className="w-8 h-8 rounded-lg gradient-hero" />
-              <span className="font-display font-bold text-xl">The Grid Nexus</span>
+              <span className="font-display font-bold text-xl text-foreground">The Grid Nexus</span>
             </Link>
 
             {/* Desktop Navigation */}
@@ -180,7 +180,7 @@ export function Navbar() {
               aria-label={isOpen ? 'Close menu' : 'Open menu'}
               aria-expanded={isOpen}
             >
-              {isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+              {isOpen ? <X className="h-6 w-6 text-foreground" /> : <Menu className="h-6 w-6 text-foreground" />}
             </button>
           </div>
 

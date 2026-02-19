@@ -27,11 +27,11 @@ function sourceAccentClasses(source: string | null | undefined) {
       !isTechCrunch && "border-border/70 hover:border-border"
     ),
     title: cn(
-      "text-balance text-white font-bold tracking-tight",
+      "text-balance text-foreground font-bold tracking-tight",
       isWired ? "font-serif" : "font-display"
     ),
     excerpt: cn(
-      "text-sm text-slate-300 leading-relaxed",
+      "text-sm text-muted-foreground leading-relaxed",
       isWired ? "font-serif" : "font-body"
     ),
   };
@@ -73,10 +73,10 @@ export function NewsGrid({
     <section className={cn("py-10", className)} aria-label={title}>
       <div className="flex items-end justify-between gap-4 mb-6">
         <div>
-          <h2 className="font-display font-bold tracking-tight text-white text-2xl md:text-3xl">
+          <h2 className="font-display font-bold tracking-tight text-foreground text-2xl md:text-3xl">
             {title}
           </h2>
-          <p className="text-sm text-slate-300">
+          <p className="text-sm text-muted-foreground">
             Modular headlines in a 12-column bento grid.
           </p>
         </div>
@@ -134,18 +134,18 @@ export function NewsGrid({
                   <span
                     className={cn(
                       "text-[11px] font-semibold tracking-[0.18em] uppercase",
-                      accent.isTechCrunch ? "text-[#39FF14]" : "text-slate-300"
+                      accent.isTechCrunch ? "text-[#39FF14]" : "text-muted-foreground"
                     )}
                   >
                     {item.source}
                   </span>
-                  <ExternalLink className="h-4 w-4 text-slate-400 opacity-0 group-hover:opacity-100 transition-opacity" />
+                  <ExternalLink className="h-4 w-4 text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity" />
                 </div>
 
                 <h3 className={cn(accent.title, "text-base md:text-lg line-clamp-2")}>{item.title}</h3>
                 <p className={cn(accent.excerpt, "mt-2 line-clamp-3")}>{item.summary}</p>
 
-                <div className="mt-auto pt-3 text-xs text-slate-400">
+                <div className="mt-auto pt-3 text-xs text-muted-foreground">
                   {new Date(item.publishedAt).toLocaleString()}
                 </div>
               </a>
