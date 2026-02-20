@@ -35,6 +35,7 @@ import type * as roadmapVotes from "../roadmapVotes.js";
 import type * as securityRatings from "../securityRatings.js";
 import type * as seed from "../seed.js";
 import type * as seedAdditionalArticles from "../seedAdditionalArticles.js";
+import type * as seedAllFebruary2026Articles from "../seedAllFebruary2026Articles.js";
 import type * as seedAllFiveArticles from "../seedAllFiveArticles.js";
 import type * as seedContentNiches from "../seedContentNiches.js";
 import type * as seedFeaturedArticles from "../seedFeaturedArticles.js";
@@ -83,6 +84,7 @@ declare const fullApi: ApiFromModules<{
   securityRatings: typeof securityRatings;
   seed: typeof seed;
   seedAdditionalArticles: typeof seedAdditionalArticles;
+  seedAllFebruary2026Articles: typeof seedAllFebruary2026Articles;
   seedAllFiveArticles: typeof seedAllFiveArticles;
   seedContentNiches: typeof seedContentNiches;
   seedFeaturedArticles: typeof seedFeaturedArticles;
