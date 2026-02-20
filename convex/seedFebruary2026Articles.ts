@@ -129,7 +129,6 @@ Despite some minor gripes about menu visuals in performance mode, *Ys X: Proud N
         contentType: "gaming" as const,
         focusKeyword: "best games February 2026",
         status: "published",
-        isPremium: true,
         publishedAt: 1738735200000,
         body: `## A Masterpiece Rebuilt: The Fragmented World Returns
 
@@ -254,9 +253,7 @@ For those who find traditional *Souls* games too slow, *Nioh 3* is the answer. I
 
       // Create content-niche relationship
       let nicheId: number;
-      if (article.contentType === 'technology') {
-        nicheId = techNiche.idNum;
-      } else if (article.contentType === 'security') {
+      if (article.contentType === 'security') {
         nicheId = securityNiche.idNum;
       } else if (article.contentType === 'gaming') {
         nicheId = gamingNiche.idNum;
