@@ -38,6 +38,7 @@ import type * as seedAdditionalArticles from "../seedAdditionalArticles.js";
 import type * as seedAllFiveArticles from "../seedAllFiveArticles.js";
 import type * as seedContentNiches from "../seedContentNiches.js";
 import type * as seedFeaturedArticles from "../seedFeaturedArticles.js";
+import type * as seedFebruary2026Articles from "../seedFebruary2026Articles.js";
 import type * as seedTopArticles from "../seedTopArticles.js";
 import type * as semanticSearch from "../semanticSearch.js";
 import type * as seoOptimization from "../seoOptimization.js";
@@ -85,6 +86,7 @@ declare const fullApi: ApiFromModules<{
   seedAllFiveArticles: typeof seedAllFiveArticles;
   seedContentNiches: typeof seedContentNiches;
   seedFeaturedArticles: typeof seedFeaturedArticles;
+  seedFebruary2026Articles: typeof seedFebruary2026Articles;
   seedTopArticles: typeof seedTopArticles;
   semanticSearch: typeof semanticSearch;
   seoOptimization: typeof seoOptimization;
