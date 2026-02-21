@@ -5,33 +5,48 @@
  */
 
 import { cronJobs } from "convex/server";
-import { internal } from "./_generated/api";
+import { internalMutation } from "./_generated/server";
 
 const crons = cronJobs();
 
-crons.interval(
-  "news-ingestion",
-  { hours: 1 },
-  internal.newsIngestor.ingestFromNewsApi
-);
+// This mutation safely deletes anything where expiresAt is in the past
+export const cleanupExpiredContent = internalMutation({
+  handler: async (ctx) => {
+    const now = Date.now();
+    
+    // Clean up articles (Live Wire / Nexus Intelligence)
+    const expiredArticles = await ctx.db
+      .query("articles")
+      .withIndex("by_expiresAt", (q) => q.lt("expiresAt", now))
+      .take(100); // Batch deletes to avoid transaction limits
+      
+    for (const article of expiredArticles) {
+      await ctx.db.delete(article._id);
+    }
 
-crons.interval(
-  "refresh-news-feed",
-  { minutes: 30 },
-  internal.ingest.runIngestion
-);
+    // Clean up AI Updates
+    const expiredAiUpdates = await ctx.db
+      .query("aiUpdates")
+      .withIndex("by_expiresAt", (q) => q.lt("expiresAt", now))
+      .take(100);
+      
+    for (const update of expiredAiUpdates) {
+      await ctx.db.delete(update._id);
+    }
 
-crons.interval(
-  "refresh-threat-intel-kev",
-  { hours: 6 },
-  internal.threatIntelIngest.runKevIngestion
-);
+    // Clean up Threat Intel
+    const expiredThreatIntel = await ctx.db
+      .query("threatIntel")
+      .withIndex("by_expiresAt", (q) => q.lt("expiresAt", now))
+      .take(100);
+      
+    for (const threat of expiredThreatIntel) {
+      await ctx.db.delete(threat._id);
+    }
 
-crons.interval(
-  "refresh-threat-intel-nvd",
-  { hours: 6 },
-  internal.threatIntelNvdIngest.runNvdIngestion,
-  { hoursBack: 24, maxResults: 200 }
-);
+    const totalCleaned = expiredArticles.length + expiredAiUpdates.length + expiredThreatIntel.length;
+    console.log(`Auto-cleanup: Removed ${totalCleaned} expired items`);
+  },
+});
 
 export default crons;

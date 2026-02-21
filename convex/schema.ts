@@ -365,18 +365,20 @@ export default defineSchema({
       v.literal("low")
     ),
     category: v.optional(v.string()),
-    publishedAt: v.number(), // ms
+    publishedAt: v.float64(), // ms
     url: v.optional(v.string()),
     cveIds: v.optional(v.array(v.string())),
     affected: v.optional(v.array(v.string())),
     tags: v.optional(v.array(v.string())),
     raw: v.optional(v.any()),
     lastIngestedAt: v.number(),
+    expiresAt: v.optional(v.float64()),
   })
     .index("by_source", ["source"])
     .index("by_source_id", ["source", "sourceId"])
     .index("by_published_at", ["publishedAt"])
-    .index("by_severity_published", ["severity", "publishedAt"]),
+    .index("by_severity_published", ["severity", "publishedAt"])
+    .index("by_expiresAt", ["expiresAt"]),
 
   // ─── Threat alert subscriptions & notifications ─────────────────────────
   threatSubscriptions: defineTable({
