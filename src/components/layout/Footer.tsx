@@ -9,7 +9,11 @@ export function Footer() {
           {/* Brand + value prop */}
           <div className="md:col-span-1 space-y-4">
             <Link to="/" className="flex items-center gap-2">
-              <div className="h-9 w-9 rounded-lg gradient-hero" />
+              <div className="h-9 w-9 rounded-lg bg-gradient-to-br from-tech via-security to-gaming flex items-center justify-center">
+                <div className="w-7 h-7 rounded bg-white/20 backdrop-blur-sm flex items-center justify-center">
+                  <div className="w-5 h-5 rounded bg-gradient-to-br from-gaming via-tech animate-pulse" />
+                </div>
+              </div>
               <span className="font-display text-xl font-bold tracking-tight">
                 The Grid Nexus
               </span>

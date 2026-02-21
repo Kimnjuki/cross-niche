@@ -90,7 +90,11 @@ export function Navbar() {
           <div className="flex items-center justify-between h-16">
             {/* Logo */}
             <Link to="/" className="flex items-center gap-2">
-              <div className="w-8 h-8 rounded-lg gradient-hero" />
+              <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-tech via-security to-gaming flex items-center justify-center">
+                <div className="w-6 h-6 rounded bg-white/20 backdrop-blur-sm flex items-center justify-center">
+                  <div className="w-4 h-4 rounded bg-gradient-to-br from-tech to-security animate-pulse" />
+                </div>
+              </div>
               <span className="font-display font-bold text-xl text-foreground">The Grid Nexus</span>
             </Link>
 

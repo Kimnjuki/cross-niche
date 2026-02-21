@@ -138,5 +138,59 @@ export function getPlaceholderByNiche(niche: string, articleId?: string): string
   if (n === 'tech') return getPlaceholderImage('tech', 800, 500, articleId);
   if (n === 'security') return getPlaceholderImage('security', 800, 500, articleId);
   if (n === 'gaming') return getPlaceholderImage('gaming', 800, 500, articleId);
+  if (n === 'technology') return getPlaceholderImage('tech', 800, 500, articleId);
+  if (n === 'cybersecurity') return getPlaceholderImage('security', 800, 500, articleId);
   return getPlaceholderImage('default', 800, 500, articleId);
+}
+
+/**
+ * Get free live images for technology, cybersecurity, and gaming content
+ * @param theme - Image theme
+ * @param articleId - Optional article ID for unique image per article
+ */
+export function getLivePlaceholderImage(theme: ImageTheme = 'default', articleId?: string): string {
+  // Use curated free images for each theme
+  const liveImages = {
+    tech: [
+      'https://images.unsplash.com/photo-1519389950473-47ba0277781c?q=80&w=800', // Modern tech workspace
+      'https://images.unsplash.com/photo-1550745165-9bc0b252726a?q=80&w=800', // Computer setup
+      'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?q=80&w=800', // Server room
+      'https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=800', // Code on screen
+    ],
+    security: [
+      'https://images.unsplash.com/photo-1563013544-824ae1b704d3?q=80&w=800', // Cybersecurity lock
+      'https://images.unsplash.com/photo-1555949963-ff9fe0c870eb?q=80&w=800', // Digital security
+      'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?q=80&w=800', // Network security
+      'https://images.unsplash.com/photo-1611224923853-80b023f02d71?q=80&w=800', // Security abstract
+    ],
+    gaming: [
+      'https://images.unsplash.com/photo-1511512578047-dfb367046420?q=80&w=800', // Gaming setup
+      'https://images.unsplash.com/photo-1538481199705-c710c4e965fc?q=80&w=800', // Gaming room
+      'https://images.unsplash.com/photo-1542751371-adc38448a05e?q=80&w=800', // Esports arena
+      'https://images.unsplash.com/photo-1578303512597-81e6cc155b3e?q=80&w=800', // Gaming console
+    ],
+    default: [
+      'https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=800', // Space/tech nexus
+      'https://images.unsplash.com/photo-1446776811953-b23d57ea21c3?q=80&w=800', // Grid network
+    ]
+  };
+
+  const images = liveImages[theme] || liveImages.default;
+  if (!articleId) {
+    // Fallback: use timestamp to select random image
+    const index = Math.floor(Math.random() * images.length);
+    return images[index];
+  }
+
+  // Use article ID/slug to create consistent but unique image selection
+  let hash = 0;
+  for (let i = 0; i < articleId.length; i++) {
+    const char = articleId.charCodeAt(i);
+    hash = ((hash << 5) - hash) + char;
+    hash = hash & hash; // Convert to 32-bit integer
+  }
+
+  // Use hash to select image consistently
+  const index = Math.abs(hash) % images.length;
+  return images[index];
 }
