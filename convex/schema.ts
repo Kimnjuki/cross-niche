@@ -233,9 +233,18 @@ export default defineSchema({
     source: v.string(),
     imageUrl: v.optional(v.string()),
     publishedAt: v.number(), // Unix timestamp (ms) for precise sorting
+    // NEW: Categorize the source so you know what is ephemeral vs permanent
+    sourceType: v.optional(
+      v.union(v.literal("live_wire"), v.literal("nexus_intelligence"), v.literal("permanent"))
+    ),
+    // NEW: TTL Control
+    expiresAt: v.optional(v.number()),
   })
     .index("by_url", ["url"])
-    .index("by_publishedAt", ["publishedAt"]),
+    .index("by_publishedAt", ["publishedAt"])
+    // NEW INDEX: Target exactly what needs to be deleted
+    .index("by_expiresAt", ["expiresAt"])
+    .index("by_sourceType", ["sourceType"]),
 
   // ─── AI-Pulse Roadmap (nexus-002) ──────────────────────────────────────
   // Live-updating timeline: AI/ML tech trends. category = Productivity | Creative | Gaming AI.
@@ -248,6 +257,8 @@ export default defineSchema({
     isHype: v.boolean(), // marketing fluff → dim when Hype view
     hasBenchmarks: v.boolean(), // confirmed ML benchmarks → highlight when Utility view
     sourceUrl: v.optional(v.string()),
+    // NEW: TTL Control
+    expiresAt: v.optional(v.number()),
     // Enhanced fields for comprehensive roadmap
     benchmarks: v.optional(v.array(v.object({
       name: v.string(),
@@ -276,7 +287,9 @@ export default defineSchema({
   })
     .index("by_category", ["category"])
     .index("by_category_published_at", ["category", "publishedAt"])
-    .index("by_published_at", ["publishedAt"]),
+    .index("by_published_at", ["publishedAt"])
+    // NEW INDEX: Crucial for blazing-fast database cleanup
+    .index("by_expiresAt", ["expiresAt"]),
 
   // ─── Guides & Tutorials ───────────────────────────────────────────────
   guides: defineTable({
