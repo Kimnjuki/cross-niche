@@ -38,7 +38,7 @@ import type * as seed from "../seed.js";
 import type * as seedAdditionalArticles from "../seedAdditionalArticles.js";
 import type * as seedAllFebruary2026Articles from "../seedAllFebruary2026Articles.js";
 import type * as seedAllFiveArticles from "../seedAllFiveArticles.js";
-import type * as seedCompleteFebruary2026 from "../seedCompleteFebruary2026.js";
+import type * as seedBatchFourFebruary2026 from "../seedBatchFourFebruary2026.js";
 import type * as seedContentNiches from "../seedContentNiches.js";
 import type * as seedFeaturedArticles from "../seedFeaturedArticles.js";
 import type * as seedFebruary2026Articles from "../seedFebruary2026Articles.js";
@@ -90,7 +90,7 @@ declare const fullApi: ApiFromModules<{
   seedAdditionalArticles: typeof seedAdditionalArticles;
   seedAllFebruary2026Articles: typeof seedAllFebruary2026Articles;
   seedAllFiveArticles: typeof seedAllFiveArticles;
-  seedCompleteFebruary2026: typeof seedCompleteFebruary2026;
+  seedBatchFourFebruary2026: typeof seedBatchFourFebruary2026;
   seedContentNiches: typeof seedContentNiches;
   seedFeaturedArticles: typeof seedFeaturedArticles;
   seedFebruary2026Articles: typeof seedFebruary2026Articles;
