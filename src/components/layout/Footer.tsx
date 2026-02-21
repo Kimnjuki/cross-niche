@@ -50,6 +50,9 @@ export function Footer() {
               <Link to="/blog-series" className="text-muted-foreground hover:text-foreground transition-colors">
                 Blog Series
               </Link>
+              <Link to="/topics" className="text-muted-foreground hover:text-foreground transition-colors">
+                Topics & Analysis
+              </Link>
               <Link to="/explore" className="text-muted-foreground hover:text-foreground transition-colors">
                 Explore all coverage
               </Link>

@@ -495,9 +495,13 @@ export default function Index() {
                 <span className="text-muted-foreground">·</span>
                 <Link to="/gaming" className="text-xs text-primary hover:underline">Gaming</Link>
                 <span className="text-muted-foreground">·</span>
-                <Link to="/blog-series" className="text-xs text-primary hover:underline">All articles</Link>
+                <Link to="/topics" className="text-xs text-primary hover:underline">Topics</Link>
                 <span className="text-muted-foreground">·</span>
-                <Link to="/guides" className="text-xs text-primary hover:underline">Guides</Link>
+                <Link to="/tutorials" className="text-xs text-primary hover:underline">Tutorials</Link>
+                <span className="text-muted-foreground">·</span>
+                <Link to="/blog-series" className="text-xs text-primary hover:underline">Blog Series</Link>
+                <span className="text-muted-foreground">·</span>
+                <Link to="/explore" className="text-xs text-primary hover:underline">All Articles</Link>
               </div>
             </section>
           </aside>

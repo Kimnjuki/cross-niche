@@ -9,6 +9,7 @@ import { SafeConvexProvider } from "@/components/SafeConvexProvider";
 import { EnhancedErrorBoundary } from "@/components/error/EnhancedErrorBoundary";
 import { GA4PageTracker } from "./components/analytics/GA4PageTracker";
 import { ThemeProvider } from "./components/theme/ThemeProvider";
+import { CanonicalLink } from "./components/seo/CanonicalLink";
 
 // Eager-loaded routes (no lazy loading – exact same content as full page refresh)
 import Index from "./pages/Index";
@@ -69,6 +70,7 @@ const App = () => (
             <ThemeProvider>
               <AuthProvider>
                 <TooltipProvider>
+                  <CanonicalLink />
                   <Toaster />
                   <Sonner />
                   <GA4PageTracker />

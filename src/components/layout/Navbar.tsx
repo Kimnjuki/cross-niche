@@ -23,6 +23,8 @@ const navLinks = [
   { href: '/topics', label: 'Topics', color: 'text-foreground' },
   { href: '/guides', label: 'Guides', color: 'text-foreground' },
   { href: '/roadmap', label: 'Roadmap', color: 'text-foreground' },
+  { href: '/tutorials', label: 'Tutorials', color: 'text-foreground' },
+  { href: '/blog-series', label: 'Blog Series', color: 'text-foreground' },
 ];
 
 /** Primary CTAs for mobile: Tech, Security, Gaming first to reduce bounce and improve navigation. */
