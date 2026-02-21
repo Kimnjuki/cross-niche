@@ -1,38 +1,54 @@
-/* GridNexus Design System (GDS) v1.0 */
-/* Technical precision meets visual boldness. Clean, fast, intelligent. */
+/* TheGridNexus Design System v2.0 */
+/* Intelligence Layer at the Intersection of Technology, Security, and Gaming */
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Inter+Display:wght@300;400;500;600;700;800;900&family=IBM+Plex+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap');
 
-/* CSS Custom Properties - Design Tokens */
+/* CSS Custom Properties - TheGridNexus Brand Identity */
 :root {
-  /* Brand Colors */
-  --nexus-cyan: #00E5FF;
-  --nexus-cyan-rgb: 0, 229, 255;
-  --nexus-blue: #0A1929;
-  --nexus-blue-rgb: 10, 25, 41;
-  --nexus-white: #F8FAFC;
-  --nexus-white-rgb: 248, 250, 252;
-
-  /* Secondary Colors */
-  --tech-green: #10B981;
-  --tech-green-rgb: 16, 185, 129;
-  --security-red: #EF4444;
-  --security-red-rgb: 239, 68, 68;
+  /* Primary Brand Palette */
+  --brand-black: #0A0A0F;
+  --brand-black-rgb: 10, 10, 15;
+  --nexus-blue: #00D4FF;
+  --nexus-blue-rgb: 0, 212, 255;
+  --threat-red: #FF2D55;
+  --threat-red-rgb: 255, 45, 85;
+  --grid-white: #F0F4FF;
+  --grid-white-rgb: 240, 244, 255;
+  --security-green: #00FF88;
+  --security-green-rgb: 0, 255, 136;
   --gaming-purple: #8B5CF6;
   --gaming-purple-rgb: 139, 92, 246;
-  --news-orange: #F59E0B;
-  --news-orange-rgb: 245, 158, 11;
+
+  /* Legacy Colors (for backward compatibility) */
+  --nexus-cyan: var(--nexus-blue);
+  --nexus-cyan-rgb: var(--nexus-blue-rgb);
+  --nexus-white: var(--grid-white);
+  --nexus-white-rgb: var(--grid-white-rgb);
+  --tech-green: var(--security-green);
+  --tech-green-rgb: var(--security-green-rgb);
+  --security-red: var(--threat-red);
+  --security-red-rgb: var(--threat-red-rgb);
+
+  /* Category Colors */
+  --tech-primary: var(--nexus-blue);
+  --tech-secondary: var(--security-green);
+  --security-primary: var(--threat-red);
+  --security-secondary: var(--security-green);
+  --gaming-primary: var(--gaming-purple);
+  --gaming-secondary: var(--nexus-blue);
 
   /* AI Gradient */
   --ai-gradient-start: #667EEA;
   --ai-gradient-end: #764BA2;
 
   /* Semantic Colors */
-  --success: #10B981;
+  --success: var(--security-green);
   --warning: #F59E0B;
-  --error: #EF4444;
-  --info: #3B82F6;
+  --warning-rgb: 245, 158, 11;
+  --error: var(--threat-red);
+  --info: var(--nexus-blue);
   --neutral: #6B7280;
+  --neutral-rgb: 107, 114, 128;
 
   /* Grayscale */
   --gray-50: #F9FAFB;
@@ -69,10 +85,25 @@
   --content-max-width: 1280px;
   --reading-max-width: 65ch;
 
-  /* Typography */
-  --font-display: 'Inter Variable', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
-  --font-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
-  --font-code: 'JetBrains Mono', Consolas, Monaco, 'Courier New', monospace;
+  /* Typography - TheGridNexus Brand Fonts */
+  --font-display: 'Inter Display', 'Inter Variable', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  --font-body: 'IBM Plex Sans', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', Consolas, Monaco, 'Courier New', monospace;
+  
+  /* Font Size Scale */
+  --text-xs: 0.75rem;    /* 12px */
+  --text-sm: 0.875rem;   /* 14px */
+  --text-base: 1rem;      /* 16px */
+  --text-lg: 1.125rem;   /* 18px */
+  --text-xl: 1.25rem;     /* 20px */
+  --text-2xl: 1.5rem;    /* 24px */
+  --text-3xl: 1.875rem;  /* 30px */
+  --text-4xl: 2.25rem;   /* 36px */
+  --text-5xl: 3rem;      /* 48px */
+  --text-6xl: 3.75rem;   /* 60px */
+  --text-7xl: 4.5rem;    /* 72px */
+  --text-8xl: 6rem;      /* 96px */
+  --text-9xl: 8rem;      /* 128px */
 
   /* Line Heights */
   --leading-tight: 1.1;
@@ -113,16 +144,35 @@
   --glass-subtle: blur(5px) saturate(150%);
   --glass-strong: blur(20px) saturate(200%);
 
-  /* Animations */
+  /* TheGridNexus Motion Design - Purposeful Micro-Animations */
+  --duration-instant: 50ms;
   --duration-fast: 150ms;
   --duration-normal: 250ms;
   --duration-slow: 350ms;
   --duration-slower: 500ms;
+  --duration-epic: 750ms;
 
   --ease-standard: cubic-bezier(0.4, 0.0, 0.2, 1);
   --ease-decelerate: cubic-bezier(0.0, 0.0, 0.2, 1);
   --ease-accelerate: cubic-bezier(0.4, 0.0, 1, 1);
   --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ease-grid: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+
+  /* Grid Pulse Animation (Brand Signature) */
+  --grid-pulse-duration: 2s;
+  --grid-pulse-ease: var(--ease-spring);
+  
+  /* Security Threat Ring Animation */
+  --threat-ring-duration: 1.5s;
+  --threat-ring-ease: var(--ease-decelerate);
+  
+  /* Article Card Hover Reveal */
+  --card-reveal-duration: var(--duration-normal);
+  --card-reveal-ease: var(--ease-standard);
+  
+  /* Dark Mode Toggle Circuit Animation */
+  --circuit-trace-duration: var(--duration-slow);
+  --circuit-trace-ease: var(--ease-accelerate);
 
   /* Z-Index Scale */
   --z-dropdown: 1000;
@@ -180,8 +230,110 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+/* TheGridNexus Brand Animations */
+@keyframes grid-pulse {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.8;
+    transform: scale(1.05);
+  }
+}
+
+@keyframes threat-ring {
+  0% {
+    transform: scale(0.95);
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1.2);
+    opacity: 0;
+  }
+}
+
+@keyframes card-reveal {
+  0% {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes circuit-trace {
+  0% {
+    stroke-dashoffset: 100;
+  }
+  100% {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes nexus-glow {
+  0%, 100% {
+    box-shadow: 0 0 20px rgba(0, 212, 255, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 40px rgba(0, 212, 255, 0.6);
+  }
+}
+
+/* Utility Classes for Brand Animations */
+.grid-pulse {
+  animation: grid-pulse var(--grid-pulse-duration) var(--grid-pulse-ease) infinite;
+}
+
+.threat-ring {
+  animation: threat-ring var(--threat-ring-duration) var(--threat-ring-ease) infinite;
+}
+
+.card-reveal {
+  animation: card-reveal var(--card-reveal-duration) var(--card-reveal-ease) forwards;
+}
+
+.circuit-trace {
+  animation: circuit-trace var(--circuit-trace-duration) var(--circuit-trace-ease) forwards;
+}
+
+.nexus-glow {
+  animation: nexus-glow 2s ease-in-out infinite;
+}
+
+/* Category-specific color utilities */
+.text-tech { color: var(--tech-primary); }
+.bg-tech { background-color: var(--tech-primary); }
+.border-tech { border-color: var(--tech-primary); }
+
+.text-security { color: var(--security-primary); }
+.bg-security { background-color: var(--security-primary); }
+.border-security { border-color: var(--security-primary); }
+
+.text-gaming { color: var(--gaming-primary); }
+.bg-gaming { background-color: var(--gaming-primary); }
+.border-gaming { border-color: var(--gaming-primary); }
+
+/* TheGridNexus brand gradients */
 .gradient-nexus-intelligence {
-  background: linear-gradient(90deg, #00E5FF 0%, #3B82F6 40%, #A855F7 100%);
+  background: linear-gradient(90deg, var(--nexus-blue) 0%, var(--tech-primary) 40%, var(--gaming-primary) 100%);
+}
+
+.gradient-tech-security {
+  background: linear-gradient(135deg, var(--tech-primary) 0%, var(--security-primary) 100%);
+}
+
+.gradient-security-gaming {
+  background: linear-gradient(135deg, var(--security-primary) 0%, var(--gaming-primary) 100%);
+}
+
+.gradient-gaming-tech {
+  background: linear-gradient(135deg, var(--gaming-primary) 0%, var(--tech-primary) 100%);
 }
 
 #root {
