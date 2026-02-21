@@ -9,18 +9,42 @@ import { v } from 'convex/values';
 
 export const seedBatchFourFebruary2026 = mutation({
   handler: async (ctx) => {
-    // 1. CLEANUP (Optional but Recommended): 
-    // Remove previous attempts to prevent slug collisions and "ghost" data.
-    const existingNiches = await ctx.db.query('contentNiches').collect();
-    for (const cn of existingNiches) await ctx.db.delete(cn._id);
+    // 1. CLEANUP: Remove December 2024 articles (older content)
+    const december2024Start = new Date('2024-12-01').getTime();
+    const december2024End = new Date('2024-12-31').getTime();
+    
+    const oldArticles = await ctx.db
+      .query('content')
+      .filter(q => 
+        q.and(
+          q.gte(q.field('publishedAt'), december2024Start),
+          q.lte(q.field('publishedAt'), december2024End)
+        )
+      )
+      .collect();
+    
+    for (const article of oldArticles) {
+      // Remove contentNiches relationships first
+      const relationships = await ctx.db
+        .query('contentNiches')
+        .filter(q => q.eq(q.field('contentId'), article._id))
+        .collect();
+      
+      for (const rel of relationships) {
+        await ctx.db.delete(rel._id);
+      }
+      
+      // Delete the article
+      await ctx.db.delete(article._id);
+    }
 
-    // 2. FETCH NICHES: Get the actual documents to retrieve their unique _id
+    // 2. Fetch Niches to verify they exist before we start
     const techNiche = await ctx.db.query('niches').withIndex('by_id_num', q => q.eq('idNum', 1)).first();
     const securityNiche = await ctx.db.query('niches').withIndex('by_id_num', q => q.eq('idNum', 2)).first();
     const gamingNiche = await ctx.db.query('niches').withIndex('by_id_num', q => q.eq('idNum', 3)).first();
 
     if (!techNiche || !securityNiche || !gamingNiche) {
-      throw new Error('Niches must be seeded before articles. Check your niches table!');
+      throw new Error('Niches 1, 2, or 3 are missing. Please seed niches first.');
     }
 
     const editorialContent = [
@@ -52,7 +76,7 @@ Aspyr has taken the rare step of offering automatic refunds for all pre-orders. 
         isPremium: false,
         securityScore: 1,
         featuredImageUrl: "https://images.unsplash.com/photo-1550745165-9bc0b252726f",
-        nicheDocId: gamingNiche._id // FIX: Linking to document _id
+        targetNicheId: 3 // Gaming
       },
       // --- 17. HIGH ON LIFE 2 (GAMING) ---
       {
@@ -82,7 +106,7 @@ Launching day-and-date on Game Pass, the title has already seen record-breaking 
         isPremium: false,
         securityScore: 2,
         featuredImageUrl: "https://images.unsplash.com/photo-1612287230202-1ff1d85d1bdf",
-        nicheDocId: gamingNiche._id // FIX: Linking to document _id
+        targetNicheId: 3 // Gaming
       },
       // --- 18. GROK AI (TECHNOLOGY) ---
       {
@@ -112,7 +136,7 @@ The EU and UK have both launched inquiries into X regarding Grok's role in gener
         isPremium: true, // Market analysis is premium content
         securityScore: 4,
         featuredImageUrl: "https://images.unsplash.com/photo-1677442136019-21780ecad995",
-        nicheDocId: techNiche._id // FIX: Linking to document _id
+        targetNicheId: 1 // Technology
       },
       // --- 19. CHINA TRAFFIC SPIKES (TECHNOLOGY) ---
       {
@@ -142,7 +166,7 @@ Small site owners are seeing surges of visitors with "0 seconds on page," indica
         isPremium: false,
         securityScore: 5,
         featuredImageUrl: "https://images.unsplash.com/photo-1551288049-bbbda536ad0a",
-        nicheDocId: techNiche._id // FIX: Linking to document _id
+        targetNicheId: 1 // Technology
       },
       // --- 20. TIKTOK US DEAL (TECHNOLOGY) ---
       {
@@ -172,26 +196,30 @@ The move has been framed as a "qualified divestiture" by the administration. Whi
         isPremium: false,
         securityScore: 4,
         featuredImageUrl: "https://images.unsplash.com/photo-1611605698335-8b1569810447",
-        nicheDocId: techNiche._id // FIX: Linking to document _id
+        targetNicheId: 1 // Technology (Note: Shared with Security often, but targetNicheId is 1)
       }
     ];
 
     for (const art of editorialContent) {
-      // Avoid duplicate content entries by checking slug
-      const existing = await ctx.db.query("content").withIndex("by_slug", q => q.eq("slug", art.slug)).first();
-      
+      // 1. Check for existing article by slug
+      const existing = await ctx.db
+        .query("content")
+        .withIndex("by_slug", q => q.eq("slug", art.slug))
+        .first();
+
       let contentId;
       if (existing) {
         contentId = existing._id;
-        // Update body or status if needed
+        // Patch existing to ensure it is 'published' and has the right content
         await ctx.db.patch(contentId, { status: "published" });
       } else {
+        // 2. Insert new content document
         contentId = await ctx.db.insert("content", {
           title: art.title,
           slug: art.slug,
           contentType: art.contentType,
           focusKeyword: art.focusKeyword,
-          status: art.status,
+          status: "published", // Force published status
           isBreaking: art.isBreaking,
           isFeatured: art.isFeatured,
           publishedAt: art.publishedAt,
@@ -208,14 +236,26 @@ The move has been framed as a "qualified divestiture" by the administration. Whi
         });
       }
 
-      // 3. THE KEY FIX: Map to the contentNiches table using the numeric idNum from niche document
-      await ctx.db.insert("contentNiches", {
-        contentId,
-        nicheId: art.nicheDocId === gamingNiche._id ? 3 : 
-                  art.nicheDocId === techNiche._id ? 1 : 2, // Map to idNum values
-      });
+      // 3. Link via the contentNiches join table
+      // Check if this specific relationship already exists to avoid duplicates
+      const existingLink = await ctx.db
+        .query("contentNiches")
+        .filter(q => 
+          q.and(
+            q.eq(q.field("contentId"), contentId),
+            q.eq(q.field("nicheId"), art.targetNicheId)
+          )
+        )
+        .first();
+
+      if (!existingLink) {
+        await ctx.db.insert("contentNiches", {
+          contentId,
+          nicheId: art.targetNicheId, // Using the NUMBER here to match validator v.float64()
+        });
+      }
     }
 
-    return "Batch 4 Seeding FIXED: 5 Articles linked via Document IDs.";
+    return `Batch 4 Seeding Complete & Schema Validated. Removed ${oldArticles.length} December 2024 articles.`;
   },
 });
