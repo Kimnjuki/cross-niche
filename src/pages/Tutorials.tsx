@@ -5,6 +5,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { SEOHead } from '@/components/seo/SEOHead';
 import { 
   Search, 
   Clock, 
@@ -100,6 +101,13 @@ export default function Tutorials() {
 
   return (
     <Layout>
+      <SEOHead
+        title="Tech Tutorials & Step-by-Step Guides | The Grid Nexus"
+        description="Master common fixes across Windows, macOS, and Linux. Learn security best practices and optimize your gaming experience with comprehensive tutorials."
+        keywords={['tech tutorials', 'how-to guides', 'step-by-step tutorials', 'tech fixes', 'security tutorials', 'gaming tutorials']}
+        url={window.location.href}
+        type="website"
+      />
       <div className="container mx-auto px-4 py-8 md:py-12">
         {/* Hero Section */}
         <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-primary/10 via-background to-background mb-12 p-8 md:p-12">

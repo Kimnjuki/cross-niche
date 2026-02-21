@@ -1,25 +1,279 @@
 <!doctype html>
 <html lang="en">
   <head>
+    <!-- Google tag (gtag.js) - skip on localhost to avoid dev console noise -->
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      try {
+        var isLocal = /^localhost$|^127\.0\.0\.1$|^\[::1\]$/i.test(window.location.hostname || '');
+        if (!isLocal) {
+          var s = document.createElement('script');
+          s.async = true;
+          s.src = 'https://www.googletagmanager.com/gtag/js?id=%VITE_GA4_MEASUREMENT_ID%';
+          s.onerror = function() {};
+          document.head.appendChild(s);
+          gtag('js', new Date());
+          gtag('config', '%VITE_GA4_MEASUREMENT_ID%');
+        }
+      } catch (e) {}
+    </script>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <!-- TODO: Set the document title to the name of your application -->
-    <title>The Grid Nexus - Tech • Security • Gaming Intelligence</title>
-    <meta name="description" content="The Grid Nexus: Your trusted source for breaking news, in-depth analysis, and expert guides across technology, cybersecurity, and gaming." />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="theme-color" content="#0f172a" />
+    <meta name="msapplication-TileColor" content="#0f172a" />
+    <meta name="msapplication-config" content="/browserconfig.xml" />
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+    <meta name="googlebot" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+    <meta name="bingbot" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+    <meta name="revisit-after" content="1 days" />
+    <meta name="distribution" content="global" />
+    <meta name="rating" content="general" />
+    <meta name="copyright" content="The Grid Nexus" />
+    <meta name="language" content="en" />
+    <meta http-equiv="Content-Language" content="en" />
+    <meta name="geo.region" content="US" />
+    <meta name="geo.placename" content="United States" />
+    <title>The Grid Nexus – Tech, Security & Gaming News</title>
+    <meta name="description" content="The Grid Nexus: breaking technology news, cybersecurity analysis, and gaming guides. AI insights, security intelligence, and tech coverage. Stay ahead." />
+    <meta name="keywords" content="technology news, cybersecurity, gaming, tech intelligence, security analysis, gaming news, AI technology, tech trends, cyber threats, gaming hardware, tech reviews, security updates, gaming industry, tech innovation" />
     <meta name="author" content="The Grid Nexus" />
+    <!-- Canonical is set by SEOHead per-route to avoid Ahrefs "non-canonical page in sitemap" -->
 
-    <meta property="og:title" content="The Grid Nexus - Tech • Security • Gaming Intelligence" />
-    <meta property="og:description" content="Your trusted source for breaking news, in-depth analysis, and expert guides across technology, cybersecurity, and gaming." />
+    <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website" />
-    <meta property="og:image" content="https://lovable.dev/opengraph-image-p98pqg.png" />
+    <meta property="og:url" content="https://thegridnexus.com/" />
+    <meta property="og:title" content="The Grid Nexus - Tech, Security & Gaming News" />
+    <meta property="og:description" content="Breaking tech news, cybersecurity analysis, and gaming guides. AI insights and expert coverage." />
+    <meta property="og:image" content="https://thegridnexus.com/og-image.jpg" />
+    <meta property="og:image:secure_url" content="https://thegridnexus.com/og-image.jpg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="The Grid Nexus - Tech, Security & Gaming" />
+    <meta property="og:image:type" content="image/jpeg" />
+    <meta property="og:site_name" content="The Grid Nexus" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:locale:alternate" content="en_GB" />
+    <meta property="article:publisher" content="https://www.facebook.com/thegridnexus" />
 
+    <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:site" content="@Lovable" />
-    <meta name="twitter:image" content="https://lovable.dev/opengraph-image-p98pqg.png" />
+    <meta name="twitter:url" content="https://thegridnexus.com/" />
+    <meta name="twitter:title" content="The Grid Nexus - Tech, Security & Gaming News" />
+    <meta name="twitter:description" content="Breaking tech news, cybersecurity analysis, and gaming guides. AI insights and expert coverage." />
+    <meta name="twitter:image" content="https://thegridnexus.com/og-image.jpg" />
+    <meta name="twitter:image:alt" content="The Grid Nexus - Tech, Security & Gaming Intelligence" />
+    <meta name="twitter:site" content="@thegridnexus" />
+    <meta name="twitter:creator" content="@thegridnexus" />
+
+    <!-- Favicon and App Icons -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#0f172a" />
+
+    <!-- DNS Prefetch and Preconnect for Performance -->
+    <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
+    <link rel="dns-prefetch" href="https://fonts.gstatic.com" />
+    <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
+    <link rel="dns-prefetch" href="https://www.google-analytics.com" />
+    <link rel="dns-prefetch" href="https://pagead2.googlesyndication.com" />
+    <link rel="dns-prefetch" href="https://www.clarity.ms" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preconnect" href="https://www.googletagmanager.com" />
+    <link rel="preconnect" href="https://www.google-analytics.com" />
+
+    <!-- Preload critical fonts to prevent layout shift -->
+    <!-- Removed preload to fix font loading warnings -->
+
+    <!-- Google AdSense: deferred to not block LCP (loaded after DOMContentLoaded) -->
+
+    <!-- Clickio Consent CSS -->
+    <style>body.clickio-cmp-in-scope .clickio-cmp-settings-display { display: inherit !important; }</style>
+
+    <!-- Default Consent Mode config (guarded so missing gtag does not break page) -->
+    <script>
+        if (typeof gtag === 'function') gtag('consent', 'default', {
+            'ad_storage': 'granted',
+            'analytics_storage': 'granted',
+            'functionality_storage': 'granted',
+            'personalization_storage': 'granted',
+            'security_storage': 'granted',
+            'wait_for_update': 1500
+        });
+        if (typeof gtag === 'function') gtag('consent', 'default', {
+            'region': ['AT', 'BE', 'BG', 'HR', 'CY', 'CZ', 'DK', 'EE', 'FI', 'FR', 'DE', 'GR', 'HU', 'IS', 'IE', 'IT', 'LV', 'LI', 'LT', 'LU', 'MT', 'NL', 'NO', 'PL', 'PT', 'RO', 'SK', 'SI', 'ES', 'SE', 'GB', 'CH'],
+            'ad_storage': 'denied',
+            'analytics_storage': 'denied',
+            'functionality_storage': 'denied',
+            'personalization_storage': 'denied',
+            'security_storage': 'denied',
+            'wait_for_update': 1500
+        });
+        if (typeof gtag === 'function') { gtag('set', 'ads_data_redaction', true); gtag('set', 'url_passthrough', true); }
+        (function(){
+            try {
+                if (typeof gtag !== 'function') return;
+                var s = {
+                    adStorage: {storageName: "ad_storage", serialNumber: 0},
+                    analyticsStorage: {storageName: "analytics_storage", serialNumber: 1},
+                    functionalityStorage: {storageName: "functionality_storage", serialNumber: 2},
+                    personalizationStorage: {storageName: "personalization_storage", serialNumber: 3},
+                    securityStorage: {storageName: "security_storage", serialNumber: 4}
+                };
+                var c = localStorage.getItem("__lxG__consent__v2");
+                if (c) {
+                    try {
+                        c = JSON.parse(c);
+                        if (c && c.cls_val) c = c.cls_val;
+                        if (c) c = c.split("|");
+                        if (c && c.length && typeof c[4] !== undefined) {
+                            c = c[4].split("").map(function(e) { return e - 0; });
+                            if (c.length) {
+                                var t = {};
+                                Object.values(s).sort(function(e, t) { return e.serialNumber - t.serialNumber; }).forEach(function(e) {
+                                    t[e.storageName] = c[e.serialNumber] ? "granted" : "denied";
+                                });
+                                gtag("consent", "update", t);
+                            }
+                        }
+                    } catch(err) {}
+                }
+                if (Math.random() < 0.05 && window.dataLayer) {
+                    try {
+                        document.head.appendChild(document.createElement('img')).src = "//clickiocdn.com/utr/gtag/?sid=247023";
+                    } catch(err) {}
+                }
+            } catch (e) {}
+        })();
+    </script>
+
+    <!-- Clickio, AdSense, Ahrefs: deferred to not block LCP -->
+
+    <!-- Schema.org JSON-LD (static, visible to crawlers before JS) -->
+    <script type="application/ld+json">
+    {"@context":"https://schema.org","@graph":[{"@type":"Organization","@id":"https://thegridnexus.com/#organization","name":"The Grid Nexus","url":"https://thegridnexus.com","logo":{"@type":"ImageObject","url":"https://thegridnexus.com/logo.png","width":512,"height":512},"sameAs":["https://twitter.com/thegridnexus","https://facebook.com/thegridnexus","https://linkedin.com/company/thegridnexus"],"description":"Tech, Security & Gaming Intelligence - Breaking news, expert analysis, and comprehensive guides."},{"@type":"WebSite","@id":"https://thegridnexus.com/#website","url":"https://thegridnexus.com","name":"The Grid Nexus","description":"Breaking technology news, cybersecurity analysis, and gaming guides. AI insights, security intelligence, and tech coverage.","publisher":{"@id":"https://thegridnexus.com/#organization"},"potentialAction":{"@type":"SearchAction","target":{"@type":"EntryPoint","urlTemplate":"https://thegridnexus.com/topics?q={search_term_string}"},"query-input":"required name=search_term_string"},"inLanguage":"en-US"}]}
+    </script>
   </head>
 
   <body>
-    <div id="root"></div>
+    <a href="#main-content" class="skip-link">Skip to content</a>
+    <div id="root">
+      <div id="static-shell" style="min-height:100vh;font-family:system-ui,sans-serif;background:#0f172a;color:#f8fafc">
+        <header style="border-bottom:1px solid rgba(148,163,184,0.2);padding:1rem 1.5rem"><nav aria-label="Main navigation" style="max-width:80rem;margin:0 auto;display:flex;flex-wrap:wrap;gap:1rem;align-items:center"><a href="/" style="font-weight:700;font-size:1.25rem;color:#f8fafc;text-decoration:none">The Grid Nexus</a><a href="/tech" style="color:#94a3b8;text-decoration:none">Tech</a><a href="/security" style="color:#94a3b8;text-decoration:none">Security</a><a href="/gaming" style="color:#94a3b8;text-decoration:none">Gaming</a><a href="/news" style="color:#94a3b8;text-decoration:none">News</a><a href="/topics" style="color:#94a3b8;text-decoration:none">Topics</a><a href="/guides" style="color:#94a3b8;text-decoration:none">Guides</a><a href="/about" style="color:#94a3b8;text-decoration:none">About</a></nav></header>
+        <main id="main-content" style="max-width:80rem;margin:0 auto;padding:2rem 1.5rem">
+          <h1 style="font-size:2rem;margin-bottom:0.5rem">The Grid Nexus – Tech, Security &amp; Gaming News</h1>
+          <p style="font-size:1.125rem;color:#94a3b8;margin-bottom:1.5rem">Expert analysis and breaking coverage across technology, cybersecurity, and gaming.</p>
+        <p style="color:#cbd5e1;line-height:1.6;margin-bottom:1rem">Breaking technology news, cybersecurity analysis, and gaming guides. AI insights, security intelligence, and tech coverage. Stay ahead of the curve.</p>
+        <p style="color:#cbd5e1;line-height:1.6;margin-bottom:1rem">The Grid Nexus delivers in-depth reporting on the technology, security, and gaming industries. Our editorial team covers the latest in artificial intelligence, cyber threats, hardware releases, software updates, and esports. We provide actionable intelligence for professionals and enthusiasts who need to stay informed.</p>
+        <p style="color:#cbd5e1;line-height:1.6;margin-bottom:1rem">Explore our guides and tutorials for practical advice on security best practices, gaming performance, and emerging tech. Our topics include tech news and innovation, cybersecurity and threats, gaming and esports, breaking news, and expert analysis. We combine data-driven reporting with clear explanations so you can make better decisions.</p>
+        <p style="color:#cbd5e1;line-height:1.6;margin-bottom:2rem">Whether you follow tech trends, manage security risk, or care about gaming and hardware, The Grid Nexus is your source for reliable, up-to-date coverage. Browse by category: Tech, Security, Gaming, News, Topics, and Guides. For deeper dives, visit our AI Pulse, Roadmap, Breach Sim, and Security Score tools. We publish daily updates on vulnerabilities, product launches, and industry shifts so you stay ahead. Our editorial and disclosure policies ensure transparent, accurate reporting. Contact us for press inquiries or feedback.</p>
+          <section aria-label="Explore sections" style="margin-bottom:2rem">
+            <h2 style="font-size:1.25rem;margin-bottom:1rem;color:#f8fafc">Explore</h2>
+            <ul style="list-style:none;padding:0;margin:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:0.75rem">
+              <li><a href="/tech" style="color:#60a5fa;text-decoration:none">Tech News &amp; Innovation</a></li>
+              <li><a href="/security" style="color:#60a5fa;text-decoration:none">Cybersecurity &amp; Threats</a></li>
+              <li><a href="/gaming" style="color:#60a5fa;text-decoration:none">Gaming &amp; Esports</a></li>
+              <li><a href="/news" style="color:#60a5fa;text-decoration:none">Breaking News</a></li>
+              <li><a href="/explore" style="color:#60a5fa;text-decoration:none">Explore</a></li>
+              <li><a href="/topics" style="color:#60a5fa;text-decoration:none">Topics &amp; Tags</a></li>
+              <li><a href="/guides" style="color:#60a5fa;text-decoration:none">Guides &amp; Tutorials</a></li>
+              <li><a href="/blog-series" style="color:#60a5fa;text-decoration:none">Blog Series</a></li>
+              <li><a href="/tutorials" style="color:#60a5fa;text-decoration:none">Tutorials</a></li>
+              <li><a href="/ai-pulse" style="color:#60a5fa;text-decoration:none">AI Pulse</a></li>
+              <li><a href="/roadmap" style="color:#60a5fa;text-decoration:none">Roadmap</a></li>
+              <li><a href="/breach-sim" style="color:#60a5fa;text-decoration:none">Breach Sim</a></li>
+              <li><a href="/nexus-intersection" style="color:#60a5fa;text-decoration:none">Nexus Intersection</a></li>
+              <li><a href="/security-score" style="color:#60a5fa;text-decoration:none">Security Score</a></li>
+              <li><a href="/reviews" style="color:#60a5fa;text-decoration:none">Reviews</a></li>
+              <li><a href="/about" style="color:#60a5fa;text-decoration:none">About</a></li>
+              <li><a href="/contact" style="color:#60a5fa;text-decoration:none">Contact</a></li>
+              <li><a href="/privacy" style="color:#60a5fa;text-decoration:none">Privacy</a></li>
+              <li><a href="/terms" style="color:#60a5fa;text-decoration:none">Terms</a></li>
+              <li><a href="/disclosure" style="color:#60a5fa;text-decoration:none">Disclosure</a></li>
+              <li><a href="/editorial" style="color:#60a5fa;text-decoration:none">Editorial Policy</a></li>
+            </ul>
+          </section>
+          <p style="font-size:0.875rem;color:#64748b">Loading full experience...</p>
+        </main>
+      </div>
+    </div>
+    <noscript>
+      <div style="padding:2rem;text-align:center;background:#0f172a;color:#f8fafc;font-family:system-ui,sans-serif">
+        <p style="margin-bottom:1rem">JavaScript is disabled. The full site requires JavaScript for the interactive experience.</p>
+        <p>You can still browse: <a href="/tech" style="color:#60a5fa">Tech</a> · <a href="/security" style="color:#60a5fa">Security</a> · <a href="/gaming" style="color:#60a5fa">Gaming</a> · <a href="/news" style="color:#60a5fa">News</a> · <a href="/explore" style="color:#60a5fa">Explore</a> · <a href="/topics" style="color:#60a5fa">Topics</a> · <a href="/guides" style="color:#60a5fa">Guides</a> · <a href="/about" style="color:#60a5fa">About</a></p>
+      </div>
+    </noscript>
+    <style>.skip-link{position:absolute;left:-9999px;z-index:9999;padding:1rem 1.5rem;background:#3b82f6;color:white;text-decoration:none;font-weight:600}.skip-link:focus{left:0;top:0}</style>
+    <!-- Development/Production script loading -->
     <script type="module" src="/src/main.tsx"></script>
+    
+    <!-- Fallback for development or build issues -->
+    <script>
+      // Fallback if main script fails to load
+      window.addEventListener('DOMContentLoaded', function() {
+        if (!window.__VITE_APP_LOADED__) {
+          console.warn('Main script failed to load, attempting fallback...');
+          // Try to load any available script files
+          const scripts = [
+            '/src/main.tsx',
+            '/assets/index.js'
+          ];
+          
+          let loaded = false;
+          scripts.forEach(function(src) {
+            const script = document.createElement('script');
+            script.type = 'module';
+            script.src = src;
+            script.onload = function() {
+              if (!loaded) {
+                loaded = true;
+                console.log('Fallback script loaded:', src);
+              }
+            };
+            script.onerror = function() {
+              console.error('Failed to load fallback script:', src);
+            };
+            document.head.appendChild(script);
+          });
+        }
+      });
+    </script>
+    <!-- Defer third-party scripts; only load on non-localhost to avoid console noise (e.g. Ahrefs "Ignoring Event: localhost") -->
+    <script>
+      (function(){
+        var isLocalhost = /^localhost$|^127\.0\.0\.1$|^\[::1\]$/i.test(window.location.hostname || '');
+        function loadScript(src, opts) {
+          try {
+            var s = document.createElement('script');
+            s.async = true;
+            s.src = src;
+            s.onerror = function() {};
+            if (opts) for (var k in opts) s.setAttribute(k, opts[k]);
+            (document.body || document.documentElement).appendChild(s);
+          } catch (e) {}
+        }
+        function run() {
+          if (isLocalhost) return;
+          // Microsoft Clarity (session recordings, heatmaps)
+          (function(c,l,a,r,i,t,y){
+            c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+            t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+            y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+          })(window, document, "clarity", "script", "vd7rgy7tu7");
+          loadScript('https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9278124025449370', { crossOrigin: 'anonymous', referrerPolicy: 'no-referrer-when-downgrade' });
+          loadScript('//clickiocmp.com/t/consent_247023.js', { crossOrigin: 'anonymous' });
+          loadScript('https://analytics.ahrefs.com/analytics.js', { 'data-key': 'aNTResFK8mO8Rf5gt0QKdw', crossOrigin: 'anonymous' });
+        }
+        if (document.readyState === 'complete') run(); else window.addEventListener('load', run);
+      })();
+    </script>
   </body>
 </html>

@@ -1,0 +1,11 @@
+{
+  "redirects": [
+    { "source": "/:path*", "has": [{ "type": "host", "value": "www.thegridnexus.com" }], "destination": "https://thegridnexus.com/:path*", "statusCode": 301 }
+  ],
+  "headers": [
+    { "source": "/robots.txt", "headers": [{ "key": "Content-Type", "value": "text/plain; charset=utf-8" }] },
+    { "source": "/ads.txt", "headers": [{ "key": "Content-Type", "value": "text/plain; charset=utf-8" }] },
+    { "source": "/sitemap.xml", "headers": [{ "key": "Content-Type", "value": "application/xml; charset=utf-8" }] },
+    { "source": "/sitemap-news.xml", "headers": [{ "key": "Content-Type", "value": "application/xml; charset=utf-8" }] }
+  ]
+}

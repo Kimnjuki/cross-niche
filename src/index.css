@@ -1,5 +1,9 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=optional');
+@import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&display=optional');
+@import url('https://api.fontshare.com/v2/css?f[]=satoshi@400,500,700,900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter+Tight:wght@500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Serif:wght@400;500;600&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -7,54 +11,60 @@
 
 @layer base {
   :root {
-    --background: 220 20% 97%;
-    --foreground: 220 30% 10%;
+    /* Light editorial base (Ars/Verge-ish): clean paper + high-contrast type */
+    --background: 0 0% 100%;
+    --foreground: 222 47% 11%;
 
+    /* Cards & surfaces */
     --card: 0 0% 100%;
-    --card-foreground: 220 30% 10%;
+    --card-foreground: 222 47% 11%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 220 30% 10%;
+    --popover-foreground: 222 47% 11%;
 
-    --primary: 199 89% 48%; /* #0ea5e9 */
+    /* Brand blue: strong but editorial (less neon) */
+    --primary: 221 83% 53%;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 220 15% 92%;
-    --secondary-foreground: 220 30% 10%;
+    --secondary: 210 40% 96%;
+    --secondary-foreground: 222 47% 11%;
 
-    --muted: 220 15% 94%;
-    --muted-foreground: 220 10% 45%;
+    --muted: 210 40% 96%;
+    --muted-foreground: 215 16% 47%;
 
-    --accent: 220 15% 92%;
-    --accent-foreground: 220 30% 10%;
+    --accent: 210 40% 96%;
+    --accent-foreground: 222 47% 11%;
 
-    --destructive: 0 85% 60%;
+    --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 220 15% 88%;
-    --input: 220 15% 88%;
-    --ring: 220 90% 50%;
+    /* Editorial borders: subtle, not heavy */
+    --border: 214 32% 91%;
+    --input: 214 32% 91%;
+    --ring: 221 83% 53%;
 
     --radius: 0.75rem;
 
-    /* Niche Colors */
-    --tech: 220 90% 50%;
+    /* Niche Colors – Nexus palette */
+    --tech: 217 100% 52%; /* electric tech blue */
     --tech-foreground: 0 0% 100%;
-    --tech-muted: 220 70% 95%;
+    --tech-muted: 217 40% 18%;
 
-    --security: 0 75% 55%;
+    /* Security actions use cyber blue #00F0FF */
+    --security: 184 100% 50%;
     --security-foreground: 0 0% 100%;
-    --security-muted: 0 60% 95%;
+    --security-muted: 184 40% 18%;
 
-    --gaming: 145 70% 42%;
+    /* Gaming tags use neon pink #FF007A */
+    --gaming: 330 100% 50%;
     --gaming-foreground: 0 0% 100%;
-    --gaming-muted: 145 50% 94%;
+    --gaming-muted: 330 40% 18%;
 
-    /* Gradient */
-    --gradient-hero: linear-gradient(135deg, hsl(220 90% 50%) 0%, hsl(260 80% 55%) 50%, hsl(320 75% 55%) 100%);
-    --gradient-tech: linear-gradient(135deg, hsl(220 90% 50%) 0%, hsl(240 80% 55%) 100%);
-    --gradient-security: linear-gradient(135deg, hsl(0 75% 55%) 0%, hsl(30 80% 50%) 100%);
-    --gradient-gaming: linear-gradient(135deg, hsl(145 70% 42%) 0%, hsl(175 70% 45%) 100%);
+    /* Gradients: restrained editorial accents (still colorful, less “cyber neon”) */
+    --gradient-hero: linear-gradient(135deg, hsl(221 83% 53%) 0%, hsl(259 83% 60%) 55%, hsl(289 85% 64%) 100%);
+    --gradient-tech: linear-gradient(135deg, hsl(221 83% 53%) 0%, hsl(234 89% 60%) 100%);
+    --gradient-security: linear-gradient(135deg, hsl(184 100% 40%) 0%, hsl(221 83% 53%) 100%);
+    --gradient-gaming: linear-gradient(135deg, hsl(330 100% 50%) 0%, hsl(289 85% 64%) 100%);
 
     /* Shadows */
     --shadow-sm: 0 1px 2px 0 hsl(220 30% 10% / 0.05);
@@ -76,13 +86,40 @@
     /* New Design System Colors */
     --danger-glow: rgba(239, 68, 68, 0.15);
     --surface-elevated: 217 33% 17%; /* #1e293b */
+
+    /* Grid Nexus 2026 – design tokens */
+    --nexus-bg: #0A0A0B;
+    --nexus-surface: rgba(20, 20, 22, 0.7);
+    --nexus-border: rgba(255, 255, 255, 0.1);
+    --nexus-accent-security: #00FF41;
+    --nexus-accent-tech: #00F0FF;
+    --nexus-accent-gaming: #FF007A;
+    --nexus-glow-security: 0 0 20px rgba(0, 255, 65, 0.15);
+    --nexus-glow-tech: 0 0 20px rgba(0, 240, 255, 0.15);
+    --nexus-glow-gaming: 0 0 20px rgba(255, 0, 122, 0.15);
+    --nexus-font-display: 'Inter Tight', system-ui, sans-serif;
+    --nexus-font-body: 'IBM Plex Serif', system-ui, serif;
+    --nexus-font-data: 'JetBrains Mono', monospace;
+
+    /* Platform analysis: competitive design (Verge / Ars / WIRED) */
+    --brand-primary: 217 100% 50%;
+    --brand-secondary: 190 100% 50%;
+    --container-max: 1280px;
+    --content-max: 65ch;
+    --grid-gap: 24px;
+    --text-hero: clamp(2.5rem, 5vw, 4.5rem);
+    --text-h1: clamp(2rem, 3.5vw, 3rem);
+    --text-h2: clamp(1.5rem, 2.5vw, 2rem);
+    --text-h3: clamp(1.25rem, 2vw, 1.5rem);
+    --leading-headline: 1.1;
+    --leading-body: 1.6;
   }
 
   .dark {
-    --background: 220 25% 8%;
+    --background: 240 6% 4%;
     --foreground: 220 15% 95%;
 
-    --card: 220 25% 12%;
+    --card: 240 5% 9%;
     --card-foreground: 220 15% 95%;
 
     --popover: 220 25% 12%;
@@ -91,11 +128,11 @@
     --primary: 199 89% 48%; /* #0ea5e9 */
     --primary-foreground: 220 25% 8%;
 
-    --secondary: 220 20% 18%;
+    --secondary: 240 6% 7%;
     --secondary-foreground: 220 15% 95%;
 
-    --muted: 220 20% 18%;
-    --muted-foreground: 220 15% 60%;
+    --muted: 240 4% 12%;
+    --muted-foreground: 220 15% 65%;
 
     --accent: 220 20% 18%;
     --accent-foreground: 220 15% 95%;
@@ -103,19 +140,19 @@
     --destructive: 0 70% 50%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 220 20% 20%;
-    --input: 220 20% 20%;
+    --border: 0 0% 18%;
+    --input: 0 0% 18%;
     --ring: 220 90% 60%;
 
-    /* Niche Colors Dark */
-    --tech: 220 90% 60%;
-    --tech-muted: 220 40% 20%;
+    /* Niche Colors Dark – keep in sync with root */
+    --tech: 217 100% 56%;
+    --tech-muted: 217 40% 20%;
 
-    --security: 0 70% 55%;
-    --security-muted: 0 40% 20%;
+    --security: 184 100% 52%;
+    --security-muted: 184 40% 20%;
 
-    --gaming: 145 60% 50%;
-    --gaming-muted: 145 30% 18%;
+    --gaming: 330 100% 52%;
+    --gaming-muted: 330 40% 20%;
 
     --sidebar-background: 240 5.9% 10%;
     --sidebar-foreground: 240 4.8% 95.9%;
@@ -138,12 +175,21 @@
   }
 
   body {
-    @apply bg-background text-foreground font-sans antialiased;
-    font-family: 'Inter', system-ui, sans-serif;
+    @apply bg-background text-foreground antialiased;
+    /* Wired-style body serif for long-form authority */
+    font-family: 'IBM Plex Serif', system-ui, -apple-system, BlinkMacSystemFont, 'Georgia', serif;
+    font-display: optional;
   }
 
-  h1, h2, h3, h4, h5, h6 {
-    font-family: 'Inter', system-ui, sans-serif;
+  h1, h2, h3 {
+    /* Inter Tight for primary headings */
+    font-family: 'Inter Tight', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-display: optional;
+  }
+
+  h4, h5, h6 {
+    font-family: 'Inter Tight', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-display: optional;
   }
 
   code, pre, .font-mono, .technical-data {
@@ -241,5 +287,229 @@
   }
   .animate-reveal {
     animation: reveal 0.6s ease-out;
+  }
+
+  /* Grid Nexus: neon glows */
+  .nexus-glow-security {
+    box-shadow: var(--nexus-glow-security);
+  }
+  .nexus-glow-tech {
+    box-shadow: var(--nexus-glow-tech);
+  }
+  .nexus-glow-gaming {
+    box-shadow: var(--nexus-glow-gaming);
+  }
+  .nexus-bg { background-color: var(--nexus-bg); }
+  .nexus-surface { background: var(--nexus-surface); }
+  .nexus-border-color { border-color: var(--nexus-border); }
+  .nexus-font-display { font-family: var(--nexus-font-display); }
+  .nexus-font-data { font-family: var(--nexus-font-data); }
+
+  /* Scanline keyframe – hacking/terminal feel for Secured category */
+  @keyframes scanline {
+    0% { transform: translateY(-100%); opacity: 0.4; }
+    50% { opacity: 0.6; }
+    100% { transform: translateY(100vh); opacity: 0.4; }
+  }
+  .animate-scanline {
+    position: relative;
+    overflow: hidden;
+  }
+  .animate-scanline::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(
+      to bottom,
+      transparent,
+      rgba(0, 255, 65, 0.3),
+      transparent
+    );
+    pointer-events: none;
+    animation: scanline 4s linear infinite;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .animate-scanline::after {
+      animation: none;
+      opacity: 0;
+    }
+  }
+
+  /* Platform analysis: typography & layout */
+  .text-hero { font-size: var(--text-hero); line-height: var(--leading-headline); }
+  .text-h1 { font-size: var(--text-h1); line-height: var(--leading-headline); }
+  .text-h2 { font-size: var(--text-h2); line-height: var(--leading-headline); }
+  .text-body { font-size: var(--text-body, 1rem); line-height: var(--leading-body, 1.6); }
+  .content-max { max-width: var(--content-max); margin-left: auto; margin-right: auto; }
+  .container-platform { max-width: var(--container-max); }
+  /* Card hover (Verge/Ars style) */
+  .card-hover-lift {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  .card-hover-lift:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12);
+  }
+  .card-hover-lift:hover img { transform: scale(1.05); }
+  .card-hover-lift img { transition: transform 0.5s ease; }
+
+  /* Accessibility: Screen reader only content - WCAG 2.4.1 */
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+  }
+
+  .sr-only:focus,
+  .sr-only:active {
+    position: static;
+    width: auto;
+    height: auto;
+    padding: inherit;
+    margin: inherit;
+    overflow: visible;
+    clip: auto;
+    white-space: normal;
+  }
+
+  .focus\:not-sr-only:focus {
+    position: static;
+    width: auto;
+    height: auto;
+    padding: inherit;
+    margin: inherit;
+    overflow: visible;
+    clip: auto;
+    white-space: normal;
+  }
+
+  /* Accessibility: Focus indicators - WCAG 2.4.7 */
+  *:focus-visible {
+    outline: 2px solid hsl(var(--ring));
+    outline-offset: 2px;
+    border-radius: calc(var(--radius) - 2px);
+  }
+
+  /* Accessibility: Skip link styling */
+  a:focus:not(:focus-visible) {
+    outline: none;
+  }
+
+  /* Accessibility: Reduced motion support - WCAG 2.3.3 */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+
+  /* Accessibility: High contrast mode support */
+  @media (prefers-contrast: high) {
+    :root {
+      --border: 220 30% 20%;
+      --ring: 220 90% 50%;
+    }
+  }
+
+  /* Accessibility: Color contrast improvements - WCAG 1.4.3 */
+  @media (prefers-contrast: more) {
+    .text-muted-foreground {
+      color: hsl(220 30% 30%);
+    }
+  }
+
+  /* Mobile UX (GA recommendations): prevent iOS zoom on input focus, improve tap targets */
+  @media (max-width: 768px) {
+    input,
+    select,
+    textarea {
+      font-size: 16px !important;
+    }
+  }
+}
+
+@layer utilities {
+  .min-tap-target {
+    min-height: 44px;
+    min-width: 44px;
+  }
+}
+
+@layer base {
+  /* Print styles for better printing experience */
+  @media print {
+    * {
+      background: white !important;
+      color: black !important;
+      box-shadow: none !important;
+    }
+    
+    body {
+      font-size: 12pt;
+      line-height: 1.4;
+      margin: 0;
+      padding: 1in;
+    }
+    
+    .no-print {
+      display: none !important;
+    }
+    
+    header, nav, footer, .sidebar, .ad-container {
+      display: none !important;
+    }
+    
+    h1, h2, h3, h4, h5, h6 {
+      page-break-after: avoid;
+      page-break-inside: avoid;
+    }
+    
+    img {
+      max-width: 100% !important;
+      height: auto !important;
+      page-break-inside: avoid;
+    }
+    
+    a {
+      color: black !important;
+      text-decoration: underline !important;
+    }
+    
+    .card, .border {
+      border: 1pt solid black !important;
+    }
+    
+    p, ul, ol {
+      orphans: 3;
+      widows: 3;
+    }
+    
+    blockquote {
+      page-break-inside: avoid;
+      border-left: 3pt solid black;
+      padding-left: 1em;
+      font-style: italic;
+    }
+    
+    pre, code {
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 10pt;
+      background: #f5f5f5;
+      border: 1pt solid #ddd;
+      padding: 0.5em;
+      page-break-inside: avoid;
+    }
   }
 }

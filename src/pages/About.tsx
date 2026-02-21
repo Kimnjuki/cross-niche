@@ -3,29 +3,36 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
 import { Target, Users, Zap, Shield } from 'lucide-react';
+import { SEOHead } from '@/components/seo/SEOHead';
 
 export default function About() {
   return (
     <Layout>
+      <SEOHead
+        title="About The Grid Nexus | Tech, Security & Gaming Intelligence"
+        description="Learn about The Grid Nexus, your trusted source for tech news, cybersecurity insights, and gaming industry analysis. Expert coverage since 2026."
+        keywords={['about us', 'tech news', 'cybersecurity', 'gaming intelligence', 'editorial standards', 'mission statement']}
+        url={window.location.href}
+        type="website"
+      />
       <div className="container mx-auto px-4 py-16">
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-12">
             <h1 className="text-4xl font-bold mb-4">About The Grid Nexus</h1>
             <p className="text-xl text-muted-foreground">
-              Where AI innovation, cybersecurity threats, and gaming technology converge
+              Demystifying complex trends in technology, cybersecurity, and gaming
             </p>
           </div>
 
           <div className="prose prose-lg max-w-none mb-12">
             <p className="text-lg leading-relaxed mb-6">
-              The Grid Nexus is a comprehensive intelligence hub designed for professionals, 
-              researchers, and enthusiasts who need to stay ahead of the rapidly evolving landscape 
-              where technology, security, and gaming intersect.
+              The Grid Nexus is a premier digital publication established in 2026, dedicated to demystifying complex trends in technology, cybersecurity, and gaming. Managed by Kim Njuki, our mission is to provide actionable intelligence for the digital age.
             </p>
             <p className="text-lg leading-relaxed mb-6">
               We aggregate, analyze, and curate content from across these three critical domains, 
               providing actionable insights, expert analysis, and real-time intelligence to help 
-              you make informed decisions in an increasingly complex digital world.
+              you make informed decisions in an increasingly complex digital world. For transparency, you can reach us at{' '}
+              <a href="mailto:kimnjuki2@gmail.com" className="text-primary hover:underline">kimnjuki2@gmail.com</a>.
             </p>
           </div>
 

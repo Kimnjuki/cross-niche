@@ -1,7 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { User } from '@/types';
-import { supabase, isSupabaseConfigured } from '@/integrations/supabase/client';
-import type { User as SupabaseUser } from '@supabase/supabase-js';
+import { useClerk, useUser } from '@clerk/clerk-react';
 
 interface AuthContextType {
   user: User | null;
@@ -10,199 +9,103 @@ interface AuthContextType {
   signup: (email: string, password: string, name: string) => Promise<{ success: boolean; error?: string }>;
   logout: () => void;
   toggleBookmark: (articleId: string) => Promise<void>;
+  resetPassword: (email: string) => Promise<{ success: boolean; error?: string }>;
+  updatePassword: (newPassword: string) => Promise<{ success: boolean; error?: string }>;
+  signInWithGoogle: () => Promise<{ success: boolean; error?: string }>;
+  signInWithGitHub: () => Promise<{ success: boolean; error?: string }>;
+  resendVerificationEmail: () => Promise<{ success: boolean; error?: string }>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-// Helper to convert Supabase user to app User type
-function mapSupabaseUserToUser(supabaseUser: SupabaseUser, metadata?: { name?: string }): User {
-  return {
-    id: supabaseUser.id,
-    email: supabaseUser.email || '',
-    name: metadata?.name || supabaseUser.user_metadata?.name || supabaseUser.email?.split('@')[0] || 'User',
-    avatar: supabaseUser.user_metadata?.avatar_url,
-    bookmarks: [],
-    createdAt: supabaseUser.created_at || new Date().toISOString(),
-  };
-}
+const AUTH_UNAVAILABLE = 'Sign-in is not available.';
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const { user: clerkUser, isLoaded } = useUser();
+  const clerk = useClerk();
 
   useEffect(() => {
-    // Check for existing session
-    const initAuth = async () => {
-      if (!isSupabaseConfigured()) {
-        setIsLoading(false);
-        return;
-      }
+    if (!isLoaded) {
+      setIsLoading(true);
+      return;
+    }
 
-      try {
-        const { data: { session } } = await supabase.auth.getSession();
-        if (session?.user) {
-          const appUser = mapSupabaseUserToUser(session.user, session.user.user_metadata);
-          // Load bookmarks from Supabase
-          const bookmarks = await loadBookmarks(session.user.id);
-          setUser({ ...appUser, bookmarks });
-        }
-      } catch (error) {
-        console.error('Error initializing auth:', error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    initAuth();
-
-    // Listen for auth changes
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
-      if (session?.user) {
-        const appUser = mapSupabaseUserToUser(session.user, session.user.user_metadata);
-        const bookmarks = await loadBookmarks(session.user.id);
-        setUser({ ...appUser, bookmarks });
-      } else {
-        setUser(null);
-      }
+    if (!clerkUser) {
+      setUser(null);
       setIsLoading(false);
+      return;
+    }
+
+    const email =
+      clerkUser.primaryEmailAddress?.emailAddress ??
+      clerkUser.emailAddresses?.[0]?.emailAddress ??
+      '';
+    const name = clerkUser.fullName ?? clerkUser.firstName ?? email ?? 'User';
+
+    setUser({
+      id: clerkUser.id,
+      email,
+      name,
+      avatar: clerkUser.imageUrl ?? undefined,
+      bookmarks: [],
+      createdAt: clerkUser.createdAt ? new Date(clerkUser.createdAt).toISOString() : new Date().toISOString(),
     });
+    setIsLoading(false);
+  }, [clerkUser, isLoaded]);
 
-    return () => {
-      subscription.unsubscribe();
-    };
-  }, []);
-
-  // Load bookmarks from Supabase
-  const loadBookmarks = async (userId: string): Promise<string[]> => {
-    if (!isSupabaseConfigured()) return [];
-    
-    try {
-      const { data, error } = await supabase
-        .from('user_bookmarks')
-        .select('content_id')
-        .eq('user_id', userId);
-      
-      if (error) throw error;
-      return data?.map(b => b.content_id) || [];
-    } catch (error) {
-      console.error('Error loading bookmarks:', error);
-      return [];
-    }
+  const login = async (): Promise<{ success: boolean; error?: string }> => {
+    return { success: false, error: AUTH_UNAVAILABLE };
   };
 
-  const login = async (email: string, password: string): Promise<{ success: boolean; error?: string }> => {
-    if (!isSupabaseConfigured()) {
-      return { success: false, error: 'Supabase is not configured. Please check your environment variables.' };
-    }
-
-    try {
-      const { data, error } = await supabase.auth.signInWithPassword({
-        email,
-        password,
-      });
-
-      if (error) {
-        return { success: false, error: error.message };
-      }
-
-      if (data.user) {
-        const appUser = mapSupabaseUserToUser(data.user, data.user.user_metadata);
-        const bookmarks = await loadBookmarks(data.user.id);
-        setUser({ ...appUser, bookmarks });
-      }
-
-      return { success: true };
-    } catch (error: any) {
-      return { success: false, error: error.message || 'An unexpected error occurred' };
-    }
+  const signup = async (): Promise<{ success: boolean; error?: string }> => {
+    return { success: false, error: AUTH_UNAVAILABLE };
   };
 
-  const signup = async (email: string, password: string, name: string): Promise<{ success: boolean; error?: string }> => {
-    if (!isSupabaseConfigured()) {
-      return { success: false, error: 'Supabase is not configured. Please check your environment variables.' };
-    }
-
-    try {
-      const { data, error } = await supabase.auth.signUp({
-        email,
-        password,
-        options: {
-          data: {
-            name,
-          },
-        },
-      });
-
-      if (error) {
-        return { success: false, error: error.message };
-      }
-
-      if (data.user) {
-        const appUser = mapSupabaseUserToUser(data.user, { name });
-        setUser({ ...appUser, bookmarks: [] });
-      }
-
-      return { success: true };
-    } catch (error: any) {
-      return { success: false, error: error.message || 'An unexpected error occurred' };
-    }
-  };
-
-  const logout = async () => {
-    if (isSupabaseConfigured()) {
-      await supabase.auth.signOut();
-    }
+  const logout = () => {
+    void clerk.signOut();
     setUser(null);
   };
 
-  const toggleBookmark = async (articleId: string): Promise<void> => {
-    if (!user || !isSupabaseConfigured()) return;
+  const toggleBookmark = async (): Promise<void> => {};
 
-    try {
-      // Check if bookmark exists
-      const { data: existing } = await supabase
-        .from('user_bookmarks')
-        .select('id')
-        .eq('user_id', user.id)
-        .eq('content_id', articleId)
-        .maybeSingle();
+  const resetPassword = async (): Promise<{ success: boolean; error?: string }> => {
+    return { success: false, error: AUTH_UNAVAILABLE };
+  };
 
-      if (existing) {
-        // Remove bookmark
-        const { error } = await supabase
-          .from('user_bookmarks')
-          .delete()
-          .eq('id', existing.id);
+  const updatePassword = async (): Promise<{ success: boolean; error?: string }> => {
+    return { success: false, error: AUTH_UNAVAILABLE };
+  };
 
-        if (error) throw error;
-        
-        setUser({
-          ...user,
-          bookmarks: user.bookmarks.filter(id => id !== articleId),
-        });
-      } else {
-        // Add bookmark
-        const { error } = await supabase
-          .from('user_bookmarks')
-          .insert({
-            user_id: user.id,
-            content_id: articleId,
-          });
+  const signInWithGoogle = async (): Promise<{ success: boolean; error?: string }> => {
+    return { success: false, error: AUTH_UNAVAILABLE };
+  };
 
-        if (error) throw error;
-        
-        setUser({
-          ...user,
-          bookmarks: [...user.bookmarks, articleId],
-        });
-      }
-    } catch (error) {
-      console.error('Error toggling bookmark:', error);
-    }
+  const signInWithGitHub = async (): Promise<{ success: boolean; error?: string }> => {
+    return { success: false, error: AUTH_UNAVAILABLE };
+  };
+
+  const resendVerificationEmail = async (): Promise<{ success: boolean; error?: string }> => {
+    return { success: false, error: AUTH_UNAVAILABLE };
   };
 
   return (
-    <AuthContext.Provider value={{ user, isLoading, login, signup, logout, toggleBookmark }}>
+    <AuthContext.Provider
+      value={{
+        user,
+        isLoading,
+        login,
+        signup,
+        logout,
+        toggleBookmark,
+        resetPassword,
+        updatePassword,
+        signInWithGoogle,
+        signInWithGitHub,
+        resendVerificationEmail,
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );

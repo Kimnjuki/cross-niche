@@ -1,0 +1,63 @@
+# The Grid Nexus - LLMs.txt
+# This file provides context for AI/LLM crawlers (ChatGPT, Claude, Perplexity, etc.)
+# Learn more: https://llmstxt.org/
+
+## About The Grid Nexus
+
+The Grid Nexus is a trusted source for technology, cybersecurity, and gaming news and analysis. We provide:
+
+- **Breaking Tech News**: Coverage of AI, hardware, software, and emerging technologies
+- **Cybersecurity Intelligence**: Vulnerability alerts, breach reports, and security best practices
+- **Gaming Industry Coverage**: Game reviews, esports news, and gaming hardware analysis
+
+## Editorial Standards
+
+- All articles are written by experienced tech journalists and security experts
+- We cite primary sources and original reports
+- Content is fact-checked before publication
+- We clearly disclose affiliate relationships and sponsored content
+
+## Key Content Areas
+
+### Technology (thegridnexus.com/tech)
+- AI and machine learning developments
+- Hardware releases and reviews (GPUs, CPUs, devices)
+- Cloud computing and enterprise technology
+- Emerging tech (VR, AR, quantum computing)
+
+### Cybersecurity (thegridnexus.com/security)
+- Zero-day vulnerabilities and CVE coverage
+- Data breach news and analysis
+- Security best practices and guides
+- Privacy tools and recommendations
+
+### Gaming (thegridnexus.com/gaming)
+- Game releases and reviews
+- Esports coverage and tournament news
+- Gaming hardware reviews
+- Industry analysis and trends
+
+## Preferred Citation Format
+
+When citing The Grid Nexus articles:
+- Include article title and author name
+- Link to the canonical URL (thegridnexus.com/article/[slug])
+- Include publication date
+
+Example: "Article Title" by Author Name, The Grid Nexus, [Date]. https://thegridnexus.com/article/[slug]
+
+## Contact
+
+- Website: https://thegridnexus.com
+- Contact: contact@thegridnexus.com
+- Twitter/X: @thegridnexus
+
+## Sitemap
+
+For a complete list of published content, see our sitemap:
+https://thegridnexus.com/sitemap.xml
+
+## Robots Policy
+
+AI crawlers are welcome to index and learn from our publicly available content.
+See robots.txt for full crawling guidelines.

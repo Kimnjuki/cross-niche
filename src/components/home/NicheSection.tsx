@@ -54,9 +54,14 @@ export function NicheSection({ niche, articles }: NicheSectionProps) {
             </div>
             <div>
               <h2 className={cn('font-display font-bold text-2xl', config.color)}>
-                {config.title}
+                {config.title} - {niche === 'tech' ? 'Technology News' : niche === 'security' ? 'Cybersecurity Updates' : 'Gaming News'}
               </h2>
-              <p className="text-muted-foreground text-sm">{config.subtitle}</p>
+              <p className="text-muted-foreground text-sm">
+                {config.subtitle}
+                {niche === 'tech' && ' - Latest on artificial intelligence, machine learning, cloud computing, and tech innovations'}
+                {niche === 'security' && ' - Breaking cybersecurity news, data privacy, network security, and threat intelligence'}
+                {niche === 'gaming' && ' - Gaming news, reviews, virtual reality, and gaming hardware'}
+              </p>
             </div>
           </div>
           <Button asChild variant="ghost" className={cn('gap-2', config.color)}>
@@ -69,7 +74,7 @@ export function NicheSection({ niche, articles }: NicheSectionProps) {
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {articles.slice(0, 3).map((article) => (
-            <ArticleCard key={article.id} article={article} />
+            <ArticleCard key={(article as Article & { _id?: string })?._id ?? article?.id ?? article?.slug ?? index} article={article} />
           ))}
         </div>
       </div>

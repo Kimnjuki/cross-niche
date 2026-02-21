@@ -1,0 +1,763 @@
+import { useState, useMemo } from 'react';
+import { Layout } from '@/components/layout/Layout';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { Progress } from '@/components/ui/progress';
+import { SEOHead } from '@/components/seo/SEOHead';
+import { Link } from 'react-router-dom';
+import { CheckCircle2, Circle, Clock, Zap, Users, BarChart3, Globe, ExternalLink, Filter, X, TrendingUp, Target, Download, ArrowUpDown, Calendar } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { RoadmapKanban } from '@/components/roadmap/RoadmapKanban';
+import { RoadmapVoting } from '@/components/roadmap/RoadmapVoting';
+import { cn } from '@/lib/utils';
+
+interface Feature {
+  id: string;
+  title: string;
+  description: string;
+  status: 'completed' | 'in-progress' | 'planned';
+  priority: 'high' | 'medium' | 'low';
+  phase: number;
+  tier: 1 | 2 | 3;
+  estimatedEffort: string;
+  businessValue: string;
+  liveUrl?: string;
+}
+
+const competitiveAdvantages: Feature[] = [
+  // TIER 1: Competitive Moats
+  {
+    id: 'intelligence-graph',
+    title: 'Cross-Niche Intelligence Graph',
+    description: 'Interactive knowledge graph showing relationships between tech, security, and gaming domains with AI-powered connection discovery',
+    status: 'planned',
+    priority: 'high',
+    phase: 1,
+    tier: 1,
+    estimatedEffort: 'High',
+    businessValue: 'Unique value proposition competitors can\'t replicate'
+  },
+  {
+    id: 'predictive-threats',
+    title: 'Predictive Threat Intelligence',
+    description: 'ML model predicting emerging threats before they\'re widely reported with threat forecast dashboard',
+    status: 'planned',
+    priority: 'high',
+    phase: 1,
+    tier: 1,
+    estimatedEffort: 'High',
+    businessValue: 'Positions platform as forward-thinking, not just aggregating news'
+  },
+  {
+    id: 'gamified-learning',
+    title: 'Gamified Learning Paths',
+    description: 'Personalized learning paths with achievement system, skill trees, and XP system for role-based progression',
+    status: 'planned',
+    priority: 'high',
+    phase: 1,
+    tier: 1,
+    estimatedEffort: 'Medium',
+    businessValue: 'Increases engagement, retention, and makes platform sticky'
+  },
+  {
+    id: 'collaborative-intelligence',
+    title: 'Real-Time Collaborative Intelligence',
+    description: 'Community-driven threat analysis with live annotation system and expert verification',
+    status: 'planned',
+    priority: 'high',
+    phase: 3,
+    tier: 1,
+    estimatedEffort: 'High',
+    businessValue: 'Builds community, increases trust, creates network effects'
+  },
+  {
+    id: 'threat-simulation',
+    title: 'AI-Powered Threat Simulation',
+    description: 'Interactive "What If?" threat simulator with impact calculator and attack path diagrams',
+    status: 'planned',
+    priority: 'medium',
+    phase: 2,
+    tier: 1,
+    estimatedEffort: 'Medium',
+    businessValue: 'Educational value that competitors don\'t offer'
+  },
+
+  // TIER 2: Enhanced User Experience
+  {
+    id: 'personalized-dashboard',
+    title: 'Personalized Intelligence Dashboard',
+    description: 'Customizable widgets with role-specific layouts and drag-and-drop dashboard builder',
+    status: 'planned',
+    priority: 'medium',
+    phase: 2,
+    tier: 2,
+    estimatedEffort: 'Medium',
+    businessValue: 'Improved user experience and personalization'
+  },
+  {
+    id: 'advanced-discovery',
+    title: 'Advanced Content Discovery',
+    description: 'AI-powered recommendations with "Similar Articles" and "You Might Have Missed" features',
+    status: 'planned',
+    priority: 'medium',
+    phase: 2,
+    tier: 2,
+    estimatedEffort: 'Medium',
+    businessValue: 'Better content discovery and user engagement'
+  },
+  {
+    id: 'multi-modal-content',
+    title: 'Multi-Modal Content Consumption',
+    description: 'Audio narration, video summaries, and downloadable formats for articles',
+    status: 'planned',
+    priority: 'medium',
+    phase: 2,
+    tier: 2,
+    estimatedEffort: 'Medium',
+    businessValue: 'Enhanced accessibility and user experience'
+  },
+  {
+    id: 'expert-network',
+    title: 'Expert Network & Mentorship',
+    description: 'Verified expert profiles with Q&A system and mentorship matching',
+    status: 'planned',
+    priority: 'medium',
+    phase: 3,
+    tier: 2,
+    estimatedEffort: 'Medium',
+    businessValue: 'Builds expert community and trust'
+  },
+  {
+    id: 'intelligence-reports',
+    title: 'Intelligence Reports & Analytics',
+    description: 'Custom report builder with automated weekly reports and trend analysis',
+    status: 'planned',
+    priority: 'low',
+    phase: 3,
+    tier: 2,
+    estimatedEffort: 'Medium',
+    businessValue: 'Enterprise value and monetization opportunities'
+  },
+
+  // TIER 3: Platform Expansion
+  {
+    id: 'api-integrations',
+    title: 'API & Integrations',
+    description: 'Public API, Slack/Discord bots, browser extensions, and webhook support',
+    status: 'planned',
+    priority: 'low',
+    phase: 4,
+    tier: 3,
+    estimatedEffort: 'High',
+    businessValue: 'Platform expansion and ecosystem growth'
+  },
+  {
+    id: 'enterprise-features',
+    title: 'Enterprise Features',
+    description: 'Team workspaces, SSO integration, advanced analytics, and custom branding',
+    status: 'planned',
+    priority: 'low',
+    phase: 4,
+    tier: 3,
+    estimatedEffort: 'High',
+    businessValue: 'Enterprise monetization and market expansion'
+  },
+  {
+    id: 'marketplace-ecosystem',
+    title: 'Marketplace & Ecosystem',
+    description: 'Threat intelligence marketplace and custom mitigation guide marketplace',
+    status: 'planned',
+    priority: 'low',
+    phase: 4,
+    tier: 3,
+    estimatedEffort: 'High',
+    businessValue: 'New revenue streams and platform growth'
+  },
+  {
+    id: 'research-tools',
+    title: 'Research & Development Tools',
+    description: 'Research workspace with citation management and collaborative research projects',
+    status: 'planned',
+    priority: 'low',
+    phase: 4,
+    tier: 3,
+    estimatedEffort: 'Medium',
+    businessValue: 'Academic and research market expansion'
+  }
+];
+
+const Roadmap = () => {
+  const [searchQuery, setSearchQuery] = useState('');
+  const [statusFilter, setStatusFilter] = useState<Feature['status'] | 'all'>('all');
+  const [tierFilter, setTierFilter] = useState<Feature['tier'] | 'all'>('all');
+  const [phaseFilter, setPhaseFilter] = useState<number | 'all'>('all');
+  const [sortBy, setSortBy] = useState<'priority' | 'phase' | 'tier' | 'status'>('priority');
+  const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc');
+
+  const filteredFeatures = useMemo(() => {
+    return competitiveAdvantages.filter((feature) => {
+      const matchesSearch = searchQuery === '' || 
+        feature.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        feature.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        feature.businessValue.toLowerCase().includes(searchQuery.toLowerCase());
+      
+      const matchesStatus = statusFilter === 'all' || feature.status === statusFilter;
+      const matchesTier = tierFilter === 'all' || feature.tier === tierFilter;
+      const matchesPhase = phaseFilter === 'all' || feature.phase === phaseFilter;
+
+      return matchesSearch && matchesStatus && matchesTier && matchesPhase;
+    });
+  }, [searchQuery, statusFilter, tierFilter, phaseFilter]);
+
+  const hasActiveFilters = statusFilter !== 'all' || tierFilter !== 'all' || phaseFilter !== 'all' || searchQuery !== '';
+
+  const clearFilters = () => {
+    setSearchQuery('');
+    setStatusFilter('all');
+    setTierFilter('all');
+    setPhaseFilter('all');
+  };
+
+  const getStatusIcon = (status: Feature['status']) => {
+    switch (status) {
+      case 'completed':
+        return <CheckCircle2 className="h-5 w-5 text-green-500" />;
+      case 'in-progress':
+        return <Clock className="h-5 w-5 text-blue-500" />;
+      default:
+        return <Circle className="h-5 w-5 text-gray-400" />;
+    }
+  };
+
+  const getPriorityColor = (priority: Feature['priority']) => {
+    switch (priority) {
+      case 'high':
+        return 'destructive';
+      case 'medium':
+        return 'default';
+      default:
+        return 'secondary';
+    }
+  };
+
+  const getTierIcon = (tier: Feature['tier']) => {
+    switch (tier) {
+      case 1:
+        return <Zap className="h-5 w-5 text-yellow-500" />;
+      case 2:
+        return <Users className="h-5 w-5 text-blue-500" />;
+      case 3:
+        return <Globe className="h-5 w-5 text-green-500" />;
+    }
+  };
+
+  const getPhaseProgress = (phase: number) => {
+    const phaseFeatures = competitiveAdvantages.filter(f => f.phase === phase);
+    const completed = phaseFeatures.filter(f => f.status === 'completed').length;
+    return Math.round((completed / phaseFeatures.length) * 100);
+  };
+
+  const phases = [
+    { id: 1, name: 'Foundation Differentiators', description: 'Core competitive advantages' },
+    { id: 2, name: 'User Experience', description: 'Enhanced user experience features' },
+    { id: 3, name: 'Community & Collaboration', description: 'Community-driven features' },
+    { id: 4, name: 'Platform Expansion', description: 'Enterprise and ecosystem growth' }
+  ];
+
+  return (
+    <Layout>
+      <SEOHead
+        title="Technology Roadmap 2026-2030 | Tech Trends & Predictions | The Grid Nexus"
+        description="Explore the comprehensive technology roadmap for 2026 and beyond. Expert predictions on AI, gaming, cybersecurity, and emerging tech. Updated quarterly with industry insights and future trends."
+        keywords={[
+          'technology roadmap 2026',
+          'tech industry trends',
+          'future of cybersecurity',
+          'gaming industry roadmap',
+          'AI development timeline',
+          'what technologies will dominate in 2026 and beyond',
+          'comprehensive technology roadmap for enterprise',
+          'future trends in artificial intelligence and machine learning',
+          'gaming industry evolution next 5 years',
+          'cybersecurity roadmap for modern businesses',
+          'emerging technologies to watch in 2026',
+          'how to create a technology adoption roadmap',
+          'AI integration timeline for businesses',
+          'future of cloud computing and edge technology',
+          'what is the next big thing in tech industry',
+        ]}
+        url={window.location.href}
+        type="website"
+        faqs={[
+          {
+            question: 'What is a technology roadmap?',
+            answer: 'A technology roadmap is a strategic planning tool that outlines the development and adoption of technologies over time, helping organizations plan for future innovations and trends.',
+          },
+          {
+            question: 'How often is the roadmap updated?',
+            answer: 'Our technology roadmap is updated quarterly to reflect the latest industry trends, expert predictions, and emerging technologies.',
+          },
+          {
+            question: 'What technologies are covered in the roadmap?',
+            answer: 'The roadmap covers AI and machine learning, cybersecurity, gaming technology, cloud computing, edge computing, and other emerging technologies shaping the future.',
+          },
+        ]}
+      />
+      <div className="container mx-auto px-4 py-12">
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-12">
+            <h1 className="text-4xl font-bold mb-4">Technology Roadmap 2026-2030</h1>
+            <p className="text-xl text-muted-foreground mb-4">
+              Building The Grid Nexus - A category-defining intelligence platform
+            </p>
+            <div className="prose prose-lg max-w-3xl mx-auto text-left">
+              <p className="text-muted-foreground mb-4">
+                Explore our comprehensive technology roadmap outlining major tech trajectories for the next 3-5 years. 
+                This roadmap covers AI and machine learning advancements, cybersecurity evolution, gaming technology innovations, 
+                and emerging technologies that will shape the future of tech.
+              </p>
+              <p className="text-muted-foreground">
+                Our roadmap is updated quarterly based on expert analysis, industry trends, and emerging technologies. 
+                Each milestone includes predictions, confidence levels, and potential industry impact.
+              </p>
+            </div>
+            <div className="mt-6 flex flex-wrap justify-center gap-4 text-sm">
+              <Link to="/about" className="text-primary hover:underline">About Us</Link>
+              <span className="text-muted-foreground">•</span>
+              <Link to="/contact" className="text-primary hover:underline">Contact</Link>
+              <span className="text-muted-foreground">•</span>
+              <Link to="/blog-series" className="text-primary hover:underline">Latest Articles</Link>
+            </div>
+          </div>
+
+          {/* Filters */}
+          <div className="mb-8 space-y-4">
+            <div className="flex items-center gap-3">
+              <Filter className="h-5 w-5 text-muted-foreground" />
+              <h2 className="text-lg font-semibold">Filters</h2>
+              {hasActiveFilters && (
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={clearFilters}
+                  className="h-7 text-xs gap-1"
+                >
+                  <X className="h-3 w-3" />
+                  Clear all
+                </Button>
+              )}
+            </div>
+            
+            <div className="flex flex-col sm:flex-row gap-4">
+              {/* Search */}
+              <div className="flex-1">
+                <Input
+                  placeholder="Search features..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="w-full"
+                />
+              </div>
+
+              {/* Sort */}
+              <div className="flex gap-2">
+                <Select value={sortBy} onValueChange={(v) => setSortBy(v as typeof sortBy)}>
+                  <SelectTrigger className="w-[140px]">
+                    <ArrowUpDown className="h-4 w-4 mr-2" />
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="priority">Priority</SelectItem>
+                    <SelectItem value="phase">Phase</SelectItem>
+                    <SelectItem value="tier">Tier</SelectItem>
+                    <SelectItem value="status">Status</SelectItem>
+                  </SelectContent>
+                </Select>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc')}
+                  className="px-3"
+                >
+                  {sortOrder === 'asc' ? '↑' : '↓'}
+                </Button>
+              </div>
+
+              {/* Status Filter */}
+              <div className="flex gap-2 flex-wrap">
+                {(['all', 'completed', 'in-progress', 'planned'] as const).map((status) => (
+                  <Button
+                    key={status}
+                    variant={statusFilter === status ? 'default' : 'outline'}
+                    size="sm"
+                    onClick={() => setStatusFilter(status)}
+                    className="capitalize"
+                  >
+                    {status === 'all' ? 'All Status' : status.replace('-', ' ')}
+                  </Button>
+                ))}
+              </div>
+
+              {/* Tier Filter */}
+              <div className="flex gap-2 flex-wrap">
+                {(['all', 1, 2, 3] as const).map((tier) => (
+                  <Button
+                    key={tier}
+                    variant={tierFilter === tier ? 'default' : 'outline'}
+                    size="sm"
+                    onClick={() => setTierFilter(tier)}
+                  >
+                    {tier === 'all' ? 'All Tiers' : `Tier ${tier}`}
+                  </Button>
+                ))}
+              </div>
+
+              {/* Phase Filter */}
+              <div className="flex gap-2 flex-wrap">
+                {(['all', ...phases.map(p => p.id)] as const).map((phase) => (
+                  <Button
+                    key={phase}
+                    variant={phaseFilter === phase ? 'default' : 'outline'}
+                    size="sm"
+                    onClick={() => setPhaseFilter(phase)}
+                  >
+                    {phase === 'all' ? 'All Phases' : `Phase ${phase}`}
+                  </Button>
+                ))}
+              </div>
+            </div>
+
+            {hasActiveFilters && (
+              <div className="text-sm text-muted-foreground">
+                Showing {filteredFeatures.length} of {competitiveAdvantages.length} features
+              </div>
+            )}
+          </div>
+
+          {/* Executive Overview */}
+          <Card className="mb-12 bg-gradient-to-r from-primary/5 to-primary/10 border-primary/20">
+            <CardHeader>
+              <CardTitle className="text-2xl flex items-center gap-2">
+                <TrendingUp className="h-6 w-6" />
+                Executive Overview
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="prose prose-lg max-w-none">
+              <p className="text-muted-foreground mb-4">
+                The technology landscape is evolving rapidly, with AI and machine learning driving innovation across 
+                all sectors. Over the next 3-5 years, we anticipate significant advancements in cybersecurity automation, 
+                gaming technology integration, and the convergence of enterprise and consumer technologies.
+              </p>
+              <p className="text-muted-foreground">
+                This roadmap reflects expert predictions, industry analysis, and emerging trends that will shape 
+                how organizations adopt and integrate new technologies. Each phase represents a strategic milestone 
+                in building competitive advantages and staying ahead of technological disruption.
+              </p>
+            </CardContent>
+          </Card>
+
+          {/* Phase Overview */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+            {phases.map((phase) => (
+              <Card key={phase.id} className="hover:border-primary/50 transition-colors">
+                <CardHeader className="pb-3">
+                  <CardTitle className="text-lg flex items-center gap-2">
+                    <Target className="h-5 w-5 text-primary" />
+                    Phase {phase.id}
+                  </CardTitle>
+                  <CardDescription>{phase.name}</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-2">
+                    <div className="flex justify-between text-sm">
+                      <span>Progress</span>
+                      <span className="font-semibold">{getPhaseProgress(phase.id)}%</span>
+                    </div>
+                    <Progress value={getPhaseProgress(phase.id)} className="h-2" />
+                    <p className="text-xs text-muted-foreground">{phase.description}</p>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+
+          {/* View Toggle: List vs Kanban */}
+          <Tabs defaultValue="list" className="mb-8">
+            <TabsList>
+              <TabsTrigger value="list">List View</TabsTrigger>
+              <TabsTrigger value="kanban">Kanban Board</TabsTrigger>
+            </TabsList>
+
+            <TabsContent value="kanban" className="mt-6">
+              <RoadmapKanban features={filteredFeatures} />
+            </TabsContent>
+
+            <TabsContent value="list" className="mt-6">
+              {/* Features by Tier */}
+              <div className="space-y-12">
+            {/* Tier 1 */}
+            <div>
+              <div className="flex items-center gap-3 mb-6">
+                <Zap className="h-8 w-8 text-yellow-500" />
+                <div>
+                  <h2 className="text-3xl font-bold">Tier 1: Competitive Moats</h2>
+                  <p className="text-muted-foreground">Must-have differentiators that competitors can't easily replicate</p>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                {filteredFeatures.filter(f => f.tier === 1).map((feature) => (
+                  <Card key={feature.id} className="relative">
+                    <CardHeader className="pb-3">
+                      <div className="flex items-start justify-between">
+                        <div className="flex items-center gap-3">
+                          {getStatusIcon(feature.status)}
+                          <div>
+                            <CardTitle className="text-lg">{feature.title}</CardTitle>
+                            <div className="flex items-center gap-2 mt-1">
+                              <Badge variant={getPriorityColor(feature.priority)}>
+                                Phase {feature.phase}
+                              </Badge>
+                              <Badge variant="outline">{feature.estimatedEffort} Effort</Badge>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </CardHeader>
+                    <CardContent>
+                      <CardDescription className="mb-4">{feature.description}</CardDescription>
+                      <div className="text-sm mb-3">
+                        <strong>Business Value:</strong> {feature.businessValue}
+                      </div>
+                      <div className="flex items-center justify-between mt-4 pt-4 border-t">
+                        {feature.liveUrl && (
+                          <Link
+                            to={feature.liveUrl}
+                            className="inline-flex items-center gap-1.5 text-sm text-primary hover:underline font-medium"
+                          >
+                            Try it live <ExternalLink className="h-3.5 w-3.5" />
+                          </Link>
+                        )}
+                        <RoadmapVoting featureId={feature.id} />
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            </div>
+
+            {/* Tier 2 */}
+            <div>
+              <div className="flex items-center gap-3 mb-6">
+                <Users className="h-8 w-8 text-blue-500" />
+                <div>
+                  <h2 className="text-3xl font-bold">Tier 2: Enhanced User Experience</h2>
+                  <p className="text-muted-foreground">High-impact features that improve user engagement and satisfaction</p>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                {filteredFeatures.filter(f => f.tier === 2).map((feature) => (
+                  <Card key={feature.id} className="relative">
+                    <CardHeader>
+                      <div className="flex items-start justify-between">
+                        <div className="flex items-center gap-3">
+                          {getStatusIcon(feature.status)}
+                          <div>
+                            <CardTitle className="text-lg">{feature.title}</CardTitle>
+                            <div className="flex items-center gap-2 mt-1">
+                              <Badge variant={getPriorityColor(feature.priority)}>
+                                Phase {feature.phase}
+                              </Badge>
+                              <Badge variant="outline">{feature.estimatedEffort} Effort</Badge>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </CardHeader>
+                    <CardContent>
+                      <CardDescription className="mb-4">{feature.description}</CardDescription>
+                      <div className="text-sm mb-3">
+                        <strong>Business Value:</strong> {feature.businessValue}
+                      </div>
+                      <div className="flex items-center justify-between mt-4 pt-4 border-t">
+                        {feature.liveUrl && (
+                          <Link
+                            to={feature.liveUrl}
+                            className="inline-flex items-center gap-1.5 text-sm text-primary hover:underline font-medium"
+                          >
+                            Try it live <ExternalLink className="h-3.5 w-3.5" />
+                          </Link>
+                        )}
+                        <RoadmapVoting featureId={feature.id} />
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            </div>
+
+            {/* Tier 3 */}
+            <div>
+              <div className="flex items-center gap-3 mb-6">
+                <Globe className="h-8 w-8 text-green-500" />
+                <div>
+                  <h2 className="text-3xl font-bold">Tier 3: Platform Expansion</h2>
+                  <p className="text-muted-foreground">Future growth features for enterprise and ecosystem expansion</p>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                {filteredFeatures.filter(f => f.tier === 3).map((feature) => (
+                  <Card key={feature.id} className="relative">
+                    <CardHeader>
+                      <div className="flex items-start justify-between">
+                        <div className="flex items-center gap-3">
+                          {getStatusIcon(feature.status)}
+                          <div>
+                            <CardTitle className="text-lg">{feature.title}</CardTitle>
+                            <div className="flex items-center gap-2 mt-1">
+                              <Badge variant={getPriorityColor(feature.priority)}>
+                                Phase {feature.phase}
+                              </Badge>
+                              <Badge variant="outline">{feature.estimatedEffort} Effort</Badge>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </CardHeader>
+                    <CardContent>
+                      <CardDescription className="mb-4">{feature.description}</CardDescription>
+                      <div className="text-sm mb-3">
+                        <strong>Business Value:</strong> {feature.businessValue}
+                      </div>
+                      <div className="flex items-center justify-between mt-4 pt-4 border-t">
+                        {feature.liveUrl && (
+                          <Link
+                            to={feature.liveUrl}
+                            className="inline-flex items-center gap-1.5 text-sm text-primary hover:underline font-medium"
+                          >
+                            Try it live <ExternalLink className="h-3.5 w-3.5" />
+                          </Link>
+                        )}
+                        <RoadmapVoting featureId={feature.id} />
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            </div>
+          </div>
+            </TabsContent>
+          </Tabs>
+
+          {/* Summary Stats */}
+          <div className="mt-16 space-y-6">
+            <div className="flex items-center justify-between">
+              <h2 className="text-2xl font-bold">Roadmap Statistics</h2>
+              <Button variant="outline" size="sm" className="gap-2">
+                <Download className="h-4 w-4" />
+                Export Roadmap
+              </Button>
+            </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+              <Card className="hover:border-green-500/50 transition-colors">
+                <CardContent className="pt-6">
+                  <div className="text-center">
+                    <div className="text-3xl font-bold text-green-500 mb-1">
+                      {filteredFeatures.filter(f => f.status === 'completed').length}
+                    </div>
+                    <p className="text-sm text-muted-foreground">Completed Features</p>
+                    <Progress 
+                      value={filteredFeatures.length > 0 
+                        ? (filteredFeatures.filter(f => f.status === 'completed').length / filteredFeatures.length) * 100
+                        : 0} 
+                      className="h-1 mt-2"
+                    />
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card className="hover:border-blue-500/50 transition-colors">
+                <CardContent className="pt-6">
+                  <div className="text-center">
+                    <div className="text-3xl font-bold text-blue-500 mb-1">
+                      {filteredFeatures.filter(f => f.status === 'in-progress').length}
+                    </div>
+                    <p className="text-sm text-muted-foreground">In Progress</p>
+                    <Progress 
+                      value={filteredFeatures.length > 0 
+                        ? (filteredFeatures.filter(f => f.status === 'in-progress').length / filteredFeatures.length) * 100
+                        : 0} 
+                      className="h-1 mt-2"
+                    />
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card className="hover:border-gray-500/50 transition-colors">
+                <CardContent className="pt-6">
+                  <div className="text-center">
+                    <div className="text-3xl font-bold text-gray-500 mb-1">
+                      {filteredFeatures.filter(f => f.status === 'planned').length}
+                    </div>
+                    <p className="text-sm text-muted-foreground">Planned Features</p>
+                    <Progress 
+                      value={filteredFeatures.length > 0 
+                        ? (filteredFeatures.filter(f => f.status === 'planned').length / filteredFeatures.length) * 100
+                        : 0} 
+                      className="h-1 mt-2"
+                    />
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card className="hover:border-primary/50 transition-colors">
+                <CardContent className="pt-6">
+                  <div className="text-center">
+                    <div className="text-3xl font-bold text-primary mb-1">
+                      {filteredFeatures.length > 0 
+                        ? Math.round((filteredFeatures.filter(f => f.status === 'completed').length / filteredFeatures.length) * 100)
+                        : 0}%
+                    </div>
+                    <p className="text-sm text-muted-foreground">Overall Progress</p>
+                    <Progress 
+                      value={filteredFeatures.length > 0 
+                        ? (filteredFeatures.filter(f => f.status === 'completed').length / filteredFeatures.length) * 100
+                        : 0} 
+                      className="h-1 mt-2"
+                    />
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+
+            {/* Quarterly Update Info */}
+            <Card className="border-dashed">
+              <CardContent className="pt-6">
+                <div className="flex items-start gap-3">
+                  <Calendar className="h-5 w-5 text-primary mt-0.5" />
+                  <div>
+                    <h3 className="font-semibold mb-1">Last Updated</h3>
+                    <p className="text-sm text-muted-foreground">
+                      This roadmap is updated quarterly. Last update: {new Date().toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}
+                    </p>
+                    <p className="text-xs text-muted-foreground mt-2">
+                      Next update scheduled for: {new Date(new Date().setMonth(new Date().getMonth() + 3)).toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}
+                    </p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+      </div>
+    </Layout>
+  );
+};
+
+export default Roadmap;
