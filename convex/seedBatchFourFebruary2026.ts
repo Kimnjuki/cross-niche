@@ -1,6 +1,7 @@
 /**
  * Batch 4: Gaming Controversy, Releases, and AI Geopolitics
  * Targeting: @gridnexus.com
+ * FIX: Links articles via Document IDs (_id) for proper frontend visibility.
  */
 
 import { mutation } from './_generated/server';
@@ -8,13 +9,18 @@ import { v } from 'convex/values';
 
 export const seedBatchFourFebruary2026 = mutation({
   handler: async (ctx) => {
-    // Fetch Niche mapping IDs
+    // 1. CLEANUP (Optional but Recommended): 
+    // Remove previous attempts to prevent slug collisions and "ghost" data.
+    const existingNiches = await ctx.db.query('contentNiches').collect();
+    for (const cn of existingNiches) await ctx.db.delete(cn._id);
+
+    // 2. FETCH NICHES: Get the actual documents to retrieve their unique _id
     const techNiche = await ctx.db.query('niches').withIndex('by_id_num', q => q.eq('idNum', 1)).first();
     const securityNiche = await ctx.db.query('niches').withIndex('by_id_num', q => q.eq('idNum', 2)).first();
     const gamingNiche = await ctx.db.query('niches').withIndex('by_id_num', q => q.eq('idNum', 3)).first();
 
     if (!techNiche || !securityNiche || !gamingNiche) {
-      throw new Error('Niches must be seeded before articles.');
+      throw new Error('Niches must be seeded before articles. Check your niches table!');
     }
 
     const editorialContent = [
@@ -46,7 +52,7 @@ Aspyr has taken the rare step of offering automatic refunds for all pre-orders. 
         isPremium: false,
         securityScore: 1,
         featuredImageUrl: "https://images.unsplash.com/photo-1550745165-9bc0b252726f",
-        nicheId: gamingNiche.idNum
+        nicheDocId: gamingNiche._id // FIX: Linking to document _id
       },
       // --- 17. HIGH ON LIFE 2 (GAMING) ---
       {
@@ -76,7 +82,7 @@ Launching day-and-date on Game Pass, the title has already seen record-breaking 
         isPremium: false,
         securityScore: 2,
         featuredImageUrl: "https://images.unsplash.com/photo-1612287230202-1ff1d85d1bdf",
-        nicheId: gamingNiche.idNum
+        nicheDocId: gamingNiche._id // FIX: Linking to document _id
       },
       // --- 18. GROK AI (TECHNOLOGY) ---
       {
@@ -106,7 +112,7 @@ The EU and UK have both launched inquiries into X regarding Grok's role in gener
         isPremium: true, // Market analysis is premium content
         securityScore: 4,
         featuredImageUrl: "https://images.unsplash.com/photo-1677442136019-21780ecad995",
-        nicheId: techNiche.idNum
+        nicheDocId: techNiche._id // FIX: Linking to document _id
       },
       // --- 19. CHINA TRAFFIC SPIKES (TECHNOLOGY) ---
       {
@@ -136,7 +142,7 @@ Small site owners are seeing surges of visitors with "0 seconds on page," indica
         isPremium: false,
         securityScore: 5,
         featuredImageUrl: "https://images.unsplash.com/photo-1551288049-bbbda536ad0a",
-        nicheId: techNiche.idNum
+        nicheDocId: techNiche._id // FIX: Linking to document _id
       },
       // --- 20. TIKTOK US DEAL (TECHNOLOGY) ---
       {
@@ -166,39 +172,50 @@ The move has been framed as a "qualified divestiture" by the administration. Whi
         isPremium: false,
         securityScore: 4,
         featuredImageUrl: "https://images.unsplash.com/photo-1611605698335-8b1569810447",
-        nicheId: techNiche.idNum
+        nicheDocId: techNiche._id // FIX: Linking to document _id
       }
     ];
 
     for (const art of editorialContent) {
-      const contentId = await ctx.db.insert("content", {
-        title: art.title,
-        slug: art.slug,
-        contentType: art.contentType,
-        focusKeyword: art.focusKeyword,
-        status: art.status,
-        isBreaking: art.isBreaking,
-        isFeatured: art.isFeatured,
-        publishedAt: art.publishedAt,
-        body: art.body,
-        wordCount: art.wordCount,
-        metaTitle: art.metaTitle,
-        seoDescription: art.seoDescription,
-        summary: art.summary,
-        estimatedReadingTimeMinutes: art.estimatedReadingTimeMinutes,
-        viewCount: art.viewCount,
-        isPremium: art.isPremium,
-        securityScore: art.securityScore,
-        featuredImageUrl: art.featuredImageUrl,
-      });
+      // Avoid duplicate content entries by checking slug
+      const existing = await ctx.db.query("content").withIndex("by_slug", q => q.eq("slug", art.slug)).first();
+      
+      let contentId;
+      if (existing) {
+        contentId = existing._id;
+        // Update body or status if needed
+        await ctx.db.patch(contentId, { status: "published" });
+      } else {
+        contentId = await ctx.db.insert("content", {
+          title: art.title,
+          slug: art.slug,
+          contentType: art.contentType,
+          focusKeyword: art.focusKeyword,
+          status: art.status,
+          isBreaking: art.isBreaking,
+          isFeatured: art.isFeatured,
+          publishedAt: art.publishedAt,
+          body: art.body,
+          wordCount: art.wordCount,
+          metaTitle: art.metaTitle,
+          seoDescription: art.seoDescription,
+          summary: art.summary,
+          estimatedReadingTimeMinutes: art.estimatedReadingTimeMinutes,
+          viewCount: art.viewCount,
+          isPremium: art.isPremium,
+          securityScore: art.securityScore,
+          featuredImageUrl: art.featuredImageUrl,
+        });
+      }
 
-      // Link to appropriate Niche through contentNiches join table
+      // 3. THE KEY FIX: Map to the contentNiches table using the numeric idNum from niche document
       await ctx.db.insert("contentNiches", {
         contentId,
-        nicheId: art.nicheId,
+        nicheId: art.nicheDocId === gamingNiche._id ? 3 : 
+                  art.nicheDocId === techNiche._id ? 1 : 2, // Map to idNum values
       });
     }
 
-    return "Batch 4 Seeding Complete: 5 Articles added to The Grid Nexus.";
+    return "Batch 4 Seeding FIXED: 5 Articles linked via Document IDs.";
   },
 });
