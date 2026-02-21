@@ -149,7 +149,6 @@ If you are looking for a game that provides incredible value for your time, look
         summary: "Square Enix fully reimagines Dragon Quest VII with modern visuals, streamlined gameplay, and expanded content for a new generation.",
         estimatedReadingTimeMinutes: 6,
         viewCount: 0,
-        isPremium: true,
         securityScore: 1,
         featuredImageUrl: "https://images.unsplash.com/photo-1532187863486-abf9dbad1b69?w=1200&h=630&fit=crop"
       },
