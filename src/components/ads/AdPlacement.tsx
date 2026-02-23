@@ -5,16 +5,35 @@ import { hasAdConsent, ADSENSE_CONFIG } from '@/lib/adsenseConfig';
 interface AdPlacementProps {
   position: 'header' | 'sidebar' | 'in-article' | 'in-feed' | 'footer' | 'between-content';
   className?: string;
+  contentLength?: number; // Word count of surrounding content
+  hasSubstantialContent?: boolean; // Whether page has meaningful content
 }
 
 /**
  * Smart Ad Placement Component
  * Automatically places ads in optimal locations based on position prop
+ * Enforces AdSense policy: only show ads on pages with substantial content
  */
-export function AdPlacement({ position, className }: AdPlacementProps) {
+export function AdPlacement({ 
+  position, 
+  className, 
+  contentLength = 0,
+  hasSubstantialContent = false 
+}: AdPlacementProps) {
   // Check if user has consented to advertising cookies
   if (!hasAdConsent()) {
     return null; // Don't show ads if user hasn't consented
+  }
+
+  // AdSense Policy: No ads on pages without substantial content
+  // Minimum requirements: 300+ words, meaningful content, not just navigation
+  const MIN_CONTENT_LENGTH = 300;
+  const hasMinimumContent = contentLength >= MIN_CONTENT_LENGTH || hasSubstantialContent;
+  
+  if (!hasMinimumContent) {
+    // Don't show ads on pages with insufficient content
+    // This prevents "Google-served ads on screens without publisher-content" violations
+    return null;
   }
 
   const baseClasses = cn('w-full', className);
@@ -39,6 +58,10 @@ export function AdPlacement({ position, className }: AdPlacementProps) {
       );
 
     case 'in-article':
+      // Only show in-article ads if there's substantial content
+      if (contentLength < 500) {
+        return null;
+      }
       return (
         <div className={cn(baseClasses, 'my-8')}>
           <InArticleAd />

@@ -336,7 +336,11 @@ export default function Article() {
               />
             </div>
 
-            <AdPlacement position="in-article" />
+            <AdPlacement 
+              position="in-article" 
+              contentLength={article.content ? article.content.split(/\s+/).length : 0}
+              hasSubstantialContent={!!article.content && article.content.length > 500}
+            />
 
             {tags.length > 0 && (
               <div className="flex flex-wrap gap-2 mt-8">
