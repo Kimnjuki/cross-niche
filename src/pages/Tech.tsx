@@ -23,11 +23,9 @@ export default function Tech() {
     <Layout>
       <LandingPageTracker pageType="category" articlesViewed={techArticles.length} />
       <SEOHead
-        title="Technology News & Innovation | The Grid Nexus"
-        description="Latest technology news, hardware reviews, and innovation insights. Stay ahead with cutting-edge processors, AI developments, and tech industry analysis."
-        keywords={['technology news', 'tech innovation', 'hardware reviews', 'AI technology', 'tech trends', 'innovation']}
-        url={window.location.href}
-        type="website"
+        title="Tech | The Grid Nexus"
+        description="Breaking technology news covering AI, hardware, software, and industry analysis from The Grid Nexus."
+        url={typeof window !== 'undefined' ? `${window.location.origin}/tech` : '/tech'}
       />
       <div className="container mx-auto px-4 py-12">
         {/* Header */}

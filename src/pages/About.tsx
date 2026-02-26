@@ -9,11 +9,9 @@ export default function About() {
   return (
     <Layout>
       <SEOHead
-        title="About The Grid Nexus | Tech, Security & Gaming Intelligence"
-        description="Learn about The Grid Nexus, your trusted source for tech news, cybersecurity insights, and gaming industry analysis. Expert coverage since 2026."
-        keywords={['about us', 'tech news', 'cybersecurity', 'gaming intelligence', 'editorial standards', 'mission statement']}
-        url={window.location.href}
-        type="website"
+        title="About | The Grid Nexus"
+        description="Learn about The Grid Nexus — our mission, editorial standards, and the team behind the coverage."
+        url={typeof window !== 'undefined' ? `${window.location.origin}/about` : '/about'}
       />
       <div className="container mx-auto px-4 py-16">
         <div className="max-w-4xl mx-auto">

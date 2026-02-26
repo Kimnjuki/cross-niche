@@ -96,7 +96,7 @@ export default function Index() {
     <Layout showPulseSidebar={false}>
       <LandingPageTracker pageType="homepage" articlesViewed={sortedArticles.length} />
       <SEOHead
-        title="The Grid Nexus – Tech, Security & Gaming News"
+        title="Breaking Tech, Security & Gaming News — Expert Analysis"
         description="Breaking technology news, cybersecurity analysis, and gaming guides. One hub for tech, security, and gaming intelligence."
         keywords={['tech news', 'cybersecurity', 'gaming news', 'technology', 'security threats', 'gaming industry']}
         url={typeof window !== 'undefined' ? window.location.href : ''}
@@ -160,6 +160,31 @@ export default function Index() {
             <div className="w-2 h-2 bg-destructive rounded-full animate-pulse" />
             <h2 className="font-bold text-lg text-foreground">Breaking News</h2>
             <p className="text-muted-foreground text-sm">Critical security updates and major tech announcements</p>
+          </div>
+        </div>
+      </section>
+
+      {/* Orphan Pages Section - Internal Links for SEO */}
+      <section className="border-b border-border/50 bg-muted/30">
+        <div className="container mx-auto px-4 py-8 max-w-7xl">
+          <h2 className="font-display text-2xl font-bold mb-6">Essential Reading</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            <Link to="/article/xai-spacex-merger-impact-2026" className="block p-4 bg-card rounded-lg hover:bg-accent transition-colors">
+              <h3 className="font-medium mb-2">xAI and SpaceX Merger</h3>
+              <p className="text-sm text-muted-foreground">Impact on 2026 Tech Landscape</p>
+            </Link>
+            <Link to="/article/best-new-games-february-2026-guide" className="block p-4 bg-card rounded-lg hover:bg-accent transition-colors">
+              <h3 className="font-medium mb-2">Best New Games</h3>
+              <p className="text-sm text-muted-foreground">February 2026 Gaming Guide</p>
+            </Link>
+            <Link to="/article/sicarii-ransomware-claude-espionage-2026" className="block p-4 bg-card rounded-lg hover:bg-accent transition-colors">
+              <h3 className="font-medium mb-2">Sicarii Ransomware</h3>
+              <p className="text-sm text-muted-foreground">Claude Espionage 2026 Analysis</p>
+            </Link>
+            <Link to="/sitemap" className="block p-4 bg-card rounded-lg hover:bg-accent transition-colors">
+              <h3 className="font-medium mb-2">Complete Site Map</h3>
+              <p className="text-sm text-muted-foreground">Browse All Content</p>
+            </Link>
           </div>
         </div>
       </section>

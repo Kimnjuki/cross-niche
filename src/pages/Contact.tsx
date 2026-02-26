@@ -51,11 +51,9 @@ export default function Contact() {
   return (
     <Layout>
       <SEOHead
-        title="Contact Us | The Grid Nexus"
-        description="Contact The Grid Nexus for inquiries, press, and data correction requests. We respond within 48 hours."
-        keywords={['contact', 'get in touch', 'feedback', 'partnership', 'inquiry']}
-        url={window.location.href}
-        type="website"
+        title="Contact | The Grid Nexus"
+        description="Get in touch with The Grid Nexus team for tips, press inquiries, or partnership opportunities."
+        url={typeof window !== 'undefined' ? `${window.location.origin}/contact` : '/contact'}
       />
       <div className="container mx-auto px-4 py-12">
         <div className="max-w-4xl mx-auto">

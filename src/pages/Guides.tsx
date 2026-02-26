@@ -80,7 +80,7 @@ export default function Guides() {
           'unique tech tricks',
           'modern tech solutions',
         ]}
-        url={window.location.href}
+        url={typeof window !== 'undefined' ? `${window.location.origin}/guides` : '/guides'}
         type="website"
         faqs={[
           {

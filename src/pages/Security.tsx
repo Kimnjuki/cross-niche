@@ -27,11 +27,9 @@ export default function Security() {
     <Layout>
       <LandingPageTracker pageType="category" articlesViewed={securityArticles.length} />
       <SEOHead
-        title="Cybersecurity News & Threat Intelligence | The Grid Nexus"
-        description="Critical security news, threat intelligence, and protection guides. Stay informed about the latest vulnerabilities and how to protect your digital life."
-        keywords={['cybersecurity', 'security news', 'threat intelligence', 'cyber threats', 'data privacy', 'network security']}
+        title="Security | The Grid Nexus"
+        description="Cybersecurity news, threat intelligence, and breach analysis. Real-time coverage of vulnerabilities, ransomware, and security research."
         url={typeof window !== 'undefined' ? `${window.location.origin}/security` : '/security'}
-        type="website"
       />
       <div className="container mx-auto px-4 py-12">
         {/* Header */}

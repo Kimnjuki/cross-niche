@@ -7,11 +7,9 @@ export default function Privacy() {
   return (
     <Layout>
       <SEOHead
-        title="Privacy Policy | The Grid Nexus"
+        title="Privacy | The Grid Nexus"
         description="Read The Grid Nexus privacy policy. Learn how we collect, use, and protect your data. GDPR and CCPA compliant."
-        keywords={['privacy policy', 'data protection', 'GDPR', 'CCPA', 'cookie policy', 'data privacy']}
-        url={window.location.href}
-        type="website"
+        url={typeof window !== 'undefined' ? `${window.location.origin}/privacy` : '/privacy'}
       />
       <div className="container mx-auto px-4 py-12">
         <div className="max-w-3xl mx-auto">

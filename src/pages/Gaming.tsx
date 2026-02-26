@@ -32,11 +32,9 @@ export default function Gaming() {
     <Layout>
       <LandingPageTracker pageType="category" articlesViewed={gamingArticles.length} />
       <SEOHead
-        title="Gaming News & Reviews | The Grid Nexus"
-        description="Your ultimate gaming destination. Reviews, news, esports coverage, and exclusive security ratings for every game."
-        keywords={['gaming news', 'game reviews', 'esports', 'gaming hardware', 'gaming security', 'game ratings']}
+        title="Gaming | The Grid Nexus"
+        description="Latest gaming news, release guides, and reviews. Stay ahead of the game with The Grid Nexus gaming coverage."
         url={typeof window !== 'undefined' ? `${window.location.origin}/gaming` : '/gaming'}
-        type="website"
       />
       <div className="container mx-auto px-4 py-12">
         {/* Header */}

@@ -37,11 +37,10 @@ export default function Sitemap() {
   return (
     <Layout>
       <SEOHead
-        title="Sitemap | The Grid Nexus"
-        description="Complete sitemap of all articles, guides, and pages on The Grid Nexus. Find tech, security, and gaming content."
-        keywords={['sitemap', 'site map', 'all pages', 'content index']}
-        url={typeof window !== 'undefined' ? window.location.href : ''}
-        type="website"
+        title="Site Map | The Grid Nexus"
+        description="Browse all sections and articles on The Grid Nexus."
+        url={typeof window !== 'undefined' ? `${window.location.origin}/sitemap` : '/sitemap'}
+        noindex={true}
       />
       <div className="container mx-auto px-4 py-12">
         <h1 className="font-display font-bold text-4xl mb-4">Sitemap</h1>

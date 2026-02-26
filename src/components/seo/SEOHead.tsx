@@ -57,12 +57,12 @@ export function SEOHead({
 }: SEOHeadProps) {
   // Auto-generate optimized title and description for articles if enabled
   const title = type === 'article' && article && autoGenerate
-    ? generateArticleTitle(article)
-    : providedTitle || 'The Grid Nexus - Tech, Security & Gaming Intelligence';
+    ? `${article.title || 'Untitled Article'} | The Grid Nexus`
+    : providedTitle || 'The Grid Nexus';
   
   const description = type === 'article' && article && autoGenerate
     ? generateArticleMetaDescription(article)
-    : providedDescription || 'Stay ahead of the curve with expert analysis on technology, cybersecurity, and gaming. Get personalized insights, AI-powered tools, and community-driven intelligence.';
+    : providedDescription || '';
   
   // Ensure optimized values are calculated (60 chars for title, 160 for description)
   const optimizedTitle = optimizeTitle(title, 60);
@@ -176,7 +176,7 @@ export function SEOHead({
       robotsMeta.content = 'noindex, nofollow';
     }
 
-    // Canonical URL - use the current page URL without query parameters or fragments
+    // Canonical URL - use current page URL without query parameters or fragments
     let canonicalLink = document.querySelector('link[rel="canonical"]') as HTMLLinkElement;
     if (!canonicalLink) {
       canonicalLink = document.createElement('link');

@@ -7,11 +7,9 @@ export default function Terms() {
   return (
     <Layout>
       <SEOHead
-        title="Terms of Service | The Grid Nexus"
+        title="Terms | The Grid Nexus"
         description="Terms and conditions for using The Grid Nexus. User guidelines, content usage policy, and disclaimer."
-        keywords={['terms of service', 'terms and conditions', 'user agreement', 'legal', 'disclaimer']}
-        url={window.location.href}
-        type="website"
+        url={typeof window !== 'undefined' ? `${window.location.origin}/terms` : '/terms'}
       />
       <div className="container mx-auto px-4 py-12">
         <div className="max-w-3xl mx-auto">

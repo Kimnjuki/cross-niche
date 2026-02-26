@@ -27,9 +27,9 @@ export default function Reviews() {
   return (
     <Layout>
       <SEOHead
-        title="Product & Game Reviews | The Grid Nexus"
-        description="Expert reviews of tech hardware, security tools, and gaming gear. Honest comparisons and buying guides."
-        keywords={['product reviews', 'tech reviews', 'gaming reviews', 'hardware comparison', 'buying guide']}
+        title="Reviews | The Grid Nexus"
+        description="Expert reviews of the latest tech, security tools, and gaming gear. Honest, in-depth analysis from The Grid Nexus team."
+        url={typeof window !== 'undefined' ? `${window.location.origin}/reviews` : '/reviews'}
       />
       <div className="container mx-auto px-4 py-8">
         <div className="mb-8">
