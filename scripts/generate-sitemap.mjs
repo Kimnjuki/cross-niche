@@ -190,7 +190,7 @@ async function main() {
   const outputPath = path.join(__dirname, '..', 'public', 'sitemap.xml');
   fs.writeFileSync(outputPath, sitemapXml, 'utf-8');
 
-  console.log(`✅ Sitemap generated with ${urls.length} URLs`);
+  console.log(`[OK] Sitemap generated with ${urls.length} URLs`);
   console.log(`   Saved to: ${outputPath}`);
 
   // Also output URL count breakdown

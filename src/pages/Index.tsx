@@ -18,6 +18,7 @@ import {
 import { Layout } from '@/components/layout/Layout';
 import { ArticleCard } from '@/components/articles/ArticleCard';
 import { SEOHead } from '@/components/seo/SEOHead';
+import { SEO } from '@/components/SEO';
 import { LandingPageTracker } from '@/components/analytics/LandingPageTracker';
 import { BreakingNewsSection } from '@/components/home/BreakingNewsSection';
 import { LiveFeedWidget } from '@/components/home/LiveFeedWidget';
@@ -95,6 +96,12 @@ export default function Index() {
   return (
     <Layout showPulseSidebar={false}>
       <LandingPageTracker pageType="homepage" articlesViewed={sortedArticles.length} />
+      <SEO
+        title="The Grid Nexus — Tech, Security & Gaming News"
+        description="Breaking technology news, cybersecurity analysis, and gaming guides. Expert coverage across tech, security, and gaming intelligence."
+        canonical="https://thegridnexus.com/"
+        ogType="website"
+      />
       <SEOHead
         title="Breaking Tech, Security & Gaming News — Expert Analysis"
         description="Breaking technology news, cybersecurity analysis, and gaming guides. One hub for tech, security, and gaming intelligence."

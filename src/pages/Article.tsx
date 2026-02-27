@@ -23,8 +23,10 @@ import { useReadingTracker, useUserBehavior } from '@/hooks/useUserBehavior';
 import { AITools } from '@/components/ai/AITools';
 import { EnhancedShareBar } from '@/components/sharing/EnhancedShareBar';
 import { SEOHead } from '@/components/seo/SEOHead';
+import { SEO } from '@/components/SEO';
 import { Breadcrumbs } from '@/components/seo/Breadcrumbs';
 import { FAQSection } from '@/components/seo/FAQSection';
+import { RelatedArticles } from '@/components/RelatedArticles';
 import { LazyImage } from '@/components/ui/lazy-image';
 import { AdPlacement } from '@/components/ads/AdPlacement';
 import { cn, authorSlug } from '@/lib/utils';
@@ -207,6 +209,13 @@ export default function Article() {
   // 12. RENDER (article is guaranteed to exist and have an ID)
   return (
     <Layout>
+      <SEO
+        title={`${article.title || 'Untitled Article'} | The Grid Nexus`}
+        description={article.excerpt || `Read ${article.title || 'this article'} on The Grid Nexus - expert analysis and insights.`}
+        canonical={`https://thegridnexus.com/article/${article.slug || articleId}`}
+        ogType="article"
+        ogImage={article.imageUrl}
+      />
       <SEOHead
         title={undefined}
         description={undefined}
@@ -241,6 +250,9 @@ export default function Article() {
         </Link>
 
         <header className="max-w-4xl mb-8">
+          <h1 className="font-display font-bold text-4xl md:text-5xl mb-4 text-slate-900">
+            {article.title || 'Untitled Article'}
+          </h1>
           <div className="flex flex-wrap gap-2 mb-4">
             <Badge className={styles.badge}>{nicheLabels[safeNiche]}</Badge>
             {article.isSponsored && <Badge variant="secondary">Sponsored</Badge>}
@@ -457,6 +469,11 @@ export default function Article() {
             },
           ]}
           title={`Frequently Asked Questions about ${article.title ?? 'this article'}`}
+        />
+        
+        <RelatedArticles 
+          currentSlug={article.slug || articleId} 
+          category={safeNiche} 
         />
       </article>
     </Layout>

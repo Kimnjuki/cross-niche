@@ -11,6 +11,7 @@ import { Gamepad2, Shield, Info } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Skeleton } from '@/components/ui/skeleton';
 import { SEOHead } from '@/components/seo/SEOHead';
+import { SEO } from '@/components/SEO';
 import { LandingPageTracker } from '@/components/analytics/LandingPageTracker';
 
 // Sample security ratings for Nexus Risk-to-Reward (nexus-001). Replace with Convex useQuery(api.securityRatings.list) when frontend uses Convex.
@@ -31,6 +32,12 @@ export default function Gaming() {
   return (
     <Layout>
       <LandingPageTracker pageType="category" articlesViewed={gamingArticles.length} />
+      <SEO
+        title="Gaming News & Guides | The Grid Nexus"
+        description="Latest gaming news, release guides, and reviews. Stay ahead of the game with expert gaming coverage and esports analysis."
+        canonical="https://thegridnexus.com/gaming"
+        ogType="website"
+      />
       <SEOHead
         title="Gaming | The Grid Nexus"
         description="Latest gaming news, release guides, and reviews. Stay ahead of the game with The Grid Nexus gaming coverage."

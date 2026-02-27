@@ -170,14 +170,14 @@ try {
   // Generate and write sitemap
   const sitemap = generateSitemap();
   fs.writeFileSync(sitemapPath, sitemap);
-  console.log(`✅ Sitemap generated: ${sitemapPath}`);
+  console.log(`[OK] Sitemap generated: ${sitemapPath}`);
 
   // Generate and write robots.txt
   const robots = generateRobots();
   fs.writeFileSync(robotsPath, robots);
-  console.log(`✅ Robots.txt generated: ${robotsPath}`);
+  console.log(`[OK] Robots.txt generated: ${robotsPath}`);
 
-  console.log(`📊 Generated sitemap with ${allRoutes.length} URLs`);
+  console.log(`[OK] Generated sitemap with ${allRoutes.length} URLs`);
 } catch (error) {
   console.error('❌ Error generating sitemap:', error);
   process.exit(1);

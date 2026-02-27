@@ -11,7 +11,7 @@
     "dev:convex": "cross-env VITE_CONVEX_URL=https://intent-akita-728.convex.cloud vite",
     "dev:ssr": "tsx server.ts",
     "build": "vite build",
-    "postbuild": "node scripts/generate-sitemap-vite.mjs",
+    "postbuild": "node scripts/copy-sitemap-to-dist.mjs",
     "build:convex": "cross-env VITE_CONVEX_URL=https://intent-akita-728.convex.cloud vite build",
     "build:dev": "vite build --mode development",
     "lint": "eslint .",

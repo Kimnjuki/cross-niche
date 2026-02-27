@@ -9,6 +9,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Shield, AlertTriangle, AlertCircle, CheckCircle } from 'lucide-react';
 import { Skeleton } from '@/components/ui/skeleton';
 import { SEOHead } from '@/components/seo/SEOHead';
+import { SEO } from '@/components/SEO';
 import { Link } from 'react-router-dom';
 import { LandingPageTracker } from '@/components/analytics/LandingPageTracker';
 
@@ -26,6 +27,12 @@ export default function Security() {
   return (
     <Layout>
       <LandingPageTracker pageType="category" articlesViewed={securityArticles.length} />
+      <SEO
+        title="Cybersecurity News & Analysis | The Grid Nexus"
+        description="Critical cybersecurity news, threat intelligence, and breach analysis. Real-time coverage of vulnerabilities, ransomware, and security research."
+        canonical="https://thegridnexus.com/security"
+        ogType="website"
+      />
       <SEOHead
         title="Security | The Grid Nexus"
         description="Cybersecurity news, threat intelligence, and breach analysis. Real-time coverage of vulnerabilities, ransomware, and security research."

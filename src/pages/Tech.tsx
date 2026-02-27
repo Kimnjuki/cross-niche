@@ -8,6 +8,7 @@ import { mapContentToArticles } from '@/lib/contentMapper';
 import { Cpu } from 'lucide-react';
 import { Skeleton } from '@/components/ui/skeleton';
 import { SEOHead } from '@/components/seo/SEOHead';
+import { SEO } from '@/components/SEO';
 import { Link } from 'react-router-dom';
 import { LandingPageTracker } from '@/components/analytics/LandingPageTracker';
 
@@ -22,6 +23,12 @@ export default function Tech() {
   return (
     <Layout>
       <LandingPageTracker pageType="category" articlesViewed={techArticles.length} />
+      <SEO
+        title="Technology News | The Grid Nexus"
+        description="Breaking technology news covering AI, hardware, software, and industry analysis. Expert insights on tech innovations and digital transformation."
+        canonical="https://thegridnexus.com/tech"
+        ogType="website"
+      />
       <SEOHead
         title="Tech | The Grid Nexus"
         description="Breaking technology news covering AI, hardware, software, and industry analysis from The Grid Nexus."

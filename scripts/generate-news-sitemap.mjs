@@ -156,7 +156,7 @@ async function main() {
   const outputPath = path.join(__dirname, '..', 'public', 'sitemap-news.xml');
   fs.writeFileSync(outputPath, newsSitemapXml, 'utf-8');
 
-  console.log(`✅ News sitemap generated with ${newsArticles.length} articles`);
+  console.log(`[OK] News sitemap generated with ${newsArticles.length} articles`);
   console.log(`   Saved to: ${outputPath}`);
 }
 
