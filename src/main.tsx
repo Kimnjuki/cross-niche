@@ -9,6 +9,7 @@ import { initAllTracking } from "./lib/analytics/ga4";
 import { initINPOptimizations } from "./lib/seo/inpOptimization";
 import { initCoreWebVitals } from "./lib/seo/coreWebVitals";
 import "./sentry";
+import "./lib/errorHandlers";
 
 // Build timestamp for cache busting
 const BUILD_TIMESTAMP = Date.now();

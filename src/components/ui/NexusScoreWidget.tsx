@@ -13,11 +13,18 @@ interface NexusScoreWidgetProps {
  * Competitive edge feature inspired by security dashboards
  */
 export function NexusScoreWidget({ className }: NexusScoreWidgetProps) {
+  const [isClient, setIsClient] = useState(false);
   const [score, setScore] = useState(72); // Mock score 0-100
   const [isExpanded, setIsExpanded] = useState(false);
 
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
   // Simulate real-time score updates
   useEffect(() => {
+    if (!isClient) return;
+    
     const interval = setInterval(() => {
       setScore((prev) => {
         const change = Math.random() * 4 - 2; // -2 to +2
@@ -26,7 +33,11 @@ export function NexusScoreWidget({ className }: NexusScoreWidgetProps) {
     }, 5000);
 
     return () => clearInterval(interval);
-  }, []);
+  }, [isClient]);
+
+  if (!isClient) {
+    return null; // Don't render on server to prevent hydration mismatch
+  }
 
   const getScoreColor = (score: number) => {
     if (score >= 75) return 'text-green-500';

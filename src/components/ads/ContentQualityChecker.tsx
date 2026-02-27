@@ -89,7 +89,7 @@ export function ContentQualityChecker({
     return genericMatches < text.length / 100; // Less than 1% generic content
   };
 
-  const checkMeaningfulContent = (text: string): boolean {
+  const checkMeaningfulContent = (text: string): boolean => {
     // Check for meaningful content indicators
     const meaningfulIndicators = [
       /\b\d{4}\b/, // Years (indicates timely content)
