@@ -9,16 +9,47 @@ import { useAllPublishedContent } from '@/hooks/useContent';
 import { mapContentToArticles } from '@/lib/contentMapper';
 import { ArticleGrid } from '@/components/articles/ArticleGrid';
 import { SEOHead } from '@/components/seo/SEOHead';
+import { SEO } from '@/components/SEO';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Link } from 'react-router-dom';
 import { Archive, ChevronRight } from 'lucide-react';
+import { useState, useEffect } from 'react';
 
 export default function Explore() {
+  const [isClient, setIsClient] = useState(false);
   const { data: allContent, isLoading } = useAllPublishedContent(10);
   const articles = allContent ? mapContentToArticles(allContent) : [];
 
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
+  if (!isClient) {
+    return (
+      <Layout>
+        <div className="container mx-auto px-4 py-10 max-w-7xl">
+          <div className="animate-pulse">
+            <div className="h-8 w-8 bg-muted rounded mb-4"></div>
+            <div className="h-12 bg-muted rounded w-64 mb-4"></div>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {[...Array(6)].map((_, i) => (
+                <div key={i} className="h-64 bg-muted rounded-lg"></div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </Layout>
+    );
+  }
+
   return (
     <Layout>
+      <SEO
+        title="All Articles | The Grid Nexus"
+        description="Browse all tech, security, and gaming articles. Archive and full catalog for discoverability."
+        canonical="https://thegridnexus.com/explore"
+        ogType="website"
+      />
       <SEOHead
         title="All Articles | The Grid Nexus"
         description="Browse all tech, security, and gaming articles. Archive and full catalog for discoverability."

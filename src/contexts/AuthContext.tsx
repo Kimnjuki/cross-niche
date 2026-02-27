@@ -21,13 +21,18 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 const AUTH_UNAVAILABLE = 'Sign-in is not available.';
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
+  const [isClient, setIsClient] = useState(false);
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const { user: clerkUser, isLoaded } = useUser();
   const clerk = useClerk();
 
   useEffect(() => {
-    if (!isLoaded) {
+    setIsClient(true);
+  }, []);
+
+  useEffect(() => {
+    if (!isClient || !isLoaded) {
       setIsLoading(true);
       return;
     }

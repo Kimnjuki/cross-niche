@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Menu, X, User, Bookmark, LogOut, Search, ChevronRight, Home } from 'lucide-react';
 import { ThemeToggle } from '@/components/theme/ThemeToggle';
@@ -57,13 +57,40 @@ const getBreadcrumbs = (pathname: string) => {
 };
 
 export function Navbar() {
+  const [isClient, setIsClient] = useState(false);
+  const { user, logout } = useAuth();
+  const location = useLocation();
+  const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedRole, setSelectedRole] = useState('all');
-  const { user, logout } = useAuth();
-  const location = useLocation();
-  const navigate = useNavigate();
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
+  if (!isClient) {
+    // Return skeleton navbar during SSR to prevent hydration mismatch
+    return (
+      <nav className="sticky top-0 z-50 bg-background/90 text-foreground backdrop-blur-lg border-b border-border">
+        <div className="container mx-auto px-4">
+          <div className="flex items-center justify-between h-16">
+            <div className="w-8 h-8 rounded-lg bg-muted animate-pulse"></div>
+            <div className="hidden md:flex items-center gap-8">
+              {[...Array(9)].map((_, i) => (
+                <div key={i} className="h-6 w-16 bg-muted rounded animate-pulse"></div>
+              ))}
+            </div>
+            <div className="hidden md:flex items-center gap-4">
+              <div className="h-9 w-9 bg-muted rounded animate-pulse"></div>
+              <div className="h-9 w-9 bg-muted rounded animate-pulse"></div>
+            </div>
+          </div>
+        </div>
+      </nav>
+    );
+  }
 
   const handleSearchSubmit = (e: React.FormEvent) => {
     e.preventDefault();

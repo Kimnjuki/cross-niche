@@ -19,6 +19,7 @@ const COOKIE_CONSENT_KEY = 'cookie-consent';
 const COOKIE_PREFERENCES_KEY = 'cookie-preferences';
 
 export function CookieConsent() {
+  const [isClient, setIsClient] = useState(false);
   const [showBanner, setShowBanner] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
   const [preferences, setPreferences] = useState<CookiePreferences>({
@@ -29,6 +30,8 @@ export function CookieConsent() {
   });
 
   useEffect(() => {
+    setIsClient(true);
+    
     // Check if user has already given consent
     const consent = localStorage.getItem(COOKIE_CONSENT_KEY);
     const savedPreferences = localStorage.getItem(COOKIE_PREFERENCES_KEY);
@@ -46,6 +49,10 @@ export function CookieConsent() {
       }
     }
   }, []);
+
+  if (!isClient) {
+    return null; // Don't render on server to prevent hydration mismatch
+  }
 
   const handleAcceptAll = () => {
     const allAccepted: CookiePreferences = {
