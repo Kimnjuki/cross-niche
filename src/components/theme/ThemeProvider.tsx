@@ -41,10 +41,16 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
       const resolved = resolveTheme();
       setResolvedTheme(resolved);
       
-      if (resolved === 'dark') {
-        document.documentElement.classList.add('dark');
-      } else {
-        document.documentElement.classList.remove('dark');
+      if (typeof window !== 'undefined' && document?.documentElement?.classList) {
+        try {
+          if (resolved === 'dark') {
+            document.documentElement.classList.add('dark');
+          } else {
+            document.documentElement.classList.remove('dark');
+          }
+        } catch (error) {
+          console.warn('Failed to update theme class:', error);
+        }
       }
     };
 

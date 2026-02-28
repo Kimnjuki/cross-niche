@@ -290,11 +290,15 @@ export function TechnicalSEO({ pageType = 'article', customMeta, structuredData 
                 entries.forEach(entry => {
                   if (entry.isIntersecting) {
                     const img = entry.target;
-                    if (img.dataset.src) {
-                      img.src = img.dataset.src;
-                      img.classList.remove('lazy');
-                      observer.unobserve(img);
+                    if (img.dataset.src && img?.classList) {
+                      try {
+                        img.src = img.dataset.src;
+                        img.classList.remove('lazy');
+                      } catch (error) {
+                        console.warn('Failed to lazy load image:', error);
+                      }
                     }
+                    observer.unobserve(img);
                   }
                 });
               });
@@ -306,13 +310,19 @@ export function TechnicalSEO({ pageType = 'article', customMeta, structuredData 
             }
 
             // Font loading optimization
-            if ('fonts' in document) {
+            if ('fonts' in document && document?.documentElement?.classList) {
               Promise.all([
                 document.fonts.load('400 1em Inter'),
                 document.fonts.load('600 1em Inter'),
                 document.fonts.load('700 1em Inter')
               ]).then(function() {
-                document.documentElement.classList.add('fonts-loaded');
+                try {
+                  document.documentElement.classList.add('fonts-loaded');
+                } catch (error) {
+                  console.warn('Failed to add fonts-loaded class:', error);
+                }
+              }).catch(function(error) {
+                console.warn('Font loading failed:', error);
               });
             }
           })();

@@ -272,7 +272,11 @@
           
           // Add error handling for Clickio consent script
           try {
-            loadScript('//clickiocmp.com/t/consent_247023.js', { crossOrigin: 'anonymous' });
+            loadScript('//clickiocmp.com/t/consent_247023.js', { 
+              crossOrigin: 'anonymous',
+              onError: () => console.warn('Clickio consent script failed to load'),
+              timeout: 5000
+            });
           } catch (e) {
             console.warn('Clickio consent script failed to load:', e);
             // Fallback: set default consent state
