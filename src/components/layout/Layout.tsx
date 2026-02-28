@@ -4,6 +4,7 @@ import { Footer } from './Footer';
 import { GlobalPulseSidebar } from './GlobalPulseSidebar';
 import { NexusScoreWidget } from '@/components/ui/NexusScoreWidget';
 import { CookieConsent } from '@/components/consent/CookieConsent';
+import { AdScriptInitializer } from '@/components/ads/AdScriptInitializer';
 
 interface LayoutProps {
   children: ReactNode;
@@ -14,6 +15,7 @@ interface LayoutProps {
 export function Layout({ children, showPulseSidebar = false }: LayoutProps) {
   return (
     <div className="min-h-screen flex flex-col">
+      <AdScriptInitializer />
       {showPulseSidebar && <GlobalPulseSidebar />}
       <div className={showPulseSidebar ? 'pl-[64px]' : ''}>
         <Navbar />
