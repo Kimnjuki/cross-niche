@@ -101,3 +101,73 @@ export const awardXP = internalMutation({
     return { userId: args.userId, docId: existing._id, xp: nextXp, level: nextLevel };
   },
 });
+
+// Get user gamification data (alias for getByUser to match expected API)
+export const getUserGamification = query({
+  args: { userId: v.string() },
+  handler: async (ctx, args) => {
+    return await ctx.db
+      .query("userGamification")
+      .withIndex("by_user", (q) => q.eq("userId", args.userId))
+      .first();
+  },
+});
+
+// Initialize user gamification
+export const initializeGamification = internalMutation({
+  args: { userId: v.string() },
+  handler: async (ctx, args) => {
+    const existing = await ctx.db
+      .query("userGamification")
+      .withIndex("by_user", (q) => q.eq("userId", args.userId))
+      .unique();
+    
+    if (existing) return existing._id;
+    
+    return await ctx.db.insert("userGamification", {
+      userId: args.userId,
+      xp: 0,
+      level: 1,
+      badges: [],
+      achievements: [],
+      currentStreak: 0,
+      longestStreak: 0,
+      lastActivityDate: Date.now(),
+    });
+  },
+});
+
+// Get leaderboard
+export const getLeaderboard = query({
+  args: { limit: v.optional(v.number()) },
+  handler: async (ctx, args) => {
+    const limit = args.limit || 10;
+    
+    const topUsers = await ctx.db
+      .query("userGamification")
+      .withIndex("by_xp")
+      .order("desc")
+      .take(limit);
+    
+    // Get user details
+    const leaderboard = await Promise.all(
+      topUsers.map(async (g) => {
+        const user = await ctx.db
+          .query("users")
+          .withIndex("by_supabase_user_id", (q) =>
+            q.eq("supabaseUserId", g.userId)
+          )
+          .unique();
+        
+        return {
+          ...g,
+          username: user?.username || "Anonymous",
+          displayName: user?.displayName || user?.username,
+          avatarUrl: user?.avatarUrl,
+        };
+      })
+    );
+    
+    return leaderboard;
+  },
+});

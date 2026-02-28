@@ -2,7 +2,7 @@ import { useQuery } from "convex/react";
 import { api } from "../../convex/_generated/api";
 
 export function Leaderboard() {
-  const leaderboard = useQuery(api.gamification.getByUser, { limit: 10 });
+  const leaderboard = useQuery(api.gamification.getLeaderboard, { limit: 10 });
   
   return (
     <div className="bg-white rounded-lg shadow-lg p-6">

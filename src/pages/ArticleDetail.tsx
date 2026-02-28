@@ -1,5 +1,7 @@
-import { useQuery } from "convex/react";
+import { useParams } from "react-router-dom";
+import { useQuery, useMutation } from "convex/react";
 import { api } from "../../convex/_generated/api";
+import { useEffect } from "react";
 import { ArticleCard } from "@/components/ArticleCard";
 import { LoadingState } from "@/components/LoadingState";
 
@@ -7,6 +9,12 @@ export function ArticleDetail() {
   const { slug } = useParams<{ slug: string }>();
   const content = useQuery(api.content.getContentBySlug, { slug: slug! });
   const incrementView = useMutation(api.content.incrementViewCount);
+  
+  useEffect(() => {
+    if (content?._id) {
+      incrementView({ contentId: content._id });
+    }
+  }, [content?._id]);
   
   if (content === undefined) {
     return <LoadingState />;
@@ -49,12 +57,12 @@ export function ArticleDetail() {
         
         {content.tags && content.tags.length > 0 && (
           <div className="flex flex-wrap gap-2 mt-4">
-            {content.tags.map((tag) => (
+            {(content.tags as any[]).map((tag: any) => (
               <span
-                key={tag._id}
+                key={tag._id || tag}
                 className="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm"
               >
-                {tag.name}
+                {tag.name || tag}
               </span>
             ))}
           </div>
@@ -66,9 +74,9 @@ export function ArticleDetail() {
         dangerouslySetInnerHTML={{ __html: content.body }}
       />
       
-      {content.media && content.media.length > 0 && (
+      {(content as any).media && (content as any).media.length > 0 && (
         <div className="mt-8 grid grid-cols-2 gap-4">
-          {content.media.map((media) => (
+          {(content as any).media.map((media: any) => (
             <img
               key={media._id}
               src={media.url}

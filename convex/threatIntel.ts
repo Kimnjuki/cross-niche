@@ -131,3 +131,33 @@ export const listFeed = query({
       .take(limit);
   },
 });
+
+// Get latest threats (alias for listLatest to match expected API)
+export const getLatestThreats = query({
+  args: {
+    severity: v.optional(v.union(
+      v.literal("critical"),
+      v.literal("high"),
+      v.literal("medium"),
+      v.literal("low")
+    )),
+    limit: v.optional(v.number()),
+  },
+  handler: async (ctx, args) => {
+    const limit = args.limit || 20;
+    
+    if (args.severity) {
+      return await ctx.db
+        .query("threatIntel")
+        .withIndex("by_severity_published", (q) => q.eq("severity", args.severity as "critical" | "high" | "medium" | "low"))
+        .order("desc")
+        .take(limit);
+    }
+    
+    return await ctx.db
+      .query("threatIntel")
+      .withIndex("by_published_at")
+      .order("desc")
+      .take(limit);
+  },
+});
