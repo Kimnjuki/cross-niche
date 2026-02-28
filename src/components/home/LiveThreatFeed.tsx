@@ -14,7 +14,7 @@ interface ThreatAlert {
   timeAgo: string;
 }
 
-// Mock threat data - in production, this would come from Supabase
+// Mock threat data - in production, this would come from Convex
 const mockThreats: ThreatAlert[] = [
   { id: '1', title: 'New Zero-Day Exploit Targeting Gaming Platforms', severity: 'critical', timeAgo: '5m ago' },
   { id: '2', title: 'Enterprise Ransomware Campaign Detected', severity: 'high', timeAgo: '12m ago' },

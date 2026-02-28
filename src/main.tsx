@@ -1,4 +1,5 @@
 import { createRoot, hydrateRoot } from "react-dom/client";
+import { ConvexProvider } from "convex/react";
 import App from "./App.tsx";
 import "./index.css";
 import "./styles/design-tokens.css";
@@ -10,6 +11,7 @@ import { initINPOptimizations } from "./lib/seo/inpOptimization";
 import { initCoreWebVitals } from "./lib/seo/coreWebVitals";
 import "./sentry";
 import "./lib/errorHandlers";
+import { convex } from "./lib/convex";
 
 // Build timestamp for cache busting
 const BUILD_TIMESTAMP = Date.now();
@@ -55,7 +57,9 @@ if (!rootEl) {
 
 const app = (
   <ErrorBoundary>
-    <App />
+    <ConvexProvider client={convex}>
+      <App />
+    </ConvexProvider>
   </ErrorBoundary>
 );
 

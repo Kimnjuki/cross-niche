@@ -31,7 +31,7 @@ export default function Auth() {
 
   // Handle OAuth callback
   const handleOAuthCallback = async () => {
-    // This will be handled by Supabase automatically
+    // This will be handled by Clerk automatically
     // The auth state change listener will pick it up
   };
 

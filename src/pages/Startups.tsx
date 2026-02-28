@@ -27,7 +27,7 @@ import type { StartupProfile } from '@/types';
  * Features: Funding rounds, valuations, investor info, startup profiles
  */
 
-// Mock data - in production, this would come from Supabase
+// Mock data - in production, this would come from Convex
 const mockStartups: StartupProfile[] = [
   {
     id: '1',
