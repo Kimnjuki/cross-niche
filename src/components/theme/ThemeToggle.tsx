@@ -7,6 +7,7 @@ import { Sun, Moon, Monitor } from 'lucide-react';
 import { GlassCard } from '@/components/design-system/GlassCard';
 import { cn } from '@/lib/utils';
 import { ClientOnly } from '@/components/ClientOnly';
+import { safeClassListAdd, safeClassListRemove } from '@/utils/domSafety';
 
 type Theme = 'light' | 'dark' | 'system';
 
@@ -30,16 +31,16 @@ export const ThemeToggle: React.FC = () => {
     if (typeof window === 'undefined') return;
     
     const root = window.document.documentElement;
-    if (!root || !root.classList) return;
+    if (!root) return;
     
     try {
       if (newTheme === 'system') {
         const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-        root.classList.remove('light', 'dark');
-        root.classList.add(systemTheme);
+        safeClassListRemove(root, 'light', 'dark');
+        safeClassListAdd(root, systemTheme);
       } else {
-        root.classList.remove('light', 'dark', 'system');
-        root.classList.add(newTheme);
+        safeClassListRemove(root, 'light', 'dark', 'system');
+        safeClassListAdd(root, newTheme);
       }
     } catch (error) {
       console.warn('Failed to apply theme:', error);

@@ -4,6 +4,7 @@
  */
 
 import { createContext, useContext, useEffect, useState } from 'react';
+import { safeClassListAdd, safeClassListRemove } from '@/utils/domSafety';
 
 type Theme = 'light' | 'dark' | 'system';
 
@@ -41,12 +42,12 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
       const resolved = resolveTheme();
       setResolvedTheme(resolved);
       
-      if (typeof window !== 'undefined' && document?.documentElement?.classList) {
+      if (typeof window !== 'undefined' && document?.documentElement) {
         try {
           if (resolved === 'dark') {
-            document.documentElement.classList.add('dark');
+            safeClassListAdd(document.documentElement, 'dark');
           } else {
-            document.documentElement.classList.remove('dark');
+            safeClassListRemove(document.documentElement, 'dark');
           }
         } catch (error) {
           console.warn('Failed to update theme class:', error);

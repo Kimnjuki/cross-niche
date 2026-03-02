@@ -284,6 +284,35 @@ export function TechnicalSEO({ pageType = 'article', customMeta, structuredData 
         {`
           // Critical Resource Loading
           (function() {
+            // Safe DOM utilities
+            function safeClassListAdd(element, ...classNames) {
+              if (!element?.classList) {
+                console.warn('safeClassListAdd: element or classList is undefined');
+                return false;
+              }
+              try {
+                element.classList.add(...classNames);
+                return true;
+              } catch (error) {
+                console.warn('safeClassListAdd: failed to add classes', error);
+                return false;
+              }
+            }
+            
+            function safeClassListRemove(element, ...classNames) {
+              if (!element?.classList) {
+                console.warn('safeClassListRemove: element or classList is undefined');
+                return false;
+              }
+              try {
+                element.classList.remove(...classNames);
+                return true;
+              } catch (error) {
+                console.warn('safeClassListRemove: failed to remove classes', error);
+                return false;
+              }
+            }
+            
             // Lazy load images
             if ('IntersectionObserver' in window) {
               const imageObserver = new IntersectionObserver((entries, observer) => {
@@ -293,7 +322,7 @@ export function TechnicalSEO({ pageType = 'article', customMeta, structuredData 
                     if (img.dataset.src && img?.classList) {
                       try {
                         img.src = img.dataset.src;
-                        img.classList.remove('lazy');
+                        safeClassListRemove(img, 'lazy');
                       } catch (error) {
                         console.warn('Failed to lazy load image:', error);
                       }
@@ -310,14 +339,14 @@ export function TechnicalSEO({ pageType = 'article', customMeta, structuredData 
             }
 
             // Font loading optimization
-            if ('fonts' in document && document?.documentElement?.classList) {
+            if ('fonts' in document && document?.documentElement) {
               Promise.all([
                 document.fonts.load('400 1em Inter'),
                 document.fonts.load('600 1em Inter'),
                 document.fonts.load('700 1em Inter')
               ]).then(function() {
                 try {
-                  document.documentElement.classList.add('fonts-loaded');
+                  safeClassListAdd(document.documentElement, 'fonts-loaded');
                 } catch (error) {
                   console.warn('Failed to add fonts-loaded class:', error);
                 }
