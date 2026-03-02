@@ -1,9 +1,9 @@
 import React, { useMemo } from 'react';
-import { 
-  SignIn, 
-  SignUp, 
+import {
+  SignIn,
+  SignUp,
   useUser,
-  UserButton
+  UserButton,
 } from '@clerk/clerk-react';
 import { 
   Shield, 
@@ -13,8 +13,30 @@ import {
 import { GlassCard } from '@/components/design-system/GlassCard';
 import { cn } from '@/lib/utils';
 import { Link, useLocation } from 'react-router-dom';
+import { isClerkEnabled } from '@/lib/clerkConfig';
 
 export const SignInSignUp: React.FC = () => {
+  if (!isClerkEnabled) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-950 via-gray-900 to-gray-950 px-6">
+        <GlassCard className="p-8 max-w-md w-full text-center">
+          <Shield className="w-10 h-10 text-nexus-cyan mx-auto mb-4" />
+          <h1 className="text-2xl font-bold text-white mb-2">Sign-in temporarily unavailable</h1>
+          <p className="text-gray-400 mb-4">
+            Authentication is currently disabled on this environment. You can still browse all public
+            articles and tools.
+          </p>
+          <a
+            href="/"
+            className="inline-flex items-center justify-center w-full px-6 py-3 bg-gradient-to-r from-nexus-cyan to-blue-500 text-white rounded-lg font-semibold hover:shadow-lg hover:shadow-nexus-cyan/25 transition-all"
+          >
+            Back to homepage
+          </a>
+        </GlassCard>
+      </div>
+    );
+  }
+
   const { isSignedIn } = useUser();
   const location = useLocation();
 

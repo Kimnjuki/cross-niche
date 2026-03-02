@@ -1,6 +1,7 @@
 import React from 'react';
 import { ClerkProvider, ClerkLoaded, ClerkLoading } from '@clerk/clerk-react';
 import { GlassCard } from '@/components/design-system/GlassCard';
+import { clerkPublishableKey, isClerkEnabled, isClerkDevKey } from '@/lib/clerkConfig';
 
 interface AuthProviderProps {
   children: React.ReactNode;
@@ -8,17 +9,21 @@ interface AuthProviderProps {
   routerReplace?: (to: string) => void;
 }
 
-const clerkFrontendApi = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
-
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children, routerPush, routerReplace }) => {
-  if (!clerkFrontendApi) {
-    console.warn('Clerk publishable key not found. Authentication will be disabled.');
+  if (!isClerkEnabled || !clerkPublishableKey) {
+    if (!clerkPublishableKey) {
+      console.warn('Clerk publishable key not found. Authentication will be disabled.');
+    } else if (!import.meta.env.DEV && isClerkDevKey) {
+      console.warn(
+        'Clerk is configured with a development publishable key on a non-development host. Authentication UI is disabled until a production key is configured.'
+      );
+    }
     return <>{children}</>;
   }
 
   return (
     <ClerkProvider
-      publishableKey={clerkFrontendApi}
+      publishableKey={clerkPublishableKey}
       routerPush={routerPush}
       routerReplace={routerReplace}
     >

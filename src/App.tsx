@@ -46,11 +46,15 @@ import LiveUpdatesFeed from "./components/live/LiveUpdatesFeed";
 import SignInSignUp from "./components/auth/SignInSignUp";
 import TestFeatures from "./pages/TestFeatures";
 import NewsletterVerify from "./pages/NewsletterVerify";
+import { isClerkEnabled } from "@/lib/clerkConfig";
 
 const queryClient = new QueryClient();
 
 function RouterClerkProvider({ children }: { children: React.ReactNode }) {
   const navigate = useNavigate();
+  if (!isClerkEnabled) {
+    return <>{children}</>;
+  }
   return (
     <ClerkAuthProvider
       routerPush={(to) => navigate(to)}
@@ -63,7 +67,7 @@ function RouterClerkProvider({ children }: { children: React.ReactNode }) {
 
 const App = () => (
   <EnhancedErrorBoundary>
-    <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
+    <BrowserRouter>
       <RouterClerkProvider>
         <SafeConvexProvider>
           <QueryClientProvider client={queryClient}>
