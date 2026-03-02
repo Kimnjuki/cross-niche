@@ -11,8 +11,15 @@ interface AuthProviderProps {
 const clerkFrontendApi = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
 
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children, routerPush, routerReplace }) => {
-  if (!clerkFrontendApi) {
-    console.warn('Clerk publishable key not found. Authentication will be disabled.');
+  const isProd = import.meta.env.PROD;
+  const isDevKey = clerkFrontendApi?.startsWith('pk_test_');
+
+  if (!clerkFrontendApi || (isProd && isDevKey)) {
+    if (!clerkFrontendApi) {
+      console.warn('Clerk publishable key not found. Authentication will be disabled.');
+    } else if (isProd && isDevKey) {
+      console.warn('Clerk is configured with a development publishable key in production. Authentication will be disabled until a production key is provided.');
+    }
     return <>{children}</>;
   }
 

@@ -270,19 +270,8 @@
           })(window, document, "clarity", "script", "vd7rgy7tu7");
           loadScript('https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9278124025449370', { crossOrigin: 'anonymous', referrerPolicy: 'no-referrer-when-downgrade' });
           
-          // Add error handling for Clickio consent script
-          try {
-            loadScript('//clickiocmp.com/t/consent_247023.js', { 
-              crossOrigin: 'anonymous',
-              onError: () => console.warn('Clickio consent script failed to load'),
-              timeout: 5000
-            });
-          } catch (e) {
-            console.warn('Clickio consent script failed to load:', e);
-            // Fallback: set default consent state
-            window.clickioConsent = window.clickioConsent || {};
-            window.clickioConsent.hasConsent = false;
-          }
+          // Clickio CMP script removed to avoid CORS errors and hard failures when blocked upstream.
+          // Consent state is safely defaulted in application code when Clickio is unavailable.
           
           loadScript('https://analytics.ahrefs.com/analytics.js', { 'data-key': 'aNTResFK8mO8Rf5gt0QKdw', crossOrigin: 'anonymous' });
         }
