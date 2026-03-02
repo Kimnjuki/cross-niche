@@ -48,6 +48,12 @@ const FEED_SLUGS = [
   { slug: 'play', label: 'Gaming', path: '/gaming' },
 ];
 
+const PINNED_SLUGS = [
+  'neuromorphic-chip-robotic-vision-2026',
+  'microsoft-10000-year-data-storage',
+  'ai-spending-forecast-2026',
+];
+
 function articleLink(article: Article | null | undefined): string {
   if (!article) return '/';
   return `/article/${article.slug ?? article.id ?? ''}`;
@@ -76,7 +82,18 @@ export default function Index() {
 
   const hasPublishedData = Array.isArray(published) && published.length > 0;
   const articles: Article[] = hasPublishedData ? mapContentToArticles(published as ContentItem[]) : mockArticles;
+
+  const getPinRank = (article: Article): number => {
+    const key = article.slug ?? article.id ?? '';
+    const index = PINNED_SLUGS.indexOf(key);
+    return index === -1 ? PINNED_SLUGS.length : index;
+  };
+
   const sortedArticles = [...articles].sort((a, b) => {
+    const pa = getPinRank(a);
+    const pb = getPinRank(b);
+    if (pa !== pb) return pa - pb;
+
     const aTime = a.publishedAt != null ? new Date(a.publishedAt as string | number).getTime() : 0;
     const bTime = b.publishedAt != null ? new Date(b.publishedAt as string | number).getTime() : 0;
     return (Number.isNaN(bTime) ? 0 : bTime) - (Number.isNaN(aTime) ? 0 : aTime);
