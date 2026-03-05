@@ -1,10 +1,6 @@
-export const clerkPublishableKey = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY as string | undefined;
-
-export const isClerkDevKey =
-  typeof clerkPublishableKey === 'string' && clerkPublishableKey.startsWith('pk_test_');
-
-export const isClerkEnabled =
-  typeof clerkPublishableKey === 'string' &&
-  clerkPublishableKey.length > 0 &&
-  (!import.meta.env.PROD || !isClerkDevKey);
+// Legacy Clerk config kept only to avoid import errors after migrating to Auth0.
+// All new code should use `auth0Config` instead.
+export const clerkPublishableKey = undefined;
+export const isClerkDevKey = false;
+export const isClerkEnabled = false;
 

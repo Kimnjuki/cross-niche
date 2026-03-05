@@ -1,5 +1,6 @@
 import { createRoot, hydrateRoot } from "react-dom/client";
 import { ConvexProvider } from "convex/react";
+import { Auth0Provider } from "@auth0/auth0-react";
 import App from "./App.tsx";
 import "./index.css";
 import "./styles/design-tokens.css";
@@ -12,6 +13,7 @@ import { initCoreWebVitals } from "./lib/seo/coreWebVitals";
 import "./sentry";
 import "./lib/errorHandlers";
 import { convex } from "./lib/convex";
+import { auth0Domain, auth0ClientId, auth0Audience, isAuth0Enabled } from "./lib/auth0Config";
 
 // Build timestamp for cache busting
 const BUILD_TIMESTAMP = Date.now();
@@ -58,7 +60,20 @@ if (!rootEl) {
 const app = (
   <ErrorBoundary>
     <ConvexProvider client={convex}>
-      <App />
+      {isAuth0Enabled && auth0Domain && auth0ClientId ? (
+        <Auth0Provider
+          domain={auth0Domain}
+          clientId={auth0ClientId}
+          authorizationParams={{
+            redirect_uri: window.location.origin,
+            audience: auth0Audience,
+          }}
+        >
+          <App />
+        </Auth0Provider>
+      ) : (
+        <App />
+      )}
     </ConvexProvider>
   </ErrorBoundary>
 );

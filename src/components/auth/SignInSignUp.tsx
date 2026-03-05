@@ -1,10 +1,5 @@
 import React, { useMemo } from 'react';
-import {
-  SignIn,
-  SignUp,
-  useUser,
-  UserButton,
-} from '@clerk/clerk-react';
+import { useAuth0 } from '@auth0/auth0-react';
 import { 
   Shield, 
   Mail, 
@@ -13,10 +8,12 @@ import {
 import { GlassCard } from '@/components/design-system/GlassCard';
 import { cn } from '@/lib/utils';
 import { Link, useLocation } from 'react-router-dom';
-import { isClerkEnabled } from '@/lib/clerkConfig';
+import { isAuth0Enabled } from '@/lib/auth0Config';
 
 export const SignInSignUp: React.FC = () => {
-  if (!isClerkEnabled) {
+  const { isAuthenticated, isLoading, loginWithRedirect, logout, user } = useAuth0();
+
+  if (!isAuth0Enabled) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-950 via-gray-900 to-gray-950 px-6">
         <GlassCard className="p-8 max-w-md w-full text-center">
@@ -37,7 +34,6 @@ export const SignInSignUp: React.FC = () => {
     );
   }
 
-  const { isSignedIn } = useUser();
   const location = useLocation();
 
   const mode: 'signin' | 'signup' = useMemo(() => {
@@ -103,22 +99,27 @@ export const SignInSignUp: React.FC = () => {
         </div>
 
         <div className="w-full lg:w-1/2 flex items-center justify-center p-6">
-          {isSignedIn ? (
+          {isAuthenticated ? (
             <GlassCard className="p-8 max-w-md w-full">
               <div className="text-center">
                 <h2 className="text-2xl font-bold text-white mb-2">You're signed in</h2>
                 <p className="text-gray-400 mb-6">Continue to your dashboard.</p>
 
-                <div className="flex justify-center mb-6">
-                  <UserButton
-                    appearance={{
-                      elements: {
-                        rootBox: "glass border border-white/20 rounded-lg p-2",
-                        avatarBox: "w-16 h-16",
-                      },
-                    }}
-                  />
-                </div>
+                {user && (
+                  <div className="flex flex-col items-center justify-center mb-6">
+                    {user.picture && (
+                      <img
+                        src={user.picture}
+                        alt={user.name ?? 'Profile'}
+                        className="w-16 h-16 rounded-full border border-white/20 mb-3"
+                      />
+                    )}
+                    <div className="text-white font-semibold">{user.name ?? user.email}</div>
+                    {user.email && (
+                      <div className="text-gray-400 text-sm mt-1">{user.email}</div>
+                    )}
+                  </div>
+                )}
 
                 <a
                   href="/"
@@ -126,6 +127,17 @@ export const SignInSignUp: React.FC = () => {
                 >
                   Continue
                 </a>
+                <button
+                  type="button"
+                  onClick={() =>
+                    logout({
+                      logoutParams: { returnTo: window.location.origin },
+                    })
+                  }
+                  className="mt-4 inline-flex items-center justify-center w-full px-6 py-3 border border-white/20 text-gray-200 rounded-lg font-semibold hover:bg-white/5 transition-all"
+                >
+                  Sign out
+                </button>
               </div>
             </GlassCard>
           ) : (
@@ -166,64 +178,30 @@ export const SignInSignUp: React.FC = () => {
                   </Link>
                 </div>
 
-                <div className="relative">
-                  {mode === 'signin' ? (
-                    <SignIn
-                      path="/signin"
-                      routing="path"
-                      signUpUrl="/signup"
-                      afterSignInUrl="/"
-                      afterSignUpUrl="/"
-                      appearance={{
-                        elements: {
-                          rootBox: "space-y-4",
-                          card: "glass border-0 bg-transparent shadow-none",
-                          headerTitle: "text-white text-xl font-semibold",
-                          headerSubtitle: "text-gray-400 text-sm",
-                          socialButtonsBlockButton:
-                            "glass border border-white/20 bg-white/5 text-white hover:bg-white/10",
-                          socialButtonsBlockButtonText: "text-white",
-                          formButtonPrimary:
-                            "w-full bg-gradient-to-r from-nexus-cyan to-blue-500 text-white font-semibold hover:shadow-lg hover:shadow-nexus-cyan/25 transition-all",
-                          formFieldLabel: "text-gray-300 text-sm font-medium",
-                          formFieldInput:
-                            "bg-white/5 border border-white/20 text-white placeholder-gray-400 focus:border-nexus-cyan focus:bg-white/10 transition-all rounded-lg",
-                          footerActionLink: "text-nexus-cyan hover:text-blue-400 text-sm",
-                          dividerText: "text-gray-500 text-sm",
-                          identityPreview: "text-white",
-                          identityPreviewText: "text-gray-400",
+                <div className="relative space-y-4">
+                  <button
+                    type="button"
+                    disabled={isLoading}
+                    onClick={() =>
+                      loginWithRedirect({
+                        authorizationParams: {
+                          screen_hint: mode === 'signup' ? 'signup' : undefined,
                         },
-                      }}
-                    />
-                  ) : (
-                    <SignUp
-                      path="/signup"
-                      routing="path"
-                      signInUrl="/signin"
-                      afterSignUpUrl="/"
-                      afterSignInUrl="/"
-                      appearance={{
-                        elements: {
-                          rootBox: "space-y-4",
-                          card: "glass border-0 bg-transparent shadow-none",
-                          headerTitle: "text-white text-xl font-semibold",
-                          headerSubtitle: "text-gray-400 text-sm",
-                          socialButtonsBlockButton:
-                            "glass border border-white/20 bg-white/5 text-white hover:bg-white/10",
-                          socialButtonsBlockButtonText: "text-white",
-                          formButtonPrimary:
-                            "w-full bg-gradient-to-r from-nexus-cyan to-blue-500 text-white font-semibold hover:shadow-lg hover:shadow-nexus-cyan/25 transition-all",
-                          formFieldLabel: "text-gray-300 text-sm font-medium",
-                          formFieldInput:
-                            "bg-white/5 border border-white/20 text-white placeholder-gray-400 focus:border-nexus-cyan focus:bg-white/10 transition-all rounded-lg",
-                          footerActionLink: "text-nexus-cyan hover:text-blue-400 text-sm",
-                          dividerText: "text-gray-500 text-sm",
-                          identityPreview: "text-white",
-                          identityPreviewText: "text-gray-400",
-                        },
-                      }}
-                    />
-                  )}
+                      })
+                    }
+                    className="w-full inline-flex items-center justify-center px-6 py-3 bg-gradient-to-r from-nexus-cyan to-blue-500 text-white rounded-lg font-semibold hover:shadow-lg hover:shadow-nexus-cyan/25 transition-all disabled:opacity-60"
+                  >
+                    {isLoading
+                      ? 'Loading...'
+                      : mode === 'signin'
+                      ? 'Continue with Auth0'
+                      : 'Create account with Auth0'}
+                  </button>
+
+                  <p className="text-gray-400 text-sm text-center">
+                    You’ll be securely redirected to our authentication provider and then back to
+                    GridNexus.
+                  </p>
                 </div>
 
                 <div className="mt-4 text-center text-sm text-gray-400 lg:hidden">

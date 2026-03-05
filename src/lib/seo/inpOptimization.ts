@@ -156,7 +156,7 @@ export function preventLayoutShifts() {
   
   dynamicContainers.forEach(container => {
     const height = container.getBoundingClientRect().height;
-    container.style.minHeight = `${height}px`;
+    (container as HTMLElement).style.minHeight = `${height}px`;
   });
 }
 
@@ -188,10 +188,8 @@ export function measureINP() {
         if (entry.entryType === 'event' && 'duration' in entry) {
           const duration = entry.duration;
           
-          // Log only in development or for very slow interactions (> 1s) to avoid console noise
+          // Avoid console noise in production; keep INP reporting via analytics below.
           if (import.meta.env.DEV && duration > 200) {
-            console.warn(`Slow interaction detected: ${duration}ms`, entry);
-          } else if (duration > 1000) {
             console.warn(`Slow interaction detected: ${duration}ms`, entry);
           }
           

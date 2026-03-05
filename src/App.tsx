@@ -2,9 +2,8 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route, Navigate, useNavigate } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { AuthProvider } from "@/contexts/AuthContext";
-import { AuthProvider as ClerkAuthProvider } from "@/components/auth/AuthProvider";
 import { SafeConvexProvider } from "@/components/SafeConvexProvider";
 import { EnhancedErrorBoundary } from "@/components/error/EnhancedErrorBoundary";
 import { GA4PageTracker } from "./components/analytics/GA4PageTracker";
@@ -46,39 +45,22 @@ import LiveUpdatesFeed from "./components/live/LiveUpdatesFeed";
 import SignInSignUp from "./components/auth/SignInSignUp";
 import TestFeatures from "./pages/TestFeatures";
 import NewsletterVerify from "./pages/NewsletterVerify";
-import { isClerkEnabled } from "@/lib/clerkConfig";
 
 const queryClient = new QueryClient();
-
-function RouterClerkProvider({ children }: { children: React.ReactNode }) {
-  const navigate = useNavigate();
-  if (!isClerkEnabled) {
-    return <>{children}</>;
-  }
-  return (
-    <ClerkAuthProvider
-      routerPush={(to) => navigate(to)}
-      routerReplace={(to) => navigate(to, { replace: true })}
-    >
-      {children}
-    </ClerkAuthProvider>
-  );
-}
 
 const App = () => (
   <EnhancedErrorBoundary>
     <BrowserRouter>
-      <RouterClerkProvider>
-        <SafeConvexProvider>
-          <QueryClientProvider client={queryClient}>
-            <ThemeProvider>
-              <AuthProvider>
-                <TooltipProvider>
-                  <CanonicalLink />
-                  <Toaster />
-                  <Sonner />
-                  <GA4PageTracker />
-                  <Routes>
+      <SafeConvexProvider>
+        <QueryClientProvider client={queryClient}>
+          <ThemeProvider>
+            <AuthProvider>
+              <TooltipProvider>
+                <CanonicalLink />
+                <Toaster />
+                <Sonner />
+                <GA4PageTracker />
+                <Routes>
                     <Route path="/" element={<Index />} />
                     <Route path="/simple" element={<IndexSimple />} />
                     <Route path="/enhanced" element={<EnhancedIndex />} />
@@ -125,12 +107,11 @@ const App = () => (
                     {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                     <Route path="*" element={<NotFound />} />
                   </Routes>
-                </TooltipProvider>
-              </AuthProvider>
-            </ThemeProvider>
-          </QueryClientProvider>
-        </SafeConvexProvider>
-      </RouterClerkProvider>
+              </TooltipProvider>
+            </AuthProvider>
+          </ThemeProvider>
+        </QueryClientProvider>
+      </SafeConvexProvider>
     </BrowserRouter>
   </EnhancedErrorBoundary>
 );

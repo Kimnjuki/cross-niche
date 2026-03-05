@@ -361,11 +361,15 @@ export function TechnicalSEO({ pageType = 'article', customMeta, structuredData 
       {/* Service Worker Registration */}
       <script>
         {`
-          if ('serviceWorker' in navigator) {
+          // Only register the service worker in production builds.
+          // In dev, this can lead to stale cached bundles and confusing runtime errors.
+          if (${import.meta.env.PROD} && 'serviceWorker' in navigator) {
             window.addEventListener('load', function() {
               navigator.serviceWorker.register('/sw.js')
                 .then(function(registration) {
                   console.log('SW registered: ', registration);
+                  // Check for updates immediately (helps clients pick up new bundles).
+                  try { registration.update(); } catch (e) {}
                 })
                 .catch(function(registrationError) {
                   console.log('SW registration failed: ', registrationError);

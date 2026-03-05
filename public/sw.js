@@ -3,7 +3,8 @@
  * PWA capabilities and offline support
  */
 
-const CACHE_NAME = 'thegridnexus-v1';
+// Bump this to force old cached bundles to be dropped.
+const CACHE_NAME = 'thegridnexus-v2';
 const urlsToCache = [
   '/',
   '/guides',
@@ -22,6 +23,8 @@ const urlsToCache = [
 
 // Install event - cache resources
 self.addEventListener('install', function(event) {
+  // Activate updated SW ASAP.
+  self.skipWaiting();
   event.waitUntil(
     caches.open(CACHE_NAME)
       .then(function(cache) {
@@ -33,36 +36,49 @@ self.addEventListener('install', function(event) {
 
 // Fetch event - serve from cache when offline
 self.addEventListener('fetch', function(event) {
+  const url = new URL(event.request.url);
+
+  // Never cache built asset bundles (prevents stale vendor JS causing runtime errors).
+  if (url.origin === self.location.origin) {
+    if (event.request.destination === 'script' || url.pathname.startsWith('/assets/')) {
+      event.respondWith(fetch(event.request));
+      return;
+    }
+  }
+
+  // Network-first for navigations so the app shell updates quickly.
+  if (event.request.mode === 'navigate') {
+    event.respondWith(
+      fetch(event.request)
+        .then(function(response) {
+          return response;
+        })
+        .catch(function() {
+          return caches.match('/');
+        })
+    );
+    return;
+  }
+
+  // Cache-first for a small set of static resources / offline support.
   event.respondWith(
     caches.match(event.request)
       .then(function(response) {
-        // Cache hit - return response
-        if (response) {
-          return response;
-        }
+        if (response) return response;
 
-        // Clone the request
         const fetchRequest = event.request.clone();
-
-        return fetch(fetchRequest).then(
-          function(response) {
-            // Check if valid response
-            if (!response || response.status !== 200 || response.type !== 'basic') {
-              return response;
-            }
-
-            // Clone the response
-            const responseToCache = response.clone();
-
-            // Open cache and add response
-            caches.open(CACHE_NAME)
-              .then(function(cache) {
-                cache.put(event.request, responseToCache);
-              });
-
+        return fetch(fetchRequest).then(function(response) {
+          if (!response || response.status !== 200 || response.type !== 'basic') {
             return response;
           }
-        );
+
+          const responseToCache = response.clone();
+          caches.open(CACHE_NAME).then(function(cache) {
+            cache.put(event.request, responseToCache);
+          });
+
+          return response;
+        });
       })
   );
 });
@@ -82,6 +98,9 @@ self.addEventListener('activate', function(event) {
       );
     })
   );
+
+  // Take control of any existing clients without requiring a reload loop.
+  self.clients.claim();
 });
 
 // Background sync for offline actions
