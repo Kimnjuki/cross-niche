@@ -1,6 +1,7 @@
 import { createRoot, hydrateRoot } from "react-dom/client";
 import { ConvexProvider } from "convex/react";
 import { Auth0Provider } from "@auth0/auth0-react";
+import { HelmetProvider } from "react-helmet-async";
 import App from "./App.tsx";
 import "./index.css";
 import "./styles/design-tokens.css";
@@ -60,20 +61,22 @@ if (!rootEl) {
 const app = (
   <ErrorBoundary>
     <ConvexProvider client={convex}>
-      {isAuth0Enabled && auth0Domain && auth0ClientId ? (
-        <Auth0Provider
-          domain={auth0Domain}
-          clientId={auth0ClientId}
-          authorizationParams={{
-            redirect_uri: window.location.origin,
-            audience: auth0Audience,
-          }}
-        >
+      <HelmetProvider>
+        {isAuth0Enabled && auth0Domain && auth0ClientId ? (
+          <Auth0Provider
+            domain={auth0Domain}
+            clientId={auth0ClientId}
+            authorizationParams={{
+              redirect_uri: window.location.origin,
+              audience: auth0Audience,
+            }}
+          >
+            <App />
+          </Auth0Provider>
+        ) : (
           <App />
-        </Auth0Provider>
-      ) : (
-        <App />
-      )}
+        )}
+      </HelmetProvider>
     </ConvexProvider>
   </ErrorBoundary>
 );
