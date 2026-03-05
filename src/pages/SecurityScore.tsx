@@ -1,6 +1,8 @@
 import { Layout } from '@/components/layout/Layout';
 import { Shield, CheckCircle, AlertTriangle, FileText } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { SEOHead } from '@/components/seo/SEOHead';
+import { Link } from 'react-router-dom';
 
 export default function SecurityScore() {
   const criteria = [
@@ -33,6 +35,13 @@ export default function SecurityScore() {
 
   return (
     <Layout>
+      <SEOHead
+        title="Security Score Methodology | The Grid Nexus"
+        description="Learn how we calculate security scores for games. Our methodology evaluates data collection, account security, privacy policies, and more."
+        keywords={['security score', 'gaming security', 'privacy assessment', 'data protection', 'security methodology']}
+        url={window.location.href}
+        type="website"
+      />
       <div className="container mx-auto px-4 py-12">
         {/* Header */}
         <div className="max-w-3xl mx-auto mb-12">
@@ -47,6 +56,13 @@ export default function SecurityScore() {
           <p className="text-lg text-muted-foreground">
             Our Security Score provides gamers with a quick, reliable assessment of how well games protect user data and privacy. Here's how we calculate it.
           </p>
+          <div className="mt-6 flex flex-wrap gap-4 text-sm">
+            <Link to="/gaming" className="text-primary hover:underline">Gaming News</Link>
+            <span className="text-muted-foreground">•</span>
+            <Link to="/security" className="text-primary hover:underline">Security Updates</Link>
+            <span className="text-muted-foreground">•</span>
+            <Link to="/guides" className="text-primary hover:underline">Security Guides</Link>
+          </div>
         </div>
 
         {/* Score Scale */}
@@ -88,7 +104,7 @@ export default function SecurityScore() {
         </div>
 
         {/* Disclaimer */}
-        <div className="max-w-3xl mx-auto bg-muted/50 rounded-xl p-6">
+        <div className="max-w-3xl mx-auto bg-muted/50 rounded-xl p-6 mb-8">
           <div className="flex gap-4">
             <FileText className="h-6 w-6 text-muted-foreground flex-shrink-0" />
             <div>
@@ -99,6 +115,22 @@ export default function SecurityScore() {
                 intended to inform consumers and should not be considered legal or professional security advice.
               </p>
             </div>
+          </div>
+        </div>
+
+        {/* Internal Links Section */}
+        <div className="max-w-3xl mx-auto pt-8 border-t border-border">
+          <h2 className="font-display font-semibold text-xl mb-4">Related Resources</h2>
+          <div className="flex flex-wrap gap-4 text-sm">
+            <Link to="/gaming" className="text-primary hover:underline">Gaming News</Link>
+            <span className="text-muted-foreground">•</span>
+            <Link to="/security" className="text-primary hover:underline">Cybersecurity</Link>
+            <span className="text-muted-foreground">•</span>
+            <Link to="/guides" className="text-primary hover:underline">Security Guides</Link>
+            <span className="text-muted-foreground">•</span>
+            <Link to="/privacy" className="text-primary hover:underline">Privacy Policy</Link>
+            <span className="text-muted-foreground">•</span>
+            <Link to="/about" className="text-primary hover:underline">About Us</Link>
           </div>
         </div>
       </div>

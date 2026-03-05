@@ -1,10 +1,19 @@
 import { Layout } from '@/components/layout/Layout';
 import { AlertTriangle, ExternalLink } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
+import { SEOHead } from '@/components/seo/SEOHead';
+import { Link } from 'react-router-dom';
 
 export default function Disclosure() {
   return (
     <Layout>
+      <SEOHead
+        title="Affiliate Disclosure | The Grid Nexus"
+        description="Learn about our affiliate relationships and how we maintain editorial independence. Transparent disclosure of our revenue sources."
+        keywords={['affiliate disclosure', 'transparency', 'editorial independence', 'affiliate links']}
+        url={window.location.href}
+        type="website"
+      />
       <div className="container mx-auto px-4 py-12">
         <div className="max-w-3xl mx-auto">
           {/* Header */}
@@ -71,10 +80,24 @@ export default function Disclosure() {
 
             <section>
               <h2 className="font-display font-semibold text-2xl mb-4">Questions?</h2>
-              <p className="text-muted-foreground">
+              <p className="text-muted-foreground mb-4">
                 If you have any questions about our affiliate relationships or this disclosure, 
-                please don't hesitate to contact us. We're committed to maintaining your trust.
+                please don't hesitate to <Link to="/contact" className="text-primary hover:underline">contact us</Link>. We're committed to maintaining your trust.
               </p>
+            </section>
+
+            {/* Internal Links Section */}
+            <section className="mt-8 pt-8 border-t border-border">
+              <h2 className="font-display font-semibold text-xl mb-4">Related Pages</h2>
+              <div className="flex flex-wrap gap-4 text-sm">
+                <Link to="/privacy" className="text-primary hover:underline">Privacy Policy</Link>
+                <span className="text-muted-foreground">•</span>
+                <Link to="/terms" className="text-primary hover:underline">Terms of Service</Link>
+                <span className="text-muted-foreground">•</span>
+                <Link to="/about" className="text-primary hover:underline">About Us</Link>
+                <span className="text-muted-foreground">•</span>
+                <Link to="/contact" className="text-primary hover:underline">Contact</Link>
+              </div>
             </section>
 
             <p className="text-sm text-muted-foreground border-t border-border pt-6 mt-8">

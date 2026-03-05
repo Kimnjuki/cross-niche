@@ -1,4 +1,5 @@
 import type { Config } from "tailwindcss";
+import tailwindcssAnimate from "tailwindcss-animate";
 
 export default {
   darkMode: ["class"],
@@ -7,15 +8,28 @@ export default {
   theme: {
     container: {
       center: true,
-      padding: "2rem",
+      padding: "clamp(1rem, 5vw, 3rem)",
       screens: {
-        "2xl": "1400px",
+        sm: "640px",
+        md: "768px",
+        lg: "1024px",
+        xl: "1280px",
+        "2xl": "1536px",
       },
+    },
+    screens: {
+      sm: "640px",
+      md: "768px",
+      lg: "1024px",
+      xl: "1280px",
+      "2xl": "1536px",
     },
     extend: {
       fontFamily: {
-        sans: ['Inter', 'system-ui', 'sans-serif'],
-        display: ['Space Grotesk', 'system-ui', 'sans-serif'],
+        /* Wired-style: serif body, tight sans headings */
+        sans: ['IBM Plex Serif', 'system-ui', 'serif'],
+        display: ['Inter Tight', 'Space Grotesk', 'Satoshi', 'system-ui', 'sans-serif'],
+        mono: ['JetBrains Mono', 'Fira Code', 'monospace'],
       },
       colors: {
         border: "hsl(var(--border))",
@@ -112,6 +126,18 @@ export default {
           "0%": { transform: "translateX(100%)" },
           "100%": { transform: "translateX(-100%)" },
         },
+        "scanline": {
+          "0%": { transform: "translateY(-100%)", opacity: "0.4" },
+          "100%": { transform: "translateY(100vh)", opacity: "0.4" },
+        },
+        "shimmer": {
+          "0%": { backgroundPosition: "-468px 0" },
+          "100%": { backgroundPosition: "468px 0" },
+        },
+        "fade-in-up": {
+          from: { opacity: "0", transform: "translateY(30px)" },
+          to: { opacity: "1", transform: "translateY(0)" },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
@@ -121,11 +147,19 @@ export default {
         "pulse-glow": "pulse-glow 2s ease-in-out infinite",
         "reveal": "reveal 0.6s ease-out",
         "ticker-scroll": "ticker-scroll 30s linear infinite",
+        "scanline": "scanline 4s linear infinite",
+        "shimmer": "shimmer 1.2s ease-in-out infinite",
+        "fade-in-up": "fade-in-up 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards",
+      },
+      transitionDuration: {
+        fast: "150ms",
+        base: "300ms",
+        slow: "600ms",
       },
       transitionProperty: {
         "scale-hover": "transform",
       },
     },
   },
-  plugins: [require("tailwindcss-animate")],
+  plugins: [tailwindcssAnimate],
 } satisfies Config;
