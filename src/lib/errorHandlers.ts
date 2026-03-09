@@ -25,12 +25,16 @@ export function safeInitializeThirdParty(
       (obj as any)[methodName]();
       return true;
     } else {
-      console.warn(`${objectName}.${methodName} is not available. Script may have failed to load.`);
+      if (import.meta.env.DEV) {
+        console.warn(`${objectName.toString()}.${methodName} is not available. Script may have failed to load.`);
+      }
       fallback?.();
       return false;
     }
   } catch (error) {
-    console.error(`Failed to initialize ${objectName}.${methodName}:`, error);
+    if (import.meta.env.DEV) {
+      console.error(`Failed to initialize ${objectName.toString()}.${methodName}:`, error);
+    }
     fallback?.();
     return false;
   }
@@ -43,7 +47,9 @@ export function createDefensiveObject(
 ): any {
   if (!(window as any)[objectName]) {
     (window as any)[objectName] = defaultImplementation;
-    console.warn(`Created defensive fallback for ${objectName as string}`);
+    if (import.meta.env.DEV) {
+      console.warn(`Created defensive fallback for ${String(objectName)}`);
+    }
   }
   return (window as any)[objectName];
 }

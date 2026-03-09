@@ -241,8 +241,8 @@ export function TechnicalSEO({ pageType = 'article', customMeta, structuredData 
       <link rel="dns-prefetch" href="//images.unsplash.com" />
       <link rel="dns-prefetch" href="//intent-akita-728.convex.cloud" />
 
-      {/* Font Preload */}
-      <link rel="preload" href="/fonts/inter-var.woff2" as="font" type="font/woff2" crossOrigin="anonymous" />
+      {/* Font Preload (disabled to avoid console warnings when font isn't used immediately) */}
+      {/* <link rel="preload" href="/fonts/inter-var.woff2" as="font" type="font/woff2" crossOrigin="anonymous" /> */}
 
       {/* Canonical URL */}
       <link rel="canonical" href={customMeta?.url || 'https://thegridnexus.com'} />

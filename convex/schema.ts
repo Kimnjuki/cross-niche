@@ -430,4 +430,180 @@ export default defineSchema({
     .index("by_user_created", ["userId", "createdAt"])
     .index("by_user_read", ["userId", "readAt"])
     .index("by_user_threat", ["userId", "threatId"]),
+
+  // ─── SEO & Content Optimization ────────────────────────────────────────────
+  contentOptimization: defineTable({
+    contentId: v.id("content"),
+    targetKeyword: v.string(),
+    currentRank: v.optional(v.number()),
+    targetRank: v.optional(v.number()),
+    optimizationDate: v.number(), // ms
+    improvements: v.array(v.string()),
+    resultRank: v.optional(v.number()),
+    trafficIncrease: v.optional(v.number()),
+  })
+    .index("by_content", ["contentId"])
+    .index("by_keyword", ["targetKeyword"]),
+
+  contentGaps: defineTable({
+    keyword: v.string(),
+    searchVolume: v.number(),
+    keywordDifficulty: v.number(),
+    competitorCount: v.number(),
+    priority: v.number(),
+    status: v.union(
+      v.literal("identified"),
+      v.literal("in_progress"),
+      v.literal("published"),
+      v.literal("ranking")
+    ),
+    targetRank: v.optional(v.number()),
+    currentRank: v.optional(v.number()),
+    contentId: v.optional(v.id("content")),
+    createdAt: v.number(), // ms
+  })
+    .index("by_keyword", ["keyword"])
+    .index("by_status", ["status"])
+    .index("by_content", ["contentId"]),
+
+  contentAnalytics: defineTable({
+    contentId: v.id("content"),
+    date: v.number(), // ms (start of day)
+    views: v.number(),
+    uniqueVisitors: v.number(),
+    avgTimeOnPage: v.number(), // seconds
+    bounceRate: v.number(), // 0–100
+    organicTraffic: v.number(),
+  })
+    .index("by_content_date", ["contentId", "date"])
+    .index("by_date", ["date"]),
+
+  contentRefreshes: defineTable({
+    contentId: v.id("content"),
+    refreshDate: v.number(), // ms
+    changesMade: v.array(v.string()),
+    trafficBefore: v.number(),
+    trafficAfter: v.optional(v.number()),
+    rankBefore: v.optional(v.number()),
+    rankAfter: v.optional(v.number()),
+  })
+    .index("by_content", ["contentId"])
+    .index("by_refreshDate", ["refreshDate"]),
+
+  // ─── Link Intelligence & Redirects ────────────────────────────────────────
+  brokenLinks: defineTable({
+    url: v.string(),
+    statusCode: v.number(),
+    backlinkCount: v.number(),
+    referringDomains: v.array(v.string()),
+    lastChecked: v.number(), // ms
+    redirectTo: v.optional(v.string()),
+    fixed: v.boolean(),
+  })
+    .index("by_url", ["url"])
+    .index("by_fixed", ["fixed"]),
+
+  internalLinks: defineTable({
+    sourceContentId: v.id("content"),
+    targetContentId: v.id("content"),
+    anchorText: v.string(),
+    context: v.string(),
+    createdAt: v.number(), // ms
+    clickCount: v.optional(v.number()),
+  })
+    .index("by_source", ["sourceContentId"])
+    .index("by_target", ["targetContentId"]),
+
+  linkOpportunities: defineTable({
+    domain: v.string(),
+    domainRating: v.number(),
+    competitorsLinking: v.array(v.string()),
+    contactEmail: v.optional(v.string()),
+    status: v.union(
+      v.literal("identified"),
+      v.literal("outreach_sent"),
+      v.literal("responded"),
+      v.literal("link_acquired"),
+      v.literal("rejected")
+    ),
+    outreachDate: v.optional(v.number()),
+    responseDate: v.optional(v.number()),
+    linkUrl: v.optional(v.string()),
+  })
+    .index("by_domain", ["domain"])
+    .index("by_status", ["status"]),
+
+  brandMentions: defineTable({
+    url: v.string(),
+    domain: v.string(),
+    mentionContext: v.string(),
+    isLinked: v.boolean(),
+    domainRating: v.number(),
+    outreachStatus: v.optional(v.string()),
+    linkAcquired: v.optional(v.boolean()),
+    discoveredAt: v.number(), // ms
+  })
+    .index("by_domain", ["domain"])
+    .index("by_is_linked", ["isLinked"]),
+
+  anchorTextAnalysis: defineTable({
+    backlinkId: v.string(),
+    anchorText: v.string(),
+    type: v.union(
+      v.literal("exact_match"),
+      v.literal("partial_match"),
+      v.literal("branded"),
+      v.literal("generic"),
+      v.literal("naked_url")
+    ),
+    targetUrl: v.string(),
+    isOptimal: v.boolean(),
+    suggestedAnchor: v.optional(v.string()),
+  })
+    .index("by_target_url", ["targetUrl"])
+    .index("by_type", ["type"]),
+
+  // ─── Page Speed & SEO Metrics ─────────────────────────────────────────────
+  pageSpeed: defineTable({
+    url: v.string(),
+    fcp: v.number(), // First Contentful Paint (ms)
+    lcp: v.number(), // Largest Contentful Paint (ms)
+    fid: v.number(), // First Input Delay (ms)
+    cls: v.number(), // Cumulative Layout Shift
+    timestamp: v.number(), // ms
+  })
+    .index("by_url", ["url"])
+    .index("by_timestamp", ["timestamp"]),
+
+  seoMetrics: defineTable({
+    date: v.number(), // ms
+    averageRank: v.optional(v.number()),
+    keywords1to3: v.optional(v.number()),
+    keywords4to10: v.optional(v.number()),
+    keywords11to20: v.optional(v.number()),
+    totalKeywords: v.optional(v.number()),
+    organicVisits: v.optional(v.number()),
+    organicVisitsChange: v.optional(v.number()),
+    pagesPerSession: v.optional(v.number()),
+    avgSessionDuration: v.optional(v.number()),
+    bounceRate: v.optional(v.number()),
+    publishedPages: v.optional(v.number()),
+    indexedPages: v.optional(v.number()),
+    featuredSnippets: v.optional(v.number()),
+    totalBacklinks: v.optional(v.number()),
+    referringDomains: v.optional(v.number()),
+    domainRating: v.optional(v.number()),
+    criticalIssues: v.optional(v.number()),
+    avgPageSpeed: v.optional(v.number()),
+    mobileUsability: v.optional(v.number()),
+  }).index("by_date", ["date"]),
+
+  seoAudits: defineTable({
+    date: v.number(), // ms
+    brokenLinksCount: v.number(),
+    thinContentCount: v.number(),
+    cannibalizationCount: v.number(),
+    decliningContentCount: v.number(),
+    issues: v.optional(v.any()),
+  }).index("by_date", ["date"]),
 });

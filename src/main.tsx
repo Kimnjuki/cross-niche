@@ -1,4 +1,4 @@
-import { createRoot, hydrateRoot } from "react-dom/client";
+import { createRoot } from "react-dom/client";
 import { ConvexProvider } from "convex/react";
 import { Auth0Provider } from "@auth0/auth0-react";
 import { HelmetProvider } from "react-helmet-async";
@@ -16,9 +16,6 @@ import "./lib/errorHandlers";
 import { convex } from "./lib/convex";
 import { auth0Domain, auth0ClientId, auth0Audience, isAuth0Enabled } from "./lib/auth0Config";
 
-// Build timestamp for cache busting
-const BUILD_TIMESTAMP = Date.now();
-
 // Declare global variable for app loaded state
 declare global {
   interface Window {
@@ -26,9 +23,6 @@ declare global {
     __GRIDNEXUS_BUILD__?: number;
   }
 }
-
-// Set build timestamp globally
-window.__GRIDNEXUS_BUILD__ = BUILD_TIMESTAMP;
 
 // Never let init scripts block or break the app (critical for Coolify/deployment)
 try {
@@ -82,14 +76,9 @@ const app = (
 );
 
 try {
-  if (rootEl.hasChildNodes()) {
-    hydrateRoot(rootEl, app);
-  } else {
-    createRoot(rootEl).render(app);
-  }
+  const root = createRoot(rootEl);
+  root.render(app);
   window.__VITE_APP_LOADED__ = true;
 } catch (error) {
-  console.error('Failed to render app:', error);
-  rootEl.innerHTML = '';
-  createRoot(rootEl).render(app);
+  console.error("Failed to render app:", error);
 }

@@ -42,13 +42,14 @@ export const getPublishedContent = query({
 });
 
 /**
- * List all visible content (published + new only; excludes draft/archived/deleted; only recent by _creationTime).
+ * List all visible content (published + new only; excludes draft/archived/deleted).
  * Used for sitemaps and Explore/archive. Sorted by publishedAt desc so newest first.
+ * NOTE: This intentionally does NOT filter by _creationTime so that older content
+ * is still discoverable and included in sitemaps.
  */
 export const listAll = query({
   args: {},
   handler: async (ctx) => {
-    const cutoff = getCreationTimeCutoff();
     const [published, newStatus] = await Promise.all([
       ctx.db
         .query("content")
@@ -62,7 +63,7 @@ export const listAll = query({
         .take(200),
     ]);
     const merged = [...published, ...newStatus]
-      .filter((c) => c.isDeleted !== true && c._creationTime >= cutoff)
+      .filter((c) => c.isDeleted !== true)
       .sort((a, b) => (b.publishedAt ?? b._creationTime ?? 0) - (a.publishedAt ?? a._creationTime ?? 0));
     return merged.slice(0, 200);
   },
@@ -268,7 +269,6 @@ export const getContentBySlug = query({
       .first();
     if (!content || content.isDeleted === true) return null;
     if (content.status !== "published" && content.status !== "new" && content.status !== "unlisted") return null;
-    if (!isRecentByCreation(content)) return null;
     return content;
   },
 });

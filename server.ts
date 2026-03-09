@@ -9,6 +9,17 @@ const __dirname = path.dirname(__filename);
 
 async function createServer() {
   const app = express();
+
+  // Serve robots.txt explicitly for crawlers during dev/SSR
+  app.get("/robots.txt", (req, res) => {
+    try {
+      const robotsPath = path.resolve(__dirname, "public", "robots.txt");
+      const robotsText = fs.readFileSync(robotsPath, "utf-8");
+      res.type("text/plain; charset=utf-8").send(robotsText);
+    } catch (err) {
+      res.status(404).type("text/plain").send("robots.txt not found");
+    }
+  });
   
   // Create Vite server in middleware mode
   const vite = await createViteServer({
