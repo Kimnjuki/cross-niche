@@ -35,12 +35,13 @@ import { mapContentToArticles } from '@/lib/contentMapper';
 import type { Article } from '@/types';
 import type { ContentItem } from '@/hooks/useContent';
 import {
-  usePublishedContent,
+  useAllPublishedContent,
   useLatestContent,
   useTrendingContent,
   useFeeds,
   useContentByFeed,
 } from '@/hooks/useContent';
+import { ArticleGrid } from '@/components/articles/ArticleGrid';
 
 const FEED_SLUGS = [
   { slug: 'innovate', label: 'Tech', path: '/tech' },
@@ -69,7 +70,8 @@ function safeArticleId(article: Article | null | undefined): string {
  */
 export default function Index() {
   const navigate = useNavigate();
-  const { data: published, isLoading: loadingPublished } = usePublishedContent(10);
+  // Same source as Explore: Convex content table via listAll (full extent)
+  const { data: allContent, isLoading: loadingPublished } = useAllPublishedContent(80);
   const { data: latest, isLoading: loadingLatest } = useLatestContent(10);
   const { data: trending, isLoading: loadingTrending } = useTrendingContent(6);
   const { data: feeds } = useFeeds();
@@ -78,10 +80,12 @@ export default function Index() {
   const { data: gamingFeed } = useContentByFeed('play', 3);
 
   const liveWireArticles = useQuery(api.articles.getLatestFeed, {});
-  const liveWireExcludeUrls = (liveWireArticles ?? []).slice(0, 9).map((a: any) => String(a.url ?? '')).filter(Boolean);
+  const liveWireExcludeUrls: string[] = Array.isArray(liveWireArticles)
+    ? liveWireArticles.slice(0, 9).map((a: { url?: string }) => String(a?.url ?? '')).filter(Boolean)
+    : [];
 
-  const hasPublishedData = Array.isArray(published) && published.length > 0;
-  const articles: Article[] = hasPublishedData ? mapContentToArticles(published as ContentItem[]) : [];
+  const hasPublishedData = Array.isArray(allContent) && allContent.length > 0;
+  const articles: Article[] = hasPublishedData ? mapContentToArticles(allContent as ContentItem[]) : [];
 
   const getPinRank = (article: Article): number => {
     const key = article.slug ?? article.id ?? '';
@@ -371,6 +375,26 @@ export default function Index() {
           <NewsGrid limit={12} excludeUrls={liveWireExcludeUrls} />
         </div>
       </section>
+
+      {/* Full extent: all Convex content (same as Explore page) */}
+      {sortedArticles.length > 0 && (
+        <section className="border-b border-border bg-muted/5 py-10" aria-label="All articles from the grid">
+          <div className="container mx-auto px-4 max-w-7xl">
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="font-display font-bold text-xl text-foreground">All articles</h2>
+              <Link to="/explore" className="text-sm font-medium text-primary hover:underline flex items-center gap-1">
+                Explore all <ChevronRight className="h-4 w-4" />
+              </Link>
+            </div>
+            <ArticleGrid articles={sortedArticles} columns={3} viewMode="grid" />
+            <div className="mt-6 text-center">
+              <Link to="/explore" className="text-sm font-medium text-primary hover:underline">
+                View full archive on Explore →
+              </Link>
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* Main + sidebar: More stories list + Search / Trending / Newsletter (Ars-style) */}
       <div className="container-tokens container mx-auto px-4 py-8 max-w-7xl">
