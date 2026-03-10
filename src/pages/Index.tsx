@@ -31,7 +31,6 @@ import { LazyImage } from '@/components/ui/lazy-image';
 import { ImageOverlay } from '@/components/ui/ImageOverlay';
 import { formatRelativeTime } from '@/lib/timeUtils';
 import { mapContentToArticles } from '@/lib/contentMapper';
-import { mockArticles } from '@/data/mockData';
 import type { Article } from '@/types';
 import type { ContentItem } from '@/hooks/useContent';
 import {
@@ -81,7 +80,7 @@ export default function Index() {
   const liveWireExcludeUrls = (liveWireArticles ?? []).slice(0, 9).map((a: any) => String(a.url ?? '')).filter(Boolean);
 
   const hasPublishedData = Array.isArray(published) && published.length > 0;
-  const articles: Article[] = hasPublishedData ? mapContentToArticles(published as ContentItem[]) : mockArticles;
+  const articles: Article[] = hasPublishedData ? mapContentToArticles(published as ContentItem[]) : [];
 
   const getPinRank = (article: Article): number => {
     const key = article.slug ?? article.id ?? '';
@@ -109,6 +108,42 @@ export default function Index() {
   const techArticles: Article[] = Array.isArray(techFeed) && techFeed.length ? mapContentToArticles(techFeed as ContentItem[]) : sortedArticles.filter(a => a.niche === 'tech').slice(0, 2);
   const securityArticles: Article[] = Array.isArray(securityFeed) && securityFeed.length ? mapContentToArticles(securityFeed as ContentItem[]) : sortedArticles.filter(a => a.niche === 'security').slice(0, 2);
   const gamingArticles: Article[] = Array.isArray(gamingFeed) && gamingFeed.length ? mapContentToArticles(gamingFeed as ContentItem[]) : sortedArticles.filter(a => a.niche === 'gaming').slice(0, 2);
+
+  const showEmptyState = !isLoading && sortedArticles.length === 0;
+
+  if (showEmptyState) {
+    return (
+      <Layout showPulseSidebar={false}>
+        <SEO
+          title="The Grid Nexus — Tech, Security & Gaming News"
+          description="Breaking technology news, cybersecurity analysis, and gaming guides."
+          canonical="https://thegridnexus.com/"
+          ogType="website"
+        />
+        <section className="border-b border-border/50 bg-muted/30">
+          <div className="container mx-auto px-4 py-3 max-w-7xl">
+            <p className="text-center text-sm text-muted-foreground">
+              Technology, Security & Gaming Intelligence
+            </p>
+          </div>
+        </section>
+        <section className="container mx-auto px-4 py-16 max-w-7xl text-center">
+          <h1 className="font-display text-2xl md:text-3xl font-bold text-foreground mb-4">
+            Welcome to The Grid Nexus
+          </h1>
+          <p className="text-muted-foreground mb-8 max-w-lg mx-auto">
+            Articles from Convex will appear here. Explore by topic or check back soon.
+          </p>
+          <div className="flex flex-wrap justify-center gap-4">
+            <Link to="/tech" className="px-4 py-2 rounded-lg bg-tech/10 text-tech font-medium hover:bg-tech/20">Tech</Link>
+            <Link to="/security" className="px-4 py-2 rounded-lg bg-security/10 text-security font-medium hover:bg-security/20">Security</Link>
+            <Link to="/gaming" className="px-4 py-2 rounded-lg bg-gaming/10 text-gaming font-medium hover:bg-gaming/20">Gaming</Link>
+            <Link to="/news" className="px-4 py-2 rounded-lg border border-border font-medium hover:bg-muted">News</Link>
+          </div>
+        </section>
+      </Layout>
+    );
+  }
 
   return (
     <Layout showPulseSidebar={false}>

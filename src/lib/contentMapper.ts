@@ -24,17 +24,31 @@ export function mapContentToArticle(content: ContentItem | null | undefined): Ar
     'guides-tools': 'tech',
   };
 
-  // Priority: Use database niches first, then fallback to feed_slug
-  let niche: Niche = 'tech'; // Default
-  
-  // Check if content has niches array from database
+  // Convex contentType (e.g. "technology", "security", "gaming") maps to frontend niche
+  const contentTypeToNiche: Record<string, Niche> = {
+    'technology': 'tech',
+    'tech': 'tech',
+    'security': 'security',
+    'cybersecurity': 'security',
+    'gaming': 'gaming',
+    'games': 'gaming',
+    'article': 'tech',
+    'news': 'tech',
+    'guide': 'tech',
+    'opinion': 'tech',
+    'review': 'tech',
+    'feature': 'tech',
+    'tutorial': 'tech',
+  };
+
+  // Priority: database niches > contentType > feed_slug > default
+  let niche: Niche = 'tech';
   if (content.niches && Array.isArray(content.niches) && content.niches.length > 0) {
-    // Use first niche from database, mapping to frontend type
     const dbNicheName = content.niches[0];
     niche = databaseNicheToFrontend[dbNicheName] || feedSlugToNiche[content.feed_slug || ''] || 'tech';
   } else {
-    // Fallback to feed_slug mapping
-    niche = feedSlugToNiche[content.feed_slug || ''] || 'tech';
+    const contentType = (content as any).content_type ?? (content as any).contentType;
+    niche = (contentType && contentTypeToNiche[String(contentType).toLowerCase()]) || feedSlugToNiche[content.feed_slug || ''] || 'tech';
   }
 
   // Handle tags - can be string, array, or null

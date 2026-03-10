@@ -38,6 +38,21 @@ export type Feed = { _id: string; slug: string; name: string; isActive?: boolean
 
 function toContentItem(row: Record<string, unknown> | null): ContentItem | null {
   if (!row || typeof row !== 'object') return null;
+  // Convex content table uses camelCase (publishedAt, featuredImageUrl, contentType, isFeatured, isBreaking)
+  const publishedAt = row.published_at ?? row.publishedAt;
+  const publishedAtStr =
+    publishedAt != null
+      ? typeof publishedAt === 'number'
+        ? new Date(publishedAt).toISOString()
+        : String(publishedAt)
+      : null;
+  const createdAt = row.created_at ?? row._creationTime;
+  const createdAtStr =
+    createdAt != null
+      ? typeof createdAt === 'number'
+        ? new Date(createdAt).toISOString()
+        : String(createdAt)
+      : null;
   return {
     id: String(row.id ?? row._id ?? ''),
     title: String(row.title ?? ''),
@@ -46,23 +61,30 @@ function toContentItem(row: Record<string, unknown> | null): ContentItem | null 
     excerpt: row.excerpt != null ? String(row.excerpt) : null,
     summary: row.summary != null ? String(row.summary) : null,
     status: String(row.status ?? 'draft'),
-    published_at: row.published_at != null ? String(row.published_at) : null,
-    created_at: row.created_at != null ? String(row.created_at) : null,
+    published_at: publishedAtStr,
+    created_at: createdAtStr,
     updated_at: row.updated_at != null ? String(row.updated_at) : null,
-    featured_image_url: row.featured_image_url != null ? String(row.featured_image_url) : null,
-    read_time_minutes: typeof row.read_time_minutes === 'number' ? row.read_time_minutes : 5,
-    is_featured: row.is_featured === true,
-    is_breaking: row.is_breaking === true,
-    security_score: typeof row.security_score === 'number' ? row.security_score : null,
-    content_type: row.content_type != null ? String(row.content_type) : 'article',
+    featured_image_url:
+      row.featured_image_url != null ? String(row.featured_image_url) : row.featuredImageUrl != null ? String(row.featuredImageUrl) : null,
+    read_time_minutes:
+      typeof row.read_time_minutes === 'number'
+        ? row.read_time_minutes
+        : typeof row.estimatedReadingTimeMinutes === 'number'
+          ? row.estimatedReadingTimeMinutes
+          : 5,
+    is_featured: row.is_featured === true || row.isFeatured === true,
+    is_breaking: row.is_breaking === true || row.isBreaking === true,
+    security_score:
+      typeof row.security_score === 'number' ? row.security_score : typeof row.securityScore === 'number' ? row.securityScore : null,
+    content_type: row.content_type != null ? String(row.content_type) : row.contentType != null ? String(row.contentType) : 'article',
     author_id: row.authorId != null ? String(row.authorId) : row.author_id != null ? String(row.author_id) : null,
-    author_name: row.author_name != null ? String(row.author_name) : 'Anonymous',
+    author_name: row.author_name != null ? String(row.author_name) : (row as any).author != null ? String((row as any).author) : 'Anonymous',
     feed_slug: row.feed_slug != null ? String(row.feed_slug) : undefined,
     feed_name: row.feed_name != null ? String(row.feed_name) : undefined,
     feed_id: row.feed_id != null ? Number(row.feed_id) : null,
     niches: Array.isArray(row.niches) ? row.niches.map(String) : [],
     tags: Array.isArray(row.tags) ? row.tags.map(String) : [],
-    view_count: typeof row.view_count === 'number' ? row.view_count : 0,
+    view_count: typeof row.view_count === 'number' ? row.view_count : typeof row.viewCount === 'number' ? row.viewCount : 0,
   };
 }
 
