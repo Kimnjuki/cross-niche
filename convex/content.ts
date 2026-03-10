@@ -1,27 +1,8 @@
-/**
- * Grid Nexus - Working Content Queries
- * Simplified queries that match the current schema
- *
- * Only content added to the database within the last RECENT_CONTENT_DAYS is shown
- * (filters by _creationTime). Older content is hidden on all pages.
- */
-
 import { query, mutation } from "./_generated/server";
 import { v } from "convex/values";
 
-/** Only display content created within this many days (by _creationTime). */
-const RECENT_CONTENT_DAYS = 14;
-
-function getCreationTimeCutoff(): number {
-  return Date.now() - RECENT_CONTENT_DAYS * 24 * 60 * 60 * 1000;
-}
-
-function isRecentByCreation(doc: { _creationTime: number }): boolean {
-  return doc._creationTime >= getCreationTimeCutoff();
-}
-
 /**
- * Get all published content (excludes deleted, only recent by _creationTime). Newest first by publishedAt.
+ * Get all published content (excludes deleted). Newest first by publishedAt.
  */
 export const getPublishedContent = query({
   args: {
@@ -29,15 +10,12 @@ export const getPublishedContent = query({
   },
   handler: async (ctx, args) => {
     const limit = args.limit ?? 50;
-    const cutoff = getCreationTimeCutoff();
     const docs = await ctx.db
       .query("content")
       .withIndex("by_status_published_at", (q) => q.eq("status", "published"))
       .order("desc")
       .take(limit * 3);
-    return docs
-      .filter((d) => d.isDeleted !== true && d._creationTime >= cutoff)
-      .slice(0, limit);
+    return docs.filter((d) => d.isDeleted !== true).slice(0, limit);
   },
 });
 
@@ -70,7 +48,7 @@ export const listAll = query({
 });
 
 /**
- * Get featured content (excludes deleted; only recent by _creationTime).
+ * Get featured content (excludes deleted).
  */
 export const getFeaturedContent = query({
   args: {
@@ -78,20 +56,19 @@ export const getFeaturedContent = query({
   },
   handler: async (ctx, args) => {
     const limit = args.limit ?? 10;
-    const cutoff = getCreationTimeCutoff();
     const docs = await ctx.db
       .query("content")
       .withIndex("by_status_published_at", (q) => q.eq("status", "published"))
       .order("desc")
       .take(limit * 5);
     return docs
-      .filter((d) => d.isDeleted !== true && d._creationTime >= cutoff && d.isFeatured === true)
+      .filter((d) => d.isDeleted !== true && d.isFeatured === true)
       .slice(0, limit);
   },
 });
 
 /**
- * Get breaking news (excludes deleted; only recent by _creationTime).
+ * Get breaking news (excludes deleted).
  */
 export const getBreakingNews = query({
   args: {
@@ -99,14 +76,13 @@ export const getBreakingNews = query({
   },
   handler: async (ctx, args) => {
     const limit = args.limit ?? 5;
-    const cutoff = getCreationTimeCutoff();
     const docs = await ctx.db
       .query("content")
       .withIndex("by_status_published_at", (q) => q.eq("status", "published"))
       .order("desc")
       .take(limit * 5);
     return docs
-      .filter((d) => d.isDeleted !== true && d._creationTime >= cutoff && d.isBreaking === true)
+      .filter((d) => d.isDeleted !== true && d.isBreaking === true)
       .slice(0, limit);
   },
 });
@@ -274,25 +250,22 @@ export const getContentBySlug = query({
 });
 
 /**
- * Get all published content for Explore (excludes deleted; only recent by _creationTime).
+ * Get all published content for Explore (excludes deleted).
  */
 export const getAllPublishedContent = query({
   args: {},
   handler: async (ctx) => {
-    const cutoff = getCreationTimeCutoff();
     const docs = await ctx.db
       .query("content")
       .withIndex("by_status_published_at", (q) => q.eq("status", "published"))
       .order("desc")
       .take(200);
-    return docs
-      .filter((d) => d.isDeleted !== true && d._creationTime >= cutoff)
-      .slice(0, 100);
+    return docs.filter((d) => d.isDeleted !== true).slice(0, 100);
   },
 });
 
 /**
- * Get content by niche (excludes deleted; only recent by _creationTime).
+ * Get content by niche (excludes deleted).
  */
 export const getContentByNiche = query({
   args: {
@@ -301,20 +274,17 @@ export const getContentByNiche = query({
   },
   handler: async (ctx, args) => {
     const limit = args.limit ?? 20;
-    const cutoff = getCreationTimeCutoff();
     const docs = await ctx.db
       .query("content")
       .withIndex("by_status_published_at", (q) => q.eq("status", "published"))
       .order("desc")
       .take(limit * 3);
-    return docs
-      .filter((d) => d.isDeleted !== true && d._creationTime >= cutoff)
-      .slice(0, limit);
+    return docs.filter((d) => d.isDeleted !== true).slice(0, limit);
   },
 });
 
 /**
- * Get trending content (excludes deleted; only recent by _creationTime). Sorted by publishedAt desc.
+ * Get trending content (excludes deleted). Sorted by publishedAt desc.
  */
 export const getTrendingContent = query({
   args: {
@@ -322,15 +292,12 @@ export const getTrendingContent = query({
   },
   handler: async (ctx, args) => {
     const limit = args.limit ?? 12;
-    const cutoff = getCreationTimeCutoff();
     const docs = await ctx.db
       .query("content")
       .withIndex("by_status_published_at", (q) => q.eq("status", "published"))
       .order("desc")
       .take(limit * 3);
-    return docs
-      .filter((d) => d.isDeleted !== true && d._creationTime >= cutoff)
-      .slice(0, limit);
+    return docs.filter((d) => d.isDeleted !== true).slice(0, limit);
   },
 });
 

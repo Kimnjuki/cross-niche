@@ -6,6 +6,7 @@
 
 import { cronJobs } from "convex/server";
 import { internalMutation } from "./_generated/server";
+import { internal } from "./_generated/api";
 
 const crons = cronJobs();
 
@@ -48,5 +49,21 @@ export const cleanupExpiredContent = internalMutation({
     console.log(`Auto-cleanup: Removed ${totalCleaned} expired items`);
   },
 });
+
+// News ingestion into content table (NewsAPI → content.upsertIngestedContent)
+// Runs every 60 minutes to keep tech/security/gaming news fresh.
+crons.interval(
+  "news-ingestion-content",
+  { minutes: 60 },
+  internal.newsIngestor.ingestFromNewsApi
+);
+
+// Refresh Live Wire / external articles feed (NewsAPI + GNews → articles.saveArticle)
+// Runs every 30 minutes to update the homepage news feed.
+crons.interval(
+  "refresh-news-feed-articles",
+  { minutes: 30 },
+  internal.ingest.runIngestion
+);
 
 export default crons;
