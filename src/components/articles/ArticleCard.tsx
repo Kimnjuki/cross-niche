@@ -6,6 +6,7 @@ import { Bookmark, Clock, Shield, AlertTriangle, TrendingUp, User } from 'lucide
 import { useAuth } from '@/contexts/AuthContext';
 import { cn, authorSlug } from '@/lib/utils';
 import { formatRelativeTime, isFreshContent, isNewContent, isJustPublished } from '@/lib/timeUtils';
+import { getPlaceholderByNiche } from '@/lib/placeholderImages';
 
 interface ArticleCardProps {
   article: Article | null | undefined;
@@ -71,6 +72,7 @@ export function ArticleCard({ article, variant = 'default', onArticleClick }: Ar
   const articleId = safeArticleId(article);
   const articleUrl = `/article/${article.slug ?? article.id ?? articleId}`;
   const styles = nicheStyles[article.niche ?? 'tech'];
+  const imageUrl = article.imageUrl || getPlaceholderByNiche(article.niche ?? 'tech', article.slug ?? article.id ?? articleId);
   const isBookmarked = user?.bookmarks?.includes(articleId);
   const difficulty = getDifficultyLevel(article);
   const securityGlow = getSecurityGlow(article.securityScore);
@@ -104,7 +106,7 @@ export function ArticleCard({ article, variant = 'default', onArticleClick }: Ar
       >
         <div className="relative aspect-[16/9] overflow-hidden" style={{ minHeight: '400px', aspectRatio: '16/9' }}>
           <img
-            src={article.imageUrl}
+            src={imageUrl}
             alt={article.title}
             className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
             width="1200"
@@ -183,7 +185,7 @@ export function ArticleCard({ article, variant = 'default', onArticleClick }: Ar
         <div className="group flex gap-4 py-4 border-b border-border last:border-0 hover:bg-muted/30 transition-all duration-200">
           <div className="w-20 h-20 rounded-lg overflow-hidden flex-shrink-0" style={{ aspectRatio: '1/1' }}>
             <img
-              src={article.imageUrl}
+              src={imageUrl}
               alt={article.title}
               className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
               width="80"
@@ -224,7 +226,7 @@ export function ArticleCard({ article, variant = 'default', onArticleClick }: Ar
       >
         <div className="w-44 sm:w-52 flex-shrink-0 rounded-lg overflow-hidden aspect-video bg-muted">
           <img
-            src={article.imageUrl}
+            src={imageUrl}
             alt={article.title}
             className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
             width="208"
@@ -275,7 +277,7 @@ export function ArticleCard({ article, variant = 'default', onArticleClick }: Ar
     >
       <div className="relative aspect-video overflow-hidden" style={{ minHeight: '225px', aspectRatio: '16/9' }}>
           <img
-            src={article.imageUrl}
+            src={imageUrl}
             alt={article.title}
             className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
             width="800"

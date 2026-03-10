@@ -32,6 +32,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { ImageOverlay } from '@/components/ui/ImageOverlay';
 import { formatRelativeTime } from '@/lib/timeUtils';
 import { mapContentToArticles } from '@/lib/contentMapper';
+import { getPlaceholderByNiche } from '@/lib/placeholderImages';
 import type { Article } from '@/types';
 import type { ContentItem } from '@/hooks/useContent';
 import {
@@ -216,7 +217,7 @@ export default function Index() {
               <article className="md:col-span-8 h-[420px] md:h-[600px]">
                 <Link to={articleLink(topStory)} className="block h-full group">
                   <ImageOverlay
-                    src={topStory.imageUrl}
+                    src={topStory.imageUrl || getPlaceholderByNiche(topStory.niche ?? 'tech', topStory.slug ?? topStory.id)}
                     alt={topStory.title}
                     width={960}
                     height={600}

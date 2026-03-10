@@ -2,6 +2,7 @@ import { useQuery } from "convex/react";
 import { api } from "../../../convex/_generated/api";
 import { cn } from "@/lib/utils";
 import { ExternalLink } from "lucide-react";
+import { getPlaceholderImage } from "@/lib/placeholderImages";
 
 type NewsRow = {
   _id: string;
@@ -118,17 +119,15 @@ export function NewsGrid({
                 )}
                 aria-label={item.title}
               >
-                {item.imageUrl && (
-                  <div className="relative rounded-lg overflow-hidden mb-3 h-28 md:h-32">
-                    <img
-                      src={item.imageUrl}
-                      alt={item.title}
-                      className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-[1.02]"
-                      loading="lazy"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
-                  </div>
-                )}
+                <div className="relative rounded-lg overflow-hidden mb-3 h-28 md:h-32">
+                  <img
+                    src={item.imageUrl || getPlaceholderImage('default', 800, 400, item._id)}
+                    alt={item.title}
+                    className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-[1.02]"
+                    loading="lazy"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
+                </div>
 
                 <div className="flex items-center justify-between gap-3 mb-2">
                   <span

@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
-import { Clock, TrendingUp, ExternalLink } from 'lucide-react';
+import { Clock, ExternalLink } from 'lucide-react';
 import { Article } from '@/types';
+import { getPlaceholderByNiche } from '@/lib/placeholderImages';
 
 interface LiveFeedWidgetProps {
   articles: Article[];
@@ -27,16 +28,17 @@ export function LiveFeedWidget({ articles, maxItems = 5 }: LiveFeedWidgetProps) 
       </div>
       
       <div className="space-y-3">
-        {liveArticles.map((article, index) => (
-          <div key={article.id} className="flex gap-3 p-3 border-b border-border last:border-0 hover:bg-muted/50 transition-colors">
+        {liveArticles.map((article, index) => {
+          const imgSrc = article.imageUrl || getPlaceholderByNiche(article.niche ?? 'tech', article.slug ?? article.id);
+          return (
+          <div key={article.id ?? index} className="flex gap-3 p-3 border-b border-border last:border-0 hover:bg-muted/50 transition-colors">
             <div className="flex-shrink-0">
-              {article.imageUrl && (
-                <img 
-                  src={article.imageUrl} 
-                  alt={article.title}
-                  className="w-16 h-16 rounded-lg object-cover"
-                />
-              )}
+              <img
+                src={imgSrc}
+                alt={article.title}
+                className="w-16 h-16 rounded-lg object-cover"
+                loading="lazy"
+              />
             </div>
             <div className="flex-1 min-w-0">
               <div className="flex items-start justify-between gap-2 mb-1">
@@ -63,7 +65,8 @@ export function LiveFeedWidget({ articles, maxItems = 5 }: LiveFeedWidgetProps) 
               </div>
             </div>
           </div>
-        ))}
+          );
+        })}
       </div>
     </div>
   );
