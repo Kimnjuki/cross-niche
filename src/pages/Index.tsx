@@ -1,6 +1,8 @@
 /**
- * Enhanced Homepage – GridNexus Design System Implementation
- * Technical precision meets visual boldness. Clean, fast, intelligent.
+ * Homepage – Editorial layout inspired by Wired, Ars Technica, The Verge.
+ * Structure: compact top bar → breaking (if any) → hero (lead + security sidebar) →
+ * Latest card grid → By topic (Tech/Security/Gaming) → Live Wire / NewsGrid →
+ * More stories list + sidebar (Search, Trending, Newsletter).
  */
 
 import React from 'react';
@@ -27,7 +29,6 @@ import { NewsGrid } from '@/components/news/NewsGrid';
 import { EnhancedSearch } from '@/components/search/EnhancedSearch';
 import { NewsletterForm } from '@/components/newsletter/NewsletterForm';
 import { Skeleton } from '@/components/ui/skeleton';
-import { LazyImage } from '@/components/ui/lazy-image';
 import { ImageOverlay } from '@/components/ui/ImageOverlay';
 import { formatRelativeTime } from '@/lib/timeUtils';
 import { mapContentToArticles } from '@/lib/contentMapper';
@@ -162,100 +163,47 @@ export default function Index() {
         type="website"
       />
 
-      {/* Tagline strip with RSS feeds */}
-      <section className="border-b border-border/50 bg-muted/30">
-        <div className="container mx-auto px-4 py-3 max-w-7xl">
-          <div className="flex flex-col md:flex-row justify-between items-center gap-4">
-            <p className="text-center text-sm text-muted-foreground">
-              Technology, Security & Gaming Intelligence · Breaking news, analysis, and guides
+      {/* Compact top bar: tagline + nav (Ars/Verge-style) */}
+      <header className="border-b border-border/50 bg-muted/30" aria-label="Site tagline and navigation">
+        <div className="container mx-auto px-4 py-2.5 max-w-7xl">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+            <p className="text-xs sm:text-sm text-muted-foreground">
+              Technology, Security & Gaming Intelligence
             </p>
-            <div className="flex items-center gap-4">
+            <nav className="flex items-center gap-4" aria-label="Categories and tools">
+              <Link to="/tech" className="text-xs font-medium text-muted-foreground hover:text-tech transition-colors">Tech</Link>
+              <Link to="/security" className="text-xs font-medium text-muted-foreground hover:text-security transition-colors">Security</Link>
+              <Link to="/gaming" className="text-xs font-medium text-muted-foreground hover:text-gaming transition-colors">Gaming</Link>
+              <Link to="/news" className="text-xs font-medium text-muted-foreground hover:text-primary transition-colors">News</Link>
               <a href="/sitemap.xml" className="text-muted-foreground hover:text-primary transition-colors flex items-center gap-1 text-xs" title="Sitemap">
                 <Rss className="h-3 w-3" />
                 Sitemap
               </a>
-              <Link to="/tech" className="text-muted-foreground hover:text-tech transition-colors text-xs">Tech</Link>
-              <Link to="/security" className="text-muted-foreground hover:text-security transition-colors text-xs">Security</Link>
-              <Link to="/gaming" className="text-muted-foreground hover:text-gaming transition-colors text-xs">Gaming</Link>
-            </div>
+            </nav>
           </div>
         </div>
-      </section>
+      </header>
 
-      {/* Mobile-only: Quick explore CTAs above the fold to reduce bounce (GA mobile recommendations) */}
+      {/* Mobile: Quick explore above the fold */}
       <section className="md:hidden border-b border-border/50 bg-background" aria-label="Quick explore">
-        <div className="container mx-auto px-4 py-4 max-w-7xl">
-          <p className="text-sm font-medium text-muted-foreground mb-3">Explore by topic</p>
-          <div className="grid grid-cols-3 gap-3">
-            <Link
-              to="/tech"
-              className="min-h-[48px] flex items-center justify-center gap-1.5 rounded-lg border border-border bg-card px-3 py-3 text-sm font-semibold text-tech hover:bg-tech/10 hover:border-tech/30 transition-colors"
-            >
-              Tech
-              <ChevronRight className="h-4 w-4 shrink-0" />
-            </Link>
-            <Link
-              to="/security"
-              className="min-h-[48px] flex items-center justify-center gap-1.5 rounded-lg border border-border bg-card px-3 py-3 text-sm font-semibold text-security hover:bg-security/10 hover:border-security/30 transition-colors"
-            >
-              Security
-              <ChevronRight className="h-4 w-4 shrink-0" />
-            </Link>
-            <Link
-              to="/gaming"
-              className="min-h-[48px] flex items-center justify-center gap-1.5 rounded-lg border border-border bg-card px-3 py-3 text-sm font-semibold text-gaming hover:bg-gaming/10 hover:border-gaming/30 transition-colors"
-            >
-              Gaming
-              <ChevronRight className="h-4 w-4 shrink-0" />
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      {/* Breaking News Banner */}
-      <section className="border-b border-border bg-destructive/10">
         <div className="container mx-auto px-4 py-3 max-w-7xl">
-          <div className="flex items-center gap-3">
-            <div className="w-2 h-2 bg-destructive rounded-full animate-pulse" />
-            <h2 className="font-bold text-lg text-foreground">Breaking News</h2>
-            <p className="text-muted-foreground text-sm">Critical security updates and major tech announcements</p>
-          </div>
-        </div>
-      </section>
-
-      {/* Orphan Pages Section - Internal Links for SEO */}
-      <section className="border-b border-border/50 bg-muted/30">
-        <div className="container mx-auto px-4 py-8 max-w-7xl">
-          <h2 className="font-display text-2xl font-bold mb-6">Essential Reading</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-            <Link to="/article/xai-spacex-merger-impact-2026" className="block p-4 bg-card rounded-lg hover:bg-accent transition-colors">
-              <h3 className="font-medium mb-2">xAI and SpaceX Merger</h3>
-              <p className="text-sm text-muted-foreground">Impact on 2026 Tech Landscape</p>
+          <div className="grid grid-cols-3 gap-2">
+            <Link to="/tech" className="min-h-[44px] flex items-center justify-center gap-1 rounded-lg border border-border bg-card px-2 py-2.5 text-xs font-semibold text-tech hover:bg-tech/10 transition-colors">
+              Tech <ChevronRight className="h-3 w-3 shrink-0" />
             </Link>
-            <Link to="/article/best-new-games-february-2026-guide" className="block p-4 bg-card rounded-lg hover:bg-accent transition-colors">
-              <h3 className="font-medium mb-2">Best New Games</h3>
-              <p className="text-sm text-muted-foreground">February 2026 Gaming Guide</p>
+            <Link to="/security" className="min-h-[44px] flex items-center justify-center gap-1 rounded-lg border border-border bg-card px-2 py-2.5 text-xs font-semibold text-security hover:bg-security/10 transition-colors">
+              Security <ChevronRight className="h-3 w-3 shrink-0" />
             </Link>
-            <Link to="/article/sicarii-ransomware-claude-espionage-2026" className="block p-4 bg-card rounded-lg hover:bg-accent transition-colors">
-              <h3 className="font-medium mb-2">Sicarii Ransomware</h3>
-              <p className="text-sm text-muted-foreground">Claude Espionage 2026 Analysis</p>
-            </Link>
-            <Link to="/sitemap" className="block p-4 bg-card rounded-lg hover:bg-accent transition-colors">
-              <h3 className="font-medium mb-2">Complete Site Map</h3>
-              <p className="text-sm text-muted-foreground">Browse All Content</p>
+            <Link to="/gaming" className="min-h-[44px] flex items-center justify-center gap-1 rounded-lg border border-border bg-card px-2 py-2.5 text-xs font-semibold text-gaming hover:bg-gaming/10 transition-colors">
+              Gaming <ChevronRight className="h-3 w-3 shrink-0" />
             </Link>
           </div>
         </div>
       </section>
 
-      <BreakingNewsSection articles={sortedArticles} maxItems={6} />
+      <BreakingNewsSection articles={sortedArticles.filter((a) => a.impactLevel === 'high')} maxItems={6} />
 
-      <section className="border-b border-border bg-muted/5">
-        <div className="container mx-auto px-4 max-w-7xl">
-          <LiveFeedWidget articles={sortedArticles.slice(0, 8)} maxItems={8} />
-        </div>
-      </section>
-
+      {/* Hero: Lead story + sidebar (Verge/Wired – editorial first) */}
       {topStory && (
         <section className="py-8">
           <div className="container mx-auto px-4 max-w-7xl">
@@ -345,30 +293,31 @@ export default function Index() {
         </section>
       )}
 
-      <section className="border-b border-border bg-muted/5" aria-label="Live Wire news feed">
-        <div className="container mx-auto px-4 max-w-7xl">
-          <NewsFeed limit={9} title="Live Wire" showTitle />
-        </div>
-      </section>
+      {/* Latest: card grid (Verge-style) – stories 2–7 excluding hero */}
+      {sortedArticles.slice(1, 7).filter((a): a is Article => a != null).length > 0 && (
+        <section className="border-b border-border bg-background py-8" aria-label="Latest stories">
+          <div className="container mx-auto px-4 max-w-7xl">
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="font-display font-bold text-xl text-foreground">Latest</h2>
+              <Link to="/explore" className="text-sm font-medium text-primary hover:underline flex items-center gap-1">
+                View all <ChevronRight className="h-4 w-4" />
+              </Link>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {sortedArticles.slice(1, 7).filter((a): a is Article => a != null).map((article, i) => (
+                <ArticleCard key={safeArticleId(article) || i} article={article} variant="default" />
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
 
-      <section className="border-b border-border bg-background" aria-label="Nexus Intelligence grid">
+      {/* Latest by category – unified cards (Ars-style) */}
+      <section className="border-b border-border bg-muted/5 py-8" aria-label="Latest by category">
         <div className="container mx-auto px-4 max-w-7xl">
-          <NewsGrid limit={12} excludeUrls={liveWireExcludeUrls} />
-        </div>
-      </section>
-
-      <section className="border-b border-border bg-muted/10 py-8" aria-label="Latest by category">
-        <div className="container mx-auto px-4 max-w-7xl">
-          <h2 className="font-display font-bold text-lg mb-6 text-foreground">Latest by category</h2>
+          <h2 className="font-display font-bold text-xl text-foreground mb-6">By topic</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div
-              className="rounded-lg border border-border bg-card p-4"
-              style={{
-                background:
-                  'linear-gradient(45deg, #000850 0%, #000320 100%), radial-gradient(100% 225% at 100% 0%, #FF6928 0%, #000000 100%), linear-gradient(225deg, #FF7A00 0%, #000000 100%), linear-gradient(135deg, #CDFFEB 10%, #CDFFEB 35%, #009F9D 35%, #009F9D 60%, #07456F 60%, #07456F 67%, #0F0A3C 67%, #0F0A3C 100%)',
-                backgroundBlendMode: 'screen, overlay, hard-light, normal',
-              }}
-            >
+            <div className="rounded-lg border border-border bg-card p-4">
               <Link to="/tech" className="font-semibold text-tech hover:underline mb-3 block">Tech</Link>
               <ul className="space-y-2">
                 {(techArticles.length ? techArticles : sortedArticles.filter(a => a.niche === 'tech').slice(0, 3)).slice(0, 3).filter((a): a is Article => a != null).map((a, i) => (
@@ -405,106 +354,52 @@ export default function Index() {
         </div>
       </section>
 
-      <div className="container-tokens container mx-auto px-4 py-6 max-w-7xl">
+      <section className="border-b border-border bg-muted/5" aria-label="Live Wire news feed">
+        <div className="container mx-auto px-4 max-w-7xl">
+          <LiveFeedWidget articles={sortedArticles.slice(0, 8)} maxItems={8} />
+        </div>
+      </section>
+
+      <section className="border-b border-border bg-muted/5" aria-label="Live Wire">
+        <div className="container mx-auto px-4 max-w-7xl">
+          <NewsFeed limit={9} title="Live Wire" showTitle />
+        </div>
+      </section>
+
+      <section className="border-b border-border bg-background" aria-label="Nexus Intelligence grid">
+        <div className="container mx-auto px-4 max-w-7xl">
+          <NewsGrid limit={12} excludeUrls={liveWireExcludeUrls} />
+        </div>
+      </section>
+
+      {/* Main + sidebar: More stories list + Search / Trending / Newsletter (Ars-style) */}
+      <div className="container-tokens container mx-auto px-4 py-8 max-w-7xl">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           <div className="lg:col-span-2 space-y-8">
-            {topStory ? (
-              <article className="rounded-xl overflow-hidden border border-border bg-card">
-                <Link to={articleLink(topStory)} className="block group">
-                  <div className="relative aspect-[2/1] overflow-hidden bg-muted">
-                    <LazyImage
-                      src={topStory.imageUrl}
-                      alt={topStory.title}
-                      className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-[1.02]"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
-                    <div className="absolute bottom-0 left-0 right-0 p-4 md:p-6 text-white">
-                      <span className="inline-block px-2 py-0.5 rounded text-xs font-medium bg-primary/90 mb-2">Top story</span>
-                      <h1 className="font-display font-bold text-xl md:text-2xl lg:text-3xl line-clamp-2 group-hover:underline">{topStory.title}</h1>
-                      <p className="text-sm text-white/90 mt-1 line-clamp-2">{topStory.excerpt}</p>
-                      <div className="flex flex-wrap items-center gap-3 mt-3 text-xs text-white/80">
-                        <span className="flex items-center gap-1"><User className="h-3.5 w-3.5" />{topStory.author}</span>
-                        <span className="flex items-center gap-1"><Clock className="h-3.5 w-3.5" />{formatRelativeTime(typeof topStory.publishedAt === 'number' ? new Date(topStory.publishedAt).toISOString() : String(topStory.publishedAt ?? ''))} · {topStory.readTime ?? 5} min read</span>
-                      </div>
-                    </div>
-                  </div>
-                </Link>
-              </article>
-            ) : isLoading ? (
-              <Skeleton className="aspect-[2/1] w-full rounded-xl" />
-            ) : null}
-
-            <section aria-label="Latest stories">
-              <div className="flex items-center justify-between mb-4">
-                <h2 className="font-display font-bold text-lg text-foreground">Latest</h2>
-                <Link to="/blog-series" className="text-sm text-primary hover:underline flex items-center gap-1">View all <ChevronRight className="h-4 w-4" /></Link>
-              </div>
+            <section aria-label="More stories">
+              <h2 className="font-display font-bold text-lg text-foreground mb-4">More stories</h2>
               {isLoading ? (
                 <ul className="space-y-4">
                   {[1, 2, 3, 4, 5].map((i) => (
                     <li key={i}><Skeleton className="h-24 w-full rounded-lg" /></li>
                   ))}
                 </ul>
-              ) : mainFeed.filter((a): a is Article => a != null).length === 0 ? (
-                <>
-                  <p className="text-muted-foreground py-6 text-center">Stay tuned — new articles are on the way.</p>
-                  <div className="rounded-lg border border-border bg-muted/30 p-6" aria-label="Browse categories">
-                    <h3 className="font-semibold text-sm text-foreground mb-3">Browse Categories</h3>
-                    <div className="flex flex-wrap gap-3">
-                      <Link to="/tech" className="text-sm text-tech hover:underline">Tech</Link>
-                      <span className="text-muted-foreground">·</span>
-                      <Link to="/security" className="text-sm text-security hover:underline">Security</Link>
-                      <span className="text-muted-foreground">·</span>
-                      <Link to="/gaming" className="text-sm text-gaming hover:underline">Gaming</Link>
-                      <span className="text-muted-foreground">·</span>
-                      <Link to="/explore" className="text-sm text-primary hover:underline">All Articles</Link>
-                    </div>
-                  </div>
-                </>
+              ) : sortedArticles.slice(4, 12).filter((a): a is Article => a != null).length === 0 ? (
+                <p className="text-muted-foreground py-6">More articles will appear here as we publish.</p>
               ) : (
                 <ul className="space-y-4">
-                  {mainFeed.filter((a): a is Article => a != null).map((article, i) => (
+                  {sortedArticles.slice(4, 12).filter((a): a is Article => a != null).map((article, i) => (
                     <li key={safeArticleId(article) || i}>
                       <ArticleCard article={article} variant="list" />
                     </li>
                   ))}
                 </ul>
               )}
-            </section>
-
-            <section aria-label="Latest from the Community" className="mt-8">
-              <h2 className="font-display font-bold text-lg text-foreground mb-4">Latest from the Community</h2>
-              {loadingLatest ? (
-                <ul className="space-y-4">
-                  {[1, 2, 3].map((i) => (
-                    <li key={i}><Skeleton className="h-20 w-full rounded-lg" /></li>
-                  ))}
-                </ul>
-              ) : latestArticles.length === 0 ? (
-                <>
-                  <p className="text-muted-foreground py-6 text-center">No recent articles yet. Check back soon.</p>
-                  <div className="rounded-lg border border-border bg-muted/30 p-4">
-                    <h3 className="font-semibold text-sm text-foreground mb-2">Browse Categories</h3>
-                    <div className="flex flex-wrap gap-2 text-sm">
-                      <Link to="/tech" className="text-tech hover:underline">Tech</Link>
-                      <span className="text-muted-foreground">·</span>
-                      <Link to="/security" className="text-security hover:underline">Security</Link>
-                      <span className="text-muted-foreground">·</span>
-                      <Link to="/gaming" className="text-gaming hover:underline">Gaming</Link>
-                      <span className="text-muted-foreground">·</span>
-                      <Link to="/explore" className="text-primary hover:underline">All Articles</Link>
-                    </div>
-                  </div>
-                </>
-              ) : (
-                <ul className="space-y-4">
-                  {latestArticles.filter((a): a is Article => a != null).map((article, i) => (
-                    <li key={safeArticleId(article) || i}>
-                      <ArticleCard article={article} variant="list" />
-                    </li>
-                  ))}
-                </ul>
-              )}
+              <div className="mt-6">
+                <Link to="/explore" className="text-sm font-medium text-primary hover:underline flex items-center gap-1">
+                  View all articles <ChevronRight className="h-4 w-4" />
+                </Link>
+              </div>
             </section>
           </div>
 
