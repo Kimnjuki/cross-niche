@@ -7,6 +7,8 @@ import "./index.css";
 import "./styles/design-tokens.css";
 import "./styles/globals.css";
 import ErrorBoundary from "./components/error/ErrorBoundary";
+import { ConvexErrorBoundary } from "./components/ConvexErrorBoundary";
+import { validateConvexSetup } from "./lib/convex-validator";
 import { initExternalScriptErrorHandling } from "./lib/externalScriptHandler";
 import { initAllTracking } from "./lib/analytics/ga4";
 import { initINPOptimizations } from "./lib/seo/inpOptimization";
@@ -15,6 +17,10 @@ import "./sentry";
 import "./lib/errorHandlers";
 import { convex } from "./lib/convex";
 import { auth0Domain, auth0ClientId, auth0Audience, isAuth0Enabled } from "./lib/auth0Config";
+
+if (import.meta.env.DEV) {
+  validateConvexSetup();
+}
 
 // Declare global variable for app loaded state
 declare global {
@@ -54,8 +60,9 @@ if (!rootEl) {
 
 const app = (
   <ErrorBoundary>
-    <ConvexProvider client={convex}>
-      <HelmetProvider>
+    <ConvexErrorBoundary>
+      <ConvexProvider client={convex}>
+        <HelmetProvider>
         {isAuth0Enabled && auth0Domain && auth0ClientId ? (
           <Auth0Provider
             domain={auth0Domain}
@@ -70,8 +77,9 @@ const app = (
         ) : (
           <App />
         )}
-      </HelmetProvider>
-    </ConvexProvider>
+        </HelmetProvider>
+      </ConvexProvider>
+    </ConvexErrorBoundary>
   </ErrorBoundary>
 );
 

@@ -1,3 +1,4 @@
+import { lazy, Suspense } from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -9,42 +10,43 @@ import { EnhancedErrorBoundary } from "@/components/error/EnhancedErrorBoundary"
 import { GA4PageTracker } from "./components/analytics/GA4PageTracker";
 import { ThemeProvider } from "./components/theme/ThemeProvider";
 import { CanonicalLink } from "./components/seo/CanonicalLink";
+import { LoadingState } from "./components/LoadingState";
 
-// Eager-loaded routes (no lazy loading – exact same content as full page refresh)
-import Index from "./pages/Index";
-import NotFound from "./pages/NotFound";
-import ArticlePage from "./pages/Article";
-import IndexSimple from "./pages/IndexSimple";
-import EnhancedIndex from "./pages/EnhancedIndex";
-import EnhancedIndexSimple from "./pages/EnhancedIndexSimple";
-import Tech from "./pages/Tech";
-import Security from "./pages/Security";
-import Gaming from "./pages/Gaming";
-import Guides from "./pages/Guides";
-import GuideDetail from "./pages/GuideDetail";
-import RoadmapV3 from "./pages/RoadmapV3";
-import RoadmapFeature from "./pages/RoadmapFeature";
-import BlogSeries from "./pages/BlogSeries";
-import Explore from "./pages/Explore";
-import Topics from "./pages/Topics";
-import Tutorials from "./pages/Tutorials";
-import News from "./pages/News";
-import AIPulse from "./pages/AIPulse";
-import BreachSim from "./pages/BreachSim";
-import LiveThreatDashboard from "./pages/LiveThreatDashboard";
-import SecurityScore from "./pages/SecurityScore";
-import SubscriptionPlans from "./pages/SubscriptionPlans";
-import SubscriptionManagement from "./pages/SubscriptionManagement";
-import CommunityForums from "./pages/CommunityForums";
-import SecurityScanner from "./pages/SecurityScanner";
-import APIAccess from "./pages/APIAccess";
-import MobileApp from "./pages/MobileApp";
-import PodcastPlatform from "./pages/PodcastPlatform";
-import AdvancedSearch from "./components/search/AdvancedSearch";
-import LiveUpdatesFeed from "./components/live/LiveUpdatesFeed";
-import SignInSignUp from "./components/auth/SignInSignUp";
-import TestFeatures from "./pages/TestFeatures";
-import NewsletterVerify from "./pages/NewsletterVerify";
+// Lazy-loaded routes for better initial load and smaller bundles
+const Index = lazy(() => import("./pages/Index"));
+const NotFound = lazy(() => import("./pages/NotFound"));
+const ArticlePage = lazy(() => import("./pages/Article"));
+const IndexSimple = lazy(() => import("./pages/IndexSimple"));
+const EnhancedIndex = lazy(() => import("./pages/EnhancedIndex"));
+const EnhancedIndexSimple = lazy(() => import("./pages/EnhancedIndexSimple"));
+const Tech = lazy(() => import("./pages/Tech"));
+const Security = lazy(() => import("./pages/Security"));
+const Gaming = lazy(() => import("./pages/Gaming"));
+const Guides = lazy(() => import("./pages/Guides"));
+const GuideDetail = lazy(() => import("./pages/GuideDetail"));
+const RoadmapV3 = lazy(() => import("./pages/RoadmapV3"));
+const RoadmapFeature = lazy(() => import("./pages/RoadmapFeature"));
+const BlogSeries = lazy(() => import("./pages/BlogSeries"));
+const Explore = lazy(() => import("./pages/Explore"));
+const Topics = lazy(() => import("./pages/Topics"));
+const Tutorials = lazy(() => import("./pages/Tutorials"));
+const News = lazy(() => import("./pages/News"));
+const AIPulse = lazy(() => import("./pages/AIPulse"));
+const BreachSim = lazy(() => import("./pages/BreachSim"));
+const LiveThreatDashboard = lazy(() => import("./pages/LiveThreatDashboard"));
+const SecurityScore = lazy(() => import("./pages/SecurityScore"));
+const SubscriptionPlans = lazy(() => import("./pages/SubscriptionPlans"));
+const SubscriptionManagement = lazy(() => import("./pages/SubscriptionManagement"));
+const CommunityForums = lazy(() => import("./pages/CommunityForums"));
+const SecurityScanner = lazy(() => import("./pages/SecurityScanner"));
+const APIAccess = lazy(() => import("./pages/APIAccess"));
+const MobileApp = lazy(() => import("./pages/MobileApp"));
+const PodcastPlatform = lazy(() => import("./pages/PodcastPlatform"));
+const AdvancedSearch = lazy(() => import("./components/search/AdvancedSearch"));
+const LiveUpdatesFeed = lazy(() => import("./components/live/LiveUpdatesFeed"));
+const SignInSignUp = lazy(() => import("./components/auth/SignInSignUp"));
+const TestFeatures = lazy(() => import("./pages/TestFeatures"));
+const NewsletterVerify = lazy(() => import("./pages/NewsletterVerify"));
 
 const queryClient = new QueryClient();
 
@@ -60,7 +62,8 @@ const App = () => (
                 <Toaster />
                 <Sonner />
                 <GA4PageTracker />
-                <Routes>
+                <Suspense fallback={<LoadingState />}>
+                  <Routes>
                     <Route path="/" element={<Index />} />
                     <Route path="/simple" element={<IndexSimple />} />
                     <Route path="/enhanced" element={<EnhancedIndex />} />
@@ -107,6 +110,7 @@ const App = () => (
                     {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                     <Route path="*" element={<NotFound />} />
                   </Routes>
+                </Suspense>
               </TooltipProvider>
             </AuthProvider>
           </ThemeProvider>

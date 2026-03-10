@@ -78,27 +78,14 @@
     <link rel="manifest" href="/site.webmanifest" />
     <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#0f172a" />
 
-    <!-- DNS Prefetch and Preconnect for Performance -->
-    <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
-    <link rel="dns-prefetch" href="https://fonts.gstatic.com" />
+    <!-- Resource hints: no font preload/preconnect (use system fonts to avoid console warnings) -->
     <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
     <link rel="dns-prefetch" href="https://www.google-analytics.com" />
-    <link rel="dns-prefetch" href="https://pagead2.googlesyndication.com" />
     <link rel="dns-prefetch" href="https://www.clarity.ms" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link rel="preconnect" href="https://www.googletagmanager.com" />
     <link rel="preconnect" href="https://www.google-analytics.com" />
 
-    <!-- Preload critical fonts to prevent layout shift -->
-    <!-- Removed preload to fix font loading warnings -->
-
-    <!-- Google AdSense: deferred to not block LCP (loaded after DOMContentLoaded) -->
-
-    <!-- Clickio Consent CSS -->
-    <style>body.clickio-cmp-in-scope .clickio-cmp-settings-display { display: inherit !important; }</style>
-
-    <!-- Default Consent Mode config (guarded so missing gtag does not break page) -->
+    <!-- Default Consent Mode (gtag only; Clickio removed to fix consent error) -->
     <script>
         if (typeof gtag === 'function') gtag('consent', 'default', {
             'ad_storage': 'granted',
@@ -118,44 +105,7 @@
             'wait_for_update': 1500
         });
         if (typeof gtag === 'function') { gtag('set', 'ads_data_redaction', true); gtag('set', 'url_passthrough', true); }
-        (function(){
-            try {
-                if (typeof gtag !== 'function') return;
-                var s = {
-                    adStorage: {storageName: "ad_storage", serialNumber: 0},
-                    analyticsStorage: {storageName: "analytics_storage", serialNumber: 1},
-                    functionalityStorage: {storageName: "functionality_storage", serialNumber: 2},
-                    personalizationStorage: {storageName: "personalization_storage", serialNumber: 3},
-                    securityStorage: {storageName: "security_storage", serialNumber: 4}
-                };
-                var c = localStorage.getItem("__lxG__consent__v2");
-                if (c) {
-                    try {
-                        c = JSON.parse(c);
-                        if (c && c.cls_val) c = c.cls_val;
-                        if (c) c = c.split("|");
-                        if (c && c.length && typeof c[4] !== undefined) {
-                            c = c[4].split("").map(function(e) { return e - 0; });
-                            if (c.length) {
-                                var t = {};
-                                Object.values(s).sort(function(e, t) { return e.serialNumber - t.serialNumber; }).forEach(function(e) {
-                                    t[e.storageName] = c[e.serialNumber] ? "granted" : "denied";
-                                });
-                                gtag("consent", "update", t);
-                            }
-                        }
-                    } catch(err) {}
-                }
-                if (Math.random() < 0.05 && window.dataLayer) {
-                    try {
-                        document.head.appendChild(document.createElement('img')).src = "//clickiocdn.com/utr/gtag/?sid=247023";
-                    } catch(err) {}
-                }
-            } catch (e) {}
-        })();
     </script>
-
-    <!-- Clickio, AdSense, Ahrefs: deferred to not block LCP -->
 
     <!-- Schema.org JSON-LD (static, visible to crawlers before JS) -->
     <script type="application/ld+json">
