@@ -1,6 +1,11 @@
 import { query, mutation } from "./_generated/server";
 import { v } from "convex/values";
 
+/** No creation-time cutoff: all published content is visible. */
+function getCreationTimeCutoff(): number {
+  return 0;
+}
+
 /**
  * Get all published content (excludes deleted). Newest first by publishedAt.
  */
