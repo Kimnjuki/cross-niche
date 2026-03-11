@@ -113,6 +113,13 @@ export const getContentStats = mutation({
   },
 });
 
+/** Only accept HTTPS image URLs; drop HTTP to avoid mixed content. */
+function sanitizeImageUrl(url: string | undefined): string | undefined {
+  if (!url || typeof url !== "string") return undefined;
+  if (!url.startsWith("https://")) return undefined;
+  return url;
+}
+
 /**
  * Upsert ingested content from news APIs
  */
@@ -146,13 +153,14 @@ export const upsertIngestedContent = mutation({
           body: args.body,
           summary: args.summary,
           contentType: args.contentType as any,
-          featuredImageUrl: args.featuredImageUrl,
+          featuredImageUrl: sanitizeImageUrl(args.featuredImageUrl),
           lastModifiedAt: Date.now(),
         });
         return existing._id;
       }
     }
     
+    const featuredImageUrl = sanitizeImageUrl(args.featuredImageUrl);
     // Create new content
     const contentId = await ctx.db.insert("content", {
       title: args.title,
@@ -163,7 +171,7 @@ export const upsertIngestedContent = mutation({
       source: args.source,
       originalUrl: args.originalUrl,
       externalId: args.externalId,
-      featuredImageUrl: args.featuredImageUrl,
+      featuredImageUrl,
       authorId: args.authorId,
       publishedAt: args.publishedAt || Date.now(),
       isAutomated: args.isAutomated ?? true,

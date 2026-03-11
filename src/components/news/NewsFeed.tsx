@@ -19,6 +19,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { Bot, Clock, ExternalLink } from 'lucide-react';
 import { formatCompactRelativeTime } from '@/lib/timeUtils';
 import { LazyImage } from '@/components/ui/lazy-image';
+import { getPlaceholderImage, secureImageUrl } from '@/lib/placeholderImages';
 import { useConvexDisabled } from '@/components/SafeConvexProvider';
 import { cn } from '@/lib/utils';
 
@@ -40,6 +41,9 @@ interface NewsItem {
 function NewsCard({ item, index }: { item: NewsItem; index: number }) {
   const href = item.originalUrl || `/article/${item.slug}`;
   const isExternal = !!item.originalUrl;
+  const displayImageUrl = item.featured_image_url
+    ? secureImageUrl(item.featured_image_url, getPlaceholderImage('default', 800, 450, item._id))
+    : null;
   const timeStr = formatCompactRelativeTime(
     item.published_at ?? (item.publishedAt ? new Date(item.publishedAt).toISOString() : null)
   );
@@ -74,11 +78,12 @@ function NewsCard({ item, index }: { item: NewsItem; index: number }) {
         )}
       </CardHeader>
       <CardContent className="pt-0">
-        {item.featured_image_url && (
+        {displayImageUrl && (
           <div className="rounded-md overflow-hidden aspect-video mb-3">
             <LazyImage
-              src={item.featured_image_url}
+              src={displayImageUrl}
               alt={item.title}
+              fallbackSrc={getPlaceholderImage('default', 800, 450, item._id)}
               className="w-full h-full object-cover"
             />
           </div>

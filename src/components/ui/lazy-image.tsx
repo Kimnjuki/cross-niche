@@ -1,10 +1,12 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { cn } from '@/lib/utils';
 
 interface LazyImageProps {
   src: string;
   alt: string;
   className?: string;
+  /** Fallback image URL when src fails (e.g. 403, CORS). Prevents broken image. */
+  fallbackSrc?: string;
   placeholder?: string;
   onLoad?: () => void;
   onError?: () => void;
@@ -23,6 +25,7 @@ export function LazyImage({
   src,
   alt,
   className,
+  fallbackSrc,
   onLoad,
   onError,
   width,
@@ -30,11 +33,21 @@ export function LazyImage({
   aspectRatio,
 }: LazyImageProps) {
   const [hasError, setHasError] = useState(false);
+  const [currentSrc, setCurrentSrc] = useState(src);
+  useEffect(() => {
+    setCurrentSrc(src);
+    setHasError(false);
+  }, [src]);
 
   const handleLoad = () => onLoad?.();
   const handleError = () => {
-    setHasError(true);
-    onError?.();
+    if (fallbackSrc && currentSrc !== fallbackSrc) {
+      setCurrentSrc(fallbackSrc);
+      setHasError(false);
+    } else {
+      setHasError(true);
+      onError?.();
+    }
   };
 
   const finalAspectRatio = aspectRatio || '16/9';
@@ -53,7 +66,7 @@ export function LazyImage({
 
   return (
     <img
-      src={src}
+      src={currentSrc}
       alt={alt}
       className={cn('w-full h-full object-cover', className)}
       onLoad={handleLoad}

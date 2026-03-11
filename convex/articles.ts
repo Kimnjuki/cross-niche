@@ -1,10 +1,18 @@
 /**
  * Multi-source news feed (NewsAPI + GNews).
  * saveArticle: dedupe by URL. getLatestFeed: most recent first.
+ * Rejects HTTP image URLs to prevent mixed content on HTTPS sites.
  */
 
 import { mutation, query } from "./_generated/server";
 import { v } from "convex/values";
+
+/** Only accept HTTPS image URLs; drop HTTP to avoid mixed content. */
+function sanitizeImageUrl(url: string | undefined): string | undefined {
+  if (!url || typeof url !== "string") return undefined;
+  if (!url.startsWith("https://")) return undefined;
+  return url;
+}
 
 export const saveArticle = mutation({
   args: {
@@ -16,12 +24,13 @@ export const saveArticle = mutation({
     publishedAt: v.number(),
   },
   handler: async (ctx, args) => {
+    const imageUrl = sanitizeImageUrl(args.imageUrl);
     const exists = await ctx.db
       .query("articles")
       .withIndex("by_url", (q) => q.eq("url", args.url))
       .unique();
     if (!exists) {
-      await ctx.db.insert("articles", args);
+      await ctx.db.insert("articles", { ...args, imageUrl });
     }
   },
 });

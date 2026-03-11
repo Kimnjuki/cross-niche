@@ -36,7 +36,7 @@ import {
   trackSocialShare,
   trackRelatedArticleClick,
 } from '@/lib/analytics/ga4';
-import { getPlaceholderByNiche } from '@/lib/placeholderImages';
+import { getPlaceholderByNiche, secureImageUrl } from '@/lib/placeholderImages';
 import { prepareArticleContent } from '@/lib/markdownToHtml';
 import { getRelatedClusterContent } from '@/lib/seo/topicClusters';
 import type { Article as ArticleType } from '@/types';
@@ -303,8 +303,9 @@ export default function Article() {
 
         <div className="max-w-4xl mb-8">
           <LazyImage
-            src={article.imageUrl ?? getPlaceholderByNiche(article.niche, article.slug ?? article.id)}
+            src={secureImageUrl(article.imageUrl, getPlaceholderByNiche(article.niche, article.slug ?? article.id))}
             alt={article.title ?? 'Article'}
+            fallbackSrc={getPlaceholderByNiche(article.niche, article.slug ?? article.id)}
             className="w-full aspect-video rounded-xl"
           />
         </div>
