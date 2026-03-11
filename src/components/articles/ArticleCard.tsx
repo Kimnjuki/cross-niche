@@ -6,7 +6,7 @@ import { Bookmark, Clock, Shield, AlertTriangle, TrendingUp, User } from 'lucide
 import { useAuth } from '@/contexts/AuthContext';
 import { cn, authorSlug } from '@/lib/utils';
 import { formatRelativeTime, isFreshContent, isNewContent, isJustPublished } from '@/lib/timeUtils';
-import { getPlaceholderByNiche } from '@/lib/placeholderImages';
+import { getPlaceholderByNiche, secureImageUrl } from '@/lib/placeholderImages';
 
 interface ArticleCardProps {
   article: Article | null | undefined;
@@ -72,7 +72,12 @@ export function ArticleCard({ article, variant = 'default', onArticleClick }: Ar
   const articleId = safeArticleId(article);
   const articleUrl = `/article/${article.slug ?? article.id ?? articleId}`;
   const styles = nicheStyles[article.niche ?? 'tech'];
-  const imageUrl = article.imageUrl || getPlaceholderByNiche(article.niche ?? 'tech', article.slug ?? article.id ?? articleId);
+  const placeholderFallback = getPlaceholderByNiche(article.niche ?? 'tech', article.slug ?? article.id ?? articleId);
+  const imageUrl = secureImageUrl(article.imageUrl, placeholderFallback);
+  const onImageError = (e: React.SyntheticEvent<HTMLImageElement>) => {
+    const el = e.currentTarget;
+    if (el.src !== placeholderFallback) el.src = placeholderFallback;
+  };
   const isBookmarked = user?.bookmarks?.includes(articleId);
   const difficulty = getDifficultyLevel(article);
   const securityGlow = getSecurityGlow(article.securityScore);
@@ -108,6 +113,7 @@ export function ArticleCard({ article, variant = 'default', onArticleClick }: Ar
           <img
             src={imageUrl}
             alt={article.title}
+            onError={onImageError}
             className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
             width="1200"
             height="675"
@@ -187,6 +193,7 @@ export function ArticleCard({ article, variant = 'default', onArticleClick }: Ar
             <img
               src={imageUrl}
               alt={article.title}
+              onError={onImageError}
               className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
               width="80"
               height="80"
@@ -228,6 +235,7 @@ export function ArticleCard({ article, variant = 'default', onArticleClick }: Ar
           <img
             src={imageUrl}
             alt={article.title}
+            onError={onImageError}
             className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
             width="208"
             height="117"
@@ -279,6 +287,7 @@ export function ArticleCard({ article, variant = 'default', onArticleClick }: Ar
           <img
             src={imageUrl}
             alt={article.title}
+            onError={onImageError}
             className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
             width="800"
             height="450"

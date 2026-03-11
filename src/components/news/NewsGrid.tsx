@@ -2,7 +2,7 @@ import { useQuery } from "convex/react";
 import { api } from "../../../convex/_generated/api";
 import { cn } from "@/lib/utils";
 import { ExternalLink } from "lucide-react";
-import { getPlaceholderImage } from "@/lib/placeholderImages";
+import { getPlaceholderImage, secureImageUrl } from "@/lib/placeholderImages";
 
 type NewsRow = {
   _id: string;
@@ -121,7 +121,7 @@ export function NewsGrid({
               >
                 <div className="relative rounded-lg overflow-hidden mb-3 h-28 md:h-32">
                   <img
-                    src={item.imageUrl || getPlaceholderImage('default', 800, 400, item._id)}
+                    src={secureImageUrl(item.imageUrl, getPlaceholderImage('default', 800, 400, item._id))}
                     alt={item.title}
                     className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-[1.02]"
                     loading="lazy"

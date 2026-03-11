@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import { Clock, ExternalLink } from 'lucide-react';
 import { Article } from '@/types';
-import { getPlaceholderByNiche } from '@/lib/placeholderImages';
+import { getPlaceholderByNiche, secureImageUrl } from '@/lib/placeholderImages';
 
 interface LiveFeedWidgetProps {
   articles: Article[];
@@ -29,7 +29,7 @@ export function LiveFeedWidget({ articles, maxItems = 5 }: LiveFeedWidgetProps) 
       
       <div className="space-y-3">
         {liveArticles.map((article, index) => {
-          const imgSrc = article.imageUrl || getPlaceholderByNiche(article.niche ?? 'tech', article.slug ?? article.id);
+          const imgSrc = secureImageUrl(article.imageUrl, getPlaceholderByNiche(article.niche ?? 'tech', article.slug ?? article.id));
           return (
           <div key={article.id ?? index} className="flex gap-3 p-3 border-b border-border last:border-0 hover:bg-muted/50 transition-colors">
             <div className="flex-shrink-0">

@@ -289,6 +289,36 @@ export const getContentByNiche = query({
 });
 
 /**
+ * Get content by niche ID (1=Tech, 2=Security, 3=Gaming). Excludes deleted.
+ * Used by RelatedArticles and similar components.
+ */
+export const getByNicheId = query({
+  args: {
+    nicheId: v.number(),
+    limit: v.optional(v.number()),
+  },
+  handler: async (ctx, args) => {
+    const limit = args.limit ?? 10;
+    const techTypes = ["technology", "tech", "article", "news", "guide", "opinion", "review", "feature", "tutorial"];
+    const matchesNiche = (d: { contentType?: string }) => {
+      const ct = (d.contentType ?? "").toLowerCase();
+      if (args.nicheId === 1) return techTypes.includes(ct) || !ct;
+      if (args.nicheId === 2) return ct === "security" || ct === "cybersecurity";
+      if (args.nicheId === 3) return ct === "gaming" || ct === "games";
+      return true;
+    };
+    const docs = await ctx.db
+      .query("content")
+      .withIndex("by_status_published_at", (q) => q.eq("status", "published"))
+      .order("desc")
+      .take(limit * 5);
+    return docs
+      .filter((d) => d.isDeleted !== true && matchesNiche(d))
+      .slice(0, limit);
+  },
+});
+
+/**
  * Get trending content (excludes deleted). Sorted by publishedAt desc.
  */
 export const getTrendingContent = query({

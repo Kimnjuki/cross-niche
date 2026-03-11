@@ -128,6 +128,21 @@ export function getPlaceholderImage(
   return `${imageUrl}${separator}w=${width}&h=${height}&fit=crop&auto=format`;
 }
 
+/** Returns true if URL is HTTPS (avoids mixed content); false for http or invalid. */
+export function isSecureImageUrl(url: string | null | undefined): boolean {
+  return !!(url && typeof url === 'string' && url.startsWith('https://'));
+}
+
+/**
+ * Use imageUrl only if secure (HTTPS); otherwise return placeholder. Prevents mixed content errors.
+ */
+export function secureImageUrl(
+  url: string | null | undefined,
+  placeholder: string
+): string {
+  return isSecureImageUrl(url) ? url! : placeholder;
+}
+
 /**
  * Get placeholder by niche (tech | security | gaming)
  * @param niche - Niche type

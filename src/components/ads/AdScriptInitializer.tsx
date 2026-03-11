@@ -6,10 +6,8 @@ import { useThirdPartyScript, useDefensiveObject } from '@/hooks/useThirdPartySc
  * Prevents crashes when ad scripts fail to load due to CORS or blocking
  */
 export function AdScriptInitializer() {
-  // Initialize Clickio consent safely
-  useThirdPartyScript('clickioConsent', 'addEventListener', () => {
-    console.warn('Clickio consent not available, using fallback');
-  });
+  // Initialize Clickio consent safely (no console noise when unavailable)
+  useThirdPartyScript('clickioConsent', 'addEventListener');
 
   // Create defensive objects only when needed
   useDefensiveObject('clickioConsent', {

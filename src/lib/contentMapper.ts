@@ -2,6 +2,13 @@ import type { ContentItem } from '@/hooks/useContent';
 import type { Article, Niche } from '@/types';
 import { getPlaceholderByNiche } from '@/lib/placeholderImages';
 
+/** Reject HTTP URLs (mixed content) and obviously invalid URLs; use placeholder instead. */
+function sanitizeImageUrl(url: string | null | undefined, fallback: string): string {
+  if (!url || typeof url !== 'string' || !url.startsWith('http')) return fallback;
+  if (url.startsWith('http://')) return fallback;
+  return url;
+}
+
 // Map Convex/database content to Article type used by components (returns null if content is falsy)
 export function mapContentToArticle(content: ContentItem | null | undefined): Article | null {
   if (!content || typeof content !== 'object') return null;
@@ -86,7 +93,7 @@ export function mapContentToArticle(content: ContentItem | null | undefined): Ar
     author,
     publishedAt,
     readTime: content.read_time_minutes || 5,
-    imageUrl: content.featured_image_url || getPlaceholderByNiche(niche, docId),
+    imageUrl: sanitizeImageUrl(content.featured_image_url, getPlaceholderByNiche(niche, docId)),
     tags,
     isSponsored: false,
     isFeatured: content.is_featured || false,
