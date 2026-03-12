@@ -2,9 +2,11 @@ import { Layout } from '@/components/layout/Layout';
 import { Shield, CheckCircle, AlertTriangle, FileText } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { SEOHead } from '@/components/seo/SEOHead';
+import { getPageMetadata } from '@/lib/seo/pageMetadata';
 import { Link } from 'react-router-dom';
 
 export default function SecurityScore() {
+  const meta = getPageMetadata('/security-score');
   const criteria = [
     {
       title: 'Data Collection Practices',
@@ -36,8 +38,8 @@ export default function SecurityScore() {
   return (
     <Layout>
       <SEOHead
-        title="Security Score Methodology | The Grid Nexus"
-        description="Learn how we calculate security scores for games. Our methodology evaluates data collection, account security, privacy policies, and more."
+        title={meta.title}
+        description={meta.description}
         keywords={['security score', 'gaming security', 'privacy assessment', 'data protection', 'security methodology']}
         url={window.location.href}
         type="website"

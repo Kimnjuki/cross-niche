@@ -10,6 +10,7 @@ import { Shield, AlertTriangle, AlertCircle, CheckCircle } from 'lucide-react';
 import { Skeleton } from '@/components/ui/skeleton';
 import { SEOHead } from '@/components/seo/SEOHead';
 import { SEO } from '@/components/SEO';
+import { getPageMetadata } from '@/lib/seo/pageMetadata';
 import { Link } from 'react-router-dom';
 import { LandingPageTracker } from '@/components/analytics/LandingPageTracker';
 
@@ -23,19 +24,20 @@ export default function Security() {
   
   const highImpact = securityArticles.filter(a => a.impactLevel === 'high').length;
   const mediumImpact = securityArticles.filter(a => a.impactLevel === 'medium').length;
+  const meta = getPageMetadata('/security');
 
   return (
     <Layout>
       <LandingPageTracker pageType="category" articlesViewed={securityArticles.length} />
       <SEO
-        title="Cybersecurity News & Analysis | The Grid Nexus"
-        description="Critical cybersecurity news, threat intelligence, and breach analysis. Real-time coverage of vulnerabilities, ransomware, and security research."
+        title={meta.title}
+        description={meta.description}
         canonical="https://thegridnexus.com/security"
         ogType="website"
       />
       <SEOHead
-        title="Security | The Grid Nexus"
-        description="Cybersecurity news, threat intelligence, and breach analysis. Real-time coverage of vulnerabilities, ransomware, and security research."
+        title={meta.title}
+        description={meta.description}
         url={typeof window !== 'undefined' ? `${window.location.origin}/security` : '/security'}
       />
       <div className="container mx-auto px-4 py-12">

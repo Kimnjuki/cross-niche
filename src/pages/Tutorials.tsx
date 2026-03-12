@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { SEOHead } from '@/components/seo/SEOHead';
+import { getPageMetadata } from '@/lib/seo/pageMetadata';
 import { 
   Search, 
   Clock, 
@@ -102,8 +103,8 @@ export default function Tutorials() {
   return (
     <Layout>
       <SEOHead
-        title="Tech Tutorials & Step-by-Step Guides | The Grid Nexus"
-        description="Master common fixes across Windows, macOS, and Linux. Learn security best practices and optimize your gaming experience with comprehensive tutorials."
+        title={getPageMetadata('/tutorials').title}
+        description={getPageMetadata('/tutorials').description}
         keywords={['tech tutorials', 'how-to guides', 'step-by-step tutorials', 'tech fixes', 'security tutorials', 'gaming tutorials']}
         url={window.location.href}
         type="website"

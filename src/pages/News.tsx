@@ -1,13 +1,15 @@
 import { Layout } from '@/components/layout/Layout';
 import { NewsFeed } from '@/components/news/NewsFeed';
 import { SEOHead } from '@/components/seo/SEOHead';
+import { getPageMetadata } from '@/lib/seo/pageMetadata';
 
 export default function News() {
+  const meta = getPageMetadata('/news');
   return (
     <Layout>
       <SEOHead
-        title="Live Wire: Breaking Tech & Security News | The Grid Nexus"
-        description="Real-time news feed from top sources. Breaking technology, cybersecurity, and gaming headlines."
+        title={meta.title}
+        description={meta.description}
         keywords={['tech news', 'breaking news', 'cybersecurity news', 'gaming news', 'live news']}
         url={typeof window !== 'undefined' ? window.location.href : ''}
         type="website"

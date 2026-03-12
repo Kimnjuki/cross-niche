@@ -3,6 +3,7 @@ import { Layout } from '@/components/layout/Layout';
 import { Link, useSearchParams, useNavigate } from 'react-router-dom';
 import { TrendingTopicsWidget } from '@/components/home/TrendingTopicsWidget';
 import { SEOHead } from '@/components/seo/SEOHead';
+import { getPageMetadata } from '@/lib/seo/pageMetadata';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Hash, TrendingUp, Search, Filter, X, Clock, Eye, ArrowRight, Sparkles, BarChart3, Users, Zap, Globe, Target, Calendar, Download, Share2, BookmarkPlus, RefreshCw, ChevronRight, Star, Flame, Rocket } from 'lucide-react';
@@ -211,8 +212,8 @@ export default function Topics() {
   return (
     <Layout>
       <SEOHead
-        title="Technology Topics & Keywords - The Grid Nexus"
-        description="Explore trending technology topics: AI, machine learning, cybersecurity, cloud computing, gaming, and blockchain. Latest news and insights. Search by keyword to find relevant articles."
+        title={getPageMetadata('/topics').title}
+        description={getPageMetadata('/topics').description}
         keywords={[
           'artificial intelligence',
           'machine learning',

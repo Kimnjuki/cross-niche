@@ -1,13 +1,15 @@
 import { Layout } from '@/components/layout/Layout';
 import { SEOHead } from '@/components/seo/SEOHead';
+import { getPageMetadata } from '@/lib/seo/pageMetadata';
 import { BreachSimulator } from '@/components/security/BreachSimulator';
 
 export default function BreachSim() {
+  const meta = getPageMetadata('/breach-sim');
   return (
     <Layout>
       <SEOHead
-        title="Breach Simulator | The Grid Nexus"
-        description="Run realistic cybersecurity incident simulations and learn proper response playbooks."
+        title={meta.title}
+        description={meta.description}
         keywords={['breach simulator', 'incident response', 'ransomware', 'phishing', 'data breach', 'cybersecurity training']}
         url={typeof window !== 'undefined' ? window.location.href : '/breach-sim'}
         type="website"

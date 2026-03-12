@@ -9,6 +9,7 @@ import { useContentByFeed, usePublishedContent } from '@/hooks/useContent';
 import { mapContentToArticles } from '@/lib/contentMapper';
 import { LazyImage } from '@/components/ui/lazy-image';
 import { SEOHead } from '@/components/seo/SEOHead';
+import { getPageMetadata } from '@/lib/seo/pageMetadata';
 import { Link } from 'react-router-dom';
 import { ChevronLeft, ChevronRight, Clock, Calendar } from 'lucide-react';
 import { cn } from '@/lib/utils';
@@ -90,11 +91,12 @@ export default function BlogSeries() {
                      (selectedNiche === 'security' && isLoadingSecurity) || 
                      (selectedNiche === 'gaming' && isLoadingGaming);
 
+  const meta = getPageMetadata('/blog-series');
   return (
     <Layout>
       <SEOHead
-        title="Tech & Gaming Series 2026 | The Grid Nexus"
-        description="Latest tech, gaming, and cybersecurity articles. Expert analysis and in-depth coverage."
+        title={meta.title}
+        description={meta.description}
         keywords={['blog series', 'tech articles', 'gaming articles', 'cybersecurity articles', 'tech blog', 'gaming blog']}
         url={window.location.href}
         type="website"

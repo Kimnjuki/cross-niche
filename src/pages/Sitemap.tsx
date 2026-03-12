@@ -6,6 +6,7 @@
 import { Link } from 'react-router-dom';
 import { Layout } from '@/components/layout/Layout';
 import { SEOHead } from '@/components/seo/SEOHead';
+import { getPageMetadata } from '@/lib/seo/pageMetadata';
 
 const SECTION_LINKS = [
   { to: '/', label: 'Home' },
@@ -34,11 +35,12 @@ const SECTION_LINKS = [
 ] as const;
 
 export default function Sitemap() {
+  const meta = getPageMetadata('/sitemap');
   return (
     <Layout>
       <SEOHead
-        title="Site Map | The Grid Nexus"
-        description="Browse all sections and articles on The Grid Nexus."
+        title={meta.title}
+        description={meta.description}
         url={typeof window !== 'undefined' ? `${window.location.origin}/sitemap` : '/sitemap'}
         noindex={true}
       />

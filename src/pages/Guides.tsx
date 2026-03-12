@@ -8,6 +8,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { BookOpen, Search, ExternalLink, Clock, Zap, Shield, Gamepad2, TrendingUp, Lightbulb, CheckCircle2, ArrowRight } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { SEOHead } from '@/components/seo/SEOHead';
+import { getPageMetadata } from '@/lib/seo/pageMetadata';
 import { Link } from 'react-router-dom';
 import { howToGuides, getGuidesByCategory, searchGuides, type HowToGuide } from '@/data/howToGuides';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
@@ -53,11 +54,12 @@ export default function Guides() {
   const securityGuides = getGuidesByCategory('security');
   const gamingGuides = getGuidesByCategory('gaming');
 
+  const meta = getPageMetadata('/guides');
   return (
     <Layout>
       <SEOHead
-        title="How-To Guides 2026: Tech, Security & Gaming Solutions | The Grid Nexus"
-        description="Solve the most searched tech, security, and gaming questions with our comprehensive how-to guides. Unique tricks, modern solutions, and step-by-step tutorials. Updated February 2026."
+        title={meta.title}
+        description={meta.description}
         keywords={[
           'how to speed up windows 11',
           'how to fix slow internet connection',

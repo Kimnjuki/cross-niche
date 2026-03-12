@@ -4,6 +4,7 @@ import { useQuery } from "convex/react";
 import { api } from "../../convex/_generated/api";
 import { Layout } from "@/components/layout/Layout";
 import { SEOHead } from "@/components/seo/SEOHead";
+import { getPageMetadata } from "@/lib/seo/pageMetadata";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -21,11 +22,12 @@ export default function RoadmapV3() {
     return map;
   }, [features]);
 
+  const meta = getPageMetadata('/roadmap');
   return (
     <Layout>
       <SEOHead
-        title="Product Roadmap | Vote on Features | The Grid Nexus"
-        description="Shape the future of The Grid Nexus. Vote on upcoming AI tools, cybersecurity simulators, gaming features, and more. Real-time transparent product development."
+        title={meta.title}
+        description={meta.description}
         keywords={[
           "product roadmap",
           "feature voting",

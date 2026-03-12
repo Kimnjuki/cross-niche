@@ -1,16 +1,18 @@
 import { Layout } from '@/components/layout/Layout';
 import { SEOHead } from '@/components/seo/SEOHead';
+import { getPageMetadata } from '@/lib/seo/pageMetadata';
 import { AIPulseTimeline } from '@/components/ai/AIPulseTimeline';
 import { useAIPulse } from '@/hooks/useAIPulse';
 
 export default function AIPulse() {
   const { items, isLoading } = useAIPulse();
+  const meta = getPageMetadata('/ai-pulse');
 
   return (
     <Layout>
       <SEOHead
-        title="AI Pulse | The Grid Nexus"
-        description="AI updates, benchmarks, and competitive analysis across productivity, creative, and gaming AI."
+        title={meta.title}
+        description={meta.description}
         keywords={['ai pulse', 'ai updates', 'ml benchmarks', 'ai trends', 'gaming ai', 'competitive analysis']}
         url={typeof window !== 'undefined' ? window.location.href : '/ai-pulse'}
         type="website"

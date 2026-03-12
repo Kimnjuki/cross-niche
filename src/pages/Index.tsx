@@ -43,6 +43,7 @@ import {
   useContentByFeed,
 } from '@/hooks/useContent';
 import { ArticleGrid } from '@/components/articles/ArticleGrid';
+import { getPageMetadata } from '@/lib/seo/pageMetadata';
 
 const FEED_SLUGS = [
   { slug: 'innovate', label: 'Tech', path: '/tech' },
@@ -116,13 +117,14 @@ export default function Index() {
   const gamingArticles: Article[] = Array.isArray(gamingFeed) && gamingFeed.length ? mapContentToArticles(gamingFeed as ContentItem[]) : sortedArticles.filter(a => a.niche === 'gaming').slice(0, 2);
 
   const showEmptyState = !isLoading && sortedArticles.length === 0;
+  const homeMeta = getPageMetadata('/');
 
   if (showEmptyState) {
     return (
       <Layout showPulseSidebar={false}>
         <SEO
-          title="The Grid Nexus — Tech, Security & Gaming News"
-          description="Breaking technology news, cybersecurity analysis, and gaming guides."
+          title={homeMeta.title}
+          description={homeMeta.description}
           canonical="https://thegridnexus.com/"
           ogType="website"
         />
@@ -155,14 +157,14 @@ export default function Index() {
     <Layout showPulseSidebar={false}>
       <LandingPageTracker pageType="homepage" articlesViewed={sortedArticles.length} />
       <SEO
-        title="The Grid Nexus — Tech, Security & Gaming News"
-        description="Breaking technology news, cybersecurity analysis, and gaming guides. Expert coverage across tech, security, and gaming intelligence."
+        title={homeMeta.title}
+        description={homeMeta.description}
         canonical="https://thegridnexus.com/"
         ogType="website"
       />
       <SEOHead
-        title="Breaking Tech, Security & Gaming News — Expert Analysis"
-        description="Breaking technology news, cybersecurity analysis, and gaming guides. One hub for tech, security, and gaming intelligence."
+        title={homeMeta.title}
+        description={homeMeta.description}
         keywords={['tech news', 'cybersecurity', 'gaming news', 'technology', 'security threats', 'gaming industry']}
         url={typeof window !== 'undefined' ? window.location.href : ''}
         type="website"

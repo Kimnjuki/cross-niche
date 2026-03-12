@@ -9,6 +9,7 @@ import { Cpu } from 'lucide-react';
 import { Skeleton } from '@/components/ui/skeleton';
 import { SEOHead } from '@/components/seo/SEOHead';
 import { SEO } from '@/components/SEO';
+import { getPageMetadata } from '@/lib/seo/pageMetadata';
 import { Link } from 'react-router-dom';
 import { LandingPageTracker } from '@/components/analytics/LandingPageTracker';
 
@@ -19,19 +20,20 @@ export default function Tech() {
   const techArticles = techContent && techContent.length > 0
     ? mapContentToArticles(techContent)
     : mockArticles.filter(a => a.niche === 'tech');
+  const meta = getPageMetadata('/tech');
 
   return (
     <Layout>
       <LandingPageTracker pageType="category" articlesViewed={techArticles.length} />
       <SEO
-        title="Technology News | The Grid Nexus"
-        description="Breaking technology news covering AI, hardware, software, and industry analysis. Expert insights on tech innovations and digital transformation."
+        title={meta.title}
+        description={meta.description}
         canonical="https://thegridnexus.com/tech"
         ogType="website"
       />
       <SEOHead
-        title="Tech | The Grid Nexus"
-        description="Breaking technology news covering AI, hardware, software, and industry analysis from The Grid Nexus."
+        title={meta.title}
+        description={meta.description}
         url={typeof window !== 'undefined' ? `${window.location.origin}/tech` : '/tech'}
       />
       <div className="container mx-auto px-4 py-12">

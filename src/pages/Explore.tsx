@@ -10,6 +10,7 @@ import { mapContentToArticles } from '@/lib/contentMapper';
 import { ArticleGrid } from '@/components/articles/ArticleGrid';
 import { SEOHead } from '@/components/seo/SEOHead';
 import { SEO } from '@/components/SEO';
+import { getPageMetadata } from '@/lib/seo/pageMetadata';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Link } from 'react-router-dom';
 import { Archive, ChevronRight } from 'lucide-react';
@@ -42,17 +43,18 @@ export default function Explore() {
     );
   }
 
+  const meta = getPageMetadata('/explore');
   return (
     <Layout>
       <SEO
-        title="All Articles | The Grid Nexus"
-        description="Browse all tech, security, and gaming articles. Archive and full catalog for discoverability."
+        title={meta.title}
+        description={meta.description}
         canonical="https://thegridnexus.com/explore"
         ogType="website"
       />
       <SEOHead
-        title="All Articles | The Grid Nexus"
-        description="Browse all tech, security, and gaming articles. Archive and full catalog for discoverability."
+        title={meta.title}
+        description={meta.description}
         keywords={['all articles', 'archive', 'tech articles', 'security articles', 'gaming articles', 'blog archive']}
         url={typeof window !== 'undefined' ? window.location.href : ''}
         type="website"

@@ -12,6 +12,7 @@ import { Link } from 'react-router-dom';
 import { Skeleton } from '@/components/ui/skeleton';
 import { SEOHead } from '@/components/seo/SEOHead';
 import { SEO } from '@/components/SEO';
+import { getPageMetadata } from '@/lib/seo/pageMetadata';
 import { LandingPageTracker } from '@/components/analytics/LandingPageTracker';
 
 // Sample security ratings for Nexus Risk-to-Reward (nexus-001). Replace with Convex useQuery(api.securityRatings.list) when frontend uses Convex.
@@ -28,19 +29,20 @@ export default function Gaming() {
   const gamingArticles = gamingContent && gamingContent.length > 0
     ? mapContentToArticles(gamingContent)
     : mockArticles.filter(a => a.niche === 'gaming');
+  const meta = getPageMetadata('/gaming');
 
   return (
     <Layout>
       <LandingPageTracker pageType="category" articlesViewed={gamingArticles.length} />
       <SEO
-        title="Gaming News & Guides | The Grid Nexus"
-        description="Latest gaming news, release guides, and reviews. Stay ahead of the game with expert gaming coverage and esports analysis."
+        title={meta.title}
+        description={meta.description}
         canonical="https://thegridnexus.com/gaming"
         ogType="website"
       />
       <SEOHead
-        title="Gaming | The Grid Nexus"
-        description="Latest gaming news, release guides, and reviews. Stay ahead of the game with The Grid Nexus gaming coverage."
+        title={meta.title}
+        description={meta.description}
         url={typeof window !== 'undefined' ? `${window.location.origin}/gaming` : '/gaming'}
       />
       <div className="container mx-auto px-4 py-12">
