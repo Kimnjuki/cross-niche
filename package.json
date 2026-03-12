@@ -4,6 +4,9 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
+    "copy-assets": "node -e \"const fs=require('fs');if(fs.existsSync('assets')){fs.cpSync('assets','public/assets',{recursive:true});console.log('Assets copied to public/assets');}\"",
+    "predev": "npm run copy-assets",
+    "prebuild": "npm run copy-assets",
     "dev": "convex dev & vite",
     "build": "convex deploy && tsc && vite build",
     "preview": "vite preview",
