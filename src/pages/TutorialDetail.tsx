@@ -20,6 +20,7 @@ import {
 import { cn } from '@/lib/utils';
 import { useState } from 'react';
 import { mockTutorials, type Tutorial } from '@/data/tutorialsData';
+import { SEOHead } from '@/components/seo/SEOHead';
 
 const osIcons = {
   windows: Monitor,
@@ -48,6 +49,11 @@ export default function TutorialDetail() {
   if (!tutorial) {
     return (
       <Layout>
+        <SEOHead
+          title="Tutorial Not Found | The Grid Nexus"
+          description="The tutorial you're looking for doesn't exist."
+          noindex={true}
+        />
         <div className="container mx-auto px-4 py-16 text-center">
           <h1 className="text-4xl font-bold mb-4">Tutorial Not Found</h1>
           <p className="text-muted-foreground mb-8">The tutorial you're looking for doesn't exist.</p>

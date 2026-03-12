@@ -1,0 +1,5 @@
+# ads.txt - Authorized digital sellers for thegridnexus.com
+# See https://iabtechlab.com/ads-txt/ and Google AdSense help.
+# Publisher ID must match the client in index.html and src/lib/adsenseConfig.ts
+
+google.com, pub-9278124025449370, DIRECT, f08c47fec0942fa0

@@ -1,0 +1,91 @@
+{
+  "project_metadata": {
+    "name": "The Grid Nexus Optimization",
+    "domain": "thegridnexus.com",
+    "mission": "Dominate the intersection of Technology, Cybersecurity, and Gaming news.",
+    "frameworks": ["Next.js 14+", "Tailwind CSS", "Node.js", "TypeScript"],
+    "target_audience": ["Security Professionals", "Hardcore Gamers", "Tech Enthusiasts"]
+  },
+  "cursor_ai_behavior": {
+    "role": "Senior Full-Stack Architect & SEO Strategist",
+    "tone": "Technical, concise, and performance-obsessed",
+    "workflow_rules": [
+      "ALWAYS analyze the file structure before suggesting changes.",
+      "Use 'Nexus-Style' coding: modular components, strictly typed TypeScript, and mobile-first Tailwind classes.",
+      "When generating content or code, cross-reference the 'competitor_outperformance_plan' to ensure unique value.",
+      "For every new component, automatically generate a corresponding test file."
+    ]
+  },
+  "ai_implementation_roadmap": {
+    "phase_1_content_velocity": {
+      "objective": "Scale content production by 300% without quality loss",
+      "cursor_commands": {
+        "auto_summarize": "Create a server-side utility that uses OpenAI API to generate a 'TL;DR' bullet list and a 'Key Takeaways' box for every article based on content length.",
+        "smart_tagging": "Implement an NLP service (using libraries like 'natural' or external APIs) to scan article bodies and auto-assign tags like 'Zero-Day', 'Ransomware', or 'GPU' to boost internal linking."
+      }
+    },
+    "phase_2_nexus_intelligence": {
+      "objective": "Build the 'Nexus Brain' for user retention",
+      "features": [
+        {
+          "name": "Nexus Bot (Semantic Search)",
+          "tech": "Pinecone Vector DB + Vercel AI SDK",
+          "cursor_instruction": "Scaffold a chat interface component allowing users to query your article database (e.g., 'Is the new GTA 6 trailer safe from malware links?')."
+        },
+        {
+          "name": "Dynamic Personalization",
+          "tech": "Edge Middleware",
+          "cursor_instruction": "Write middleware that reads user cookies to detect 'interest_clusters' (e.g., Security vs. Gaming) and re-orders the homepage grid server-side."
+        }
+      ]
+    }
+  },
+  "seo_dominance_strategy": {
+    "technical_imperatives": {
+      "schema_automation": {
+        "instruction": "Automatically inject JSON-LD schema into the <head> of every page.",
+        "types": {
+          "NewsArticle": {
+            "trigger": "Default for all posts",
+            "fields": ["headline", "datePublished", "author", "publisher", "image"]
+          },
+          "LiveBlogPosting": {
+            "trigger": "If category == 'Live Coverage'",
+            "goal": "Trigger Google 'Live' Red Badge"
+          },
+          "TechArticle": {
+            "trigger": "If category == 'Guides' or 'Tutorials'",
+            "fields": ["proficiencyLevel", "dependencies"]
+          }
+        }
+      },
+      "core_web_vitals": {
+        "LCP_target": "< 0.8s",
+        "CLS_target": "0.00",
+        "cursor_check": "Before any pull request, check that all images use 'next/image' with appropriate 'sizes' props and 'priority' is set for above-the-fold content."
+      }
+    },
+    "traffic_growth_hacks": {
+      "google_discover_optimization": {
+        "instruction": "Ensure the OG:Image generation script creates 1200x675px images with high-contrast text overlays automatically.",
+        "tactic": "Trend-Jacking: If a keyword like 'RTX 5090' spikes, prioritize generating a 'Security Analysis' of that hardware."
+      }
+    }
+  },
+  "competitor_outperformance_plan": {
+    "competitor_matrix": [
+      { "name": "IGN", "weakness": "Lacks security context", "our_angle": "The 'Security-First' Game Review" },
+      { "name": "BleepingComputer", "weakness": "Poor UI/UX", "our_angle": "Cybersecurity news that looks beautiful and reads easily" },
+      { "name": "The Verge", "weakness": "Generalist", "our_angle": "Deep-dive technical specificity at the intersection of gaming/sec" }
+    ],
+    "winning_tactics": {
+      "speed_to_index": "Implement Google Indexing API to ping search engines immediately upon publishing 'Critical' alerts.",
+      "cross_pollination": "Every gaming article MUST have a 'Security Note' sidebar; every security article MUST mention relevant consumer tech."
+    }
+  },
+  "coding_guidelines": {
+    "accessibility": "Strict WCAG 2.1 AA compliance. All interactive elements must have aria-labels.",
+    "images": "All <img> tags must have dynamic alt text based on the article keywords.",
+    "performance": "No heavy client-side libraries (like Lodash) unless absolutely necessary. Prefer native ES6+."
+  }
+}
