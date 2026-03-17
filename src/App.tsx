@@ -1,4 +1,4 @@
-import { lazy, Suspense } from "react";
+import { lazy, Suspense, Component, type ReactNode } from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -11,6 +11,50 @@ import { GA4PageTracker } from "./components/analytics/GA4PageTracker";
 import { ThemeProvider } from "./components/theme/ThemeProvider";
 import { CanonicalLink } from "./components/seo/CanonicalLink";
 import { LoadingState } from "./components/LoadingState";
+
+/**
+ * Catches dynamic import (chunk) 404 errors that occur when the browser has
+ * cached the old index.html but a new deploy replaced the asset filenames.
+ * Triggers a single hard-reload to fetch fresh assets.
+ */
+class ChunkErrorBoundary extends Component<
+  { children: ReactNode },
+  { hasError: boolean }
+> {
+  constructor(props: { children: ReactNode }) {
+    super(props);
+    this.state = { hasError: false };
+  }
+
+  static getDerivedStateFromError(error: Error) {
+    const isChunk =
+      error.message?.includes('Failed to fetch dynamically imported module') ||
+      error.message?.includes('Importing a module script failed') ||
+      error.message?.includes('error loading dynamically imported module');
+    return { hasError: isChunk };
+  }
+
+  componentDidCatch(error: Error) {
+    const isChunk =
+      error.message?.includes('Failed to fetch dynamically imported module') ||
+      error.message?.includes('Importing a module script failed') ||
+      error.message?.includes('error loading dynamically imported module');
+    if (isChunk) {
+      const RELOAD_KEY = '__gnx_chunk_reload__';
+      if (!sessionStorage.getItem(RELOAD_KEY)) {
+        sessionStorage.setItem(RELOAD_KEY, '1');
+        window.location.reload();
+      }
+    }
+  }
+
+  render() {
+    if (this.state.hasError) {
+      return <LoadingState />;
+    }
+    return this.props.children;
+  }
+}
 
 // Lazy-loaded routes for better initial load and smaller bundles
 const Index = lazy(() => import("./pages/Index"));
@@ -62,6 +106,7 @@ const App = () => (
                 <Toaster />
                 <Sonner />
                 <GA4PageTracker />
+                <ChunkErrorBoundary>
                 <Suspense fallback={<LoadingState />}>
                   <Routes>
                     <Route path="/" element={<Index />} />
@@ -111,6 +156,7 @@ const App = () => (
                     <Route path="*" element={<NotFound />} />
                   </Routes>
                 </Suspense>
+                </ChunkErrorBoundary>
               </TooltipProvider>
             </AuthProvider>
           </ThemeProvider>

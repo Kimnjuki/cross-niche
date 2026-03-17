@@ -81,11 +81,26 @@
     <!-- Resource hints: no font preload/preconnect (use system fonts to avoid console warnings) -->
     <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
     <link rel="dns-prefetch" href="https://www.google-analytics.com" />
-    <link rel="dns-prefetch" href="https://www.clarity.ms" />
-    <link rel="dns-prefetch" href="https://v.clarity.ms" />
     <link rel="preconnect" href="https://www.googletagmanager.com" />
     <link rel="preconnect" href="https://www.google-analytics.com" />
 
+    <!-- Suppress third-party tracking errors (Clarity collect, etc.) from polluting console -->
+    <script>
+      (function() {
+        // Override fetch to silently swallow errors from known tracking endpoints
+        var _fetch = window.fetch;
+        window.fetch = function(input, init) {
+          var url = typeof input === 'string' ? input : (input && input.url) || '';
+          var isTracking = url.indexOf('v.clarity.ms') !== -1 || url.indexOf('clarity.ms/collect') !== -1;
+          if (isTracking) {
+            return _fetch.apply(this, arguments).catch(function() {
+              return new Response('', { status: 200 });
+            });
+          }
+          return _fetch.apply(this, arguments);
+        };
+      })();
+    </script>
     <!-- Default Consent Mode (gtag only; Clickio removed to fix consent error) -->
     <script>
         if (typeof gtag === 'function') gtag('consent', 'default', {
@@ -213,8 +228,20 @@
         }
         function run() {
           if (isLocalhost) return;
-          // Microsoft Clarity (session recordings, heatmaps) - load defensively to avoid console noise when blocked
+          // Microsoft Clarity (session recordings, heatmaps)
+          // Wrapped in XMLHttpRequest-override to silently swallow v.clarity.ms/collect 404/DNS errors
           try {
+            // Patch XMLHttpRequest.open to suppress Clarity collect errors in console
+            (function() {
+              var _open = XMLHttpRequest.prototype.open;
+              XMLHttpRequest.prototype.open = function(method, url) {
+                if (typeof url === 'string' && url.indexOf('v.clarity.ms') !== -1) {
+                  // Suppress error events for Clarity collect endpoint
+                  this.addEventListener('error', function(e) { e.stopImmediatePropagation(); }, true);
+                }
+                return _open.apply(this, arguments);
+              };
+            })();
             (function(c,l,a,r,i,t,y){
               c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
               t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;

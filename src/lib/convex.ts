@@ -6,4 +6,8 @@ if (!convexUrl) {
   throw new Error("VITE_CONVEX_URL is not set");
 }
 
-export const convex = new ConvexReactClient(convexUrl);
+export const convex = new ConvexReactClient(convexUrl, {
+  // Suppress verbose WebSocket reconnect logs in production
+  // (code 1006 / InactiveServer disconnects are normal on the free tier)
+  verbose: import.meta.env.DEV,
+});

@@ -1,7 +1,7 @@
 # Stage 1: Build — use Node + npm (package-lock.json). Do not use Bun in Docker.
 # Note: Coolify may inject ARGs (e.g. production_deploy_key). Do not add secrets here;
 # set VITE_* and other build args in Coolify Build Time Variables only.
-# Build version: 551f8c0 - React hooks error #300 FIXED - ThemeToggle updated
+# Build version: fix-chunk-404-clarity-convex-ws - chunk reload, clarity suppress, convex 1.33.1
 FROM node:22-alpine AS build-stage
 
 WORKDIR /app
