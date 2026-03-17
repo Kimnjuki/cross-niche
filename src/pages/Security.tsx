@@ -16,7 +16,7 @@ import { LandingPageTracker } from '@/components/analytics/LandingPageTracker';
 
 export default function Security() {
   const [viewMode, setViewMode] = useState<'grid' | 'list' | 'compact'>('grid');
-  const { data: securityContent, isLoading } = useContentByNicheId(2, 20);
+  const { data: securityContent, isLoading } = useContentByNicheId(2, 50);
 
   const securityArticles = securityContent && securityContent.length > 0
     ? mapContentToArticles(securityContent)

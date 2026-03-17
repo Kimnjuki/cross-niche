@@ -15,7 +15,7 @@ import { LandingPageTracker } from '@/components/analytics/LandingPageTracker';
 
 export default function Tech() {
   const [viewMode, setViewMode] = useState<'grid' | 'list' | 'compact'>('grid');
-  const { data: techContent, isLoading } = useContentByNicheId(1, 20);
+  const { data: techContent, isLoading } = useContentByNicheId(1, 50);
 
   const techArticles = techContent && techContent.length > 0
     ? mapContentToArticles(techContent)

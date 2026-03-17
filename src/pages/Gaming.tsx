@@ -24,7 +24,7 @@ const SAMPLE_SECURITY_RATINGS = [
 
 export default function Gaming() {
   const [viewMode, setViewMode] = useState<'grid' | 'list' | 'compact'>('grid');
-  const { data: gamingContent, isLoading } = useContentByNicheId(3, 20);
+  const { data: gamingContent, isLoading } = useContentByNicheId(3, 50);
 
   const gamingArticles = gamingContent && gamingContent.length > 0
     ? mapContentToArticles(gamingContent)

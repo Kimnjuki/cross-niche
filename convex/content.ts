@@ -278,7 +278,7 @@ export const getAllPublishedContent = query({
 });
 
 /**
- * Get content by niche (excludes deleted).
+ * Get content by niche name (tech/security/gaming). Filters by contentType.
  */
 export const getContentByNiche = query({
   args: {
@@ -287,12 +287,23 @@ export const getContentByNiche = query({
   },
   handler: async (ctx, args) => {
     const limit = args.limit ?? 20;
+    const n = args.niche.toLowerCase();
+    const techTypes = new Set(["technology", "tech", "article", "news", "guide", "opinion", "review", "feature", "tutorial"]);
+    const matchesNiche = (d: { contentType?: string }) => {
+      const ct = (d.contentType ?? "").toLowerCase();
+      if (n === "tech" || n === "technology") return techTypes.has(ct) || !ct;
+      if (n === "security" || n === "cybersecurity") return ct === "security" || ct === "cybersecurity";
+      if (n === "gaming" || n === "games") return ct === "gaming" || ct === "games";
+      return true;
+    };
     const docs = await ctx.db
       .query("content")
       .withIndex("by_status_published_at", (q) => q.eq("status", "published"))
       .order("desc")
-      .take(limit * 3);
-    return docs.filter((d) => d.isDeleted !== true).slice(0, limit);
+      .take(limit * 5);
+    return docs
+      .filter((d) => d.isDeleted !== true && matchesNiche(d))
+      .slice(0, limit);
   },
 });
 
@@ -306,7 +317,7 @@ export const getByNicheId = query({
     limit: v.optional(v.number()),
   },
   handler: async (ctx, args) => {
-    const limit = args.limit ?? 10;
+    const limit = args.limit ?? 30;
     const techTypes = ["technology", "tech", "article", "news", "guide", "opinion", "review", "feature", "tutorial"];
     const matchesNiche = (d: { contentType?: string }) => {
       const ct = (d.contentType ?? "").toLowerCase();

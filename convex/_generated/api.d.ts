@@ -25,6 +25,7 @@ import type * as guides from "../guides.js";
 import type * as import_ from "../import.js";
 import type * as ingest from "../ingest.js";
 import type * as insertArticlesAsContent from "../insertArticlesAsContent.js";
+import type * as insertBatchMay2025 from "../insertBatchMay2025.js";
 import type * as insertFeaturedArticle from "../insertFeaturedArticle.js";
 import type * as linkIntelligence from "../linkIntelligence.js";
 import type * as liveWire from "../liveWire.js";
@@ -81,6 +82,7 @@ declare const fullApi: ApiFromModules<{
   import: typeof import_;
   ingest: typeof ingest;
   insertArticlesAsContent: typeof insertArticlesAsContent;
+  insertBatchMay2025: typeof insertBatchMay2025;
   insertFeaturedArticle: typeof insertFeaturedArticle;
   linkIntelligence: typeof linkIntelligence;
   liveWire: typeof liveWire;
