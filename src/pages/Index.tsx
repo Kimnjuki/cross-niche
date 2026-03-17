@@ -73,7 +73,7 @@ function safeArticleId(article: Article | null | undefined): string {
 export default function Index() {
   const navigate = useNavigate();
   // Same source as Explore: Convex content table via listAll (full extent)
-  const { data: allContent, isLoading: loadingPublished } = useAllPublishedContent(80);
+  const { data: allContent, isLoading: loadingPublished } = useAllPublishedContent(150);
   const { data: latest, isLoading: loadingLatest } = useLatestContent(10);
   const { data: trending, isLoading: loadingTrending } = useTrendingContent(6);
   const { data: feeds } = useFeeds();

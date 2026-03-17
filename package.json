@@ -11,7 +11,8 @@
     "build": "convex deploy && tsc && vite build",
     "preview": "vite preview",
     "deploy": "npm run build && vercel --prod",
-    "seed": "tsx scripts/seed-convex.ts"
+    "seed": "tsx scripts/seed-convex.ts",
+    "insert-articles": "npx convex run insertArticlesAsContent:insertArticlesAsContent"
   },
   "dependencies": {
     "@auth0/auth0-react": "^2.15.0",
