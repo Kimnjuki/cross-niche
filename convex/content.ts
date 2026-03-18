@@ -299,7 +299,6 @@ export const getContentByNiche = query({
       const ct = (contentType ?? "").toLowerCase();
       if (niche === "security") return ct === "security";
       if (niche === "gaming") return ct === "gaming";
-      // innovate / tech: everything that isn't security or gaming
       return innovateTypes.has(ct) || (ct !== "security" && ct !== "gaming");
     };
 
@@ -324,7 +323,7 @@ export const getByNicheId = query({
     limit: v.optional(v.number()),
   },
   handler: async (ctx, args) => {
-    const limit = args.limit ?? 10;
+    const limit = args.limit ?? 30;
     const techTypes = ["technology", "tech", "article", "news", "guide", "opinion", "review", "feature", "tutorial"];
     const matchesNiche = (d: { contentType?: string }) => {
       const ct = (d.contentType ?? "").toLowerCase();

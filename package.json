@@ -11,7 +11,8 @@
     "build": "convex deploy && tsc && vite build",
     "preview": "vite preview",
     "deploy": "npm run build && vercel --prod",
-    "seed": "tsx scripts/seed-convex.ts"
+    "seed": "tsx scripts/seed-convex.ts",
+    "insert-articles": "npx convex run insertArticlesAsContent:insertArticlesAsContent"
   },
   "dependencies": {
     "@auth0/auth0-react": "^2.15.0",
@@ -53,7 +54,7 @@
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "cmdk": "^1.1.1",
-    "convex": "^1.31.6",
+    "convex": "^1.33.1",
     "date-fns": "^3.6.0",
     "embla-carousel-react": "^8.6.0",
     "express": "^5.2.1",

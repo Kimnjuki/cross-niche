@@ -52,7 +52,8 @@ export function loadExternalScript(
 }
 
 /**
- * Initialize error handling for external scripts
+ * Initialize error handling for external scripts.
+ * Also handles stale-cache chunk 404s by reloading once after a new deploy.
  */
 export function initExternalScriptErrorHandling() {
   // Handle unhandled script errors
@@ -66,9 +67,33 @@ export function initExternalScriptErrorHandling() {
     }
   }, true);
 
-  // Handle promise rejections from scripts
+  // Handle promise rejections — specifically catch stale Vite chunk 404s
+  // (e.g. "Failed to fetch dynamically imported module: .../assets/Article-XYZ.js")
+  // This happens when the browser has cached the old index.html but assets were
+  // replaced by a new deploy. A single hard-reload fixes it.
   window.addEventListener('unhandledrejection', (event) => {
-    // Suppress external script promise rejections in production
+    const reason = event.reason;
+    const isChunkLoadError =
+      reason instanceof TypeError &&
+      typeof reason.message === 'string' &&
+      (reason.message.includes('Failed to fetch dynamically imported module') ||
+        reason.message.includes('Importing a module script failed') ||
+        reason.message.includes('error loading dynamically imported module'));
+
+    if (isChunkLoadError) {
+      // Prevent the error from surfacing in the console / error boundary
+      event.preventDefault();
+      // Only reload once per session to avoid infinite loops
+      const RELOAD_KEY = '__gnx_chunk_reload__';
+      if (!sessionStorage.getItem(RELOAD_KEY)) {
+        sessionStorage.setItem(RELOAD_KEY, '1');
+        // Hard reload bypasses cache and fetches fresh index.html + assets
+        window.location.reload();
+      }
+      return;
+    }
+
+    // Suppress all other unhandled rejections in production
     if (!import.meta.env.DEV) {
       event.preventDefault();
     }

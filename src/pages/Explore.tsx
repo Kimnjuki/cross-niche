@@ -18,7 +18,7 @@ import { useState, useEffect } from 'react';
 
 export default function Explore() {
   const [isClient, setIsClient] = useState(false);
-  const { data: allContent, isLoading } = useAllPublishedContent(10);
+  const { data: allContent, isLoading } = useAllPublishedContent(200);
   const articles = allContent ? mapContentToArticles(allContent) : [];
 
   useEffect(() => {
