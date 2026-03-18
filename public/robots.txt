@@ -1,12 +1,32 @@
 User-agent: *
 Allow: /
-Disallow: /api/
+
+# Private / auth pages
 Disallow: /admin/
+Disallow: /admin
 Disallow: /profile
+Disallow: /profile/
 Disallow: /auth
 Disallow: /auth/
+Disallow: /signin
+Disallow: /signup
+Disallow: /settings
+Disallow: /billing
+Disallow: /subscription/management
+
+# Internal / dev pages (not for indexing)
+Disallow: /simple
+Disallow: /enhanced
+Disallow: /enhanced-simple
+Disallow: /test-features
+Disallow: /newsletter/verify
+
+# Search (duplicate content risk)
+Disallow: /search
+Disallow: /search/
+
+# WordPress scan paths (not applicable but block scanners)
 Disallow: /wp-admin/
 Disallow: /wp-includes/
-Disallow: /search/
 
 Sitemap: https://thegridnexus.com/sitemap.xml

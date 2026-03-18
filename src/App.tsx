@@ -91,6 +91,22 @@ const LiveUpdatesFeed = lazy(() => import("./components/live/LiveUpdatesFeed"));
 const SignInSignUp = lazy(() => import("./components/auth/SignInSignUp"));
 const TestFeatures = lazy(() => import("./pages/TestFeatures"));
 const NewsletterVerify = lazy(() => import("./pages/NewsletterVerify"));
+const About = lazy(() => import("./pages/About"));
+const Contact = lazy(() => import("./pages/Contact"));
+const Privacy = lazy(() => import("./pages/Privacy"));
+const Terms = lazy(() => import("./pages/Terms"));
+const Editorial = lazy(() => import("./pages/Editorial"));
+const Media = lazy(() => import("./pages/Media"));
+const Disclosure = lazy(() => import("./pages/Disclosure"));
+const Reviews = lazy(() => import("./pages/Reviews"));
+const Startups = lazy(() => import("./pages/Startups"));
+const QualityGuidelines = lazy(() => import("./pages/QualityGuidelines"));
+const ContentPolicy = lazy(() => import("./pages/ContentPolicy"));
+const Sitemap = lazy(() => import("./pages/Sitemap"));
+const NexusIntersection = lazy(() => import("./pages/NexusIntersectionEnhanced"));
+const Author = lazy(() => import("./pages/Author"));
+const Bookmarks = lazy(() => import("./pages/Bookmarks"));
+const Profile = lazy(() => import("./pages/Profile"));
 
 const queryClient = new QueryClient();
 
@@ -152,6 +168,25 @@ const App = () => (
                     <Route path="/signup" element={<SignInSignUp />} />
                     <Route path="/newsletter/verify" element={<NewsletterVerify />} />
                     <Route path="/test-features" element={<TestFeatures />} />
+                    {/* Company / legal pages */}
+                    <Route path="/about" element={<About />} />
+                    <Route path="/contact" element={<Contact />} />
+                    <Route path="/privacy" element={<Privacy />} />
+                    <Route path="/terms" element={<Terms />} />
+                    <Route path="/editorial" element={<Editorial />} />
+                    <Route path="/media" element={<Media />} />
+                    <Route path="/disclosure" element={<Disclosure />} />
+                    <Route path="/reviews" element={<Reviews />} />
+                    <Route path="/startups" element={<Startups />} />
+                    <Route path="/quality-guidelines" element={<QualityGuidelines />} />
+                    <Route path="/content-policy" element={<ContentPolicy />} />
+                    {/* Utility pages */}
+                    <Route path="/sitemap" element={<Sitemap />} />
+                    <Route path="/nexus-intersection" element={<NexusIntersection />} />
+                    {/* User account pages */}
+                    <Route path="/author/:authorSlug" element={<Author />} />
+                    <Route path="/bookmarks" element={<Bookmarks />} />
+                    <Route path="/profile" element={<Profile />} />
                     {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                     <Route path="*" element={<NotFound />} />
                   </Routes>
