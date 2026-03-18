@@ -26,9 +26,11 @@ export default function Gaming() {
   const [viewMode, setViewMode] = useState<'grid' | 'list' | 'compact'>('grid');
   const { data: gamingContent, isLoading } = useContentByFeed('play', 30);
 
-  const gamingArticles = gamingContent && gamingContent.length > 0
+  const gamingArticles = !isLoading && gamingContent && gamingContent.length > 0
     ? mapContentToArticles(gamingContent)
-    : mockArticles.filter(a => a.niche === 'gaming');
+    : !isLoading
+      ? mockArticles.filter(a => a.niche === 'gaming')
+      : [];
   const meta = getPageMetadata('/gaming');
 
   return (

@@ -18,9 +18,11 @@ export default function Security() {
   const [viewMode, setViewMode] = useState<'grid' | 'list' | 'compact'>('grid');
   const { data: securityContent, isLoading } = useContentByFeed('secured', 30);
 
-  const securityArticles = securityContent && securityContent.length > 0
+  const securityArticles = !isLoading && securityContent && securityContent.length > 0
     ? mapContentToArticles(securityContent)
-    : mockArticles.filter(a => a.niche === 'security');
+    : !isLoading
+      ? mockArticles.filter(a => a.niche === 'security')
+      : [];
   
   const highImpact = securityArticles.filter(a => a.impactLevel === 'high').length;
   const mediumImpact = securityArticles.filter(a => a.impactLevel === 'medium').length;

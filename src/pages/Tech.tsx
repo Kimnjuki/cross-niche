@@ -17,9 +17,11 @@ export default function Tech() {
   const [viewMode, setViewMode] = useState<'grid' | 'list' | 'compact'>('grid');
   const { data: techContent, isLoading } = useContentByFeed('innovate', 30);
 
-  const techArticles = techContent && techContent.length > 0
+  const techArticles = !isLoading && techContent && techContent.length > 0
     ? mapContentToArticles(techContent)
-    : mockArticles.filter(a => a.niche === 'tech');
+    : !isLoading
+      ? mockArticles.filter(a => a.niche === 'tech')
+      : [];
   const meta = getPageMetadata('/tech');
 
   return (
