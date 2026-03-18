@@ -1,0 +1,20 @@
+{
+  "description": "Topic clusters for hub-and-spoke internal linking. Each cluster = pillar page + supporting articles.",
+  "clusters": {
+    "ai_ml": {
+      "pillar": "/tech?q=artificial+intelligence",
+      "keywords": ["artificial intelligence", "machine learning", "AI trends"],
+      "spokes": ["/article/grok-ai-market-share-growth-2026", "/article/claude-ai-weaponized-espionage-2026"]
+    },
+    "cybersecurity": {
+      "pillar": "/security",
+      "keywords": ["cybersecurity", "ransomware", "zero-day"],
+      "spokes": ["/article/global-cybersecurity-outlook-2026-ai-risks", "/article/sandworm-hackers-poland-power-grid-2026", "/article/microsoft-patch-tuesday-6-zero-days-february-2026"]
+    },
+    "gaming": {
+      "pillar": "/gaming",
+      "keywords": ["gaming news", "game release", "PS5"],
+      "spokes": ["/article/high-on-life-2-release-2026", "/article/resident-evil-requiem-launch-2026", "/article/nioh-3-release-ps5-2026"]
+    }
+  }
+}

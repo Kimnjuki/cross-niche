@@ -1,0 +1,13 @@
+{
+  "description": "Best pages to use as link targets in outreach. Include pitch angle for each.",
+  "targets": [
+    {
+      "url": "https://thegridnexus.com/security",
+      "pitch": "Comprehensive cybersecurity news and threat intelligence"
+    },
+    {
+      "url": "https://thegridnexus.com/breach-sim",
+      "pitch": "Interactive breach simulation tool for security training"
+    }
+  ]
+}

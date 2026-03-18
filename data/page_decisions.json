@@ -1,0 +1,4 @@
+{
+  "description": "For each old page: update | consolidate | delete. If consolidate, set merge_target.",
+  "decisions": []
+}

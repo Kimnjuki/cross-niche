@@ -140,10 +140,10 @@ export function useVisibleContent(limit = 24) {
 }
 
 // Fetch content by feed slug (or mock when Convex not configured)
-export function useContentByFeed(feedSlug: string, limit = 20) {
+export function useContentByFeed(feedSlug: string, limit = 20): { data: ContentItem[]; isLoading: boolean } {
   const isDisabled = useConvexDisabled();
   const cacheKey = `content-by-feed-${feedSlug}-${limit}`;
-  const cachedData = contentCache.get(cacheKey);
+  const cachedData = contentCache.get<ContentItem[]>(cacheKey);
   const rows = useQuery(api.content.getContentByFeed, isDisabled ? 'skip' : { feedSlug, limit });
 
   if (cachedData && !isDisabled) {
@@ -151,11 +151,10 @@ export function useContentByFeed(feedSlug: string, limit = 20) {
   }
 
   const feedNiche = feedSlug === 'secured' ? 'security' : feedSlug === 'play' ? 'gaming' : 'tech';
-  const data = isDisabled
+  const data: ContentItem[] = isDisabled
     ? articlesToContentItems(mockArticles.filter((a) => a.niche === feedNiche).slice(0, limit))
     : toContentItems(Array.isArray(rows) ? rows : []);
   
-  // Cache the result
   if (data && !isDisabled) {
     contentCache.set(cacheKey, data, 30000);
   }

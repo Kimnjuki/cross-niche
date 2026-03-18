@@ -1,0 +1,4 @@
+{
+  "description": "Track outreach: domain, contact, date_sent, status (sent|replied|link_acquired|declined), type (brand_mention_reclaim|link_intersect)",
+  "entries": []
+}

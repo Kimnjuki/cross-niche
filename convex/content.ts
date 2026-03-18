@@ -278,7 +278,8 @@ export const getAllPublishedContent = query({
 });
 
 /**
- * Get content by niche (excludes deleted).
+ * Get content by niche (excludes deleted). Filters by contentType to ensure
+ * correct routing: security → secured, gaming → play, everything else → innovate.
  */
 export const getContentByNiche = query({
   args: {
@@ -287,12 +288,29 @@ export const getContentByNiche = query({
   },
   handler: async (ctx, args) => {
     const limit = args.limit ?? 20;
+    const niche = args.niche.toLowerCase();
+
+    const innovateTypes = new Set([
+      "technology", "tech", "article", "news", "guide",
+      "opinion", "review", "feature", "tutorial",
+    ]);
+
+    const matchesNiche = (contentType: string | undefined) => {
+      const ct = (contentType ?? "").toLowerCase();
+      if (niche === "security") return ct === "security";
+      if (niche === "gaming") return ct === "gaming";
+      // innovate / tech: everything that isn't security or gaming
+      return innovateTypes.has(ct) || (ct !== "security" && ct !== "gaming");
+    };
+
     const docs = await ctx.db
       .query("content")
       .withIndex("by_status_published_at", (q) => q.eq("status", "published"))
       .order("desc")
-      .take(limit * 3);
-    return docs.filter((d) => d.isDeleted !== true).slice(0, limit);
+      .take(limit * 5);
+    return docs
+      .filter((d) => d.isDeleted !== true && matchesNiche(d.contentType))
+      .slice(0, limit);
   },
 });
 
@@ -365,7 +383,9 @@ export const listFeeds = query({
 });
 
 /**
- * Get content by feed slug (excludes deleted; only recent by _creationTime).
+ * Get content by feed slug via the contentFeeds join table.
+ * Falls back to contentType-based filtering when the feed has no linked rows yet
+ * (i.e. before setupFeedsAndRouting has been run).
  */
 export const getContentByFeed = query({
   args: {
@@ -373,15 +393,52 @@ export const getContentByFeed = query({
     limit: v.optional(v.number()),
   },
   handler: async (ctx, args) => {
-    const limit = args.limit ?? 10;
-    const cutoff = getCreationTimeCutoff();
+    const limit = args.limit ?? 20;
+
+    // Resolve feed record
+    const feed = await ctx.db
+      .query("feeds")
+      .withIndex("by_slug", (q) => q.eq("slug", args.feedSlug))
+      .first();
+
+    if (feed) {
+      // Primary path: use contentFeeds join table
+      const joins = await ctx.db
+        .query("contentFeeds")
+        .withIndex("by_feed", (q) => q.eq("feedId", feed._id))
+        .collect();
+
+      if (joins.length > 0) {
+        const contentDocs = await Promise.all(joins.map((j) => ctx.db.get(j.contentId)));
+        return contentDocs
+          .filter((d): d is NonNullable<typeof d> =>
+            d !== null && d.status === "published" && d.isDeleted !== true
+          )
+          .sort((a, b) => (b.publishedAt ?? 0) - (a.publishedAt ?? 0))
+          .slice(0, limit);
+      }
+    }
+
+    // Fallback: filter by contentType when feed/links not yet seeded
+    const innovateTypes = new Set([
+      "technology", "tech", "article", "news", "guide",
+      "opinion", "review", "feature", "tutorial",
+    ]);
+
+    const matchesFeed = (contentType: string | undefined) => {
+      const ct = (contentType ?? "").toLowerCase();
+      if (args.feedSlug === "secured") return ct === "security";
+      if (args.feedSlug === "play") return ct === "gaming";
+      return innovateTypes.has(ct) || (ct !== "security" && ct !== "gaming");
+    };
+
     const docs = await ctx.db
       .query("content")
       .withIndex("by_status_published_at", (q) => q.eq("status", "published"))
       .order("desc")
-      .take(limit * 3);
+      .take(limit * 5);
     return docs
-      .filter((d) => d.isDeleted !== true && d._creationTime >= cutoff)
+      .filter((d) => d.isDeleted !== true && matchesFeed(d.contentType))
       .slice(0, limit);
   },
 });
