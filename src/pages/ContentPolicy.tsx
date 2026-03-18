@@ -359,7 +359,7 @@ export default function ContentPolicy() {
                   Report Content Issue
                 </Link>
                 <Link 
-                  to="/feedback" 
+                  to="/contact" 
                   className="inline-flex items-center gap-2 text-sm text-nexus-blue hover:underline"
                 >
                   <Users className="w-4 h-4" />

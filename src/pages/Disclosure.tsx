@@ -29,8 +29,10 @@ export default function Disclosure() {
               <CardContent className="p-6">
                 <h2 className="font-display font-semibold text-xl mb-4">Our Commitment to Transparency</h2>
                 <p className="text-muted-foreground">
-                  At NexusMedia, we believe in complete transparency with our readers. This disclosure 
+                  At The Grid Nexus, we believe in complete transparency with our readers. This disclosure
                   explains our affiliate relationships and how we earn revenue while maintaining editorial independence.
+                  In accordance with FTC guidelines, we disclose all material connections between The Grid Nexus
+                  and any brands, products, or services we mention.
                 </p>
               </CardContent>
             </Card>

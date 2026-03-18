@@ -26,8 +26,9 @@ export default function Privacy() {
               <CardContent className="p-6">
                 <h2 className="font-display font-semibold text-xl mb-4">Our Commitment to Your Privacy</h2>
                 <p className="text-muted-foreground">
-                  At NexusMedia, we take your privacy seriously. This Privacy Policy explains how we collect, 
+                  At The Grid Nexus, we take your privacy seriously. This Privacy Policy explains how we collect,
                   use, disclose, and safeguard your information when you visit our website and use our services.
+                  This policy applies to all visitors and registered users of thegridnexus.com.
                 </p>
                 <p className="text-sm text-muted-foreground mt-4">
                   Last updated: {new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
@@ -141,16 +142,25 @@ export default function Privacy() {
             <section>
               <h2 className="font-display font-semibold text-2xl mb-4">Your Rights and Choices</h2>
               <p className="text-muted-foreground mb-4">
-                You have the right to:
+                Depending on your location, you may have rights under applicable data protection laws,
+                including the <strong>General Data Protection Regulation (GDPR)</strong> for users in the
+                European Economic Area, and the <strong>California Consumer Privacy Act (CCPA)</strong> for
+                California residents. These rights include:
               </p>
               <ul className="list-disc list-inside text-muted-foreground space-y-2">
-                <li>Access and receive a copy of your personal data</li>
-                <li>Rectify inaccurate or incomplete information</li>
-                <li>Request deletion of your personal data</li>
-                <li>Object to processing of your personal data</li>
-                <li>Withdraw consent at any time</li>
-                <li>Opt-out of marketing communications</li>
+                <li><strong>Right of Access:</strong> Request a copy of the personal data we hold about you</li>
+                <li><strong>Right to Rectification:</strong> Correct inaccurate or incomplete information</li>
+                <li><strong>Right to Erasure ("Right to be Forgotten"):</strong> Request deletion of your personal data</li>
+                <li><strong>Right to Object:</strong> Object to certain types of processing</li>
+                <li><strong>Right to Withdraw Consent:</strong> Withdraw consent at any time where processing is based on consent</li>
+                <li><strong>Right to Opt-Out (CCPA):</strong> California residents may opt out of the sale of personal information</li>
+                <li><strong>Right to Non-Discrimination:</strong> We will not discriminate against you for exercising your privacy rights</li>
               </ul>
+              <p className="text-muted-foreground mt-4">
+                To exercise any of these rights, please contact us at{' '}
+                <a href="mailto:kimnjuki2@gmail.com" className="text-primary hover:underline">kimnjuki2@gmail.com</a>.
+                We will respond to verified requests within 30 days.
+              </p>
             </section>
 
             <section>
@@ -181,10 +191,18 @@ export default function Privacy() {
 
             <section>
               <h2 className="font-display font-semibold text-2xl mb-4">Contact Us</h2>
-              <p className="text-muted-foreground">
-                If you have any questions about this Privacy Policy, please contact us through our 
-                <a href="/contact" className="text-primary hover:underline ml-1">contact page</a>.
+              <p className="text-muted-foreground mb-2">
+                If you have any questions about this Privacy Policy or wish to exercise your data rights,
+                please contact us:
               </p>
+              <ul className="list-none text-muted-foreground space-y-1">
+                <li><strong>Email:</strong>{' '}
+                  <a href="mailto:kimnjuki2@gmail.com" className="text-primary hover:underline">kimnjuki2@gmail.com</a>
+                </li>
+                <li><strong>Website:</strong>{' '}
+                  <a href="/contact" className="text-primary hover:underline">thegridnexus.com/contact</a>
+                </li>
+              </ul>
             </section>
           </div>
         </div>

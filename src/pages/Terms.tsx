@@ -26,9 +26,10 @@ export default function Terms() {
               <CardContent className="p-6">
                 <h2 className="font-display font-semibold text-xl mb-4">Agreement to Terms</h2>
                 <p className="text-muted-foreground">
-                  By accessing and using NexusMedia ("the Service"), you accept and agree to be bound by 
-                  the terms and provision of this agreement. If you do not agree to abide by the above, 
-                  please do not use this service.
+                  By accessing and using The Grid Nexus ("the Service", "we", "us", or "our"), you accept
+                  and agree to be bound by the terms and provisions of this agreement. If you do not agree
+                  to abide by these terms, please do not use this service. These Terms of Service apply to
+                  all visitors and users of thegridnexus.com.
                 </p>
                 <p className="text-sm text-muted-foreground mt-4">
                   Last updated: {new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
@@ -42,8 +43,8 @@ export default function Terms() {
                 <h2 className="font-display font-semibold text-2xl">Use License</h2>
               </div>
               <p className="text-muted-foreground mb-4">
-                Permission is granted to temporarily access the materials on NexusMedia's website for personal, 
-                non-commercial transitory viewing only. This is the grant of a license, not a transfer of title, 
+                Permission is granted to temporarily access the materials on The Grid Nexus website for personal,
+                non-commercial transitory viewing only. This is the grant of a license, not a transfer of title,
                 and under this license you may not:
               </p>
               <ul className="list-disc list-inside text-muted-foreground space-y-2">
@@ -97,10 +98,10 @@ export default function Terms() {
             <section>
               <h2 className="font-display font-semibold text-2xl mb-4">Intellectual Property</h2>
               <p className="text-muted-foreground">
-                The Service and its original content, features, and functionality are and will remain the exclusive 
-                property of NexusMedia and its licensors. The Service is protected by copyright, trademark, and other 
-                laws. Our trademarks and trade dress may not be used in connection with any product or service without 
-                our prior written consent.
+                The Service and its original content, features, and functionality are and will remain the exclusive
+                property of The Grid Nexus and its licensors. The Service is protected by copyright, trademark,
+                and other applicable laws. Our trademarks and trade dress may not be used in connection with any
+                product or service without our prior written consent.
               </p>
             </section>
 
@@ -121,19 +122,20 @@ export default function Terms() {
             <section>
               <h2 className="font-display font-semibold text-2xl mb-4">Limitation of Liability</h2>
               <p className="text-muted-foreground">
-                In no event shall NexusMedia, nor its directors, employees, partners, agents, suppliers, or affiliates, 
-                be liable for any indirect, incidental, special, consequential, or punitive damages, including without 
-                limitation, loss of profits, data, use, goodwill, or other intangible losses, resulting from your use 
-                of the Service.
+                In no event shall The Grid Nexus, nor its directors, employees, partners, agents, suppliers, or
+                affiliates, be liable for any indirect, incidental, special, consequential, or punitive damages,
+                including without limitation, loss of profits, data, use, goodwill, or other intangible losses,
+                resulting from your use of the Service.
               </p>
             </section>
 
             <section>
               <h2 className="font-display font-semibold text-2xl mb-4">Governing Law</h2>
               <p className="text-muted-foreground">
-                These Terms shall be interpreted and governed by the laws of the jurisdiction in which NexusMedia operates, 
-                without regard to its conflict of law provisions. Our failure to enforce any right or provision of these 
-                Terms will not be considered a waiver of those rights.
+                These Terms shall be interpreted and governed by the laws of Kenya, without regard to its conflict
+                of law provisions. Users accessing the Service from other jurisdictions are responsible for
+                compliance with local laws. Our failure to enforce any right or provision of these Terms will
+                not be considered a waiver of those rights.
               </p>
             </section>
 

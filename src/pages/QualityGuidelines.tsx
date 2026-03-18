@@ -439,7 +439,7 @@ export default function QualityGuidelines() {
               </p>
               <div className="flex flex-wrap gap-4">
                 <Link 
-                  to="/feedback" 
+                  to="/contact" 
                   className="inline-flex items-center gap-2 text-sm text-nexus-blue hover:underline"
                 >
                   <Target className="w-4 h-4" />
