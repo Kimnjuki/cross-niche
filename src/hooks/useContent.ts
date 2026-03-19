@@ -146,7 +146,7 @@ export function useContentByFeed(feedSlug: string, limit = 20): { data: ContentI
   const cachedData = contentCache.get<ContentItem[]>(cacheKey);
   const rows = useQuery(api.content.getContentByFeed, isDisabled ? 'skip' : { feedSlug, limit });
 
-  if (cachedData && !isDisabled) {
+  if (cachedData && cachedData.length > 0 && !isDisabled) {
     return { data: cachedData, isLoading: false };
   }
 
@@ -154,11 +154,11 @@ export function useContentByFeed(feedSlug: string, limit = 20): { data: ContentI
   const data: ContentItem[] = isDisabled
     ? articlesToContentItems(mockArticles.filter((a) => a.niche === feedNiche).slice(0, limit))
     : toContentItems(Array.isArray(rows) ? rows : []);
-  
-  if (data && !isDisabled) {
+
+  if (data.length > 0 && !isDisabled) {
     contentCache.set(cacheKey, data, 30000);
   }
-  
+
   return { data, isLoading: !isDisabled && rows === undefined };
 }
 
