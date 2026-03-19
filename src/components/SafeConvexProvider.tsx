@@ -7,20 +7,22 @@
 import { useMemo, createContext, useContext, type ReactNode } from "react";
 import { ConvexProvider, ConvexReactClient } from "convex/react";
 
+// Fallback URL ensures Convex always connects even when VITE_CONVEX_URL
+// is not baked into the bundle (e.g. Docker builds without .env.local).
+const KNOWN_DEPLOYMENT_URL = "https://intent-akita-728.convex.cloud";
 const rawUrl = (import.meta.env.VITE_CONVEX_URL ?? "").trim();
-const hasConvexUrl = rawUrl.length > 0 && rawUrl.startsWith("http");
+const resolvedUrl = (rawUrl.length > 0 && rawUrl.startsWith("http")) ? rawUrl : KNOWN_DEPLOYMENT_URL;
+const hasConvexUrl = true; // resolvedUrl is always a valid URL
 const PLACEHOLDER_URL = "https://no-convex-configured.convex.cloud";
 
 export const ConvexDisabledContext = createContext<boolean>(false);
 
 function createClient(): { client: ConvexReactClient; disabled: boolean } {
-  let disabled = !hasConvexUrl;
-  let url = hasConvexUrl ? rawUrl : PLACEHOLDER_URL;
   try {
-    const client = new ConvexReactClient(url, {
+    const client = new ConvexReactClient(resolvedUrl, {
       skipConvexDeploymentUrlCheck: true,
     });
-    return { client, disabled };
+    return { client, disabled: false };
   } catch (err) {
     try {
       const fallback = new ConvexReactClient(PLACEHOLDER_URL, {
