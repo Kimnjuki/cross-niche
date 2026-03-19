@@ -22,6 +22,15 @@ function injectGa4Id(mode: string) {
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }: ConfigEnv) => {
   const isProd = mode === "production";
+
+  // Resolve VITE_CONVEX_URL: prefer .env file value, then process.env (Docker ARG/ENV),
+  // then fall back to the known deployment URL. This ensures the URL is always baked
+  // into the bundle even when .env.local is not present (e.g. in Docker builds).
+  const envFromFiles = loadEnv(mode, process.cwd(), "VITE_");
+  const convexUrl =
+    envFromFiles.VITE_CONVEX_URL ||
+    process.env.VITE_CONVEX_URL ||
+    "https://intent-akita-728.convex.cloud";
   
   // Load prerender routes: static + article routes from prerender-routes.json (generated in prebuild)
   let prerenderRoutes = [
@@ -75,6 +84,11 @@ export default defineConfig(({ mode }: ConfigEnv) => {
       port: 8080,
     },
     plugins,
+    // Explicitly inject VITE_CONVEX_URL so it's always available as import.meta.env.VITE_CONVEX_URL
+    // regardless of whether .env.local exists (critical for Docker/Coolify builds).
+    define: {
+      "import.meta.env.VITE_CONVEX_URL": JSON.stringify(convexUrl),
+    },
     resolve: {
       alias: {
         "@": path.resolve(__dirname, "./src"),
