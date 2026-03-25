@@ -13,6 +13,12 @@ import { api } from "../../convex/_generated/api";
 import { Link } from "react-router-dom";
 import { Clock3, MessageCircle } from "lucide-react";
 
+const FADE_UP = {
+  initial: { opacity: 0, y: 14 },
+  animate: { opacity: 1, y: 0 },
+  transition: { duration: 0.36, ease: [0.22, 1, 0.36, 1] as const },
+};
+
 export default function BlogSeries() {
   const { data: contentRows } = usePublishedContent(40);
   const articles = useMemo(() => mapContentToArticles(contentRows ?? []), [contentRows]);
@@ -33,20 +39,20 @@ export default function BlogSeries() {
         type="website"
       />
       <div className="min-h-screen bg-[#050505] text-[#F4F4F5]">
-        <div className="container mx-auto max-w-7xl px-4 py-8">
-          <div className="mb-6">
-            <h1 className="font-display text-4xl font-extrabold">Nexus Intelligence / Live Wire</h1>
-            <p className="mt-2 text-zinc-400">Modular masonry feed from `articles`, `aiUpdates`, and `content`.</p>
-          </div>
+        <div className="container mx-auto max-w-7xl px-4 py-12 md:py-14">
+          <motion.div {...FADE_UP} className="mb-8">
+            <h1 className="font-display text-4xl font-extrabold leading-[1.05] tracking-tight">Nexus Intelligence / Live Wire</h1>
+            <p className="mt-4 text-base leading-7 text-zinc-400">Modular masonry feed from `articles`, `aiUpdates`, and `content`.</p>
+          </motion.div>
 
           {hero && (
-            <div className="mb-8 grid grid-cols-1 gap-4 lg:grid-cols-3">
+            <motion.div {...FADE_UP} className="mb-8 grid grid-cols-1 gap-4 lg:grid-cols-3">
               <ContentCard className="overflow-hidden lg:col-span-2">
                 <img src={hero.imageUrl} alt={hero.title} className="h-[360px] w-full object-cover" />
                 <div className="p-4">
                   <Badge className="mb-2 bg-[#7000FF]">Nexus Intelligence</Badge>
-                  <h2 className="font-display text-2xl font-bold">{hero.title}</h2>
-                  <p className="mt-2 text-zinc-400">{hero.excerpt}</p>
+                  <h2 className="font-display text-2xl font-bold leading-snug tracking-tight">{hero.title}</h2>
+                  <p className="mt-3 text-sm leading-6 text-zinc-400">{hero.excerpt}</p>
                 </div>
               </ContentCard>
 
@@ -55,19 +61,26 @@ export default function BlogSeries() {
                   <h3 className="font-display text-lg font-semibold">AI Summary</h3>
                   {heroAi?.isHype && <Badge className="bg-[#C1FF00] text-black">High Priority</Badge>}
                 </div>
-                <p className="text-sm text-zinc-300">{heroAi?.description ?? "Awaiting AI signal..."}</p>
+                <p className="text-sm leading-6 text-zinc-300">{heroAi?.description ?? "Awaiting AI signal..."}</p>
                 {heroAi?.futurePrediction?.prediction && (
                   <p className="mt-3 border-l-2 border-[#7000FF] pl-3 text-xs text-zinc-400">
                     {heroAi.futurePrediction.prediction}
                   </p>
                 )}
               </ContentCard>
-            </div>
+            </motion.div>
           )}
 
           <div className="columns-1 gap-4 md:columns-2 xl:columns-3">
             {articles.slice(1, 16).map((article) => (
-              <motion.div key={article.id} layout className="mb-4 break-inside-avoid">
+              <motion.div
+                key={article.id}
+                layout
+                className="mb-4 break-inside-avoid"
+                initial={FADE_UP.initial}
+                animate={FADE_UP.animate}
+                transition={FADE_UP.transition}
+              >
                 <ContentCard technical className="overflow-hidden">
                   <img src={article.imageUrl} alt={article.title} className="h-44 w-full object-cover" />
                   <div className="p-4">
@@ -77,10 +90,10 @@ export default function BlogSeries() {
                       </Badge>
                       <span className="font-mono text-xs text-zinc-500">{article.niche}</span>
                     </div>
-                    <Link to={`/article/${article.slug ?? article.id}`} className="font-display text-lg font-semibold hover:text-grid-neon">
+                    <Link to={`/article/${article.slug ?? article.id}`} className="font-display text-lg font-semibold leading-snug tracking-tight hover:text-grid-neon">
                       {article.title}
                     </Link>
-                    <p className="mt-2 line-clamp-3 text-sm text-zinc-400">{article.excerpt}</p>
+                    <p className="mt-2 line-clamp-3 text-sm leading-6 text-zinc-400">{article.excerpt}</p>
                     <div className="mt-4 flex items-center justify-between border-t border-white/10 pt-3 text-xs text-zinc-500">
                       <span className="flex items-center gap-1"><MessageCircle className="h-3.5 w-3.5" /> 0 comments</span>
                       <span className="flex items-center gap-1"><Clock3 className="h-3.5 w-3.5" /> {article.readTime} min</span>

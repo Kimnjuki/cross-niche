@@ -15,6 +15,12 @@ import { api } from "../../convex/_generated/api";
 import { BookOpen, Clock, Filter, Shield } from "lucide-react";
 import { cn } from "@/lib/utils";
 
+const FADE_UP = {
+  initial: { opacity: 0, y: 14 },
+  animate: { opacity: 1, y: 0 },
+  transition: { duration: 0.36, ease: [0.22, 1, 0.36, 1] as const },
+};
+
 export default function Tutorials() {
   const [query, setQuery] = useState("");
   const [difficulty, setDifficulty] = useState<"all" | "beginner" | "intermediate" | "advanced">("all");
@@ -81,11 +87,11 @@ export default function Tutorials() {
         type="website"
       />
       <div className="min-h-screen bg-[#050505] text-[#F4F4F5]">
-        <div className="container mx-auto px-4 py-8">
-          <div className="mb-6 rounded-2xl border border-white/10 bg-[#0F0F12] p-6">
-            <h1 className="font-display text-4xl font-extrabold">Tutorial Intelligence Grid</h1>
-            <p className="mt-2 text-zinc-400">Wired-inspired guides with Convex progress + security scoring.</p>
-          </div>
+        <div className="container mx-auto px-4 py-12 md:py-14">
+          <motion.div {...FADE_UP} className="mb-8 rounded-2xl border border-white/10 bg-[#0F0F12] p-6 md:p-8">
+            <h1 className="font-display text-4xl font-extrabold leading-[1.05] tracking-tight">Tutorial Intelligence Grid</h1>
+            <p className="mt-4 text-base leading-7 text-zinc-400">Wired-inspired guides with Convex progress + security scoring.</p>
+          </motion.div>
 
           <div className="sticky top-16 z-30 mb-6 overflow-hidden rounded-xl border border-white/10 bg-[#0F0F12]">
             <div className="flex items-center justify-between px-4 py-2 text-xs font-mono text-zinc-400">
@@ -94,6 +100,7 @@ export default function Tutorials() {
             </div>
             <motion.div
               animate={{ width: `${progressPercent}%` }}
+              transition={{ duration: 0.36, ease: [0.22, 1, 0.36, 1] }}
               className="h-2 bg-gradient-to-r from-[#7000FF] to-[#C1FF00]"
             />
           </div>
@@ -153,13 +160,14 @@ export default function Tutorials() {
                             <Badge variant="outline" className="border-white/15 text-zinc-300">{guide.difficulty}</Badge>
                             <Badge variant="outline" className="border-white/15 text-zinc-300">{guide.niche}</Badge>
                           </div>
-                          <h3 className="line-clamp-2 font-display text-lg font-semibold">{guide.title}</h3>
-                          <p className="mt-2 line-clamp-2 text-sm text-zinc-400">{guide.description}</p>
+                          <h3 className="line-clamp-2 font-display text-lg font-semibold leading-snug tracking-tight">{guide.title}</h3>
+                          <p className="mt-2 line-clamp-2 text-sm leading-6 text-zinc-400">{guide.description}</p>
                           <div className="mt-3 flex items-center justify-between text-xs text-zinc-500">
                             <span className="flex items-center gap-1"><Clock className="h-3.5 w-3.5" /> {guide.readTime}m</span>
                             <motion.span
-                              initial={{ opacity: 0 }}
+                              initial={{ opacity: 0.6 }}
                               whileHover={{ opacity: 1 }}
+                              transition={{ duration: 0.24, ease: [0.22, 1, 0.36, 1] }}
                               className="text-grid-neon"
                             >
                               {score ? `Security ${score}` : "No score"}

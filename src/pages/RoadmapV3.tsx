@@ -11,6 +11,12 @@ import { RoadmapVoting } from "@/components/roadmap/RoadmapVoting";
 import { ContentCard } from "@/components/ui/ContentCard";
 import { Clock3, Trophy } from "lucide-react";
 
+const FADE_UP = {
+  initial: { opacity: 0, y: 14 },
+  animate: { opacity: 1, y: 0 },
+  transition: { duration: 0.36, ease: [0.22, 1, 0.36, 1] as const },
+};
+
 export default function RoadmapV3() {
   const features = useQuery(api.roadmap.getRoadmapFeatures, {});
   const voteCounts = useQuery(api.roadmap.getVoteCounts, {});
@@ -50,18 +56,21 @@ export default function RoadmapV3() {
       />
 
       <div className="bg-[#050505] text-[#F4F4F5]">
-        <div className="container mx-auto px-4 py-10">
-          <div className="relative mb-10 overflow-hidden rounded-2xl border border-white/10 bg-[#0F0F12] p-8">
+        <div className="container mx-auto px-4 py-12 md:py-14">
+          <motion.div
+            {...FADE_UP}
+            className="relative mb-10 overflow-hidden rounded-2xl border border-white/10 bg-[#0F0F12] p-8 md:p-10"
+          >
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(112,0,255,0.35),transparent_45%),radial-gradient(circle_at_bottom_left,rgba(193,255,0,0.15),transparent_40%)]" />
             <div className="relative">
               <p className="font-mono text-xs uppercase tracking-[0.25em] text-zinc-400">The Build</p>
-              <h1 className="mt-2 font-display text-4xl font-extrabold md:text-6xl">Roadmap Intelligence</h1>
-              <p className="mt-3 max-w-3xl text-zinc-400">
+              <h1 className="mt-2 font-display text-4xl font-extrabold leading-[1.05] tracking-tight md:text-6xl">Roadmap Intelligence</h1>
+              <p className="mt-4 max-w-3xl text-base leading-7 text-zinc-400">
                 Verge-style product roadmap with live voting signals from Convex `roadmapVotes`.
                 Priorities shift in real time as the community pushes features up.
               </p>
             </div>
-          </div>
+          </motion.div>
 
           <div className="grid grid-cols-1 gap-8 lg:grid-cols-12">
             <section className="lg:col-span-8">
@@ -72,16 +81,17 @@ export default function RoadmapV3() {
                     <motion.div
                       key={feature.slug}
                       layout
-                      initial={{ opacity: 0, y: 12 }}
-                      animate={{ opacity: 1, y: 0 }}
+                      initial={FADE_UP.initial}
+                      animate={FADE_UP.animate}
+                      transition={FADE_UP.transition}
                       className="relative"
                     >
                       <div className="absolute -left-[27px] top-6 h-3 w-3 rounded-full bg-grid-neon shadow-[0_0_10px_rgba(193,255,0,0.6)]" />
                       <ContentCard technical className="p-5">
                         <div className="flex flex-wrap items-start justify-between gap-4">
-                          <div>
-                            <h2 className="font-display text-xl font-bold">{feature.title}</h2>
-                            <p className="mt-1 text-sm text-zinc-400">{feature.subtitle ?? feature.summary}</p>
+                          <div className="space-y-2">
+                            <h2 className="font-display text-xl font-bold leading-snug tracking-tight">{feature.title}</h2>
+                            <p className="text-sm leading-6 text-zinc-400">{feature.subtitle ?? feature.summary}</p>
                           </div>
                           <RoadmapVoting featureId={feature.slug} />
                         </div>

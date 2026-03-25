@@ -12,10 +12,10 @@ export function ContentCard({ className, children, technical = false, onClick }:
   return (
     <motion.article
       whileHover={{ rotateZ: 0.5, y: -2 }}
-      transition={{ type: "spring", stiffness: 260, damping: 20 }}
+      transition={{ type: "spring", stiffness: 220, damping: 22, mass: 0.8 }}
       onClick={onClick}
       className={cn(
-        "relative overflow-hidden rounded-xl border border-white/10 bg-[#0F0F12]",
+        "relative overflow-hidden rounded-xl border border-white/10 bg-[#0F0F12] transition-colors duration-300",
         className
       )}
     >
