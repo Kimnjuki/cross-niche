@@ -8,6 +8,7 @@
     "predev": "npm run copy-assets",
     "prebuild": "npm run copy-assets",
     "dev": "convex dev & vite",
+    "build:frontend": "tsc && vite build",
     "build": "convex deploy && tsc && vite build",
     "preview": "vite preview",
     "deploy": "npm run build && vercel --prod",

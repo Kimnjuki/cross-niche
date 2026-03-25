@@ -25,7 +25,9 @@ ENV CONVEX_DEPLOY_KEY=${CONVEX_DEPLOY_KEY}
 # Verify CONVEX_DEPLOY_KEY is set (warn only, don't fail build)
 RUN if [ -z "$CONVEX_DEPLOY_KEY" ]; then echo "⚠️  WARNING: CONVEX_DEPLOY_KEY not set. Set it as Build Time Variable in Coolify."; fi
 
-RUN npm run build
+# Build frontend only in Docker/Coolify. Do not run `convex deploy` here
+# (it can fail on temporary Convex API outages and break otherwise healthy deploys).
+RUN npm run build:frontend
 
 # Stage 2: Production (Serve with Nginx)
 FROM nginx:stable-alpine AS production-stage
