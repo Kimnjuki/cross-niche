@@ -73,7 +73,7 @@ export function Navbar() {
   if (!isClient) {
     // Return skeleton navbar during SSR to prevent hydration mismatch
     return (
-      <nav className="sticky top-0 z-50 bg-black/55 text-foreground backdrop-blur-xl border-b border-[rgba(193,255,0,0.2)]">
+      <nav className="sticky top-0 z-50 bg-nexus-void/95 text-foreground backdrop-blur-xl border-b border-white/10">
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between h-16">
             <div className="w-8 h-8 rounded-lg bg-muted animate-pulse"></div>
@@ -112,7 +112,7 @@ export function Navbar() {
 
   return (
     <>
-      <nav className="sticky top-0 z-50 bg-black/55 text-foreground backdrop-blur-xl border-b border-[rgba(193,255,0,0.2)]">
+      <nav className="sticky top-0 z-50 bg-nexus-void/95 text-foreground backdrop-blur-xl border-b border-white/10">
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between h-16">
             {/* Logo */}
