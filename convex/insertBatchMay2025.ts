@@ -15,15 +15,49 @@ function estimateReadTime(body: string): number {
   return Math.ceil(body.split(/\s+/).length / 200);
 }
 
-// Image map: contentType -> themed Unsplash image
-const IMAGE_BY_TYPE: Record<string, string> = {
-  gaming:
+// Image pool: contentType -> themed Unsplash images
+const IMAGE_BY_TYPE: Record<string, string[]> = {
+  gaming: [
     "https://images.unsplash.com/photo-1552820728-8b83bb6b773f?w=1200&h=630&fit=crop",
-  technology:
+    "https://images.unsplash.com/photo-1591488320449-011701bb6704?w=1200&h=630&fit=crop",
+    "https://images.unsplash.com/photo-1620712943543-bcc4688e7485?w=1200&h=630&fit=crop",
+    "https://images.unsplash.com/photo-1532187863486-abf9dbad1b69?w=1200&h=630&fit=crop",
+    "https://images.unsplash.com/photo-1677442136019-21780ecad995?w=1200&h=630&fit=crop",
+  ],
+  technology: [
     "https://images.unsplash.com/photo-1518770660439-4636190af475?w=1200&h=630&fit=crop",
-  security:
+    "https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?w=1200&h=630&fit=crop",
+    "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=1200&h=630&fit=crop",
+    "https://images.unsplash.com/photo-1606147870837-bfcbcd909acd?q=80&w=2000&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1532187863486-abf9dbad1b69?w=1200&h=630&fit=crop",
+  ],
+  security: [
     "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=1200&h=630&fit=crop",
+    "https://images.unsplash.com/photo-1563013544-824ae1b704d3?w=1200&h=630&fit=crop",
+    "https://images.unsplash.com/photo-1569025591-a3c16d4c5f5f?w=1200&h=630&fit=crop",
+    "https://images.unsplash.com/photo-1591488320449-011701bb6704?w=1200&h=630&fit=crop",
+    "https://images.unsplash.com/photo-1510511459019-5dda7724fd87?w=1200&h=630&fit=crop",
+  ],
 };
+
+function hashToIndex(seed: string, length: number): number {
+  let hash = 0;
+  for (let i = 0; i < seed.length; i++) {
+    const char = seed.charCodeAt(i);
+    hash = ((hash << 5) - hash) + char;
+    hash = hash & hash;
+  }
+  return Math.abs(hash) % Math.max(1, length);
+}
+
+function pickDeterministicImage(images: string[], seed: string | undefined): string {
+  if (images.length === 0) {
+    return "https://images.unsplash.com/photo-1518770660439-4636190af475?w=1200&h=630&fit=crop";
+  }
+  const safeSeed = seed ?? "";
+  if (!safeSeed) return images[0];
+  return images[hashToIndex(safeSeed, images.length)];
+}
 
 const ARTICLES: Array<{
   title: string;
@@ -663,9 +697,10 @@ export const insertBatchMay2025 = mutation({
         continue;
       }
 
-      const imageUrl =
-        IMAGE_BY_TYPE[article.contentType] ??
-        "https://images.unsplash.com/photo-1518770660439-4636190af475?w=1200&h=630&fit=crop";
+      const imageUrl = pickDeterministicImage(
+        IMAGE_BY_TYPE[article.contentType] ?? [],
+        article.slug
+      );
 
       const id = await ctx.db.insert("content", {
         slug: article.slug,

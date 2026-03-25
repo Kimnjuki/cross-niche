@@ -1,10 +1,11 @@
 import { type ReactNode } from 'react';
-import { Navbar } from './Navbar';
+import { NexusNavBar } from './NexusNavBar';
 import { Footer } from './Footer';
 import { GlobalPulseSidebar } from './GlobalPulseSidebar';
 import { NexusScoreWidget } from '@/components/ui/NexusScoreWidget';
 import { CookieConsent } from '@/components/consent/CookieConsent';
 import { AdScriptInitializer } from '@/components/ads/AdScriptInitializer';
+import { AIIntelligenceTicker } from './AIIntelligenceTicker';
 
 interface LayoutProps {
   children: ReactNode;
@@ -18,10 +19,11 @@ export function Layout({ children, showPulseSidebar = false }: LayoutProps) {
       <AdScriptInitializer />
       {showPulseSidebar && <GlobalPulseSidebar />}
       <div className={showPulseSidebar ? 'pl-[64px]' : ''}>
-        <Navbar />
+        <NexusNavBar />
         <main className="flex-1">{children}</main>
         <Footer />
       </div>
+      <AIIntelligenceTicker />
       {/* Floating Nexus Score Widget */}
       <NexusScoreWidget />
       {/* Cookie Consent Banner */}

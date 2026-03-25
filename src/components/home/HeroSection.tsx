@@ -30,7 +30,7 @@ export function HeroSection({ featuredArticle }: HeroSectionProps) {
     const img1 = new Image();
     const img2 = new Image();
     img1.src = 'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=2070&auto=format&fit=crop';
-    img2.src = 'https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=2070&auto=format&fit=crop';
+    img2.src = 'https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?q=80&w=2070&auto=format&fit=crop';
     img1.onload = () => setImageLoaded(true);
     img2.onload = () => setImageLoaded(true);
 
@@ -85,7 +85,7 @@ export function HeroSection({ featuredArticle }: HeroSectionProps) {
           style={{
             backgroundImage: `
               url('https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=2070&auto=format&fit=crop'),
-              url('https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=2070&auto=format&fit=crop')
+              url('https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?q=80&w=2070&auto=format&fit=crop')
             `,
             backgroundBlendMode: 'overlay',
             backgroundPosition: 'center, center',

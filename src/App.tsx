@@ -144,7 +144,8 @@ const App = () => (
                     <Route path="/guides" element={<Guides />} />
                     <Route path="/guides/:slug" element={<GuideDetail />} />
                     <Route path="/tutorials" element={<Tutorials />} />
-                    <Route path="/blog-series" element={<BlogSeries />} />
+                    <Route path="/blog-series" element={<Navigate to="/blog" replace />} />
+                    <Route path="/blog" element={<BlogSeries />} />
                     <Route path="/roadmap" element={<RoadmapV3 />} />
                     <Route path="/roadmap/:featureId" element={<RoadmapFeature />} />
                     <Route path="/breach-sim" element={<BreachSim />} />
