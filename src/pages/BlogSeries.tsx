@@ -38,8 +38,7 @@ export default function BlogSeries() {
         url={window.location.href}
         type="website"
       />
-      <div className="min-h-screen bg-[#050505] text-[#F4F4F5]">
-        <div className="container mx-auto max-w-7xl px-4 py-12 md:py-14">
+      <div className="container mx-auto max-w-7xl px-4 py-12 md:py-14">
           <motion.div {...FADE_UP} className="mb-8">
             <h1 className="font-display text-4xl font-extrabold leading-[1.05] tracking-tight">Nexus Intelligence / Live Wire</h1>
             <p className="mt-4 text-base leading-7 text-zinc-400">Modular masonry feed from `articles`, `aiUpdates`, and `content`.</p>
@@ -139,7 +138,6 @@ export default function BlogSeries() {
               </div>
             ))}
           </div>
-        </div>
       </div>
     </Layout>
   );
