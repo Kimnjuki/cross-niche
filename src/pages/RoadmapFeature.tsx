@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { useMutation, useQuery } from "convex/react";
 import { api } from "../../convex/_generated/api";
@@ -12,6 +12,28 @@ import { toast } from "@/components/ui/use-toast";
 import { useAuth } from "@/contexts/AuthContext";
 import { useConvexDisabled } from "@/components/SafeConvexProvider";
 
+function renderRoadmapBody(body: string) {
+  return body
+    .split(/\n{2,}/)
+    .map((block) => block.trim())
+    .filter(Boolean)
+    .map((block, index) => {
+      if (block.startsWith("## ")) {
+        return (
+          <h2 key={`h2-${index}`} className="text-xl font-semibold mt-6">
+            {block.replace(/^##\s+/, "")}
+          </h2>
+        );
+      }
+
+      return (
+        <p key={`p-${index}`} className="text-muted-foreground leading-7 whitespace-pre-wrap">
+          {block}
+        </p>
+      );
+    });
+}
+
 export default function RoadmapFeature() {
   const { featureId } = useParams<{ featureId: string }>();
   const slug = (featureId ?? "").trim();
@@ -20,11 +42,10 @@ export default function RoadmapFeature() {
   const { user } = useAuth();
   const userId = user?.id || `session-${localStorage.getItem("sessionId") || "anonymous"}`;
 
-  const allFeatures = useQuery(api.roadmap.getRoadmapFeatures, {});
-  const feature = useMemo(() => {
-    if (!slug) return null;
-    return (allFeatures ?? []).find((f: any) => f?.slug === slug) ?? null;
-  }, [allFeatures, slug]);
+  const feature = useQuery(
+    api.roadmap.getRoadmapFeatureBySlug,
+    slug ? { slug } : "skip"
+  );
 
   const contentId = (feature?._id ?? null) as any;
 
@@ -136,7 +157,45 @@ export default function RoadmapFeature() {
     );
   }
 
-  const title = (feature?.title ?? slug) as string;
+  if (feature === undefined) {
+    return (
+      <Layout>
+        <div className="bg-background text-foreground">
+          <div className="container mx-auto px-4 py-12">
+            <div className="max-w-4xl mx-auto space-y-4">
+              <p className="text-muted-foreground">Loading roadmap…</p>
+              <Button asChild variant="outline">
+                <Link to="/roadmap">Back</Link>
+              </Button>
+            </div>
+          </div>
+        </div>
+      </Layout>
+    );
+  }
+
+  if (feature === null) {
+    return (
+      <Layout>
+        <div className="bg-background text-foreground">
+          <div className="container mx-auto px-4 py-12">
+            <Card>
+              <CardHeader>
+                <CardTitle>Feature not found</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <Button asChild variant="outline">
+                  <Link to="/roadmap">Back to roadmap</Link>
+                </Button>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+      </Layout>
+    );
+  }
+
+  const title = (feature.title ?? slug) as string;
   const description = (feature?.seoDescription ?? feature?.summary ?? "") as string;
 
   return (
@@ -149,6 +208,7 @@ export default function RoadmapFeature() {
         type="website"
       />
 
+      <div className="bg-background text-foreground">
       <div className="container mx-auto px-4 py-12">
         <div className="max-w-4xl mx-auto space-y-8">
           <div className="flex items-center justify-between gap-4">
@@ -179,7 +239,11 @@ export default function RoadmapFeature() {
               <CardTitle>Overview</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
-              {feature?.body && <p className="text-muted-foreground whitespace-pre-wrap">{feature.body}</p>}
+              {feature?.body ? (
+                <div className="space-y-4">{renderRoadmapBody(feature.body)}</div>
+              ) : (
+                <p className="text-muted-foreground">No detailed content available for this feature yet.</p>
+              )}
 
               <div className="flex flex-wrap items-center gap-3 pt-2">
                 <Button variant={isBookmarked ? "default" : "outline"} onClick={handleToggleBookmark}>
@@ -234,6 +298,7 @@ export default function RoadmapFeature() {
             </CardContent>
           </Card>
         </div>
+      </div>
       </div>
     </Layout>
   );

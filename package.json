@@ -8,12 +8,14 @@
     "predev": "npm run copy-assets",
     "prebuild": "npm run copy-assets",
     "dev": "convex dev & vite",
-    "build:frontend": "tsc && vite build",
     "build": "convex deploy && tsc && vite build",
+    "build:frontend": "tsc && vite build",
     "preview": "vite preview",
     "deploy": "npm run build && vercel --prod",
     "seed": "tsx scripts/seed-convex.ts",
-    "insert-articles": "npx convex run insertArticlesAsContent:insertArticlesAsContent"
+    "insert-articles": "npx convex run insertArticlesAsContent:insertArticlesAsContent",
+    "seed:roadmap-full": "node scripts/seed-roadmap-full.mjs",
+    "expand:roadmap-bodies": "tsx scripts/expand-roadmap-bodies.ts"
   },
   "dependencies": {
     "@auth0/auth0-react": "^2.15.0",

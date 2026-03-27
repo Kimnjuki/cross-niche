@@ -2,6 +2,50 @@ import { mutation, query } from "./_generated/server";
 import { v } from "convex/values";
 import { internal } from "./_generated/api";
 
+export const getRoadmapFeatureBySlug = query({
+  args: { slug: v.string() },
+  handler: async (ctx, args) => {
+    const doc = await ctx.db
+      .query("content")
+      .withIndex("by_slug", (q) => q.eq("slug", args.slug))
+      .first();
+    if (!doc || doc.status !== "published" || doc.contentType !== "feature") {
+      return null;
+    }
+
+    const [allNiches, allTags, allContentNiches, allContentTags] = await Promise.all([
+      ctx.db.query("niches").collect(),
+      ctx.db.query("tags").collect(),
+      ctx.db.query("contentNiches").collect(),
+      ctx.db.query("contentTags").collect(),
+    ]);
+
+    const nichesByIdNum = new Map<number, (typeof allNiches)[number]>();
+    for (const n of allNiches) nichesByIdNum.set(n.idNum, n);
+
+    const tagsById = new Map<string, (typeof allTags)[number]>();
+    for (const t of allTags) tagsById.set(t._id, t);
+
+    const contentId = doc._id as unknown as string;
+
+    const niches: (typeof allNiches)[number][] = [];
+    for (const cn of allContentNiches) {
+      if ((cn.contentId as unknown as string) !== contentId) continue;
+      const niche = nichesByIdNum.get(cn.nicheId);
+      if (niche) niches.push(niche);
+    }
+
+    const tags: (typeof allTags)[number][] = [];
+    for (const ct of allContentTags) {
+      if ((ct.contentId as unknown as string) !== contentId) continue;
+      const tag = tagsById.get(ct.tagId as unknown as string);
+      if (tag) tags.push(tag);
+    }
+
+    return { ...doc, niches, tags };
+  },
+});
+
 export const getRoadmapFeatures = query({
   args: {},
   handler: async (ctx) => {

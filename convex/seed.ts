@@ -189,7 +189,7 @@ export const seedRoadmapArticles2026 = mutation({
   args: {},
   handler: async (ctx) => {
     const inserted: string[] = [];
-    const skipped: string[] = [];
+    const updated: string[] = [];
     const timestamp = Date.now();
 
     const getNicheId = (contentType: string): number => {
@@ -205,7 +205,26 @@ export const seedRoadmapArticles2026 = mutation({
         .first();
 
       if (existing) {
-        skipped.push(article.slug);
+        await ctx.db.patch(existing._id, {
+          title: article.title,
+          body: article.body,
+          summary: article.summary,
+          subtitle: article.subtitle,
+          metaTitle: article.metaTitle,
+          seoDescription: article.seoDescription,
+          focusKeyword: article.focusKeyword,
+          status: "published",
+          contentType: "feature",
+          isFeatured: article.isFeatured,
+          isBreaking: article.isBreaking,
+          isPremium: article.isPremium,
+          estimatedReadingTimeMinutes: article.estimatedReadingTimeMinutes,
+          wordCount: article.wordCount,
+          source: article.source,
+          securityScore: article.securityScore,
+          lastModifiedAt: timestamp,
+        });
+        updated.push(article.slug);
         continue;
       }
 
@@ -239,6 +258,6 @@ export const seedRoadmapArticles2026 = mutation({
       inserted.push(article.slug);
     }
 
-    return { inserted, skipped, total: roadmapArticles2026.length };
+    return { inserted, updated, total: roadmapArticles2026.length };
   },
 });

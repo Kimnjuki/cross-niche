@@ -86,7 +86,7 @@ export default function Tutorials() {
         url={window.location.href}
         type="website"
       />
-      <div className="min-h-screen bg-[#050505] text-[#F4F4F5]">
+      <div className="min-h-screen bg-background text-foreground">
         <div className="container mx-auto px-4 py-12 md:py-14">
           <motion.div {...FADE_UP} className="mb-8 rounded-2xl border border-white/10 bg-[#0F0F12] p-6 md:p-8">
             <h1 className="font-display text-4xl font-extrabold leading-[1.05] tracking-tight">Tutorial Intelligence Grid</h1>

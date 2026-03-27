@@ -55,7 +55,7 @@ export default function RoadmapV3() {
         type="website"
       />
 
-      <div className="bg-[#050505] text-[#F4F4F5]">
+      <div className="bg-background text-foreground">
         <div className="container mx-auto px-4 py-12 md:py-14">
           <motion.div
             {...FADE_UP}
