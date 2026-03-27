@@ -9,6 +9,7 @@
 
 import { mutation } from "./_generated/server";
 import { v } from "convex/values";
+import { roadmapArticles2026 } from "./roadmapArticles2026";
 
 const FEED_SLUGS: Record<number, { slug: string; name: string; displayOrder: number }> = {
   1: { slug: "innovate", name: "Technology", displayOrder: 1 },
@@ -177,5 +178,67 @@ export const seedAIPulseUpdates = mutation({
       await ctx.db.insert('aiUpdates', row);
     }
     return { inserted: AI_PULSE_SEED.length, message: 'AI Pulse updates seeded' };
+  },
+});
+
+/**
+ * Seed roadmap detail content so /roadmap cards render as seeded features.
+ * Run from Convex Dashboard: Functions -> seed -> seedRoadmapArticles2026.
+ */
+export const seedRoadmapArticles2026 = mutation({
+  args: {},
+  handler: async (ctx) => {
+    const inserted: string[] = [];
+    const skipped: string[] = [];
+    const timestamp = Date.now();
+
+    const getNicheId = (contentType: string): number => {
+      if (contentType === "gaming") return 3;
+      if (contentType === "security") return 2;
+      return 1;
+    };
+
+    for (const article of roadmapArticles2026) {
+      const existing = await ctx.db
+        .query("content")
+        .withIndex("by_slug", (q) => q.eq("slug", article.slug))
+        .first();
+
+      if (existing) {
+        skipped.push(article.slug);
+        continue;
+      }
+
+      const contentId = await ctx.db.insert("content", {
+        title: article.title,
+        slug: article.slug,
+        body: article.body,
+        summary: article.summary,
+        subtitle: article.subtitle,
+        metaTitle: article.metaTitle,
+        seoDescription: article.seoDescription,
+        focusKeyword: article.focusKeyword,
+        status: "published",
+        contentType: "feature",
+        isFeatured: article.isFeatured,
+        isBreaking: article.isBreaking,
+        isPremium: article.isPremium,
+        estimatedReadingTimeMinutes: article.estimatedReadingTimeMinutes,
+        wordCount: article.wordCount,
+        source: article.source,
+        securityScore: article.securityScore,
+        publishedAt: timestamp,
+        lastModifiedAt: timestamp,
+      });
+
+      await ctx.db.insert("contentNiches", {
+        contentId,
+        nicheId: getNicheId(article.contentType),
+      });
+
+      inserted.push(article.slug);
+    }
+
+    return { inserted, skipped, total: roadmapArticles2026.length };
   },
 });
