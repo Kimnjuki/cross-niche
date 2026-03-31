@@ -35,6 +35,7 @@ export default defineSchema({
     colorCode: v.optional(v.string()),
     description: v.optional(v.string()),
     icon: v.optional(v.string()),
+    isEditorialCurated: v.optional(v.boolean()),
   })
     .index("by_slug", ["slug"])
     .index("by_active_order", ["isActive", "displayOrder"]),
@@ -58,6 +59,7 @@ export default defineSchema({
     twitterHandle: v.optional(v.string()),
     linkedinUrl: v.optional(v.string()),
     githubUrl: v.optional(v.string()),
+    blueskyHandle: v.optional(v.string()),
     createdAt: v.optional(v.number()), // ms timestamp
     lastLoginAt: v.optional(v.number()), // ms timestamp
     isActive: v.optional(v.boolean()),
@@ -105,7 +107,10 @@ export default defineSchema({
       v.literal("security"),
       v.literal("gaming"),
       v.literal("feature"),
-      v.literal("tutorial")
+      v.literal("tutorial"),
+      v.literal("editorial_brief"),
+      v.literal("threat_alert"),
+      v.literal("roadmap_report")
     )
   ),
     // CRITICAL: Add default values for undefined prevention
@@ -121,6 +126,12 @@ export default defineSchema({
     source: v.optional(v.string()), // e.g. "Reuters", "TechCrunch"
     isAutomated: v.optional(v.boolean()), // true for API-ingested content
     originalUrl: v.optional(v.string()), // Link to original article at source
+    // AdSense / editorial workflow (see config/adsense-strategy-thegridnexus.json)
+    editorialLevel: v.optional(
+      v.union(v.literal("basic"), v.literal("high"), v.literal("premium"))
+    ),
+    factCheckId: v.optional(v.id("factChecks")),
+    isEditorialSelection: v.optional(v.boolean()),
   })
     .index("by_slug", ["slug"])
     .index("by_status", ["status"])
@@ -133,6 +144,28 @@ export default defineSchema({
     .index("by_is_featured", ["isFeatured", "publishedAt"])
     .index("by_is_breaking", ["isBreaking", "publishedAt"])
     .index("by_is_premium", ["isPremium", "publishedAt"]),
+
+  // ─── Editorial & fact-checking (AdSense / trust signals) ───────────────
+  factChecks: defineTable({
+    contentId: v.id("content"),
+    claims: v.array(v.string()),
+    sources: v.array(v.string()),
+    status: v.union(
+      v.literal("pending"),
+      v.literal("confirmed"),
+      v.literal("partially_confirmed"),
+      v.literal("needs_update")
+    ),
+    updatedAt: v.number(),
+  }).index("by_content", ["contentId"]),
+
+  editorialStandards: defineTable({
+    contentId: v.id("content"),
+    editorialLevel: v.union(v.literal("basic"), v.literal("high"), v.literal("premium")),
+    needsHumanReview: v.boolean(),
+    reviewedBy: v.optional(v.string()),
+    reviewedAt: v.optional(v.number()),
+  }).index("by_content", ["contentId"]),
 
   // ─── Content ↔ Niches (many-to-many) ─────────────────────────────────────
   contentNiches: defineTable({
@@ -283,6 +316,7 @@ export default defineSchema({
       prediction: v.string(),
       confidence: v.string(), // "high" | "medium" | "low"
       implications: v.optional(v.array(v.string())),
+      evidence: v.optional(v.string()),
     })),
   })
     .index("by_category", ["category"])

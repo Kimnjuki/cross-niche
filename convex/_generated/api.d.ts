@@ -18,6 +18,7 @@ import type * as cleanAndSeedArticles from "../cleanAndSeedArticles.js";
 import type * as comments from "../comments.js";
 import type * as content from "../content.js";
 import type * as crons from "../crons.js";
+import type * as diversifyFeaturedImages from "../diversifyFeaturedImages.js";
 import type * as feedQueries from "../feedQueries.js";
 import type * as feeds from "../feeds.js";
 import type * as fixArticleImages from "../fixArticleImages.js";
@@ -79,6 +80,7 @@ declare const fullApi: ApiFromModules<{
   comments: typeof comments;
   content: typeof content;
   crons: typeof crons;
+  diversifyFeaturedImages: typeof diversifyFeaturedImages;
   feedQueries: typeof feedQueries;
   feeds: typeof feeds;
   fixArticleImages: typeof fixArticleImages;
