@@ -144,7 +144,7 @@ export function HeroSection({ featuredArticle }: HeroSectionProps) {
             </Link>
             
             <Link
-              to="/live"
+              to="/live-updates"
               className="group px-8 py-4 glass border border-white/20 text-white rounded-lg font-semibold hover:border-nexus-cyan transition-all duration-300 flex items-center justify-center gap-2 transform hover:scale-105"
             >
               <Activity className="w-5 h-5 transition-transform group-hover:scale-110" />

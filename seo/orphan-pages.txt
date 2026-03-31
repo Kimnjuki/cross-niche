@@ -1,0 +1,21 @@
+# Orphan Page Tracker (Phase 1)
+# Source: Ahrefs Site Audit -> Orphan page export
+# Goal: reduce orphan pages to 0 by adding internal links
+# Last updated: 2026-03-31
+
+# Status values: TODO | IN_PROGRESS | FIXED | NOINDEX | REDIRECTED
+# Priority values: HIGH | MEDIUM | LOW
+
+# Format:
+# [STATUS] [PRIORITY] URL | CATEGORY | LINK FROM | ANCHOR TEXT | NOTES
+
+[TODO] [HIGH] https://thegridnexus.com/roadmap | tools | / and /topics | Roadmap Intelligence | Add one contextual link in homepage content block
+[TODO] [HIGH] https://thegridnexus.com/ai-pulse | tools | /news and /topics | AI Pulse | Add related links from security and tech index cards
+[TODO] [HIGH] https://thegridnexus.com/live-threat-dashboard | security-tool | footer and /security | Live Threat Dashboard | Added footer link; add in-page link from Security page
+[TODO] [MEDIUM] https://thegridnexus.com/startups | category | /tech | Startups coverage | Add contextual link in Tech page quick links
+[TODO] [MEDIUM] https://thegridnexus.com/media | utility | footer | Media & Podcast | Verify from at least one editorial page
+[TODO] [MEDIUM] https://thegridnexus.com/quality-guidelines | trust | footer | Quality Guidelines | Added footer link
+[TODO] [MEDIUM] https://thegridnexus.com/content-policy | trust | footer | Content Policy | Added footer link
+[TODO] [LOW] https://thegridnexus.com/disclosure | trust | footer and /editorial | Affiliate Disclosure | Verify crawl with Ahrefs recrawl
+
+# Add the full Ahrefs export list below and work top-down by priority.

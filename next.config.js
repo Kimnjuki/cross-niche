@@ -1,7 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   // SEO Configuration
-  trailingSlash: true,
+  trailingSlash: false,
   
   // Redirects for 404 pages (FIX-001)
   async redirects() {
@@ -13,8 +13,11 @@ const nextConfig = {
         destination: 'https://thegridnexus.com/:path*',
         permanent: true,
       },
-      // Add 404 redirects here when identified
-      // Example: { source: '/old-page', destination: '/new-page', permanent: true },
+      // Legacy route aliases to prevent 404/4XX on removed paths
+      { source: '/articles', destination: '/blog', permanent: true },
+      { source: '/live', destination: '/live-updates', permanent: true },
+      { source: '/ai', destination: '/ai-pulse', permanent: true },
+      { source: '/security-tools', destination: '/tools/security-scanner', permanent: true },
     ];
   },
 

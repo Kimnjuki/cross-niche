@@ -84,6 +84,9 @@ export function Footer() {
               <Link to="/roadmap" className="text-muted-foreground hover:text-foreground transition-colors">
                 Roadmap
               </Link>
+              <Link to="/live-threat-dashboard" className="text-muted-foreground hover:text-foreground transition-colors">
+                Live Threat Dashboard
+              </Link>
               <Link to="/topics" className="text-muted-foreground hover:text-foreground transition-colors">
                 Topics & Tags
               </Link>
@@ -132,6 +135,12 @@ export function Footer() {
               </Link>
               <Link to="/contact" className="hover:text-foreground transition-colors">
                 Contact
+              </Link>
+              <Link to="/quality-guidelines" className="hover:text-foreground transition-colors">
+                Quality Guidelines
+              </Link>
+              <Link to="/content-policy" className="hover:text-foreground transition-colors">
+                Content Policy
               </Link>
             </div>
             <a

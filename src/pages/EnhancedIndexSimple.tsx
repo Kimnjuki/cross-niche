@@ -88,7 +88,7 @@ export default function EnhancedIndexSimple() {
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
-              to="/security-tools"
+              to="/tools/security-scanner"
               className="px-8 py-4 bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-lg font-semibold hover:shadow-lg hover:shadow-blue-400/25 transition-all duration-300 flex items-center justify-center gap-2"
             >
               <Shield className="w-5 h-5" />

@@ -146,6 +146,11 @@ const App = () => (
                     <Route path="/tutorials" element={<Tutorials />} />
                     <Route path="/blog-series" element={<Navigate to="/blog" replace />} />
                     <Route path="/blog" element={<BlogSeries />} />
+                    {/* Legacy URL aliases (Phase 1 SEO 404/4XX fixes) */}
+                    <Route path="/articles" element={<Navigate to="/blog" replace />} />
+                    <Route path="/live" element={<Navigate to="/live-updates" replace />} />
+                    <Route path="/ai" element={<Navigate to="/ai-pulse" replace />} />
+                    <Route path="/security-tools" element={<Navigate to="/tools/security-scanner" replace />} />
                     <Route path="/roadmap" element={<RoadmapV3 />} />
                     <Route path="/roadmap/:featureId" element={<RoadmapFeature />} />
                     <Route path="/breach-sim" element={<BreachSim />} />

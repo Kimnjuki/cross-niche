@@ -341,7 +341,7 @@ export default function EnhancedIndex() {
               <p className="text-gray-400">Hand-picked articles from our expert team</p>
             </div>
             <Link
-              to="/articles"
+              to="/blog"
               className="flex items-center gap-2 text-nexus-cyan hover:text-nexus-cyan/80 transition-colors"
             >
               View All
@@ -425,7 +425,7 @@ export default function EnhancedIndex() {
                 <li><Link to="/tech" className="hover:text-nexus-cyan transition-colors">Technology</Link></li>
                 <li><Link to="/security" className="hover:text-nexus-cyan transition-colors">Security</Link></li>
                 <li><Link to="/gaming" className="hover:text-nexus-cyan transition-colors">Gaming</Link></li>
-                <li><Link to="/ai" className="hover:text-nexus-cyan transition-colors">AI & ML</Link></li>
+                <li><Link to="/ai-pulse" className="hover:text-nexus-cyan transition-colors">AI & ML</Link></li>
               </ul>
             </div>
             
