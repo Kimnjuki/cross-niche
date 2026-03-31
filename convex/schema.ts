@@ -4,6 +4,12 @@
  * Tables map to: content, users, comments, content_niches, content_tags,
  * content_feeds, feeds, niches, tags, media, content_tables, user_bookmarks.
  *
+ * Editorial pipeline fields (editorialLevel, factChecks, editorialStandards,
+ * contentType editorial_brief|threat_alert|roadmap_report) align with
+ * config/adsense-strategy-thegridnexus.json. We keep string authorId and
+ * session userIds where the app already depends on them; optional v.id("users")
+ * links are added for stricter relations when you migrate.
+ *
  * Use this with: npx convex dev (push schema)
  */
 
@@ -60,6 +66,9 @@ export default defineSchema({
     linkedinUrl: v.optional(v.string()),
     githubUrl: v.optional(v.string()),
     blueskyHandle: v.optional(v.string()),
+    // Optional gamification mirrors (see also userGamification table)
+    xp: v.optional(v.number()),
+    badges: v.optional(v.array(v.string())),
     createdAt: v.optional(v.number()), // ms timestamp
     lastLoginAt: v.optional(v.number()), // ms timestamp
     isActive: v.optional(v.boolean()),
@@ -82,6 +91,7 @@ export default defineSchema({
     body: v.string(),
     summary: v.optional(v.string()),
     authorId: v.optional(v.string()), // Supabase user UUID (or Convex users._id if you migrate users)
+    authorUserId: v.optional(v.id("users")), // Optional strict FK when author rows exist in users
     status: v.string(), // "draft" | "published" | "new" | "archived" | "unlisted"
     isPremium: v.optional(v.boolean()),
     securityScore: v.optional(v.number()), // 1–5
@@ -141,6 +151,7 @@ export default defineSchema({
     .index("by_publishedAt", ["publishedAt"])
     // CRITICAL: Add composite indexes for performance
     .index("by_author_status", ["authorId", "status"])
+    .index("by_author_user_id", ["authorUserId"])
     .index("by_is_featured", ["isFeatured", "publishedAt"])
     .index("by_is_breaking", ["isBreaking", "publishedAt"])
     .index("by_is_premium", ["isPremium", "publishedAt"]),
@@ -163,7 +174,8 @@ export default defineSchema({
     contentId: v.id("content"),
     editorialLevel: v.union(v.literal("basic"), v.literal("high"), v.literal("premium")),
     needsHumanReview: v.boolean(),
-    reviewedBy: v.optional(v.string()),
+    reviewedBy: v.optional(v.string()), // legacy: display name or external id
+    reviewedByUserId: v.optional(v.id("users")), // preferred when reviewer is in users
     reviewedAt: v.optional(v.number()),
   }).index("by_content", ["contentId"]),
 
@@ -359,7 +371,8 @@ export default defineSchema({
   // ─── Roadmap Voting System ─────────────────────────────────────────────
   roadmapVotes: defineTable({
     featureId: v.string(), // ID of the roadmap feature
-    userId: v.string(), // User or session identifier
+    userId: v.string(), // User or session identifier (required for anonymous / legacy)
+    convexUserId: v.optional(v.id("users")), // when voter is a synced Convex users row
     voteType: v.union(v.literal("upvote"), v.literal("downvote")),
     votedAt: v.number(), // ms timestamp
   })
@@ -372,6 +385,8 @@ export default defineSchema({
     userId: v.string(), // User identifier
     xp: v.number(), // Total XP points
     level: v.number(), // Current level
+    articlesRead: v.optional(v.number()),
+    commentsMade: v.optional(v.number()),
     currentStreak: v.number(), // Days of consecutive activity
     longestStreak: v.number(), // Best streak achieved
     lastActivityDate: v.number(), // ms timestamp of last activity
