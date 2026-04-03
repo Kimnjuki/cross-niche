@@ -655,4 +655,182 @@ export default defineSchema({
     decliningContentCount: v.number(),
     issues: v.optional(v.any()),
   }).index("by_date", ["date"]),
+
+  // ════════════════════════════════════════════════════════════════════════════
+  // NEXUS AI FEATURES SCHEMA (TheGridNexus AI Feature Expansion v2.0)
+  // ════════════════════════════════════════════════════════════════════════════
+
+  // ─── FEAT-001: NexusGuard Security Briefs ──────────────────────────────────
+  securityBriefs: defineTable({
+    userId: v.optional(v.string()),
+    email: v.optional(v.string()),
+    industry: v.string(),
+    cloudStack: v.string(),
+    frameworks: v.array(v.string()),
+    region: v.string(),
+    companySize: v.string(),
+    briefContent: v.any(), // Structured JSON from AI
+    cveIds: v.array(v.string()),
+    severitySummary: v.object({
+      critical: v.float64(),
+      high: v.float64(),
+      medium: v.float64(),
+      low: v.float64(),
+    }),
+    articleLinks: v.array(v.object({
+      contentId: v.id("content"),
+      title: v.string(),
+      url: v.string(),
+    })),
+    shareToken: v.string(), // Unique token for shareable URL
+    generatedAt: v.float64(),
+    downloadedAt: v.optional(v.float64()),
+    emailSentAt: v.optional(v.float64()),
+    expiresAt: v.float64(), // TTL: 7 days
+  })
+    .index("by_user", ["userId"])
+    .index("by_share_token", ["shareToken"])
+    .index("by_generated_at", ["generatedAt"])
+    .index("by_industry", ["industry"]),
+
+  // ─── FEAT-002: Nexus Copilot Interactions ──────────────────────────────────
+  copilotInteractions: defineTable({
+    sessionId: v.string(),
+    userId: v.optional(v.string()),
+    contentId: v.id("content"),
+    question: v.string(),
+    response: v.string(),
+    skillLevel: v.union(
+      v.literal("beginner"),
+      v.literal("intermediate"),
+      v.literal("expert")
+    ),
+    relatedArticlesShown: v.array(v.id("content")),
+    responseRating: v.optional(v.union(
+      v.literal("positive"),
+      v.literal("negative")
+    )),
+    responseTimeMs: v.float64(),
+    createdAt: v.float64(),
+  })
+    .index("by_content", ["contentId"])
+    .index("by_user", ["userId"])
+    .index("by_session", ["sessionId"])
+    .index("by_created_at", ["createdAt"]),
+
+  // ─── FEAT-003: Nexus Path Learning Paths ───────────────────────────────────
+  learningPaths: defineTable({
+    userId: v.optional(v.string()),
+    goal: v.string(),
+    goalCategory: v.union(
+      v.literal("cybersecurity"),
+      v.literal("ai_ml"),
+      v.literal("gaming"),
+      v.literal("general_tech")
+    ),
+    skillLevel: v.union(
+      v.literal("beginner"),
+      v.literal("intermediate"),
+      v.literal("advanced")
+    ),
+    hoursPerWeek: v.float64(),
+    totalWeeks: v.float64(),
+    milestones: v.array(v.object({
+      week: v.float64(),
+      title: v.string(),
+      description: v.string(),
+      articles: v.array(v.id("content")),
+      externalResources: v.array(v.object({
+        title: v.string(),
+        url: v.string(),
+        type: v.string(),
+      })),
+      exercise: v.optional(v.string()),
+      xpReward: v.float64(),
+    })),
+    isPublic: v.boolean(),
+    shareToken: v.string(),
+    totalXP: v.float64(),
+    createdAt: v.float64(),
+    lastUpdatedAt: v.float64(),
+  })
+    .index("by_user", ["userId"])
+    .index("by_goal_category", ["goalCategory"])
+    .index("by_is_public", ["isPublic"])
+    .index("by_share_token", ["shareToken"]),
+
+  // User learning progress tracking
+  userLearningProgress: defineTable({
+    userId: v.string(),
+    pathId: v.id("learningPaths"),
+    completedMilestones: v.array(v.float64()),
+    completedArticles: v.array(v.id("content")),
+    totalXPEarned: v.float64(),
+    startedAt: v.float64(),
+    lastActivityAt: v.float64(),
+    completedAt: v.optional(v.float64()),
+    weeklyReminderEnabled: v.boolean(),
+  })
+    .index("by_user", ["userId"])
+    .index("by_user_path", ["userId", "pathId"])
+    .index("by_path", ["pathId"]),
+
+  // ─── FEAT-004: Nexus Pulse Real-Time News Feed ─────────────────────────────
+  pulseStories: defineTable({
+    sourceUrl: v.string(),
+    sourceName: v.string(),
+    sourceLogo: v.optional(v.string()),
+    title: v.string(),
+    rawSummary: v.string(),
+    aiSummary: v.string(), // One-line AI generated
+    impactScore: v.float64(), // 1-10
+    impactLevel: v.union(
+      v.literal("critical"),
+      v.literal("high"),
+      v.literal("medium"),
+      v.literal("low")
+    ),
+    topics: v.array(v.string()),
+    africaRelevance: v.boolean(),
+    relatedContentIds: v.array(v.id("content")),
+    publishedAt: v.float64(),
+    ingestedAt: v.float64(),
+    expiresAt: v.float64(),
+    urlHash: v.string(), // For deduplication
+    viewCount: v.float64(),
+  })
+    .index("by_impact_published", ["impactScore", "publishedAt"])
+    .index("by_topics", ["topics"])
+    .index("by_africa_relevance", ["africaRelevance", "publishedAt"])
+    .index("by_url_hash", ["urlHash"])
+    .index("by_expires_at", ["expiresAt"])
+    .index("by_ingested_at", ["ingestedAt"]),
+
+  // RSS source configurations for Pulse
+  rssSourceConfigs: defineTable({
+    name: v.string(),
+    url: v.string(),
+    topics: v.array(v.string()),
+    isActive: v.boolean(),
+    lastFetchedAt: v.optional(v.float64()),
+    fetchIntervalMinutes: v.float64(),
+    errorCount: v.float64(),
+  })
+    .index("by_active", ["isActive"])
+    .index("by_topics", ["topics"]),
+
+  // ─── FEAT-005: Nexus Search Logs ───────────────────────────────────────────
+  searchLogs: defineTable({
+    query: v.string(),
+    userId: v.optional(v.string()),
+    sessionId: v.string(),
+    resultsCount: v.float64(),
+    clickedResultId: v.optional(v.id("content")),
+    clickPosition: v.optional(v.float64()),
+    hasAiSummary: v.boolean(),
+    searchedAt: v.float64(),
+  })
+    .index("by_query", ["query"])
+    .index("by_searched_at", ["searchedAt"])
+    .index("by_user", ["userId"]),
 });

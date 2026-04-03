@@ -1,4 +1,4 @@
-import { internalMutation, query } from "./_generated/server";
+import { mutation, internalMutation, query } from "./_generated/server";
 import { v } from "convex/values";
 
 const LEVEL_THRESHOLDS = [0, 100, 250, 500, 1000, 2000, 5000, 10000] as const;
@@ -134,6 +134,48 @@ export const initializeGamification = internalMutation({
       longestStreak: 0,
       lastActivityDate: Date.now(),
     });
+  },
+});
+
+// Add XP (public mutation for use by other modules)
+export const addXP = mutation({
+  args: {
+    userId: v.string(),
+    xp: v.number(),
+    reason: v.string(),
+  },
+  handler: async (ctx, args) => {
+    const existing = await ctx.db
+      .query("userGamification")
+      .withIndex("by_user", (q) => q.eq("userId", args.userId))
+      .first();
+
+    const now = Date.now();
+    const currentXp = existing?.xp ?? 0;
+    const nextXp = Math.max(0, currentXp + args.xp);
+    const nextLevel = computeLevel(nextXp);
+
+    if (!existing) {
+      const docId = await ctx.db.insert("userGamification", {
+        userId: args.userId,
+        xp: nextXp,
+        level: nextLevel,
+        currentStreak: 0,
+        longestStreak: 0,
+        lastActivityDate: now,
+        badges: [],
+        achievements: [],
+      });
+      return { userId: args.userId, docId, xp: nextXp, level: nextLevel };
+    }
+
+    await ctx.db.patch(existing._id, {
+      xp: nextXp,
+      level: nextLevel,
+      lastActivityDate: now,
+    });
+
+    return { userId: args.userId, docId: existing._id, xp: nextXp, level: nextLevel };
   },
 });
 
