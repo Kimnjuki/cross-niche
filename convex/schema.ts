@@ -456,18 +456,43 @@ export default defineSchema({
   // ─── Newsletter Subscribers ─────────────────────────────────────────────
   newsletterSubscribers: defineTable({
     email: v.string(),
+    name: v.optional(v.string()),
     subscribedAt: v.number(),
-    isActive: v.boolean(),
+    status: v.optional(v.string()), // "active" | "unsubscribed" | "pending"
+    frequency: v.optional(v.string()), // "daily" | "weekly" | "bi-weekly" | "monthly"
     preferences: v.optional(v.array(v.string())),
-    frequency: v.optional(v.string()),
     newsletterTypes: v.optional(v.array(v.string())),
     topicSubscriptions: v.optional(v.array(v.string())),
+    unsubscribedTopics: v.optional(v.array(v.string())),
     verifiedAt: v.optional(v.number()),
     verificationToken: v.optional(v.string()),
+    confirmationToken: v.optional(v.string()),
+    confirmedAt: v.optional(v.number()),
+    unsubscribedAt: v.optional(v.number()),
+    lastSentAt: v.optional(v.number()),
+    openRate: v.optional(v.float64()),
+    clickRate: v.optional(v.float64()),
+    isActive: v.boolean(),
   })
     .index("by_email", ["email"])
     .index("by_active", ["isActive"])
-    .index("by_verification_token", ["verificationToken"]),
+    .index("by_verification_token", ["verificationToken"])
+    .index("by_confirmation_token", ["confirmationToken"])
+    .index("by_frequency_status", ["frequency", "status"]),
+
+  // ─── Newsletter Send History ────────────────────────────────────────────
+  newsletterSends: defineTable({
+    subscriberId: v.id("newsletterSubscribers"),
+    subject: v.string(),
+    articleIds: v.array(v.string()),
+    sentAt: v.float64(),
+    openedAt: v.optional(v.float64()),
+    clickedAt: v.optional(v.float64()),
+  })
+    .index("by_subscriber", ["subscriberId"])
+    .index("by_subscriber_opened", ["subscriberId", "openedAt"])
+    .index("by_subscriber_clicked", ["subscriberId", "clickedAt"])
+    .index("by_sent_at", ["sentAt"]),
 
   threatNotifications: defineTable({
     userId: v.string(),
