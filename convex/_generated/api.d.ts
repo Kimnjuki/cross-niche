@@ -36,6 +36,8 @@ import type * as migrations_001_add_default_values from "../migrations/001_add_d
 import type * as migrations_005_normalize_existing_data from "../migrations/005_normalize_existing_data.js";
 import type * as newsIngestor from "../newsIngestor.js";
 import type * as newsletter from "../newsletter.js";
+import type * as newsletterAutomation from "../newsletterAutomation.js";
+import type * as nexusAI from "../nexusAI.js";
 import type * as roadmap from "../roadmap.js";
 import type * as roadmapArticles2026 from "../roadmapArticles2026.js";
 import type * as roadmapData from "../roadmapData.js";
@@ -98,6 +100,8 @@ declare const fullApi: ApiFromModules<{
   "migrations/005_normalize_existing_data": typeof migrations_005_normalize_existing_data;
   newsIngestor: typeof newsIngestor;
   newsletter: typeof newsletter;
+  newsletterAutomation: typeof newsletterAutomation;
+  nexusAI: typeof nexusAI;
   roadmap: typeof roadmap;
   roadmapArticles2026: typeof roadmapArticles2026;
   roadmapData: typeof roadmapData;

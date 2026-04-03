@@ -9,8 +9,9 @@
  * - FEAT-005: Nexus Search AI Summaries
  */
 
-import { action, mutation, query } from "./_generated/server";
+import { action, mutation, query, internalMutation } from "./_generated/server";
 import { v } from "convex/values";
+import { internal } from "./_generated/api";
 
 // ════════════════════════════════════════════════════════════════════════════
 // ANTHROPIC API INTEGRATION
@@ -286,11 +287,11 @@ Provide a helpful, accurate response. If you reference any articles, include the
 
     const responseTimeMs = Date.now() - startTime;
 
-    // Step 4: Log the interaction
+    // Step 4: Log the interaction via internal mutation
     const relatedArticleIds = relatedArticles.map((a: any) => a._id);
 
-    // Log interaction directly to database
-    await ctx.db.insert("copilotInteractions", {
+    // Log interaction via internal mutation (actions can't use ctx.db directly)
+    await ctx.runMutation(internal.nexusAI.logCopilotInteractionInternal, {
       sessionId: args.conversationHistory?.[0]?.content || `session_${Date.now()}`,
       userId,
       contentId: articleId,
@@ -299,7 +300,6 @@ Provide a helpful, accurate response. If you reference any articles, include the
       skillLevel,
       relatedArticlesShown: relatedArticleIds,
       responseTimeMs,
-      createdAt: Date.now(),
     });
 
     return {
@@ -316,7 +316,29 @@ Provide a helpful, accurate response. If you reference any articles, include the
 });
 
 /**
- * Log a Copilot interaction
+ * Log a Copilot interaction (internal mutation for use by actions)
+ */
+export const logCopilotInteractionInternal = internalMutation({
+  args: {
+    sessionId: v.string(),
+    userId: v.optional(v.string()),
+    contentId: v.id("content"),
+    question: v.string(),
+    response: v.string(),
+    skillLevel: v.union(v.literal("beginner"), v.literal("intermediate"), v.literal("expert")),
+    relatedArticlesShown: v.array(v.id("content")),
+    responseTimeMs: v.float64(),
+  },
+  handler: async (ctx, args) => {
+    await ctx.db.insert("copilotInteractions", {
+      ...args,
+      createdAt: Date.now(),
+    });
+  },
+});
+
+/**
+ * Log a Copilot interaction (public mutation)
  */
 export const logCopilotInteraction = mutation({
   args: {
