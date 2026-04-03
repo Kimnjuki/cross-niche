@@ -792,7 +792,7 @@ async function findRelatedSecurityArticles(ctx: any, frameworks: string[]) {
   const keyword = frameworks[0] || "security";
   const publishedContent = await ctx.db
     .query("content")
-    .withIndex("by_status_published_at", (q) => q.eq("status", "published"))
+    .withIndex("by_status_published_at", (q: any) => q.eq("status", "published"))
     .order("desc")
     .take(20);
 
@@ -841,7 +841,7 @@ async function findArticlesForGoal(ctx: any, goal: string, category: string, ski
   // Get published content
   const publishedContent = await ctx.db
     .query("content")
-    .withIndex("by_status_published_at", (q) => q.eq("status", "published"))
+    .withIndex("by_status_published_at", (q: any) => q.eq("status", "published"))
     .order("desc")
     .take(100);
 
@@ -889,7 +889,7 @@ async function findRelatedContentForPulse(ctx: any, title: string, summary: stri
 
   const publishedContent = await ctx.db
     .query("content")
-    .withIndex("by_status_published_at", (q) => q.eq("status", "published"))
+    .withIndex("by_status_published_at", (q: any) => q.eq("status", "published"))
     .order("desc")
     .take(50);
 
