@@ -44,7 +44,7 @@ import {
   BookOpen,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { Helmet } from 'react-helmet';
+import { Helmet } from 'react-helmet-async';
 
 // Options for the wizard
 const industries = [

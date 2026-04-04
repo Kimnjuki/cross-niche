@@ -36,7 +36,7 @@ import {
   Lock,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { Helmet } from 'react-helmet';
+import { Helmet } from 'react-helmet-async';
 
 // Pre-defined learning goals
 const curatedGoals = [

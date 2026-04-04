@@ -107,6 +107,10 @@ const NexusIntersection = lazy(() => import("./pages/NexusIntersectionEnhanced")
 const Author = lazy(() => import("./pages/Author"));
 const Bookmarks = lazy(() => import("./pages/Bookmarks"));
 const Profile = lazy(() => import("./pages/Profile"));
+// Nexus AI Features
+const NexusGuard = lazy(() => import("./pages/tools/NexusGuard"));
+const NexusPath = lazy(() => import("./pages/learn/NexusPath"));
+const NexusPulse = lazy(() => import("./pages/pulse/NexusPulse"));
 
 const queryClient = new QueryClient();
 
@@ -193,6 +197,13 @@ const App = () => (
                     <Route path="/author/:authorSlug" element={<Author />} />
                     <Route path="/bookmarks" element={<Bookmarks />} />
                     <Route path="/profile" element={<Profile />} />
+                    {/* Nexus AI Features */}
+                    <Route path="/tools/nexusguard" element={<NexusGuard />} />
+                    <Route path="/nexus/nexusguard" element={<NexusGuard />} />
+                    <Route path="/learn/nexus-path" element={<NexusPath />} />
+                    <Route path="/nexus/nexuspath" element={<NexusPath />} />
+                    <Route path="/pulse/nexus-pulse" element={<NexusPulse />} />
+                    <Route path="/nexus/nexuspulse" element={<NexusPulse />} />
                     {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                     <Route path="*" element={<NotFound />} />
                   </Routes>

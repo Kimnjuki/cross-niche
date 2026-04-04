@@ -30,7 +30,7 @@ import {
   Gamepad2,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { Helmet } from 'react-helmet';
+import { Helmet } from 'react-helmet-async';
 
 interface PulseStory {
   _id: string;
