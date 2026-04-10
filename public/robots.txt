@@ -14,6 +14,11 @@ Disallow: /settings
 Disallow: /billing
 Disallow: /subscription/management
 
+# Alias routes that 301-redirect to canonical URLs (avoid duplicate indexing)
+Disallow: /nexus/nexusguard
+Disallow: /nexus/nexuspath
+Disallow: /nexus/nexuspulse
+
 # Internal / dev pages (not for indexing)
 Disallow: /simple
 Disallow: /enhanced

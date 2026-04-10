@@ -42,6 +42,9 @@ export function Footer() {
               <Link to="/news" className="text-muted-foreground hover:text-foreground transition-colors">
                 Breaking News
               </Link>
+              <Link to="/startups" className="text-muted-foreground hover:text-foreground transition-colors">
+                Startups
+              </Link>
               <Link to="/reviews" className="text-muted-foreground hover:text-foreground transition-colors">
                 Hardware & Game Reviews
               </Link>

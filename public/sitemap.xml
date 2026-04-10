@@ -39,8 +39,8 @@
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://thegridnexus.com/blog-series</loc>
-    <lastmod>2026-03-18</lastmod>
+    <loc>https://thegridnexus.com/blog</loc>
+    <lastmod>2026-04-10</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
   </url>
@@ -76,7 +76,7 @@
   </url>
   <url>
     <loc>https://thegridnexus.com/startups</loc>
-    <lastmod>2026-03-18</lastmod>
+    <lastmod>2026-04-10</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
@@ -84,37 +84,49 @@
   <!-- ── Tools & interactive pages ─────────────────────────────────────── -->
   <url>
     <loc>https://thegridnexus.com/roadmap</loc>
-    <lastmod>2026-03-18</lastmod>
+    <lastmod>2026-04-10</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://thegridnexus.com/ai-pulse</loc>
-    <lastmod>2026-03-18</lastmod>
+    <lastmod>2026-04-10</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://thegridnexus.com/breach-sim</loc>
-    <lastmod>2026-03-18</lastmod>
+    <lastmod>2026-04-10</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://thegridnexus.com/security-score</loc>
-    <lastmod>2026-03-18</lastmod>
+    <lastmod>2026-04-10</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://thegridnexus.com/live-threat-dashboard</loc>
+    <lastmod>2026-04-10</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://thegridnexus.com/tools/security-scanner</loc>
+    <lastmod>2026-04-10</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
     <loc>https://thegridnexus.com/nexus-intersection</loc>
-    <lastmod>2026-03-18</lastmod>
+    <lastmod>2026-04-10</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://thegridnexus.com/media</loc>
-    <lastmod>2026-03-18</lastmod>
+    <lastmod>2026-04-10</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>

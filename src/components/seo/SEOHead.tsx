@@ -40,7 +40,7 @@ export function SEOHead({
   title: providedTitle,
   description: providedDescription,
   keywords = ['technology', 'cybersecurity', 'gaming', 'AI', 'tech news', 'security', 'intelligence'],
-  image = '/og-image.jpg',
+  image = '/assets/circuit.jpg',
   url = typeof window !== 'undefined' ? window.location.href : '',
   type = 'website',
   article,
