@@ -260,6 +260,8 @@
           // Consent state is safely defaulted in application code when Clickio is unavailable.
           
           loadScript('https://analytics.ahrefs.com/analytics.js', { 'data-key': 'aNTResFK8mO8Rf5gt0QKdw', crossOrigin: 'anonymous' });
+          // ForeMedia analytics
+          loadScript('https://platform.foremedia.net/code/61303/analytics');
         }
         if (document.readyState === 'complete') run(); else window.addEventListener('load', run);
       })();
