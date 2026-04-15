@@ -1,7 +1,69 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" dir="ltr">
   <head>
-    <!-- Google tag (gtag.js) - skip on localhost to avoid dev console noise -->
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes" />
+
+    <!-- ── Per-route title/description injection (crawler-friendly before JS) ── -->
+    <!-- Fixes: duplicate title tags, duplicate meta descriptions, missing h1    -->
+    <script>
+      (function () {
+        var routes = {
+          '/': { t: 'The Grid Nexus \u2013 Tech, Security & Gaming News', d: 'Breaking technology news, cybersecurity analysis, and gaming guides. AI insights, security intelligence, and expert tech coverage.' },
+          '/tech': { t: 'Technology News & Analysis 2026 | The Grid Nexus', d: 'Technology news and analysis for 2026. AI breakthroughs, hardware releases, cloud computing, and emerging tech from The Grid Nexus.' },
+          '/security': { t: 'Cybersecurity News & Threat Intelligence 2026 | The Grid Nexus', d: 'Stay ahead of cyber threats. Zero-day vulnerabilities, breach analyses, threat intelligence, and security guides from The Grid Nexus.' },
+          '/gaming': { t: 'Gaming News, Reviews & Releases 2026 | The Grid Nexus', d: 'Latest gaming news, reviews, and release dates. PS5, PC, Xbox, and esports coverage from The Grid Nexus gaming desk.' },
+          '/news': { t: 'Latest Breaking News | The Grid Nexus', d: 'Breaking tech and gaming news. Real-time updates on AI, cybersecurity, hardware, and industry developments.' },
+          '/blog': { t: 'Blog & Long-Form Features | The Grid Nexus', d: 'In-depth blog posts and long-form features on technology, cybersecurity, and gaming from The Grid Nexus editorial team.' },
+          '/explore': { t: 'Explore Tech, Security & Gaming Content | The Grid Nexus', d: 'Browse technology, cybersecurity, and gaming articles. Find the latest news, guides, and expert analysis across all categories.' },
+          '/topics': { t: 'Browse Topics \u2013 Tech, Security & Gaming | The Grid Nexus', d: 'Browse topics and keywords across technology, cybersecurity, and gaming. Find articles by subject and stay informed.' },
+          '/guides': { t: 'Tech & Security Guides | The Grid Nexus', d: 'Step-by-step tech and security guides. Learn best practices, tutorials, and strategies from The Grid Nexus experts.' },
+          '/tutorials': { t: 'Tech & Security Tutorials | The Grid Nexus', d: 'Practical tutorials for technology and cybersecurity. Learn hands-on skills with guided walkthroughs from The Grid Nexus.' },
+          '/reviews': { t: 'Tech & Gaming Reviews | The Grid Nexus', d: 'Expert reviews of technology products, games, and security tools. Honest, in-depth analysis from The Grid Nexus.' },
+          '/startups': { t: 'Startup News & Funding Rounds | The Grid Nexus', d: 'Latest startup news, funding rounds, and venture capital moves across tech, security, and gaming sectors.' },
+          '/ai-pulse': { t: 'AI Pulse \u2013 Artificial Intelligence News & Trends | The Grid Nexus', d: 'AI Pulse tracks model releases, market moves, ethics debates, and real-world AI impact from The Grid Nexus.' },
+          '/breach-sim': { t: 'Breach Simulation \u2013 Cybersecurity Training Tool | The Grid Nexus', d: 'Simulate cyber breaches and test your defences. Interactive breach simulation for security training from The Grid Nexus.' },
+          '/security-score': { t: 'Security Score Tool \u2013 Assess Your Cyber Posture | The Grid Nexus', d: 'Measure your cybersecurity posture with our free Security Score tool. Get actionable recommendations from The Grid Nexus.' },
+          '/live-threat-dashboard': { t: 'Live Threat Dashboard | The Grid Nexus', d: 'Real-time cyber threat intelligence dashboard. Monitor active threats, CVEs, and breach alerts from The Grid Nexus.' },
+          '/roadmap': { t: 'Platform Roadmap & Upcoming Features | The Grid Nexus', d: 'See what we\u2019re building. Vote on features and track the product roadmap for The Grid Nexus tools and platform.' },
+          '/about': { t: 'About The Grid Nexus | Tech, Security & Gaming Intelligence', d: 'Learn about The Grid Nexus \u2014 our editorial team, mission, and standards for technology, security, and gaming coverage.' },
+          '/contact': { t: 'Contact The Grid Nexus | Press & Partnership Inquiries', d: 'Get in touch with The Grid Nexus for press inquiries, partnerships, editorial feedback, or advertising.' },
+          '/privacy': { t: 'Privacy Policy | The Grid Nexus', d: 'The Grid Nexus privacy policy: how we collect, use, and protect your personal data in accordance with GDPR and CCPA.' },
+          '/terms': { t: 'Terms of Service | The Grid Nexus', d: 'Terms of service for The Grid Nexus. Read our usage guidelines, content license, and legal terms.' },
+          '/editorial': { t: 'Editorial Policy | The Grid Nexus', d: 'The Grid Nexus editorial standards, fact-checking processes, correction policy, and independence guidelines.' },
+          '/disclosure': { t: 'Disclosure Policy | The Grid Nexus', d: 'Affiliate, advertising, and sponsored content disclosure for The Grid Nexus. Full transparency on commercial relationships.' },
+          '/quality-guidelines': { t: 'Content Quality Guidelines | The Grid Nexus', d: 'Our standards for accuracy, depth, and editorial quality at The Grid Nexus. How we select and review content.' },
+          '/content-policy': { t: 'Content Policy | The Grid Nexus', d: 'The Grid Nexus content policy: what we publish, prohibited content, and community standards.' },
+          '/media': { t: 'Media Kit & Press Resources | The Grid Nexus', d: 'Press kit, brand assets, media inquiries, and editorial contact information for The Grid Nexus.' },
+          '/nexus-intersection': { t: 'Nexus Intersection \u2013 Cross-Niche Intelligence | The Grid Nexus', d: 'Where tech, security, and gaming intersect. Cross-vertical intelligence and trend analysis from The Grid Nexus.' }
+        };
+        var p = window.location.pathname.replace(/\/$/, '') || '/';
+        var m = routes[p];
+        if (!m) {
+          // Article pages
+          if (p.indexOf('/article/') === 0) {
+            var slug = p.replace('/article/', '').replace(/-/g, ' ');
+            m = { t: slug.charAt(0).toUpperCase() + slug.slice(1) + ' | The Grid Nexus', d: 'Read the full story on The Grid Nexus \u2013 your source for tech, cybersecurity, and gaming intelligence.' };
+          } else {
+            m = routes['/'];
+          }
+        }
+        document.title = m.t;
+        var descEl = document.querySelector('meta[name="description"]');
+        if (descEl) descEl.setAttribute('content', m.d);
+        var ogT = document.querySelector('meta[property="og:title"]');
+        if (ogT) ogT.setAttribute('content', m.t);
+        var ogD = document.querySelector('meta[property="og:description"]');
+        if (ogD) ogD.setAttribute('content', m.d);
+        var twT = document.querySelector('meta[name="twitter:title"]');
+        if (twT) twT.setAttribute('content', m.t);
+        var twD = document.querySelector('meta[name="twitter:description"]');
+        if (twD) twD.setAttribute('content', m.d);
+      })();
+    </script>
+
+    <!-- ── Google tag (gtag.js) ───────────────────────────────────────── -->
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
@@ -18,9 +80,8 @@
         }
       } catch (e) {}
     </script>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+    <!-- ── Core meta ─────────────────────────────────────────────────── -->
     <meta name="format-detection" content="telephone=no" />
     <meta name="mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -36,63 +97,67 @@
     <meta name="rating" content="general" />
     <meta name="copyright" content="The Grid Nexus" />
     <meta name="language" content="en" />
-    <meta http-equiv="Content-Language" content="en" />
+    <meta http-equiv="Content-Language" content="en-US" />
     <meta name="geo.region" content="US" />
     <meta name="geo.placename" content="United States" />
-    <title>The Grid Nexus – Tech, Security & Gaming News</title>
-    <meta name="description" content="The Grid Nexus: breaking technology news, cybersecurity analysis, and gaming guides. AI insights, security intelligence, and tech coverage. Stay ahead." />
-    <meta name="keywords" content="technology news, cybersecurity, gaming, tech intelligence, security analysis, gaming news, AI technology, tech trends, cyber threats, gaming hardware, tech reviews, security updates, gaming industry, tech innovation" />
-    <meta name="author" content="The Grid Nexus" />
-    <!-- Canonical is set by SEOHead per-route to avoid Ahrefs "non-canonical page in sitemap" -->
 
-    <!-- Open Graph / Facebook -->
+    <!-- ── Titles & descriptions (overwritten above by per-route script) ─ -->
+    <title>The Grid Nexus – Tech, Security &amp; Gaming News</title>
+    <meta name="description" content="Breaking technology news, cybersecurity analysis, and gaming guides. AI insights, security intelligence, and expert tech coverage. Stay ahead." />
+    <meta name="keywords" content="technology news, cybersecurity, gaming, tech intelligence, AI technology, cyber threats, gaming hardware, tech reviews, security updates, gaming industry" />
+    <meta name="author" content="The Grid Nexus" />
+
+    <!-- ── hreflang (fixes "Missing hreflang" warning) ────────────────── -->
+    <link rel="alternate" hreflang="en" href="https://thegridnexus.com/" />
+    <link rel="alternate" hreflang="en-US" href="https://thegridnexus.com/" />
+    <link rel="alternate" hreflang="x-default" href="https://thegridnexus.com/" />
+
+    <!-- ── Open Graph ────────────────────────────────────────────────── -->
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://thegridnexus.com/" />
-    <meta property="og:title" content="The Grid Nexus - Tech, Security & Gaming News" />
+    <meta property="og:title" content="The Grid Nexus – Tech, Security &amp; Gaming News" />
     <meta property="og:description" content="Breaking tech news, cybersecurity analysis, and gaming guides. AI insights and expert coverage." />
-    <meta property="og:image" content="https://thegridnexus.com/assets/circuit.jpg" />
-    <meta property="og:image:secure_url" content="https://thegridnexus.com/assets/circuit.jpg" />
+    <meta property="og:image" content="https://thegridnexus.com/og-image.jpg" />
+    <meta property="og:image:secure_url" content="https://thegridnexus.com/og-image.jpg" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
-    <meta property="og:image:alt" content="The Grid Nexus - Tech, Security & Gaming" />
+    <meta property="og:image:alt" content="The Grid Nexus – Tech, Security &amp; Gaming Intelligence" />
     <meta property="og:image:type" content="image/jpeg" />
     <meta property="og:site_name" content="The Grid Nexus" />
     <meta property="og:locale" content="en_US" />
     <meta property="og:locale:alternate" content="en_GB" />
     <meta property="article:publisher" content="https://www.facebook.com/thegridnexus" />
 
-    <!-- Twitter Card -->
+    <!-- ── Twitter Card ──────────────────────────────────────────────── -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:url" content="https://thegridnexus.com/" />
-    <meta name="twitter:title" content="The Grid Nexus - Tech, Security & Gaming News" />
+    <meta name="twitter:title" content="The Grid Nexus – Tech, Security &amp; Gaming News" />
     <meta name="twitter:description" content="Breaking tech news, cybersecurity analysis, and gaming guides. AI insights and expert coverage." />
-    <meta name="twitter:image" content="https://thegridnexus.com/assets/circuit.jpg" />
-    <meta name="twitter:image:alt" content="The Grid Nexus - Tech, Security & Gaming Intelligence" />
+    <meta name="twitter:image" content="https://thegridnexus.com/og-image.jpg" />
+    <meta name="twitter:image:alt" content="The Grid Nexus – Tech, Security &amp; Gaming Intelligence" />
     <meta name="twitter:site" content="@thegridnexus" />
     <meta name="twitter:creator" content="@thegridnexus" />
 
-    <!-- Favicon and App Icons -->
+    <!-- ── Favicons & manifest ───────────────────────────────────────── -->
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="icon" type="image/x-icon" href="/favicon.ico" />
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
     <link rel="manifest" href="/site.webmanifest" />
     <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#0f172a" />
 
-    <!-- Resource hints: no font preload/preconnect (use system fonts to avoid console warnings) -->
+    <!-- ── Resource hints ───────────────────────────────────────────── -->
     <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
     <link rel="dns-prefetch" href="https://www.google-analytics.com" />
-    <link rel="preconnect" href="https://www.googletagmanager.com" />
-    <link rel="preconnect" href="https://www.google-analytics.com" />
+    <link rel="preconnect" href="https://www.googletagmanager.com" crossorigin />
+    <link rel="preconnect" href="https://www.google-analytics.com" crossorigin />
 
-    <!-- Suppress third-party tracking errors (Clarity collect, etc.) from polluting console -->
+    <!-- ── Clarity error suppression ────────────────────────────────── -->
     <script>
       (function() {
-        // Override fetch to silently swallow errors from known tracking endpoints
         var _fetch = window.fetch;
         window.fetch = function(input, init) {
           var url = typeof input === 'string' ? input : (input && input.url) || '';
-          var isTracking = url.indexOf('v.clarity.ms') !== -1 || url.indexOf('clarity.ms/collect') !== -1;
-          if (isTracking) {
+          if (url.indexOf('v.clarity.ms') !== -1 || url.indexOf('clarity.ms/collect') !== -1) {
             return _fetch.apply(this, arguments).catch(function() {
               return new Response('', { status: 200 });
             });
@@ -101,123 +166,169 @@
         };
       })();
     </script>
-    <!-- Default Consent Mode (gtag only; Clickio removed to fix consent error) -->
+
+    <!-- ── Consent Mode (GDPR) ──────────────────────────────────────── -->
     <script>
-        if (typeof gtag === 'function') gtag('consent', 'default', {
-            'ad_storage': 'granted',
-            'analytics_storage': 'granted',
-            'functionality_storage': 'granted',
-            'personalization_storage': 'granted',
-            'security_storage': 'granted',
-            'wait_for_update': 1500
+      if (typeof gtag === 'function') {
+        gtag('consent', 'default', {
+          'ad_storage': 'granted',
+          'analytics_storage': 'granted',
+          'functionality_storage': 'granted',
+          'personalization_storage': 'granted',
+          'security_storage': 'granted',
+          'wait_for_update': 1500
         });
-        if (typeof gtag === 'function') gtag('consent', 'default', {
-            'region': ['AT', 'BE', 'BG', 'HR', 'CY', 'CZ', 'DK', 'EE', 'FI', 'FR', 'DE', 'GR', 'HU', 'IS', 'IE', 'IT', 'LV', 'LI', 'LT', 'LU', 'MT', 'NL', 'NO', 'PL', 'PT', 'RO', 'SK', 'SI', 'ES', 'SE', 'GB', 'CH'],
-            'ad_storage': 'denied',
-            'analytics_storage': 'denied',
-            'functionality_storage': 'denied',
-            'personalization_storage': 'denied',
-            'security_storage': 'denied',
-            'wait_for_update': 1500
+        gtag('consent', 'default', {
+          'region': ['AT','BE','BG','HR','CY','CZ','DK','EE','FI','FR','DE','GR','HU','IS','IE','IT','LV','LI','LT','LU','MT','NL','NO','PL','PT','RO','SK','SI','ES','SE','GB','CH'],
+          'ad_storage': 'denied',
+          'analytics_storage': 'denied',
+          'functionality_storage': 'denied',
+          'personalization_storage': 'denied',
+          'security_storage': 'denied',
+          'wait_for_update': 1500
         });
-        if (typeof gtag === 'function') { gtag('set', 'ads_data_redaction', true); gtag('set', 'url_passthrough', true); }
+        gtag('set', 'ads_data_redaction', true);
+        gtag('set', 'url_passthrough', true);
+      }
     </script>
 
-    <!-- Schema.org JSON-LD (static, visible to crawlers before JS) -->
+    <!-- ── Static Schema.org JSON-LD (visible before JS executes) ───── -->
     <script type="application/ld+json">
-    {"@context":"https://schema.org","@graph":[{"@type":"Organization","@id":"https://thegridnexus.com/#organization","name":"The Grid Nexus","url":"https://thegridnexus.com","logo":{"@type":"ImageObject","url":"https://thegridnexus.com/logo.png","width":512,"height":512},"sameAs":["https://twitter.com/thegridnexus","https://facebook.com/thegridnexus","https://linkedin.com/company/thegridnexus"],"description":"Tech, Security & Gaming Intelligence - Breaking news, expert analysis, and comprehensive guides."},{"@type":"WebSite","@id":"https://thegridnexus.com/#website","url":"https://thegridnexus.com","name":"The Grid Nexus","description":"Breaking technology news, cybersecurity analysis, and gaming guides. AI insights, security intelligence, and tech coverage.","publisher":{"@id":"https://thegridnexus.com/#organization"},"potentialAction":{"@type":"SearchAction","target":{"@type":"EntryPoint","urlTemplate":"https://thegridnexus.com/topics?q={search_term_string}"},"query-input":"required name=search_term_string"},"inLanguage":"en-US"}]}
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "Organization",
+          "@id": "https://thegridnexus.com/#organization",
+          "name": "The Grid Nexus",
+          "url": "https://thegridnexus.com",
+          "logo": {
+            "@type": "ImageObject",
+            "url": "https://thegridnexus.com/logo.png",
+            "width": 512,
+            "height": 512
+          },
+          "sameAs": [
+            "https://twitter.com/thegridnexus",
+            "https://facebook.com/thegridnexus",
+            "https://linkedin.com/company/thegridnexus"
+          ],
+          "contactPoint": {
+            "@type": "ContactPoint",
+            "contactType": "Customer Service",
+            "email": "contact@thegridnexus.com",
+            "availableLanguage": ["English"]
+          },
+          "description": "Tech, Security & Gaming Intelligence — breaking news, expert analysis, and comprehensive guides."
+        },
+        {
+          "@type": "WebSite",
+          "@id": "https://thegridnexus.com/#website",
+          "url": "https://thegridnexus.com",
+          "name": "The Grid Nexus",
+          "description": "Breaking technology news, cybersecurity analysis, and gaming guides.",
+          "publisher": { "@id": "https://thegridnexus.com/#organization" },
+          "potentialAction": {
+            "@type": "SearchAction",
+            "target": {
+              "@type": "EntryPoint",
+              "urlTemplate": "https://thegridnexus.com/topics?q={search_term_string}"
+            },
+            "query-input": "required name=search_term_string"
+          },
+          "inLanguage": "en-US"
+        }
+      ]
+    }
     </script>
   </head>
 
   <body>
-    <a href="#main-content" class="skip-link">Skip to content</a>
+    <a href="#main-content" class="skip-link" style="position:absolute;left:-9999px;z-index:9999;padding:1rem 1.5rem;background:#3b82f6;color:white;text-decoration:none;font-weight:600">Skip to main content</a>
+
     <div id="root">
+      <!-- Static shell: rendered before React hydrates; improves Core Web Vitals & crawlability -->
       <div id="static-shell" style="min-height:100vh;font-family:system-ui,sans-serif;background:#0f172a;color:#f8fafc">
-        <header style="border-bottom:1px solid rgba(148,163,184,0.2);padding:1rem 1.5rem"><nav aria-label="Main navigation" style="max-width:80rem;margin:0 auto;display:flex;flex-wrap:wrap;gap:1rem;align-items:center"><a href="/" style="font-weight:700;font-size:1.25rem;color:#f8fafc;text-decoration:none">The Grid Nexus</a><a href="/tech" style="color:#94a3b8;text-decoration:none">Tech</a><a href="/security" style="color:#94a3b8;text-decoration:none">Security</a><a href="/gaming" style="color:#94a3b8;text-decoration:none">Gaming</a><a href="/news" style="color:#94a3b8;text-decoration:none">News</a><a href="/topics" style="color:#94a3b8;text-decoration:none">Topics</a><a href="/guides" style="color:#94a3b8;text-decoration:none">Guides</a><a href="/about" style="color:#94a3b8;text-decoration:none">About</a></nav></header>
+        <header style="border-bottom:1px solid rgba(148,163,184,0.2);padding:1rem 1.5rem">
+          <nav aria-label="Main navigation" style="max-width:80rem;margin:0 auto;display:flex;flex-wrap:wrap;gap:1rem;align-items:center">
+            <a href="/" aria-label="The Grid Nexus home" style="font-weight:700;font-size:1.25rem;color:#f8fafc;text-decoration:none">The Grid Nexus</a>
+            <a href="/tech" style="color:#94a3b8;text-decoration:none">Tech</a>
+            <a href="/security" style="color:#94a3b8;text-decoration:none">Security</a>
+            <a href="/gaming" style="color:#94a3b8;text-decoration:none">Gaming</a>
+            <a href="/news" style="color:#94a3b8;text-decoration:none">News</a>
+            <a href="/topics" style="color:#94a3b8;text-decoration:none">Topics</a>
+            <a href="/guides" style="color:#94a3b8;text-decoration:none">Guides</a>
+            <a href="/about" style="color:#94a3b8;text-decoration:none">About</a>
+          </nav>
+        </header>
+
         <main id="main-content" style="max-width:80rem;margin:0 auto;padding:2rem 1.5rem">
           <h1 style="font-size:2rem;margin-bottom:0.5rem">The Grid Nexus – Tech, Security &amp; Gaming News</h1>
           <p style="font-size:1.125rem;color:#94a3b8;margin-bottom:1.5rem">Expert analysis and breaking coverage across technology, cybersecurity, and gaming.</p>
-        <p style="color:#cbd5e1;line-height:1.6;margin-bottom:1rem">Breaking technology news, cybersecurity analysis, and gaming guides. AI insights, security intelligence, and tech coverage. Stay ahead of the curve.</p>
-        <p style="color:#cbd5e1;line-height:1.6;margin-bottom:1rem">The Grid Nexus delivers in-depth reporting on the technology, security, and gaming industries. Our editorial team covers the latest in artificial intelligence, cyber threats, hardware releases, software updates, and esports. We provide actionable intelligence for professionals and enthusiasts who need to stay informed.</p>
-        <p style="color:#cbd5e1;line-height:1.6;margin-bottom:1rem">Explore our guides and tutorials for practical advice on security best practices, gaming performance, and emerging tech. Our topics include tech news and innovation, cybersecurity and threats, gaming and esports, breaking news, and expert analysis. We combine data-driven reporting with clear explanations so you can make better decisions.</p>
-        <p style="color:#cbd5e1;line-height:1.6;margin-bottom:2rem">Whether you follow tech trends, manage security risk, or care about gaming and hardware, The Grid Nexus is your source for reliable, up-to-date coverage. Browse by category: Tech, Security, Gaming, News, Topics, and Guides. For deeper dives, visit our AI Pulse, Roadmap, Breach Sim, and Security Score tools. We publish daily updates on vulnerabilities, product launches, and industry shifts so you stay ahead. Our editorial and disclosure policies ensure transparent, accurate reporting. Contact us for press inquiries or feedback.</p>
+          <p style="color:#cbd5e1;line-height:1.6;margin-bottom:1rem">Breaking technology news, cybersecurity analysis, and gaming guides. AI insights, security intelligence, and expert tech coverage. Stay ahead of the curve with The Grid Nexus.</p>
+          <p style="color:#cbd5e1;line-height:1.6;margin-bottom:1rem">The Grid Nexus delivers in-depth reporting on the technology, security, and gaming industries. Our editorial team covers the latest in artificial intelligence, cyber threats, hardware releases, software updates, and esports. We provide actionable intelligence for professionals and enthusiasts who need to stay informed.</p>
+          <p style="color:#cbd5e1;line-height:1.6;margin-bottom:1rem">Explore our guides and tutorials for practical advice on security best practices, gaming performance, and emerging tech. Whether you follow tech trends, manage security risk, or care about gaming and hardware, The Grid Nexus is your source for reliable, up-to-date coverage.</p>
+          <p style="color:#cbd5e1;line-height:1.6;margin-bottom:2rem">Our editorial and disclosure policies ensure transparent, accurate reporting. Contact us for press inquiries or feedback. Browse by category: Tech, Security, Gaming, News, Topics, and Guides. We publish daily updates on vulnerabilities, product launches, and industry shifts so you stay ahead.</p>
+
           <section aria-label="Explore sections" style="margin-bottom:2rem">
             <h2 style="font-size:1.25rem;margin-bottom:1rem;color:#f8fafc">Explore</h2>
-            <ul style="list-style:none;padding:0;margin:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:0.75rem">
-              <li><a href="/tech" style="color:#60a5fa;text-decoration:none">Tech News &amp; Innovation</a></li>
-              <li><a href="/security" style="color:#60a5fa;text-decoration:none">Cybersecurity &amp; Threats</a></li>
+            <ul style="list-style:none;padding:0;margin:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:0.75rem" role="list">
+              <li><a href="/tech" style="color:#60a5fa;text-decoration:none">Technology News &amp; Innovation</a></li>
+              <li><a href="/security" style="color:#60a5fa;text-decoration:none">Cybersecurity &amp; Threat Intelligence</a></li>
               <li><a href="/gaming" style="color:#60a5fa;text-decoration:none">Gaming &amp; Esports</a></li>
               <li><a href="/news" style="color:#60a5fa;text-decoration:none">Breaking News</a></li>
-              <li><a href="/explore" style="color:#60a5fa;text-decoration:none">Explore</a></li>
+              <li><a href="/explore" style="color:#60a5fa;text-decoration:none">Explore All Content</a></li>
               <li><a href="/topics" style="color:#60a5fa;text-decoration:none">Topics &amp; Tags</a></li>
-              <li><a href="/guides" style="color:#60a5fa;text-decoration:none">Guides &amp; Tutorials</a></li>
-              <li><a href="/blog-series" style="color:#60a5fa;text-decoration:none">Blog Series</a></li>
+              <li><a href="/guides" style="color:#60a5fa;text-decoration:none">Guides &amp; How-Tos</a></li>
               <li><a href="/tutorials" style="color:#60a5fa;text-decoration:none">Tutorials</a></li>
-              <li><a href="/ai-pulse" style="color:#60a5fa;text-decoration:none">AI Pulse</a></li>
-              <li><a href="/roadmap" style="color:#60a5fa;text-decoration:none">Roadmap</a></li>
-              <li><a href="/breach-sim" style="color:#60a5fa;text-decoration:none">Breach Sim</a></li>
+              <li><a href="/reviews" style="color:#60a5fa;text-decoration:none">Product &amp; Game Reviews</a></li>
+              <li><a href="/ai-pulse" style="color:#60a5fa;text-decoration:none">AI Pulse Tracker</a></li>
+              <li><a href="/roadmap" style="color:#60a5fa;text-decoration:none">Platform Roadmap</a></li>
+              <li><a href="/breach-sim" style="color:#60a5fa;text-decoration:none">Breach Simulation Tool</a></li>
               <li><a href="/nexus-intersection" style="color:#60a5fa;text-decoration:none">Nexus Intersection</a></li>
-              <li><a href="/security-score" style="color:#60a5fa;text-decoration:none">Security Score</a></li>
+              <li><a href="/security-score" style="color:#60a5fa;text-decoration:none">Security Score Checker</a></li>
               <li><a href="/live-threat-dashboard" style="color:#60a5fa;text-decoration:none">Live Threat Dashboard</a></li>
-              <li><a href="/startups" style="color:#60a5fa;text-decoration:none">Startups</a></li>
-              <li><a href="/media" style="color:#60a5fa;text-decoration:none">Media &amp; Podcast</a></li>
-              <li><a href="/reviews" style="color:#60a5fa;text-decoration:none">Reviews</a></li>
-              <li><a href="/about" style="color:#60a5fa;text-decoration:none">About</a></li>
-              <li><a href="/contact" style="color:#60a5fa;text-decoration:none">Contact</a></li>
-              <li><a href="/privacy" style="color:#60a5fa;text-decoration:none">Privacy</a></li>
-              <li><a href="/terms" style="color:#60a5fa;text-decoration:none">Terms</a></li>
-              <li><a href="/disclosure" style="color:#60a5fa;text-decoration:none">Disclosure</a></li>
+              <li><a href="/startups" style="color:#60a5fa;text-decoration:none">Startup News</a></li>
+              <li><a href="/media" style="color:#60a5fa;text-decoration:none">Media &amp; Press Kit</a></li>
+              <li><a href="/about" style="color:#60a5fa;text-decoration:none">About The Grid Nexus</a></li>
+              <li><a href="/contact" style="color:#60a5fa;text-decoration:none">Contact Us</a></li>
+              <li><a href="/privacy" style="color:#60a5fa;text-decoration:none">Privacy Policy</a></li>
+              <li><a href="/terms" style="color:#60a5fa;text-decoration:none">Terms of Service</a></li>
+              <li><a href="/disclosure" style="color:#60a5fa;text-decoration:none">Disclosure Policy</a></li>
               <li><a href="/editorial" style="color:#60a5fa;text-decoration:none">Editorial Policy</a></li>
               <li><a href="/quality-guidelines" style="color:#60a5fa;text-decoration:none">Quality Guidelines</a></li>
               <li><a href="/content-policy" style="color:#60a5fa;text-decoration:none">Content Policy</a></li>
             </ul>
           </section>
-          <p style="font-size:0.875rem;color:#64748b">Loading full experience...</p>
+          <p style="font-size:0.875rem;color:#64748b" aria-live="polite">Loading full experience…</p>
         </main>
+
+        <footer style="border-top:1px solid rgba(148,163,184,0.2);padding:1.5rem;text-align:center;color:#64748b;font-size:0.875rem">
+          <p>&copy; 2026 The Grid Nexus. All rights reserved. <a href="/privacy" style="color:#60a5fa">Privacy</a> &middot; <a href="/terms" style="color:#60a5fa">Terms</a> &middot; <a href="/disclosure" style="color:#60a5fa">Disclosure</a></p>
+        </footer>
       </div>
     </div>
+
     <noscript>
       <div style="padding:2rem;text-align:center;background:#0f172a;color:#f8fafc;font-family:system-ui,sans-serif">
-        <p style="margin-bottom:1rem">JavaScript is disabled. The full site requires JavaScript for the interactive experience.</p>
-        <p>You can still browse: <a href="/tech" style="color:#60a5fa">Tech</a> · <a href="/security" style="color:#60a5fa">Security</a> · <a href="/gaming" style="color:#60a5fa">Gaming</a> · <a href="/news" style="color:#60a5fa">News</a> · <a href="/explore" style="color:#60a5fa">Explore</a> · <a href="/topics" style="color:#60a5fa">Topics</a> · <a href="/guides" style="color:#60a5fa">Guides</a> · <a href="/about" style="color:#60a5fa">About</a></p>
+        <p style="margin-bottom:1rem">JavaScript is required for the full interactive experience. You can browse the following pages directly:</p>
+        <nav aria-label="No-JavaScript navigation">
+          <a href="/tech" style="color:#60a5fa">Tech</a> &middot;
+          <a href="/security" style="color:#60a5fa">Security</a> &middot;
+          <a href="/gaming" style="color:#60a5fa">Gaming</a> &middot;
+          <a href="/news" style="color:#60a5fa">News</a> &middot;
+          <a href="/explore" style="color:#60a5fa">Explore</a> &middot;
+          <a href="/topics" style="color:#60a5fa">Topics</a> &middot;
+          <a href="/guides" style="color:#60a5fa">Guides</a> &middot;
+          <a href="/about" style="color:#60a5fa">About</a>
+        </nav>
       </div>
     </noscript>
-    <style>.skip-link{position:absolute;left:-9999px;z-index:9999;padding:1rem 1.5rem;background:#3b82f6;color:white;text-decoration:none;font-weight:600}.skip-link:focus{left:0;top:0}</style>
-    <!-- Development/Production script loading -->
+
+    <!-- ── Application entry point ───────────────────────────────────── -->
     <script type="module" src="/src/main.tsx"></script>
-    
-    <!-- Fallback for development or build issues -->
-    <script>
-      // Fallback if main script fails to load
-      window.addEventListener('DOMContentLoaded', function() {
-        if (!window.__VITE_APP_LOADED__) {
-          console.warn('Main script failed to load, attempting fallback...');
-          // Try to load any available script files
-          const scripts = [
-            '/src/main.tsx',
-            '/assets/index.js'
-          ];
-          
-          let loaded = false;
-          scripts.forEach(function(src) {
-            const script = document.createElement('script');
-            script.type = 'module';
-            script.src = src;
-            script.onload = function() {
-              if (!loaded) {
-                loaded = true;
-                console.log('Fallback script loaded:', src);
-              }
-            };
-            script.onerror = function() {
-              console.error('Failed to load fallback script:', src);
-            };
-            document.head.appendChild(script);
-          });
-        }
-      });
-    </script>
-    <!-- Defer third-party scripts; only load on non-localhost to avoid console noise (e.g. Ahrefs "Ignoring Event: localhost") -->
+
+    <!-- ── Deferred third-party scripts (non-localhost only) ─────────── -->
     <script>
       (function(){
         var isLocalhost = /^localhost$|^127\.0\.0\.1$|^\[::1\]$/i.test(window.location.hostname || '');
@@ -227,44 +338,29 @@
             s.async = true;
             s.src = src;
             s.onerror = function() {};
-            if (opts) for (var k in opts) s.setAttribute(k, opts[k]);
+            if (opts) { for (var k in opts) s.setAttribute(k, opts[k]); }
             (document.body || document.documentElement).appendChild(s);
           } catch (e) {}
         }
         function run() {
           if (isLocalhost) return;
-          // Microsoft Clarity (session recordings, heatmaps)
-          // Wrapped in XMLHttpRequest-override to silently swallow v.clarity.ms/collect 404/DNS errors
+          // Microsoft Clarity
           try {
-            // Patch XMLHttpRequest.open to suppress Clarity collect errors in console
-            (function() {
-              var _open = XMLHttpRequest.prototype.open;
-              XMLHttpRequest.prototype.open = function(method, url) {
-                if (typeof url === 'string' && url.indexOf('v.clarity.ms') !== -1) {
-                  // Suppress error events for Clarity collect endpoint
-                  this.addEventListener('error', function(e) { e.stopImmediatePropagation(); }, true);
-                }
-                return _open.apply(this, arguments);
-              };
-            })();
             (function(c,l,a,r,i,t,y){
               c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
-              t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+              t=l.createElement(r);t.async=1;t.src='https://www.clarity.ms/tag/'+i;
               t.onerror=function(){};
               y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
-            })(window, document, "clarity", "script", "vd7rgy7tu7");
-          } catch (_) {}
+            })(window,document,'clarity','script','vd7rgy7tu7');
+          } catch(_){}
           loadScript('https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9278124025449370', { crossOrigin: 'anonymous', referrerPolicy: 'no-referrer-when-downgrade' });
-          
-          // Clickio CMP script removed to avoid CORS errors and hard failures when blocked upstream.
-          // Consent state is safely defaulted in application code when Clickio is unavailable.
-          
           loadScript('https://analytics.ahrefs.com/analytics.js', { 'data-key': 'aNTResFK8mO8Rf5gt0QKdw', crossOrigin: 'anonymous' });
-          // ForeMedia analytics
           loadScript('https://platform.foremedia.net/code/61303/analytics');
         }
         if (document.readyState === 'complete') run(); else window.addEventListener('load', run);
       })();
     </script>
+
+    <style>.skip-link:focus{left:0!important;top:0!important}</style>
   </body>
 </html>

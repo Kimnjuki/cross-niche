@@ -1,9 +1,11 @@
 import { useEffect } from 'react';
 import type { Article } from '@/types';
-import { optimizeTitle, optimizeMetaDescription, generateArticleTitle, generateArticleMetaDescription } from '@/lib/seoUtils';
+import { optimizeTitle, optimizeMetaDescription, generateArticleMetaDescription } from '@/lib/seoUtils';
 import { generateAllSchemas, generatePersonSchema } from '@/lib/schemaMarkup';
 
-/** Person/author for E-E-A-T schema on author pages */
+const SITE_NAME = 'The Grid Nexus';
+const BASE_URL = 'https://thegridnexus.com';
+
 interface PersonSchema {
   name: string;
   jobTitle?: string;
@@ -26,21 +28,23 @@ interface SEOHeadProps {
   author?: string;
   section?: string;
   tags?: string[];
-  autoGenerate?: boolean; // Auto-generate optimized title/description for articles
-  noindex?: boolean; // Add noindex meta tag to prevent indexing
-  /** FAQ items for FAQPage schema (homepage, landing pages) */
+  autoGenerate?: boolean;
+  noindex?: boolean;
   faqs?: Array<{ question: string; answer: string }>;
-  /** HowTo for guides/tutorials schema */
-  howTo?: { name: string; description: string; steps: Array<{ name: string; text: string; image?: string }>; totalTime?: string };
-  /** Person schema for author pages (E-E-A-T) */
+  howTo?: {
+    name: string;
+    description: string;
+    steps: Array<{ name: string; text: string; image?: string }>;
+    totalTime?: string;
+  };
   person?: PersonSchema;
 }
 
 export function SEOHead({
   title: providedTitle,
   description: providedDescription,
-  keywords = ['technology', 'cybersecurity', 'gaming', 'AI', 'tech news', 'security', 'intelligence'],
-  image = '/assets/circuit.jpg',
+  keywords = ['technology', 'cybersecurity', 'gaming', 'AI', 'tech news', 'security intelligence'],
+  image = '/og-image.jpg',
   url = typeof window !== 'undefined' ? window.location.href : '',
   type = 'website',
   article,
@@ -53,255 +57,199 @@ export function SEOHead({
   noindex = false,
   faqs,
   howTo,
-  person
+  person,
 }: SEOHeadProps) {
-  // Auto-generate optimized title and description for articles if enabled
-  const title = type === 'article' && article && autoGenerate
-    ? `${article.title || 'Untitled Article'} | The Grid Nexus`
-    : providedTitle || 'The Grid Nexus';
-  
-  const description = type === 'article' && article && autoGenerate
-    ? generateArticleMetaDescription(article)
-    : providedDescription || '';
-  
-  // Ensure optimized values are calculated (60 chars for title, 160 for description)
-  const optimizedTitle = optimizeTitle(title, 60);
-  const optimizedDescription = optimizeMetaDescription(description, 160);
+  // ── Title construction (unique per page, 50-60 chars) ──────────────────
+  const rawTitle =
+    type === 'article' && article && autoGenerate
+      ? `${article.title || 'Untitled'} | ${SITE_NAME}`
+      : providedTitle || SITE_NAME;
+
+  const rawDescription =
+    type === 'article' && article && autoGenerate
+      ? generateArticleMetaDescription(article)
+      : providedDescription || '';
+
+  const optimizedTitle       = optimizeTitle(rawTitle, 60);
+  const optimizedDescription = optimizeMetaDescription(rawDescription, 160);
+
+  // ── Canonical URL (strip query + fragment, always HTTPS production) ────
+  function buildCanonical(href: string): string {
+    try {
+      const parsed = new URL(href.split('?')[0].split('#')[0]);
+      const origin =
+        typeof import.meta !== 'undefined' && import.meta.env?.PROD
+          ? BASE_URL
+          : parsed.origin;
+      return `${origin}${parsed.pathname}`;
+    } catch {
+      return href.split('?')[0].split('#')[0];
+    }
+  }
+  const canonical = buildCanonical(url);
+
+  // ── Absolute image URL (always HTTPS — fixes "mixed content" warnings) ─
+  function absoluteImage(src: string): string {
+    if (src.startsWith('https://')) return src;
+    if (src.startsWith('http://')) return src.replace('http://', 'https://');
+    const origin =
+      typeof window !== 'undefined' ? window.location.origin : BASE_URL;
+    return `${origin}${src.startsWith('/') ? src : `/${src}`}`;
+  }
+  const ogImage = absoluteImage(image);
 
   useEffect(() => {
-    // Update document title (ensure it's under 75 characters for SEO)
+    // ── document.title ──────────────────────────────────────────────────
     document.title = optimizedTitle;
 
-    // Update or create meta tags
-    const updateMetaTag = (property: string, content: string, isProperty = false) => {
-      const attribute = isProperty ? 'property' : 'name';
-      let element = document.querySelector(`meta[${attribute}="${property}"]`) as HTMLMetaElement;
-
-      if (!element) {
-        element = document.createElement('meta');
-        element.setAttribute(attribute, property);
-        document.head.appendChild(element);
+    // ── Helper: upsert meta tag ────────────────────────────────────────
+    function upsertMeta(attr: 'name' | 'property', key: string, value: string) {
+      let el = document.querySelector(
+        `meta[${attr}="${key}"]`
+      ) as HTMLMetaElement | null;
+      if (!el) {
+        el = document.createElement('meta');
+        el.setAttribute(attr, key);
+        document.head.appendChild(el);
       }
-      element.content = content;
-    };
-
-    // Basic meta tags
-    updateMetaTag('description', optimizedDescription);
-    updateMetaTag('keywords', [...keywords, ...tags].join(', '));
-    updateMetaTag('author', author || 'The Grid Nexus');
-    if (!noindex) {
-      updateMetaTag('robots', 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1');
-      updateMetaTag('googlebot', 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1');
-      updateMetaTag('bingbot', 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1');
+      el.content = value;
     }
-    updateMetaTag('revisit-after', '1 days');
-    updateMetaTag('distribution', 'global');
-    updateMetaTag('rating', 'general');
-    updateMetaTag('language', 'en');
-    updateMetaTag('copyright', 'The Grid Nexus');
 
-    // Open Graph tags (complete set for Ahrefs/social)
-    updateMetaTag('og:title', optimizedTitle, true);
-    updateMetaTag('og:description', optimizedDescription, true);
-    const ogImage = image.startsWith('http') ? image : (typeof window !== 'undefined' ? `${window.location.origin}${image}` : image);
-    updateMetaTag('og:image', ogImage, true);
-    if (ogImage.startsWith('https://')) {
-      updateMetaTag('og:image:secure_url', ogImage, true);
-    }
-    updateMetaTag('og:image:width', '1200', true);
-    updateMetaTag('og:image:height', '630', true);
-    updateMetaTag('og:image:alt', optimizedTitle, true);
-    updateMetaTag('og:image:type', 'image/jpeg', true);
-    const canonicalForOg = (() => {
-      try {
-        const parsed = new URL(url.split('?')[0].split('#')[0]);
-        const pathname = parsed.pathname || '/';
-        // Use the exact current URL for Open Graph
-        return `${parsed.origin}${pathname}`;
-      } catch {
-        return url.split('?')[0].split('#')[0];
-      }
-    })();
-    updateMetaTag('og:url', canonicalForOg, true);
-    updateMetaTag('og:type', type, true);
-    updateMetaTag('og:site_name', 'The Grid Nexus', true);
-    updateMetaTag('og:locale', 'en_US', true);
-    updateMetaTag('og:locale:alternate', 'en_GB', true);
+    // ── Basic meta ─────────────────────────────────────────────────────
+    upsertMeta('name', 'description',   optimizedDescription);
+    upsertMeta('name', 'keywords',      [...keywords, ...tags].join(', '));
+    upsertMeta('name', 'author',        author || SITE_NAME);
+    upsertMeta('name', 'language',      'en');
+    upsertMeta('name', 'copyright',     SITE_NAME);
+    upsertMeta('name', 'distribution',  'global');
+    upsertMeta('name', 'rating',        'general');
+    upsertMeta('name', 'revisit-after', '1 days');
+
+    // ── Robots ─────────────────────────────────────────────────────────
+    const robotsValue = noindex
+      ? 'noindex, nofollow'
+      : 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1';
+    upsertMeta('name', 'robots',    robotsValue);
+    upsertMeta('name', 'googlebot', robotsValue);
+    upsertMeta('name', 'bingbot',   robotsValue);
+
+    // ── Open Graph ─────────────────────────────────────────────────────
+    upsertMeta('property', 'og:title',              optimizedTitle);
+    upsertMeta('property', 'og:description',        optimizedDescription);
+    upsertMeta('property', 'og:url',                canonical);
+    upsertMeta('property', 'og:type',               type);
+    upsertMeta('property', 'og:image',              ogImage);
+    upsertMeta('property', 'og:image:secure_url',   ogImage);
+    upsertMeta('property', 'og:image:width',        '1200');
+    upsertMeta('property', 'og:image:height',       '630');
+    upsertMeta('property', 'og:image:alt',          optimizedTitle);
+    upsertMeta('property', 'og:image:type',         'image/jpeg');
+    upsertMeta('property', 'og:site_name',          SITE_NAME);
+    upsertMeta('property', 'og:locale',             'en_US');
+    upsertMeta('property', 'og:locale:alternate',   'en_GB');
+
     if (type === 'article' && article) {
-      updateMetaTag('og:article:author', author || article.author || 'The Grid Nexus', true);
-      if (section) {
-        updateMetaTag('og:article:section', section, true);
+      upsertMeta('property', 'og:article:author',  author || article.author || SITE_NAME);
+      if (section) upsertMeta('property', 'og:article:section', section);
+      if (publishedTime || article.publishedAt) {
+        upsertMeta('property', 'article:published_time', publishedTime || article.publishedAt);
       }
-      tags.forEach(tag => {
-        updateMetaTag('og:article:tag', tag, true);
-      });
-    }
-
-    // Twitter Card tags
-    updateMetaTag('twitter:card', 'summary_large_image');
-    updateMetaTag('twitter:title', optimizedTitle);
-    updateMetaTag('twitter:description', optimizedDescription);
-    const twitterImage = image.startsWith('http') ? image : (typeof window !== 'undefined' ? `${window.location.origin}${image}` : image);
-    updateMetaTag('twitter:image', twitterImage);
-    updateMetaTag('twitter:image:alt', optimizedTitle);
-    updateMetaTag('twitter:site', '@thegridnexus');
-    updateMetaTag('twitter:creator', '@thegridnexus');
-    updateMetaTag('twitter:url', url);
-
-    // Article-specific meta tags
-    if (type === 'article' && article) {
-      updateMetaTag('article:published_time', publishedTime || article.publishedAt, true);
       if (modifiedTime) {
-        updateMetaTag('article:modified_time', modifiedTime, true);
+        upsertMeta('property', 'article:modified_time', modifiedTime);
       }
-      if (author) {
-        updateMetaTag('article:author', author, true);
-      }
-      if (section) {
-        updateMetaTag('article:section', section, true);
-      }
-      tags.forEach(tag => {
-        updateMetaTag('article:tag', tag, true);
-      });
+      if (author) upsertMeta('property', 'article:author', author);
+      if (section) upsertMeta('property', 'article:section', section);
     }
 
-    // Robots meta tag (noindex for 404 etc.)
-    let robotsMeta = document.querySelector('meta[name="robots"]') as HTMLMetaElement;
-    if (noindex) {
-      if (!robotsMeta) {
-        robotsMeta = document.createElement('meta');
-        robotsMeta.name = 'robots';
-        document.head.appendChild(robotsMeta);
-      }
-      robotsMeta.content = 'noindex, nofollow';
-    }
+    // ── Twitter Card ───────────────────────────────────────────────────
+    upsertMeta('name', 'twitter:card',        'summary_large_image');
+    upsertMeta('name', 'twitter:title',       optimizedTitle);
+    upsertMeta('name', 'twitter:description', optimizedDescription);
+    upsertMeta('name', 'twitter:image',       ogImage);
+    upsertMeta('name', 'twitter:image:alt',   optimizedTitle);
+    upsertMeta('name', 'twitter:site',        '@thegridnexus');
+    upsertMeta('name', 'twitter:creator',     '@thegridnexus');
+    upsertMeta('name', 'twitter:url',         canonical);
 
-    // Canonical URL - use current page URL without query parameters or fragments
-    let canonicalLink = document.querySelector('link[rel="canonical"]') as HTMLLinkElement;
+    // ── Canonical link ─────────────────────────────────────────────────
+    let canonicalLink = document.querySelector('link[rel="canonical"]') as HTMLLinkElement | null;
     if (!canonicalLink) {
       canonicalLink = document.createElement('link');
       canonicalLink.rel = 'canonical';
       document.head.appendChild(canonicalLink);
     }
-    try {
-      const parsed = new URL(url.split('?')[0].split('#')[0]);
-      const pathname = parsed.pathname || '/';
-      // Use fixed production origin so canonical always matches sitemap (Ahrefs non-canonical fix)
-      const canonicalOrigin = typeof import.meta !== 'undefined' && import.meta.env?.PROD
-        ? 'https://thegridnexus.com'
-        : parsed.origin;
-      canonicalLink.href = `${canonicalOrigin}${pathname}`;
-    } catch {
-      canonicalLink.href = url.split('?')[0].split('#')[0];
-    }
+    canonicalLink.href = canonical;
 
-    // Structured Data (JSON-LD) - Article + Organization for ranking (schema.org)
-    let schemas = generateAllSchemas({
+    // ── hreflang (fixes "Missing hreflang" warning) ────────────────────
+    const hreflangPairs: [string, string][] = [
+      ['en',       canonical],
+      ['en-US',    canonical],
+      ['x-default', canonical],
+    ];
+    hreflangPairs.forEach(([lang, href]) => {
+      let el = document.querySelector(`link[rel="alternate"][hreflang="${lang}"]`) as HTMLLinkElement | null;
+      if (!el) {
+        el = document.createElement('link');
+        el.rel = 'alternate';
+        el.setAttribute('hreflang', lang);
+        document.head.appendChild(el);
+      }
+      el.href = href;
+    });
+
+    // ── Structured Data: single consolidated @graph ────────────────────
+    // Remove ALL existing JSON-LD scripts first (prevents duplicates)
+    document.querySelectorAll('script[type="application/ld+json"]').forEach(s => s.remove());
+
+    const schemas = generateAllSchemas({
       article: type === 'article' && article ? article : undefined,
-      breadcrumbs: type === 'article' && article ? [
-        { name: 'Home', url: '/' },
-        { name: (article.niche === 'tech' ? 'Tech' : article.niche === 'security' ? 'Security' : 'Gaming'), url: `/${article.niche}` },
-        { name: article.title ?? 'Article', url: `/article/${article.slug ?? article._id ?? article.id ?? ''}` }
-      ] : undefined,
-      faqs: faqs && faqs.length > 0 ? faqs : undefined,
+      breadcrumbs:
+        type === 'article' && article
+          ? [
+              { name: 'Home', url: '/' },
+              {
+                name:
+                  article.niche === 'tech'
+                    ? 'Tech'
+                    : article.niche === 'security'
+                    ? 'Security'
+                    : 'Gaming',
+                url: `/${article.niche}`,
+              },
+              {
+                name: article.title ?? 'Article',
+                url: `/article/${article.slug ?? article._id ?? article.id ?? ''}`,
+              },
+            ]
+          : undefined,
+      faqs:     faqs && faqs.length > 0 ? faqs : undefined,
       howTo,
-      isHomepage: typeof window !== 'undefined' && (url === window.location.origin || url === `${window.location.origin}/`),
-      category: type === 'website' && !article ? {
-        name: title,
-        description: description,
-        url: url
-      } : undefined
+      isHomepage:
+        typeof window !== 'undefined' &&
+        (url === window.location.origin || url === `${window.location.origin}/`),
+      category:
+        type === 'website' && !article
+          ? { name: optimizedTitle, description: optimizedDescription, url: canonical }
+          : undefined,
     });
 
-    // Add Person schema for author pages (E-E-A-T)
-    if (person) {
-      schemas = [...schemas, generatePersonSchema(person)];
-    }
+    if (person) schemas.push(generatePersonSchema(person));
 
-    // Remove existing schema scripts
-    const existingSchemas = document.querySelectorAll('script[type="application/ld+json"]');
-    existingSchemas.forEach(script => script.remove());
-
-    // Output schemas (Organization + Article always included for technical health)
-    schemas.forEach((schema, index) => {
-      const script = document.createElement('script');
-      script.type = 'application/ld+json';
-      script.id = `schema-${index}`;
-      script.textContent = JSON.stringify(schema);
-      document.head.appendChild(script);
-    });
-
-    // WebPage/WebSite @graph for non-article pages (Organization included)
-    let structuredDataScript = document.querySelector('script[type="application/ld+json"][id="schema-graph"]') as HTMLScriptElement;
-    if (!structuredDataScript) {
-      structuredDataScript = document.createElement('script');
-      structuredDataScript.type = 'application/ld+json';
-      structuredDataScript.id = 'schema-graph';
-      document.head.appendChild(structuredDataScript);
-    }
-
-    const structuredData = type === 'article' && article ? null : {
+    // Build one consolidated @graph script — no duplicate Organization/WebSite
+    const graphScript = document.createElement('script');
+    graphScript.type = 'application/ld+json';
+    graphScript.id   = 'schema-graph-main';
+    graphScript.textContent = JSON.stringify({
       '@context': 'https://schema.org',
-      '@graph': [
-        {
-          '@type': 'WebSite',
-          '@id': typeof window !== 'undefined' ? `${window.location.origin}/#website` : '#website',
-          url: typeof window !== 'undefined' ? window.location.origin : '',
-          name: 'The Grid Nexus',
-          description: optimizedDescription,
-          publisher: {
-            '@id': typeof window !== 'undefined' ? `${window.location.origin}/#organization` : '#organization'
-          },
-          potentialAction: {
-            '@type': 'SearchAction',
-            target: {
-              '@type': 'EntryPoint',
-              urlTemplate: typeof window !== 'undefined' ? `${window.location.origin}/topics?q={search_term_string}` : '/topics?q={search_term_string}'
-            },
-            'query-input': 'required name=search_term_string'
-          }
-        },
-        {
-          '@type': 'Organization',
-          '@id': typeof window !== 'undefined' ? `${window.location.origin}/#organization` : '#organization',
-          name: 'The Grid Nexus',
-          url: typeof window !== 'undefined' ? window.location.origin : '',
-          logo: {
-            '@type': 'ImageObject',
-            url: typeof window !== 'undefined' ? `${window.location.origin}/logo.png` : '/logo.png'
-          },
-          sameAs: [
-            'https://twitter.com/thegridnexus',
-            'https://facebook.com/thegridnexus'
-          ]
-        },
-        {
-          '@type': 'WebPage',
-          '@id': `${url}#webpage`,
-          url: url,
-          name: optimizedTitle,
-          description: optimizedDescription,
-          isPartOf: {
-            '@id': typeof window !== 'undefined' ? `${window.location.origin}/#website` : '#website'
-          },
-          about: {
-            '@id': typeof window !== 'undefined' ? `${window.location.origin}/#organization` : '#organization'
-          },
-          primaryImageOfPage: {
-            '@type': 'ImageObject',
-            url: image.startsWith('http') ? image : (typeof window !== 'undefined' ? `${window.location.origin}${image}` : image)
-          }
-        }
-      ]
-    };
+      '@graph': schemas,
+    });
+    document.head.appendChild(graphScript);
 
-    if (structuredData) {
-      structuredDataScript.textContent = JSON.stringify(structuredData);
-    } else {
-      structuredDataScript.textContent = '';
-    }
+  }, [
+    optimizedTitle, optimizedDescription, keywords, ogImage, canonical,
+    type, article, publishedTime, modifiedTime, author, section, tags,
+    noindex, faqs, howTo, person,
+  ]);
 
-  }, [optimizedTitle, optimizedDescription, title, description, keywords, image, url, type, article, publishedTime, modifiedTime, author, section, tags, noindex, faqs, howTo, person]);
-
-  return null; // This component doesn't render anything
+  return null;
 }
