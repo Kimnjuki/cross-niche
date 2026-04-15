@@ -100,19 +100,28 @@ export const effectiveCTAs = {
 };
 
 /**
- * Optimize title tag
+ * Optimize title tag (50–60 chars ideal, 75 hard max)
+ * Truncates at a word boundary to avoid mid-word clips.
  */
 export function optimizeTitle(title: string, maxLength: number = 60): string {
   if (title.length <= maxLength) return title;
-  return title.substring(0, maxLength - 3) + '...';
+  const cut = title.lastIndexOf(' ', maxLength - 1);
+  const pos = cut > maxLength * 0.6 ? cut : maxLength - 1;
+  return title.substring(0, pos).replace(/[,\s]+$/, '') + '\u2026';
 }
 
 /**
- * Optimize meta description
+ * Optimize meta description (140–158 chars ideal, 160 hard max)
+ * Truncates at a sentence or word boundary.
  */
 export function optimizeMetaDescription(description: string, maxLength: number = 160): string {
   if (description.length <= maxLength) return description;
-  return description.substring(0, maxLength - 3) + '...';
+  // Try to break at sentence end
+  const sentenceEnd = description.lastIndexOf('. ', maxLength - 1);
+  if (sentenceEnd > maxLength * 0.7) return description.substring(0, sentenceEnd + 1);
+  const wordEnd = description.lastIndexOf(' ', maxLength - 1);
+  const pos = wordEnd > maxLength * 0.7 ? wordEnd : maxLength - 1;
+  return description.substring(0, pos).replace(/[,\s]+$/, '') + '\u2026';
 }
 
 /** Current year for freshness signals (CTR boost) */
@@ -186,7 +195,9 @@ export function generateArticleTitle(article: {
 }
 
 /**
- * Generate SEO-friendly meta description for article
+ * Generate SEO-friendly meta description for article.
+ * Prioritises the article excerpt (most unique signal) and appends
+ * a niche-aware CTA. Produces 140-158 chars of unique, descriptive copy.
  */
 export function generateArticleMetaDescription(article: {
   excerpt: string;
@@ -194,18 +205,22 @@ export function generateArticleMetaDescription(article: {
   niche?: string;
   tags?: string[];
 }): string {
-  const { excerpt, title, niche, tags } = article;
-  const primaryKeyword = tags?.[0] || niche || 'technology';
-  const cta = effectiveCTAs.informational[0];
-  
-  // Use value proposition formula
-  return metaDescriptionFormulas.valueProposition(
-    'Discover',
-    primaryKeyword,
-    excerpt.substring(0, 60),
-    `Expert insights on ${title.toLowerCase()}.`,
-    cta
-  );
+  const { excerpt, niche } = article;
+
+  // Use the excerpt as primary signal if it's substantive
+  const clean = (excerpt || '').trim().replace(/\s+/g, ' ');
+  if (clean.length >= 100) {
+    return optimizeMetaDescription(clean, 158);
+  }
+
+  // Fallback: build from excerpt + niche CTA
+  const nicheLabel =
+    niche === 'security' ? 'cybersecurity'
+    : niche === 'gaming' ? 'gaming'
+    : 'technology';
+  const cta = `Read the full analysis on ${nicheLabel} at The Grid Nexus.`;
+  const combined = clean ? `${clean} ${cta}` : cta;
+  return optimizeMetaDescription(combined, 158);
 }
 
 

@@ -138,7 +138,6 @@ const App = () => (
                     <Route path="/security" element={<Security />} />
                     <Route path="/security/:slug" element={<ArticlePage />} />
                     <Route path="/cybersecurity" element={<Navigate to="/security" replace />} />
-                    <Route path="/cybersecurity/" element={<Navigate to="/security" replace />} />
                     <Route path="/gaming" element={<Gaming />} />
                     <Route path="/gaming/:slug" element={<ArticlePage />} />
                     <Route path="/article/:slug" element={<ArticlePage />} />
@@ -162,8 +161,9 @@ const App = () => (
                     <Route path="/live-threat-dashboard" element={<LiveThreatDashboard />} />
                     <Route path="/subscription" element={<SubscriptionPlans />} />
                     <Route path="/subscription/management" element={<SubscriptionManagement />} />
-                    <Route path="/billing" element={<SubscriptionManagement />} />
-                    <Route path="/settings" element={<SubscriptionManagement />} />
+                    {/* 301-equivalent client-side redirects for duplicate-render aliases */}
+                    <Route path="/billing" element={<Navigate to="/subscription/management" replace />} />
+                    <Route path="/settings" element={<Navigate to="/subscription/management" replace />} />
                     <Route path="/forums" element={<CommunityForums />} />
                     <Route path="/tools/security-scanner" element={<SecurityScanner />} />
                     <Route path="/tools" element={<SecurityScanner />} />
@@ -199,11 +199,11 @@ const App = () => (
                     <Route path="/profile" element={<Profile />} />
                     {/* Nexus AI Features */}
                     <Route path="/tools/nexusguard" element={<NexusGuard />} />
-                    <Route path="/nexus/nexusguard" element={<NexusGuard />} />
+                    <Route path="/nexus/nexusguard" element={<Navigate to="/tools/nexusguard" replace />} />
                     <Route path="/learn/nexus-path" element={<NexusPath />} />
-                    <Route path="/nexus/nexuspath" element={<NexusPath />} />
+                    <Route path="/nexus/nexuspath" element={<Navigate to="/learn/nexus-path" replace />} />
                     <Route path="/pulse/nexus-pulse" element={<NexusPulse />} />
-                    <Route path="/nexus/nexuspulse" element={<NexusPulse />} />
+                    <Route path="/nexus/nexuspulse" element={<Navigate to="/pulse/nexus-pulse" replace />} />
                     {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                     <Route path="*" element={<NotFound />} />
                   </Routes>
