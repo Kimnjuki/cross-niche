@@ -51,11 +51,7 @@ const FEED_SLUGS = [
   { slug: 'play', label: 'Gaming', path: '/gaming' },
 ];
 
-const PINNED_SLUGS = [
-  'neuromorphic-chip-robotic-vision-2026',
-  'microsoft-10000-year-data-storage',
-  'ai-spending-forecast-2026',
-];
+const PINNED_SLUGS: string[] = [];
 
 function articleLink(article: Article | null | undefined): string {
   if (!article) return '/';
