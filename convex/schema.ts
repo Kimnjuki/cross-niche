@@ -109,7 +109,7 @@ export default defineSchema({
     contentType: v.optional(
     v.union(
       v.literal("article"),
-      v.literal("review"), 
+      v.literal("review"),
       v.literal("guide"),
       v.literal("news"),
       v.literal("opinion"),
@@ -120,9 +120,16 @@ export default defineSchema({
       v.literal("tutorial"),
       v.literal("editorial_brief"),
       v.literal("threat_alert"),
-      v.literal("roadmap_report")
+      v.literal("roadmap_report"),
+      v.literal("gaming_security_guide"),
+      v.literal("threat_intelligence")
     )
   ),
+    // Gaming security niche fields
+    gamingPlatforms: v.optional(v.array(v.string())),   // ["Steam","PlayStation","Xbox","PC","Mobile"]
+    securityDifficulty: v.optional(
+      v.union(v.literal("beginner"), v.literal("intermediate"), v.literal("advanced"))
+    ),
     // CRITICAL: Add default values for undefined prevention
     seoDescription: v.optional(v.string()),
     canonicalUrl: v.optional(v.string()),
@@ -435,12 +442,17 @@ export default defineSchema({
     raw: v.optional(v.any()),
     lastIngestedAt: v.number(),
     expiresAt: v.optional(v.float64()),
+    // Gaming context enrichment
+    affectsGamers: v.optional(v.boolean()),
+    gamingPlatforms: v.optional(v.array(v.string())),  // ["Steam","PlayStation","Xbox","PC","Mobile"]
+    gamerImpactScore: v.optional(v.number()),          // 0–100
   })
     .index("by_source", ["source"])
     .index("by_source_id", ["source", "sourceId"])
     .index("by_published_at", ["publishedAt"])
     .index("by_severity_published", ["severity", "publishedAt"])
-    .index("by_expiresAt", ["expiresAt"]),
+    .index("by_expiresAt", ["expiresAt"])
+    .index("by_affects_gamers", ["affectsGamers", "publishedAt"]),
 
   // ─── Threat alert subscriptions & notifications ─────────────────────────
   threatSubscriptions: defineTable({
@@ -876,7 +888,7 @@ export default defineSchema({
     scenarioId: v.string(),
     scenarioTitle: v.string(),
     decisions: v.array(v.object({
-      stepId: v.number(),
+      stepId: v.string(),       // e.g. "email_received", "verify_sender"
       choiceLabel: v.string(),
       riskImpact: v.number(),
       costImpact: v.number(),
@@ -890,6 +902,37 @@ export default defineSchema({
     .index("by_user", ["userId"])
     .index("by_session", ["sessionId"])
     .index("by_scenario", ["scenarioId"])
+    .index("by_created_at", ["createdAt"]),
+
+  // Community-submitted threat intelligence
+  communityThreatReports: defineTable({
+    userId: v.optional(v.string()),
+    displayName: v.optional(v.string()),   // "Anonymous" if not provided
+    title: v.string(),
+    description: v.string(),
+    platform: v.string(),                  // "Steam" | "PlayStation" | "Xbox" | "PC" | "Mobile" | "Other"
+    severity: v.union(
+      v.literal("critical"),
+      v.literal("high"),
+      v.literal("medium"),
+      v.literal("low")
+    ),
+    threatType: v.string(),                // "phishing" | "account_takeover" | "malware" | "ddos" | "exploit" | "other"
+    evidence: v.optional(v.string()),      // URL or description of evidence
+    upvotes: v.number(),
+    status: v.union(
+      v.literal("pending"),
+      v.literal("verified"),
+      v.literal("dismissed")
+    ),
+    verifiedByAdmin: v.optional(v.boolean()),
+    linkedThreatId: v.optional(v.id("threatIntel")),  // link to official CVE if escalated
+    createdAt: v.number(),
+  })
+    .index("by_user", ["userId"])
+    .index("by_status", ["status"])
+    .index("by_platform", ["platform"])
+    .index("by_severity_created", ["severity", "createdAt"])
     .index("by_created_at", ["createdAt"]),
 
   // ─── FEAT-005: Nexus Search Logs ───────────────────────────────────────────

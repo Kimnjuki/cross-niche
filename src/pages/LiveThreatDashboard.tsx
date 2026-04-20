@@ -2,6 +2,7 @@ import { Layout } from '@/components/layout/Layout';
 import { SEOHead } from '@/components/seo/SEOHead';
 import { ThreatIntelligenceDashboard } from '@/components/security/ThreatIntelligenceDashboard';
 import { LiveThreatFeed } from '@/components/home/LiveThreatFeed';
+import { CommunityThreatReporter } from '@/components/security/CommunityThreatReporter';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
@@ -202,6 +203,7 @@ export default function LiveThreatDashboard() {
                   )}
                 </CardContent>
               </Card>
+              <CommunityThreatReporter />
             </div>
             <div className="lg:col-span-1">
               <LiveThreatFeed />

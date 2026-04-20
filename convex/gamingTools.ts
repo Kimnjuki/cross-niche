@@ -69,7 +69,7 @@ export const saveBreachSimulation = mutation({
     scenarioId: v.string(),
     scenarioTitle: v.string(),
     decisions: v.array(v.object({
-      stepId: v.number(),
+      stepId: v.string(),
       choiceLabel: v.string(),
       riskImpact: v.number(),
       costImpact: v.number(),

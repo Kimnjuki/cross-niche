@@ -1,7 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Shield, AlertTriangle, Play, RotateCcw, Eye, Lock, Database, Wifi, Globe, Users, FileText, TrendingUp, Clock, DollarSign, Activity } from 'lucide-react';
 import { GlassCard } from '@/components/ui/GlassCard';
 import { cn } from '@/lib/utils';
+import { useMutation } from 'convex/react';
+import { api } from '../../../convex/_generated/api';
+import { useConvexDisabled } from '@/components/SafeConvexProvider';
+import { useAuth } from '@/contexts/AuthContext';
 
 interface BreachScenario {
   id: string;
@@ -252,6 +256,11 @@ const difficultyConfig = {
 };
 
 export function BreachSimulator() {
+  const isDisabled = useConvexDisabled();
+  const { user } = useAuth();
+  const saveSimulation = useMutation(api.gamingTools.saveBreachSimulation);
+  const sessionIdRef = useRef<string>(crypto.randomUUID());
+
   const [selectedScenario, setSelectedScenario] = useState<BreachScenario | null>(null);
   const [currentStep, setCurrentStep] = useState(0);
   const [choices, setChoices] = useState<Record<string, string>>({});
@@ -294,6 +303,7 @@ export function BreachSimulator() {
   };
 
   const resetSimulator = () => {
+    sessionIdRef.current = crypto.randomUUID();
     setSelectedScenario(null);
     setCurrentStep(0);
     setChoices({});
@@ -301,6 +311,38 @@ export function BreachSimulator() {
     setShowResults(false);
     setTotalImpact({ risk: 0, cost: 0, time: 0 });
   };
+
+  // Persist completed simulation to Convex
+  useEffect(() => {
+    if (!showResults || !selectedScenario || isDisabled) return;
+
+    const outcome: 'success' | 'partial' | 'failure' =
+      totalImpact.risk <= 30 ? 'success' : totalImpact.risk <= 60 ? 'partial' : 'failure';
+
+    const decisions = Object.entries(choices).map(([stepId, optionId]) => {
+      const step = selectedScenario.scenario.find((s) => s.id === stepId);
+      const option = step?.options?.find((o) => o.id === optionId);
+      return {
+        stepId,
+        choiceLabel: option?.text ?? optionId,
+        riskImpact: option?.impact.risk ?? 0,
+        costImpact: option?.impact.cost ?? 0,
+      };
+    });
+
+    saveSimulation({
+      sessionId: sessionIdRef.current,
+      userId: user?.id,
+      scenarioId: selectedScenario.id,
+      scenarioTitle: selectedScenario.title,
+      decisions,
+      finalRisk: totalImpact.risk,
+      finalCost: totalImpact.cost,
+      finalTime: totalImpact.time,
+      outcome,
+    }).catch(() => { /* non-critical */ });
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [showResults]);
 
   const getScoreColor = (value: number, type: 'risk' | 'cost' | 'time') => {
     const thresholds = {
