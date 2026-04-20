@@ -16,22 +16,21 @@ import { cn } from '@/lib/utils';
 import { LiveTicker } from '@/components/layout/LiveTicker';
 
 const navLinks = [
-  { href: '/tech', label: 'Innovate', color: 'text-tech' },
-  { href: '/security', label: 'Secured', color: 'text-security' },
-  { href: '/gaming', label: 'Play', color: 'text-gaming' },
-  { href: '/explore', label: 'Explore', color: 'text-foreground' },
-  { href: '/topics', label: 'Topics', color: 'text-foreground' },
+  { href: '/security', label: 'Threat Intel', color: 'text-security' },
+  { href: '/gaming', label: 'Game Security', color: 'text-gaming' },
+  { href: '/tech', label: 'Tech', color: 'text-tech' },
+  { href: '/tools', label: 'Security Tools', color: 'text-security' },
   { href: '/guides', label: 'Guides', color: 'text-foreground' },
-  { href: '/roadmap', label: 'Roadmap', color: 'text-foreground' },
+  { href: '/topics', label: 'Topics', color: 'text-foreground' },
   { href: '/tutorials', label: 'Tutorials', color: 'text-foreground' },
   { href: '/blog', label: 'Live Wire', color: 'text-foreground' },
 ];
 
-/** Primary CTAs for mobile: Tech, Security, Gaming first to reduce bounce and improve navigation. */
+/** Primary CTAs for mobile: Security-first to reinforce gaming security positioning. */
 const mobilePrimaryLinks = [
+  { href: '/security', label: 'Threat Intel', color: 'text-security' },
+  { href: '/gaming', label: 'Game Security', color: 'text-gaming' },
   { href: '/tech', label: 'Tech', color: 'text-tech' },
-  { href: '/security', label: 'Security', color: 'text-security' },
-  { href: '/gaming', label: 'Gaming', color: 'text-gaming' },
 ];
 
 const roleFilters = [

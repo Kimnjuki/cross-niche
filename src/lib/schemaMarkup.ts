@@ -42,7 +42,15 @@ export function generateOrganizationSchema() {
       availableLanguage: ['English'],
     },
     description:
-      'Tech, Security & Gaming Intelligence — breaking news, expert analysis, and comprehensive guides.',
+      'Gaming cybersecurity intelligence hub — protecting gamers and analyzing threats where gaming meets security. Expert analysis, interactive tools, and comprehensive security guides.',
+    knowsAbout: [
+      'Gaming Cybersecurity',
+      'Threat Intelligence',
+      'Game Security',
+      'Cybersecurity News',
+      'Tech Innovation',
+      'Online Gaming Safety',
+    ],
     foundingDate: '2024',
     publishingPrinciples: `${BASE_URL}/editorial`,
     ownershipFundingInfo: `${BASE_URL}/disclosure`,
@@ -62,7 +70,7 @@ export function generateWebSiteSchema() {
     url: BASE_URL,
     name: 'The Grid Nexus',
     description:
-      'Your trusted source for technology news, cybersecurity insights, and gaming industry analysis.',
+      'Your security intelligence hub for the gaming and tech world. We protect gamers, secure systems, and analyze threats where gaming meets cybersecurity.',
     publisher: { '@id': `${BASE_URL}/#organization` },
     potentialAction: {
       '@type': 'SearchAction',
