@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { Shield, AlertTriangle, Play, RotateCcw, Eye, Lock, Database, Wifi, Globe, Users, FileText, TrendingUp, Clock, DollarSign, Activity } from 'lucide-react';
 import { GlassCard } from '@/components/ui/GlassCard';
 import { cn } from '@/lib/utils';
@@ -255,7 +255,7 @@ const difficultyConfig = {
   advanced: { label: 'Advanced', color: 'text-security-red' }
 };
 
-export function BreachSimulator() {
+export const BreachSimulator = React.memo(function BreachSimulator() {
   const isDisabled = useConvexDisabled();
   const { user } = useAuth();
   const saveSimulation = useMutation(api.gamingTools.saveBreachSimulation);
@@ -268,41 +268,48 @@ export function BreachSimulator() {
   const [showResults, setShowResults] = useState(false);
   const [totalImpact, setTotalImpact] = useState({ risk: 0, cost: 0, time: 0 });
 
-  const startScenario = (scenario: BreachScenario) => {
+  const startScenario = useCallback((scenario: BreachScenario) => {
     setSelectedScenario(scenario);
     setCurrentStep(0);
     setChoices({});
     setIsRunning(true);
     setShowResults(false);
     setTotalImpact({ risk: 0, cost: 0, time: 0 });
-  };
+  }, []);
 
-  const makeChoice = (stepId: string, optionId: string) => {
+  const makeChoice = useCallback((stepId: string, optionId: string) => {
     setChoices(prev => ({ ...prev, [stepId]: optionId }));
-    
-    if (selectedScenario) {
-      const step = selectedScenario.scenario.find(s => s.id === stepId);
-      const option = step?.options?.find(o => o.id === optionId);
-      
-      if (option) {
-        setTotalImpact(prev => ({
-          risk: prev.risk + option.impact.risk,
-          cost: prev.cost + option.impact.cost,
-          time: prev.time + option.impact.time
-        }));
+
+    setSelectedScenario(current => {
+      if (current) {
+        const step = current.scenario.find(s => s.id === stepId);
+        const option = step?.options?.find(o => o.id === optionId);
+        if (option) {
+          setTotalImpact(prev => ({
+            risk: prev.risk + option.impact.risk,
+            cost: prev.cost + option.impact.cost,
+            time: prev.time + option.impact.time
+          }));
+        }
       }
-    }
-  };
+      return current;
+    });
+  }, []);
 
-  const nextStep = () => {
-    if (selectedScenario && currentStep < selectedScenario.scenario.length - 1) {
-      setCurrentStep(currentStep + 1);
-    } else {
-      setShowResults(true);
-    }
-  };
+  const nextStep = useCallback(() => {
+    setSelectedScenario(current => {
+      if (current) {
+        setCurrentStep(prev => {
+          if (prev < current.scenario.length - 1) return prev + 1;
+          setShowResults(true);
+          return prev;
+        });
+      }
+      return current;
+    });
+  }, []);
 
-  const resetSimulator = () => {
+  const resetSimulator = useCallback(() => {
     sessionIdRef.current = crypto.randomUUID();
     setSelectedScenario(null);
     setCurrentStep(0);
@@ -310,7 +317,7 @@ export function BreachSimulator() {
     setIsRunning(false);
     setShowResults(false);
     setTotalImpact({ risk: 0, cost: 0, time: 0 });
-  };
+  }, []);
 
   // Persist completed simulation to Convex
   useEffect(() => {
@@ -720,4 +727,4 @@ export function BreachSimulator() {
       </div>
     </GlassCard>
   );
-}
+});

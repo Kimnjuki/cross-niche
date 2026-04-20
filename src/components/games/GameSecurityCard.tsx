@@ -3,6 +3,7 @@
  * Radar chart: Fun Factor vs Security Risk, plus Nexus Security Score.
  */
 
+import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Shield, Lock, Smartphone, FileText } from 'lucide-react';
@@ -43,7 +44,7 @@ function scoreBadgeClass(score: number): string {
   return 'border-red-500/30 bg-red-500/10 text-red-700 dark:text-red-400';
 }
 
-export function GameSecurityCard({
+export const GameSecurityCard = React.memo(function GameSecurityCard({
   gameTitle,
   nexusSecurityScore,
   funFactor = 70,
@@ -137,4 +138,4 @@ export function GameSecurityCard({
       </CardContent>
     </Card>
   );
-}
+});
