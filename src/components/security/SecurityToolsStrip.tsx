@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { Shield, Target, Zap, Activity, ArrowRight } from 'lucide-react';
+import { Shield, Target, Zap, Activity, Gamepad2, ArrowRight } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 const tools = [
@@ -11,18 +11,25 @@ const tools = [
     color: 'text-security hover:bg-security/10 border-security/20',
   },
   {
+    href: '/tools/steam-scanner',
+    icon: Gamepad2,
+    label: 'Steam Scanner',
+    sub: 'Account security',
+    color: 'text-gaming hover:bg-gaming/10 border-gaming/20',
+  },
+  {
     href: '/breach-sim',
     icon: Target,
     label: 'Breach Sim',
     sub: 'Attack scenarios',
-    color: 'text-gaming hover:bg-gaming/10 border-gaming/20',
+    color: 'text-tech hover:bg-tech/10 border-tech/20',
   },
   {
     href: '/security-score',
     icon: Zap,
     label: 'Security Score',
     sub: 'Personal assessment',
-    color: 'text-tech hover:bg-tech/10 border-tech/20',
+    color: 'text-yellow-500 hover:bg-yellow-500/10 border-yellow-500/20',
   },
   {
     href: '/live-threat-dashboard',
@@ -50,7 +57,7 @@ export function SecurityToolsStrip({ className, heading = 'Interactive Security 
           All tools <ArrowRight className="h-3 w-3" />
         </Link>
       </div>
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2">
         {tools.map((t) => {
           const Icon = t.icon;
           return (

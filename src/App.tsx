@@ -110,6 +110,7 @@ const Bookmarks = lazy(() => import("./pages/Bookmarks"));
 const Profile = lazy(() => import("./pages/Profile"));
 // Nexus AI Features
 const NexusGuard = lazy(() => import("./pages/tools/NexusGuard"));
+const SteamScanner = lazy(() => import("./pages/tools/SteamScanner"));
 const NexusPath = lazy(() => import("./pages/learn/NexusPath"));
 const NexusPulse = lazy(() => import("./pages/pulse/NexusPulse"));
 
@@ -200,6 +201,7 @@ const App = () => (
                     <Route path="/profile" element={<Profile />} />
                     {/* Nexus AI Features */}
                     <Route path="/tools/nexusguard" element={<NexusGuard />} />
+                    <Route path="/tools/steam-scanner" element={<SteamScanner />} />
                     <Route path="/nexus/nexusguard" element={<Navigate to="/tools/nexusguard" replace />} />
                     <Route path="/learn/nexus-path" element={<NexusPath />} />
                     <Route path="/nexus/nexuspath" element={<Navigate to="/learn/nexus-path" replace />} />

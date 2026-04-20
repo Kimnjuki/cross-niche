@@ -10,6 +10,7 @@ import {
   Activity,
   ScanLine,
   Target,
+  Gamepad2,
   ArrowRight,
 } from 'lucide-react';
 
@@ -25,6 +26,18 @@ const tools = [
     badgeVariant: 'default' as const,
     gradient: 'from-security/20 to-security/5',
     iconColor: 'text-security',
+  },
+  {
+    href: '/tools/steam-scanner',
+    icon: Gamepad2,
+    name: 'Steam Security Scanner',
+    tagline: 'Steam Account Health Check',
+    description:
+      '10 checks in 2 minutes: Steam Guard, API key exposure, trade confirmation, privacy settings, and more. Get a scored report with exact fix steps.',
+    badge: 'New',
+    badgeVariant: 'default' as const,
+    gradient: 'from-gaming/20 to-gaming/5',
+    iconColor: 'text-gaming',
   },
   {
     href: '/breach-sim',
