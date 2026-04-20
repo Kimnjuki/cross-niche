@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { Shield, AlertTriangle, TrendingUp, Clock, ExternalLink } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -67,7 +67,7 @@ const severityConfig = {
   low: { color: 'bg-blue-500', text: 'text-blue-500', label: 'Low' },
 };
 
-export function ThreatIntelligenceDashboard() {
+export const ThreatIntelligenceDashboard = React.memo(function ThreatIntelligenceDashboard() {
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const isDisabled = useConvexDisabled();
   const rows = useQuery(api.threatIntel.listLatest, isDisabled ? 'skip' : { limit: 50 });
@@ -210,7 +210,7 @@ export function ThreatIntelligenceDashboard() {
       </CardContent>
     </Card>
   );
-}
+});
 
 
 
