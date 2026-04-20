@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Layout } from '@/components/layout/Layout';
 import { Shield, CheckCircle, AlertTriangle, RotateCcw, ChevronRight } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -8,6 +8,10 @@ import { Badge } from '@/components/ui/badge';
 import { SEOHead } from '@/components/seo/SEOHead';
 import { Link } from 'react-router-dom';
 import { cn } from '@/lib/utils';
+import { useMutation } from 'convex/react';
+import { api } from '../../convex/_generated/api';
+import { useConvexDisabled } from '@/components/SafeConvexProvider';
+import { useAuth } from '@/contexts/AuthContext';
 
 type Answer = 'yes' | 'partial' | 'no' | null;
 
@@ -114,6 +118,19 @@ function getScoreBand(score: number) {
 }
 
 export default function SecurityScore() {
+  const isDisabled = useConvexDisabled();
+  const { user } = useAuth();
+  const saveScore = useMutation(api.gamingTools.saveSecurityScore);
+
+  const sessionIdRef = useRef<string>(
+    (() => {
+      const key = 'gnx_security_score_session';
+      let id = sessionStorage.getItem(key);
+      if (!id) { id = crypto.randomUUID(); sessionStorage.setItem(key, id); }
+      return id;
+    })()
+  );
+
   const [answers, setAnswers] = useState<Record<number, Answer>>({});
   const [currentQ, setCurrentQ] = useState(0);
   const [phase, setPhase] = useState<'intro' | 'quiz' | 'results'>('intro');
@@ -132,6 +149,10 @@ export default function SecurityScore() {
   }
 
   function reset() {
+    // Generate a fresh session for retakes
+    const newId = crypto.randomUUID();
+    sessionStorage.setItem('gnx_security_score_session', newId);
+    sessionIdRef.current = newId;
     setAnswers({});
     setCurrentQ(0);
     setPhase('intro');
@@ -148,6 +169,27 @@ export default function SecurityScore() {
   const band = getScoreBand(score);
 
   const weakAreas = questions.filter((q) => answers[q.id] === 'no' || answers[q.id] === 'partial');
+
+  // Persist results to Convex when quiz finishes
+  useEffect(() => {
+    if (phase !== 'results' || isDisabled) return;
+    const bandKey = band.label.toLowerCase().replace(' ', '_') as
+      'excellent' | 'good' | 'fair' | 'needs_work';
+    saveScore({
+      sessionId: sessionIdRef.current,
+      userId: user?.id,
+      answers: questions.map((q) => ({
+        questionId: q.id,
+        answer: (answers[q.id] ?? 'no') as 'yes' | 'partial' | 'no',
+      })),
+      totalScore: score,
+      maxScore: MAX_SCORE,
+      percentScore: scorePct,
+      band: bandKey,
+      weakAreaCount: weakAreas.length,
+    }).catch(() => { /* non-critical — don't surface save errors to user */ });
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [phase]);
 
   const q = questions[currentQ];
 

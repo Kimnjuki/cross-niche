@@ -844,6 +844,54 @@ export default defineSchema({
     .index("by_active", ["isActive"])
     .index("by_topics", ["topics"]),
 
+  // ─── Gaming Security Tools ─────────────────────────────────────────────────
+  // Backs /security-score interactive quiz
+  gamingSecurityScores: defineTable({
+    sessionId: v.string(),
+    userId: v.optional(v.string()),
+    answers: v.array(v.object({
+      questionId: v.number(),
+      answer: v.union(v.literal("yes"), v.literal("partial"), v.literal("no")),
+    })),
+    totalScore: v.number(),
+    maxScore: v.number(),
+    percentScore: v.number(),
+    band: v.union(
+      v.literal("excellent"),
+      v.literal("good"),
+      v.literal("fair"),
+      v.literal("needs_work")
+    ),
+    weakAreaCount: v.number(),
+    createdAt: v.number(),
+  })
+    .index("by_user", ["userId"])
+    .index("by_session", ["sessionId"])
+    .index("by_created_at", ["createdAt"]),
+
+  // Backs /breach-sim interactive decision-tree scenarios
+  breachSimulations: defineTable({
+    sessionId: v.string(),
+    userId: v.optional(v.string()),
+    scenarioId: v.string(),
+    scenarioTitle: v.string(),
+    decisions: v.array(v.object({
+      stepId: v.number(),
+      choiceLabel: v.string(),
+      riskImpact: v.number(),
+      costImpact: v.number(),
+    })),
+    finalRisk: v.number(),
+    finalCost: v.number(),
+    finalTime: v.number(),
+    outcome: v.union(v.literal("success"), v.literal("partial"), v.literal("failure")),
+    createdAt: v.number(),
+  })
+    .index("by_user", ["userId"])
+    .index("by_session", ["sessionId"])
+    .index("by_scenario", ["scenarioId"])
+    .index("by_created_at", ["createdAt"]),
+
   // ─── FEAT-005: Nexus Search Logs ───────────────────────────────────────────
   searchLogs: defineTable({
     query: v.string(),
