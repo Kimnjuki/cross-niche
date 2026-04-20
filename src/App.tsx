@@ -84,6 +84,7 @@ const SubscriptionManagement = lazy(() => import("./pages/SubscriptionManagement
 const CommunityForums = lazy(() => import("./pages/CommunityForums"));
 const SecurityScanner = lazy(() => import("./pages/SecurityScanner"));
 const APIAccess = lazy(() => import("./pages/APIAccess"));
+const ToolsHub = lazy(() => import("./pages/ToolsHub"));
 const MobileApp = lazy(() => import("./pages/MobileApp"));
 const PodcastPlatform = lazy(() => import("./pages/PodcastPlatform"));
 const AdvancedSearch = lazy(() => import("./components/search/AdvancedSearch"));
@@ -166,7 +167,7 @@ const App = () => (
                     <Route path="/settings" element={<Navigate to="/subscription/management" replace />} />
                     <Route path="/forums" element={<CommunityForums />} />
                     <Route path="/tools/security-scanner" element={<SecurityScanner />} />
-                    <Route path="/tools" element={<SecurityScanner />} />
+                    <Route path="/tools" element={<ToolsHub />} />
                     <Route path="/api" element={<APIAccess />} />
                     <Route path="/mobile" element={<MobileApp />} />
                     <Route path="/podcasts" element={<PodcastPlatform />} />
