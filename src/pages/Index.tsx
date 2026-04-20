@@ -44,6 +44,7 @@ import {
 } from '@/hooks/useContent';
 import { ArticleGrid } from '@/components/articles/ArticleGrid';
 import { getPageMetadata } from '@/lib/seo/pageMetadata';
+import { SecurityToolsStrip } from '@/components/security/SecurityToolsStrip';
 
 const FEED_SLUGS = [
   { slug: 'innovate', label: 'Tech', path: '/tech' },
@@ -132,18 +133,20 @@ export default function Index() {
           </div>
         </section>
         <section className="container mx-auto px-4 py-16 max-w-7xl text-center">
-          <h1 className="font-display text-2xl md:text-3xl font-bold text-foreground mb-4">
-            Welcome to The Grid Nexus
+          <h1 className="font-display text-3xl md:text-4xl font-bold text-foreground mb-3">
+            Gaming Cybersecurity Intelligence
           </h1>
-          <p className="text-muted-foreground mb-8 max-w-lg mx-auto">
-            Articles from Convex will appear here. Explore by topic or check back soon.
+          <p className="text-muted-foreground mb-2 text-lg max-w-xl mx-auto">
+            Threat intel, security tools, and gaming news — built for gamers who take their accounts seriously.
           </p>
-          <div className="flex flex-wrap justify-center gap-4">
+          <p className="text-sm text-muted-foreground mb-8">Content loading — check back shortly or explore below.</p>
+          <div className="flex flex-wrap justify-center gap-3 mb-10">
+            <Link to="/security" className="px-4 py-2 rounded-lg bg-security/10 text-security font-medium hover:bg-security/20">Threat Intel</Link>
+            <Link to="/gaming" className="px-4 py-2 rounded-lg bg-gaming/10 text-gaming font-medium hover:bg-gaming/20">Game Security</Link>
             <Link to="/tech" className="px-4 py-2 rounded-lg bg-tech/10 text-tech font-medium hover:bg-tech/20">Tech</Link>
-            <Link to="/security" className="px-4 py-2 rounded-lg bg-security/10 text-security font-medium hover:bg-security/20">Security</Link>
-            <Link to="/gaming" className="px-4 py-2 rounded-lg bg-gaming/10 text-gaming font-medium hover:bg-gaming/20">Gaming</Link>
-            <Link to="/news" className="px-4 py-2 rounded-lg border border-border font-medium hover:bg-muted">News</Link>
+            <Link to="/live-threat-dashboard" className="px-4 py-2 rounded-lg border border-border font-medium hover:bg-muted">Live Threats</Link>
           </div>
+          <SecurityToolsStrip className="max-w-2xl mx-auto text-left" />
         </section>
       </Layout>
     );
@@ -161,7 +164,7 @@ export default function Index() {
       <SEOHead
         title={homeMeta.title}
         description={homeMeta.description}
-        keywords={['tech news', 'cybersecurity', 'gaming news', 'technology', 'security threats', 'gaming industry']}
+        keywords={['gaming cybersecurity', 'gaming security', 'threat intelligence', 'game security', 'gaming account security', 'cybersecurity news']}
         url={typeof window !== 'undefined' ? window.location.href : ''}
         type="website"
       />
@@ -171,13 +174,13 @@ export default function Index() {
         <div className="container mx-auto px-4 py-2.5 max-w-7xl">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
             <p className="text-xs sm:text-sm text-muted-foreground">
-              Technology, Security & Gaming Intelligence
+              Gaming Cybersecurity Intelligence Hub
             </p>
             <nav className="flex items-center gap-4" aria-label="Categories and tools">
+              <Link to="/security" className="text-xs font-medium text-muted-foreground hover:text-security transition-colors">Threat Intel</Link>
+              <Link to="/gaming" className="text-xs font-medium text-muted-foreground hover:text-gaming transition-colors">Game Security</Link>
               <Link to="/tech" className="text-xs font-medium text-muted-foreground hover:text-tech transition-colors">Tech</Link>
-              <Link to="/security" className="text-xs font-medium text-muted-foreground hover:text-security transition-colors">Security</Link>
-              <Link to="/gaming" className="text-xs font-medium text-muted-foreground hover:text-gaming transition-colors">Gaming</Link>
-              <Link to="/news" className="text-xs font-medium text-muted-foreground hover:text-primary transition-colors">News</Link>
+              <Link to="/tools" className="text-xs font-medium text-muted-foreground hover:text-primary transition-colors">Security Tools</Link>
               <a href="/sitemap.xml" className="text-muted-foreground hover:text-primary transition-colors flex items-center gap-1 text-xs" title="Sitemap">
                 <Rss className="h-3 w-3" />
                 Sitemap
@@ -191,11 +194,11 @@ export default function Index() {
       <section className="md:hidden border-b border-border/50 bg-background" aria-label="Quick explore">
         <div className="container mx-auto px-4 py-3 max-w-7xl">
           <div className="grid grid-cols-3 gap-2">
-            <Link to="/tech" className="min-h-[44px] flex items-center justify-center gap-1 rounded-lg border border-border bg-card px-2 py-2.5 text-xs font-semibold text-tech hover:bg-tech/10 transition-colors">
-              Tech <ChevronRight className="h-3 w-3 shrink-0" />
-            </Link>
             <Link to="/security" className="min-h-[44px] flex items-center justify-center gap-1 rounded-lg border border-border bg-card px-2 py-2.5 text-xs font-semibold text-security hover:bg-security/10 transition-colors">
-              Security <ChevronRight className="h-3 w-3 shrink-0" />
+              Threat Intel <ChevronRight className="h-3 w-3 shrink-0" />
+            </Link>
+            <Link to="/gaming" className="min-h-[44px] flex items-center justify-center gap-1 rounded-lg border border-border bg-card px-2 py-2.5 text-xs font-semibold text-gaming hover:bg-gaming/10 transition-colors">
+              Game Security <ChevronRight className="h-3 w-3 shrink-0" />
             </Link>
             <Link to="/gaming" className="min-h-[44px] flex items-center justify-center gap-1 rounded-lg border border-border bg-card px-2 py-2.5 text-xs font-semibold text-gaming hover:bg-gaming/10 transition-colors">
               Gaming <ChevronRight className="h-3 w-3 shrink-0" />

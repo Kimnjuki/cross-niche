@@ -9,6 +9,7 @@ import { mapContentToArticles } from '@/lib/contentMapper';
 import { Badge } from '@/components/ui/badge';
 import { Gamepad2, Shield, Info } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { SecurityToolsStrip } from '@/components/security/SecurityToolsStrip';
 import { Skeleton } from '@/components/ui/skeleton';
 import { SEOHead } from '@/components/seo/SEOHead';
 import { SEO } from '@/components/SEO';
@@ -55,28 +56,33 @@ export default function Gaming() {
               <Gamepad2 className="h-8 w-8 text-white" />
             </div>
             <div>
-              <h1 className="font-display font-bold text-4xl text-gaming">Gaming – News, Reviews & Esports</h1>
-              <p className="text-muted-foreground">Play. Explore. Stay secure.</p>
+              <h1 className="font-display font-bold text-4xl text-gaming">Game Security</h1>
+              <p className="text-muted-foreground">Protect your game, your account, your data.</p>
             </div>
           </div>
           <div className="prose prose-lg max-w-2xl">
             <p className="text-lg text-muted-foreground mb-4">
-              Your ultimate destination for gaming news, reviews, esports coverage, and exclusive security ratings. We cover everything from AAA releases and indie gems to gaming hardware, industry trends, and the intersection of gaming and cybersecurity.
+              Gaming news and security intelligence in one place. We cover account takeovers, in-game scams, platform vulnerabilities, and data-privacy practices of the games you play — alongside reviews, esports coverage, and industry analysis.
             </p>
             <p className="text-base text-muted-foreground">
-              Beyond reviews and news, we provide unique insights into gaming security practices, data privacy, and account protection. Our Nexus Security Score rates every game's security posture, helping you make informed decisions about which games protect your data and privacy. Whether you're a casual player or competitive esports enthusiast, find the coverage you need here. For industry trends and market data, see the <a href="https://www.theesa.com/" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">Entertainment Software Association</a>.
+              Every game we cover gets a <strong>Nexus Security Score</strong> — a rating of its data encryption, MFA support, and data-sharing practices. Know which platforms protect you before you hand over your personal data. For industry data, see the <a href="https://www.theesa.com/" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">Entertainment Software Association</a>.
             </p>
           </div>
-          <div className="mt-6 flex flex-wrap gap-4 text-sm">
-            <Link to="/topics?q=gaming" className="text-primary hover:underline">Gaming Topics</Link>
+          <div className="mt-4 flex flex-wrap gap-4 text-sm">
+            <Link to="/topics?q=gaming+security" className="text-primary hover:underline">Gaming Security</Link>
             <span className="text-muted-foreground">•</span>
-            <Link to="/security-score" className="text-primary hover:underline">Security Scores</Link>
+            <Link to="/security-score" className="text-primary hover:underline">Check Your Score</Link>
             <span className="text-muted-foreground">•</span>
-            <Link to="/guides" className="text-primary hover:underline">Gaming Guides</Link>
+            <Link to="/breach-sim" className="text-primary hover:underline">Breach Simulator</Link>
+            <span className="text-muted-foreground">•</span>
+            <Link to="/guides" className="text-primary hover:underline">Security Guides</Link>
             <span className="text-muted-foreground">•</span>
             <Link to="/blog-series" className="text-primary hover:underline">All Articles</Link>
           </div>
         </div>
+
+        {/* Tools strip */}
+        <SecurityToolsStrip className="mb-8" heading="Free security tools for gamers" />
 
         {/* Nexus Risk-to-Reward: Games with Security Ratings (nexus-001) */}
         <section className="mb-12">

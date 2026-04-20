@@ -13,6 +13,7 @@ import { SEO } from '@/components/SEO';
 import { getPageMetadata } from '@/lib/seo/pageMetadata';
 import { Link } from 'react-router-dom';
 import { LandingPageTracker } from '@/components/analytics/LandingPageTracker';
+import { SecurityToolsStrip } from '@/components/security/SecurityToolsStrip';
 
 export default function Security() {
   const [viewMode, setViewMode] = useState<'grid' | 'list' | 'compact'>('grid');
@@ -50,30 +51,33 @@ export default function Security() {
               <Shield className="h-8 w-8 text-white" />
             </div>
             <div>
-              <h1 className="font-display font-bold text-4xl text-security">Secured</h1>
-              <p className="text-muted-foreground">Cybersecurity & Privacy</p>
+              <h1 className="font-display font-bold text-4xl text-security">Threat Intel</h1>
+              <p className="text-muted-foreground">Gaming Security Intelligence</p>
             </div>
           </div>
           <div className="prose prose-lg max-w-2xl">
             <p className="text-lg text-muted-foreground mb-4">
-              Critical cybersecurity news, threat intelligence, and protection strategies to keep you informed and secure. We analyze the latest vulnerabilities, data breaches, and security incidents, providing actionable guidance for individuals and organizations navigating an increasingly complex threat landscape.
+              Real-time threat intelligence and cybersecurity analysis focused on the gaming world. We track active exploits, account takeovers, gaming platform breaches, and emerging attack vectors — with actionable guidance for gamers and the platforms they play on.
             </p>
             <p className="text-base text-muted-foreground">
-              From zero-day exploits and ransomware attacks to privacy regulations and security best practices, our coverage helps you understand emerging threats and implement effective defenses. Explore our interactive breach simulations, security guides, and expert analysis to strengthen your digital security posture. For official guidance on threats and hardening, see <a href="https://www.cisa.gov/" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">CISA</a> (Cybersecurity and Infrastructure Security Agency).
+              From zero-day exploits targeting gaming clients to phishing campaigns hitting Steam and PlayStation users, our coverage bridges the gap between mainstream cybersecurity and the threats gamers actually face. Use our interactive tools to assess your own exposure and stay ahead of attackers. For official guidance, see <a href="https://www.cisa.gov/" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">CISA</a>.
             </p>
           </div>
-          <div className="mt-6 flex flex-wrap gap-4 text-sm">
-            <Link to="/topics?q=cybersecurity" className="text-primary hover:underline">Cybersecurity Topics</Link>
+          <div className="mt-4 flex flex-wrap gap-4 text-sm">
+            <Link to="/topics?q=cybersecurity" className="text-primary hover:underline">Threat Intelligence</Link>
             <span className="text-muted-foreground">•</span>
-            <Link to="/topics?q=data+privacy" className="text-primary hover:underline">Data Privacy</Link>
+            <Link to="/topics?q=gaming+security" className="text-primary hover:underline">Gaming Security</Link>
             <span className="text-muted-foreground">•</span>
-            <Link to="/security-score" className="text-primary hover:underline">Security Score</Link>
+            <Link to="/live-threat-dashboard" className="text-primary hover:underline">Live Threats</Link>
             <span className="text-muted-foreground">•</span>
             <Link to="/guides" className="text-primary hover:underline">Security Guides</Link>
             <span className="text-muted-foreground">•</span>
             <Link to="/blog-series" className="text-primary hover:underline">All Articles</Link>
           </div>
         </div>
+
+        {/* Tools strip */}
+        <SecurityToolsStrip className="mb-8" heading="Protect yourself — use our free tools" />
 
         {/* Threat Dashboard */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-12">
