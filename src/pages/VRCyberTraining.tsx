@@ -2,10 +2,10 @@ import React, { useState, useEffect } from 'react';
 import CyberCard from '../components/ui/cyber/CyberCard';
 import HolographicButton from '../components/ui/cyber/HolographicButton';
 import TerminalInput from '../components/ui/cyber/TerminalInput';
-import { useRouter } from 'next/navigation';
+import { useNavigate } from 'react-router-dom';
 
 const VRCyberTraining: React.FC = () => {
-  const router = useRouter();
+  const navigate = useNavigate();
   const [trainingModules, setTrainingModules] = useState([
     {
       id: 'phishing-defense',

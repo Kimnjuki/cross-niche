@@ -5,10 +5,10 @@ import TerminalInput from '../components/ui/cyber/TerminalInput';
 import RadialMenu from '../components/ui/cyber/RadialMenu';
 import RankSystem from '../components/ui/cyber/RankSystem';
 import VoiceCommand from '../components/ui/cyber/VoiceCommand';
-import { useRouter } from 'next/navigation';
+import { useNavigate } from 'react-router-dom';
 
 const HomepageCommandCenter: React.FC = () => {
-  const router = useRouter();
+  const navigate = useNavigate();
   const [liveThreats, setLiveThreats] = useState([]);
   const [securityStatus, setSecurityStatus] = useState('SECURE');
   const [threatLevel, setThreatLevel] = useState('LOW');
@@ -53,28 +53,28 @@ const HomepageCommandCenter: React.FC = () => {
       title: 'NexusGuard',
       subtitle: 'AI-Powered Threat Detection',
       icon: '🛡️',
-      action: () => router.push('/tools/NexusGuard')
+      action: () => navigate('/tools/NexusGuard')
     },
     {
       id: 'breach-simulator',
       title: 'Breach Simulator',
       subtitle: 'Cyber Training',
       icon: '🎮',
-      action: () => router.push('/tools/BreachSimulator')
+      action: () => navigate('/tools/BreachSimulator')
     },
     {
       id: 'threat-intelligence',
       title: 'Threat Intel',
       subtitle: 'Real-time Analysis',
       icon: '🔍',
-      action: () => router.push('/tools/ThreatIntelligence')
+      action: () => navigate('/tools/ThreatIntelligence')
     },
     {
       id: 'security-audit',
       title: 'Security Audit',
       subtitle: 'System Assessment',
       icon: '📊',
-      action: () => router.push('/tools/SecurityAudit')
+      action: () => navigate('/tools/SecurityAudit')
     }
   ];
 

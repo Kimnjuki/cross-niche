@@ -2,10 +2,10 @@ import React, { useState, useEffect } from 'react';
 import CyberCard from '../components/ui/cyber/CyberCard';
 import HolographicButton from '../components/ui/cyber/HolographicButton';
 import TerminalInput from '../components/ui/cyber/TerminalInput';
-import { useRouter } from 'next/navigation';
+import { useNavigate } from 'react-router-dom';
 
 const SecurityBriefingRoom: React.FC = () => {
-  const router = useRouter();
+  const navigate = useNavigate();
   const [aiAssistant, setAiAssistant] = useState({
     status: 'ACTIVE' as 'ACTIVE' | 'ANALYZING' | 'IDLE',
     message: 'Ready to assist with security analysis'
@@ -69,28 +69,28 @@ const SecurityBriefingRoom: React.FC = () => {
       title: 'Threat Detection',
       subtitle: 'AI-Powered Analysis',
       icon: '🔍',
-      action: () => router.push('/tools/NexusGuard')
+      action: () => navigate('/tools/NexusGuard')
     },
     {
       id: 'vulnerability-scan',
       title: 'Vulnerability Scan',
       subtitle: 'System Assessment',
       icon: '🛡️',
-      action: () => router.push('/tools/SecurityScanner')
+      action: () => navigate('/tools/SecurityScanner')
     },
     {
       id: 'incident-response',
       title: 'Incident Response',
       subtitle: 'Automated Actions',
       icon: '🚨',
-      action: () => router.push('/tools/IncidentResponse')
+      action: () => navigate('/tools/IncidentResponse')
     },
     {
       id: 'compliance-check',
       title: 'Compliance Check',
       subtitle: 'Regulatory Audit',
       icon: '📜',
-      action: () => router.push('/tools/ComplianceChecker')
+      action: () => navigate('/tools/ComplianceChecker')
     }
   ];
 
