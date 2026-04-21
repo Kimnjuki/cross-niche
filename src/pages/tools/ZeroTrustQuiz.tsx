@@ -95,7 +95,7 @@ function getTier(pct: number): { label: string; emoji: string; desc: string; col
 
 // ── Score Ring ────────────────────────────────────────────────────────────────
 
-function ScoreRing({ pct, color }: { pct: number; color: string }) {
+const ScoreRing = React.memo(function ScoreRing({ pct, color }: { pct: number; color: string }) {
   const r = 56;
   const circ = 2 * Math.PI * r;
   const offset = circ - (pct / 100) * circ;
@@ -116,7 +116,7 @@ function ScoreRing({ pct, color }: { pct: number; color: string }) {
       </div>
     </div>
   );
-}
+});
 
 // ── Component ─────────────────────────────────────────────────────────────────
 

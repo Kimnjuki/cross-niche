@@ -231,7 +231,7 @@ const SOURCE_VERDICT_CONFIG: Record<Source['verdict'], { color: string; icon: Re
 
 // ── Score Ring ────────────────────────────────────────────────────────────────
 
-function ScoreRing({ score, severity }: { score: number; severity: Severity }) {
+const ScoreRing = React.memo(function ScoreRing({ score, severity }: { score: number; severity: Severity }) {
   const r = 52;
   const circ = 2 * Math.PI * r;
   const offset = circ - (score / 100) * circ;
@@ -256,7 +256,7 @@ function ScoreRing({ score, severity }: { score: number; severity: Severity }) {
       </div>
     </div>
   );
-}
+});
 
 // ── EXAMPLE IOCs for the UI ───────────────────────────────────────────────────
 

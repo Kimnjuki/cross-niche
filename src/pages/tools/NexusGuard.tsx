@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { memo, useState, useCallback, useMemo } from 'react';
 import { Layout } from '@/components/layout/Layout';
 import { SEO } from '@/components/SEO';
 import { Button } from '@/components/ui/button';
@@ -149,9 +149,20 @@ function getSeverityBadgeColor(level: string) {
   }
 }
 
+// Static step metadata — defined outside component so it's never re-created
+const STEPS: { id: Step; label: string; icon: React.ElementType }[] = [
+  { id: 'industry',   label: 'Industry',    icon: Building },
+  { id: 'cloud',      label: 'Cloud Stack', icon: Cloud },
+  { id: 'frameworks', label: 'Technologies', icon: Code },
+  { id: 'region',     label: 'Region',      icon: Globe },
+  { id: 'company',    label: 'Company Size', icon: Users },
+];
+
+const STEP_ORDER: Step[] = ['industry', 'cloud', 'frameworks', 'region', 'company', 'generating'];
+
 // ── Component ─────────────────────────────────────────────────────────────────
 
-export default function NexusGuardPage() {
+const NexusGuardPage = memo(function NexusGuardPage() {
   const [currentStep, setCurrentStep] = useState<Step>('industry');
   const [briefData, setBriefData] = useState<BriefData>({
     industry: '', cloudStack: '', frameworks: [], region: '', companySize: '',
@@ -161,30 +172,37 @@ export default function NexusGuardPage() {
   const [showEmailModal, setShowEmailModal] = useState(false);
   const [email, setEmail] = useState('');
 
-  const steps: { id: Step; label: string; icon: React.ElementType }[] = [
-    { id: 'industry',   label: 'Industry',    icon: Building },
-    { id: 'cloud',      label: 'Cloud Stack', icon: Cloud },
-    { id: 'frameworks', label: 'Technologies', icon: Code },
-    { id: 'region',     label: 'Region',      icon: Globe },
-    { id: 'company',    label: 'Company Size', icon: Users },
-  ];
+  const currentStepIndex = useMemo(
+    () => STEPS.findIndex((s) => s.id === currentStep),
+    [currentStep],
+  );
+  const progress = useMemo(
+    () => ((currentStepIndex + 1) / STEPS.length) * 100,
+    [currentStepIndex],
+  );
 
-  const currentStepIndex = steps.findIndex((s) => s.id === currentStep);
-  const progress = ((currentStepIndex + 1) / steps.length) * 100;
+  const canProceed = useMemo(() => {
+    switch (currentStep) {
+      case 'industry':    return !!briefData.industry;
+      case 'cloud':       return !!briefData.cloudStack;
+      case 'frameworks':  return briefData.frameworks.length > 0;
+      case 'region':      return !!briefData.region;
+      case 'company':     return !!briefData.companySize;
+      default:            return true;
+    }
+  }, [currentStep, briefData]);
 
-  const handleNext = () => {
-    const order: Step[] = ['industry', 'cloud', 'frameworks', 'region', 'company', 'generating'];
-    const next = order.indexOf(currentStep) + 1;
-    if (next < order.length) setCurrentStep(order[next]);
-  };
+  const handleNext = useCallback(() => {
+    const next = STEP_ORDER.indexOf(currentStep) + 1;
+    if (next < STEP_ORDER.length) setCurrentStep(STEP_ORDER[next]);
+  }, [currentStep]);
 
-  const handleBack = () => {
-    const order: Step[] = ['industry', 'cloud', 'frameworks', 'region', 'company'];
-    const prev = order.indexOf(currentStep) - 1;
-    if (prev >= 0) setCurrentStep(order[prev]);
-  };
+  const handleBack = useCallback(() => {
+    const prev = STEP_ORDER.indexOf(currentStep) - 1;
+    if (prev >= 0) setCurrentStep(STEP_ORDER[prev]);
+  }, [currentStep]);
 
-  const handleGenerate = async () => {
+  const handleGenerate = useCallback(async () => {
     setCurrentStep('generating');
     await new Promise((resolve) => setTimeout(resolve, 3000));
 
@@ -227,40 +245,29 @@ export default function NexusGuardPage() {
       low: mock.low_threats.length,
     });
     setCurrentStep('results');
-  };
+  }, [briefData]);
 
-  const toggleFramework = (fw: string) => {
+  const toggleFramework = useCallback((fw: string) => {
     setBriefData((prev) => ({
       ...prev,
       frameworks: prev.frameworks.includes(fw)
         ? prev.frameworks.filter((f) => f !== fw)
         : [...prev.frameworks, fw],
     }));
-  };
+  }, []);
 
-  const canProceed = () => {
-    switch (currentStep) {
-      case 'industry':    return !!briefData.industry;
-      case 'cloud':       return !!briefData.cloudStack;
-      case 'frameworks':  return briefData.frameworks.length > 0;
-      case 'region':      return !!briefData.region;
-      case 'company':     return !!briefData.companySize;
-      default:            return true;
-    }
-  };
-
-  const handleShareLink = () => {
+  const handleShareLink = useCallback(() => {
     const url = `${window.location.origin}/tools/nexusguard`;
     navigator.clipboard.writeText(url).then(() => {
       toast({ title: 'Link copied', description: 'Share URL copied to clipboard.' });
     });
-  };
+  }, []);
 
-  const handleDownloadPDF = () => {
+  const handleDownloadPDF = useCallback(() => {
     toast({ title: 'PDF export', description: 'PDF download is coming soon — bookmark this page for now.' });
-  };
+  }, []);
 
-  const handleSendEmail = () => {
+  const handleSendEmail = useCallback(() => {
     if (!email.trim()) {
       toast({ title: 'Email required', description: 'Please enter a valid email address.', variant: 'destructive' });
       return;
@@ -268,14 +275,14 @@ export default function NexusGuardPage() {
     toast({ title: 'Brief sent', description: `Security brief sent to ${email}.` });
     setShowEmailModal(false);
     setEmail('');
-  };
+  }, [email]);
 
-  const handleReset = () => {
+  const handleReset = useCallback(() => {
     setCurrentStep('industry');
     setBriefData({ industry: '', cloudStack: '', frameworks: [], region: '', companySize: '' });
     setGeneratedBrief(null);
     setSeveritySummary(null);
-  };
+  }, []);
 
   return (
     <Layout>
@@ -318,12 +325,12 @@ export default function NexusGuardPage() {
           <Card className="mb-6">
             <CardContent className="pt-6">
               <div className="flex items-center justify-between mb-4 overflow-x-auto gap-1">
-                {steps.map((step, index) => {
+                {STEPS.map((step, index) => {
                   const Icon = step.icon;
                   const isActive = step.id === currentStep;
                   const isCompleted = index < currentStepIndex;
                   return (
-                    <div key={step.id} className={cn('flex items-center gap-1.5 shrink-0', index !== steps.length - 1 && 'flex-1')}>
+                    <div key={step.id} className={cn('flex items-center gap-1.5 shrink-0', index !== STEPS.length - 1 && 'flex-1')}>
                       <div className={cn(
                         'h-9 w-9 rounded-full flex items-center justify-center transition-colors shrink-0',
                         isActive    ? 'bg-security text-white' :
@@ -335,7 +342,7 @@ export default function NexusGuardPage() {
                       <span className={cn('text-xs hidden sm:inline', isActive ? 'font-medium' : 'text-muted-foreground')}>
                         {step.label}
                       </span>
-                      {index !== steps.length - 1 && (
+                      {index !== STEPS.length - 1 && (
                         <div className={cn('h-px flex-1 mx-1', isCompleted ? 'bg-green-500' : 'bg-border')} />
                       )}
                     </div>
@@ -353,7 +360,7 @@ export default function NexusGuardPage() {
             <CardTitle>
               {currentStep === 'results'    ? 'Your Security Brief' :
                currentStep === 'generating' ? 'Generating Your Brief…' :
-               `Step ${currentStepIndex + 1}: ${steps[currentStepIndex]?.label}`}
+               `Step ${currentStepIndex + 1}: ${STEPS[currentStepIndex]?.label}`}
             </CardTitle>
             {currentStep !== 'results' && currentStep !== 'generating' && (
               <CardDescription>
@@ -371,7 +378,7 @@ export default function NexusGuardPage() {
             {currentStep === 'industry' && (
               <Select
                 value={briefData.industry}
-                onValueChange={(v) => setBriefData({ ...briefData, industry: v })}
+                onValueChange={(v) => setBriefData((prev) => ({ ...prev, industry: v }))}
               >
                 <SelectTrigger aria-label="Select your industry">
                   <SelectValue placeholder="Select your industry" />
@@ -386,7 +393,7 @@ export default function NexusGuardPage() {
             {currentStep === 'cloud' && (
               <Select
                 value={briefData.cloudStack}
-                onValueChange={(v) => setBriefData({ ...briefData, cloudStack: v })}
+                onValueChange={(v) => setBriefData((prev) => ({ ...prev, cloudStack: v }))}
               >
                 <SelectTrigger aria-label="Select your cloud platform">
                   <SelectValue placeholder="Select your primary cloud platform" />
@@ -429,7 +436,7 @@ export default function NexusGuardPage() {
             {currentStep === 'region' && (
               <Select
                 value={briefData.region}
-                onValueChange={(v) => setBriefData({ ...briefData, region: v })}
+                onValueChange={(v) => setBriefData((prev) => ({ ...prev, region: v }))}
               >
                 <SelectTrigger aria-label="Select your region">
                   <SelectValue placeholder="Select your region" />
@@ -444,7 +451,7 @@ export default function NexusGuardPage() {
             {currentStep === 'company' && (
               <Select
                 value={briefData.companySize}
-                onValueChange={(v) => setBriefData({ ...briefData, companySize: v })}
+                onValueChange={(v) => setBriefData((prev) => ({ ...prev, companySize: v }))}
               >
                 <SelectTrigger aria-label="Select your company size">
                   <SelectValue placeholder="Select your company size" />
@@ -654,7 +661,7 @@ export default function NexusGuardPage() {
                 </Button>
                 <Button
                   onClick={currentStep === 'company' ? handleGenerate : handleNext}
-                  disabled={!canProceed()}
+                  disabled={!canProceed}
                   className="bg-security hover:bg-security/90"
                 >
                   {currentStep === 'company' ? <>Generate Brief <Shield className="h-4 w-4 ml-1.5" /></> : <>Next <ChevronRight className="h-4 w-4 ml-1" /></>}
@@ -702,4 +709,6 @@ export default function NexusGuardPage() {
       </div>
     </Layout>
   );
-}
+});
+
+export default NexusGuardPage;

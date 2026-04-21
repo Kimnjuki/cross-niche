@@ -410,7 +410,7 @@ function severityOrder(s: Severity) {
 
 // ── Game Card ─────────────────────────────────────────────────────────────────
 
-function GameCard({ game }: { game: GameEntry }) {
+const GameCard = React.memo(function GameCard({ game }: { game: GameEntry }) {
   const [expanded, setExpanded] = useState(false);
   const cfg = SEVERITY_CONFIG[game.overallRisk];
   const critCount = game.patches.filter(p => p.severity === 'critical').length;
@@ -490,7 +490,7 @@ function GameCard({ game }: { game: GameEntry }) {
       </CardContent>
     </Card>
   );
-}
+});
 
 // ── Main Component ────────────────────────────────────────────────────────────
 

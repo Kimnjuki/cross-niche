@@ -267,7 +267,7 @@ const VERDICT_CONFIG: Record<NexusVerdict, { label: string; color: string; bg: s
 
 // ── Tool Card ────────────────────────────────────────────────────────────────
 
-function ToolCard({ tool }: { tool: AITool }) {
+const ToolCard = React.memo(function ToolCard({ tool }: { tool: AITool }) {
   const [expanded, setExpanded] = useState(false);
   const verdictCfg = VERDICT_CONFIG[tool.verdict];
   const priceCfg = PRICE_LABELS[tool.priceTier];
@@ -370,7 +370,7 @@ function ToolCard({ tool }: { tool: AITool }) {
       </CardContent>
     </Card>
   );
-}
+});
 
 // ── Main Component ────────────────────────────────────────────────────────────
 
