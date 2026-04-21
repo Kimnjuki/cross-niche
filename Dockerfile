@@ -4,10 +4,6 @@
 # Build version: fix-chunk-404-clarity-convex-ws - chunk reload, clarity suppress, convex 1.33.1
 FROM node:22-alpine AS build-stage
 
-# Create non-root user for security
-RUN addgroup -g 1001 -S nodejs
-RUN adduser -S nodejs -u 1001
-
 WORKDIR /app
 
 # Copy package files and install dependencies (npm ci uses lockfile; no bun.lockb)
@@ -35,10 +31,6 @@ RUN npm run build:frontend
 
 # Stage 2: Production (Serve with Nginx)
 FROM nginx:stable-alpine AS production-stage
-
-# Create non-root user for security
-RUN addgroup -g 1001 -S nginx
-RUN adduser -S nginx -u 1001
 
 # Copy built files from build stage
 COPY --from=build-stage /app/dist /usr/share/nginx/html
