@@ -1,0 +1,7 @@
+# pack-refs with: peeled fully-peeled sorted 
+99f3471c8bff1c69931a35a2a21b5fe267e92f47 refs/remotes/origin/claude/determined-wu
+e9284b51fcf35c811c4d7a806634e21fb4193390 refs/remotes/origin/claude/goofy-allen
+07c42bb349bef6b0f63b59e0bf9b4d709730c871 refs/remotes/origin/claude/infallible-hopper
+10ca6de30e3e73cc544ac3436dd39858433dacd4 refs/remotes/origin/claude/magical-davinci-7d5cb9
+3719e283cd2c88472d1ce5a6a5ab7759cecdad54 refs/remotes/origin/main
+10ca6de30e3e73cc544ac3436dd39858433dacd4 refs/remotes/origin/master

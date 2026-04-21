@@ -1,0 +1,8 @@
+[
+  {
+    "from": "/old-path-example",
+    "to": "/new-path",
+    "status": 301,
+    "note": "Add entries from broken_pages_with_links.csv. Run scripts/verify_redirects.ts"
+  }
+]

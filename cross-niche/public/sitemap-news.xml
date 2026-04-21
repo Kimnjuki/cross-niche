@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
+
+  <url>
+    <loc>https://thegridnexus.com/article/nvidia-blackwell-chips-1-trillion-orders-2026</loc>
+    <news:news>
+      <news:publication>
+        <news:name>The Grid Nexus</news:name>
+        <news:language>en</news:language>
+      </news:publication>
+      <news:publication_date>2026-04-10T00:00:00Z</news:publication_date>
+      <news:title>NVIDIA Blackwell Chips Hit $1 Trillion in Orders</news:title>
+    </news:news>
+  </url>
+
+  <url>
+    <loc>https://thegridnexus.com/article/xai-pentagon-access-security-concerns-2026</loc>
+    <news:news>
+      <news:publication>
+        <news:name>The Grid Nexus</news:name>
+        <news:language>en</news:language>
+      </news:publication>
+      <news:publication_date>2026-04-10T00:00:00Z</news:publication_date>
+      <news:title>xAI Pentagon Access Raises Security Concerns</news:title>
+    </news:news>
+  </url>
+
+  <url>
+    <loc>https://thegridnexus.com/article/conduent-data-breach-25-million-records-2026</loc>
+    <news:news>
+      <news:publication>
+        <news:name>The Grid Nexus</news:name>
+        <news:language>en</news:language>
+      </news:publication>
+      <news:publication_date>2026-03-17T00:00:00Z</news:publication_date>
+      <news:title>Conduent Data Breach Exposes 25 Million Records</news:title>
+    </news:news>
+  </url>
+
+  <url>
+    <loc>https://thegridnexus.com/article/icewarp-rce-vulnerability-cve-2025-14500</loc>
+    <news:news>
+      <news:publication>
+        <news:name>The Grid Nexus</news:name>
+        <news:language>en</news:language>
+      </news:publication>
+      <news:publication_date>2026-03-15T00:00:00Z</news:publication_date>
+      <news:title>IceWarp RCE Vulnerability CVE-2025-14500 Disclosed</news:title>
+    </news:news>
+  </url>
+
+  <url>
+    <loc>https://thegridnexus.com/article/microsoft-patch-tuesday-6-zero-days-february-2026</loc>
+    <news:news>
+      <news:publication>
+        <news:name>The Grid Nexus</news:name>
+        <news:language>en</news:language>
+      </news:publication>
+      <news:publication_date>2026-02-13T00:00:00Z</news:publication_date>
+      <news:title>Microsoft Patch Tuesday: 6 Zero-Days Fixed in February 2026</news:title>
+    </news:news>
+  </url>
+
+  <url>
+    <loc>https://thegridnexus.com/article/grok-ai-market-share-growth-2026</loc>
+    <news:news>
+      <news:publication>
+        <news:name>The Grid Nexus</news:name>
+        <news:language>en</news:language>
+      </news:publication>
+      <news:publication_date>2026-02-21T00:00:00Z</news:publication_date>
+      <news:title>Grok AI Captures Growing Market Share in 2026</news:title>
+    </news:news>
+  </url>
+
+</urlset>

@@ -1,0 +1,27 @@
+# Orphan Page Tracker
+# Source: Ahrefs Site Audit -> Orphan page export
+# Goal: reduce orphan pages to 0 by adding internal links
+# Last updated: 2026-04-10
+
+# Status values: TODO | IN_PROGRESS | FIXED | NOINDEX | REDIRECTED
+# Priority values: HIGH | MEDIUM | LOW
+
+# Format:
+# [STATUS] [PRIORITY] URL | CATEGORY | LINK FROM | ANCHOR TEXT | NOTES
+
+[FIXED] [HIGH] https://thegridnexus.com/roadmap | tools | index.html static shell + Footer (Tools section) | Roadmap | Static shell link added 2026-04-10
+[FIXED] [HIGH] https://thegridnexus.com/ai-pulse | tools | index.html static shell + Footer (Tools section) | AI Pulse | Static shell link + footer link confirmed 2026-04-10
+[FIXED] [HIGH] https://thegridnexus.com/live-threat-dashboard | security-tool | index.html static shell + Footer (Tools section) | Live Threat Dashboard | Static shell link added; footer link was already present
+[FIXED] [MEDIUM] https://thegridnexus.com/startups | category | Footer (Coverage section) + index.html static shell | Startups | Footer link added 2026-04-10; static shell link added
+[FIXED] [MEDIUM] https://thegridnexus.com/media | utility | Footer (Tools section) | Media & Podcast | Footer link confirmed; static shell link added 2026-04-10
+[FIXED] [MEDIUM] https://thegridnexus.com/quality-guidelines | trust | Footer (legal row) + index.html static shell | Quality Guidelines | Footer link confirmed; static shell link added 2026-04-10
+[FIXED] [MEDIUM] https://thegridnexus.com/content-policy | trust | Footer (legal row) + index.html static shell | Content Policy | Footer link confirmed; static shell link added 2026-04-10
+[FIXED] [LOW] https://thegridnexus.com/disclosure | trust | Footer (legal row) + index.html static shell | Affiliate Disclosure | Footer + static shell confirmed 2026-04-10
+
+# Alias routes converted to 301 redirects (no longer orphaned or duplicates):
+# /billing        -> 301 -> /subscription/management  (vercel.json 2026-04-10)
+# /settings       -> 301 -> /subscription/management  (vercel.json 2026-04-10)
+# /nexus/nexusguard  -> 301 -> /tools/nexusguard       (vercel.json 2026-04-10)
+# /nexus/nexuspath   -> 301 -> /learn/nexus-path       (vercel.json 2026-04-10)
+# /nexus/nexuspulse  -> 301 -> /pulse/nexus-pulse      (vercel.json 2026-04-10)
+# /tools             -> 301 -> /tools/security-scanner (vercel.json 2026-04-10)

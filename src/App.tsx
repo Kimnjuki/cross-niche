@@ -57,6 +57,7 @@ class ChunkErrorBoundary extends Component<
 }
 
 // Lazy-loaded routes for better initial load and smaller bundles
+const HomepageCommandCenter = lazy(() => import("./pages/HomepageCommandCenter"));
 const Index = lazy(() => import("./pages/Index"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 const ArticlePage = lazy(() => import("./pages/Article"));
@@ -110,6 +111,8 @@ const Bookmarks = lazy(() => import("./pages/Bookmarks"));
 const Profile = lazy(() => import("./pages/Profile"));
 // Nexus AI Features
 const NexusGuard = lazy(() => import("./pages/tools/NexusGuard"));
+const SecurityBriefingRoom = lazy(() => import("./pages/SecurityBriefingRoom"));
+const VRCyberTraining = lazy(() => import("./pages/VRCyberTraining"));
 const SteamScanner = lazy(() => import("./pages/tools/SteamScanner"));
 const NexusPath = lazy(() => import("./pages/learn/NexusPath"));
 const NexusPulse = lazy(() => import("./pages/pulse/NexusPulse"));
@@ -131,7 +134,8 @@ const App = () => (
                 <ChunkErrorBoundary>
                 <Suspense fallback={<LoadingState />}>
                   <Routes>
-                    <Route path="/" element={<Index />} />
+                    <Route path="/" element={<HomepageCommandCenter />} />
+<Route path="/original-index" element={<Index />} />
                     <Route path="/simple" element={<IndexSimple />} />
                     <Route path="/enhanced" element={<EnhancedIndex />} />
                     <Route path="/enhanced-simple" element={<EnhancedIndexSimple />} />
@@ -201,6 +205,8 @@ const App = () => (
                     <Route path="/profile" element={<Profile />} />
                     {/* Nexus AI Features */}
                     <Route path="/tools/nexusguard" element={<NexusGuard />} />
+<Route path="/tools/security-briefing" element={<SecurityBriefingRoom />} />
+<Route path="/tools/vr-cyber-training" element={<VRCyberTraining />} />
                     <Route path="/tools/steam-scanner" element={<SteamScanner />} />
                     <Route path="/nexus/nexusguard" element={<Navigate to="/tools/nexusguard" replace />} />
                     <Route path="/learn/nexus-path" element={<NexusPath />} />

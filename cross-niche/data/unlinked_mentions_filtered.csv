@@ -1,0 +1,2 @@
+page_url,domain,dr,mention_context,author_name,author_email
+# Filter unlinked_mentions.csv by dr >= 20, exclude spam

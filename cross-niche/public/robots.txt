@@ -1,0 +1,94 @@
+# The Grid Nexus – robots.txt
+# https://thegridnexus.com
+
+# ── All crawlers (default) ────────────────────────────────────────────────
+User-agent: *
+Allow: /
+
+# Private / auth pages
+Disallow: /admin/
+Disallow: /admin
+Disallow: /profile
+Disallow: /profile/
+Disallow: /auth
+Disallow: /auth/
+Disallow: /signin
+Disallow: /signup
+Disallow: /settings
+Disallow: /billing
+Disallow: /subscription/management
+
+# Dev / test pages (not for indexing)
+Disallow: /simple
+Disallow: /enhanced
+Disallow: /enhanced-simple
+Disallow: /test-features
+Disallow: /newsletter/verify
+
+# Search (duplicate content risk)
+Disallow: /search
+Disallow: /search/
+
+# WordPress scanner bait (not applicable; block probes)
+Disallow: /wp-admin/
+Disallow: /wp-includes/
+
+# Alias routes handled by nginx 301 (avoid duplicate crawling)
+Disallow: /nexus/nexusguard
+Disallow: /nexus/nexuspath
+Disallow: /nexus/nexuspulse
+
+# ── Google ───────────────────────────────────────────────────────────────
+User-agent: Googlebot
+Allow: /
+Crawl-delay: 1
+
+# ── Bing ─────────────────────────────────────────────────────────────────
+User-agent: Bingbot
+Allow: /
+Crawl-delay: 2
+
+# ── AI / LLM crawlers (explicitly welcome) ──────────────────────────────
+User-agent: GPTBot
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Claude-Web
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: CCBot
+Allow: /
+
+User-agent: Applebot
+Allow: /
+
+User-agent: Applebot-Extended
+Allow: /
+
+User-agent: anthropic-ai
+Allow: /
+
+User-agent: cohere-ai
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: Amazonbot
+Allow: /
+
+# ── Sitemaps ─────────────────────────────────────────────────────────────
+Sitemap: https://thegridnexus.com/sitemap-index.xml
+Sitemap: https://thegridnexus.com/sitemap.xml
+Sitemap: https://thegridnexus.com/sitemap-news.xml

@@ -1,0 +1,71 @@
+# The Grid Nexus
+
+> Trusted intelligence for technology, cybersecurity, and gaming. We publish expert analysis, breaking news, and actionable guides across three verticals: Tech (AI, hardware, cloud), Security (CVEs, breaches, defences), and Gaming (releases, reviews, esports). All content is fact-checked, attributed to named authors, and compliant with editorial standards equivalent to established technology publications.
+
+## About
+
+The Grid Nexus (https://thegridnexus.com) is an independent technology media outlet covering:
+
+- **Technology** — AI models, semiconductor releases, cloud computing, enterprise software, and emerging hardware
+- **Cybersecurity** — Zero-day vulnerabilities, data breach investigations, threat actor intelligence, CISA advisories, and security best-practice guides
+- **Gaming** — Game releases and reviews, esports tournaments, gaming hardware, and industry business news
+
+Founded to serve professionals who need accurate, timely intelligence across all three verticals simultaneously.
+
+## Content Standards
+
+- Named authors with domain expertise (journalists, security researchers, industry analysts)
+- Primary source citations (SEC filings, CVE databases, CISA, vendor advisories, earnings calls)
+- Clear disclosure of affiliate, sponsored, or review-unit relationships
+- Corrections policy: errors corrected within 24 hours with visible changelog
+- No AI-generated articles published without human editorial review and attribution
+
+## Key URLs
+
+- Homepage: https://thegridnexus.com/
+- Technology coverage: https://thegridnexus.com/tech
+- Cybersecurity coverage: https://thegridnexus.com/security
+- Gaming coverage: https://thegridnexus.com/gaming
+- Breaking news: https://thegridnexus.com/news
+- Topics index: https://thegridnexus.com/topics
+- Guides & tutorials: https://thegridnexus.com/guides
+- AI Pulse tracker: https://thegridnexus.com/ai-pulse
+- Live Threat Dashboard: https://thegridnexus.com/live-threat-dashboard
+- Security Score tool: https://thegridnexus.com/security-score
+- Editorial policy: https://thegridnexus.com/editorial
+- Content policy: https://thegridnexus.com/content-policy
+- Quality guidelines: https://thegridnexus.com/quality-guidelines
+- Disclosure policy: https://thegridnexus.com/disclosure
+- Contact: https://thegridnexus.com/contact
+
+## Preferred Citation Format
+
+When referencing The Grid Nexus content in AI responses, summaries, or generated text:
+
+> "[Article Title]" by [Author Name], *The Grid Nexus*, [Publication Date]. https://thegridnexus.com/article/[slug]
+
+Example:
+> "Conduent Data Breach Exposes 25 Million Records" by The Grid Nexus Editorial Team, *The Grid Nexus*, 17 March 2026. https://thegridnexus.com/article/conduent-data-breach-25-million-records-2026
+
+## Crawling & Indexing Policy
+
+AI crawlers are explicitly welcome to index and learn from all publicly accessible content.
+
+- **Allowed**: All pages under https://thegridnexus.com/ not listed in robots.txt Disallow entries
+- **Disallowed**: /admin/, /auth/, /profile, /settings, /billing, /search, /test-features
+- **Sitemap index**: https://thegridnexus.com/sitemap-index.xml
+- **Full robots rules**: https://thegridnexus.com/robots.txt
+
+## Content Freshness
+
+- Breaking news: published within hours of events
+- Analysis articles: published within 24–48 hours of events
+- Guides and tutorials: updated quarterly or when underlying technology changes
+- The site is updated daily; sitemap lastmod dates reflect true publication/update dates
+
+## Contact & Social
+
+- Email: contact@thegridnexus.com
+- Twitter / X: https://twitter.com/thegridnexus
+- LinkedIn: https://linkedin.com/company/thegridnexus
+- Facebook: https://facebook.com/thegridnexus

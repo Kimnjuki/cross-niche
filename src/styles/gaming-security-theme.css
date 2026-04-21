@@ -1,0 +1,393 @@
+/**
+ * The Grid Nexus – Gaming Security Theme
+ * Cyberpunk Aesthetic for Immersive Security Experience
+ */
+
+/* === Cyberpunk Color Palette === */
+:root {
+  /* Matrix Green & Cyber Purple */
+  --color-matrix-green: #00FF41;
+  --color-matrix-green-rgb: 0, 255, 65;
+  --color-cyber-purple: #8B5CF6;
+  --color-cyber-purple-rgb: 139, 92, 246;
+  --color-neon-blue: #00D4FF;
+  --color-neon-blue-rgb: 0, 212, 255;
+  --color-threat-red: #FF2D55;
+  --color-threat-red-rgb: 255, 45, 85;
+  --color-glow-orange: #FF6B35;
+  --color-glow-orange-rgb: 255, 107, 53;
+
+  /* Dark Cyberpunk Background */
+  --color-cyber-dark: #0A0A0F;
+  --color-cyber-dark-rgb: 10, 10, 15;
+  --color-cyber-mid: #1A1A2E;
+  --color-cyber-mid-rgb: 26, 26, 46;
+  --color-cyber-light: #16213E;
+  --color-cyber-light-rgb: 22, 33, 62;
+
+  /* Holographic Effects */
+  --color-hologram-1: rgba(139, 92, 246, 0.3);
+  --color-hologram-2: rgba(0, 212, 255, 0.3);
+  --color-hologram-3: rgba(0, 255, 65, 0.3);
+  --color-hologram-glow: rgba(139, 92, 246, 0.6);
+
+  /* Terminal/Scanline Effects */
+  --color-scanline: rgba(0, 255, 65, 0.1);
+  --color-terminal-text: #00FF41;
+  --color-terminal-bg: #0A0A0F;
+}
+
+/* === Cyberpunk Typography === */
+:root {
+  /* Gaming Display Fonts */
+  --font-display-cyber: 'Orbitron', 'Bebas Neue', 'Arial Black', sans-serif;
+  --font-display-gaming: 'Bebas Neue', 'Arial Black', sans-serif;
+  --font-body-gaming: 'Exo 2', 'Arial', sans-serif;
+  --font-mono-cyber: 'JetBrains Mono', 'Fira Code', monospace;
+
+  /* Enhanced Typography Scale */
+  --text-hero-cyber: clamp(3rem, 2rem + 8vw, 6rem);
+  --text-h1-cyber: clamp(2.5rem, 1.5rem + 6vw, 4rem);
+  --text-h2-cyber: clamp(2rem, 1rem + 4vw, 3rem);
+  --text-h3-cyber: clamp(1.5rem, 0.8rem + 3vw, 2rem);
+}
+
+/* === Cyberpunk Animations === */
+:root {
+  /* Matrix Rain Animation */
+  --animation-matrix-rain: matrix-rain 10s linear infinite;
+  --animation-matrix-scan: matrix-scan 8s linear infinite;
+  --animation-neon-pulse: neon-pulse 2s ease-in-out infinite;
+  --animation-hologram-glow: hologram-glow 3s ease-in-out infinite;
+  --animation-cyber-glitch: cyber-glitch 0.5s ease-in-out infinite;
+
+  /* Enhanced Motion Durations */
+  --duration-cyber-fast: 100ms;
+  --duration-cyber-normal: 250ms;
+  --duration-cyber-slow: 500ms;
+  --duration-cyber-epic: 1000ms;
+}
+
+/* === Cyberpunk Glass Morphism === */
+:root {
+  /* Enhanced Glass Effects */
+  --glass-cyber: blur(20px) saturate(200%);
+  --glass-hologram: blur(15px) saturate(300%);
+  --glass-neon: blur(10px) saturate(250%);
+  --glass-terminal: blur(5px) saturate(150%);
+}
+
+/* === Cyberpunk Shadows & Glows === */
+:root {
+  /* Neon Glow Shadows */
+  --shadow-neon-glow: 0 0 20px rgba(0, 255, 65, 0.6), 0 0 40px rgba(0, 255, 65, 0.4);
+  --shadow-cyber-glow: 0 0 30px rgba(139, 92, 246, 0.5), 0 0 60px rgba(139, 92, 246, 0.3);
+  --shadow-hologram: 0 0 15px rgba(139, 92, 246, 0.4), 0 8px 25px rgba(0, 0, 0, 0.3);
+
+  /* Cyber Deck Shadows */
+  --shadow-cyberdeck: 0 4px 20px rgba(0, 0, 0, 0.4), 0 10px 40px rgba(0, 0, 0, 0.2);
+  --shadow-cyberdeck-hover: 0 8px 30px rgba(0, 0, 0, 0.5), 0 15px 50px rgba(0, 0, 0, 0.3);
+}
+
+/* === Cyberpunk Keyframes === */
+@keyframes matrix-rain {
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    background-position: 20px 600px;
+  }
+}
+
+@keyframes matrix-scan {
+  0% {
+    opacity: 0.3;
+    transform: translateY(0);
+  }
+  50% {
+    opacity: 0.6;
+    transform: translateY(-20px);
+  }
+  100% {
+    opacity: 0.3;
+    transform: translateY(0);
+  }
+}
+
+@keyframes neon-pulse {
+  0%, 100% {
+    opacity: 0.6;
+    text-shadow: 0 0 10px var(--color-matrix-green), 0 0 20px var(--color-matrix-green);
+  }
+  50% {
+    opacity: 1;
+    text-shadow: 0 0 20px var(--color-matrix-green), 0 0 30px var(--color-matrix-green), 0 0 40px var(--color-matrix-green);
+  }
+}
+
+@keyframes hologram-glow {
+  0%, 100% {
+    opacity: 0.5;
+    box-shadow: 0 0 20px var(--color-hologram-glow);
+  }
+  50% {
+    opacity: 1;
+    box-shadow: 0 0 40px var(--color-hologram-glow), 0 0 60px var(--color-hologram-glow);
+  }
+}
+
+@keyframes cyber-glitch {
+  0%, 100% {
+    transform: translate(0);
+    filter: hue-rotate(0deg);
+  }
+  20% {
+    transform: translate(-2px, 2px);
+    filter: hue-rotate(90deg);
+  }
+  40% {
+    transform: translate(-2px, -2px);
+    filter: hue-rotate(180deg);
+  }
+  60% {
+    transform: translate(2px, 2px);
+    filter: hue-rotate(270deg);
+  }
+  80% {
+    transform: translate(2px, -2px);
+    filter: hue-rotate(360deg);
+  }
+}
+
+/* === Cyberpunk Utility Classes === */
+.cyberpunk-theme {
+  background: linear-gradient(135deg, var(--color-cyber-dark) 0%, var(--color-cyber-mid) 50%, var(--color-cyber-light) 100%);
+  background-size: 400% 400%;
+  animation: var(--animation-matrix-rain);
+}
+
+.cyberpunk-text {
+  font-family: var(--font-display-cyber);
+  color: var(--color-matrix-green);
+  text-shadow: 0 0 10px var(--color-matrix-green), 0 0 20px var(--color-matrix-green);
+  animation: var(--animation-neon-pulse);
+}
+
+.cyberpunk-glow {
+  box-shadow: var(--shadow-neon-glow);
+  animation: var(--animation-neon-pulse);
+}
+
+.cyberpunk-hologram {
+  background: linear-gradient(45deg, var(--color-hologram-1), var(--color-hologram-2), var(--color-hologram-3));
+  background-size: 200% 200%;
+  animation: var(--animation-hologram-glow);
+  box-shadow: var(--shadow-hologram);
+}
+
+.cyberpunk-scanlines {
+  background-image: 
+    linear-gradient(0deg, var(--color-scanline) 1px, transparent 1px),
+    linear-gradient(90deg, var(--color-scanline) 1px, transparent 1px);
+  background-size: 100px 100px, 100px 100px;
+}
+
+.cyberpunk-terminal {
+  background: var(--color-terminal-bg);
+  color: var(--color-terminal-text);
+  font-family: var(--font-mono-cyber);
+  border: 1px solid var(--color-matrix-green);
+  box-shadow: inset 0 0 20px rgba(0, 255, 65, 0.1);
+}
+
+.cyberpunk-glitch {
+  animation: var(--animation-cyber-glitch);
+}
+
+/* === Cyberpunk Component Styles === */
+.cyber-card {
+  background: rgba(10, 10, 15, 0.8);
+  backdrop-filter: var(--glass-cyber);
+  border: 1px solid rgba(0, 255, 65, 0.3);
+  box-shadow: var(--shadow-cyberdeck);
+  transition: all var(--duration-cyber-normal) ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.cyber-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(0, 255, 65, 0.3), transparent);
+  transition: left var(--duration-cyber-slow) ease;
+}
+
+.cyber-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-cyberdeck-hover);
+}
+
+.cyber-card:hover::before {
+  left: 100%;
+}
+
+.cyber-button {
+  background: linear-gradient(45deg, var(--color-cyber-purple), var(--color-neon-blue));
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  font-family: var(--font-display-gaming);
+  font-size: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: all var(--duration-cyber-normal) ease;
+  box-shadow: var(--shadow-cyberdeck);
+}
+
+.cyber-button::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.3);
+  transform: translate(-50%, -50%);
+  transition: width var(--duration-cyber-slow), height var(--duration-cyber-slow);
+}
+
+.cyber-button:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-cyberdeck-hover);
+}
+
+.cyber-button:active::before {
+  width: 300px;
+  height: 300px;
+}
+
+.cyber-input {
+  background: rgba(26, 26, 46, 0.8);
+  backdrop-filter: var(--glass-terminal);
+  border: 1px solid rgba(0, 255, 65, 0.3);
+  color: var(--color-matrix-green);
+  font-family: var(--font-mono-cyber);
+  padding: 10px 15px;
+  transition: all var(--duration-cyber-normal) ease;
+}
+
+.cyber-input:focus {
+  outline: none;
+  border-color: var(--color-cyber-purple);
+  box-shadow: 0 0 15px rgba(139, 92, 246, 0.3);
+}
+
+/* === Cyberpunk Navigation === */
+.cyber-nav {
+  background: linear-gradient(90deg, var(--color-cyber-dark), var(--color-cyber-mid));
+  border-bottom: 1px solid rgba(0, 255, 65, 0.3);
+  backdrop-filter: var(--glass-cyber);
+}
+
+.cyber-nav-item {
+  color: var(--color-matrix-green);
+  text-decoration: none;
+  padding: 15px 20px;
+  transition: all var(--duration-cyber-normal) ease;
+  position: relative;
+}
+
+.cyber-nav-item::after {
+  content: '';
+  position: absolute;
+  bottom: 5px;
+  left: 50%;
+  width: 0;
+  height: 2px;
+  background: var(--color-cyber-purple);
+  transition: all var(--duration-cyber-slow) ease;
+  transform: translateX(-50%);
+}
+
+.cyber-nav-item:hover {
+  color: var(--color-cyber-purple);
+}
+
+.cyber-nav-item:hover::after {
+  width: 80%;
+}
+
+/* === Cyberpunk Scrollbar === */
+.cyber-scrollbar::-webkit-scrollbar {
+  width: 12px;
+}
+
+.cyber-scrollbar::-webkit-scrollbar-track {
+  background: var(--color-cyber-mid);
+}
+
+.cyber-scrollbar::-webkit-scrollbar-thumb {
+  background: linear-gradient(45deg, var(--color-cyber-purple), var(--color-neon-blue));
+  border-radius: 6px;
+}
+
+.cyber-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(45deg, var(--color-neon-blue), var(--color-cyber-purple));
+}
+
+/* === Cyberpunk Dark Mode === */
+[data-theme="dark"].cyberpunk-theme {
+  background: linear-gradient(135deg, #0A0A0F 0%, #1A1A2E 50%, #16213E 100%);
+}
+
+[data-theme="dark"].cyberpunk-text {
+  color: #00FF41;
+  text-shadow: 0 0 15px #00FF41, 0 0 30px #00FF41;
+}
+
+[data-theme="dark"].cyberpunk-glow {
+  box-shadow: 0 0 25px rgba(0, 255, 65, 0.8), 0 0 50px rgba(0, 255, 65, 0.6);
+}
+
+/* === Cyberpunk Responsive Typography === */
+@media (max-width: 768px) {
+  .cyberpunk-text {
+    font-size: 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .cyberpunk-text {
+    font-size: 1.25rem;
+  }
+}
+
+/* === Cyberpunk Accessibility === */
+@media (prefers-reduced-motion: reduce) {
+  .cyberpunk-theme,
+  .cyberpunk-glow,
+  .cyberpunk-hologram,
+  .cyberpunk-glitch {
+    animation: none;
+  }
+}
+
+/* === Cyberpunk Print Styles === */
+@media print {
+  .cyberpunk-theme {
+    background: white !important;
+  }
+  
+  .cyberpunk-text {
+    color: black !important;
+    text-shadow: none !important;
+  }
+}
