@@ -101,31 +101,6 @@ export default defineConfig(({ mode }: ConfigEnv) => {
       chunkSizeWarningLimit: 800,
       rollupOptions: {
         output: {
-          manualChunks(id) {
-            if (id.includes('node_modules')) {
-              // React must be isolated first — other chunks import it, so it cannot
-              // share a chunk with anything that transitively imports UI components.
-              if (id.includes('/react/') || id.includes('/react-dom/') || id.includes('/react-router') || id.includes('/scheduler/')) {
-                return 'react';
-              }
-              if (id.includes('@radix-ui') || id.includes('framer-motion') || id.includes('class-variance-authority') || id.includes('cmdk') || id.includes('vaul')) {
-                return 'ui';
-              }
-              if (id.includes('lucide-react')) {
-                return 'icons';
-              }
-              if (id.includes('convex')) {
-                return 'convex';
-              }
-              if (id.includes('recharts') || id.includes('d3-') || id.includes('victory')) {
-                return 'charts';
-              }
-              if (id.includes('@tiptap')) {
-                return 'editor';
-              }
-              return 'vendor';
-            }
-          },
           // Add cache-busting to filenames
           entryFileNames: `assets/[name]-[hash].js`,
           chunkFileNames: `assets/[name]-[hash].js`,
