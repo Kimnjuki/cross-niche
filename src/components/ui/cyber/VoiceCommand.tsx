@@ -188,7 +188,7 @@ const VoiceCommand: React.FC<VoiceCommandProps> = ({
       </div>
 
 {/* Browser Support Warning */}
-{(!('webkitSpeechRecognition' in window || 'SpeechRecognition' in window')) && (
+{!(('webkitSpeechRecognition' in window) || ('SpeechRecognition' in window)) && (
   <div className="cyberpunk-text text-xs text-red-500 mt-4">
     ⚠️ Voice commands not supported in this browser
   </div>
