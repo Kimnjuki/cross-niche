@@ -1,6 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import HolographicButton from './HolographicButton';
 
+declare global {
+  interface Window {
+    SpeechRecognition: SpeechRecognition;
+    webkitSpeechRecognition: SpeechRecognition;
+  }
+}
+
 interface SpeechRecognition {
   start(): void;
   stop(): void;
@@ -42,14 +49,14 @@ const VoiceCommand: React.FC<VoiceCommandProps> = ({
     return 'webkitSpeechRecognition' in window || 'SpeechRecognition' in window;
   };
 
-  // Helper function to get the speech recognition constructor
+// Helper function to get the speech recognition constructor
   const getSpeechRecognitionConstructor = () => {
     return (window.SpeechRecognition || window.webkitSpeechRecognition) as unknown as {
       new (): SpeechRecognition;
     };
   };
 
-  // Helper function to safely create speech recognition instance
+// Helper function to safely create speech recognition instance
   const createSpeechRecognition = () => {
     if (!isSpeechRecognitionSupported()) return null;
     try {
