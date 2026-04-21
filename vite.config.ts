@@ -103,31 +103,26 @@ export default defineConfig(({ mode }: ConfigEnv) => {
         output: {
           manualChunks(id) {
             if (id.includes('node_modules')) {
-              // Group React and related packages
-              if (id.includes('react') || id.includes('react-dom') || id.includes('react-router-dom')) {
-                return 'vendor';
+              // React must be isolated first — other chunks import it, so it cannot
+              // share a chunk with anything that transitively imports UI components.
+              if (id.includes('/react/') || id.includes('/react-dom/') || id.includes('/react-router') || id.includes('/scheduler/')) {
+                return 'react';
               }
-              // Group UI libraries
-              if (id.includes('@radix-ui') || id.includes('framer-motion') || id.includes('class-variance-authority')) {
+              if (id.includes('@radix-ui') || id.includes('framer-motion') || id.includes('class-variance-authority') || id.includes('cmdk') || id.includes('vaul')) {
                 return 'ui';
               }
-              // Group icons
               if (id.includes('lucide-react')) {
                 return 'icons';
               }
-              // Group Convex
               if (id.includes('convex')) {
                 return 'convex';
               }
-              // Group charts
-              if (id.includes('recharts')) {
+              if (id.includes('recharts') || id.includes('d3-') || id.includes('victory')) {
                 return 'charts';
               }
-              // Group editor
               if (id.includes('@tiptap')) {
                 return 'editor';
               }
-              // Default vendor chunk
               return 'vendor';
             }
           },
