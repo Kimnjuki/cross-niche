@@ -1,6 +1,7 @@
 import React, { useState, useCallback, useRef } from 'react';
 import { Layout } from '@/components/layout/Layout';
 import { SEO } from '@/components/SEO';
+import { Link } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -23,6 +24,9 @@ import {
   Users,
   Globe,
   Gamepad2,
+  ArrowLeft,
+  Activity,
+  Zap,
 } from 'lucide-react';
 import { useMutation } from 'convex/react';
 import { api } from '../../../convex/_generated/api';
@@ -256,6 +260,16 @@ export default function SteamScanner() {
         ogType="website"
       />
       <div className="container mx-auto px-4 py-12 max-w-3xl">
+        {/* Breadcrumb */}
+        <div className="flex items-center gap-2 text-sm text-muted-foreground mb-8">
+          <Link to="/tools" className="hover:text-foreground flex items-center gap-1 transition-colors">
+            <ArrowLeft className="h-3.5 w-3.5" />
+            Security Tools
+          </Link>
+          <span>/</span>
+          <span className="text-foreground font-medium">Steam Scanner</span>
+        </div>
+
         {/* Header */}
         <div className="mb-10 text-center">
           <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gaming/10 border border-gaming/20 mb-4">
@@ -359,7 +373,7 @@ export default function SteamScanner() {
                   )}
                 </div>
 
-                <div className="grid grid-cols-3 gap-3">
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                   <Button
                     variant="outline"
                     className="border-green-500/40 text-green-600 hover:bg-green-500/10 hover:border-green-500"
@@ -515,6 +529,24 @@ export default function SteamScanner() {
                 </div>
               </div>
             )}
+
+            {/* Related tools */}
+            <div className="rounded-xl border bg-muted/30 p-4">
+              <p className="text-sm font-semibold mb-3">More Security Tools</p>
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                {[
+                  { href: '/tools/nexusguard',     icon: Shield,    label: 'NexusGuard',    sub: 'Threat assessment',   color: 'text-security hover:bg-security/10 border-security/20' },
+                  { href: '/security-score',        icon: Zap,       label: 'Security Score', sub: 'Personal assessment', color: 'text-yellow-500 hover:bg-yellow-500/10 border-yellow-500/20' },
+                  { href: '/live-threat-dashboard', icon: Activity,  label: 'Live Threats',  sub: 'Real-time feed',      color: 'text-destructive hover:bg-destructive/10 border-destructive/20' },
+                ].map((t) => (
+                  <Link key={t.href} to={t.href} className={cn('flex flex-col gap-1 rounded-lg border p-3 transition-colors', t.color)}>
+                    <t.icon className="h-4 w-4" />
+                    <span className="text-xs font-semibold">{t.label}</span>
+                    <span className="text-xs text-muted-foreground">{t.sub}</span>
+                  </Link>
+                ))}
+              </div>
+            </div>
 
             {/* CTA */}
             <div className="flex flex-col sm:flex-row gap-3 pt-2">
