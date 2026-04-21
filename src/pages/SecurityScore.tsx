@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef, useMemo } from 'react';
 import { Layout } from '@/components/layout/Layout';
-import { Shield, CheckCircle, AlertTriangle, RotateCcw, ChevronRight } from 'lucide-react';
+import { Shield, CheckCircle, AlertTriangle, RotateCcw, ChevronRight, ArrowLeft } from 'lucide-react';
+import { SecurityToolsStrip } from '@/components/security/SecurityToolsStrip';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
@@ -207,6 +208,16 @@ export default function SecurityScore() {
       />
 
       <div className="container mx-auto px-4 py-12 max-w-2xl">
+        {/* Breadcrumb */}
+        <div className="flex items-center gap-2 text-sm text-muted-foreground mb-8">
+          <Link to="/tools" className="hover:text-foreground flex items-center gap-1 transition-colors">
+            <ArrowLeft className="h-3.5 w-3.5" />
+            Security Tools
+          </Link>
+          <span>/</span>
+          <span className="text-foreground font-medium">Security Score</span>
+        </div>
+
         {/* ── INTRO ── */}
         {phase === 'intro' && (
           <div className="text-center">
@@ -217,7 +228,7 @@ export default function SecurityScore() {
             <p className="text-lg text-muted-foreground mb-8 max-w-md mx-auto">
               10 questions. 2 minutes. Get a personalised score and know exactly where your gaming security needs work.
             </p>
-            <div className="grid grid-cols-3 gap-4 mb-10 text-sm">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-10 text-sm">
               {[
                 { label: '10 Questions', sub: 'covering key risk areas' },
                 { label: 'Instant Score', sub: 'out of 100' },
@@ -303,7 +314,7 @@ export default function SecurityScore() {
             </div>
 
             {/* Summary bar */}
-            <div className="grid grid-cols-3 gap-3 mb-10 text-center text-sm">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-10 text-center text-sm">
               {(['yes', 'partial', 'no'] as const).map((val) => {
                 const count = Object.values(answers).filter((a) => a === val).length;
                 const labels = { yes: 'Secure', partial: 'Partial', no: 'At Risk' };
@@ -359,16 +370,8 @@ export default function SecurityScore() {
               </Button>
             </div>
 
-            {/* Related links */}
-            <div className="mt-8 pt-6 border-t border-border flex flex-wrap gap-3 text-sm">
-              <Link to="/security" className="text-primary hover:underline">Threat Intel</Link>
-              <span className="text-muted-foreground">•</span>
-              <Link to="/gaming" className="text-primary hover:underline">Game Security</Link>
-              <span className="text-muted-foreground">•</span>
-              <Link to="/guides" className="text-primary hover:underline">Security Guides</Link>
-              <span className="text-muted-foreground">•</span>
-              <Link to="/breach-sim" className="text-primary hover:underline">Breach Simulator</Link>
-            </div>
+            {/* Related tools strip */}
+            <SecurityToolsStrip className="mt-8" heading="More security tools" />
           </div>
         )}
       </div>

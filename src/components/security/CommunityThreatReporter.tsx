@@ -125,10 +125,12 @@ export const CommunityThreatReporter = React.memo(function CommunityThreatReport
                 maxLength={800}
               />
             </div>
-            <div className="grid grid-cols-3 gap-2">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
               <div>
-                <label className="text-xs font-medium text-muted-foreground mb-1 block">Platform</label>
+                <label htmlFor="report-platform" className="text-xs font-medium text-muted-foreground mb-1 block">Platform</label>
                 <select
+                  id="report-platform"
+                  aria-label="Select affected platform"
                   className="w-full h-9 text-sm rounded-md border border-input bg-background px-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
                   value={form.platform}
                   onChange={(e) => set('platform', e.target.value)}
@@ -137,8 +139,10 @@ export const CommunityThreatReporter = React.memo(function CommunityThreatReport
                 </select>
               </div>
               <div>
-                <label className="text-xs font-medium text-muted-foreground mb-1 block">Severity</label>
+                <label htmlFor="report-severity" className="text-xs font-medium text-muted-foreground mb-1 block">Severity</label>
                 <select
+                  id="report-severity"
+                  aria-label="Select threat severity"
                   className="w-full h-9 text-sm rounded-md border border-input bg-background px-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
                   value={form.severity}
                   onChange={(e) => set('severity', e.target.value)}
@@ -147,8 +151,10 @@ export const CommunityThreatReporter = React.memo(function CommunityThreatReport
                 </select>
               </div>
               <div>
-                <label className="text-xs font-medium text-muted-foreground mb-1 block">Type</label>
+                <label htmlFor="report-type" className="text-xs font-medium text-muted-foreground mb-1 block">Type</label>
                 <select
+                  id="report-type"
+                  aria-label="Select threat type"
                   className="w-full h-9 text-sm rounded-md border border-input bg-background px-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
                   value={form.threatType}
                   onChange={(e) => set('threatType', e.target.value)}
