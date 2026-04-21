@@ -38,7 +38,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Progress } from '@/components/ui/progress';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 
 interface BASPlatform {
@@ -367,7 +367,7 @@ export default function BreachSimEnhanced() {
         {/* Tab Content */}
         <div className="container mx-auto px-4 py-12">
           <div className="max-w-6xl mx-auto">
-            <TabsContent value="overview" className="space-y-8">
+            {activeTab === 'overview' && <div className="space-y-8">
               {/* What is BAS Section */}
               <Card>
                 <CardHeader>
@@ -500,9 +500,9 @@ export default function BreachSimEnhanced() {
                   </div>
                 </CardContent>
               </Card>
-            </TabsContent>
+            </div>}
 
-            <TabsContent value="platforms" className="space-y-6">
+            {activeTab === 'platforms' && <div className="space-y-6">
               {/* Filter Controls */}
               <div className="flex items-center gap-4 mb-6">
                 <span className="text-sm font-medium">Category:</span>
@@ -594,9 +594,9 @@ export default function BreachSimEnhanced() {
                   </Card>
                 ))}
               </div>
-            </TabsContent>
+            </div>}
 
-            <TabsContent value="scenarios" className="space-y-6">
+            {activeTab === 'scenarios' && <div className="space-y-6">
               <div className="grid gap-6 md:grid-cols-2">
                 {attackScenarios.map((scenario) => (
                   <Card key={scenario.id} className="hover:shadow-lg transition-all">
@@ -665,9 +665,9 @@ export default function BreachSimEnhanced() {
                   </Card>
                 ))}
               </div>
-            </TabsContent>
+            </div>}
 
-            <TabsContent value="comparison" className="space-y-6">
+            {activeTab === 'comparison' && <div className="space-y-6">
               <Card>
                 <CardHeader>
                   <CardTitle className="text-2xl flex items-center gap-2">
@@ -725,7 +725,7 @@ export default function BreachSimEnhanced() {
                   </div>
                 </CardContent>
               </Card>
-            </TabsContent>
+            </div>}
           </div>
         </div>
 
