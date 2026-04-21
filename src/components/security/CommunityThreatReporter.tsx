@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { useMutation, useQuery } from 'convex/react';
 import { api } from '../../../convex/_generated/api';
 import { useConvexDisabled } from '@/components/SafeConvexProvider';
@@ -22,7 +22,7 @@ const severityColor: Record<string, string> = {
   low: 'bg-blue-500/10 text-blue-500 border-blue-500/30',
 };
 
-export function CommunityThreatReporter() {
+export const CommunityThreatReporter = React.memo(function CommunityThreatReporter() {
   const isDisabled = useConvexDisabled();
   const { user } = useAuth();
 
@@ -228,4 +228,4 @@ export function CommunityThreatReporter() {
       </CardContent>
     </Card>
   );
-}
+});

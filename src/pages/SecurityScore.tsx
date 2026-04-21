@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useMemo } from 'react';
 import { Layout } from '@/components/layout/Layout';
 import { Shield, CheckCircle, AlertTriangle, RotateCcw, ChevronRight } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -158,17 +158,20 @@ export default function SecurityScore() {
     setPhase('intro');
   }
 
-  const score = questions.reduce((sum, q) => {
-    const a = answers[q.id];
-    if (a === 'yes') return sum + q.yesPoints;
-    if (a === 'partial') return sum + q.partialPoints;
-    return sum;
-  }, 0);
-
-  const scorePct = Math.round((score / MAX_SCORE) * 100);
-  const band = getScoreBand(score);
-
-  const weakAreas = questions.filter((q) => answers[q.id] === 'no' || answers[q.id] === 'partial');
+  const { score, scorePct, band, weakAreas } = useMemo(() => {
+    const s = questions.reduce((sum, q) => {
+      const a = answers[q.id];
+      if (a === 'yes') return sum + q.yesPoints;
+      if (a === 'partial') return sum + q.partialPoints;
+      return sum;
+    }, 0);
+    return {
+      score: s,
+      scorePct: Math.round((s / MAX_SCORE) * 100),
+      band: getScoreBand(s),
+      weakAreas: questions.filter((q) => answers[q.id] === 'no' || answers[q.id] === 'partial'),
+    };
+  }, [answers]);
 
   // Persist results to Convex when quiz finishes
   useEffect(() => {
