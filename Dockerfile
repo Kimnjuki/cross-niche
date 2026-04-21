@@ -46,6 +46,11 @@ RUN mkdir -p /var/cache/nginx/client_temp /var/cache/nginx/proxy_temp \
     && chown -R nginx:nginx /var/cache/nginx \
     && chmod -R 755 /var/cache/nginx
 
+# Allow nginx user to write PID file and logs
+RUN touch /run/nginx.pid \
+    && chown nginx:nginx /run/nginx.pid \
+    && chown -R nginx:nginx /var/log/nginx
+
 # Switch to non-root user for security
 USER nginx
 
