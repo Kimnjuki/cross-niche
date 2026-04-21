@@ -41,6 +41,11 @@ COPY nginx.conf /etc/nginx/conf.d/default.conf
 # Change ownership to non-root user
 RUN chown -R nginx:nginx /usr/share/nginx/html
 
+# Create cache directories with proper permissions
+RUN mkdir -p /var/cache/nginx/client_temp /var/cache/nginx/proxy_temp \
+    && chown -R nginx:nginx /var/cache/nginx \
+    && chmod -R 755 /var/cache/nginx
+
 # Switch to non-root user for security
 USER nginx
 
