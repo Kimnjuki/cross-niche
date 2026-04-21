@@ -116,6 +116,14 @@ const VRCyberTraining = lazy(() => import("./pages/VRCyberTraining"));
 const SteamScanner = lazy(() => import("./pages/tools/SteamScanner"));
 const NexusPath = lazy(() => import("./pages/learn/NexusPath"));
 const NexusPulse = lazy(() => import("./pages/pulse/NexusPulse"));
+// Security Tools Suite
+const IOCLookup = lazy(() => import("./pages/tools/IOCLookup"));
+const GamingSecurityCheckup = lazy(() => import("./pages/tools/GamingSecurityCheckup"));
+const BreachExplainer = lazy(() => import("./pages/tools/BreachExplainer"));
+const AIToolFinder = lazy(() => import("./pages/tools/AIToolFinder"));
+const PatchRiskTracker = lazy(() => import("./pages/tools/PatchRiskTracker"));
+const ZeroTrustQuiz = lazy(() => import("./pages/tools/ZeroTrustQuiz"));
+const ExploitRiskMeter = lazy(() => import("./pages/tools/ExploitRiskMeter"));
 
 const queryClient = new QueryClient();
 
@@ -213,6 +221,14 @@ const App = () => (
                     <Route path="/nexus/nexuspath" element={<Navigate to="/learn/nexus-path" replace />} />
                     <Route path="/pulse/nexus-pulse" element={<NexusPulse />} />
                     <Route path="/nexus/nexuspulse" element={<Navigate to="/pulse/nexus-pulse" replace />} />
+                    {/* Security Tools Suite */}
+                    <Route path="/tools/ioc-lookup" element={<IOCLookup />} />
+                    <Route path="/tools/gaming-security-checkup" element={<GamingSecurityCheckup />} />
+                    <Route path="/tools/breach-explainer" element={<BreachExplainer />} />
+                    <Route path="/tools/ai-tool-finder" element={<AIToolFinder />} />
+                    <Route path="/tools/patch-risk-tracker" element={<PatchRiskTracker />} />
+                    <Route path="/tools/zero-trust-quiz" element={<ZeroTrustQuiz />} />
+                    <Route path="/tools/exploit-risk-meter" element={<ExploitRiskMeter />} />
                     {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                     <Route path="*" element={<NotFound />} />
                   </Routes>

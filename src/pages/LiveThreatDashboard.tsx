@@ -12,9 +12,9 @@ import { useMutation, useQuery } from 'convex/react';
 import { api } from '../../convex/_generated/api';
 import { useConvexDisabled } from '@/components/SafeConvexProvider';
 import { useAuth } from '@/contexts/AuthContext';
-import { useEffect, useMemo, useState } from 'react';
+import { memo, useEffect, useMemo, useState } from 'react';
 
-export default function LiveThreatDashboard() {
+const LiveThreatDashboard = memo(function LiveThreatDashboard() {
   const isDisabled = useConvexDisabled();
   const { user } = useAuth();
   const userId = user?.id || `session-${localStorage.getItem('sessionId') || 'anonymous'}`;
@@ -213,4 +213,6 @@ export default function LiveThreatDashboard() {
       </div>
     </Layout>
   );
-}
+});
+
+export default LiveThreatDashboard;
