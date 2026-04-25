@@ -10,4 +10,8 @@ function Tag({ className, variant, ...props }: TagProps) {
   return <div className={cn(tagVariants({ variant }), className)} {...props} />;
 }
 
+// Backward compatibility for existing imports
+export const Badge = Tag;
+export type BadgeProps = TagProps;
+
 export { Tag };
