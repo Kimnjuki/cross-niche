@@ -2,12 +2,12 @@ import * as React from "react";
 import { type VariantProps } from "class-variance-authority";
 
 import { cn } from "@/lib/utils";
-import { badgeVariants } from "./badge-variants";
+import { tagVariants } from "./badge-variants";
 
-export interface BadgeProps extends React.HTMLAttributes<HTMLDivElement>, VariantProps<typeof badgeVariants> {}
+export interface TagProps extends React.HTMLAttributes<HTMLDivElement>, VariantProps<typeof tagVariants> {}
 
-function Badge({ className, variant, ...props }: BadgeProps) {
-  return <div className={cn(badgeVariants({ variant }), className)} {...props} />;
+function Tag({ className, variant, ...props }: TagProps) {
+  return <div className={cn(tagVariants({ variant }), className)} {...props} />;
 }
 
-export { Badge };
+export { Tag };
