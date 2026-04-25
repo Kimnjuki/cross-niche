@@ -89,14 +89,58 @@
 
     /* Grid Nexus 2026 – design tokens */
     --nexus-bg: #0A0A0B;
+    --nexus-bg-secondary: #141417;
+    --nexus-bg-card: #16161A;
+    --nexus-bg-elevated: #1F1F23;
     --nexus-surface: rgba(20, 20, 22, 0.7);
     --nexus-border: rgba(255, 255, 255, 0.1);
+    --nexus-border-subtle: rgba(63, 63, 70, 0.5);
+
+    /* Nexus v2.0 – 5-color accent palette */
+    --nexus-cyber: #00F0FF;
+    --nexus-cyber-hover: #00D4E6;
+    --nexus-cyber-dim: rgba(0, 240, 255, 0.15);
+    --nexus-pink: #FF007A;
+    --nexus-pink-hover: #E6006D;
+    --nexus-pink-dim: rgba(255, 0, 122, 0.15);
+    --nexus-green: #39FF14;
+    --nexus-green-hover: #33E612;
+    --nexus-green-dim: rgba(57, 255, 20, 0.15);
+    --nexus-purple: #B026FF;
+    --nexus-purple-hover: #9D22E6;
+    --nexus-purple-dim: rgba(176, 38, 255, 0.15);
+    --nexus-amber: #FFB800;
+    --nexus-amber-hover: #E6A500;
+    --nexus-amber-dim: rgba(255, 184, 0, 0.15);
+
+    /* Legacy compat aliases */
     --nexus-accent-security: #00FF41;
     --nexus-accent-tech: #00F0FF;
     --nexus-accent-gaming: #FF007A;
+
+    /* Glow shadows */
+    --nexus-glow-cyber: 0 0 20px rgba(0, 240, 255, 0.35);
+    --nexus-glow-pink: 0 0 20px rgba(255, 0, 122, 0.35);
+    --nexus-glow-green: 0 0 20px rgba(57, 255, 20, 0.35);
+    --nexus-glow-purple: 0 0 20px rgba(176, 38, 255, 0.35);
+    --nexus-glow-amber: 0 0 20px rgba(255, 184, 0, 0.35);
     --nexus-glow-security: 0 0 20px rgba(0, 255, 65, 0.15);
     --nexus-glow-tech: 0 0 20px rgba(0, 240, 255, 0.15);
     --nexus-glow-gaming: 0 0 20px rgba(255, 0, 122, 0.15);
+
+    /* Severity badges */
+    --nexus-severity-critical: #EF4444;
+    --nexus-severity-high: #F97316;
+    --nexus-severity-medium: #F59E0B;
+    --nexus-severity-low: #10B981;
+
+    /* Rank colors */
+    --nexus-rank-novice: #71717A;
+    --nexus-rank-guardian: #3B82F6;
+    --nexus-rank-sentinel: #8B5CF6;
+    --nexus-rank-architect: #F59E0B;
+    --nexus-rank-legend: #EF4444;
+
     --nexus-font-display: 'Inter Tight', system-ui, sans-serif;
     --nexus-font-body: 'IBM Plex Serif', system-ui, serif;
     --nexus-font-data: 'JetBrains Mono', monospace;
@@ -299,11 +343,102 @@
   .nexus-glow-gaming {
     box-shadow: var(--nexus-glow-gaming);
   }
+  .nexus-glow-cyber  { box-shadow: var(--nexus-glow-cyber);  }
+  .nexus-glow-pink   { box-shadow: var(--nexus-glow-pink);   }
+  .nexus-glow-green  { box-shadow: var(--nexus-glow-green);  }
+  .nexus-glow-purple { box-shadow: var(--nexus-glow-purple); }
+  .nexus-glow-amber  { box-shadow: var(--nexus-glow-amber);  }
+
   .nexus-bg { background-color: var(--nexus-bg); }
+  .nexus-bg-card { background-color: var(--nexus-bg-card); }
+  .nexus-bg-elevated { background-color: var(--nexus-bg-elevated); }
   .nexus-surface { background: var(--nexus-surface); }
   .nexus-border-color { border-color: var(--nexus-border); }
   .nexus-font-display { font-family: var(--nexus-font-display); }
   .nexus-font-data { font-family: var(--nexus-font-data); }
+
+  /* Nexus v2 gradient text */
+  .gradient-nexus-cyber {
+    background: linear-gradient(135deg, #FFFFFF 0%, #00F0FF 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .gradient-nexus-intelligence {
+    background: linear-gradient(135deg, #00F0FF 0%, #FF007A 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .gradient-nexus-hero {
+    background: linear-gradient(135deg, #FFFFFF 0%, #00F0FF 60%, #FF007A 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  /* Niche tag badge colors */
+  .niche-tag-tech     { background: rgba(57,255,20,0.15);  color: #39FF14; border: 1px solid rgba(57,255,20,0.3);  }
+  .niche-tag-security { background: rgba(0,240,255,0.15);  color: #00F0FF; border: 1px solid rgba(0,240,255,0.3);  }
+  .niche-tag-gaming   { background: rgba(255,0,122,0.15);  color: #FF007A; border: 1px solid rgba(255,0,122,0.3);  }
+  .niche-tag-ai       { background: rgba(176,38,255,0.15); color: #B026FF; border: 1px solid rgba(176,38,255,0.3); }
+  .niche-tag-amber    { background: rgba(255,184,0,0.15);  color: #FFB800; border: 1px solid rgba(255,184,0,0.3);  }
+
+  /* Severity badge colors */
+  .severity-critical { background: rgba(239,68,68,0.15);  color: #EF4444; border: 1px solid rgba(239,68,68,0.3);  }
+  .severity-high     { background: rgba(249,115,22,0.15); color: #F97316; border: 1px solid rgba(249,115,22,0.3); }
+  .severity-medium   { background: rgba(245,158,11,0.15); color: #F59E0B; border: 1px solid rgba(245,158,11,0.3); }
+  .severity-low      { background: rgba(16,185,129,0.15); color: #10B981; border: 1px solid rgba(16,185,129,0.3); }
+
+  /* Neo-brutalist card base */
+  .card-nexus {
+    background: var(--nexus-bg-card);
+    border: 1px solid rgba(39, 39, 42, 1);
+    border-radius: 0px;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+  }
+  .card-nexus:hover {
+    border-color: rgba(0, 240, 255, 0.4);
+    box-shadow: 0 0 20px rgba(0, 240, 255, 0.15);
+    transform: translateY(-2px);
+  }
+  .card-nexus-glass {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(12px) saturate(150%);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 0px;
+  }
+  .card-nexus-glass:hover {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(0, 240, 255, 0.3);
+  }
+
+  /* Marquee animation (for BreakingNewsTicker – doubled content scrolls from right to left) */
+  @keyframes marquee {
+    0%   { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+  .animate-marquee {
+    animation: marquee 30s linear infinite;
+    will-change: transform;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .animate-marquee { animation: none; }
+  }
+
+  /* Glow pulse for live badges */
+  @keyframes glow-pulse {
+    0%, 100% { box-shadow: 0 0 6px rgba(0, 240, 255, 0.4); }
+    50%       { box-shadow: 0 0 14px rgba(0, 240, 255, 0.8); }
+  }
+  .animate-glow-pulse { animation: glow-pulse 2s ease-in-out infinite; }
+
+  /* Blinking cursor for terminal */
+  @keyframes blink {
+    0%, 100% { opacity: 1; }
+    50%       { opacity: 0; }
+  }
+  .animate-blink { animation: blink 1s step-end infinite; }
 
   /* Scanline keyframe – hacking/terminal feel for Secured category */
   @keyframes scanline {
