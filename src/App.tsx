@@ -142,8 +142,8 @@ const App = () => (
                 <ChunkErrorBoundary>
                 <Suspense fallback={<LoadingState />}>
                   <Routes>
-                    <Route path="/" element={<HomepageCommandCenter />} />
-<Route path="/original-index" element={<Index />} />
+                    <Route path="/" element={<Index />} />
+                    <Route path="/original-index" element={<HomepageCommandCenter />} />
                     <Route path="/simple" element={<IndexSimple />} />
                     <Route path="/enhanced" element={<EnhancedIndex />} />
                     <Route path="/enhanced-simple" element={<EnhancedIndexSimple />} />
