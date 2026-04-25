@@ -15,7 +15,7 @@ export function SiteFooter() {
           <div className="max-w-[240px]">
             <Link
               to="/"
-              className="flex items-center gap-2 font-[var(--font-display)] font-bold text-[0.875rem] tracking-[0.15em] text-[var(--text-primary)] mb-4"
+              className="flex items-center gap-2 font-[var(--font-display)] text-[0.875rem] tracking-[0.15em] text-[var(--text-primary)] mb-4"
             >
               <span className="text-[var(--accent-cyan)]">●</span>
               THE GRID NEXUS
@@ -30,7 +30,7 @@ export function SiteFooter() {
 
           {/* Explore Column */}
           <div>
-            <h3 className="font-[var(--font-label)] font-bold uppercase tracking-[0.1em] text-[var(--text-primary)] text-xs mb-4">
+            <h3 className="font-[var(--font-label)] uppercase tracking-[0.1em] text-[var(--text-primary)] text-xs mb-4">
               Explore
             </h3>
             <ul className="space-y-2">
@@ -49,7 +49,7 @@ export function SiteFooter() {
 
           {/* Company Column */}
           <div>
-            <h3 className="font-[var(--font-label)] font-bold uppercase tracking-[0.1em] text-[var(--text-primary)] text-xs mb-4">
+            <h3 className="font-[var(--font-label)] uppercase tracking-[0.1em] text-[var(--text-primary)] text-xs mb-4">
               Company
             </h3>
             <ul className="space-y-2">
@@ -68,7 +68,7 @@ export function SiteFooter() {
 
           {/* Connect Column */}
           <div>
-            <h3 className="font-[var(--font-label)] font-bold uppercase tracking-[0.1em] text-[var(--text-primary)] text-xs mb-4">
+            <h3 className="font-[var(--font-label)] uppercase tracking-[0.1em] text-[var(--text-primary)] text-xs mb-4">
               Connect
             </h3>
 

@@ -179,12 +179,12 @@ export function HeroSection({
 
       <div className="relative z-10 container-tokens max-w-3xl text-center px-4">
         {eyebrow && (
-          <p className="font-[var(--font-label)] font-bold uppercase tracking-[0.1em] text-[var(--accent-cyan)] text-xs mb-3">
+          <p className="font-[var(--font-label)] uppercase tracking-[0.1em] text-[var(--accent-cyan)] text-xs mb-3">
             {eyebrow}
           </p>
         )}
 
-        <h1 className="font-[var(--font-heading)] font-bold text-[clamp(1.75rem,3vw,2.5rem)] text-[var(--text-primary)] mb-3">
+        <h1 className="font-[var(--font-heading)] text-[clamp(1.75rem,3vw,2.5rem)] text-[var(--text-primary)] mb-3">
           {title}
         </h1>
 

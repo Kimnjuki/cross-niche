@@ -58,7 +58,7 @@ export function ArticleCard({ article, variant = 'default', className }: Article
             <Tag variant={`category-${article.category}`} className="mb-3 w-fit">
               {article.category.toUpperCase()}
             </Tag>
-            <h3 className="font-[var(--font-heading)] font-semibold text-xl text-[var(--text-primary)] mb-3 leading-tight group-hover:text-[var(--accent-cyan)] transition-colors">
+            <h3 className="font-[var(--font-heading)] text-xl text-[var(--text-primary)] mb-3 leading-tight group-hover:text-[var(--accent-cyan)] transition-colors">
               {article.title}
             </h3>
             <p className="text-[var(--text-secondary)] text-sm mb-4 line-clamp-3">
@@ -103,7 +103,7 @@ export function ArticleCard({ article, variant = 'default', className }: Article
             <Tag variant={`category-${article.category}`} className="mb-1 w-fit text-[10px]">
               {article.category.toUpperCase()}
             </Tag>
-            <h4 className="font-[var(--font-heading)] font-semibold text-sm text-[var(--text-primary)] line-clamp-2 group-hover:text-[var(--accent-cyan)] transition-colors">
+            <h4 className="font-[var(--font-heading)] text-sm text-[var(--text-primary)] line-clamp-2 group-hover:text-[var(--accent-cyan)] transition-colors">
               {article.title}
             </h4>
           </div>
@@ -139,7 +139,7 @@ export function ArticleCard({ article, variant = 'default', className }: Article
         </div>
       </div>
       <div className="p-5">
-        <h3 className="font-[var(--font-heading)] font-semibold text-lg text-[var(--text-primary)] mb-2 leading-tight group-hover:text-[var(--accent-cyan)] transition-colors line-clamp-2">
+        <h3 className="font-[var(--font-heading)] text-lg text-[var(--text-primary)] mb-2 leading-tight group-hover:text-[var(--accent-cyan)] transition-colors line-clamp-2">
           {article.title}
         </h3>
         <p className="text-[var(--text-secondary)] text-sm mb-3 line-clamp-2">

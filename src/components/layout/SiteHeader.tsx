@@ -79,7 +79,7 @@ export function SiteHeader() {
           {/* Logo */}
           <Link
             to="/"
-            className="flex items-center gap-2 font-[var(--font-display)] font-bold text-[0.875rem] tracking-[0.15em] text-[var(--text-primary)] transition-colors duration-180ms hover:text-[var(--accent-cyan)]"
+            className="flex items-center gap-2 font-[var(--font-display)] text-[0.875rem] tracking-[0.15em] text-[var(--text-primary)] transition-colors duration-180ms hover:text-[var(--accent-cyan)]"
           >
             <span className="text-[var(--accent-cyan)]">●</span>
             THE GRID NEXUS
@@ -189,7 +189,7 @@ export function SiteHeader() {
       >
         <div className="flex flex-col h-full p-4">
           <div className="flex items-center justify-between mb-6">
-            <span className="font-[var(--font-display)] font-bold text-sm tracking-wider">THE GRID NEXUS</span>
+            <span className="font-[var(--font-display)] text-sm tracking-wider">THE GRID NEXUS</span>
             <button
               type="button"
               onClick={() => setIsOpen(false)}

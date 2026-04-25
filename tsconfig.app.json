@@ -18,14 +18,15 @@
     "strict": false,
     "noUnusedLocals": false,
     "noUnusedParameters": false,
-    "noImplicitAny": false,
-    "noFallthroughCasesInSwitch": false,
+"noImplicitAny": false,
+"noFallthroughCasesInSwitch": false,
 
-    "baseUrl": ".",
-    "paths": {
-      "@/*": ["./src/*"],
-      "@convex/*": ["./convex/*"]
-    }
+"baseUrl": ".",
+"paths": {
+  "@/*": ["./src/*"],
+  "@convex/*": ["./convex/*"]
+},
+"ignoreDeprecations": "6.0"
   },
   "include": ["src"]
 }

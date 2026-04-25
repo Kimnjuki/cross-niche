@@ -9,7 +9,7 @@ function injectGa4Id(mode: string) {
   return {
     name: "inject-ga4-id",
     transformIndexHtml: {
-      order: "pre",
+      order: "pre" as const,
       handler(html: string) {
         const env = loadEnv(mode, process.cwd(), "");
         const gaId = env.VITE_GA4_MEASUREMENT_ID || "G-TJ1VXE91NE";

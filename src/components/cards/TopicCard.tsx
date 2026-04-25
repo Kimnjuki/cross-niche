@@ -53,7 +53,7 @@ export function TopicCard({ topic, className }: TopicCardProps) {
         />
       </div>
 
-      <h3 className="font-[var(--font-heading)] font-bold text-lg text-[var(--text-primary)] mb-2 group-hover:text-[var(--accent-cyan)] transition-colors">
+      <h3 className="font-[var(--font-heading)] text-lg text-[var(--text-primary)] mb-2 group-hover:text-[var(--accent-cyan)] transition-colors">
         {topic.name}
       </h3>
 

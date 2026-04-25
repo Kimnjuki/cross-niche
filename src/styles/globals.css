@@ -4,6 +4,7 @@
 /* Intelligence Layer at the Intersection of Technology, Security, and Gaming */
 
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Inter+Display:wght@300;400;500;600;700;800;900&family=IBM+Plex+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Syncopate:wght@400;700&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=IBM+Plex+Sans:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap');
 
 /* CSS Custom Properties - TheGridNexus Brand Identity */
 :root {
@@ -185,6 +186,99 @@
   --z-popover: 1060;
   --z-tooltip: 1070;
   --z-toast: 1080;
+
+  /* ─── Nexus v2.0 Design Tokens ─────────────────────────────────────────── */
+
+  /* Backgrounds */
+  --bg-base: #03050A;
+  --bg-surface: #080C14;
+  --bg-elevated: #0D1220;
+  --bg-overlay: #111827;
+  --bg-glass: rgba(8, 12, 20, 0.72);
+
+  /* Accent — Cyan (Tech) */
+  --accent-cyan: #00E5FF;
+  --accent-cyan-dim: #00B8CC;
+  --accent-cyan-glow: rgba(0, 229, 255, 0.15);
+
+  /* Accent — Violet (Security) */
+  --accent-violet: #A855F7;
+  --accent-violet-dim: #7C3AED;
+  --accent-violet-glow: rgba(168, 85, 247, 0.12);
+
+  /* Accent — Amber (Gaming) */
+  --accent-amber: #F59E0B;
+  --accent-amber-glow: rgba(245, 158, 11, 0.15);
+
+  /* Accent — Red (Breaking/Threat) */
+  --accent-red: #EF4444;
+  --accent-red-glow: rgba(239, 68, 68, 0.15);
+
+  /* Text */
+  --text-primary: #F0F4FF;
+  --text-secondary: #8B95A8;
+  --text-tertiary: #4B5563;
+  --text-inverse: #03050A;
+  --text-accent-cyan: #00E5FF;
+  --text-accent-violet: #A855F7;
+
+  /* Borders */
+  --border-default: rgba(255,255,255,0.06);
+  --border-subtle: rgba(255,255,255,0.04);
+  --border-cyan: rgba(0, 229, 255, 0.35);
+  --border-violet: rgba(168, 85, 247, 0.35);
+  --border-amber: rgba(245, 158, 11, 0.35);
+
+  /* Category accent map */
+  --cat-tech: #00E5FF;
+  --cat-security: #A855F7;
+  --cat-gaming: #F59E0B;
+  --cat-ai: #34D399;
+  --cat-esports: #F97316;
+  --cat-threat: #EF4444;
+
+  /* Priority map */
+  --priority-low: #00E5FF;
+  --priority-medium: #F59E0B;
+  --priority-high: #EF4444;
+  --priority-breaking: #EF4444;
+
+  /* Typography */
+  --font-display-v2: 'Syncopate', 'Orbitron', sans-serif;
+  --font-heading: 'DM Sans', 'Outfit', sans-serif;
+  --font-body-v2: 'IBM Plex Sans', 'Geist', sans-serif;
+  --font-mono-v2: 'IBM Plex Mono', 'JetBrains Mono', monospace;
+  --font-label: 'DM Sans', sans-serif;
+
+  /* Radius v2 */
+  --radius-v2-sm: 6px;
+  --radius-v2-md: 10px;
+  --radius-v2-lg: 14px;
+  --radius-v2-xl: 20px;
+
+  /* Shadows v2 */
+  --shadow-card: 0 1px 2px rgba(0,0,0,0.4), 0 4px 16px rgba(0,0,0,0.3);
+  --shadow-card-hover: 0 2px 4px rgba(0,0,0,0.5), 0 8px 32px rgba(0,0,0,0.4);
+  --shadow-glow-cyan: 0 0 24px rgba(0, 229, 255, 0.18), 0 0 48px rgba(0, 229, 255, 0.08);
+  --shadow-glow-violet: 0 0 24px rgba(168, 85, 247, 0.18), 0 0 48px rgba(168, 85, 247, 0.08);
+  --shadow-glow-amber: 0 0 24px rgba(245, 158, 11, 0.18), 0 0 48px rgba(245, 158, 11, 0.08);
+  --shadow-button-primary: 0 0 20px rgba(0, 229, 255, 0.3), 0 4px 12px rgba(0,0,0,0.4);
+
+  /* Transitions v2 */
+  --transition-fast: 120ms ease-out;
+  --transition-base: 180ms ease-out;
+  --transition-slow: 280ms ease-out;
+  --transition-spring: 220ms cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  /* Layout */
+  --container-max-v2: 1280px;
+  --section-gap: 96px;
+  --section-gap-mobile: 56px;
+  --grid-gap-v2: 16px;
+  --card-padding-v2: 24px;
+  --card-padding-v2-sm: 16px;
+  --container-padding-desktop: 40px;
+  --container-padding-mobile: 20px;
 }
 
 /* Dark Theme */
@@ -230,6 +324,26 @@ body {
   min-height: 100%;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-color: var(--bg-base);
+  color: var(--text-primary);
+}
+
+/* Breaking badge pulse */
+@keyframes breaking-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.6; }
+}
+
+/* Bell badge pulse */
+@keyframes bell-pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.3); }
+}
+
+/* Signal scan line */
+@keyframes scanline {
+  0% { transform: translateY(-100%); }
+  100% { transform: translateY(100%); }
 }
 
 /* TheGridNexus Brand Animations */
