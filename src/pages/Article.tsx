@@ -255,9 +255,9 @@ export default function Article() {
           </h1>
           <div className="flex flex-wrap gap-2 mb-4">
             <Badge className={styles.badge}>{nicheLabels[safeNiche]}</Badge>
-            {article.isSponsored && <Badge variant="secondary">Sponsored</Badge>}
+            {article.isSponsored && <Badge variant="topic">Sponsored</Badge>}
             {article.impactLevel && (
-              <Badge variant={article.impactLevel === 'high' ? 'destructive' : 'secondary'} className="gap-1">
+              <Badge variant={article.impactLevel === 'high' ? 'breaking' : 'topic'} className="gap-1">
                 <AlertTriangle className="h-3 w-3" />
                 {article.impactLevel.toUpperCase()} IMPACT
               </Badge>
@@ -319,7 +319,7 @@ export default function Article() {
             <div className="flex justify-end">
               {user && (
                 <Button
-                  variant={isBookmarked ? 'default' : 'outline'}
+                  variant={isBookmarked ? 'primary' : 'secondary'}
                   size="lg"
                   onClick={handleBookmark}
                   className="gap-2 w-full lg:w-auto"
@@ -358,7 +358,7 @@ export default function Article() {
             {tags.length > 0 && (
               <div className="flex flex-wrap gap-2 mt-8">
                 {tags.map((tag) => (
-                  <Badge key={tag} variant="outline">{tag}</Badge>
+                  <Badge key={tag} variant="topic">{tag}</Badge>
                 ))}
               </div>
             )}
