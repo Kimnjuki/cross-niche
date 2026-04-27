@@ -1,14 +1,14 @@
-import React, { useMemo } from ‘react’;
-import { SignIn, SignUp, useUser } from ‘@clerk/clerk-react’;
-import { Shield, Mail, User } from ‘lucide-react’;
-import { useLocation } from ‘react-router-dom’;
+import React, { useMemo } from 'react';
+import { SignIn, SignUp, useUser } from '@clerk/clerk-react';
+import { Shield, Mail, User } from 'lucide-react';
+import { useLocation } from 'react-router-dom';
 
 export const SignInSignUp: React.FC = () => {
   const { isSignedIn } = useUser();
   const location = useLocation();
 
-  const mode: ‘signin’ | ‘signup’ = useMemo(() => {
-    return location.pathname.toLowerCase().startsWith(‘/signup’) ? ‘signup’ : ‘signin’;
+  const mode: 'signin' | 'signup' = useMemo(() => {
+    return location.pathname.toLowerCase().startsWith('/signup') ? 'signup' : 'signin';
   }, [location.pathname]);
 
   return (
@@ -57,9 +57,9 @@ export const SignInSignUp: React.FC = () => {
             </div>
 
             <div className="text-gray-400 text-sm">
-              By continuing, you agree to our{‘ ‘}
-              <a href="/terms" className="text-nexus-cyan hover:text-blue-400">Terms of Service</a>{‘ ‘}
-              and{‘ ‘}
+              By continuing, you agree to our{' '}
+              <a href="/terms" className="text-nexus-cyan hover:text-blue-400">Terms of Service</a>{' '}
+              and{' '}
               <a href="/privacy" className="text-nexus-cyan hover:text-blue-400">Privacy Policy</a>.
             </div>
           </div>
@@ -69,7 +69,7 @@ export const SignInSignUp: React.FC = () => {
         <div className="w-full lg:w-1/2 flex items-center justify-center p-6">
           {isSignedIn ? (
             <div className="text-center text-white">
-              <p className="text-lg mb-4">You’re signed in.</p>
+              <p className="text-lg mb-4">You're signed in.</p>
               <a
                 href="/"
                 className="inline-flex items-center justify-center px-6 py-3 bg-gradient-to-r from-nexus-cyan to-blue-500 text-white rounded-lg font-semibold"
@@ -77,13 +77,13 @@ export const SignInSignUp: React.FC = () => {
                 Go to homepage
               </a>
             </div>
-          ) : mode === ‘signup’ ? (
+          ) : mode === 'signup' ? (
             <SignUp
               routing="path"
               path="/signup"
               afterSignUpUrl="/"
               appearance={{
-                variables: { colorPrimary: ‘#00F0FF’ },
+                variables: { colorPrimary: '#00F0FF' },
               }}
             />
           ) : (
@@ -92,7 +92,7 @@ export const SignInSignUp: React.FC = () => {
               path="/signin"
               afterSignInUrl="/"
               appearance={{
-                variables: { colorPrimary: ‘#00F0FF’ },
+                variables: { colorPrimary: '#00F0FF' },
               }}
             />
           )}
