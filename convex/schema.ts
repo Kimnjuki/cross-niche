@@ -73,6 +73,10 @@ export default defineSchema({
     lastLoginAt: v.optional(v.number()), // ms timestamp
     isActive: v.optional(v.boolean()),
     isBanned: v.optional(v.boolean()),
+    // Community & social proof layer
+    publicProfile: v.optional(v.boolean()),
+    headline: v.optional(v.string()),
+    primaryPersona: v.optional(v.union(v.literal("gamer"), v.literal("security_enthusiast"), v.literal("builder"))),
   })
     .index("by_supabase_user_id", ["supabaseUserId"])
     .index("by_email", ["email"])
@@ -272,6 +276,9 @@ export default defineSchema({
     dataSharingPolicy: v.string(), // "minimal" | "standard" | "extensive" | "unknown" → P
     nexusSecurityScore: v.number(), // 0–100, computed from E,M,P
     funFactor: v.optional(v.number()), // 0–100 for radar (Fun vs Security Risk)
+    // Nexus Security Profile enrichments
+    riskVector: v.optional(v.array(v.string())),
+    lastReviewedAt: v.optional(v.float64()),
   })
     .index("by_content", ["contentId"])
     .index("by_game_slug", ["gameSlug"]),
@@ -403,6 +410,9 @@ export default defineSchema({
       unlockedAt: v.number(), // ms timestamp
       progress: v.optional(v.number()), // Progress percentage if applicable
     })),
+    // Tool cohesion — track suite module usage
+    lastModuleCompleted: v.optional(v.string()),
+    preferredModule: v.optional(v.string()),
   })
     .index("by_user", ["userId"])
     .index("by_level", ["level"])
@@ -446,6 +456,8 @@ export default defineSchema({
     affectsGamers: v.optional(v.boolean()),
     gamingPlatforms: v.optional(v.array(v.string())),  // ["Steam","PlayStation","Xbox","PC","Mobile"]
     gamerImpactScore: v.optional(v.number()),          // 0–100
+    // Game Security Copilot enrichment
+    gameSlugs: v.optional(v.array(v.string())),
   })
     .index("by_source", ["source"])
     .index("by_source_id", ["source", "sourceId"])
@@ -460,6 +472,8 @@ export default defineSchema({
     type: v.union(v.literal("cve"), v.literal("tag")),
     value: v.string(),
     createdAt: v.number(),
+    // Threat Intel usability — persona filter
+    persona: v.optional(v.union(v.literal("gamer"), v.literal("it_pro"), v.literal("developer"))),
   })
     .index("by_user", ["userId"])
     .index("by_type_value", ["type", "value"])
@@ -547,6 +561,9 @@ export default defineSchema({
     currentRank: v.optional(v.number()),
     contentId: v.optional(v.id("content")),
     createdAt: v.number(), // ms
+    // Brand Intelligence Copilot — editorial assignment
+    assignedTo: v.optional(v.id("users")),
+    briefId: v.optional(v.id("editorialAiBriefs")),
   })
     .index("by_keyword", ["keyword"])
     .index("by_status", ["status"])
@@ -807,6 +824,8 @@ export default defineSchema({
     lastActivityAt: v.float64(),
     completedAt: v.optional(v.float64()),
     weeklyReminderEnabled: v.boolean(),
+    // Adaptive Learning Copilot — last recommendation timestamp
+    lastRecommendationAt: v.optional(v.float64()),
   })
     .index("by_user", ["userId"])
     .index("by_user_path", ["userId", "pathId"])
@@ -876,6 +895,9 @@ export default defineSchema({
     ),
     weakAreaCount: v.number(),
     createdAt: v.number(),
+    // Game Security Copilot — per-game context
+    gameSlug: v.optional(v.string()),
+    platform: v.optional(v.string()),
   })
     .index("by_user", ["userId"])
     .index("by_session", ["sessionId"])
@@ -898,6 +920,13 @@ export default defineSchema({
     finalTime: v.number(),
     outcome: v.union(v.literal("success"), v.literal("partial"), v.literal("failure")),
     createdAt: v.number(),
+    // AI post-mortem for simulation depth and learning linkage
+    aiFeedback: v.optional(v.object({
+      summary: v.string(),
+      strengths: v.array(v.string()),
+      weaknesses: v.array(v.string()),
+      recommendedContentIds: v.optional(v.array(v.id("content"))),
+    })),
   })
     .index("by_user", ["userId"])
     .index("by_session", ["sessionId"])
@@ -928,6 +957,8 @@ export default defineSchema({
     verifiedByAdmin: v.optional(v.boolean()),
     linkedThreatId: v.optional(v.id("threatIntel")),  // link to official CVE if escalated
     createdAt: v.number(),
+    // Community Threat Hub — cluster membership
+    clusterId: v.optional(v.string()),
   })
     .index("by_user", ["userId"])
     .index("by_status", ["status"])
@@ -949,4 +980,327 @@ export default defineSchema({
     .index("by_query", ["query"])
     .index("by_searched_at", ["searchedAt"])
     .index("by_user", ["userId"]),
+
+  // ════════════════════════════════════════════════════════════════════════════
+  // NEXUS v2.0 SCHEMA ADDITIONS
+  // ════════════════════════════════════════════════════════════════════════════
+
+  // ─── Topics — taxonomy nodes ("the map of the grid") ────────────────────
+  topics: defineTable({
+    name: v.string(),
+    slug: v.string(),
+    description: v.string(),
+    category: v.union(
+      v.literal("tech"),
+      v.literal("security"),
+      v.literal("gaming"),
+      v.literal("cross")
+    ),
+    icon: v.optional(v.string()),
+    coverImage: v.optional(v.string()),
+    articleCount: v.number(),
+    followerCount: v.number(),
+    lastActivityAt: v.number(),
+    trending: v.boolean(),
+    featured: v.boolean(),
+    sortOrder: v.number(),
+    parentTopicId: v.optional(v.id("topics")),
+    relatedTopicIds: v.optional(v.array(v.id("topics"))),
+    seoMetaTitle: v.optional(v.string()),
+    seoMetaDescription: v.optional(v.string()),
+  })
+    .index("by_slug", ["slug"])
+    .index("by_category", ["category", "featured"])
+    .index("by_trending", ["trending", "lastActivityAt"])
+    .index("by_sort", ["sortOrder"]),
+
+  // ─── Authors — bylines and contributor profiles ──────────────────────────
+  authors: defineTable({
+    userId: v.optional(v.id("users")),
+    name: v.string(),
+    slug: v.string(),
+    bio: v.optional(v.string()),
+    avatar: v.optional(v.string()),
+    role: v.union(
+      v.literal("editor"),
+      v.literal("contributor"),
+      v.literal("analyst"),
+      v.literal("guest")
+    ),
+    expertise: v.array(v.string()),
+    socialTwitter: v.optional(v.string()),
+    socialLinkedin: v.optional(v.string()),
+    socialGithub: v.optional(v.string()),
+    articleCount: v.number(),
+    joinedAt: v.number(),
+    active: v.boolean(),
+  })
+    .index("by_slug", ["slug"])
+    .index("by_user", ["userId"]),
+
+  // ─── Alerts — real-time notification system ("signal alerts") ───────────
+  alerts: defineTable({
+    type: v.union(
+      v.literal("breaking"),
+      v.literal("new_article"),
+      v.literal("score_update"),
+      v.literal("patch_notes"),
+      v.literal("threat_advisory"),
+      v.literal("price_drop"),
+      v.literal("system")
+    ),
+    priority: v.union(
+      v.literal("low"),
+      v.literal("medium"),
+      v.literal("high"),
+      v.literal("critical")
+    ),
+    title: v.string(),
+    description: v.optional(v.string()),
+    articleId: v.optional(v.id("content")),
+    topicId: v.optional(v.id("topics")),
+    category: v.optional(v.union(
+      v.literal("tech"),
+      v.literal("security"),
+      v.literal("gaming")
+    )),
+    targetAudience: v.union(
+      v.literal("all"),
+      v.literal("subscribers"),
+      v.literal("topic_followers")
+    ),
+    targetTopics: v.optional(v.array(v.id("topics"))),
+    createdAt: v.number(),
+    expiresAt: v.optional(v.number()),
+    active: v.boolean(),
+  })
+    .index("by_priority_active", ["priority", "active", "createdAt"])
+    .index("by_category", ["category", "createdAt"])
+    .index("by_type", ["type", "createdAt"]),
+
+  // ─── UserAlerts — per-user alert read state ──────────────────────────────
+  userAlerts: defineTable({
+    userId: v.id("users"),
+    alertId: v.id("alerts"),
+    read: v.boolean(),
+    dismissed: v.boolean(),
+    readAt: v.optional(v.number()),
+    createdAt: v.number(),
+  })
+    .index("by_user_unread", ["userId", "read", "createdAt"])
+    .index("by_user_alert", ["userId", "alertId"]),
+
+  // ─── Series — multi-part intel series / deep dives ──────────────────────
+  series: defineTable({
+    title: v.string(),
+    slug: v.string(),
+    description: v.string(),
+    coverImage: v.optional(v.string()),
+    category: v.union(
+      v.literal("tech"),
+      v.literal("security"),
+      v.literal("gaming")
+    ),
+    status: v.union(v.literal("ongoing"), v.literal("complete")),
+    articleCount: v.number(),
+    createdAt: v.number(),
+    updatedAt: v.number(),
+  })
+    .index("by_slug", ["slug"])
+    .index("by_category", ["category", "status"]),
+
+  // ─── Newsletter Subscriptions v2 — decoupled from auth ──────────────────
+  newsletterSubscriptions: defineTable({
+    email: v.string(),
+    firstName: v.optional(v.string()),
+    interests: v.array(v.string()),
+    digest: v.union(v.literal("daily"), v.literal("weekly")),
+    confirmed: v.boolean(),
+    confirmToken: v.optional(v.string()),
+    subscribedAt: v.number(),
+    unsubscribedAt: v.optional(v.number()),
+    source: v.string(),
+  })
+    .index("by_email", ["email"])
+    .index("by_confirmed", ["confirmed", "subscribedAt"]),
+
+  // ─── Contact Submissions — the "secure channel" ──────────────────────────
+  contactSubmissions: defineTable({
+    name: v.string(),
+    email: v.string(),
+    category: v.union(
+      v.literal("press"),
+      v.literal("partnership"),
+      v.literal("tip"),
+      v.literal("security_disclosure"),
+      v.literal("other")
+    ),
+    subject: v.string(),
+    message: v.string(),
+    attachmentUrl: v.optional(v.string()),
+    status: v.union(
+      v.literal("new"),
+      v.literal("in_review"),
+      v.literal("responded"),
+      v.literal("closed")
+    ),
+    submittedAt: v.number(),
+    respondedAt: v.optional(v.number()),
+    ipHash: v.optional(v.string()),
+  })
+    .index("by_status", ["status", "submittedAt"])
+    .index("by_category", ["category", "submittedAt"]),
+
+  // ─── Site Config — CMS-controlled site settings (single-doc pattern) ─────
+  siteConfig: defineTable({
+    key: v.string(),
+    value: v.any(),
+    updatedAt: v.number(),
+    updatedBy: v.optional(v.id("users")),
+  }).index("by_key", ["key"]),
+
+  // ════════════════════════════════════════════════════════════════════════════
+  // NEXUS v3.0 AI MODULES — Competitive differentiation layer
+  // ════════════════════════════════════════════════════════════════════════════
+
+  // ─── Nexus Security Profile & Risk Graph ────────────────────────────────
+  userRiskProfiles: defineTable({
+    userId: v.string(),
+    overallRiskScore: v.float64(),
+    riskBand: v.union(
+      v.literal("low"),
+      v.literal("medium"),
+      v.literal("high"),
+      v.literal("critical")
+    ),
+    lastUpdatedAt: v.float64(),
+    topRisks: v.array(v.object({
+      id: v.string(),
+      title: v.string(),
+      severity: v.string(),
+      relatedGameSlug: v.optional(v.string()),
+      relatedThreatId: v.optional(v.id("threatIntel")),
+      status: v.union(v.literal("open"), v.literal("in_progress"), v.literal("resolved")),
+    })),
+    recommendationSummary: v.optional(v.string()),
+  })
+    .index("by_user", ["userId"])
+    .index("by_risk_band", ["riskBand", "overallRiskScore"]),
+
+  // Event log of changes to a user's risk profile
+  userRiskEvents: defineTable({
+    userId: v.string(),
+    eventType: v.union(
+      v.literal("threat_added"),
+      v.literal("threat_resolved"),
+      v.literal("score_change"),
+      v.literal("config_change")
+    ),
+    eventAt: v.float64(),
+    deltaScore: v.optional(v.float64()),
+    threatId: v.optional(v.id("threatIntel")),
+    gameSlug: v.optional(v.string()),
+    metadata: v.optional(v.any()),
+  })
+    .index("by_user", ["userId", "eventAt"])
+    .index("by_threat", ["threatId", "eventAt"]),
+
+  // ─── Game Security Copilot ───────────────────────────────────────────────
+  gameSecurityAdvisories: defineTable({
+    gameSlug: v.string(),
+    platform: v.optional(v.string()),
+    threatIds: v.array(v.id("threatIntel")),
+    generatedSummary: v.string(),
+    recommendations: v.array(v.string()),
+    riskLevel: v.union(
+      v.literal("informational"),
+      v.literal("elevated"),
+      v.literal("high"),
+      v.literal("critical")
+    ),
+    createdAt: v.float64(),
+    expiresAt: v.optional(v.float64()),
+  })
+    .index("by_game", ["gameSlug", "platform", "createdAt"])
+    .index("by_risk", ["riskLevel", "createdAt"]),
+
+  // ─── Adaptive Learning & Practice Copilot ───────────────────────────────
+  learningRecommendations: defineTable({
+    userId: v.string(),
+    pathId: v.optional(v.id("learningPaths")),
+    contentIds: v.array(v.id("content")),
+    simulationIds: v.optional(v.array(v.string())),
+    generatedAt: v.float64(),
+    validUntil: v.optional(v.float64()),
+    status: v.union(
+      v.literal("pending"),
+      v.literal("in_progress"),
+      v.literal("completed")
+    ),
+  })
+    .index("by_user", ["userId", "generatedAt"])
+    .index("by_status", ["status", "generatedAt"]),
+
+  // ─── Brand & Content Intelligence Copilot ───────────────────────────────
+  editorialAiBriefs: defineTable({
+    contentId: v.optional(v.id("content")),
+    status: v.union(
+      v.literal("draft"),
+      v.literal("in_review"),
+      v.literal("approved"),
+      v.literal("cancelled")
+    ),
+    createdAt: v.float64(),
+    createdBy: v.optional(v.id("users")),
+    targetKeyword: v.optional(v.string()),
+    briefJson: v.any(),
+  })
+    .index("by_status", ["status", "createdAt"])
+    .index("by_content", ["contentId"]),
+
+  // ─── Community Threat Hub ────────────────────────────────────────────────
+  communityThreatClusters: defineTable({
+    clusterId: v.string(),
+    title: v.string(),
+    description: v.string(),
+    platforms: v.array(v.string()),
+    gameSlugs: v.optional(v.array(v.string())),
+    severity: v.union(
+      v.literal("critical"),
+      v.literal("high"),
+      v.literal("medium"),
+      v.literal("low")
+    ),
+    createdAt: v.float64(),
+    updatedAt: v.float64(),
+    reportIds: v.array(v.id("communityThreatReports")),
+    linkedThreatIds: v.optional(v.array(v.id("threatIntel"))),
+  })
+    .index("by_severity", ["severity", "updatedAt"])
+    .index("by_cluster_id", ["clusterId"]),
+
+  // ─── Personalized Feed ──────────────────────────────────────────────────
+  personalizedFeeds: defineTable({
+    userId: v.string(),
+    generatedAt: v.float64(),
+    items: v.array(v.object({
+      type: v.string(),
+      contentId: v.optional(v.id("content")),
+      threatId: v.optional(v.id("threatIntel")),
+      pulseId: v.optional(v.id("pulseStories")),
+      score: v.float64(),
+    })),
+  })
+    .index("by_user", ["userId", "generatedAt"]),
+
+  // ─── AI Search Summaries ─────────────────────────────────────────────────
+  aiSearchSummaries: defineTable({
+    sessionId: v.string(),
+    query: v.string(),
+    generatedAt: v.float64(),
+    summary: v.string(),
+    topContentIds: v.array(v.id("content")),
+  })
+    .index("by_session", ["sessionId", "generatedAt"])
+    .index("by_query", ["query", "generatedAt"]),
 });
