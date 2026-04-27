@@ -8,7 +8,7 @@ import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useQuery } from 'convex/react';
 import { api } from '../../convex/_generated/api';
-import { ChevronRight, Search, TrendingUp } from 'lucide-react';
+import { ChevronRight, Search, TrendingUp, Shield, Users } from 'lucide-react';
 
 import { Layout } from '@/components/layout/Layout';
 import { SEO } from '@/components/SEO';
@@ -250,6 +250,57 @@ export default function Index() {
                 <NewsletterForm variant="default" />
               </div>
             </aside>
+          </div>
+        </div>
+      </section>
+
+      {/* Nexus Security Suite + Community Watch strip */}
+      <section className="bg-[#0A0A0B] border-b border-[#27272A] py-8">
+        <div className="container mx-auto px-4 max-w-7xl">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {/* Security Profile CTA */}
+            <Link
+              to="/security-profile"
+              className="group flex items-start gap-4 p-5 rounded-xl border border-[#00F0FF]/20 bg-gradient-to-br from-[#00F0FF]/5 to-black hover:border-[#00F0FF]/40 transition-all"
+            >
+              <div className="w-10 h-10 rounded-xl bg-[#00F0FF]/10 border border-[#00F0FF]/30 flex items-center justify-center shrink-0">
+                <Shield className="w-5 h-5 text-[#00F0FF]" />
+              </div>
+              <div>
+                <div className="flex items-center gap-2 mb-1">
+                  <span className="text-sm font-bold text-white">Nexus Security Profile</span>
+                  <span className="text-[10px] px-2 py-0.5 rounded-full bg-[#00F0FF]/10 text-[#00F0FF] border border-[#00F0FF]/30">New</span>
+                </div>
+                <p className="text-xs text-gray-400">
+                  Your unified AI-powered security posture — risk score, top threats, game copilot, and learning missions in one place.
+                </p>
+                <span className="mt-2 inline-flex items-center gap-1 text-xs text-[#00F0FF] group-hover:gap-2 transition-all">
+                  Start my profile <ChevronRight className="w-3 h-3" />
+                </span>
+              </div>
+            </Link>
+
+            {/* Community Watch CTA */}
+            <Link
+              to="/community-threats"
+              className="group flex items-start gap-4 p-5 rounded-xl border border-[#FF007A]/20 bg-gradient-to-br from-[#FF007A]/5 to-black hover:border-[#FF007A]/40 transition-all"
+            >
+              <div className="w-10 h-10 rounded-xl bg-[#FF007A]/10 border border-[#FF007A]/30 flex items-center justify-center shrink-0">
+                <Users className="w-5 h-5 text-[#FF007A]" />
+              </div>
+              <div>
+                <div className="flex items-center gap-2 mb-1">
+                  <span className="text-sm font-bold text-white">Community Watch</span>
+                  <span className="text-[10px] px-2 py-0.5 rounded-full bg-[#FF007A]/10 text-[#FF007A] border border-[#FF007A]/30">Live</span>
+                </div>
+                <p className="text-xs text-gray-400">
+                  Crowd-sourced threat reports from gamers. Submit suspicious links, mods, or scams — upvote to triage emerging threats.
+                </p>
+                <span className="mt-2 inline-flex items-center gap-1 text-xs text-[#FF007A] group-hover:gap-2 transition-all">
+                  View threat reports <ChevronRight className="w-3 h-3" />
+                </span>
+              </div>
+            </Link>
           </div>
         </div>
       </section>

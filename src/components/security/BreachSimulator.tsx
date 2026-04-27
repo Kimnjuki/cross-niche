@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { Shield, AlertTriangle, Play, RotateCcw, Eye, Lock, Database, Wifi, Globe, Users, FileText, TrendingUp, Clock, DollarSign, Activity } from 'lucide-react';
+import { Shield, AlertTriangle, Play, RotateCcw, Eye, Lock, Database, Wifi, Globe, Users, FileText, TrendingUp, Clock, DollarSign, Activity, Zap, BookOpen } from 'lucide-react';
 import { GlassCard } from '@/components/ui/GlassCard';
 import { cn } from '@/lib/utils';
 import { useMutation } from 'convex/react';
@@ -475,6 +475,78 @@ export const BreachSimulator = React.memo(function BreachSimulator() {
             ))}
           </div>
         </div>
+
+        {/* AI Post-Mortem */}
+        {(() => {
+          const correctCount = selectedScenario.scenario.filter((step) => {
+            const c = choices[step.id];
+            return step.options?.find((o) => o.id === c)?.correct;
+          }).length;
+          const total = selectedScenario.scenario.length;
+          const pct = Math.round((correctCount / total) * 100);
+          const strengths = selectedScenario.scenario
+            .filter((step) => {
+              const c = choices[step.id];
+              return step.options?.find((o) => o.id === c)?.correct;
+            })
+            .map((step) => step.title);
+          const weaknesses = selectedScenario.scenario
+            .filter((step) => {
+              const c = choices[step.id];
+              return !step.options?.find((o) => o.id === c)?.correct;
+            })
+            .map((step) => step.title);
+          return (
+            <div className="mb-8 p-5 rounded-xl border border-nexus-cyan/30 bg-nexus-cyan/5">
+              <div className="flex items-center gap-2 mb-3">
+                <Zap className="w-5 h-5 text-nexus-cyan" />
+                <h3 className="text-base font-semibold text-text-primary">AI Post-Mortem</h3>
+                <span className="ml-auto text-xs text-nexus-cyan font-mono">{pct}% accuracy</span>
+              </div>
+              <p className="text-sm text-text-secondary mb-4">
+                {pct >= 80
+                  ? "Strong performance. You identified threats quickly and minimized exposure."
+                  : pct >= 50
+                  ? "Moderate performance. Some decisions increased risk unnecessarily — review the steps you missed."
+                  : "High risk decisions detected. Focus on the weak areas below and run the simulation again."}
+              </p>
+              {strengths.length > 0 && (
+                <div className="mb-3">
+                  <p className="text-xs text-green-400 uppercase tracking-wider mb-2">Strengths</p>
+                  <ul className="space-y-1">
+                    {strengths.map((s) => (
+                      <li key={s} className="flex items-center gap-2 text-sm text-text-secondary">
+                        <span className="w-1.5 h-1.5 rounded-full bg-green-400 shrink-0" />
+                        {s}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+              {weaknesses.length > 0 && (
+                <div className="mb-4">
+                  <p className="text-xs text-security-red uppercase tracking-wider mb-2">Areas to Improve</p>
+                  <ul className="space-y-1">
+                    {weaknesses.map((w) => (
+                      <li key={w} className="flex items-center gap-2 text-sm text-text-secondary">
+                        <span className="w-1.5 h-1.5 rounded-full bg-security-red shrink-0" />
+                        {w}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+              <div className="pt-3 border-t border-nexus-cyan/20 text-xs text-text-tertiary flex items-center gap-2">
+                <BookOpen className="w-3 h-3" />
+                Continue learning in your{" "}
+                <a href="/security-profile" className="text-nexus-cyan hover:underline">
+                  Nexus Security Profile
+                </a>
+                {" "}→ Learning Copilot
+              </div>
+            </div>
+          );
+        })()}
 
         {/* Actions */}
         <div className="flex gap-4 justify-center">

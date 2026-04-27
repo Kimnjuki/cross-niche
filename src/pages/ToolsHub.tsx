@@ -17,6 +17,8 @@ import {
   Star,
   AlertOctagon,
   BookOpen,
+  Users,
+  ChevronRight,
 } from 'lucide-react';
 
 const tools = [
@@ -206,6 +208,47 @@ export default function ToolsHub() {
           </p>
         </div>
 
+        {/* Nexus Security Suite unified CTA */}
+        <div className="mb-10 p-6 rounded-2xl border border-[#00F0FF]/30 bg-gradient-to-r from-[#00F0FF]/5 via-[#B026FF]/5 to-black/40 backdrop-blur">
+          <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+            <div>
+              <div className="flex items-center gap-2 mb-1">
+                <div className="w-2 h-2 rounded-full bg-[#00F0FF] animate-pulse" />
+                <span className="text-xs text-[#00F0FF] uppercase tracking-wider font-semibold">
+                  Nexus Security Suite — New
+                </span>
+              </div>
+              <h2 className="text-lg font-bold text-white mb-1">
+                Start with your Nexus Security Profile
+              </h2>
+              <p className="text-sm text-gray-400 max-w-lg">
+                Get a unified view of your security posture across accounts, devices, and games. The Suite routes you to the right tool — Detection, Simulation, Intel, or Audit — based on your risk profile.
+              </p>
+            </div>
+            <div className="flex flex-col gap-2 shrink-0">
+              <Button asChild className="bg-[#00F0FF] text-black font-bold hover:bg-[#00F0FF]/80">
+                <Link to="/security-profile" className="flex items-center gap-2">
+                  <Shield className="h-4 w-4" /> My Security Profile
+                  <ChevronRight className="h-4 w-4" />
+                </Link>
+              </Button>
+              <Button asChild variant="outline" size="sm" className="border-[#FF007A]/40 text-[#FF007A] hover:bg-[#FF007A]/10">
+                <Link to="/community-threats" className="flex items-center gap-2">
+                  <Users className="h-4 w-4" /> Community Threat Hub
+                </Link>
+              </Button>
+            </div>
+          </div>
+          <div className="mt-4 flex flex-wrap gap-2 text-xs text-gray-500">
+            <span>Suite modules:</span>
+            {["Detection → NexusGuard", "Simulation → Breach Sim", "Intel → Threat Dashboard", "Audit → Security Scanner", "Learning → NexusPath"].map((m) => (
+              <span key={m} className="px-2 py-0.5 rounded-full bg-white/5 border border-white/10">
+                {m}
+              </span>
+            ))}
+          </div>
+        </div>
+
         {/* Tool grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-16">
           {tools.map((tool) => {
@@ -244,13 +287,20 @@ export default function ToolsHub() {
         <div className="border border-border rounded-xl p-8 bg-muted/30 text-center max-w-2xl mx-auto">
           <h2 className="font-display font-semibold text-xl mb-2">Stay ahead of threats</h2>
           <p className="text-muted-foreground text-sm mb-5">
-            Subscribe to the Live Threat Dashboard to get instant alerts when gaming platforms you use are compromised.
+            Subscribe to the Live Threat Dashboard, or join the Community Threat Hub to crowd-source intelligence with other gamers.
           </p>
-          <Button asChild variant="default">
-            <Link to="/live-threat-dashboard" className="flex items-center gap-2 justify-center">
-              <Activity className="h-4 w-4" /> Open Threat Dashboard
-            </Link>
-          </Button>
+          <div className="flex flex-wrap gap-3 justify-center">
+            <Button asChild variant="default">
+              <Link to="/live-threat-dashboard" className="flex items-center gap-2">
+                <Activity className="h-4 w-4" /> Open Threat Dashboard
+              </Link>
+            </Button>
+            <Button asChild variant="outline">
+              <Link to="/community-threats" className="flex items-center gap-2">
+                <Users className="h-4 w-4" /> Community Threats
+              </Link>
+            </Button>
+          </div>
         </div>
       </div>
     </Layout>

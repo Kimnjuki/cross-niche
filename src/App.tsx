@@ -124,6 +124,10 @@ const AIToolFinder = lazy(() => import("./pages/tools/AIToolFinder"));
 const PatchRiskTracker = lazy(() => import("./pages/tools/PatchRiskTracker"));
 const ZeroTrustQuiz = lazy(() => import("./pages/tools/ZeroTrustQuiz"));
 const ExploitRiskMeter = lazy(() => import("./pages/tools/ExploitRiskMeter"));
+// Nexus v3.0 AI Modules
+const NexusSecurityProfilePage = lazy(() => import("./pages/NexusSecurityProfile"));
+const CommunityThreats = lazy(() => import("./pages/CommunityThreats"));
+const NexusStudio = lazy(() => import("./pages/NexusStudio"));
 
 const queryClient = new QueryClient();
 
@@ -229,6 +233,10 @@ const App = () => (
                     <Route path="/tools/patch-risk-tracker" element={<PatchRiskTracker />} />
                     <Route path="/tools/zero-trust-quiz" element={<ZeroTrustQuiz />} />
                     <Route path="/tools/exploit-risk-meter" element={<ExploitRiskMeter />} />
+                    {/* Nexus v3.0 AI Modules */}
+                    <Route path="/security-profile" element={<NexusSecurityProfilePage />} />
+                    <Route path="/community-threats" element={<CommunityThreats />} />
+                    <Route path="/nexus-studio" element={<NexusStudio />} />
                     {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                     <Route path="*" element={<NotFound />} />
                   </Routes>

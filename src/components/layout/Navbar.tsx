@@ -19,11 +19,11 @@ const navLinks = [
   { href: '/security', label: 'Threat Intel', color: 'text-security' },
   { href: '/gaming', label: 'Game Security', color: 'text-gaming' },
   { href: '/tech', label: 'Tech', color: 'text-tech' },
-  { href: '/tools', label: 'Security Tools', color: 'text-security' },
+  { href: '/tools', label: 'Security Suite', color: 'text-security' },
+  { href: '/security-profile', label: 'My Profile', color: 'text-[#00F0FF]' },
+  { href: '/community-threats', label: 'Community', color: 'text-[#FF007A]' },
   { href: '/guides', label: 'Guides', color: 'text-foreground' },
   { href: '/topics', label: 'Topics', color: 'text-foreground' },
-  { href: '/tutorials', label: 'Tutorials', color: 'text-foreground' },
-  { href: '/blog', label: 'Live Wire', color: 'text-foreground' },
 ];
 
 /** Primary CTAs for mobile: Security-first to reinforce gaming security positioning. */
