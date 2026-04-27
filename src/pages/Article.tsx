@@ -26,9 +26,13 @@ import { SEOHead } from '@/components/seo/SEOHead';
 import { SEO } from '@/components/SEO';
 import { Breadcrumbs } from '@/components/seo/Breadcrumbs';
 import { FAQSection } from '@/components/seo/FAQSection';
+import { QuickAnswer } from '@/components/seo/QuickAnswer';
+import { TableOfContents } from '@/components/seo/TableOfContents';
 import { RelatedArticles } from '@/components/RelatedArticles';
 import { LazyImage } from '@/components/ui/lazy-image';
 import { AdPlacement } from '@/components/ads/AdPlacement';
+import { authorProfiles } from '@/data/authorData';
+import { generatePersonSchema } from '@/lib/schemaMarkup';
 import { cn, authorSlug } from '@/lib/utils';
 import {
   trackArticleView,
@@ -216,6 +220,34 @@ export default function Article() {
         ogType="article"
         ogImage={article.imageUrl}
       />
+      {/* Build author schema from article author */}
+      {(() => {
+        const authName = article.author ?? 'The Grid Nexus Editorial Team';
+        const authSlug = authorSlug(authName);
+        const authInfo = authorProfiles[authSlug];
+        const authorSchema = authInfo ? {
+          name: authName,
+          jobTitle: authInfo.role,
+          description: authInfo.bio,
+          imageUrl: authInfo.avatar,
+          sameAs: authInfo.social ? Object.values(authInfo.social).filter(Boolean) as string[] : undefined,
+          expertise: authInfo.expertise?.length ? authInfo.expertise : undefined,
+        } : {
+          name: authName,
+          jobTitle: 'Contributor',
+        };
+        return <script
+          type="application/ld+json"
+          id="author-schema"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              '@context': 'https://schema.org',
+              '@graph': [generatePersonSchema(authorSchema)],
+            }),
+          }}
+        />;
+      })()}
+
       <SEOHead
         title={undefined}
         description={undefined}
@@ -223,9 +255,9 @@ export default function Article() {
         image={article.imageUrl ?? getPlaceholderByNiche(article.niche, article.slug ?? article.id)}
         url={`${window.location.origin}/article/${article.slug ?? articleId}`}
         type="article"
-        article={article}
+        article={{ ...article, impactLevel: article.impactLevel ?? 'normal', isBreaking: article.isBreaking ?? false }}
         publishedTime={article.publishedAt}
-        author={article.author ?? 'Anonymous'}
+        author={article.author ?? 'The Grid Nexus Editorial Team'}
         section={safeNiche}
         tags={tags}
         autoGenerate={true}
@@ -340,7 +372,17 @@ export default function Article() {
           className="max-w-4xl"
         >
           <div className="mb-12">
-            <div className="prose prose-lg max-w-none">
+            {/* Quick Answer — structured for AI Overviews & Featured Snippets */}
+            <QuickAnswer
+              question={`What is ${article.title ?? 'this article about'}?`}
+              answer={article.excerpt || `Expert analysis and coverage of ${article.title ?? 'this topic'} from The Grid Nexus.`}
+              keyPoints={tags.length > 0 ? tags.slice(0, 5).map(t => `Coverage includes: ${t}`) : undefined}
+            />
+
+            {/* Table of Contents — signals topic depth to Google */}
+            <TableOfContents content={article.content} />
+
+            <div className="prose prose-lg max-w-none" data-article-content>
               <div
                 className="text-lg leading-relaxed text-slate-900 article-content"
                 dangerouslySetInnerHTML={{

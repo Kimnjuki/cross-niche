@@ -85,7 +85,8 @@ export function generateWebSiteSchema() {
 }
 
 // ────────────────────────────────────────────────────────────────────────────
-// Article / NewsArticle
+// NewsArticle — used for ALL articles (Google AI Overviews prefer NewsArticle
+// over generic Article schema for timely content)
 // ────────────────────────────────────────────────────────────────────────────
 type ArticleWithSlug = Article & {
   slug?: string;
@@ -94,7 +95,7 @@ type ArticleWithSlug = Article & {
   isBreaking?: boolean;
 };
 
-export function generateArticleSchema(article: ArticleWithSlug | null | undefined) {
+export function generateNewsArticleSchema(article: ArticleWithSlug | null | undefined) {
   if (!article) return null;
   const publishedDate = new Date(article.publishedAt ?? Date.now()).toISOString();
   const modifiedDate  = article.updatedAt
@@ -112,7 +113,7 @@ export function generateArticleSchema(article: ArticleWithSlug | null | undefine
     : 300;
 
   return {
-    '@type': 'Article',
+    '@type': 'NewsArticle',
     '@id': `${articleUrl}#article`,
     headline: article.title,
     name: article.title,
@@ -156,22 +157,20 @@ export function generateArticleSchema(article: ArticleWithSlug | null | undefine
     // Speakable for voice search / AI assistants
     speakable: {
       '@type': 'SpeakableSpecification',
-      cssSelector: ['h1', '.article-summary', '.article-excerpt'],
+      cssSelector: ['h1', '.quick-answer', '.article-excerpt', 'article header p:first-of-type'],
     },
-  };
-}
-
-export function generateNewsArticleSchema(article: ArticleWithSlug) {
-  const base = generateArticleSchema(article);
-  if (!base) return null;
-  return {
-    ...base,
-    '@type': 'NewsArticle',
     ...(article.impactLevel === 'high' || article.isBreaking
-      ? { dateline: 'Breaking' }
+      ? { dateline: 'Breaking News', urgency: 'Breaking' }
       : {}),
   };
 }
+
+// Legacy alias — kept for backward compat
+export function generateArticleSchema(article: ArticleWithSlug | null | undefined) {
+  return generateNewsArticleSchema(article);
+}
+
+
 
 // ────────────────────────────────────────────────────────────────────────────
 // BreadcrumbList
@@ -441,11 +440,9 @@ export function generateAllSchemas(options: {
   schemas.push(generateOrganizationSchema());
   schemas.push(generateWebSiteSchema());
 
-  // Article / NewsArticle
+  // NewsArticle (all articles — Google AI Overviews prefers NewsArticle)
   if (options.article) {
-    const art    = options.article as ArticleWithSlug;
-    const isNews = art.impactLevel === 'high' || art.isBreaking;
-    const schema = isNews ? generateNewsArticleSchema(art) : generateArticleSchema(art);
+    const schema = generateNewsArticleSchema(options.article as ArticleWithSlug);
     if (schema) schemas.push(schema);
   }
 
