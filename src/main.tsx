@@ -1,6 +1,6 @@
 import { createRoot } from "react-dom/client";
 import { ConvexProvider } from "convex/react";
-import { Auth0Provider } from "@auth0/auth0-react";
+import { ClerkProvider } from "@clerk/clerk-react";
 import { HelmetProvider } from "react-helmet-async";
 import App from "./App.tsx";
 import "./index.css";
@@ -16,7 +16,7 @@ import { initCoreWebVitals } from "./lib/seo/coreWebVitals";
 import "./sentry";
 import "./lib/errorHandlers";
 import { convex } from "./lib/convex";
-import { auth0Domain, auth0ClientId, auth0Audience, isAuth0Enabled } from "./lib/auth0Config";
+import { clerkPublishableKey } from "./lib/clerkConfig";
 
 if (import.meta.env.DEV) {
   validateConvexSetup();
@@ -63,20 +63,9 @@ const app = (
     <ConvexErrorBoundary>
       <ConvexProvider client={convex}>
         <HelmetProvider>
-        {isAuth0Enabled && auth0Domain && auth0ClientId ? (
-          <Auth0Provider
-            domain={auth0Domain}
-            clientId={auth0ClientId}
-            authorizationParams={{
-              redirect_uri: window.location.origin,
-              audience: auth0Audience,
-            }}
-          >
+          <ClerkProvider publishableKey={clerkPublishableKey} afterSignInUrl="/" afterSignUpUrl="/">
             <App />
-          </Auth0Provider>
-        ) : (
-          <App />
-        )}
+          </ClerkProvider>
         </HelmetProvider>
       </ConvexProvider>
     </ConvexErrorBoundary>

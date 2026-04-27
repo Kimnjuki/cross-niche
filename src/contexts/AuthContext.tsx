@@ -1,5 +1,5 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
-import { useAuth0 } from '@auth0/auth0-react';
+import React, { createContext, useContext, useEffect, useState } from 'react';
+import { useUser, useClerk } from '@clerk/clerk-react';
 import { User } from '@/types';
 
 interface AuthContextType {
@@ -21,84 +21,49 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 const AUTH_UNAVAILABLE = 'Sign-in is not available.';
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
-  const [isClient, setIsClient] = useState(false);
+  const { user: clerkUser, isLoaded, isSignedIn } = useUser();
+  const { signOut, openSignIn, openSignUp } = useClerk();
   const [user, setUser] = useState<User | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
-  const {
-    user: auth0User,
-    isLoading: auth0Loading,
-    isAuthenticated,
-    loginWithRedirect,
-    logout: auth0Logout,
-  } = useAuth0();
 
   useEffect(() => {
-    setIsClient(true);
-  }, []);
-
-  useEffect(() => {
-    if (!isClient || auth0Loading) {
-      setIsLoading(true);
-      return;
-    }
-
-    if (!isAuthenticated || !auth0User) {
+    if (!isLoaded) return;
+    if (!isSignedIn || !clerkUser) {
       setUser(null);
-      setIsLoading(false);
       return;
     }
-
-    const email =
-      (auth0User.email as string | undefined) ??
-      (Array.isArray(auth0User.emails) ? (auth0User.emails[0] as string | undefined) : undefined) ??
-      '';
-    const name =
-      (auth0User.name as string | undefined) ??
-      (auth0User.given_name as string | undefined) ??
-      email ??
-      'User';
-
+    const primaryEmail = clerkUser.primaryEmailAddress?.emailAddress ?? '';
     setUser({
-      id: (auth0User.sub as string | undefined) ?? email ?? 'user',
-      email,
-      name,
-      avatar: (auth0User.picture as string | undefined) ?? undefined,
+      id: clerkUser.id,
+      email: primaryEmail,
+      name: clerkUser.fullName ?? clerkUser.firstName ?? primaryEmail ?? 'User',
+      avatar: clerkUser.imageUrl ?? undefined,
       bookmarks: [],
-      createdAt: new Date().toISOString(),
+      createdAt: clerkUser.createdAt?.toISOString() ?? new Date().toISOString(),
     });
-    setIsLoading(false);
-  }, [auth0User, auth0Loading, isAuthenticated, isClient]);
+  }, [clerkUser, isLoaded, isSignedIn]);
 
   const login = async (): Promise<{ success: boolean; error?: string }> => {
     try {
-      await loginWithRedirect();
+      openSignIn({ afterSignInUrl: '/' });
       return { success: true };
     } catch (error) {
-      console.error('Auth0 login failed', error);
+      console.error('Clerk login failed', error);
       return { success: false, error: 'Sign-in failed. Please try again.' };
     }
   };
 
   const signup = async (): Promise<{ success: boolean; error?: string }> => {
     try {
-      await loginWithRedirect({
-        authorizationParams: {
-          screen_hint: 'signup',
-        },
-      });
+      openSignUp({ afterSignUpUrl: '/' });
       return { success: true };
     } catch (error) {
-      console.error('Auth0 signup failed', error);
+      console.error('Clerk signup failed', error);
       return { success: false, error: 'Sign-up failed. Please try again.' };
     }
   };
 
   const logout = () => {
-    auth0Logout({
-      logoutParams: {
-        returnTo: window.location.origin,
-      },
-    });
+    signOut({ redirectUrl: '/' });
     setUser(null);
   };
 
@@ -128,7 +93,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     <AuthContext.Provider
       value={{
         user,
-        isLoading,
+        isLoading: !isLoaded,
         login,
         signup,
         logout,
