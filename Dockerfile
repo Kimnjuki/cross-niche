@@ -1,7 +1,7 @@
 # Stage 1: Build — use Node + npm (package-lock.json). Do not use Bun in Docker.
-# Note: Coolify may inject ARGs (e.g. production_deploy_key). Do not add secrets here;
-# set VITE_* and other build args in Coolify Build Time Variables only.
-# Build version: fix-chunk-404-clarity-convex-ws - chunk reload, clarity suppress, convex 1.33.1
+# Build version: auth0-credentials-embedded-v2 - Auth0 creds baked into code, not env vars.
+#   auth0Config.ts has hardcoded fallbacks for the new EU Auth0 tenant.
+#   Coolify ARG injection no longer can override them with stale values.
 FROM node:22-alpine AS build-stage
 
 WORKDIR /app
@@ -13,14 +13,19 @@ RUN npm ci --legacy-peer-deps || npm install --legacy-peer-deps
 # Copy the rest of the code and build
 COPY . .
 
-# Build-time env for Vite (Coolify: set these as Build Time Variables, one = only)
+# Build-time env for Vite (only essentials — Auth0 creds are baked into code)
+ARG CONVEX_DEPLOY_KEY
 ARG VITE_CONVEX_URL=https://intent-akita-728.convex.cloud
 ARG VITE_APP_URL
-ARG CONVEX_DEPLOY_KEY
 
+ENV CONVEX_DEPLOY_KEY=${CONVEX_DEPLOY_KEY}
 ENV VITE_CONVEX_URL=${VITE_CONVEX_URL}
 ENV VITE_APP_URL=${VITE_APP_URL}
-ENV CONVEX_DEPLOY_KEY=${CONVEX_DEPLOY_KEY}
+
+# IMPORTANT: VITE_AUTH0_DOMAIN / VITE_AUTH0_CLIENT_ID / VITE_AUTH0_AUDIENCE
+# are deliberately NOT declared as ARG/ENV here. Their values are hardcoded
+# in src/lib/auth0Config.ts as production defaults. Coolify Build Time Variables
+# that contain stale/incorrect values cannot override them.
 
 # Verify CONVEX_DEPLOY_KEY is set (warn only, don't fail build)
 RUN if [ -z "$CONVEX_DEPLOY_KEY" ]; then echo "⚠️  WARNING: CONVEX_DEPLOY_KEY not set. Set it as Build Time Variable in Coolify."; fi
