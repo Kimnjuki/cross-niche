@@ -47,6 +47,9 @@ export default defineConfig(({ mode }: ConfigEnv) => {
     "/terms",
     "/roadmap",
     "/blog-series",
+    "/security-profile",
+    "/community-threats",
+    "/tools",
   ];
   try {
     const routesPath = path.join(__dirname, "prerender-routes.json");

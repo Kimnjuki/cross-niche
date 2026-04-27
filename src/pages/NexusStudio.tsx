@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { useQuery, useMutation } from "convex/react";
+import { Navigate } from "react-router-dom";
 import { api } from "../../convex/_generated/api";
+import { useAuth } from "@/contexts/AuthContext";
 import { Layout } from "@/components/layout/Layout";
 import { SEOHead } from "@/components/seo/SEOHead";
 import { Badge } from "@/components/ui/badge";
@@ -20,11 +22,17 @@ const STATUS_CONFIG = {
 };
 
 export default function NexusStudio() {
+  const { user, isLoading } = useAuth();
   const [statusFilter, setStatusFilter] = useState<"draft" | "in_review" | "approved" | "cancelled" | undefined>(undefined);
   const [showForm, setShowForm] = useState(false);
   const [keyword, setKeyword] = useState("");
   const [notes, setNotes] = useState("");
   const [submitting, setSubmitting] = useState(false);
+
+  // Guard: only authenticated users (all hooks above, return below)
+  if (!isLoading && !user) {
+    return <Navigate to="/signin" replace />;
+  }
 
   const briefs = useQuery(api.editorialBriefs.list, {
     status: statusFilter,

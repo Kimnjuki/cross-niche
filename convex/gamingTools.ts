@@ -78,6 +78,12 @@ export const saveBreachSimulation = mutation({
     finalCost: v.number(),
     finalTime: v.number(),
     outcome: v.union(v.literal("success"), v.literal("partial"), v.literal("failure")),
+    aiFeedback: v.optional(v.object({
+      summary: v.string(),
+      strengths: v.array(v.string()),
+      weaknesses: v.array(v.string()),
+      recommendedContentIds: v.optional(v.array(v.id("content"))),
+    })),
   },
   handler: async (ctx, args) => {
     return await ctx.db.insert("breachSimulations", {

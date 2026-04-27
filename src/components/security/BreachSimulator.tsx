@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
+import { Link } from 'react-router-dom';
 import { Shield, AlertTriangle, Play, RotateCcw, Eye, Lock, Database, Wifi, Globe, Users, FileText, TrendingUp, Clock, DollarSign, Activity, Zap, BookOpen } from 'lucide-react';
 import { GlassCard } from '@/components/ui/GlassCard';
 import { cn } from '@/lib/utils';
@@ -539,9 +540,9 @@ export const BreachSimulator = React.memo(function BreachSimulator() {
               <div className="pt-3 border-t border-nexus-cyan/20 text-xs text-text-tertiary flex items-center gap-2">
                 <BookOpen className="w-3 h-3" />
                 Continue learning in your{" "}
-                <a href="/security-profile" className="text-nexus-cyan hover:underline">
+                <Link to="/security-profile" className="text-nexus-cyan hover:underline">
                   Nexus Security Profile
-                </a>
+                </Link>
                 {" "}→ Learning Copilot
               </div>
             </div>
