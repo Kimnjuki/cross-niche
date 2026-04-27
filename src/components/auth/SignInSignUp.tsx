@@ -12,6 +12,12 @@ import { isAuth0Enabled } from '@/lib/auth0Config';
 
 export const SignInSignUp: React.FC = () => {
   const { isAuthenticated, isLoading, loginWithRedirect, logout, user } = useAuth0();
+  const location = useLocation();
+
+  const mode: 'signin' | 'signup' = useMemo(() => {
+    const p = location.pathname.toLowerCase();
+    return p.startsWith('/signup') ? 'signup' : 'signin';
+  }, [location.pathname]);
 
   if (!isAuth0Enabled) {
     return (
@@ -33,13 +39,6 @@ export const SignInSignUp: React.FC = () => {
       </div>
     );
   }
-
-  const location = useLocation();
-
-  const mode: 'signin' | 'signup' = useMemo(() => {
-    const p = location.pathname.toLowerCase();
-    return p.startsWith('/signup') ? 'signup' : 'signin';
-  }, [location.pathname]);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-950 via-gray-900 to-gray-950">
