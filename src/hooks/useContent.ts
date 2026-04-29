@@ -278,13 +278,16 @@ export function useAllPublishedContent(limit = 30) {
 export function useContentBySlug(slugOrId: string, options?: { enabled?: boolean }) {
   const isDisabled = useConvexDisabled();
   const enabled = (options?.enabled !== undefined ? options.enabled : !!slugOrId) && slugOrId.length > 0;
+  // Hooks must always be called (React Rules of Hooks) — but we wrap in skip
+  // so Convex doesn't actually hang for mock-backed articles.
+  const row = useQuery(api.content.getContentBySlug, isDisabled || !enabled ? 'skip' : { slug: slugOrId });
   const bySlugOrId = mockArticles.find((a) => (a.slug ?? a.id) === slugOrId);
   const fromMock = bySlugOrId ? articleToContentItem(bySlugOrId) : null;
-  // Prefer mock when available — Convex may hang on stale deploy keys after merge
+  // Prefer mock when available — don't wait for Convex to hang
+  // (return value mirrors what a resolved hook shape would give)
   if (fromMock) {
     return { data: fromMock, isLoading: false };
   }
-  const row = useQuery(api.content.getContentBySlug, isDisabled || !enabled ? 'skip' : { slug: slugOrId });
   const fromConvex = row != null ? toContentItem(row as Record<string, unknown>) : null;
   const data: ContentItem | null = fromConvex ?? null;
   const isLoading = !isDisabled && enabled && row === undefined;
