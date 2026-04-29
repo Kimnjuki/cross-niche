@@ -25,15 +25,13 @@ COPY . .
 # Auth0 env vars are also deliberately omitted — credentials are
 # hardcoded in src/lib/auth0Config.ts as production defaults.
 
-# Explicitly blank VITE_CONVEX_URL to override Coolify's injected ARG
-# (Coolify auto-injects ALL build-time vars as Docker ARG at the top
-# of the Dockerfile, which Docker makes available to RUN commands).
-ARG VITE_CONVEX_URL=
-ENV VITE_CONVEX_URL=
-
-# Build frontend only in Docker/Coolify. Do not run `convex deploy` here
-# (it can fail on temporary Convex API outages and break otherwise healthy deploys).
-RUN npm run build:frontend
+# Explicitly blank VITE_CONVEX_URL to override Coolify's injected ARG.
+# Coolify auto-injects ALL build-time env vars as Docker ARG at the top
+# of the Dockerfile. Even though Docker makes ARG values available during
+# RUN commands, we unset the var at the shell level before running Vite.
+# This prevents Vite from baking the stale Convex deploy key into the
+# bundle, which would cause Convex queries to hang on article pages.
+RUN VITE_CONVEX_URL= npm run build:frontend
 
 # Stage 2: Production (Serve with Nginx)
 FROM nginx:stable-alpine AS production-stage
