@@ -13,14 +13,23 @@ RUN npm ci --legacy-peer-deps || npm install --legacy-peer-deps
 # Copy the rest of the code and build
 COPY . .
 
-# IMPORTANT: VITE_CONVEX_URL is deliberately NOT set at build time.
-# SafeConvexProvider detects missing Convex URL and disables all
-# Convex queries (they return skip). This prevents stale deploy keys
-# from hanging article pages. VITE_CONVEX_URL is only used at runtime
-# via Coolify runtime env vars, not in the static build bundle.
+# IMPORTANT: VITE_CONVEX_URL must be explicitly emptied at build time.
+# Coolify auto-injects ALL build-time env vars as Docker ARG, which
+# Docker makes available as environment variables during RUN commands.
+# If we don't explicitly blank it, Vite picks up Coolify's injected
+# VITE_CONVEX_URL and bakes the stale key into the bundle, which
+# causes all Convex queries to hang indefinitely on article pages.
+# SafeConvexProvider detects the empty/missing URL and disables all
+# Convex queries, allowing mock data to render immediately.
 #
 # Auth0 env vars are also deliberately omitted — credentials are
 # hardcoded in src/lib/auth0Config.ts as production defaults.
+
+# Explicitly blank VITE_CONVEX_URL to override Coolify's injected ARG
+# (Coolify auto-injects ALL build-time vars as Docker ARG at the top
+# of the Dockerfile, which Docker makes available to RUN commands).
+ARG VITE_CONVEX_URL=
+ENV VITE_CONVEX_URL=
 
 # Build frontend only in Docker/Coolify. Do not run `convex deploy` here
 # (it can fail on temporary Convex API outages and break otherwise healthy deploys).
