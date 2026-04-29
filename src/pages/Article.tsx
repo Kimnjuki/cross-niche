@@ -2,6 +2,7 @@ import { useParams, Link } from 'react-router-dom';
 import { useMemo, useEffect } from 'react';
 import { Layout } from '@/components/layout/Layout';
 import { mockArticles } from '@/data/mockData';
+import { findMockArticleBySlug, filterMockByNiche } from '@/lib/findMockArticle';
 import { useContentBySlug, useContentByFeed, usePublishedContent, useRelatedContent } from '@/hooks/useContent';
 import type { ContentItem } from '@/hooks/useContent';
 import { mapContentToArticle, mapContentToArticles } from '@/lib/contentMapper';
@@ -77,7 +78,7 @@ export default function Article() {
       return mapContentToArticle(contentData) ?? null;
     }
     if (!slugOrId) return null;
-    return mockArticles.find((a) => (a?.slug ?? a?.id) === slugOrId) ?? null;
+    return findMockArticleBySlug(mockArticles, slugOrId) ?? null;
   }, [contentData, slugOrId]);
 
   // 3. SAFE ARTICLE ID (compute before using in hooks/memos)
@@ -88,7 +89,7 @@ export default function Article() {
   const relatedArticles = useMemo(() => {
     if (!article) return [];
     const convexArticles = relatedContent ? mapContentToArticles(relatedContent as ContentItem[]) : [];
-    const mockFallback = mockArticles.filter((a) => a?.niche === article?.niche);
+    const mockFallback = filterMockByNiche(mockArticles, article?.niche ?? '');
     const combined: ArticleType[] = [...convexArticles, ...mockFallback];
     const seen = new Set<string>();
     return combined
