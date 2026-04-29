@@ -58,12 +58,8 @@ crons.interval(
   internal.newsIngestor.ingestFromNewsApi
 );
 
-// Refresh Live Wire / external articles feed (NewsAPI + GNews → articles.saveArticle)
-// Runs every 30 minutes to update the homepage news feed.
-crons.interval(
-  "refresh-news-feed-articles",
-  { minutes: 30 },
-  internal.ingest.runIngestion
-);
+// refresh-news-feed-articles DISABLED: Live Wire page removed; articles table has no
+// active frontend readers. ingestFromNewsApi (above) already covers the content table.
+// crons.interval("refresh-news-feed-articles", { minutes: 30 }, internal.ingest.runIngestion);
 
 export default crons;

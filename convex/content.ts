@@ -19,7 +19,7 @@ export const getPublishedContent = query({
       .query("content")
       .withIndex("by_status_published_at", (q) => q.eq("status", "published"))
       .order("desc")
-      .take(limit * 3);
+      .take(limit + 10);
     return docs.filter((d) => d.isDeleted !== true).slice(0, limit);
   },
 });
@@ -63,11 +63,11 @@ export const getFeaturedContent = query({
     const limit = args.limit ?? 10;
     const docs = await ctx.db
       .query("content")
-      .withIndex("by_status_published_at", (q) => q.eq("status", "published"))
+      .withIndex("by_is_featured", (q) => q.eq("isFeatured", true))
       .order("desc")
-      .take(limit * 5);
+      .take(limit + 5);
     return docs
-      .filter((d) => d.isDeleted !== true && d.isFeatured === true)
+      .filter((d) => d.isDeleted !== true && d.status === "published")
       .slice(0, limit);
   },
 });
@@ -83,33 +83,33 @@ export const getBreakingNews = query({
     const limit = args.limit ?? 5;
     const docs = await ctx.db
       .query("content")
-      .withIndex("by_status_published_at", (q) => q.eq("status", "published"))
+      .withIndex("by_is_breaking", (q) => q.eq("isBreaking", true))
       .order("desc")
-      .take(limit * 5);
+      .take(limit + 5);
     return docs
-      .filter((d) => d.isDeleted !== true && d.isBreaking === true)
+      .filter((d) => d.isDeleted !== true && d.status === "published")
       .slice(0, limit);
   },
 });
 
 /**
- * Get content statistics
+ * Get content statistics — uses per-status indexes instead of full table scan.
  */
-export const getContentStats = mutation({
+export const getContentStats = query({
   args: {},
   handler: async (ctx) => {
-    const allContent = await ctx.db.query("content").collect();
-    
-    const stats = {
-      totalArticles: allContent.length,
-      publishedArticles: allContent.filter(c => c.status === "published").length,
-      draftArticles: allContent.filter(c => c.status === "draft").length,
-      withPublishedAt: allContent.filter(c => c.publishedAt != null).length,
-      totalViews: allContent.reduce((sum, c) => sum + (c.viewCount || 0), 0),
+    const [published, drafts, archived] = await Promise.all([
+      ctx.db.query("content").withIndex("by_status", (q) => q.eq("status", "published")).collect(),
+      ctx.db.query("content").withIndex("by_status", (q) => q.eq("status", "draft")).collect(),
+      ctx.db.query("content").withIndex("by_status", (q) => q.eq("status", "archived")).collect(),
+    ]);
+    return {
+      totalArticles: published.length + drafts.length + archived.length,
+      publishedArticles: published.length,
+      draftArticles: drafts.length,
+      withPublishedAt: published.filter(c => c.publishedAt != null).length,
+      totalViews: published.reduce((sum, c) => sum + (c.viewCount || 0), 0),
     };
-    
-    console.log("Content Stats:", stats);
-    return stats;
   },
 });
 
@@ -237,7 +237,7 @@ export const getLatestContent = query({
       .query("content")
       .withIndex("by_status_published_at", (q) => q.eq("status", "published"))
       .order("desc")
-      .take(limit * 3);
+      .take(limit + 10);
     return docs
       .filter((d) => d.isDeleted !== true && d._creationTime >= cutoff)
       .slice(0, limit);
@@ -306,7 +306,7 @@ export const getContentByNiche = query({
       .query("content")
       .withIndex("by_status_published_at", (q) => q.eq("status", "published"))
       .order("desc")
-      .take(limit * 5);
+      .take(limit * 2);
     return docs
       .filter((d) => d.isDeleted !== true && matchesNiche(d.contentType))
       .slice(0, limit);
@@ -336,7 +336,7 @@ export const getByNicheId = query({
       .query("content")
       .withIndex("by_status_published_at", (q) => q.eq("status", "published"))
       .order("desc")
-      .take(limit * 5);
+      .take(limit * 2);
     return docs
       .filter((d) => d.isDeleted !== true && matchesNiche(d))
       .slice(0, limit);
@@ -356,7 +356,7 @@ export const getTrendingContent = query({
       .query("content")
       .withIndex("by_status_published_at", (q) => q.eq("status", "published"))
       .order("desc")
-      .take(limit * 3);
+      .take(limit + 10);
     return docs.filter((d) => d.isDeleted !== true).slice(0, limit);
   },
 });
@@ -435,7 +435,7 @@ export const getContentByFeed = query({
       .query("content")
       .withIndex("by_status_published_at", (q) => q.eq("status", "published"))
       .order("desc")
-      .take(limit * 5);
+      .take(limit * 2);
     return docs
       .filter((d) => d.isDeleted !== true && matchesFeed(d.contentType))
       .slice(0, limit);
@@ -456,7 +456,7 @@ export const getVisibleContent = query({
       .query("content")
       .withIndex("by_status_published_at", (q) => q.eq("status", "published"))
       .order("desc")
-      .take(limit * 3);
+      .take(limit + 10);
     return docs
       .filter((d) => d.isDeleted !== true && d._creationTime >= cutoff)
       .slice(0, limit);
@@ -540,12 +540,15 @@ export const listIngestedNews = query({
 export const diagnostics = query({
   args: {},
   handler: async (ctx) => {
-    const content = await ctx.db.query("content").collect();
+    const [published, drafts] = await Promise.all([
+      ctx.db.query("content").withIndex("by_status", (q) => q.eq("status", "published")).collect(),
+      ctx.db.query("content").withIndex("by_status", (q) => q.eq("status", "draft")).collect(),
+    ]);
     return {
-      totalContent: content.length,
-      publishedContent: content.filter(c => c.status === "published").length,
-      draftContent: content.filter(c => c.status === "draft").length,
-      contentWithPublishedAt: content.filter(c => c.publishedAt != null).length,
+      totalContent: published.length + drafts.length,
+      publishedContent: published.length,
+      draftContent: drafts.length,
+      contentWithPublishedAt: published.filter(c => c.publishedAt != null).length,
     };
   },
 });

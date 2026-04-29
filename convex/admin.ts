@@ -3,7 +3,7 @@
  * Data management and fixes for content
  */
 
-import { mutation } from "./_generated/server";
+import { mutation, query } from "./_generated/server";
 import { v } from "convex/values";
 
 /**
@@ -58,23 +58,23 @@ export const fixPublishedDates = mutation({
 });
 
 /**
- * Get content statistics
+ * Get content statistics — uses per-status indexes instead of full table scan.
  */
-export const getContentStats = mutation({
+export const getContentStats = query({
   args: {},
   handler: async (ctx) => {
-    const allContent = await ctx.db.query("content").collect();
-    
-    const stats = {
-      totalArticles: allContent.length,
-      publishedArticles: allContent.filter(c => c.status === "published").length,
-      draftArticles: allContent.filter(c => c.status === "draft").length,
-      withPublishedAt: allContent.filter(c => c.publishedAt != null).length,
-      totalViews: allContent.reduce((sum, c) => sum + (c.viewCount || 0), 0),
+    const [published, drafts, archived] = await Promise.all([
+      ctx.db.query("content").withIndex("by_status", (q) => q.eq("status", "published")).collect(),
+      ctx.db.query("content").withIndex("by_status", (q) => q.eq("status", "draft")).collect(),
+      ctx.db.query("content").withIndex("by_status", (q) => q.eq("status", "archived")).collect(),
+    ]);
+    return {
+      totalArticles: published.length + drafts.length + archived.length,
+      publishedArticles: published.length,
+      draftArticles: drafts.length,
+      withPublishedAt: published.filter(c => c.publishedAt != null).length,
+      totalViews: published.reduce((sum, c) => sum + (c.viewCount || 0), 0),
     };
-    
-    console.log("Content Stats:", stats);
-    return stats;
   },
 });
 
