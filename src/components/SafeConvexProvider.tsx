@@ -7,28 +7,39 @@
 import { useMemo, createContext, useContext, type ReactNode } from "react";
 import { ConvexProvider, ConvexReactClient } from "convex/react";
 
-// Fallback URL ensures Convex always connects even when VITE_CONVEX_URL
-// is not baked into the bundle (e.g. Docker builds without .env.local).
-const KNOWN_DEPLOYMENT_URL = "https://intent-akita-728.convex.cloud";
+// Convex URL resolution: only connect when VITE_CONVEX_URL is explicitly set.
+// Not set in Dockerfile at build time — avoids stale deploy keys hanging queries.
 const rawUrl = (import.meta.env.VITE_CONVEX_URL ?? "").trim();
-const resolvedUrl = (rawUrl.length > 0 && rawUrl.startsWith("http")) ? rawUrl : KNOWN_DEPLOYMENT_URL;
-const hasConvexUrl = true; // resolvedUrl is always a valid URL
+const hasConvexUrl = rawUrl.length > 0 && rawUrl.startsWith("http");
 const PLACEHOLDER_URL = "https://no-convex-configured.convex.cloud";
 
-export const ConvexDisabledContext = createContext<boolean>(false);
+export const ConvexDisabledContext = createContext<boolean>(!hasConvexUrl);
 
 function createClient(): { client: ConvexReactClient; disabled: boolean } {
+  if (!hasConvexUrl) {
+    // No Convex URL configured — create a placeholder client that skips all queries
+    try {
+      const placeholder = new ConvexReactClient(PLACEHOLDER_URL, {
+        skipConvexDeploymentUrlCheck: true,
+      });
+      return { client: placeholder, disabled: true };
+    } catch {
+      // If placeholder fails too, create a minimal mock
+      throw new Error("Failed to create Convex placeholder client");
+    }
+  }
   try {
-    const client = new ConvexReactClient(resolvedUrl, {
+    const client = new ConvexReactClient(rawUrl, {
       skipConvexDeploymentUrlCheck: true,
     });
     return { client, disabled: false };
   } catch (err) {
+    // Fallback to placeholder if the actual URL fails
     try {
-      const fallback = new ConvexReactClient(PLACEHOLDER_URL, {
+      const placeholder = new ConvexReactClient(PLACEHOLDER_URL, {
         skipConvexDeploymentUrlCheck: true,
       });
-      return { client: fallback, disabled: true };
+      return { client: placeholder, disabled: true };
     } catch {
       throw err;
     }

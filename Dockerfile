@@ -13,22 +13,14 @@ RUN npm ci --legacy-peer-deps || npm install --legacy-peer-deps
 # Copy the rest of the code and build
 COPY . .
 
-# Build-time env for Vite (only essentials — Auth0 creds are baked into code)
-ARG CONVEX_DEPLOY_KEY
-ARG VITE_CONVEX_URL=https://intent-akita-728.convex.cloud
-ARG VITE_APP_URL
-
-ENV CONVEX_DEPLOY_KEY=${CONVEX_DEPLOY_KEY}
-ENV VITE_CONVEX_URL=${VITE_CONVEX_URL}
-ENV VITE_APP_URL=${VITE_APP_URL}
-
-# IMPORTANT: VITE_AUTH0_DOMAIN / VITE_AUTH0_CLIENT_ID / VITE_AUTH0_AUDIENCE
-# are deliberately NOT declared as ARG/ENV here. Their values are hardcoded
-# in src/lib/auth0Config.ts as production defaults. Coolify Build Time Variables
-# that contain stale/incorrect values cannot override them.
-
-# Verify CONVEX_DEPLOY_KEY is set (warn only, don't fail build)
-RUN if [ -z "$CONVEX_DEPLOY_KEY" ]; then echo "⚠️  WARNING: CONVEX_DEPLOY_KEY not set. Set it as Build Time Variable in Coolify."; fi
+# IMPORTANT: VITE_CONVEX_URL is deliberately NOT set at build time.
+# SafeConvexProvider detects missing Convex URL and disables all
+# Convex queries (they return skip). This prevents stale deploy keys
+# from hanging article pages. VITE_CONVEX_URL is only used at runtime
+# via Coolify runtime env vars, not in the static build bundle.
+#
+# Auth0 env vars are also deliberately omitted — credentials are
+# hardcoded in src/lib/auth0Config.ts as production defaults.
 
 # Build frontend only in Docker/Coolify. Do not run `convex deploy` here
 # (it can fail on temporary Convex API outages and break otherwise healthy deploys).
