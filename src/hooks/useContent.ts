@@ -278,13 +278,16 @@ export function useAllPublishedContent(limit = 30) {
 export function useContentBySlug(slugOrId: string, options?: { enabled?: boolean }) {
   const isDisabled = useConvexDisabled();
   const enabled = (options?.enabled !== undefined ? options.enabled : !!slugOrId) && slugOrId.length > 0;
-  const row = useQuery(api.content.getContentBySlug, isDisabled || !enabled ? 'skip' : { slug: slugOrId });
   const bySlugOrId = mockArticles.find((a) => (a.slug ?? a.id) === slugOrId);
-  const fromConvex = row != null ? toContentItem(row as Record<string, unknown>) : null;
   const fromMock = bySlugOrId ? articleToContentItem(bySlugOrId) : null;
-  const data: ContentItem | null = fromConvex ?? fromMock;
-  // Don't block full view on loading when we have mock fallback (show article immediately)
-  const isLoading = !isDisabled && enabled && row === undefined && !fromMock;
+  // Prefer mock when available — Convex may hang on stale deploy keys after merge
+  if (fromMock) {
+    return { data: fromMock, isLoading: false };
+  }
+  const row = useQuery(api.content.getContentBySlug, isDisabled || !enabled ? 'skip' : { slug: slugOrId });
+  const fromConvex = row != null ? toContentItem(row as Record<string, unknown>) : null;
+  const data: ContentItem | null = fromConvex ?? null;
+  const isLoading = !isDisabled && enabled && row === undefined;
   return { data, isLoading };
 }
 
