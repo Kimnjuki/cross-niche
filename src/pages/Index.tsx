@@ -8,7 +8,7 @@ import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useQuery } from 'convex/react';
 import { api } from '../../convex/_generated/api';
-import { ChevronRight, Search, TrendingUp, Shield, Users } from 'lucide-react';
+import { ChevronRight, Search, TrendingUp, Shield, Users, Gamepad2, Cpu, BookOpen, Activity, Radio, Swords, Target, Zap } from 'lucide-react';
 
 import { Layout } from '@/components/layout/Layout';
 import { SEO } from '@/components/SEO';
@@ -37,6 +37,7 @@ import { NewsletterForm } from '@/components/newsletter/NewsletterForm';
 import { Skeleton } from '@/components/ui/skeleton';
 import { NewsFeed } from '@/components/news/NewsFeed';
 import { SecurityToolsStrip } from '@/components/security/SecurityToolsStrip';
+import { Button } from '@/components/ui/button';
 
 import { formatRelativeTime } from '@/lib/timeUtils';
 import { mapContentToArticles } from '@/lib/contentMapper';
@@ -193,16 +194,183 @@ export default function Index() {
         </section>
       )}
 
-      {/* P5: Latest Briefings (6-card grid) */}
+      {/* P5: Pillar Navigation — SEO engine for category authority */}
+      <section className="bg-[#0A0A0B] border-b border-[#27272A]">
+        <div className="container mx-auto px-4 max-w-7xl py-6">
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-sm font-bold text-white tracking-wide">
+              <span className="text-[#39FF14]">//</span> Explore by Topic
+            </h2>
+          </div>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+            <Link to="/security" className="group p-4 rounded-lg border border-[#00F0FF]/20 bg-gradient-to-br from-[#00F0FF]/5 to-black hover:border-[#00F0FF]/50 transition-all">
+              <Shield className="w-5 h-5 text-[#00F0FF] mb-2" />
+              <h3 className="text-sm font-bold text-white mb-1">Security</h3>
+              <p className="text-xs text-zinc-500 group-hover:text-zinc-400 transition-colors">Breaches, vulnerabilities, and gaming defense playbooks</p>
+              <span className="mt-2 inline-flex items-center gap-1 text-xs text-[#00F0FF] opacity-0 group-hover:opacity-100 transition-all">
+                Explore threats <ChevronRight className="w-3 h-3" />
+              </span>
+            </Link>
+            <Link to="/gaming" className="group p-4 rounded-lg border border-[#FF007A]/20 bg-gradient-to-br from-[#FF007A]/5 to-black hover:border-[#FF007A]/50 transition-all">
+              <Gamepad2 className="w-5 h-5 text-[#FF007A] mb-2" />
+              <h3 className="text-sm font-bold text-white mb-1">Gaming</h3>
+              <p className="text-xs text-zinc-500 group-hover:text-zinc-400 transition-colors">Reviews, security guides, and anti-cheat analysis</p>
+              <span className="mt-2 inline-flex items-center gap-1 text-xs text-[#FF007A] opacity-0 group-hover:opacity-100 transition-all">
+                Browse games <ChevronRight className="w-3 h-3" />
+              </span>
+            </Link>
+            <Link to="/tech" className="group p-4 rounded-lg border border-[#39FF14]/20 bg-gradient-to-br from-[#39FF14]/5 to-black hover:border-[#39FF14]/50 transition-all">
+              <Cpu className="w-5 h-5 text-[#39FF14] mb-2" />
+              <h3 className="text-sm font-bold text-white mb-1">Tech</h3>
+              <p className="text-xs text-zinc-500 group-hover:text-zinc-400 transition-colors">Hardware, software, and emerging technology trends</p>
+              <span className="mt-2 inline-flex items-center gap-1 text-xs text-[#39FF14] opacity-0 group-hover:opacity-100 transition-all">
+                Discover tech <ChevronRight className="w-3 h-3" />
+              </span>
+            </Link>
+            <Link to="/guides" className="group p-4 rounded-lg border border-[#A855F7]/20 bg-gradient-to-br from-[#A855F7]/5 to-black hover:border-[#A855F7]/50 transition-all">
+              <BookOpen className="w-5 h-5 text-[#A855F7] mb-2" />
+              <h3 className="text-sm font-bold text-white mb-1">Guides</h3>
+              <p className="text-xs text-zinc-500 group-hover:text-zinc-400 transition-colors">Step-by-step tutorials and security how-tos</p>
+              <span className="mt-2 inline-flex items-center gap-1 text-xs text-[#A855F7] opacity-0 group-hover:opacity-100 transition-all">
+                Learn now <ChevronRight className="w-3 h-3" />
+              </span>
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* P6: Live Tools & Dashboards — drives engagement with interactive features */}
+      <section className="bg-[#0A0A0B] border-b border-[#27272A]">
+        <div className="container mx-auto px-4 max-w-7xl py-6">
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-sm font-bold text-white tracking-wide">
+              <span className="text-[#FF007A]">//</span> Live Tools &amp; Dashboards
+            </h2>
+            <Link to="/tools/security-scanner" className="flex items-center gap-1 text-xs font-mono text-[#FF007A]/70 hover:text-[#FF007A]">
+              All tools <ChevronRight className="h-3 w-3" />
+            </Link>
+          </div>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+            <Link to="/security-score" className="group flex flex-col items-center p-4 rounded-lg border border-zinc-800 hover:border-[#00F0FF]/40 bg-zinc-900/30 hover:bg-zinc-900/60 transition-all text-center">
+              <Target className="w-6 h-6 text-[#00F0FF] mb-2" />
+              <span className="text-sm font-medium text-white mb-1">Security Score</span>
+              <span className="text-xs text-zinc-500">Check your gaming security posture</span>
+            </Link>
+            <Link to="/breach-sim" className="group flex flex-col items-center p-4 rounded-lg border border-zinc-800 hover:border-[#FF007A]/40 bg-zinc-900/30 hover:bg-zinc-900/60 transition-all text-center">
+              <Activity className="w-6 h-6 text-[#FF007A] mb-2" />
+              <span className="text-sm font-medium text-white mb-1">Breach Simulation</span>
+              <span className="text-xs text-zinc-500">Simulate real-world attack scenarios</span>
+            </Link>
+            <Link to="/ai-pulse" className="group flex flex-col items-center p-4 rounded-lg border border-zinc-800 hover:border-[#39FF14]/40 bg-zinc-900/30 hover:bg-zinc-900/60 transition-all text-center">
+              <Radio className="w-6 h-6 text-[#39FF14] mb-2" />
+              <span className="text-sm font-medium text-white mb-1">AI Pulse</span>
+              <span className="text-xs text-zinc-500">Track today's AI security threats</span>
+            </Link>
+            <Link to="/live-threat-dashboard" className="group flex flex-col items-center p-4 rounded-lg border border-zinc-800 hover:border-[#A855F7]/40 bg-zinc-900/30 hover:bg-zinc-900/60 transition-all text-center">
+              <Zap className="w-6 h-6 text-[#A855F7] mb-2" />
+              <span className="text-sm font-medium text-white mb-1">Threat Dashboard</span>
+              <span className="text-xs text-zinc-500">Real-time threat intelligence feed</span>
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* P7: Choose Your Path — persona-based journeys */}
+      <section className="bg-[#0A0A0B] border-b border-[#27272A]">
+        <div className="container mx-auto px-4 max-w-7xl py-6">
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-sm font-bold text-white tracking-wide">
+              <span className="text-[#A855F7]">//</span> Choose Your Path
+            </h2>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+            <Link to="/security" className="group p-5 rounded-xl border border-[#00F0FF]/20 bg-gradient-to-br from-[#00F0FF]/[0.03] to-black hover:from-[#00F0FF]/[0.08] hover:border-[#00F0FF]/40 transition-all">
+              <Swords className="w-6 h-6 text-[#00F0FF] mb-3" />
+              <h3 className="font-bold text-white mb-1 group-hover:text-[#00F0FF] transition-colors text-sm">I'm a Security Lead</h3>
+              <p className="text-xs text-zinc-500 mb-3">Threat intel, breach analysis, and security playbooks</p>
+              <div className="flex flex-wrap gap-2">
+                <span className="text-[10px] px-2 py-1 rounded-full bg-[#00F0FF]/10 text-[#00F0FF] border border-[#00F0FF]/20">Threat Intel</span>
+                <span className="text-[10px] px-2 py-1 rounded-full bg-[#00F0FF]/10 text-[#00F0FF] border border-[#00F0FF]/20">Security Score</span>
+                <span className="text-[10px] px-2 py-1 rounded-full bg-[#00F0FF]/10 text-[#00F0FF] border border-[#00F0FF]/20">Breach Sim</span>
+              </div>
+            </Link>
+            <Link to="/gaming" className="group p-5 rounded-xl border border-[#FF007A]/20 bg-gradient-to-br from-[#FF007A]/[0.03] to-black hover:from-[#FF007A]/[0.08] hover:border-[#FF007A]/40 transition-all">
+              <Gamepad2 className="w-6 h-6 text-[#FF007A] mb-3" />
+              <h3 className="font-bold text-white mb-1 group-hover:text-[#FF007A] transition-colors text-sm">I'm a Gamer</h3>
+              <p className="text-xs text-zinc-500 mb-3">Account security, anti-cheat guides, and game reviews</p>
+              <div className="flex flex-wrap gap-2">
+                <span className="text-[10px] px-2 py-1 rounded-full bg-[#FF007A]/10 text-[#FF007A] border border-[#FF007A]/20">Account Security</span>
+                <span className="text-[10px] px-2 py-1 rounded-full bg-[#FF007A]/10 text-[#FF007A] border border-[#FF007A]/20">Game Reviews</span>
+                <span className="text-[10px] px-2 py-1 rounded-full bg-[#FF007A]/10 text-[#FF007A] border border-[#FF007A]/20">Anti-Cheat</span>
+              </div>
+            </Link>
+            <Link to="/tech" className="group p-5 rounded-xl border border-[#39FF14]/20 bg-gradient-to-br from-[#39FF14]/[0.03] to-black hover:from-[#39FF14]/[0.08] hover:border-[#39FF14]/40 transition-all">
+              <Cpu className="w-6 h-6 text-[#39FF14] mb-3" />
+              <h3 className="font-bold text-white mb-1 group-hover:text-[#39FF14] transition-colors text-sm">I Track AI &amp; Tech</h3>
+              <p className="text-xs text-zinc-500 mb-3">AI Pulse, tech news, and emerging threat analysis</p>
+              <div className="flex flex-wrap gap-2">
+                <span className="text-[10px] px-2 py-1 rounded-full bg-[#39FF14]/10 text-[#39FF14] border border-[#39FF14]/20">AI Pulse</span>
+                <span className="text-[10px] px-2 py-1 rounded-full bg-[#39FF14]/10 text-[#39FF14] border border-[#39FF14]/20">Tech News</span>
+                <span className="text-[10px] px-2 py-1 rounded-full bg-[#39FF14]/10 text-[#39FF14] border border-[#39FF14]/20">AI Security</span>
+              </div>
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* P8: Must-Read This Week — evergreen high-value articles */}
+      {sortedArticles.length > 0 && (
+        <section className="bg-[#0A0A0B] border-b border-[#27272A]">
+          <div className="container mx-auto px-4 max-w-7xl py-6">
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-sm font-bold text-white tracking-wide">
+                <span className="text-[#39FF14]">//</span> Must-Read This Week
+              </h2>
+              <Link to="/explore" className="flex items-center gap-1 text-xs font-mono text-[#39FF14]/70 hover:text-[#39FF14]">
+                All articles <ChevronRight className="h-3 w-3" />
+              </Link>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+              {sortedArticles.slice(0, 4).map((article, i) => (
+                <Link
+                  key={safeArticleId(article) || i}
+                  to={articleLink(article)}
+                  className="group flex items-start gap-3 p-4 rounded-lg border border-zinc-800 hover:border-zinc-700 bg-zinc-900/30 hover:bg-zinc-900/60 transition-all"
+                >
+                  <div className="w-8 h-8 rounded-lg bg-zinc-800 flex items-center justify-center shrink-0 text-xs text-zinc-500 group-hover:text-[#00F0FF] group-hover:bg-[#00F0FF]/10 transition-all">
+                    {i + 1}
+                  </div>
+                  <div className="min-w-0">
+                    <h3 className="text-sm font-medium text-zinc-300 group-hover:text-white transition-colors line-clamp-1">
+                      {article.title}
+                    </h3>
+                    <p className="text-xs text-zinc-600 line-clamp-1 mt-0.5">{article.excerpt}</p>
+                    <div className="flex items-center gap-2 mt-2">
+                      <span className="text-[10px] px-2 py-0.5 rounded-full bg-zinc-800 text-zinc-500 uppercase">
+                        {article.niche || 'Article'}
+                      </span>
+                      {article.author && (
+                        <span className="text-[10px] text-zinc-600">{article.author}</span>
+                      )}
+                    </div>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* P9: Latest Briefings (6-card grid) */}
       <BriefingsGrid articles={sortedArticles} title="Latest Briefings" />
 
-      {/* P6: Security Spotlight */}
+      {/* P10: Security Spotlight */}
       {securityArticles.length > 0 && <SpotlightStrip articles={securityArticles} />}
 
-      {/* P7: Gaming Strip */}
+      {/* P11: Gaming Strip */}
       {gamingArticles.length > 0 && <GamingStrip articles={gamingArticles} />}
 
-      {/* P8: AI & Emerging Tech */}
+      {/* P12: AI & Emerging Tech */}
       {aiArticles.length > 0 && <AIMiniStrip articles={aiArticles} />}
 
       {/* Intelligence sidebar layout: main feed + sidebar widgets */}
