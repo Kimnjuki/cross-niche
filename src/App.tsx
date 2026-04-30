@@ -104,6 +104,7 @@ const Reviews = lazy(() => import("./pages/Reviews"));
 const Startups = lazy(() => import("./pages/Startups"));
 const QualityGuidelines = lazy(() => import("./pages/QualityGuidelines"));
 const ContentPolicy = lazy(() => import("./pages/ContentPolicy"));
+const CommunityGuidelines = lazy(() => import("./pages/CommunityGuidelines"));
 const Sitemap = lazy(() => import("./pages/Sitemap"));
 const NexusIntersection = lazy(() => import("./pages/NexusIntersectionEnhanced"));
 const Author = lazy(() => import("./pages/Author"));
@@ -208,6 +209,7 @@ const App = () => (
                     <Route path="/startups" element={<Startups />} />
                     <Route path="/quality-guidelines" element={<QualityGuidelines />} />
                     <Route path="/content-policy" element={<ContentPolicy />} />
+                    <Route path="/community-guidelines" element={<CommunityGuidelines />} />
                     {/* Utility pages */}
                     <Route path="/sitemap" element={<Sitemap />} />
                     <Route path="/nexus-intersection" element={<NexusIntersection />} />
