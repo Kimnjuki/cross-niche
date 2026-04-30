@@ -153,6 +153,46 @@ export default function Index() {
       {/* P2: Command Dashboard */}
       <CommandDashboard />
 
+      {/* P3: Featured Articles Strip — helps users discover articles from homepage */}
+      {sortedArticles.length > 0 && (
+        <section className="bg-[#0A0A0B] border-b border-[#27272A]">
+          <div className="container mx-auto px-4 max-w-7xl py-6">
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-sm font-bold text-white tracking-wide">
+                <span className="text-[#00F0FF]">//</span> Featured Gaming-Security Intel
+              </h2>
+              <Link to="/security" className="flex items-center gap-1 text-xs font-mono text-[#00F0FF]/70 hover:text-[#00F0FF]">
+                All security <ChevronRight className="h-3 w-3" />
+              </Link>
+            </div>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+              {sortedArticles.slice(0, 4).map((article, i) => (
+                <Link
+                  key={safeArticleId(article) || i}
+                  to={articleLink(article)}
+                  className="group p-3 rounded-lg border border-[#27272A] bg-gradient-to-b from-zinc-900/50 to-black hover:border-[#00F0FF]/30 hover:from-zinc-900/80 transition-all"
+                >
+                  <div className="flex items-center gap-2 mb-2">
+                    <span className="text-[10px] px-2 py-0.5 rounded-full bg-zinc-800 text-zinc-400 uppercase tracking-wider">
+                      {article.niche || 'Article'}
+                    </span>
+                    {article.readTime && (
+                      <span className="text-[10px] text-zinc-600">{article.readTime} min</span>
+                    )}
+                  </div>
+                  <h3 className="text-sm font-medium text-zinc-300 group-hover:text-white transition-colors line-clamp-2 mb-1">
+                    {article.title}
+                  </h3>
+                  {article.excerpt && (
+                    <p className="text-xs text-zinc-600 line-clamp-2 group-hover:text-zinc-500 transition-colors">{article.excerpt}</p>
+                  )}
+                </Link>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
       {/* P5: Latest Briefings (6-card grid) */}
       <BriefingsGrid articles={sortedArticles} title="Latest Briefings" />
 
