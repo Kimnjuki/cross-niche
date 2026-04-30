@@ -1,160 +1,400 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
-  <!-- ── April 2026 articles ───────────────────────────────────────────── -->
   <url>
-    <loc>https://thegridnexus.com/article/nvidia-blackwell-chips-1-trillion-orders-2026</loc>
+    <loc>https://thegridnexus.com/security/gmail-hack-attacks-surge-gamers-2fa-2026</loc>
+    <lastmod>2026-04-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://thegridnexus.com/article/gmail-hack-attacks-surge-gamers-2fa-2026</loc>
+    <lastmod>2026-04-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://thegridnexus.com/security/bitwarden-security-incident-gaming-password-manager</loc>
+    <lastmod>2026-04-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://thegridnexus.com/article/bitwarden-security-incident-gaming-password-manager</loc>
+    <lastmod>2026-04-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://thegridnexus.com/security/chrome-zero-day-warning-gamers-april-2026</loc>
+    <lastmod>2026-04-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://thegridnexus.com/article/chrome-zero-day-warning-gamers-april-2026</loc>
+    <lastmod>2026-04-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://thegridnexus.com/security/steam-account-takeover-protection-guide-2026</loc>
+    <lastmod>2026-04-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://thegridnexus.com/article/steam-account-takeover-protection-guide-2026</loc>
+    <lastmod>2026-04-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://thegridnexus.com/security/discord-malware-gamers-how-to-stay-safe</loc>
+    <lastmod>2026-04-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://thegridnexus.com/article/discord-malware-gamers-how-to-stay-safe</loc>
+    <lastmod>2026-04-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://thegridnexus.com/security/nintendo-switch-2-security-guide</loc>
+    <lastmod>2026-04-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://thegridnexus.com/article/nintendo-switch-2-security-guide</loc>
+    <lastmod>2026-04-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://thegridnexus.com/security/fake-game-cheats-malware-account-stealer</loc>
+    <lastmod>2026-04-12</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://thegridnexus.com/article/fake-game-cheats-malware-account-stealer</loc>
+    <lastmod>2026-04-12</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://thegridnexus.com/security/sim-swapping-gaming-accounts-protection</loc>
     <lastmod>2026-04-10</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://thegridnexus.com/article/meta-ai-chips-mtia-300-500-2026</loc>
+    <loc>https://thegridnexus.com/article/sim-swapping-gaming-accounts-protection</loc>
     <lastmod>2026-04-10</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.85</priority>
+    <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://thegridnexus.com/article/xai-pentagon-access-security-concerns-2026</loc>
+    <loc>https://thegridnexus.com/gaming/windows-11-anti-cheat-broken-fix-guide</loc>
+    <lastmod>2026-04-23</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://thegridnexus.com/article/windows-11-anti-cheat-broken-fix-guide</loc>
+    <lastmod>2026-04-23</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://thegridnexus.com/gaming/xbox-rebrand-security-changes-gamers</loc>
+    <lastmod>2026-04-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://thegridnexus.com/article/xbox-rebrand-security-changes-gamers</loc>
+    <lastmod>2026-04-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://thegridnexus.com/gaming/steam-controller-security-risks-gamers</loc>
+    <lastmod>2026-04-21</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://thegridnexus.com/article/steam-controller-security-risks-gamers</loc>
+    <lastmod>2026-04-21</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://thegridnexus.com/gaming/vpn-gaming-security-latency-test-2026</loc>
+    <lastmod>2026-04-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://thegridnexus.com/article/vpn-gaming-security-latency-test-2026</loc>
+    <lastmod>2026-04-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://thegridnexus.com/gaming/twitch-streamer-security-guide-doxxing-swatting</loc>
+    <lastmod>2026-04-16</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://thegridnexus.com/article/twitch-streamer-security-guide-doxxing-swatting</loc>
+    <lastmod>2026-04-16</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://thegridnexus.com/gaming/razer-synapse-security-vulnerability-fix</loc>
+    <lastmod>2026-04-14</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://thegridnexus.com/article/razer-synapse-security-vulnerability-fix</loc>
+    <lastmod>2026-04-14</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://thegridnexus.com/gaming/game-key-reseller-scams-g2a-cdkeys</loc>
+    <lastmod>2026-04-12</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://thegridnexus.com/article/game-key-reseller-scams-g2a-cdkeys</loc>
+    <lastmod>2026-04-12</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://thegridnexus.com/gaming/roblox-parents-guide-account-security-safety</loc>
     <lastmod>2026-04-10</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.85</priority>
+    <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://thegridnexus.com/article/apple-acquires-motionvfx-2026</loc>
+    <loc>https://thegridnexus.com/article/roblox-parents-guide-account-security-safety</loc>
     <lastmod>2026-04-10</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.85</priority>
+    <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://thegridnexus.com/article/frore-systems-unicorn-143m-2026</loc>
-    <lastmod>2026-04-10</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.85</priority>
-  </url>
-
-  <!-- ── March 2026 articles ───────────────────────────────────────────── -->
-  <url>
-    <loc>https://thegridnexus.com/article/conduent-data-breach-25-million-records-2026</loc>
-    <lastmod>2026-03-17</lastmod>
+    <loc>https://thegridnexus.com/gaming/minecraft-server-security-guide</loc>
+    <lastmod>2026-04-08</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://thegridnexus.com/article/akzonobel-data-breach-us-operations-2026</loc>
-    <lastmod>2026-03-16</lastmod>
+    <loc>https://thegridnexus.com/article/minecraft-server-security-guide</loc>
+    <lastmod>2026-04-08</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.85</priority>
+    <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://thegridnexus.com/article/icewarp-rce-vulnerability-cve-2025-14500</loc>
-    <lastmod>2026-03-15</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.85</priority>
-  </url>
-  <url>
-    <loc>https://thegridnexus.com/article/crimson-collective-570gb-red-hat-gitlab-2026</loc>
-    <lastmod>2026-03-14</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.85</priority>
-  </url>
-  <url>
-    <loc>https://thegridnexus.com/article/helldivers-2-force-of-law-warbond-2026</loc>
-    <lastmod>2026-03-13</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.85</priority>
-  </url>
-  <url>
-    <loc>https://thegridnexus.com/article/resident-evil-requiem-launch-2026</loc>
-    <lastmod>2026-03-12</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.85</priority>
-  </url>
-
-  <!-- ── February 2026 articles ────────────────────────────────────────── -->
-  <url>
-    <loc>https://thegridnexus.com/article/tiktok-us-deal-algorithm-control-2026</loc>
-    <lastmod>2026-02-27</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.85</priority>
-  </url>
-  <url>
-    <loc>https://thegridnexus.com/article/china-ai-scraping-bot-traffic-2026</loc>
-    <lastmod>2026-02-21</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.85</priority>
-  </url>
-  <url>
-    <loc>https://thegridnexus.com/article/grok-ai-market-share-growth-2026</loc>
-    <lastmod>2026-02-21</lastmod>
+    <loc>https://thegridnexus.com/tech/twitch-accounts-hacked-breach-guide-2026</loc>
+    <lastmod>2026-04-19</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://thegridnexus.com/article/meta-facial-recognition-smart-glasses-2026</loc>
-    <lastmod>2026-02-20</lastmod>
+    <loc>https://thegridnexus.com/article/twitch-accounts-hacked-breach-guide-2026</loc>
+    <lastmod>2026-04-19</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://thegridnexus.com/tech/gaming-headset-malware-privacy-guide</loc>
+    <lastmod>2026-04-15</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://thegridnexus.com/article/tata-openai-india-data-center-2026</loc>
-    <lastmod>2026-02-20</lastmod>
+    <loc>https://thegridnexus.com/article/gaming-headset-malware-privacy-guide</loc>
+    <lastmod>2026-04-15</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.85</priority>
+    <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://thegridnexus.com/article/ys-x-proud-nordics-launch-2026</loc>
-    <lastmod>2026-02-20</lastmod>
+    <loc>https://thegridnexus.com/tech/gaming-pc-antivirus-best-2026</loc>
+    <lastmod>2026-04-11</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://thegridnexus.com/article/global-cybersecurity-outlook-2026-ai-risks</loc>
-    <lastmod>2026-02-19</lastmod>
+    <loc>https://thegridnexus.com/article/gaming-pc-antivirus-best-2026</loc>
+    <lastmod>2026-04-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://thegridnexus.com/tech/router-security-gamers-network-protection</loc>
+    <lastmod>2026-04-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://thegridnexus.com/article/sandworm-hackers-poland-power-grid-2026</loc>
-    <lastmod>2026-02-19</lastmod>
+    <loc>https://thegridnexus.com/article/router-security-gamers-network-protection</loc>
+    <lastmod>2026-04-07</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.85</priority>
+    <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://thegridnexus.com/article/claude-ai-weaponized-espionage-2026</loc>
-    <lastmod>2026-02-18</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.85</priority>
-  </url>
-  <url>
-    <loc>https://thegridnexus.com/article/microsoft-patch-tuesday-6-zero-days-february-2026</loc>
-    <lastmod>2026-02-13</lastmod>
+    <loc>https://thegridnexus.com/tech/apple-vision-pro-2-revolutionary-spatial-computing</loc>
+    <lastmod>2024-12-18</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://thegridnexus.com/article/high-on-life-2-release-2026</loc>
-    <lastmod>2026-02-13</lastmod>
+    <loc>https://thegridnexus.com/article/apple-vision-pro-2-revolutionary-spatial-computing</loc>
+    <lastmod>2024-12-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://thegridnexus.com/tech/nvidia-rtx-5090-benchmarks-leak-2x-performance</loc>
+    <lastmod>2024-12-17</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://thegridnexus.com/article/nioh-3-release-ps5-2026</loc>
-    <lastmod>2026-02-06</lastmod>
+    <loc>https://thegridnexus.com/article/nvidia-rtx-5090-benchmarks-leak-2x-performance</loc>
+    <lastmod>2024-12-17</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
+    <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://thegridnexus.com/article/dragon-quest-vii-reimagined-review-2026</loc>
-    <lastmod>2026-02-05</lastmod>
+    <loc>https://thegridnexus.com/tech/quantum-computing-breakthrough-2024-shor-algorithm</loc>
+    <lastmod>2024-12-16</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
+    <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://thegridnexus.com/article/deus-ex-remastered-controversy-2026</loc>
-    <lastmod>2026-02-05</lastmod>
+    <loc>https://thegridnexus.com/article/quantum-computing-breakthrough-2024-shor-algorithm</loc>
+    <lastmod>2024-12-16</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.85</priority>
+    <priority>0.8</priority>
   </url>
-
+  <url>
+    <loc>https://thegridnexus.com/tech/6g-networks-prototype-trials-2024</loc>
+    <lastmod>2024-12-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://thegridnexus.com/article/6g-networks-prototype-trials-2024</loc>
+    <lastmod>2024-12-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://thegridnexus.com/security/largest-ddos-attack-ever-mitigated-2024</loc>
+    <lastmod>2024-12-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://thegridnexus.com/article/largest-ddos-attack-ever-mitigated-2024</loc>
+    <lastmod>2024-12-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://thegridnexus.com/security/zero-trust-architecture-adoption-2024</loc>
+    <lastmod>2024-12-17</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://thegridnexus.com/article/zero-trust-architecture-adoption-2024</loc>
+    <lastmod>2024-12-17</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://thegridnexus.com/security/new-zero-day-vulnerability-critical-infrastructure</loc>
+    <lastmod>2024-12-16</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://thegridnexus.com/article/new-zero-day-vulnerability-critical-infrastructure</loc>
+    <lastmod>2024-12-16</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://thegridnexus.com/security/supply-chain-attack-third-party-vendor-2024</loc>
+    <lastmod>2024-12-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://thegridnexus.com/article/supply-chain-attack-third-party-vendor-2024</loc>
+    <lastmod>2024-12-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://thegridnexus.com/gaming/elder-scrolls-6-release-date-leak-2025</loc>
+    <lastmod>2024-12-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://thegridnexus.com/article/elder-scrolls-6-release-date-leak-2025</loc>
+    <lastmod>2024-12-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://thegridnexus.com/gaming/ps5-pro-announced-specs-price-2024</loc>
+    <lastmod>2024-12-17</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://thegridnexus.com/article/ps5-pro-announced-specs-price-2024</loc>
+    <lastmod>2024-12-17</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://thegridnexus.com/gaming/steam-deck-2-specs-release-date-2025</loc>
+    <lastmod>2024-12-16</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://thegridnexus.com/article/steam-deck-2-specs-release-date-2025</loc>
+    <lastmod>2024-12-16</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://thegridnexus.com/gaming/gta-6-online-gaming-security-threats-2025</loc>
+    <lastmod>2024-12-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://thegridnexus.com/article/gta-6-online-gaming-security-threats-2025</loc>
+    <lastmod>2024-12-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
 </urlset>
