@@ -119,8 +119,15 @@ export function getBaseUrls(baseUrl: string = 'https://thegridnexus.com'): Sitem
  * Convert articles to sitemap URLs
  */
 export function articlesToSitemapUrls(articles: Article[], baseUrl: string = 'https://thegridnexus.com'): SitemapUrl[] {
+  const nicheRoute = (article: Article): string => {
+    const niche = (article as any).niche;
+    if (niche === 'security') return 'security';
+    if (niche === 'gaming') return 'gaming';
+    if (niche === 'tech') return 'tech';
+    return 'article'; // fallback for legacy articles
+  };
   return articles.map(article => ({
-    loc: `${baseUrl}/article/${article.slug ?? article.id ?? ''}`,
+    loc: `${baseUrl}/${nicheRoute(article)}/${article.slug ?? article.id ?? ''}`,
     lastmod: article.updatedAt 
       ? new Date(article.updatedAt).toISOString().split('T')[0]
       : new Date(article.publishedAt).toISOString().split('T')[0],
