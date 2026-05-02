@@ -3,26 +3,66 @@ import { useLocation } from 'react-router-dom';
 import { trackPageView, trackListingPageView } from '@/lib/analytics/ga4';
 
 /**
- * Tracks SPA route changes in GA4 with enhanced context.
- * Sends listing_page_view for landing/list pages so Funnel Exploration and Landing page reports work.
+ * All section/hub pages that should fire a listing_page_view event.
+ * Article detail pages (e.g. /gaming/some-slug) are excluded by the
+ * isArticleDetail check below.
+ */
+const LISTING_PAGE_PREFIXES = [
+  '/',
+  '/tech',
+  '/security',
+  '/gaming',
+  '/news',
+  '/guides',
+  '/tutorials',
+  '/reviews',
+  '/topics',
+  '/explore',
+  '/blog',
+  '/ai-pulse',
+  '/startups',
+  '/tools',
+  '/roadmap',
+  '/nexus-intersection',
+  '/security-profile',
+  '/community-threats',
+  '/nexus-studio',
+  '/learn',
+  '/pulse',
+  '/forums',
+  '/podcasts',
+  '/live-threat-dashboard',
+  '/breach-sim',
+  '/security-score',
+  '/live-updates',
+];
+
+/** True when the path is an article detail under a niche prefix. */
+function isArticleDetail(path: string): boolean {
+  return /^\/(tech|security|gaming|news)\/[^/]+$/.test(path) ||
+    path.startsWith('/article/') ||
+    /^\/guides\/[^/]+$/.test(path);
+}
+
+/**
+ * Tracks SPA route changes in GA4.
+ * Sends page_view for every route and listing_page_view for hub/section pages.
  */
 export function GA4PageTracker() {
   const { pathname } = useLocation();
 
   useEffect(() => {
-    let pageType: string | undefined;
-    if (pathname === '/') {
-      pageType = 'homepage';
-    } else if (pathname.startsWith('/tech') || pathname.startsWith('/security') || pathname.startsWith('/gaming') || pathname.startsWith('/news')) {
-      pageType = 'category';
-    } else if (pathname.startsWith('/article/')) {
-      pageType = 'article';
-    }
+    trackPageView(pathname, document.title);
 
-    trackPageView(pathname, document.title, pageType);
+    // Fire listing_page_view for any section hub page (not article detail pages)
+    const isListing =
+      !isArticleDetail(pathname) &&
+      (pathname === '/' ||
+        LISTING_PAGE_PREFIXES.some(
+          (prefix) => prefix !== '/' && pathname.startsWith(prefix),
+        ));
 
-    // Funnel step: listing view (for Reports > Engagement > Landing page & Funnel Exploration)
-    if (pathname === '/' || pathname.startsWith('/tech') || pathname.startsWith('/security') || pathname.startsWith('/gaming') || pathname.startsWith('/news')) {
+    if (isListing) {
       trackListingPageView(pathname);
     }
   }, [pathname]);

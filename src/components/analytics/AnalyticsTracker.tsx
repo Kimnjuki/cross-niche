@@ -46,10 +46,12 @@ export function useAnalyticsTracker() {
   // Initialize analytics
   useEffect(() => {
     // Google Analytics 4
+    const GA4_ID = (import.meta as Record<string, any>).env?.VITE_GA4_MEASUREMENT_ID || 'G-XMGRJBSN5Y';
     if (typeof window !== 'undefined' && window.gtag) {
-      window.gtag('config', 'GA_MEASUREMENT_ID', {
+      window.gtag('config', GA4_ID, {
         page_title: document.title,
         page_location: window.location.href,
+        send_page_view: false, // GA4PageTracker owns page_view events
         custom_map: {
           custom_dimension_1: 'user_type',
           custom_dimension_2: 'content_category',

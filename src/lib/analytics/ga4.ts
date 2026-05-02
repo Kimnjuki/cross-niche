@@ -60,20 +60,21 @@ export function trackPageView(path: string, title?: string, pageType?: string) {
   // Determine content group for GA4 reporting
   const contentGroup = getContentGroup(path);
 
-  const config: Record<string, any> = {
+  // Update GA4's internal page context without firing a second page_view.
+  // The explicit trackEvent('page_view') below is the single source of truth.
+  window.gtag('config', GA4_MEASUREMENT_ID, {
     page_path: path,
     page_title: title || document.title,
     page_location: window.location.href,
     page_type: detectedPageType,
     content_group: contentGroup,
-  };
+    send_page_view: false,
+  });
 
-  window.gtag('config', GA4_MEASUREMENT_ID, config);
-
-  // Also send as event for better filtering in GA4
   trackEvent('page_view', {
     page_path: path,
     page_title: title || document.title,
+    page_location: window.location.href,
     page_type: detectedPageType,
     content_group: contentGroup,
     event_label: title || path,
@@ -81,23 +82,62 @@ export function trackPageView(path: string, title?: string, pageType?: string) {
 }
 
 /**
- * Detect page type from path
+ * Detect page type from path — covers every registered route.
  */
 function detectPageType(path: string): string {
   if (path === '/') return 'homepage';
+  // Article detail pages
   if (path.startsWith('/article/')) return 'article';
+  if (path.match(/^\/(tech|security|gaming|news)\/.+/)) return 'article';
+  // Guide detail
+  if (path.match(/^\/guides\/.+/)) return 'guide_detail';
+  // Category / section listing pages
   if (path.startsWith('/tech')) return 'category';
   if (path.startsWith('/security')) return 'category';
   if (path.startsWith('/gaming')) return 'category';
   if (path.startsWith('/news')) return 'category';
-  if (path.startsWith('/topics')) return 'topics';
+  if (path.startsWith('/reviews')) return 'category';
+  if (path.startsWith('/ai-pulse')) return 'category';
+  if (path.startsWith('/startups')) return 'category';
+  if (path.startsWith('/explore')) return 'category';
+  if (path.startsWith('/nexus-intersection')) return 'category';
+  // Content hubs
   if (path.startsWith('/guides')) return 'guides';
-  if (path.startsWith('/blog-series')) return 'blog-series';
+  if (path.startsWith('/tutorials')) return 'tutorials';
+  if (path.startsWith('/topics')) return 'topics';
+  if (path.startsWith('/blog')) return 'blog';
+  // Tools
+  if (path.startsWith('/tools')) return 'tool';
+  if (path.startsWith('/breach-sim')) return 'tool';
+  if (path.startsWith('/security-score')) return 'tool';
+  if (path.startsWith('/live-threat-dashboard')) return 'tool';
+  if (path.startsWith('/security-profile')) return 'tool';
+  if (path.startsWith('/community-threats')) return 'tool';
+  if (path.startsWith('/nexus-studio')) return 'tool';
+  if (path.startsWith('/learn')) return 'tool';
+  if (path.startsWith('/pulse')) return 'tool';
+  // Community / live
+  if (path.startsWith('/forums')) return 'community';
+  if (path.startsWith('/live')) return 'live';
+  if (path.startsWith('/podcasts')) return 'podcasts';
+  // User / account
+  if (path.startsWith('/author/')) return 'author';
+  if (path.startsWith('/profile')) return 'account';
+  if (path.startsWith('/bookmarks')) return 'account';
+  if (path.startsWith('/signin') || path.startsWith('/signup') || path.startsWith('/auth')) return 'auth';
+  // Roadmap
+  if (path.startsWith('/roadmap')) return 'roadmap';
+  // Static / legal
+  if (['/about', '/contact', '/privacy', '/terms', '/editorial', '/media',
+       '/disclosure', '/quality-guidelines', '/content-policy',
+       '/community-guidelines', '/sitemap'].some(p => path.startsWith(p))) return 'static';
+  // Search
+  if (path.startsWith('/search')) return 'search';
   return 'other';
 }
 
 /**
- * Get content group for GA4 reporting
+ * Get content group for GA4 reporting — maps every route to a named group.
  */
 function getContentGroup(path: string): string {
   if (path === '/') return 'homepage';
@@ -105,10 +145,28 @@ function getContentGroup(path: string): string {
   if (path.startsWith('/security')) return 'security';
   if (path.startsWith('/gaming')) return 'gaming';
   if (path.startsWith('/news')) return 'news';
-  if (path.startsWith('/article/')) {
-    // Extract niche from article if possible
-    return 'articles';
-  }
+  if (path.startsWith('/article/')) return 'articles';
+  if (path.startsWith('/guides')) return 'guides';
+  if (path.startsWith('/tutorials')) return 'tutorials';
+  if (path.startsWith('/reviews')) return 'reviews';
+  if (path.startsWith('/ai-pulse')) return 'ai';
+  if (path.startsWith('/startups')) return 'startups';
+  if (path.startsWith('/explore')) return 'explore';
+  if (path.startsWith('/topics')) return 'topics';
+  if (path.startsWith('/blog')) return 'blog';
+  if (path.startsWith('/tools') || path.startsWith('/breach-sim') ||
+      path.startsWith('/security-score') || path.startsWith('/live-threat-dashboard') ||
+      path.startsWith('/security-profile') || path.startsWith('/community-threats') ||
+      path.startsWith('/nexus-studio') || path.startsWith('/learn') || path.startsWith('/pulse')) return 'tools';
+  if (path.startsWith('/nexus-intersection')) return 'nexus';
+  if (path.startsWith('/forums') || path.startsWith('/community')) return 'community';
+  if (path.startsWith('/podcasts')) return 'podcasts';
+  if (path.startsWith('/roadmap')) return 'roadmap';
+  if (path.startsWith('/author/')) return 'authors';
+  if (path.startsWith('/search')) return 'search';
+  if (['/about', '/contact', '/privacy', '/terms', '/editorial', '/media',
+       '/disclosure', '/quality-guidelines', '/content-policy',
+       '/community-guidelines', '/sitemap'].some(p => path.startsWith(p))) return 'static';
   return 'other';
 }
 
