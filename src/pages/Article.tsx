@@ -30,6 +30,7 @@ import { FAQSection } from '@/components/seo/FAQSection';
 import { QuickAnswer } from '@/components/seo/QuickAnswer';
 import { TableOfContents } from '@/components/seo/TableOfContents';
 import { RelatedArticles } from '@/components/RelatedArticles';
+import { NextArticle } from '@/components/gaming/NextArticle';
 import { LazyImage } from '@/components/ui/lazy-image';
 import { AdPlacement } from '@/components/ads/AdPlacement';
 import { authorProfiles } from '@/data/authorData';
@@ -496,6 +497,8 @@ export default function Article() {
             </section>
           )}
         </NexusScrollBridge>
+
+        <NextArticle currentSlug={article.slug || articleId} niche={safeNiche} />
 
         <FAQSection
           faqs={[

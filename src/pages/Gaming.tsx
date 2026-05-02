@@ -10,6 +10,7 @@ import { Badge } from '@/components/ui/badge';
 import { Gamepad2, Shield, Info } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { SecurityToolsStrip } from '@/components/security/SecurityToolsStrip';
+import { GamingNewsletterSignup } from '@/components/gaming/GamingNewsletterSignup';
 import { Skeleton } from '@/components/ui/skeleton';
 import { SEOHead } from '@/components/seo/SEOHead';
 import { SEO } from '@/components/SEO';
@@ -134,6 +135,11 @@ export default function Gaming() {
               </Link>
             </div>
           </div>
+        </div>
+
+        {/* Gaming Newsletter Signup */}
+        <div className="mb-8">
+          <GamingNewsletterSignup source="listing" />
         </div>
 
         {/* View toggle (Ars / WIRED style) */}
