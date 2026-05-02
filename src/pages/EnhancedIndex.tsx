@@ -283,11 +283,8 @@ export default function EnhancedIndex() {
 
         <div className="relative z-10 container mx-auto px-4 text-center">
           <div className="max-w-4xl mx-auto">
-            <h1 className="text-5xl md:text-7xl font-bold text-white mb-6 leading-tight">
-              The Future of
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-nexus-cyan to-blue-400">
-                {' '}Tech Intelligence
-              </span>
+            <h1 className="text-5xl md:text-7xl font-bold mb-6 leading-tight text-transparent bg-clip-text bg-gradient-to-r from-white via-nexus-cyan to-blue-400">
+              The Future of Tech Intelligence
             </h1>
             
             <p className="text-xl md:text-2xl text-gray-300 mb-8 leading-relaxed">
@@ -422,9 +419,9 @@ export default function EnhancedIndex() {
             <div>
               <h3 className="font-semibold text-white mb-4">Categories</h3>
               <ul className="space-y-2 text-gray-400 text-sm">
-                <li><Link to="/tech" className="hover:text-nexus-cyan transition-colors">Technology</Link></li>
-                <li><Link to="/security" className="hover:text-nexus-cyan transition-colors">Security</Link></li>
-                <li><Link to="/gaming" className="hover:text-nexus-cyan transition-colors">Gaming</Link></li>
+                <li><Link to="/tech" className="hover:text-nexus-cyan transition-colors">Tech News & Innovation</Link></li>
+                <li><Link to="/security" className="hover:text-nexus-cyan transition-colors">Cybersecurity & Threats</Link></li>
+                <li><Link to="/gaming" className="hover:text-nexus-cyan transition-colors">Gaming & Esports Security</Link></li>
                 <li><Link to="/ai-pulse" className="hover:text-nexus-cyan transition-colors">AI & ML</Link></li>
               </ul>
             </div>

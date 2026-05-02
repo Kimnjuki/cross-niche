@@ -766,6 +766,12 @@ img {
   }
 }
 
+/* Section heading prefix — replaces inline <span>//</span> for SEO compliance */
+.section-heading-cyan::before { content: "//"; margin-right: 0.5rem; color: #00F0FF; }
+.section-heading-green::before { content: "//"; margin-right: 0.5rem; color: #39FF14; }
+.section-heading-pink::before { content: "//"; margin-right: 0.5rem; color: #FF007A; }
+.section-heading-purple::before { content: "//"; margin-right: 0.5rem; color: #A855F7; }
+
 /* Print Styles */
 @media print {
   .no-print {

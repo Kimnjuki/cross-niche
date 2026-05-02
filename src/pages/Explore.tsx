@@ -69,11 +69,11 @@ export default function Explore() {
             Every published article in one place. Find tech, security, and gaming coverage.
           </p>
           <div className="mt-4 flex flex-wrap gap-4 text-sm">
-            <Link to="/tech" className="text-primary hover:underline">Tech</Link>
+            <Link to="/tech" className="text-primary hover:underline">Tech News</Link>
             <span className="text-muted-foreground">·</span>
-            <Link to="/security" className="text-primary hover:underline">Security</Link>
+            <Link to="/security" className="text-primary hover:underline">Cybersecurity</Link>
             <span className="text-muted-foreground">·</span>
-            <Link to="/gaming" className="text-primary hover:underline">Gaming</Link>
+            <Link to="/gaming" className="text-primary hover:underline">Gaming Security</Link>
             <span className="text-muted-foreground">·</span>
             <Link to="/blog-series" className="text-primary hover:underline flex items-center gap-1">
               Blog series <ChevronRight className="h-4 w-4" />

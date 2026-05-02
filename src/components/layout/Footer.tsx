@@ -43,7 +43,7 @@ export function Footer() {
                 Breaking News
               </Link>
               <Link to="/startups" className="text-muted-foreground hover:text-foreground transition-colors">
-                Startups
+                Startup News & Funding
               </Link>
               <Link to="/reviews" className="text-muted-foreground hover:text-foreground transition-colors">
                 Hardware & Game Reviews

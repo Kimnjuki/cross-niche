@@ -139,13 +139,13 @@ const NotFound = () => {
             <div className="mt-6 flex flex-wrap justify-center gap-4 text-sm">
               <Link to="/blog-series" className="text-primary hover:underline">All Articles</Link>
               <span className="text-muted-foreground">•</span>
-              <Link to="/guides" className="text-primary hover:underline">Guides</Link>
+              <Link to="/guides" className="text-primary hover:underline">Security Guides</Link>
               <span className="text-muted-foreground">•</span>
-              <Link to="/topics" className="text-primary hover:underline">Topics</Link>
+              <Link to="/topics" className="text-primary hover:underline">Browse Topics</Link>
               <span className="text-muted-foreground">•</span>
-              <Link to="/about" className="text-primary hover:underline">About</Link>
+              <Link to="/about" className="text-primary hover:underline">About Us</Link>
               <span className="text-muted-foreground">•</span>
-              <Link to="/contact" className="text-primary hover:underline">Contact</Link>
+              <Link to="/contact" className="text-primary hover:underline">Contact Us</Link>
             </div>
           </div>
         </div>

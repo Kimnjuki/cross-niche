@@ -116,11 +116,11 @@ export default function Guides() {
           <div className="flex flex-wrap justify-center gap-4 text-sm">
             <Link to="/tech" className="text-primary hover:underline">Tech News</Link>
             <span className="text-muted-foreground">•</span>
-            <Link to="/security" className="text-primary hover:underline">Security</Link>
+            <Link to="/security" className="text-primary hover:underline">Cybersecurity</Link>
             <span className="text-muted-foreground">•</span>
-            <Link to="/gaming" className="text-primary hover:underline">Gaming</Link>
+            <Link to="/gaming" className="text-primary hover:underline">Gaming Security</Link>
             <span className="text-muted-foreground">•</span>
-            <Link to="/topics" className="text-primary hover:underline">Topics</Link>
+            <Link to="/topics" className="text-primary hover:underline">All Topics</Link>
           </div>
         </div>
 

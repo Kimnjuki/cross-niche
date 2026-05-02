@@ -165,8 +165,8 @@ export default function Index() {
         <section className="bg-[#0A0A0B] border-b border-[#27272A]">
           <div className="container mx-auto px-4 max-w-7xl py-6">
             <div className="flex items-center justify-between mb-4">
-              <h2 className="text-sm font-bold text-white tracking-wide">
-                <span className="text-[#00F0FF]">//</span> Featured Gaming-Security Intel
+              <h2 className="text-sm font-bold text-white tracking-wide section-heading-cyan">
+                Featured Gaming-Security Intel
               </h2>
               <Link to="/security" className="flex items-center gap-1 text-xs font-mono text-[#00F0FF]/70 hover:text-[#00F0FF]">
                 All security <ChevronRight className="h-3 w-3" />
@@ -204,8 +204,8 @@ export default function Index() {
       <section className="bg-[#0A0A0B] border-b border-[#27272A]">
         <div className="container mx-auto px-4 max-w-7xl py-6">
           <div className="flex items-center justify-between mb-4">
-            <h2 className="text-sm font-bold text-white tracking-wide">
-              <span className="text-[#39FF14]">//</span> Explore by Topic
+            <h2 className="text-sm font-bold text-white tracking-wide section-heading-green">
+              Explore by Topic
             </h2>
           </div>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
@@ -249,8 +249,8 @@ export default function Index() {
       <section className="bg-[#0A0A0B] border-b border-[#27272A]">
         <div className="container mx-auto px-4 max-w-7xl py-6">
           <div className="flex items-center justify-between mb-4">
-            <h2 className="text-sm font-bold text-white tracking-wide">
-              <span className="text-[#FF007A]">//</span> Live Tools &amp; Dashboards
+            <h2 className="text-sm font-bold text-white tracking-wide section-heading-pink">
+              Live Tools &amp; Dashboards
             </h2>
             <Link to="/tools/security-scanner" className="flex items-center gap-1 text-xs font-mono text-[#FF007A]/70 hover:text-[#FF007A]">
               All tools <ChevronRight className="h-3 w-3" />
@@ -285,8 +285,8 @@ export default function Index() {
       <section className="bg-[#0A0A0B] border-b border-[#27272A]">
         <div className="container mx-auto px-4 max-w-7xl py-6">
           <div className="flex items-center justify-between mb-4">
-            <h2 className="text-sm font-bold text-white tracking-wide">
-              <span className="text-[#A855F7]">//</span> Choose Your Path
+            <h2 className="text-sm font-bold text-white tracking-wide section-heading-purple">
+              Choose Your Path
             </h2>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
@@ -329,8 +329,8 @@ export default function Index() {
         <section className="bg-[#0A0A0B] border-b border-[#27272A]">
           <div className="container mx-auto px-4 max-w-7xl py-6">
             <div className="flex items-center justify-between mb-4">
-              <h2 className="text-sm font-bold text-white tracking-wide">
-                <span className="text-[#39FF14]">//</span> Must-Read This Week
+              <h2 className="text-sm font-bold text-white tracking-wide section-heading-green">
+                Must-Read This Week
               </h2>
               <Link to="/explore" className="flex items-center gap-1 text-xs font-mono text-[#39FF14]/70 hover:text-[#39FF14]">
                 All articles <ChevronRight className="h-3 w-3" />

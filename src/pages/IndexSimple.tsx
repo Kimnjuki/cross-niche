@@ -35,11 +35,8 @@ export default function IndexSimple() {
       <div className="relative bg-gradient-to-br from-gray-900 via-blue-900 to-black py-20">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
-            <h1 className="text-5xl md:text-7xl font-bold text-white mb-6 leading-tight">
-              The Future of
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400">
-                {' '}Tech Intelligence
-              </span>
+            <h1 className="text-5xl md:text-7xl font-bold mb-6 leading-tight text-transparent bg-clip-text bg-gradient-to-r from-white via-blue-400 to-purple-400">
+              The Future of Tech Intelligence
             </h1>
             
             <p className="text-xl md:text-2xl text-gray-300 mb-8 leading-relaxed max-w-3xl mx-auto">
