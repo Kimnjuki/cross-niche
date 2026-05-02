@@ -77,6 +77,20 @@ export default defineSchema({
     publicProfile: v.optional(v.boolean()),
     headline: v.optional(v.string()),
     primaryPersona: v.optional(v.union(v.literal("gamer"), v.literal("security_enthusiast"), v.literal("builder"))),
+    // Growth v2.0 — lifecycle & attribution
+    lifecycleStage: v.optional(v.union(
+      v.literal("visitor"),
+      v.literal("subscriber"),
+      v.literal("registered"),
+      v.literal("active"),
+      v.literal("premium"),
+      v.literal("churned")
+    )),
+    sourceChannel: v.optional(v.string()), // "organic" | "direct" | "newsletter" | "social" | "referral" | "paid"
+    utmSource: v.optional(v.string()),
+    utmMedium: v.optional(v.string()),
+    utmCampaign: v.optional(v.string()),
+    firstVisitAt: v.optional(v.number()), // ms timestamp of first visit
   })
     .index("by_supabase_user_id", ["supabaseUserId"])
     .index("by_email", ["email"])
@@ -499,6 +513,11 @@ export default defineSchema({
     openRate: v.optional(v.float64()),
     clickRate: v.optional(v.float64()),
     isActive: v.boolean(),
+    // Growth v2.0 — source attribution
+    sourceChannel: v.optional(v.string()), // "organic" | "tool_cta" | "social" | "referral" | "paid"
+    utmSource: v.optional(v.string()),
+    utmMedium: v.optional(v.string()),
+    utmCampaign: v.optional(v.string()),
   })
     .index("by_email", ["email"])
     .index("by_active", ["isActive"])
@@ -577,6 +596,9 @@ export default defineSchema({
     avgTimeOnPage: v.number(), // seconds
     bounceRate: v.number(), // 0–100
     organicTraffic: v.number(),
+    // Growth v2.0 — revenue attribution per content piece
+    adRevenue: v.optional(v.float64()),        // USD from programmatic ads
+    affiliateRevenue: v.optional(v.float64()), // USD from affiliate clicks/conversions
   })
     .index("by_content_date", ["contentId", "date"])
     .index("by_date", ["date"]),
@@ -613,6 +635,19 @@ export default defineSchema({
     context: v.string(),
     createdAt: v.number(), // ms
     clickCount: v.optional(v.number()),
+    // Growth v2.0 — CTA placement signals
+    positionInContent: v.optional(v.union(
+      v.literal("top"),
+      v.literal("middle"),
+      v.literal("bottom"),
+      v.literal("sidebar")
+    )),
+    ctaType: v.optional(v.union(
+      v.literal("text"),
+      v.literal("button"),
+      v.literal("image"),
+      v.literal("contextual")
+    )),
   })
     .index("by_source", ["sourceContentId"])
     .index("by_target", ["targetContentId"]),
@@ -1303,4 +1338,167 @@ export default defineSchema({
   })
     .index("by_session", ["sessionId", "generatedAt"])
     .index("by_query", ["query", "generatedAt"]),
+
+  // ════════════════════════════════════════════════════════════════════════════
+  // GROWTH v2.0 — Revenue, Experiments, Attribution & GEO
+  // ════════════════════════════════════════════════════════════════════════════
+
+  // ─── A/B Experiments ────────────────────────────────────────────────────
+  experiments: defineTable({
+    name: v.string(),
+    hypothesis: v.string(),
+    variants: v.array(v.object({
+      id: v.string(),
+      name: v.string(),
+      description: v.optional(v.string()),
+      weight: v.number(), // 0–100 traffic allocation %
+    })),
+    status: v.union(
+      v.literal("draft"),
+      v.literal("running"),
+      v.literal("paused"),
+      v.literal("concluded")
+    ),
+    targetAudience: v.optional(v.string()), // "all" | "registered" | "premium" | "anonymous"
+    metric: v.string(), // primary success metric (e.g. "newsletter_signup_rate")
+    winnerVariantId: v.optional(v.string()),
+    results: v.optional(v.any()), // structured experiment results JSON
+    startedAt: v.optional(v.number()),
+    endedAt: v.optional(v.number()),
+    createdAt: v.number(),
+    createdBy: v.optional(v.id("users")),
+  })
+    .index("by_status", ["status", "createdAt"])
+    .index("by_name", ["name"]),
+
+  // Per-user/session variant assignments
+  experimentAssignments: defineTable({
+    experimentId: v.id("experiments"),
+    variantId: v.string(),
+    userId: v.optional(v.string()),
+    sessionId: v.string(),
+    assignedAt: v.number(),
+    convertedAt: v.optional(v.number()),
+    conversionValue: v.optional(v.float64()),
+  })
+    .index("by_experiment", ["experimentId", "variantId"])
+    .index("by_session", ["sessionId", "experimentId"])
+    .index("by_user", ["userId", "experimentId"]),
+
+  // ─── Affiliate Click Tracking ────────────────────────────────────────────
+  affiliateClicks: defineTable({
+    userId: v.optional(v.string()),
+    sessionId: v.string(),
+    contentId: v.optional(v.id("content")), // article that contained the link
+    productName: v.string(),
+    productUrl: v.string(),
+    affiliateNetwork: v.string(), // "amazon", "impact", "cj", "shareasale", "direct"
+    commissionRate: v.optional(v.float64()), // percentage
+    clickedAt: v.number(),
+    convertedAt: v.optional(v.number()),
+    revenueGenerated: v.optional(v.float64()), // USD
+    positionInContent: v.optional(v.string()), // "top" | "middle" | "bottom" | "sidebar"
+  })
+    .index("by_session", ["sessionId", "clickedAt"])
+    .index("by_user", ["userId", "clickedAt"])
+    .index("by_content", ["contentId", "clickedAt"])
+    .index("by_network", ["affiliateNetwork", "clickedAt"]),
+
+  // ─── Revenue Events ──────────────────────────────────────────────────────
+  revenueEvents: defineTable({
+    userId: v.optional(v.string()),
+    type: v.union(
+      v.literal("ad_impression"),
+      v.literal("ad_click"),
+      v.literal("affiliate_click"),
+      v.literal("affiliate_conversion"),
+      v.literal("subscription_start"),
+      v.literal("subscription_renewal"),
+      v.literal("subscription_cancel"),
+      v.literal("enterprise_payment")
+    ),
+    amount: v.float64(), // USD
+    currency: v.optional(v.string()), // default "USD"
+    contentId: v.optional(v.id("content")),
+    affiliateClickId: v.optional(v.id("affiliateClicks")),
+    subscriptionId: v.optional(v.id("subscriptions")),
+    enterpriseAccountId: v.optional(v.id("enterpriseAccounts")),
+    metadata: v.optional(v.any()),
+    recordedAt: v.number(),
+  })
+    .index("by_type_recorded", ["type", "recordedAt"])
+    .index("by_user", ["userId", "recordedAt"])
+    .index("by_content", ["contentId", "recordedAt"]),
+
+  // ─── Premium Subscriptions ───────────────────────────────────────────────
+  subscriptions: defineTable({
+    userId: v.string(),
+    plan: v.union(v.literal("free"), v.literal("pro"), v.literal("team")),
+    status: v.union(
+      v.literal("trialing"),
+      v.literal("active"),
+      v.literal("past_due"),
+      v.literal("cancelled")
+    ),
+    mrr: v.float64(), // monthly recurring revenue USD
+    currency: v.optional(v.string()),
+    stripeCustomerId: v.optional(v.string()),
+    stripeSubscriptionId: v.optional(v.string()),
+    startedAt: v.number(),
+    currentPeriodEnd: v.number(),
+    cancelledAt: v.optional(v.number()),
+    trialEndsAt: v.optional(v.number()),
+  })
+    .index("by_user", ["userId"])
+    .index("by_status", ["status", "currentPeriodEnd"])
+    .index("by_stripe_subscription", ["stripeSubscriptionId"]),
+
+  // ─── Enterprise Accounts (NexusGuard B2B) ───────────────────────────────
+  enterpriseAccounts: defineTable({
+    companyName: v.string(),
+    contactEmail: v.string(),
+    plan: v.union(v.literal("starter"), v.literal("professional"), v.literal("enterprise")),
+    seatCount: v.number(),
+    industries: v.array(v.string()),
+    cloudStacks: v.optional(v.array(v.string())),
+    mrr: v.float64(), // USD
+    status: v.union(
+      v.literal("trial"),
+      v.literal("active"),
+      v.literal("at_risk"),
+      v.literal("churned")
+    ),
+    createdAt: v.number(),
+    renewsAt: v.optional(v.number()),
+    accountManagerUserId: v.optional(v.id("users")),
+    apiKey: v.optional(v.string()), // hashed API key for NexusGuard API access
+    notes: v.optional(v.string()),
+  })
+    .index("by_status", ["status", "createdAt"])
+    .index("by_contact_email", ["contactEmail"])
+    .index("by_plan", ["plan", "status"]),
+
+  // ─── GEO Signals (Generative Engine Optimization) ───────────────────────
+  // Track when The Grid Nexus content is cited by AI platforms
+  geoSignals: defineTable({
+    contentId: v.optional(v.id("content")),
+    query: v.string(), // the query that surfaced the citation
+    aiPlatform: v.union(
+      v.literal("chatgpt"),
+      v.literal("gemini"),
+      v.literal("perplexity"),
+      v.literal("claude"),
+      v.literal("copilot"),
+      v.literal("other")
+    ),
+    citationDetected: v.boolean(),
+    citationUrl: v.optional(v.string()), // direct link if platform provides it
+    contextSnippet: v.optional(v.string()), // excerpt from AI response mentioning the site
+    sentimentScore: v.optional(v.float64()), // -1 to 1
+    detectedAt: v.number(),
+    detectedBy: v.optional(v.string()), // "manual" | "crawler" | "api"
+  })
+    .index("by_platform_detected", ["aiPlatform", "detectedAt"])
+    .index("by_content", ["contentId", "detectedAt"])
+    .index("by_citation", ["citationDetected", "detectedAt"]),
 });
