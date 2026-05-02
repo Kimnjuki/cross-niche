@@ -9,7 +9,7 @@ import { SafeConvexProvider } from "@/components/SafeConvexProvider";
 import { EnhancedErrorBoundary } from "@/components/error/EnhancedErrorBoundary";
 import { GA4PageTracker } from "./components/analytics/GA4PageTracker";
 import { ThemeProvider } from "./components/theme/ThemeProvider";
-import { CanonicalLink } from "./components/seo/CanonicalLink";
+
 import { LoadingState } from "./components/LoadingState";
 
 /**
@@ -141,7 +141,6 @@ const App = () => (
           <ThemeProvider>
             <AuthProvider>
               <TooltipProvider>
-                <CanonicalLink />
                 <Toaster />
                 <Sonner />
                 <GA4PageTracker />

@@ -13,7 +13,6 @@ import { SecurityToolsStrip } from '@/components/security/SecurityToolsStrip';
 import { GamingNewsletterSignup } from '@/components/gaming/GamingNewsletterSignup';
 import { Skeleton } from '@/components/ui/skeleton';
 import { SEOHead } from '@/components/seo/SEOHead';
-import { SEO } from '@/components/SEO';
 import { getPageMetadata } from '@/lib/seo/pageMetadata';
 import { LandingPageTracker } from '@/components/analytics/LandingPageTracker';
 
@@ -38,12 +37,6 @@ export default function Gaming() {
   return (
     <Layout>
       <LandingPageTracker pageType="category" articlesViewed={gamingArticles.length} />
-      <SEO
-        title={meta.title}
-        description={meta.description}
-        canonical="https://thegridnexus.com/gaming"
-        ogType="website"
-      />
       <SEOHead
         title={meta.title}
         description={meta.description}

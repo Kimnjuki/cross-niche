@@ -8,7 +8,6 @@ import { mapContentToArticles } from '@/lib/contentMapper';
 import { Cpu } from 'lucide-react';
 import { Skeleton } from '@/components/ui/skeleton';
 import { SEOHead } from '@/components/seo/SEOHead';
-import { SEO } from '@/components/SEO';
 import { getPageMetadata } from '@/lib/seo/pageMetadata';
 import { Link } from 'react-router-dom';
 import { LandingPageTracker } from '@/components/analytics/LandingPageTracker';
@@ -27,12 +26,6 @@ export default function Tech() {
   return (
     <Layout>
       <LandingPageTracker pageType="category" articlesViewed={techArticles.length} />
-      <SEO
-        title={meta.title}
-        description={meta.description}
-        canonical="https://thegridnexus.com/tech"
-        ogType="website"
-      />
       <SEOHead
         title={meta.title}
         description={meta.description}

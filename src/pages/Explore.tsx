@@ -46,12 +46,6 @@ export default function Explore() {
   const meta = getPageMetadata('/explore');
   return (
     <Layout>
-      <SEO
-        title={meta.title}
-        description={meta.description}
-        canonical="https://thegridnexus.com/explore"
-        ogType="website"
-      />
       <SEOHead
         title={meta.title}
         description={meta.description}

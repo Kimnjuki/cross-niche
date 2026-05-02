@@ -123,7 +123,12 @@ export default function Index() {
   if (!isLoading && sortedArticles.length === 0) {
     return (
       <Layout showPulseSidebar={false}>
-        <SEO title={homeMeta.title} description={homeMeta.description} canonical="https://thegridnexus.com/" ogType="website" />
+        <SEOHead
+          title={homeMeta.title}
+          description={homeMeta.description}
+          url={typeof window !== 'undefined' ? window.location.href : ''}
+          type="website"
+        />
         <HeroCommandCenter />
         <CommandDashboard />
         <section className="container mx-auto px-4 py-16 max-w-7xl text-center">
@@ -142,7 +147,6 @@ export default function Index() {
   return (
     <Layout showPulseSidebar={false}>
       <LandingPageTracker pageType="homepage" articlesViewed={sortedArticles.length} />
-      <SEO title={homeMeta.title} description={homeMeta.description} canonical="https://thegridnexus.com/" ogType="website" />
       <SEOHead
         title={homeMeta.title}
         description={homeMeta.description}

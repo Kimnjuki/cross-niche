@@ -64,12 +64,6 @@ export default function GamingSecurityGuides() {
 
   return (
     <Layout>
-      <SEO
-        title="Gaming Security Guides — The Grid Nexus"
-        description="Comprehensive gaming security guides covering account protection, 2FA setup, threat awareness, and PC hardening. Written for every skill level."
-        canonical="https://thegridnexus.com/gaming/security-guides"
-        ogType="website"
-      />
       <SEOHead
         title="Gaming Security Guides — The Grid Nexus"
         description="Comprehensive gaming security guides covering account protection, 2FA setup, threat awareness, and PC hardening."

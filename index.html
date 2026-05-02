@@ -53,16 +53,22 @@
           }
         }
         document.title = m.t;
+        // Create or update meta name=description (static one was removed to avoid duplicate tags)
         var descEl = document.querySelector('meta[name="description"]');
-        if (descEl) descEl.setAttribute('content', m.d);
+        if (!descEl) { descEl = document.createElement('meta'); descEl.setAttribute('name', 'description'); document.head.appendChild(descEl); }
+        descEl.setAttribute('content', m.d);
+        // Create or update og:title/description
         var ogT = document.querySelector('meta[property="og:title"]');
         if (ogT) ogT.setAttribute('content', m.t);
         var ogD = document.querySelector('meta[property="og:description"]');
-        if (ogD) ogD.setAttribute('content', m.d);
+        if (!ogD) { ogD = document.createElement('meta'); ogD.setAttribute('property', 'og:description'); document.head.appendChild(ogD); }
+        ogD.setAttribute('content', m.d);
+        // Create or update twitter:title/description
         var twT = document.querySelector('meta[name="twitter:title"]');
         if (twT) twT.setAttribute('content', m.t);
         var twD = document.querySelector('meta[name="twitter:description"]');
-        if (twD) twD.setAttribute('content', m.d);
+        if (!twD) { twD = document.createElement('meta'); twD.setAttribute('name', 'twitter:description'); document.head.appendChild(twD); }
+        twD.setAttribute('content', m.d);
       })();
     </script>
 
@@ -107,9 +113,8 @@
     <meta name="geo.region" content="US" />
     <meta name="geo.placename" content="United States" />
 
-    <!-- ── Titles & descriptions (overwritten above by per-route script) ─ -->
+    <!-- ── Default title (overwritten by per-route pre-JS script) ── -->
     <title>The Grid Nexus – Tech, Security &amp; Gaming News</title>
-    <meta name="description" content="Breaking technology news, cybersecurity analysis, and gaming guides. AI insights, security intelligence, and expert tech coverage. Stay ahead." />
     <meta name="keywords" content="technology news, cybersecurity, gaming, tech intelligence, AI technology, cyber threats, gaming hardware, tech reviews, security updates, gaming industry" />
     <meta name="author" content="The Grid Nexus" />
 
@@ -122,7 +127,6 @@
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://thegridnexus.com/" />
     <meta property="og:title" content="The Grid Nexus – Tech, Security &amp; Gaming News" />
-    <meta property="og:description" content="Breaking tech news, cybersecurity analysis, and gaming guides. AI insights and expert coverage." />
     <meta property="og:image" content="https://thegridnexus.com/og-image.jpg" />
     <meta property="og:image:secure_url" content="https://thegridnexus.com/og-image.jpg" />
     <meta property="og:image:width" content="1200" />
@@ -138,7 +142,6 @@
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:url" content="https://thegridnexus.com/" />
     <meta name="twitter:title" content="The Grid Nexus – Tech, Security &amp; Gaming News" />
-    <meta name="twitter:description" content="Breaking tech news, cybersecurity analysis, and gaming guides. AI insights and expert coverage." />
     <meta name="twitter:image" content="https://thegridnexus.com/og-image.jpg" />
     <meta name="twitter:image:alt" content="The Grid Nexus – Tech, Security &amp; Gaming Intelligence" />
     <meta name="twitter:site" content="@thegridnexus" />

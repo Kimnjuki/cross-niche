@@ -24,7 +24,6 @@ import { useReadingTracker, useUserBehavior } from '@/hooks/useUserBehavior';
 import { AITools } from '@/components/ai/AITools';
 import { EnhancedShareBar } from '@/components/sharing/EnhancedShareBar';
 import { SEOHead } from '@/components/seo/SEOHead';
-import { SEO } from '@/components/SEO';
 import { Breadcrumbs } from '@/components/seo/Breadcrumbs';
 import { FAQSection } from '@/components/seo/FAQSection';
 import { QuickAnswer } from '@/components/seo/QuickAnswer';
@@ -215,13 +214,6 @@ export default function Article() {
   // 12. RENDER (article is guaranteed to exist and have an ID)
   return (
     <Layout>
-      <SEO
-        title={`${article.title || 'Untitled Article'} | The Grid Nexus`}
-        description={article.excerpt || `Read ${article.title || 'this article'} on The Grid Nexus - expert analysis and insights.`}
-        canonical={`https://thegridnexus.com/article/${article.slug || articleId}`}
-        ogType="article"
-        ogImage={article.imageUrl}
-      />
       {/* Build author schema from article author */}
       {(() => {
         const authName = article.author ?? 'The Grid Nexus Editorial Team';
@@ -304,9 +296,7 @@ export default function Article() {
             )}
           </div>
 
-          <h1 className="font-display font-bold text-3xl md:text-5xl mb-4">
-            {article.title ?? 'Untitled'}
-          </h1>
+          {/* h1 removed — already rendered above (was causing duplicate H1 crawl error) */}
 
           <p className="text-xl text-muted-foreground mb-6">
             {article.excerpt ?? ''}

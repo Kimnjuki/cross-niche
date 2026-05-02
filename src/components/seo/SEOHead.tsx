@@ -73,7 +73,7 @@ export function SEOHead({
   const optimizedTitle       = optimizeTitle(rawTitle, 60);
   const optimizedDescription = optimizeMetaDescription(rawDescription, 160);
 
-  // ── Canonical URL (strip query + fragment, always HTTPS production) ────
+  // ── Canonical URL (strip query + fragment + trailing slash, always HTTPS) ──
   function buildCanonical(href: string): string {
     try {
       const parsed = new URL(href.split('?')[0].split('#')[0]);
@@ -81,7 +81,12 @@ export function SEOHead({
         typeof import.meta !== 'undefined' && import.meta.env?.PROD
           ? BASE_URL
           : parsed.origin;
-      return `${origin}${parsed.pathname}`;
+      let path = parsed.pathname;
+      // Normalise trailing slash: keep only for root '/', strip everywhere else
+      if (path !== '/' && path.endsWith('/')) {
+        path = path.slice(0, -1);
+      }
+      return `${origin}${path}`;
     } catch {
       return href.split('?')[0].split('#')[0];
     }
