@@ -1,14 +1,18 @@
 /**
- * Convex schema – migrated from Supabase (thegridnexus.com)
+ * THE GRID NEXUS — CONVEX SCHEMA v2.0
  *
- * Tables map to: content, users, comments, content_niches, content_tags,
- * content_feeds, feeds, niches, tags, media, content_tables, user_bookmarks.
- *
- * Editorial pipeline fields (editorialLevel, factChecks, editorialStandards,
- * contentType editorial_brief|threat_alert|roadmap_report) align with
- * config/adsense-strategy-thegridnexus.json. We keep string authorId and
- * session userIds where the app already depends on them; optional v.id("users")
- * links are added for stricter relations when you migrate.
+ * ✅ Added: affiliateEvents (affiliate click/conversion tracking)
+ * ✅ Added: subscriptions (premium subscription state)
+ * ✅ Added: experiments + experimentAssignments (A/B testing)
+ * ✅ Added: enterpriseAccounts + enterpriseMembers (NexusGuard B2B)
+ * ✅ Added: geoVisibility (AI crawler / GEO signal tracking)
+ * ✅ Added: revenueEvents (unified revenue event log)
+ * ✅ Modified: users — lifecycleStage, source, accountType, enterpriseId, referredBy
+ * ✅ Modified: newsletterSubscribers — source
+ * ✅ Modified: contentAnalytics — adRevenue, affiliateRevenue, adImpressions
+ * ✅ Modified: internalLinks — positionInContent, ctaType
+ * ✅ Modified: seoMetrics — newsletterSubscribers, registeredUsers, premiumUsers, totalRevenue, aiReferralVisits
+ * ✅ Modified: content — affiliateMeta, geoOptimized, targetAudience
  *
  * Use this with: npx convex dev (push schema)
  */
@@ -77,28 +81,29 @@ export default defineSchema({
     publicProfile: v.optional(v.boolean()),
     headline: v.optional(v.string()),
     primaryPersona: v.optional(v.union(v.literal("gamer"), v.literal("security_enthusiast"), v.literal("builder"))),
-    // Growth v2.0 — lifecycle & attribution
+    // Growth v2.0 — lifecycle, attribution & B2B
     lifecycleStage: v.optional(v.union(
       v.literal("visitor"),
-      v.literal("subscriber"),
-      v.literal("registered"),
-      v.literal("active"),
-      v.literal("premium"),
+      v.literal("free_user"),
+      v.literal("newsletter_only"),
+      v.literal("paying_individual"),
+      v.literal("enterprise_contact"),
       v.literal("churned")
     )),
-    sourceChannel: v.optional(v.string()), // "organic" | "direct" | "newsletter" | "social" | "referral" | "paid"
-    utmSource: v.optional(v.string()),
-    utmMedium: v.optional(v.string()),
-    utmCampaign: v.optional(v.string()),
+    source: v.optional(v.string()), // acquisition channel: "organic" | "direct" | "newsletter" | "social" | "referral" | "paid"
+    accountType: v.optional(v.union(v.literal("personal"), v.literal("enterprise"))),
+    enterpriseId: v.optional(v.id("enterpriseAccounts")),
+    referredBy: v.optional(v.string()), // referral code or userId
     firstVisitAt: v.optional(v.number()), // ms timestamp of first visit
   })
     .index("by_supabase_user_id", ["supabaseUserId"])
     .index("by_email", ["email"])
     .index("by_username", ["username"])
-    // CRITICAL: Add user performance indexes
     .index("by_created_at", ["createdAt"])
     .index("by_last_login", ["lastLoginAt"])
-    .index("by_is_active", ["isActive"]),
+    .index("by_is_active", ["isActive"])
+    .index("by_lifecycle_stage", ["lifecycleStage"])
+    .index("by_enterprise", ["enterpriseId"]),
 
   // ─── Content (core) ─────────────────────────────────────────────────────
   // For listPublished/listTrending: set publishedAt (ms) on published items so by_status_published_at ordering is correct.
@@ -167,6 +172,21 @@ export default defineSchema({
     ),
     factCheckId: v.optional(v.id("factChecks")),
     isEditorialSelection: v.optional(v.boolean()),
+    // Growth v2.0 — monetization & GEO signals
+    affiliateMeta: v.optional(v.object({
+      program: v.string(),
+      payoutRate: v.float64(),
+      trackingUrl: v.string(),
+      productSlug: v.optional(v.string()),
+    })),
+    geoOptimized: v.optional(v.boolean()),
+    targetAudience: v.optional(v.union(
+      v.literal("gamer"),
+      v.literal("security_pro"),
+      v.literal("developer"),
+      v.literal("general"),
+      v.literal("enterprise")
+    )),
   })
     .index("by_slug", ["slug"])
     .index("by_status", ["status"])
@@ -174,12 +194,12 @@ export default defineSchema({
     .index("by_legacy_id", ["legacyId"])
     .index("by_externalId", ["externalId"])
     .index("by_publishedAt", ["publishedAt"])
-    // CRITICAL: Add composite indexes for performance
     .index("by_author_status", ["authorId", "status"])
     .index("by_author_user_id", ["authorUserId"])
     .index("by_is_featured", ["isFeatured", "publishedAt"])
     .index("by_is_breaking", ["isBreaking", "publishedAt"])
-    .index("by_is_premium", ["isPremium", "publishedAt"]),
+    .index("by_is_premium", ["isPremium", "publishedAt"])
+    .index("by_target_audience", ["targetAudience", "publishedAt"]),
 
   // ─── Editorial & fact-checking (AdSense / trust signals) ───────────────
   factChecks: defineTable({
@@ -514,10 +534,7 @@ export default defineSchema({
     clickRate: v.optional(v.float64()),
     isActive: v.boolean(),
     // Growth v2.0 — source attribution
-    sourceChannel: v.optional(v.string()), // "organic" | "tool_cta" | "social" | "referral" | "paid"
-    utmSource: v.optional(v.string()),
-    utmMedium: v.optional(v.string()),
-    utmCampaign: v.optional(v.string()),
+    source: v.optional(v.string()), // "organic" | "tool_cta" | "social" | "referral" | "paid"
   })
     .index("by_email", ["email"])
     .index("by_active", ["isActive"])
@@ -599,6 +616,7 @@ export default defineSchema({
     // Growth v2.0 — revenue attribution per content piece
     adRevenue: v.optional(v.float64()),        // USD from programmatic ads
     affiliateRevenue: v.optional(v.float64()), // USD from affiliate clicks/conversions
+    adImpressions: v.optional(v.float64()),    // raw ad impression count
   })
     .index("by_content_date", ["contentId", "date"])
     .index("by_date", ["date"]),
@@ -734,6 +752,12 @@ export default defineSchema({
     criticalIssues: v.optional(v.number()),
     avgPageSpeed: v.optional(v.number()),
     mobileUsability: v.optional(v.number()),
+    // Growth v2.0 — consolidated growth KPIs
+    newsletterSubscribers: v.optional(v.float64()),
+    registeredUsers: v.optional(v.float64()),
+    premiumUsers: v.optional(v.float64()),
+    totalRevenue: v.optional(v.float64()), // USD, all streams combined
+    aiReferralVisits: v.optional(v.float64()), // visits arriving from AI platforms (GEO)
   }).index("by_date", ["date"]),
 
   seoAudits: defineTable({
@@ -1385,8 +1409,8 @@ export default defineSchema({
     .index("by_session", ["sessionId", "experimentId"])
     .index("by_user", ["userId", "experimentId"]),
 
-  // ─── Affiliate Click Tracking ────────────────────────────────────────────
-  affiliateClicks: defineTable({
+  // ─── Affiliate Event Tracking ────────────────────────────────────────────
+  affiliateEvents: defineTable({
     userId: v.optional(v.string()),
     sessionId: v.string(),
     contentId: v.optional(v.id("content")), // article that contained the link
@@ -1420,7 +1444,7 @@ export default defineSchema({
     amount: v.float64(), // USD
     currency: v.optional(v.string()), // default "USD"
     contentId: v.optional(v.id("content")),
-    affiliateClickId: v.optional(v.id("affiliateClicks")),
+    affiliateEventId: v.optional(v.id("affiliateEvents")),
     subscriptionId: v.optional(v.id("subscriptions")),
     enterpriseAccountId: v.optional(v.id("enterpriseAccounts")),
     metadata: v.optional(v.any()),
@@ -1478,9 +1502,9 @@ export default defineSchema({
     .index("by_contact_email", ["contactEmail"])
     .index("by_plan", ["plan", "status"]),
 
-  // ─── GEO Signals (Generative Engine Optimization) ───────────────────────
+  // ─── GEO Visibility (Generative Engine Optimization) ────────────────────
   // Track when The Grid Nexus content is cited by AI platforms
-  geoSignals: defineTable({
+  geoVisibility: defineTable({
     contentId: v.optional(v.id("content")),
     query: v.string(), // the query that surfaced the citation
     aiPlatform: v.union(
@@ -1501,4 +1525,28 @@ export default defineSchema({
     .index("by_platform_detected", ["aiPlatform", "detectedAt"])
     .index("by_content", ["contentId", "detectedAt"])
     .index("by_citation", ["citationDetected", "detectedAt"]),
+
+  // ─── Enterprise Members (NexusGuard B2B seat management) ─────────────────
+  enterpriseMembers: defineTable({
+    enterpriseId: v.id("enterpriseAccounts"),
+    userId: v.optional(v.id("users")),
+    email: v.string(),
+    role: v.union(
+      v.literal("admin"),
+      v.literal("analyst"),
+      v.literal("viewer")
+    ),
+    invitedAt: v.number(),
+    acceptedAt: v.optional(v.number()),
+    status: v.union(
+      v.literal("invited"),
+      v.literal("active"),
+      v.literal("suspended"),
+      v.literal("removed")
+    ),
+    invitedBy: v.optional(v.id("users")),
+  })
+    .index("by_enterprise", ["enterpriseId", "status"])
+    .index("by_user", ["userId"])
+    .index("by_email", ["email"]),
 });
