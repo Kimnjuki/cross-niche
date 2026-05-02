@@ -60,7 +60,13 @@ const FEED_SLUGS = [
 
 function articleLink(article: Article | null | undefined): string {
   if (!article) return '/';
-  return `/article/${article.slug ?? article.id ?? ''}`;
+  const slug = article.slug ?? article.id ?? '';
+  const niche = article.niche?.toLowerCase() ?? '';
+  // Use niche-prefixed paths for better SEO (niche pages are content hubs)
+  if (niche && ['tech', 'security', 'gaming'].includes(niche)) {
+    return `/${niche}/${slug}`;
+  }
+  return `/article/${slug}`;
 }
 
 function safeArticleId(article: Article | null | undefined): string {

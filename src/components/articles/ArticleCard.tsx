@@ -70,7 +70,12 @@ export function ArticleCard({ article, variant = 'default', onArticleClick }: Ar
   if (!article) return null;
 
   const articleId = safeArticleId(article);
-  const articleUrl = `/article/${article.slug ?? article.id ?? articleId}`;
+  // Build URL with niche prefix for SEO (niche pages are content hubs)
+  const niche = article.niche?.toLowerCase() ?? '';
+  const articleSlug = article.slug ?? article.id ?? articleId;
+  const articleUrl = niche && ['tech', 'security', 'gaming'].includes(niche)
+    ? `/${niche}/${articleSlug}`
+    : `/article/${articleSlug}`;
   const styles = nicheStyles[article.niche ?? 'tech'];
   const placeholderFallback = getPlaceholderByNiche(article.niche ?? 'tech', article.slug ?? article.id ?? articleId);
   const imageUrl = secureImageUrl(article.imageUrl, placeholderFallback);
