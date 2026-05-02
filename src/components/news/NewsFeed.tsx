@@ -21,6 +21,8 @@ import { formatCompactRelativeTime } from '@/lib/timeUtils';
 import { LazyImage } from '@/components/ui/lazy-image';
 import { getPlaceholderImage, secureImageUrl } from '@/lib/placeholderImages';
 import { useConvexDisabled } from '@/components/SafeConvexProvider';
+import { MOCK_NEWS } from '@/data/mockNews';
+import type { MockNewsItem } from '@/data/mockNews';
 import { cn } from '@/lib/utils';
 
 interface NewsItem {
@@ -246,14 +248,36 @@ export function NewsFeed({
   const items: NewsItem[] = merged;
 
   if (isConvexDisabled) {
+    const items: NewsItem[] = MOCK_NEWS.slice(0, limit).map(item => ({
+      _id: item._id,
+      id: item.slug,
+      title: item.title,
+      slug: item.slug,
+      excerpt: item.excerpt,
+      published_at: item.published_at,
+      publishedAt: item.publishedAt ?? null,
+      featured_image_url: item.featured_image_url,
+      source: item.source ?? 'The Grid Nexus',
+      isAutomated: item.isAutomated ?? false,
+      originalUrl: item.originalUrl ?? null,
+      feed_name: item.feed_name,
+    }));
+
     return (
       <section className={cn('py-8', className)}>
         {showTitle && (
-          <h2 className="font-display font-bold text-2xl mb-6">{title}</h2>
+          <div className="flex items-center gap-2 mb-6">
+            <h2 className="font-display font-bold text-2xl">{title}</h2>
+            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-medium bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-400">
+              Latest
+            </span>
+          </div>
         )}
-        <p className="text-muted-foreground text-sm py-8 text-center">
-          News feed requires Convex connection. Enable VITE_CONVEX_URL to see ingested headlines.
-        </p>
+        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+          {items.map((item, index) => (
+            <NewsCard key={item._id} item={item} index={index} />
+          ))}
+        </div>
       </section>
     );
   }
