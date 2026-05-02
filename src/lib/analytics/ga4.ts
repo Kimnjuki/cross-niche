@@ -1,7 +1,7 @@
 /**
  * Google Analytics 4 Implementation
  * Comprehensive event tracking for SEO and content performance
- * Aligned with index.html gtag (G-TJ1VXE91NE) - avoids duplicate script load
+ * Aligned with index.html gtag (G-XMGRJBSN5Y) - avoids duplicate script load
  */
 
 declare global {
@@ -12,7 +12,7 @@ declare global {
 }
 
 // GA4 Measurement ID - must match index.html; env override for flexibility
-const GA4_MEASUREMENT_ID = import.meta.env.VITE_GA4_MEASUREMENT_ID || 'G-TJ1VXE91NE';
+const GA4_MEASUREMENT_ID = import.meta.env.VITE_GA4_MEASUREMENT_ID || 'G-XMGRJBSN5Y';
 
 /**
  * Initialize GA4 - uses existing gtag from index.html when present
@@ -38,9 +38,10 @@ export function initGA4() {
   }
 
   // Configure GA4 (safe to call multiple times)
+  // send_page_view: false — trackPageView() called by GA4PageTracker owns page views
   window.gtag('js', new Date());
   window.gtag('config', GA4_MEASUREMENT_ID, {
-    send_page_view: true,
+    send_page_view: false,
     page_path: window.location.pathname,
     page_title: document.title,
     page_location: window.location.href,

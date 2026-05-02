@@ -12,7 +12,7 @@ function injectGa4Id(mode: string) {
       order: "pre" as const,
       handler(html: string) {
         const env = loadEnv(mode, process.cwd(), "");
-        const gaId = env.VITE_GA4_MEASUREMENT_ID || "G-TJ1VXE91NE";
+        const gaId = env.VITE_GA4_MEASUREMENT_ID || "G-XMGRJBSN5Y";
         return html.replace(/%VITE_GA4_MEASUREMENT_ID%/g, gaId);
       },
     },
