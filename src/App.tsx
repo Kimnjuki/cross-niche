@@ -129,6 +129,7 @@ const ExploitRiskMeter = lazy(() => import("./pages/tools/ExploitRiskMeter"));
 const NexusSecurityProfilePage = lazy(() => import("./pages/NexusSecurityProfile"));
 const CommunityThreats = lazy(() => import("./pages/CommunityThreats"));
 const NexusStudio = lazy(() => import("./pages/NexusStudio"));
+const GamingSecurityGuides = lazy(() => import("./pages/GamingSecurityGuides"));
 
 const queryClient = new QueryClient();
 
@@ -158,6 +159,7 @@ const App = () => (
                     <Route path="/security/:slug" element={<ArticlePage />} />
                     <Route path="/cybersecurity" element={<Navigate to="/security" replace />} />
                     <Route path="/gaming" element={<Gaming />} />
+                    <Route path="/gaming/security-guides" element={<GamingSecurityGuides />} />
                     <Route path="/gaming/:slug" element={<ArticlePage />} />
                     <Route path="/article/:slug" element={<ArticlePage />} />
                     <Route path="/news" element={<News />} />

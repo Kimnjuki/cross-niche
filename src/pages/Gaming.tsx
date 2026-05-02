@@ -7,7 +7,7 @@ import { mockArticles } from '@/data/mockData';
 import { useContentByFeed } from '@/hooks/useContent';
 import { mapContentToArticles } from '@/lib/contentMapper';
 import { Badge } from '@/components/ui/badge';
-import { Gamepad2, Shield, Info } from 'lucide-react';
+import { Gamepad2, Shield, Info, BookOpen } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { SecurityToolsStrip } from '@/components/security/SecurityToolsStrip';
 import { GamingNewsletterSignup } from '@/components/gaming/GamingNewsletterSignup';
@@ -76,10 +76,29 @@ export default function Gaming() {
             <span className="text-muted-foreground">•</span>
             <Link to="/breach-sim" className="text-primary hover:underline">Breach Simulator</Link>
             <span className="text-muted-foreground">•</span>
-            <Link to="/guides" className="text-primary hover:underline">Security Guides</Link>
+            <Link to="/gaming/security-guides" className="text-primary hover:underline font-medium">Security Guides</Link>
             <span className="text-muted-foreground">•</span>
             <Link to="/blog-series" className="text-primary hover:underline">All Articles</Link>
           </div>
+        </div>
+
+        {/* Gaming Security Guides callout */}
+        <div className="bg-security/5 border border-security/20 rounded-xl p-5 mb-8 flex flex-col sm:flex-row items-start sm:items-center gap-4">
+          <div className="p-2 rounded-lg bg-security/10 shrink-0">
+            <BookOpen className="h-6 w-6 text-security" />
+          </div>
+          <div className="flex-1 min-w-0">
+            <p className="font-semibold text-sm mb-0.5">New: Gaming Security Guides</p>
+            <p className="text-sm text-muted-foreground">
+              Step-by-step guides on account security, 2FA, threat awareness, and PC hardening — for every skill level.
+            </p>
+          </div>
+          <Link
+            to="/gaming/security-guides"
+            className="shrink-0 inline-flex items-center gap-1.5 text-sm font-medium text-security hover:underline"
+          >
+            View all guides →
+          </Link>
         </div>
 
         {/* Tools strip */}

@@ -505,6 +505,239 @@ export const howToGuides: HowToGuide[] = [
     tools: ['NVIDIA Control Panel', 'RTSS', 'Network monitoring tools'],
     tags: ['lag', 'latency', 'gaming', 'network', 'performance', 'input lag'],
   },
+
+  // GAMING SECURITY GUIDES
+  {
+    id: 'complete-gaming-account-security-guide-2026',
+    title: 'Complete Gaming Account Security Guide 2026',
+    description: 'Lock down every gaming account you own — Steam, Xbox, PlayStation, Epic Games, Nintendo, and more — with this definitive, step-by-step security guide.',
+    category: 'security',
+    difficulty: 'beginner',
+    readTime: 12,
+    searchQuery: 'how to secure gaming accounts',
+    uniqueTrick: 'Use a dedicated email address only for gaming accounts that you never share publicly — this eliminates targeted phishing and account recovery attacks at the source',
+    comparison: {
+      traditional: 'Same password on every platform, no 2FA',
+      modern: 'Password manager with unique passwords + authenticator-app 2FA on every platform',
+      advantage: 'Reduces account takeover risk by over 99% with no ongoing effort',
+    },
+    steps: [
+      {
+        title: 'Secure your email first',
+        description: 'Your email is the master key to every gaming account. Enable authenticator-app 2FA on your email provider before touching anything else.',
+        tip: 'Use a dedicated gaming-only email address that you never post publicly',
+      },
+      {
+        title: 'Install a password manager',
+        description: 'Install Bitwarden (free) or 1Password and generate a unique 20+ character password for every gaming account.',
+        tip: 'Bitwarden has browser extensions for every major browser and free mobile apps',
+      },
+      {
+        title: 'Enable 2FA on every platform',
+        description: 'Enable authenticator-app 2FA on Steam, Xbox, PlayStation, Epic, Battle.net, Nintendo, and Roblox in turn. Save backup codes in your password manager.',
+      },
+      {
+        title: 'Revoke unused connected apps',
+        description: 'Review third-party apps connected to your accounts. On Steam, delete any API key you did not create. Revoke Discord bots you do not recognise.',
+      },
+      {
+        title: 'Check Have I Been Pwned',
+        description: 'Visit haveibeenpwned.com with every email you use for gaming. Change passwords for any breached service immediately.',
+      },
+      {
+        title: 'Set up ongoing monitoring',
+        description: 'Enable login history alerts on Steam and PSN. Review account activity and trade history monthly.',
+      },
+    ],
+    prerequisites: ['Smartphone for authenticator app', '15–30 minutes'],
+    tools: ['Bitwarden or 1Password', 'Authy or Aegis Authenticator', 'haveibeenpwned.com'],
+    tags: ['gaming', 'security', 'account security', '2FA', 'password manager', 'steam', 'xbox', 'playstation'],
+  },
+  {
+    id: '2fa-setup-every-gaming-platform',
+    title: 'How to Set Up 2FA on Every Major Gaming Platform',
+    description: 'Step-by-step two-factor authentication setup for Steam, Xbox, PlayStation, Epic Games, Battle.net, Nintendo, and Roblox — all in one guide.',
+    category: 'security',
+    difficulty: 'beginner',
+    readTime: 10,
+    searchQuery: 'how to enable 2fa gaming',
+    uniqueTrick: 'Enabling 2FA on Epic Games also unlocks the free Boogie Down emote in Fortnite — a small bonus for a critical security step',
+    comparison: {
+      traditional: 'Password-only login — stops zero automated attacks',
+      modern: 'Authenticator-app TOTP 2FA — blocks 99.9% of automated takeover attempts',
+      advantage: 'Nearly eliminates credential-stuffing risk even if your password is leaked',
+    },
+    steps: [
+      {
+        title: 'Install an authenticator app',
+        description: 'Download Aegis (Android), Raivo (iOS), or Authy (both). These generate 30-second rotating codes that attackers cannot intercept.',
+        tip: 'Authy stores an encrypted backup in the cloud — useful if you lose your phone',
+      },
+      {
+        title: 'Enable Steam Guard Mobile Authenticator',
+        description: 'Steam mobile app → Menu → Steam Guard → Add Authenticator. Follow prompts and save your recovery code.',
+      },
+      {
+        title: 'Set up Xbox / Microsoft 2FA',
+        description: 'account.microsoft.com → Security → Advanced Security → Two-Step Verification. Optionally enable Passwordless sign-in for maximum security.',
+      },
+      {
+        title: 'Enable PSN Two-Step Verification',
+        description: 'PS5 Settings → Users and Accounts → Security → 2-Step Verification → choose Authenticator App and scan the QR code.',
+      },
+      {
+        title: 'Secure Epic Games',
+        description: 'epicgames.com → Account → Password and Security → Enable Authenticator App 2FA. Save backup codes.',
+      },
+      {
+        title: 'Nintendo and Battle.net',
+        description: 'accounts.nintendo.com → Sign-In and Security → Two-Step Verification. Battle.net: use Blizzard Authenticator app or any TOTP app.',
+      },
+    ],
+    prerequisites: ['Smartphone', 'Access to each platform account'],
+    tools: ['Aegis Authenticator', 'Raivo OTP', 'Authy', 'Steam mobile app', 'Blizzard Authenticator'],
+    tags: ['2fa', 'authentication', 'steam', 'xbox', 'playstation', 'epic games', 'gaming security'],
+  },
+  {
+    id: 'how-hackers-steal-gaming-accounts',
+    title: '7 Ways Hackers Steal Gaming Accounts — And the Exact Fix for Each',
+    description: 'Understand every major attack vector targeting gamers — credential stuffing, phishing, info-stealers, SIM swapping, session theft — with the specific defence that neutralises each one.',
+    category: 'security',
+    difficulty: 'intermediate',
+    readTime: 14,
+    searchQuery: 'how do hackers steal gaming accounts',
+    uniqueTrick: 'A password manager doubles as an anti-phishing tool — it will not autofill credentials on a fake login domain, catching phishing attacks your eyes might miss',
+    comparison: {
+      traditional: 'Trying to recognise phishing by eye — fails against well-crafted fakes',
+      modern: 'Password manager autofill as phishing detector + authenticator 2FA as credential-stuffing blocker',
+      advantage: 'Passive protection that works even when you miss the visual cues',
+    },
+    steps: [
+      {
+        title: 'Understand credential stuffing',
+        description: 'Attackers buy billions of leaked username/password pairs and test them automatically against gaming platforms. Fix: unique password per account via password manager.',
+        tip: 'Your password from a 2019 forum breach is being tested against your Steam account right now if you reuse it',
+      },
+      {
+        title: 'Recognise phishing pages',
+        description: 'Fake login pages distributed through Discord DMs and social media. Fix: never click login links; type URLs directly. Password manager will not autofill on fake domains.',
+      },
+      {
+        title: 'Avoid info-stealer malware',
+        description: 'Hidden in fake cheats and cracked games — harvests all browser passwords in seconds. Fix: never download from unofficial sources, keep Defender enabled.',
+      },
+      {
+        title: 'Prevent SIM swapping',
+        description: 'Attacker convinces your carrier to transfer your number, intercepts SMS 2FA codes. Fix: switch to TOTP authenticator app, add carrier PIN lock.',
+      },
+      {
+        title: 'Guard session cookies',
+        description: 'Malware steals browser session cookies to bypass 2FA entirely. Fix: log out when done, use dedicated browser profile for gaming, keep browser updated.',
+      },
+      {
+        title: 'Spot social engineering',
+        description: 'Compromised friend accounts send malicious links via Discord. Fix: verify unusual requests through a separate channel — call or text the friend directly.',
+      },
+      {
+        title: 'Ignore fake support bots',
+        description: 'Fake Steam/Discord support bots DM you with urgent account warnings. Fix: real support only via the platform\'s official website — never authorise unknown Discord bots.',
+      },
+    ],
+    prerequisites: ['Basic familiarity with gaming platforms'],
+    tools: ['Password manager', 'Authenticator app', 'Windows Defender', 'haveibeenpwned.com'],
+    tags: ['phishing', 'malware', 'credential stuffing', 'sim swapping', 'gaming security', 'account security'],
+  },
+  {
+    id: 'gaming-pc-security-hardening-guide',
+    title: 'Gaming PC Security Hardening — Zero FPS Cost, Maximum Protection',
+    description: 'Harden your Windows gaming PC against malware, remote exploits, and account theft in 15 minutes with zero performance sacrifice.',
+    category: 'security',
+    difficulty: 'intermediate',
+    readTime: 13,
+    searchQuery: 'how to secure windows gaming pc',
+    uniqueTrick: 'Windows Defender\'s "Controlled folder access" feature prevents ransomware from encrypting your game saves and screenshots — enable it in Ransomware protection settings',
+    comparison: {
+      traditional: 'Disabling antivirus for "better performance" — leaves PC completely exposed',
+      modern: 'Windows Defender (0–2% FPS impact) + browser hardening + UAC enabled',
+      advantage: 'Full protection with no measurable gaming performance cost',
+    },
+    steps: [
+      {
+        title: 'Verify Windows Defender is active',
+        description: 'Windows Security → Virus & Threat Protection → ensure Real-time Protection, Cloud-delivered Protection, and Automatic Sample Submission are all ON.',
+        tip: 'Never disable Defender for any game — if a game claims to require it, the game is malware',
+      },
+      {
+        title: 'Enable Controlled Folder Access',
+        description: 'Windows Security → Virus & Threat Protection → Ransomware protection → Controlled folder access. Add your game save locations to protected folders.',
+      },
+      {
+        title: 'Keep UAC enabled',
+        description: 'Keep User Account Control at default ("Notify when apps make changes"). Set to Never Notify allows any program to make system changes silently.',
+      },
+      {
+        title: 'Harden your browser',
+        description: 'Enable Enhanced Safe Browsing (Chrome/Edge). Install uBlock Origin to block malvertising. Never save passwords in the browser — use a password manager.',
+      },
+      {
+        title: 'Enable automatic Windows updates',
+        description: 'Defer feature updates by up to 60 days (to allow anti-cheat compatibility) but keep security patches on automatic install.',
+        tip: 'Check game developer Twitter before installing major Windows updates to confirm anti-cheat compatibility',
+      },
+      {
+        title: 'Secure your router',
+        description: 'Change default router admin password, disable WPS, enable WPA3, and update firmware. Use Cloudflare DNS (1.1.1.1) for faster and more private DNS resolution.',
+      },
+    ],
+    prerequisites: ['Windows 10/11 gaming PC', '15 minutes'],
+    tools: ['Windows Defender', 'uBlock Origin', 'Password manager', 'Router admin panel'],
+    tags: ['windows', 'gaming pc', 'antivirus', 'firewall', 'security hardening', 'malware protection'],
+  },
+  {
+    id: 'mobile-gaming-security-guide',
+    title: 'Mobile Gaming Security — Protect Your Phone, Accounts, and Payments',
+    description: 'Secure your iOS or Android gaming device against fake apps, account theft, and unauthorised in-app purchases — with platform-specific steps for every major mobile game platform.',
+    category: 'security',
+    difficulty: 'beginner',
+    readTime: 11,
+    searchQuery: 'how to secure mobile gaming account',
+    uniqueTrick: '"Sign in with Apple" generates a private relay email address for each app, so the game never gets your real email — and you can revoke access per-app without changing your Apple ID',
+    comparison: {
+      traditional: 'Link real email to every game, download APKs from any site',
+      modern: 'Sign in with Apple/Google, official stores only, 2FA on linked accounts',
+      advantage: 'Eliminates the most common mobile gaming attack vectors with built-in OS features',
+    },
+    steps: [
+      {
+        title: 'Set strong device lock',
+        description: 'Enable Face ID or fingerprint. Set screen lock to 30 seconds. A stolen unlocked phone gives instant access to every game account on it.',
+      },
+      {
+        title: 'Only install from official stores',
+        description: 'Never enable Unknown Sources (Android) or sideload iOS apps. Fake "mod" versions of popular games are the #1 mobile malware delivery method.',
+        tip: 'If a site offers "free gems" or "unlimited coins" via a download, it is 100% malware',
+      },
+      {
+        title: 'Audit app permissions',
+        description: 'Revoke microphone, camera, and location permissions from any game that does not explicitly need them. iOS: Settings → Privacy. Android: Settings → Apps → Permissions.',
+      },
+      {
+        title: 'Enable purchase confirmation',
+        description: 'iOS: Screen Time → Content & Privacy → In-app Purchases. Android: Play Store → Settings → Authentication → require for all purchases.',
+      },
+      {
+        title: 'Secure linked accounts',
+        description: 'Audit which games have access to your Google account (myaccount.google.com → Third-party apps). Revoke access for games you no longer play.',
+      },
+      {
+        title: 'Use VPN on public Wi-Fi',
+        description: 'Enable a WireGuard-based VPN (Mullvad or ProtonVPN) when gaming on café or airport Wi-Fi. Disable it at home to avoid unnecessary latency.',
+      },
+    ],
+    prerequisites: ['iOS or Android smartphone', 'Access to linked Google/Apple ID'],
+    tools: ['Bitwarden', 'Mullvad VPN or ProtonVPN', 'iOS Screen Time / Android Digital Wellbeing'],
+    tags: ['mobile gaming', 'ios', 'android', 'app security', 'in-app purchases', 'parental controls'],
+  },
 ];
 
 // Helper function to get guides by category
