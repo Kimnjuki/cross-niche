@@ -299,8 +299,6 @@ function SentimentAnalyzer() {
             onSelectSuggestion={(g) => { setQuery(g); analyze(g); }}
             onRequestAdd={() => window.open('mailto:data@thegridnexus.com?subject=Game Request: ' + encodeURIComponent(query), '_blank')}
           />
-            </CardContent>
-          </Card>
         )}
 
         {/* Results */}
