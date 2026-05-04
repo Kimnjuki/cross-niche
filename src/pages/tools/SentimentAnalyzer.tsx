@@ -13,6 +13,9 @@ import {
   BarChart3, RefreshCw, Star, ChevronDown, ChevronUp, ArrowLeft,
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { fuzzyGameSearch } from '@/lib/search/fuzzyGameSearch';
+import { ErrorBoundary } from '@/components/common/ErrorBoundary';
+import { NotFoundState } from '@/components/common/NotFoundState';
 
 // ── Types ──────────────────────────────────────────────────────────────────
 
@@ -107,11 +110,26 @@ function normalize(input: string): string {
 function findResult(query: string): SentimentResult | null {
   const key = normalize(query);
   if (MOCK_RESULTS[key]) return MOCK_RESULTS[key];
-  // fuzzy: check if any key is included in query or vice versa
   for (const [k, v] of Object.entries(MOCK_RESULTS)) {
     if (key.includes(k) || k.includes(key) || v.gameTitle.toLowerCase().includes(query.toLowerCase())) {
       return v;
     }
+  }
+  const libraryResult = fuzzyGameSearch(query);
+  if (libraryResult.length > 0) {
+    const g = libraryResult[0].game;
+    return {
+      gameTitle: g.name,
+      platform: g.platforms.join(' / '),
+      overallSentiment: g.sentimentScores.gameplay,
+      sentimentBreakdown: { gameplay: g.sentimentScores.gameplay, security: g.sentimentScores.security, community: g.sentimentScores.community, performance: g.sentimentScores.performance, story: g.sentimentScores.balance },
+      securityMentionRate: g.securityMentionRate,
+      topSecurityComplaints: g.recentSecurityComplaints.map(c2 => c2.summary),
+      topPositiveThemes: g.positiveThemes,
+      reviewCount: 100000,
+      trendDirection: g.sentimentTrendDirection,
+      oneLineSummary: g.securityNotes || '',
+    };
   }
   return null;
 }
@@ -157,9 +175,17 @@ function sentimentLabel(score: number) {
 
 // ── Main component ─────────────────────────────────────────────────────────
 
-const POPULAR = ['Valorant', 'Fortnite', 'Minecraft', 'Counter-Strike', 'Apex Legends'];
+const POPULAR = ['Valorant', 'Elden Ring', 'Minecraft', 'CS2', 'Baldur Gate 3'];
 
-export default function SentimentAnalyzer() {
+export default function SentimentAnalyzerPage() {
+  return (
+    <ErrorBoundary toolName="Game Sentiment Dashboard">
+      <SentimentAnalyzer />
+    </ErrorBoundary>
+  );
+}
+
+function SentimentAnalyzer() {
   const [query, setQuery] = useState('');
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState<SentimentResult | null>(null);
@@ -192,8 +218,8 @@ export default function SentimentAnalyzer() {
   return (
     <Layout>
       <SEO
-        title="Game Sentiment Analyzer — The Grid Nexus"
-        description="AI-powered sentiment analysis for any game. See security complaint rates, community mood, and trending player opinions from thousands of reviews."
+        title="Game Sentiment Dashboard — The Grid Nexus"
+        description="Community-informed sentiment analysis for any game. See security complaint rates, community mood, and trending player opinions from thousands of reviews."
       />
 
       <div className="container mx-auto px-4 py-10 max-w-4xl">
@@ -207,12 +233,12 @@ export default function SentimentAnalyzer() {
               <MessageSquare className="h-7 w-7 text-[#B026FF]" />
             </div>
             <div>
-              <h1 className="font-display font-bold text-3xl">Game Sentiment Analyzer</h1>
-              <p className="text-muted-foreground text-sm">AI-powered review intelligence from thousands of real player reviews</p>
+              <h1 className="font-display font-bold text-3xl">Game Sentiment Dashboard</h1>
+              <p className="text-muted-foreground text-sm">Community-informed sentiment estimates from public reviews and security disclosures</p>
             </div>
           </div>
           <div className="flex flex-wrap gap-2 mt-3">
-            {(['Security Focus', 'Community Mood', 'Trend Direction', '280k+ Reviews'] as const).map(t => (
+            {(['Security Focus', 'Community Mood', 'Trend Direction', '23+ Games'] as const).map(t => (
               <Badge key={t} variant="outline" className="text-xs">{t}</Badge>
             ))}
           </div>
@@ -227,7 +253,7 @@ export default function SentimentAnalyzer() {
                 <Input
                   value={query}
                   onChange={e => setQuery(e.target.value)}
-                  placeholder="Enter game name (e.g. Valorant, Fortnite, Minecraft…)"
+                  placeholder="Enter a game name (e.g. Valorant, Elden Ring, Minecraft…)"
                   className="pl-9"
                 />
               </div>
@@ -267,11 +293,12 @@ export default function SentimentAnalyzer() {
 
         {/* Not found */}
         {notFound && !loading && (
-          <Card className="border-destructive/30 bg-destructive/5">
-            <CardContent className="pt-6 text-center py-10">
-              <AlertTriangle className="h-10 w-10 text-destructive mx-auto mb-3" />
-              <p className="font-semibold">No data found for "{query}"</p>
-              <p className="text-sm text-muted-foreground mt-1">Try one of the popular games above, or check the spelling.</p>
+          <NotFoundState
+            query={query}
+            suggestions={POPULAR.map(p => p)}
+            onSelectSuggestion={(g) => { setQuery(g); analyze(g); }}
+            onRequestAdd={() => window.open('mailto:data@thegridnexus.com?subject=Game Request: ' + encodeURIComponent(query), '_blank')}
+          />
             </CardContent>
           </Card>
         )}
