@@ -1549,4 +1549,35 @@ export default defineSchema({
     .index("by_enterprise", ["enterpriseId", "status"])
     .index("by_user", ["userId"])
     .index("by_email", ["email"]),
+
+  // ─── AI PC Builder (pcBuilds) ────────────────────────────────────────────
+  pcBuilds: defineTable({
+    userId: v.optional(v.string()),
+    sessionId: v.string(),
+    buildName: v.string(),
+    components: v.array(v.object({
+      type: v.string(),          // "cpu" | "gpu" | "ram" | "motherboard" | "storage" | "psu" | "case" | "cooling"
+      name: v.string(),
+      price: v.float64(),
+      asin: v.optional(v.string()),
+      securityVulnScore: v.optional(v.float64()), // 0–100 firmware vuln exposure
+      notes: v.optional(v.string()),
+    })),
+    totalPrice: v.float64(),
+    totalWatts: v.float64(),
+    compatibilityScore: v.float64(),   // 0–100
+    aiSecurityScore: v.float64(),      // 0–100
+    aiSecurityIssues: v.array(v.string()),
+    aiOptimizationTips: v.array(v.string()),
+    useCase: v.string(),               // "gaming" | "streaming" | "workstation" | "budget_gaming"
+    budget: v.float64(),
+    isPublic: v.boolean(),
+    shareToken: v.string(),
+    createdAt: v.float64(),
+    updatedAt: v.float64(),
+  })
+    .index("by_user", ["userId", "createdAt"])
+    .index("by_session", ["sessionId"])
+    .index("by_share_token", ["shareToken"])
+    .index("by_public", ["isPublic", "createdAt"]),
 });

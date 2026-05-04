@@ -19,9 +19,22 @@ import {
   BookOpen,
   Users,
   ChevronRight,
+  Cpu,
 } from 'lucide-react';
 
 const tools = [
+  {
+    href: '/tools/pc-builder',
+    icon: Cpu,
+    name: 'AI PC Builder',
+    tagline: 'Security-Scored Build Configurator',
+    description:
+      'Configure your gaming rig component by component. Get a live AI security score, firmware vulnerability analysis, PSU sizing, and hardening tips for every part.',
+    badge: 'New',
+    badgeVariant: 'default' as const,
+    gradient: 'from-[#00F0FF]/20 to-[#B026FF]/5',
+    iconColor: 'text-[#00F0FF]',
+  },
   {
     href: '/tools/nexusguard',
     icon: Shield,
