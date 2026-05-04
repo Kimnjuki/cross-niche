@@ -346,16 +346,16 @@ export default defineSchema({
     title: v.string(),
     description: v.string(),
     category: v.string(), // "productivity" | "creative" | "gaming_ai"
-    publishedAt: v.number(), // ms
+    publishedAt: v.float64(), // ms
     isHype: v.boolean(), // marketing fluff → dim when Hype view
     hasBenchmarks: v.boolean(), // confirmed ML benchmarks → highlight when Utility view
     sourceUrl: v.optional(v.string()),
     // NEW: TTL Control
-    expiresAt: v.optional(v.number()),
+    expiresAt: v.optional(v.float64()),
     // Enhanced fields for comprehensive roadmap
     benchmarks: v.optional(v.array(v.object({
       name: v.string(),
-      score: v.number(),
+      score: v.float64(),
       unit: v.optional(v.string()),
       source: v.optional(v.string()),
     }))),
@@ -1129,8 +1129,8 @@ export default defineSchema({
       v.literal("topic_followers")
     ),
     targetTopics: v.optional(v.array(v.id("topics"))),
-    createdAt: v.number(),
-    expiresAt: v.optional(v.number()),
+    createdAt: v.float64(),
+    expiresAt: v.optional(v.float64()),
     active: v.boolean(),
   })
     .index("by_priority_active", ["priority", "active", "createdAt"])
