@@ -126,6 +126,14 @@ const PatchRiskTracker = lazy(() => import("./pages/tools/PatchRiskTracker"));
 const ZeroTrustQuiz = lazy(() => import("./pages/tools/ZeroTrustQuiz"));
 const ExploitRiskMeter = lazy(() => import("./pages/tools/ExploitRiskMeter"));
 const PCBuilder = lazy(() => import("./pages/tools/PCBuilder"));
+// Nexus v3.0 AI Tools
+const SentimentAnalyzer = lazy(() => import("./pages/tools/SentimentAnalyzer"));
+const NewsPersonalizer = lazy(() => import("./pages/tools/NewsPersonalizer"));
+const RecommendationEngine = lazy(() => import("./pages/tools/RecommendationEngine"));
+const ThreatScanner = lazy(() => import("./pages/tools/ThreatScanner"));
+const CommunityModerator = lazy(() => import("./pages/tools/CommunityModerator"));
+const GamingCopilot = lazy(() => import("./pages/tools/GamingCopilot"));
+const ReleasePredictor = lazy(() => import("./pages/tools/ReleasePredictor"));
 // Nexus v3.0 AI Modules
 const NexusSecurityProfilePage = lazy(() => import("./pages/NexusSecurityProfile"));
 const CommunityThreats = lazy(() => import("./pages/CommunityThreats"));
@@ -238,6 +246,13 @@ const App = () => (
                     <Route path="/tools/zero-trust-quiz" element={<ZeroTrustQuiz />} />
                     <Route path="/tools/exploit-risk-meter" element={<ExploitRiskMeter />} />
                     <Route path="/tools/pc-builder" element={<PCBuilder />} />
+                    <Route path="/tools/sentiment-analyzer" element={<SentimentAnalyzer />} />
+                    <Route path="/tools/news-personalizer" element={<NewsPersonalizer />} />
+                    <Route path="/tools/recommendation-engine" element={<RecommendationEngine />} />
+                    <Route path="/tools/threat-scanner" element={<ThreatScanner />} />
+                    <Route path="/tools/community-moderator" element={<CommunityModerator />} />
+                    <Route path="/tools/gaming-copilot" element={<GamingCopilot />} />
+                    <Route path="/tools/release-predictor" element={<ReleasePredictor />} />
                     {/* Nexus v3.0 AI Modules */}
                     <Route path="/security-profile" element={<NexusSecurityProfilePage />} />
                     <Route path="/community-threats" element={<CommunityThreats />} />

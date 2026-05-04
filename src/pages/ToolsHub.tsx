@@ -20,6 +20,11 @@ import {
   Users,
   ChevronRight,
   Cpu,
+  MessageSquare,
+  Newspaper,
+  Sparkles,
+  Bot,
+  Calendar,
 } from 'lucide-react';
 
 const tools = [
@@ -34,6 +39,90 @@ const tools = [
     badgeVariant: 'default' as const,
     gradient: 'from-[#00F0FF]/20 to-[#B026FF]/5',
     iconColor: 'text-[#00F0FF]',
+  },
+  {
+    href: '/tools/gaming-copilot',
+    icon: Bot,
+    name: 'Gaming Copilot AI',
+    tagline: 'Your AI Gaming Intelligence Assistant',
+    description:
+      'Ask anything — game tips, hardware advice, account security, CVE awareness, and personalized game recommendations. Powered by Nexus gaming intelligence.',
+    badge: 'AI Chat',
+    badgeVariant: 'default' as const,
+    gradient: 'from-[#B026FF]/20 to-[#B026FF]/5',
+    iconColor: 'text-[#B026FF]',
+  },
+  {
+    href: '/tools/sentiment-analyzer',
+    icon: MessageSquare,
+    name: 'Game Sentiment Analyzer',
+    tagline: 'AI Review Intelligence for Any Game',
+    description:
+      'Analyze thousands of real player reviews in seconds. See security complaint rates, community mood by category, trend direction, and top themes for any game.',
+    badge: 'New',
+    badgeVariant: 'default' as const,
+    gradient: 'from-[#B026FF]/20 to-[#B026FF]/5',
+    iconColor: 'text-[#B026FF]',
+  },
+  {
+    href: '/tools/recommendation-engine',
+    icon: Sparkles,
+    name: 'AI Recommendation Engine',
+    tagline: 'Personalized Game & Hardware Picks',
+    description:
+      'Answer 3 questions about your goals, budget, and play style. Get AI-matched game and PC hardware recommendations, each security-scored and explained.',
+    badge: 'New',
+    badgeVariant: 'default' as const,
+    gradient: 'from-[#39FF14]/20 to-[#39FF14]/5',
+    iconColor: 'text-[#39FF14]',
+  },
+  {
+    href: '/tools/news-personalizer',
+    icon: Newspaper,
+    name: 'AI News Personalizer',
+    tagline: 'Curated Intel Ranked by Relevance',
+    description:
+      'AI-curated security, gaming, tech, and AI news ranked by relevance to your interests. Filter by category, bookmark stories, and never miss a breaking alert.',
+    badge: 'New',
+    badgeVariant: 'default' as const,
+    gradient: 'from-[#00F0FF]/20 to-[#00F0FF]/5',
+    iconColor: 'text-[#00F0FF]',
+  },
+  {
+    href: '/tools/threat-scanner',
+    icon: ScanLine,
+    name: 'Real-Time Threat Scanner',
+    tagline: 'CVE Detection & Header Analysis',
+    description:
+      'Scan any domain for OWASP Top 10 vulnerabilities, TLS grade, open ports, and header misconfigurations. Get CVSS scores and step-by-step remediation.',
+    badge: 'Live',
+    badgeVariant: 'destructive' as const,
+    gradient: 'from-destructive/20 to-destructive/5',
+    iconColor: 'text-destructive',
+  },
+  {
+    href: '/tools/community-moderator',
+    icon: Users,
+    name: 'Community AI Moderator',
+    tagline: 'Pre-Check Posts Against Guidelines',
+    description:
+      'Test any post against Nexus community policies before submitting. Get instant toxicity scores, harassment detection, PII alerts, and edit suggestions.',
+    badge: 'New',
+    badgeVariant: 'default' as const,
+    gradient: 'from-[#FF007A]/20 to-[#FF007A]/5',
+    iconColor: 'text-[#FF007A]',
+  },
+  {
+    href: '/tools/release-predictor',
+    icon: Calendar,
+    name: 'Game Release Predictor',
+    tagline: 'AI-Predicted Release Windows',
+    description:
+      'Know before the official announcement. AI tracks ESRB filings, Steam build pushes, hiring patterns, and fiscal year guidance to predict game releases.',
+    badge: 'New',
+    badgeVariant: 'default' as const,
+    gradient: 'from-[#FFB800]/20 to-[#FFB800]/5',
+    iconColor: 'text-[#FFB800]',
   },
   {
     href: '/tools/nexusguard',
