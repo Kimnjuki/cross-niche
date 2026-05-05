@@ -427,6 +427,7 @@ export function generateAllSchemas(options: {
     totalTime?: string;
   };
   isHomepage?: boolean;
+  software?: Parameters<typeof generateSoftwareSchema>[0];
   category?: {
     name: string;
     description: string;
@@ -464,6 +465,11 @@ export function generateAllSchemas(options: {
   // Category collection page
   if (options.category) {
     schemas.push(generateCollectionPageSchema(options.category));
+  }
+
+  // SoftwareApplication (tool page)
+  if (options.software) {
+    schemas.push(generateSoftwareSchema(options.software));
   }
 
   return schemas;

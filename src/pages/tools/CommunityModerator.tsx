@@ -1,398 +1,382 @@
 import React, { useState, useCallback } from 'react';
 import { Layout } from '@/components/layout/Layout';
 import { SEO } from '@/components/SEO';
+import { ToolCrossLinks } from '@/components/tools/ToolPageSEO';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
-import { cn } from '@/lib/utils';
+import { Separator } from '@/components/ui/separator';
+import { ErrorBoundary } from '@/components/common/ErrorBoundary';
+import { LoadingState, ErrorState } from '@/components/common/StateComponents';
+import { moderateText, redactPII } from '@/lib/moderation/rulesEngine';
+import { toolRateLimiters } from '@/lib/utils/rateLimit';
+import type { StatusType } from '@/lib/types/status';
+import type { ModerationResult } from '@/lib/moderation/rulesEngine';
 import {
   Users, Shield, AlertTriangle, CheckCircle, XCircle,
   ArrowLeft, RefreshCw, ChevronRight, MessageSquare,
-  ThumbsUp, ThumbsDown, Flag, Zap, Info,
+  ThumbsUp, ThumbsDown, Flag, Zap, Info, Eye,
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
-// ── Types ──────────────────────────────────────────────────────────────────
-
-type Verdict = 'approved' | 'flagged' | 'removed';
-
-interface ModerationCategory {
-  name: string;
-  score: number;
-  triggered: boolean;
-}
-
-interface ModerationResult {
-  verdict: Verdict;
-  confidence: number;
-  overallToxicity: number;
-  categories: ModerationCategory[];
-  reasoning: string;
-  recommendation: string;
-  appliedPolicies: string[];
-  editSuggestion?: string;
-}
-
-// ── Mock moderation engine ─────────────────────────────────────────────────
-
-function moderateText(text: string): ModerationResult {
-  const lower = text.toLowerCase();
-  const len = text.length;
-
-  const hasToxic = /\b(hate|kill|die|trash|garbage|stupid|idiot|noob|loser|worthless|trash|dogwater)\b/i.test(text);
-  const hasSpam = /(http[s]?:\/\/|buy now|click here|free coins|discord\.gg\/|join my server)/i.test(text);
-  const hasPII = /\b\d{3}[-.]?\d{3}[-.]?\d{4}\b|\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b/.test(text);
-  const hasPositive = /(great game|thanks|well played|good luck|gg|love this|appreciate|helpful|friendly|awesome)\b/i.test(text);
-  const isShort = len < 5;
-  const isOffTopic = /(free v-bucks|account giveaway|sell account|buy gold|powerleveling)/i.test(text);
-
-  const toxicityScore = hasToxic ? 72 + Math.random() * 20 : hasSpam ? 45 : isOffTopic ? 30 : hasPositive ? 5 : 12;
-  const spamScore = hasSpam || isOffTopic ? 80 + Math.random() * 15 : 8;
-  const harassmentScore = hasToxic ? 65 + Math.random() * 25 : 6;
-  const piiScore = hasPII ? 95 : 2;
-  const offTopicScore = isOffTopic || hasSpam ? 75 : 10;
-  const qualityScore = isShort ? 85 : hasToxic ? 40 : hasPositive ? 15 : 20;
-
-  const categories: ModerationCategory[] = [
-    { name: 'Toxicity', score: Math.round(toxicityScore), triggered: toxicityScore > 50 },
-    { name: 'Spam / Promotion', score: Math.round(spamScore), triggered: spamScore > 50 },
-    { name: 'Harassment', score: Math.round(harassmentScore), triggered: harassmentScore > 50 },
-    { name: 'PII / Personal Data', score: Math.round(piiScore), triggered: piiScore > 50 },
-    { name: 'Off-Topic Content', score: Math.round(offTopicScore), triggered: offTopicScore > 50 },
-    { name: 'Low Quality', score: Math.round(qualityScore), triggered: qualityScore > 70 },
-  ];
-
-  const triggered = categories.filter(c => c.triggered);
-  const overallToxicity = Math.round(Math.max(...categories.map(c => c.score)));
-
-  let verdict: Verdict;
-  let confidence: number;
-  let reasoning: string;
-  let recommendation: string;
-  let appliedPolicies: string[] = [];
-  let editSuggestion: string | undefined;
-
-  if (piiScore > 50) {
-    verdict = 'removed';
-    confidence = 97;
-    reasoning = 'Content contains personal identifiable information (PII) such as phone numbers or email addresses, which violates our privacy policy.';
-    recommendation = 'Remove the PII and repost without personal contact information.';
-    appliedPolicies = ['Privacy Policy §3.1 — No PII disclosure', 'Community Rule 7 — No doxxing or contact sharing'];
-  } else if (hasToxic && harassmentScore > 60) {
-    verdict = 'removed';
-    confidence = 89;
-    reasoning = 'High-confidence toxicity and harassment signals detected. Content includes language that targets or degrades other community members.';
-    recommendation = 'Rewrite constructively. Criticism of gameplay/mechanics is fine; targeting individuals is not.';
-    editSuggestion = text.replace(/\b(trash|garbage|stupid|idiot|noob|loser|worthless|dogwater)\b/gi, '[removed]');
-    appliedPolicies = ['Code of Conduct §2 — Respect', 'Community Rule 3 — No personal attacks'];
-  } else if (hasSpam || isOffTopic) {
-    verdict = 'flagged';
-    confidence = 83;
-    reasoning = 'Content appears to be promotional or off-topic. External links or solicitations detected.';
-    recommendation = 'Remove promotional links. If you\'re recommending a resource, describe it in text instead.';
-    appliedPolicies = ['Community Rule 5 — No unsolicited promotions', 'Community Rule 6 — Stay on topic'];
-  } else if (hasToxic) {
-    verdict = 'flagged';
-    confidence = 74;
-    reasoning = 'Moderately elevated toxicity score. Some language may be interpreted as hostile, though context is ambiguous.';
-    recommendation = 'Consider rephrasing to be more constructive. Borderline content may be reviewed by a human moderator.';
-    editSuggestion = text.replace(/\b(trash|garbage|stupid|idiot|noob|loser)\b/gi, '[flagged]');
-    appliedPolicies = ['Code of Conduct §2 — Respect', 'Community Guideline 4 — Constructive tone'];
-  } else {
-    verdict = 'approved';
-    confidence = hasPositive ? 96 : 88;
-    reasoning = 'No policy violations detected. Content is within community guidelines and appears constructive or neutral.';
-    recommendation = 'Post approved. Content meets community standards.';
-    appliedPolicies = ['All checks passed'];
-  }
-
-  return { verdict, confidence, overallToxicity, categories, reasoning, recommendation, appliedPolicies, editSuggestion };
-}
-
-// ── Example prompts ────────────────────────────────────────────────────────
+// ── Example texts ──────────────────────────────────────────────────────────
 
 const EXAMPLES = [
-  { label: 'Clean post', text: 'GG everyone, that was a really intense match! Anyone have tips for improving my aim? I\'ve been struggling with long-range shots in Valorant.' },
-  { label: 'Toxic post', text: 'This team is absolute trash. You\'re all dogwater noobs who should uninstall. I can\'t believe I got matched with these losers.' },
-  { label: 'Spam', text: 'Get free V-Bucks here! https://free-vbucks-hack.com Click now before it expires! Join my Discord discord.gg/freestuff' },
-  { label: 'Contains PII', text: 'If anyone needs help with the game, call me at 555-867-5309 or email john.player@gmail.com anytime!' },
+  {
+    label: 'Clean Comment',
+    text: 'Great guide! The security tips really helped me secure my Steam account. Thanks for putting this together.',
+  },
+  {
+    label: 'Toxic / Harassment',
+    text: 'This guide is garbage and you\'re a complete idiot for writing it. Everyone who upvoted this is a moron. Uninstall your PC.',
+  },
+  {
+    label: 'Spam / Promotion',
+    text: 'Check out this site for free Steam keys: https://totallylegitkeys.example.com. Limited time offer! DM me for more.',
+  },
+  {
+    label: 'PII Leak',
+    text: 'I talked to John Smith from the dev team, his email is john.smith@company.com and his phone is 555-0123. He said the patch is delayed.',
+  },
+  {
+    label: 'NSFW / Inappropriate',
+    text: 'This game is so sexy, I want to have sex with every character. The mods should add explicit adult content immediately.',
+  },
 ];
 
-const VERDICT_CONFIG = {
-  approved: { label: 'Approved', color: 'text-[#39FF14]', bgColor: 'bg-[#39FF14]/10', borderColor: 'border-[#39FF14]/30', icon: CheckCircle },
-  flagged: { label: 'Flagged for Review', color: 'text-[#FFB800]', bgColor: 'bg-[#FFB800]/10', borderColor: 'border-[#FFB800]/30', icon: Flag },
-  removed: { label: 'Auto-Removed', color: 'text-destructive', bgColor: 'bg-destructive/10', borderColor: 'border-destructive/30', icon: XCircle },
-};
-
-// ── Component ──────────────────────────────────────────────────────────────
+// ═══════════════════════════════════════════════════════════════════════════
 
 export default function CommunityModerator() {
-  const [text, setText] = useState('');
-  const [analyzing, setAnalyzing] = useState(false);
+  const [customText, setCustomText] = useState('');
+  const [mode, setMode] = useState<'example' | 'custom'>('example');
+  const [content, setContent] = useState('');
   const [result, setResult] = useState<ModerationResult | null>(null);
-  const [charCount, setCharCount] = useState(0);
+  const [status, setStatus] = useState<StatusType>('idle');
 
-  const MAX_CHARS = 1000;
+  const analyze = useCallback(async (text: string, source: 'example' | 'custom') => {
+    if (!text.trim()) return;
 
-  const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    const val = e.target.value.slice(0, MAX_CHARS);
-    setText(val);
-    setCharCount(val.length);
-  };
+    if (!toolRateLimiters.communityModerator.consume()) {
+      setStatus('error');
+      return;
+    }
 
-  const analyze = useCallback(async (input?: string) => {
-    const content = input ?? text;
-    if (!content.trim()) return;
-    setAnalyzing(true);
+    setStatus('loading');
+    setContent(text);
+    setMode(source);
+
+    try {
+      // Analysis is instant, but simulate a small processing delay (max 300ms)
+      const startTime = Date.now();
+      const analysis = moderateText(text);
+      const elapsed = Date.now() - startTime;
+      if (elapsed < 200) {
+        await new Promise((r) => setTimeout(r, 200 - elapsed));
+      }
+
+      setResult(analysis);
+      setStatus('success');
+    } catch (err) {
+      console.error('Moderation error:', err);
+      setStatus('error');
+    }
+  }, []);
+
+  const handleCustomSubmit = useCallback(() => {
+    if (!customText.trim()) return;
+    analyze(customText.trim(), 'custom');
+  }, [customText, analyze]);
+
+  const handleKeyDown = useCallback(
+    (e: React.KeyboardEvent) => {
+      if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) {
+        handleCustomSubmit();
+      }
+    },
+    [handleCustomSubmit]
+  );
+
+  const reset = useCallback(() => {
+    setCustomText('');
+    setContent('');
     setResult(null);
-    await new Promise(r => setTimeout(r, 900));
-    setResult(moderateText(content));
-    setAnalyzing(false);
-  }, [text]);
-
-  const loadExample = (example: typeof EXAMPLES[number]) => {
-    setText(example.text);
-    setCharCount(example.text.length);
-    analyze(example.text);
-  };
-
-  const verdictCfg = result ? VERDICT_CONFIG[result.verdict] : null;
-  const VerdictIcon = verdictCfg?.icon;
+    setStatus('idle');
+    setMode('example');
+    toolRateLimiters.communityModerator.reset();
+  }, []);
 
   return (
-    <Layout>
-      <SEO
-        title="Community AI Moderator — The Grid Nexus"
-        description="Test any post against The Grid Nexus community guidelines. Get instant AI moderation verdicts with policy citations and edit suggestions."
-      />
+    <ErrorBoundary toolName="Community Moderator">
+      <Layout>
+        <SEO
+          title="Community Content Moderator — The Grid Nexus"
+          description="AI-powered content moderation tool for gaming communities. Detect toxicity, spam, PII leaks, and NSFW content in real-time."
+        />
+        <div className="min-h-screen bg-[#0B0E14] text-gray-200">
+          <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
 
-      <div className="container mx-auto px-4 py-10 max-w-4xl">
-        {/* Header */}
-        <div className="mb-8">
-          <Link to="/tools" className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground mb-4 transition-colors">
-            <ArrowLeft className="h-3.5 w-3.5" /> Back to Tools
-          </Link>
-          <div className="flex items-center gap-3 mb-3">
-            <div className="p-3 rounded-xl bg-[#FF007A]/10 border border-[#FF007A]/30">
-              <Users className="h-7 w-7 text-[#FF007A]" />
-            </div>
-            <div>
-              <h1 className="font-display font-bold text-3xl">Community AI Moderator</h1>
-              <p className="text-muted-foreground text-sm">Pre-check any post against Nexus community guidelines before you submit</p>
-            </div>
-          </div>
-          <div className="flex flex-wrap gap-2 mt-3">
-            {['Toxicity Detection', 'Spam Filtering', 'PII Protection', 'Policy Citations'].map(t => (
-              <Badge key={t} variant="outline" className="text-xs">{t}</Badge>
-            ))}
-          </div>
-        </div>
-
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          {/* Input panel */}
-          <div className="space-y-4">
-            <Card className="border-[#FF007A]/20">
-              <CardHeader className="pb-3">
-                <CardTitle className="text-base flex items-center gap-2">
-                  <MessageSquare className="h-4 w-4 text-[#FF007A]" /> Post Content
-                </CardTitle>
-                <CardDescription>Paste or type the post you want to check</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <textarea
-                  value={text}
-                  onChange={handleChange}
-                  placeholder="Enter any post, comment, or message to check against community guidelines…"
-                  className="w-full h-40 p-3 rounded-lg border border-border bg-background text-sm resize-none focus:outline-none focus:ring-2 focus:ring-[#FF007A]/30 placeholder:text-muted-foreground"
-                />
-                <div className="flex items-center justify-between mt-2">
-                  <span className={cn('text-xs', charCount > MAX_CHARS * 0.9 ? 'text-[#FFB800]' : 'text-muted-foreground')}>
-                    {charCount}/{MAX_CHARS}
-                  </span>
-                  <div className="flex gap-2">
-                    <Button variant="outline" size="sm" onClick={() => { setText(''); setCharCount(0); setResult(null); }}>
-                      Clear
-                    </Button>
-                    <Button
-                      size="sm"
-                      onClick={() => analyze()}
-                      disabled={analyzing || !text.trim()}
-                      className="bg-[#FF007A] hover:bg-[#FF007A]/80 text-white"
-                    >
-                      {analyzing ? <RefreshCw className="h-3.5 w-3.5 animate-spin" /> : <><Zap className="h-3.5 w-3.5 mr-1" /> Check Post</>}
-                    </Button>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* Examples */}
-            <Card>
-              <CardHeader className="pb-2">
-                <CardTitle className="text-sm text-muted-foreground">Quick examples</CardTitle>
-              </CardHeader>
-              <CardContent className="pt-0 space-y-2">
-                {EXAMPLES.map(ex => (
-                  <button
-                    key={ex.label}
-                    onClick={() => loadExample(ex)}
-                    disabled={analyzing}
-                    className="w-full flex items-center justify-between p-3 rounded-lg border border-border hover:border-[#FF007A]/30 hover:bg-[#FF007A]/5 transition-all text-left group"
-                  >
-                    <div>
-                      <span className="text-sm font-medium">{ex.label}</span>
-                      <p className="text-xs text-muted-foreground mt-0.5 line-clamp-1">{ex.text}</p>
-                    </div>
-                    <ChevronRight className="h-4 w-4 text-muted-foreground group-hover:text-[#FF007A] shrink-0 ml-2" />
-                  </button>
-                ))}
-              </CardContent>
-            </Card>
-
-            {/* Policy reference */}
-            <Card className="border-border bg-muted/10">
-              <CardContent className="pt-4 pb-4 text-xs space-y-1.5 text-muted-foreground">
-                <div className="font-semibold text-foreground mb-2 flex items-center gap-1.5">
-                  <Info className="h-3.5 w-3.5" /> Checks performed
-                </div>
-                {['Toxicity & hate speech (ML + keyword)', 'Spam & promotional links', 'Harassment & personal attacks', 'PII / contact info disclosure', 'Off-topic content detection', 'Post quality threshold'].map(c => (
-                  <div key={c} className="flex items-center gap-1.5">
-                    <CheckCircle className="h-3 w-3 text-[#39FF14]" /> {c}
-                  </div>
-                ))}
-              </CardContent>
-            </Card>
-          </div>
-
-          {/* Results panel */}
-          <div>
-            {analyzing && (
-              <div className="flex flex-col items-center justify-center h-64">
-                <Shield className="h-10 w-10 text-[#FF007A] animate-pulse mb-4" />
-                <p className="text-muted-foreground">Running moderation checks…</p>
-                <div className="flex gap-1 mt-3">
-                  {[0, 1, 2].map(i => (
-                    <span key={i} className="w-2 h-2 rounded-full bg-[#FF007A] animate-bounce" style={{ animationDelay: `${i * 150}ms` }} />
-                  ))}
-                </div>
+            {/* Header */}
+            <div className="flex items-center gap-4">
+              <Link to="/tools/security-scanner" className="text-gray-400 hover:text-white transition-colors">
+                <ArrowLeft className="w-5 h-5" />
+              </Link>
+              <div>
+                <h1 className="text-3xl font-bold tracking-tight text-white flex items-center gap-3">
+                  <Users className="w-7 h-7 text-[#B026FF]" />
+                  Community Content Moderator
+                </h1>
+                <p className="text-gray-400 mt-1">
+                  Analyze text for toxic behavior, spam, PII leaks, and NSFW content. Powered by The Grid Nexus moderation engine.
+                </p>
               </div>
+            </div>
+
+            {/* Error */}
+            {status === 'error' && (
+              <ErrorState
+                title="Analysis rate limited"
+                message="Please wait a moment before submitting more content for analysis."
+              />
             )}
 
-            {result && !analyzing && verdictCfg && VerdictIcon && (
-              <div className="space-y-4">
-                {/* Verdict */}
-                <Card className={cn('border-2', verdictCfg.borderColor, verdictCfg.bgColor)}>
-                  <CardContent className="pt-5 pb-5">
-                    <div className="flex items-center gap-3 mb-3">
-                      <VerdictIcon className={cn('h-8 w-8', verdictCfg.color)} />
-                      <div>
-                        <div className={cn('text-xl font-bold', verdictCfg.color)}>{verdictCfg.label}</div>
-                        <div className="text-xs text-muted-foreground">{result.confidence}% confidence</div>
-                      </div>
-                    </div>
-                    <p className="text-sm">{result.reasoning}</p>
-                  </CardContent>
-                </Card>
-
-                {/* Overall toxicity */}
-                <Card>
-                  <CardContent className="pt-4 pb-4 space-y-3">
-                    <div className="flex justify-between text-sm">
-                      <span className="font-medium">Overall Toxicity Score</span>
-                      <span className={cn('font-bold', result.overallToxicity > 60 ? 'text-destructive' : result.overallToxicity > 30 ? 'text-[#FFB800]' : 'text-[#39FF14]')}>
-                        {result.overallToxicity}/100
-                      </span>
-                    </div>
-                    <Progress value={result.overallToxicity} className="h-2" />
-
-                    <div className="space-y-2 pt-2">
-                      {result.categories.map(cat => (
-                        <div key={cat.name} className="space-y-1">
-                          <div className="flex justify-between text-xs">
-                            <span className={cn('flex items-center gap-1', cat.triggered ? 'text-foreground font-medium' : 'text-muted-foreground')}>
-                              {cat.triggered && <AlertTriangle className="h-3 w-3 text-[#FFB800]" />}
-                              {cat.name}
-                            </span>
-                            <span className={cn(cat.triggered ? 'text-[#FFB800] font-semibold' : 'text-muted-foreground')}>{cat.score}%</span>
-                          </div>
-                          <Progress value={cat.score} className="h-1" />
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+              {/* Left: Examples + Custom Input */}
+              <div className="lg:col-span-2 space-y-6">
+                {/* Example cards */}
+                <Card className="bg-[#131820] border-gray-800">
+                  <CardHeader>
+                    <CardTitle className="text-white flex items-center gap-2">
+                      <MessageSquare className="w-5 h-5 text-[#B026FF]" />
+                      Example Content
+                    </CardTitle>
+                    <CardDescription>Click an example to analyze it</CardDescription>
+                  </CardHeader>
+                  <CardContent className="space-y-3">
+                    {EXAMPLES.map((example, i) => (
+                      <button
+                        key={i}
+                        onClick={() => analyze(example.text, 'example')}
+                        className="w-full text-left p-3 bg-[#0B0E14] rounded-lg border border-gray-800 hover:border-[#B026FF]/50 transition-colors group"
+                      >
+                        <div className="flex items-center justify-between mb-1">
+                          <Badge variant="secondary" className="text-xs bg-gray-800 text-gray-300">
+                            {example.label}
+                          </Badge>
+                          <ChevronRight className="w-4 h-4 text-gray-600 group-hover:text-[#B026FF] transition-colors" />
                         </div>
-                      ))}
-                    </div>
+                        <p className="text-sm text-gray-400 line-clamp-2">{example.text}</p>
+                      </button>
+                    ))}
                   </CardContent>
                 </Card>
 
-                {/* Recommendation */}
-                <Card className="border-[#00F0FF]/20 bg-[#00F0FF]/5">
-                  <CardContent className="pt-4 pb-4">
-                    <div className="flex items-start gap-2">
-                      <ThumbsUp className="h-4 w-4 text-[#00F0FF] shrink-0 mt-0.5" />
-                      <div>
-                        <div className="text-sm font-semibold text-[#00F0FF] mb-1">Recommendation</div>
-                        <p className="text-sm">{result.recommendation}</p>
-                      </div>
+                {/* Custom input */}
+                <Card className="bg-[#131820] border-gray-800">
+                  <CardHeader>
+                    <CardTitle className="text-white flex items-center gap-2">
+                      <Flag className="w-5 h-5 text-[#B026FF]" />
+                      Custom Text
+                    </CardTitle>
+                    <CardDescription>
+                      Paste or type your own content above. Press Ctrl+Enter to submit.
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent className="space-y-3">
+                    <textarea
+                      value={customText}
+                      onChange={(e) => setCustomText(e.target.value)}
+                      onKeyDown={handleKeyDown}
+                      placeholder="Paste Discord message, forum post, or chat log here…"
+                      rows={5}
+                      className="w-full bg-[#0B0E14] border border-gray-700 rounded-lg p-3 text-sm text-white placeholder:text-gray-500 focus:border-[#B026FF] focus:outline-none resize-y"
+                    />
+                    <div className="flex justify-between items-center">
+                      <span className="text-xs text-gray-500">
+                        {customText.length} characters
+                      </span>
+                      <Button
+                        onClick={handleCustomSubmit}
+                        disabled={status === 'loading' || !customText.trim()}
+                        className="bg-[#B026FF] hover:bg-[#B026FF]/80 text-white"
+                      >
+                        {status === 'loading' ? 'Analyzing…' : 'Analyze'}
+                      </Button>
                     </div>
                   </CardContent>
                 </Card>
+              </div>
 
-                {/* Edit suggestion */}
-                {result.editSuggestion && (
-                  <Card className="border-[#FFB800]/20 bg-[#FFB800]/5">
-                    <CardHeader className="pb-2">
-                      <CardTitle className="text-sm flex items-center gap-2 text-[#FFB800]">
-                        <MessageSquare className="h-3.5 w-3.5" /> Suggested Edit
-                      </CardTitle>
-                    </CardHeader>
-                    <CardContent className="pt-0">
-                      <p className="text-sm text-muted-foreground font-mono bg-background/50 p-3 rounded border border-border">{result.editSuggestion}</p>
+              {/* Right: Results */}
+              <div className="lg:col-span-1 space-y-6">
+                {/* Loading */}
+                {status === 'loading' && <LoadingState />}
+
+                {/* Initial state */}
+                {status === 'idle' && !result && (
+                  <Card className="bg-[#131820] border-gray-800">
+                    <CardContent className="pt-8 text-center">
+                      <Shield className="w-12 h-12 text-gray-600 mx-auto mb-3" />
+                      <p className="text-gray-400 text-sm">
+                        Select an example or enter custom text to analyze
+                      </p>
                     </CardContent>
                   </Card>
                 )}
 
-                {/* Policies */}
-                <Card>
-                  <CardContent className="pt-4 pb-4">
-                    <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2">Applied Policies</div>
-                    {result.appliedPolicies.map(p => (
-                      <div key={p} className="flex items-center gap-2 text-sm py-1 border-b border-border/50 last:border-0">
-                        <Shield className="h-3 w-3 text-[#FF007A] shrink-0" />
-                        {p}
-                      </div>
-                    ))}
-                  </CardContent>
-                </Card>
+                {/* Result */}
+                {status === 'success' && result && (
+                  <ResultPanel result={result} content={content} mode={mode} onReset={reset} />
+                )}
               </div>
-            )}
-
-            {!result && !analyzing && (
-              <div className="flex flex-col items-center justify-center h-64 text-center text-muted-foreground">
-                <Users className="h-12 w-12 mx-auto mb-4 opacity-20" />
-                <p className="font-semibold">No post checked yet</p>
-                <p className="text-sm mt-1">Enter text or pick an example to see the moderation verdict.</p>
-              </div>
-            )}
+            </div>
           </div>
         </div>
+        <ToolCrossLinks related={[
+            "/tools/gaming-copilot",
+            "/tools/sentiment-analyzer",
+            "/tools/news-personalizer",
+            "/tools/threat-scanner",
+          ]} />
+      </Layout>
+    </ErrorBoundary>
+  );
+}
 
-        {/* CTA */}
-        <Card className="mt-8 border-[#FF007A]/20 bg-gradient-to-r from-[#FF007A]/5 to-[#B026FF]/5">
-          <CardContent className="pt-5 pb-5 flex flex-col sm:flex-row items-center justify-between gap-4">
-            <div>
-              <p className="font-semibold">Read the full community guidelines</p>
-              <p className="text-sm text-muted-foreground">Understand all the rules before posting in community spaces.</p>
-            </div>
-            <div className="flex gap-2 shrink-0">
-              <Button asChild size="sm" variant="outline">
-                <Link to="/community-guidelines">Community Guidelines</Link>
-              </Button>
-              <Button asChild size="sm">
-                <Link to="/community">Join Community</Link>
-              </Button>
-            </div>
+// ═══════════════════════════════════════════════════════════════════════════
+
+function ResultPanel({
+  result,
+  content,
+  mode,
+  onReset,
+}: {
+  result: ModerationResult;
+  content: string;
+  mode: 'example' | 'custom';
+  onReset: () => void;
+}) {
+  const verdictIcon = (verdict: typeof result.verdict) => {
+    switch (verdict) {
+      case 'approved': return <CheckCircle className="w-8 h-8 text-green-400" />;
+      case 'flagged': return <AlertTriangle className="w-8 h-8 text-yellow-400" />;
+      case 'removed': return <XCircle className="w-8 h-8 text-red-400" />;
+    }
+  };
+
+  const verdictColor = (verdict: typeof result.verdict) => {
+    switch (verdict) {
+      case 'approved': return 'text-green-400 border-green-700 bg-green-900/20';
+      case 'flagged': return 'text-yellow-400 border-yellow-700 bg-yellow-900/20';
+      case 'removed': return 'text-red-400 border-red-700 bg-red-900/20';
+    }
+  };
+
+  const categoryNames: Record<string, { label: string; icon: React.ReactNode }> = {
+    profanity: { label: 'Profanity', icon: <Flag className="w-3 h-3" /> },
+    harassment: { label: 'Harassment', icon: <ThumbsDown className="w-3 h-3" /> },
+    spam: { label: 'Spam / Promotion', icon: <Zap className="w-3 h-3" /> },
+    pii: { label: 'PII / Personal Data', icon: <Eye className="w-3 h-3" /> },
+    nsfw: { label: 'NSFW / Adult', icon: <XCircle className="w-3 h-3" /> },
+  };
+
+  return (
+    <div className="space-y-4">
+      {/* Verdict */}
+      <Card className={`bg-[#131820] border-gray-800 ${result.verdict === 'removed' ? 'border-red-500/30' : result.verdict === 'flagged' ? 'border-yellow-500/30' : ''}`}>
+        <CardContent className="pt-6 text-center">
+          <div className="flex justify-center mb-2">{verdictIcon(result.verdict)}</div>
+          <h3 className={`text-xl font-bold uppercase tracking-wider ${verdictColor(result.verdict)}`}>
+            {result.verdict === 'approved' ? 'Approved' : result.verdict === 'flagged' ? 'Flagged for Review' : 'Removed'}
+          </h3>
+          <p className="text-xs text-gray-500 mt-2">
+            {result.inputLengthChars} chars · {result.ruleHits.length} rule hits
+          </p>
+        </CardContent>
+      </Card>
+
+      {/* Scores */}
+      <Card className="bg-[#131820] border-gray-800">
+        <CardHeader className="pb-2">
+          <CardTitle className="text-sm font-medium text-gray-300">Category Scores</CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-3">
+          {Object.entries(result.scores).map(([key, score]) => {
+            const cat = categoryNames[key] || { label: key, icon: <Info className="w-3 h-3" /> };
+            return (
+              <div key={key}>
+                <div className="flex items-center justify-between mb-1">
+                  <span className="flex items-center gap-1.5 text-xs text-gray-400">
+                    {cat.icon}
+                    {cat.label}
+                  </span>
+                  <span className={`text-xs font-medium ${
+                    score > 60 ? 'text-red-400' : score > 30 ? 'text-yellow-400' : 'text-green-400'
+                  }`}>
+                    {Math.round(score)}%
+                  </span>
+                </div>
+                <Progress
+                  value={score}
+                  className={`h-1.5 bg-gray-700 ${
+                    score > 60 ? '[&>div]:bg-red-500' : score > 30 ? '[&>div]:bg-yellow-500' : '[&>div]:bg-green-500'
+                  }`}
+                />
+              </div>
+            );
+          })}
+        </CardContent>
+      </Card>
+
+      {/* Rule Hits */}
+      {result.ruleHits.length > 0 && (
+        <Card className="bg-[#131820] border-gray-800">
+          <CardHeader className="pb-2">
+            <CardTitle className="text-sm font-medium text-gray-300 flex items-center gap-2">
+              <AlertTriangle className="w-4 h-4 text-yellow-400" />
+              Triggered Rules ({result.ruleHits.length})
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-2">
+            {result.ruleHits.map((hit, i) => (
+              <div key={i} className="p-2 bg-[#0B0E14] rounded border border-gray-800 text-xs">
+                <div className="flex items-center justify-between">
+                  <Badge className={`text-xs ${
+                    hit.severity === 'high' ? 'bg-red-900/30 text-red-300' :
+                    hit.severity === 'medium' ? 'bg-yellow-900/30 text-yellow-300' :
+                    'bg-blue-900/30 text-blue-300'
+                  }`}>
+                    {hit.category} · {hit.severity}
+                  </Badge>
+                </div>
+                <p className="text-gray-400 mt-1">{hit.description}</p>
+                {hit.snippet && (
+                  <p className="text-gray-500 mt-0.5 truncate">"{hit.snippet}"</p>
+                )}
+              </div>
+            ))}
           </CardContent>
         </Card>
-      </div>
-    </Layout>
+      )}
+
+      {/* Original content preview */}
+      <Card className="bg-[#131820] border-gray-800">
+        <CardHeader className="pb-2">
+          <CardTitle className="text-sm font-medium text-gray-300 flex items-center gap-2">
+            <Eye className="w-4 h-4 text-[#B026FF]" />
+            {mode === 'custom' ? 'Custom Text' : 'Example'} Content
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <p className="text-sm text-gray-400 break-words line-clamp-4">{content}</p>
+        </CardContent>
+      </Card>
+
+      {/* Reset */}
+      <Button variant="outline" onClick={onReset} className="w-full border-gray-700">
+        <RefreshCw className="w-4 h-4 mr-2" />
+        Analyze New Content
+      </Button>
+    </div>
   );
 }

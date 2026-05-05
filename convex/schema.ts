@@ -1580,4 +1580,178 @@ export default defineSchema({
     .index("by_session", ["sessionId"])
     .index("by_share_token", ["shareToken"])
     .index("by_public", ["isPublic", "createdAt"]),
+
+  // ════════════════════════════════════════════════════════════════════════════
+  // TOOLS v3.0 — Implementation Plan Tables
+  // ════════════════════════════════════════════════════════════════════════════
+
+  // ─── Game Library — unified game metadata for Tools 02, 03, 07, 08 ────────
+  gameLibrary: defineTable({
+    slug: v.string(),
+    name: v.string(),
+    aliases: v.array(v.string()),
+    genres: v.array(v.string()),
+    platforms: v.array(v.string()),
+    releaseYear: v.optional(v.float64()),
+    developer: v.optional(v.string()),
+    publisher: v.optional(v.string()),
+    minHardwareTier: v.union(
+      v.literal("low"),
+      v.literal("mid"),
+      v.literal("high"),
+      v.literal("ultra")
+    ),
+    approximateCostUSD: v.float64(),
+    securityGrade: v.union(
+      v.literal("A"),
+      v.literal("B"),
+      v.literal("C"),
+      v.literal("D"),
+      v.literal("F")
+    ),
+    securityNotes: v.optional(v.string()),
+    sentimentScores: v.object({
+      gameplay: v.float64(),
+      balance: v.float64(),
+      security: v.float64(),
+      performance: v.float64(),
+      community: v.float64(),
+    }),
+    sentimentTrendDirection: v.union(
+      v.literal("rising"),
+      v.literal("stable"),
+      v.literal("falling")
+    ),
+    securityMentionRate: v.float64(),
+    positiveThemes: v.array(v.string()),
+    negativeThemes: v.array(v.string()),
+    recentSecurityComplaints: v.array(
+      v.object({
+        id: v.string(),
+        summary: v.string(),
+        date: v.string(),
+      })
+    ),
+    releaseSignals: v.optional(
+      v.object({
+        esrbFiledDate: v.optional(v.string()),
+        steamBuildActivity: v.optional(v.boolean()),
+        marketingHires: v.optional(v.boolean()),
+        leakScore: v.optional(v.float64()),
+        officialTeases: v.optional(v.float64()),
+      })
+    ),
+    baseReleaseConfidence: v.optional(v.float64()),
+    expectedReleaseWindow: v.optional(v.string()),
+    recommendedForGoals: v.array(
+      v.union(
+        v.literal("gaming_pc"),
+        v.literal("find_game"),
+        v.literal("both")
+      )
+    ),
+    stylesMatch: v.array(v.string()),
+    budgetTier: v.union(
+      v.literal("free"),
+      v.literal("budget"),
+      v.literal("mid"),
+      v.literal("high"),
+      v.literal("ultra")
+    ),
+    isSupported: v.boolean(),
+    updatedAt: v.float64(),
+  })
+    .index("by_slug", ["slug"])
+    .index("by_security_grade", ["securityGrade"])
+    .index("by_budget_tier", ["budgetTier"])
+    .index("by_updated", ["updatedAt"]),
+
+  // ─── Tool Usage Logs — analytics/debugging for all 8 tools ────────────────
+  toolUsageLogs: defineTable({
+    toolId: v.string(),
+    userId: v.optional(v.string()),
+    sessionId: v.string(),
+    input: v.any(),
+    status: v.union(
+      v.literal("success"),
+      v.literal("error"),
+      v.literal("empty"),
+      v.literal("notFound")
+    ),
+    latencyMs: v.float64(),
+    createdAt: v.float64(),
+  })
+    .index("by_tool", ["toolId", "createdAt"])
+    .index("by_user", ["userId", "createdAt"]),
+
+  // ─── News Bookmarks — server-side bookmark persistence for Tool 04 ────────
+  newsBookmarks: defineTable({
+    userId: v.string(),
+    articleId: v.string(),
+    source: v.optional(v.string()),
+    bookmarkedAt: v.float64(),
+  })
+    .index("by_user", ["userId", "bookmarkedAt"])
+    .index("by_user_article", ["userId", "articleId"]),
+
+  // ─── Moderation Results — audit trail for Tool 06 ─────────────────────────
+  moderationResults: defineTable({
+    sessionId: v.string(),
+    userId: v.optional(v.string()),
+    inputText: v.string(),
+    verdict: v.union(
+      v.literal("approved"),
+      v.literal("flagged"),
+      v.literal("removed")
+    ),
+    ruleHits: v.array(
+      v.object({
+        ruleId: v.string(),
+        category: v.string(),
+        severity: v.union(
+          v.literal("low"),
+          v.literal("medium"),
+          v.literal("high")
+        ),
+        description: v.string(),
+        snippet: v.optional(v.string()),
+      })
+    ),
+    scores: v.object({
+      profanity: v.float64(),
+      harassment: v.float64(),
+      spam: v.float64(),
+      pii: v.float64(),
+      nsfw: v.float64(),
+    }),
+    analyzedAt: v.float64(),
+    mode: v.union(v.literal("example"), v.literal("custom")),
+    inputLengthChars: v.float64(),
+  })
+    .index("by_session", ["sessionId", "analyzedAt"])
+    .index("by_verdict", ["verdict", "analyzedAt"])
+    .index("by_user", ["userId", "analyzedAt"]),
+
+  // ─── Copilot Sessions — conversation history for Tool 07 ──────────────────
+  copilotSessions: defineTable({
+    sessionId: v.string(),
+    userId: v.optional(v.string()),
+    messages: v.array(
+      v.object({
+        role: v.union(v.literal("user"), v.literal("assistant")),
+        content: v.string(),
+        timestamp: v.float64(),
+        tokensUsed: v.optional(v.float64()),
+      })
+    ),
+    systemPromptVersion: v.string(),
+    createdAt: v.float64(),
+    updatedAt: v.float64(),
+    totalTokensUsed: v.optional(v.float64()),
+    lastUserMessage: v.optional(v.string()),
+    guardrailTriggered: v.optional(v.boolean()),
+  })
+    .index("by_session", ["sessionId"])
+    .index("by_user", ["userId", "createdAt"])
+    .index("by_updated", ["updatedAt"]),
 });

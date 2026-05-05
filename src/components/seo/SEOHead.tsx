@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import type { Article } from '@/types';
 import { optimizeTitle, optimizeMetaDescription, generateArticleMetaDescription } from '@/lib/seoUtils';
-import { generateAllSchemas, generatePersonSchema } from '@/lib/schemaMarkup';
+import { generateAllSchemas, generatePersonSchema, type SoftwareInput } from '@/lib/schemaMarkup';
 
 const SITE_NAME = 'The Grid Nexus';
 const BASE_URL = 'https://thegridnexus.com';
@@ -38,6 +38,7 @@ interface SEOHeadProps {
     totalTime?: string;
   };
   person?: PersonSchema;
+  software?: SoftwareInput;
 }
 
 export function SEOHead({
@@ -58,6 +59,7 @@ export function SEOHead({
   faqs,
   howTo,
   person,
+  software,
 }: SEOHeadProps) {
   // ── Title construction (unique per page, 50-60 chars) ──────────────────
   const rawTitle =
@@ -229,6 +231,7 @@ export function SEOHead({
           : undefined,
       faqs:     faqs && faqs.length > 0 ? faqs : undefined,
       howTo,
+      software,
       isHomepage:
         typeof window !== 'undefined' &&
         (url === window.location.origin || url === `${window.location.origin}/`),
@@ -253,7 +256,7 @@ export function SEOHead({
   }, [
     optimizedTitle, optimizedDescription, keywords, ogImage, canonical,
     type, article, publishedTime, modifiedTime, author, section, tags,
-    noindex, faqs, howTo, person,
+    noindex, faqs, howTo, person, software,
   ]);
 
   return null;

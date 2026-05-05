@@ -1,431 +1,556 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useCallback, useMemo } from 'react';
 import { Layout } from '@/components/layout/Layout';
 import { SEO } from '@/components/SEO';
+import { ToolCrossLinks } from '@/components/tools/ToolPageSEO';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { cn } from '@/lib/utils';
+import { Input } from '@/components/ui/input';
+import { Separator } from '@/components/ui/separator';
+import { ErrorBoundary } from '@/components/common/ErrorBoundary';
+import { LoadingState, EmptyState, ErrorState } from '@/components/common/StateComponents';
+import { toolRateLimiters } from '@/lib/utils/rateLimit';
+import type { StatusType } from '@/lib/types/status';
 import {
-  Newspaper, Shield, Gamepad2, Cpu, Bot, TrendingUp, Clock,
-  ArrowRight, Bookmark, Share2, ChevronRight, Zap, ArrowLeft,
-  Filter, Star, AlertTriangle, Globe,
+  Newspaper, Bookmark, Share2, Search, ChevronRight, Zap,
+  Filter, ArrowLeft, Clock, TrendingUp, Shield,
+  RefreshCw, BookmarkCheck, ChevronLeft,
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 // ── Types ──────────────────────────────────────────────────────────────────
 
-type Category = 'all' | 'security' | 'gaming' | 'tech' | 'ai';
-type Priority = 'breaking' | 'high' | 'normal';
-
 interface NewsItem {
   id: string;
   title: string;
   summary: string;
-  category: Exclude<Category, 'all'>;
-  priority: Priority;
+  category: string;
   source: string;
-  timeAgo: string;
-  readTime: number;
+  date: string;
+  priority?: 'breaking' | 'normal';
   tags: string[];
   relevanceScore: number;
   isBookmarked?: boolean;
 }
 
-// ── Mock news feed ─────────────────────────────────────────────────────────
+interface NewsCategory {
+  id: string;
+  label: string;
+}
+
+// ── Categories ─────────────────────────────────────────────────────────────
+
+const CATEGORIES: NewsCategory[] = [
+  { id: 'all', label: 'All News' },
+  { id: 'gaming', label: 'Gaming' },
+  { id: 'security', label: 'Security' },
+  { id: 'tech', label: 'Tech' },
+  { id: 'threats', label: 'Threat Intel' },
+  { id: 'hardware', label: 'Hardware' },
+  { id: 'industry', label: 'Industry' },
+];
+
+// ── Mock News Feed Data ────────────────────────────────────────────────────
 
 const NEWS_FEED: NewsItem[] = [
   {
     id: 'n1',
-    title: 'Valve patches critical Steam client RCE vulnerability — update now',
+    title: 'Steam Remote Code Execution Vulnerability Patched in Emergency Update',
     summary: 'A memory corruption bug in the Steam client allowed remote code execution via crafted game invite links. Valve\'s emergency patch is live. All users on versions below 3.0.2.18 are exposed.',
     category: 'security',
+    source: 'Valve Security Advisory',
+    date: '2026-05-04',
     priority: 'breaking',
-    source: 'Valve Security Blog',
-    timeAgo: '23 min ago',
-    readTime: 4,
-    tags: ['Steam', 'RCE', 'Patch', 'Critical'],
+    tags: ['Steam', 'RCE', 'Valve', 'Critical'],
     relevanceScore: 98,
   },
   {
     id: 'n2',
-    title: 'NVIDIA RTX 5080 benchmarks leak — 40% uplift over 4080 Super',
+    title: 'NVIDIA RTX 5080 Benchmarks Leak — 40% Uplift Over 4080 Super',
     summary: 'Early Geekbench and 3DMark runs for the unreleased RTX 5080 suggest a significant generational jump, with rasterization scores beating the 4090 in several tests. DLSS 4 performance scaling is exceptional.',
-    category: 'tech',
-    priority: 'high',
+    category: 'hardware',
     source: 'VideoCardz',
-    timeAgo: '1 hr ago',
-    readTime: 5,
+    date: '2026-05-04',
     tags: ['NVIDIA', 'GPU', 'RTX 5080', 'Benchmarks'],
-    relevanceScore: 91,
+    relevanceScore: 85,
   },
   {
     id: 'n3',
-    title: 'GTA VI multiplayer beta leaks show 500-player lobbies and AI NPCs',
-    summary: 'Internal test builds shared in a Rockstar source code leak reveal persistent open-world lobbies with up to 500 concurrent players and Claude-powered NPC dialogue systems. Release window still unclear.',
+    title: 'GTA 6 Development Update — Rockstar Confirms Late 2026 Window',
+    summary: 'Rockstar Games has reaffirmed its target launch window, with insiders reporting the game is feature-complete and entering final optimization. Security researchers flag potential for pre-release leaks.',
     category: 'gaming',
-    priority: 'high',
     source: 'Kotaku',
-    timeAgo: '2 hr ago',
-    readTime: 6,
-    tags: ['GTA VI', 'Rockstar', 'Multiplayer', 'Leak'],
-    relevanceScore: 89,
+    date: '2026-05-03',
+    tags: ['GTA 6', 'Rockstar', 'Release Date'],
+    relevanceScore: 92,
   },
   {
     id: 'n4',
-    title: 'Anthropic releases Claude 4 Opus with extended thinking and 1M context',
-    summary: 'Claude 4 Opus introduces a 1-million-token context window, extended reasoning mode, and a new tool-use protocol that allows multi-agent workflows without external orchestration frameworks.',
-    category: 'ai',
-    priority: 'high',
-    source: 'Anthropic Blog',
-    timeAgo: '3 hr ago',
-    readTime: 7,
-    tags: ['Claude', 'Anthropic', 'LLM', 'AI Models'],
-    relevanceScore: 87,
-  },
-  {
-    id: 'n5',
-    title: 'North Korean hackers impersonating gamers to infiltrate crypto firms',
-    summary: 'Lazarus Group actors are joining Discord gaming communities, building trust over weeks, then sending malware disguised as game mods. At least $47M stolen via this vector in 2025.',
-    category: 'security',
-    priority: 'high',
-    source: 'Mandiant Threat Intelligence',
-    timeAgo: '4 hr ago',
-    readTime: 5,
-    tags: ['Lazarus Group', 'Social Engineering', 'Crypto', 'Gaming'],
-    relevanceScore: 94,
-  },
-  {
-    id: 'n6',
-    title: 'Valorant Episode 9 Act 2 brings new Agent and Ranked changes',
-    summary: 'Riot unveils Tarn, a Sentinel with wall-denial and site-anchoring abilities. The ranked system receives a provisional game expansion to 10 placement matches and hidden MMR transparency improvements.',
-    category: 'gaming',
-    priority: 'normal',
-    source: 'Riot Games',
-    timeAgo: '5 hr ago',
-    readTime: 4,
-    tags: ['Valorant', 'Riot Games', 'Patch', 'Ranked'],
-    relevanceScore: 75,
-  },
-  {
-    id: 'n7',
-    title: 'OpenAI GPT-5 system card reveals new safety evaluations and refusals',
-    summary: 'GPT-5\'s safety system card details new capability evaluations including uplift for CBRN threats, cyberweapons, and persuasion. Model shows improved refusals but researchers flag new jailbreak surface areas.',
-    category: 'ai',
-    priority: 'normal',
-    source: 'OpenAI Research',
-    timeAgo: '6 hr ago',
-    readTime: 8,
-    tags: ['GPT-5', 'OpenAI', 'Safety', 'AI Policy'],
-    relevanceScore: 82,
-  },
-  {
-    id: 'n8',
-    title: 'Intel Core Ultra 300 HX outperforms AMD Ryzen 9 in sustained workloads',
-    summary: 'Anandtech\'s extensive thermal and power analysis finds Intel\'s latest mobile flagship sustains higher clocks under prolonged loads due to its improved Lion Cove power delivery architecture.',
-    category: 'tech',
-    priority: 'normal',
-    source: 'AnandTech',
-    timeAgo: '7 hr ago',
-    readTime: 9,
-    tags: ['Intel', 'CPU', 'Benchmark', 'Laptop'],
-    relevanceScore: 70,
-  },
-  {
-    id: 'n9',
-    title: 'New PowerSchool breach exposes 6.5M student records via stolen credentials',
-    summary: 'A credential-stuffing attack against PowerSchool\'s SIS portal resulted in unauthorized access to 6.5M student and staff records across 6,500 school districts. SSNs, grades, and medical notes were accessed.',
-    category: 'security',
+    title: 'Ransomware Group Claims Breach of Game Publisher Network — 2M Records Stolen',
+    summary: 'A ransomware group has posted samples from a claimed breach of an unnamed major game publisher, including source code slices and employee database exports. Investigation ongoing.',
+    category: 'threats',
+    source: 'BleepingComputer',
+    date: '2026-05-03',
     priority: 'breaking',
-    source: 'Bleeping Computer',
-    timeAgo: '8 hr ago',
-    readTime: 5,
-    tags: ['Data Breach', 'Education', 'Credential Stuffing', 'PowerSchool'],
+    tags: ['Ransomware', 'Data Breach', 'Gaming'],
     relevanceScore: 96,
   },
   {
-    id: 'n10',
-    title: 'Microsoft DirectStorage 2.0 eliminates CPU decompression bottleneck',
-    summary: 'The updated API moves all asset decompression to the GPU, freeing 2-3 CPU cores on average during load screens. Elden Ring Remastered will be the first title to ship with full DS 2.0 support.',
+    id: 'n5',
+    title: 'PlayStation Network Outage Traced to DDoS Attack — Sony Confirms No Data Compromise',
+    summary: 'PSN was offline for approximately 6 hours on May 2nd due to a distributed denial-of-service attack. Sony confirms no user data was accessed but recommends password resets as a precaution.',
+    category: 'security',
+    source: 'Sony Interactive Entertainment',
+    date: '2026-05-02',
+    tags: ['PlayStation', 'PSN', 'DDoS', 'Sony'],
+    relevanceScore: 88,
+  },
+  {
+    id: 'n6',
+    title: 'New Anti-Cheat Bypass Technique Reported in Call of Duty: Warzone',
+    summary: 'Researchers have documented a kernel-level bypass that circumvents Ricochet anti-cheat on Windows 11. Activision is investigating and plans a patch within 48 hours.',
+    category: 'threats',
+    source: 'Security Research Lab',
+    date: '2026-05-02',
+    tags: ['Call of Duty', 'Anti-Cheat', 'Exploit'],
+    relevanceScore: 84,
+  },
+  {
+    id: 'n7',
+    title: 'AMD Announces FSR 4.0 — AI Upscaling Coming to All RX 9000 Series GPUs',
+    summary: 'AMD\'s next-gen upscaling technology leverages dedicated AI accelerators for superior image quality. Backward compatible with FSR 3 titles via driver-level override.',
     category: 'tech',
-    priority: 'normal',
-    source: 'Microsoft DirectX Blog',
-    timeAgo: '9 hr ago',
-    readTime: 4,
-    tags: ['DirectStorage', 'Microsoft', 'PC Gaming', 'Performance'],
-    relevanceScore: 73,
+    source: 'AMD Official',
+    date: '2026-05-01',
+    tags: ['AMD', 'FSR', 'GPU', 'Upscaling'],
+    relevanceScore: 79,
+  },
+  {
+    id: 'n8',
+    title: 'Discord Bot Malware Campaign Targets Gaming Servers with Fake Giveaways',
+    summary: 'A coordinated campaign is spreading info-stealer malware through Discord bots posing as giveaway moderators. Over 500 gaming servers affected. Avoid clicking unexpected giveaway links.',
+    category: 'threats',
+    source: 'Malwarebytes',
+    date: '2026-05-01',
+    tags: ['Discord', 'Malware', 'Phishing'],
+    relevanceScore: 91,
+  },
+  {
+    id: 'n9',
+    title: 'Xbox Game Pass Adds 14 New Titles for May — Including Day-One Releases',
+    summary: 'Microsoft has announced the May 2026 Game Pass lineup, featuring 3 day-one releases including the anticipated "Starfall Protocol" from Obsidian Entertainment.',
+    category: 'gaming',
+    source: 'Xbox Wire',
+    date: '2026-04-30',
+    tags: ['Xbox', 'Game Pass', 'Microsoft'],
+    relevanceScore: 76,
+  },
+  {
+    id: 'n10',
+    title: 'Epic Games Store Adds One-Time Password Requirement After Account Takeover Surge',
+    summary: 'Following a 300% increase in account takeovers, Epic has mandated OTP verification for all account changes. Users report improved security but friction with family sharing.',
+    category: 'security',
+    source: 'Epic Games',
+    date: '2026-04-30',
+    tags: ['Epic Games', 'Account Security', '2FA'],
+    relevanceScore: 87,
   },
   {
     id: 'n11',
-    title: 'Overwatch 2 Season 14 introduces PvE missions and AI teammate option',
-    summary: 'Blizzard responds to years of community requests with six new PvE co-op missions and an opt-in AI teammate system for players who prefer single-player practice without bot lobbies.',
-    category: 'gaming',
-    priority: 'normal',
-    source: 'Blizzard Entertainment',
-    timeAgo: '10 hr ago',
-    readTime: 3,
-    tags: ['Overwatch 2', 'PvE', 'Blizzard', 'AI'],
-    relevanceScore: 67,
+    title: 'Intel Core Ultra 300 Series "Arrow Lake Refresh" Specs Leaked',
+    summary: 'Internal slides show Intel\'s next-gen desktop CPUs with up to 24 cores, improved efficiency cores, and enhanced AI acceleration. Launch expected Q3 2026.',
+    category: 'tech',
+    source: 'WCCFTech',
+    date: '2026-04-29',
+    tags: ['Intel', 'CPU', 'Arrow Lake'],
+    relevanceScore: 72,
   },
   {
     id: 'n12',
-    title: 'Meta AI Studio lets creators fine-tune Llama 3.3 on their own content',
-    summary: 'Meta\'s new AI Studio offers creators a no-code fine-tuning pipeline for Llama 3.3 using their own posts, DMs (with consent), and video transcripts. Output models stay private and hosted on Meta infra.',
-    category: 'ai',
-    priority: 'normal',
-    source: 'The Verge',
-    timeAgo: '11 hr ago',
-    readTime: 5,
-    tags: ['Meta', 'Llama', 'Fine-Tuning', 'Creator Tools'],
-    relevanceScore: 71,
+    title: 'Valorant Agent 28 Abilities Leaked — New Sentinel with Unique Smoke Mechanic',
+    summary: 'Data miners have uncovered ability icons and descriptions for the next Valorant agent. Expected to release with Episode 10 Act 2 in late May.',
+    category: 'gaming',
+    source: 'ValorLeaks',
+    date: '2026-04-29',
+    tags: ['Valorant', 'Riot', 'Leaks'],
+    relevanceScore: 68,
+  },
+  {
+    id: 'n13',
+    title: 'Hackers Target Gaming VPN Users — MITM Attack Steals Session Tokens',
+    summary: 'A man-in-the-middle attack has been observed targeting popular gaming VPNs, intercepting session tokens for Steam, Epic, and Battle.net. Users advised to enable VPN kill switch.',
+    category: 'threats',
+    source: 'The Grid Nexus Threat Intelligence',
+    date: '2026-04-28',
+    tags: ['VPN', 'MITM', 'Session Hijacking'],
+    relevanceScore: 94,
+  },
+  {
+    id: 'n14',
+    title: 'Nintendo Switch 2 Tear Down Reveals Custom NVIDIA Chip with DLSS 3.5',
+    summary: 'Hardware teardown confirms custom T239 SoC with dedicated tensor cores. DLSS 3.5 ray reconstruction enables console ray tracing at 60fps in handheld mode.',
+    category: 'hardware',
+    source: 'iFixit',
+    date: '2026-04-28',
+    tags: ['Nintendo', 'Switch 2', 'NVIDIA'],
+    relevanceScore: 83,
+  },
+  {
+    id: 'n15',
+    title: 'Cloud Gaming Security Report — 73% of Services Have Vulnerable API Endpoints',
+    summary: 'A comprehensive audit of 12 cloud gaming platforms found that most expose user data through insufficiently secured APIs. GeForce Now and Xbox Cloud Gaming scored highest for security.',
+    category: 'security',
+    source: 'The Grid Nexus Research',
+    date: '2026-04-27',
+    tags: ['Cloud Gaming', 'API Security', 'Research'],
+    relevanceScore: 97,
   },
 ];
 
-// ── Category config ────────────────────────────────────────────────────────
+const ITEMS_PER_PAGE = 5;
 
-const CATEGORIES: { id: Category; label: string; icon: React.ElementType; color: string; borderColor: string }[] = [
-  { id: 'all', label: 'All', icon: Globe, color: 'text-foreground', borderColor: 'border-foreground/30' },
-  { id: 'security', label: 'Security', icon: Shield, color: 'text-[#FF007A]', borderColor: 'border-[#FF007A]/30' },
-  { id: 'gaming', label: 'Gaming', icon: Gamepad2, color: 'text-[#39FF14]', borderColor: 'border-[#39FF14]/30' },
-  { id: 'tech', label: 'Tech', icon: Cpu, color: 'text-[#00F0FF]', borderColor: 'border-[#00F0FF]/30' },
-  { id: 'ai', label: 'AI', icon: Bot, color: 'text-[#B026FF]', borderColor: 'border-[#B026FF]/30' },
-];
-
-const PRIORITY_CONFIG = {
-  breaking: { label: 'Breaking', class: 'bg-destructive text-white' },
-  high: { label: 'Top Story', class: 'bg-[#FFB800]/10 text-[#FFB800] border-[#FFB800]/30' },
-  normal: { label: '', class: '' },
-};
-
-const CATEGORY_COLOR: Record<Exclude<Category, 'all'>, string> = {
-  security: 'text-[#FF007A]',
-  gaming: 'text-[#39FF14]',
-  tech: 'text-[#00F0FF]',
-  ai: 'text-[#B026FF]',
-};
-
-// ── Component ──────────────────────────────────────────────────────────────
+// ═══════════════════════════════════════════════════════════════════════════
 
 export default function NewsPersonalizer() {
-  const [activeCategory, setActiveCategory] = useState<Category>('all');
-  const [bookmarked, setBookmarked] = useState<Set<string>>(new Set());
-  const [sortBy, setSortBy] = useState<'relevance' | 'time'>('relevance');
+  const [activeCategory, setActiveCategory] = useState('all');
+  const [searchQuery, setSearchQuery] = useState('');
+  const [bookmarked, setBookmarked] = useState<Set<string>>(new Set(() => {
+    // Restore bookmarks from sessionStorage (survives page refresh within tab)
+    try {
+      const saved = sessionStorage.getItem('newsBookmarks');
+      return saved ? new Set(JSON.parse(saved)) : new Set();
+    } catch { return new Set(); }
+  }));
+  const [status, setStatus] = useState<StatusType>('idle');
+  const [currentPage, setCurrentPage] = useState(1);
 
-  const filtered = useMemo(() => {
-    let items = activeCategory === 'all' ? NEWS_FEED : NEWS_FEED.filter(n => n.category === activeCategory);
-    items = [...items].sort((a, b) => {
-      if (sortBy === 'relevance') return b.relevanceScore - a.relevanceScore;
-      return 0; // already in time order
+  // Persist bookmarks to sessionStorage on change
+  React.useEffect(() => {
+    try {
+      sessionStorage.setItem('newsBookmarks', JSON.stringify([...bookmarked]));
+    } catch { /* ignore quota errors */ }
+  }, [bookmarked]);
+
+  const toggleBookmark = useCallback((id: string) => {
+    setBookmarked((prev) => {
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id);
+      else next.add(id);
+      return next;
     });
-    return items;
-  }, [activeCategory, sortBy]);
+  }, []);
 
-  const breaking = NEWS_FEED.filter(n => n.priority === 'breaking');
-  const topCat = CATEGORIES.find(c => c.id === activeCategory)!;
+  // Filter with search + category
+  const filtered = useMemo(() => {
+    let items = activeCategory === 'all'
+      ? NEWS_FEED
+      : NEWS_FEED.filter((n) => n.category === activeCategory);
+
+    if (searchQuery.trim()) {
+      const q = searchQuery.toLowerCase();
+      items = items.filter(
+        (n) =>
+          n.title.toLowerCase().includes(q) ||
+          n.summary.toLowerCase().includes(q) ||
+          n.tags.some((t) => t.toLowerCase().includes(q))
+      );
+    }
+
+    return items;
+  }, [activeCategory, searchQuery]);
+
+  // Breaking news (always shown)
+  const breaking = useMemo(
+    () => NEWS_FEED.filter((n) => n.priority === 'breaking'),
+    []
+  );
+
+  // Pagination
+  const totalPages = Math.max(1, Math.ceil(filtered.length / ITEMS_PER_PAGE));
+  const paginatedItems = useMemo(
+    () => filtered.slice((currentPage - 1) * ITEMS_PER_PAGE, currentPage * ITEMS_PER_PAGE),
+    [filtered, currentPage]
+  );
+
+  // Reset to page 1 when category or search changes
+  React.useEffect(() => {
+    setCurrentPage(1);
+  }, [activeCategory, searchQuery]);
+
+  const handleCategoryChange = useCallback(
+    (categoryId: string) => {
+      if (!toolRateLimiters.newsPersonalizer.consume()) {
+        setStatus('error');
+        return;
+      }
+      setActiveCategory(categoryId);
+      setStatus('success');
+    },
+    []
+  );
 
   return (
-    <Layout>
-      <SEO
-        title="AI News Personalizer — The Grid Nexus"
-        description="Your personalized gaming & security news feed. AI-curated stories ranked by relevance — security breaches, game releases, AI breakthroughs, and hardware launches."
-      />
+    <ErrorBoundary toolName="News Personalizer">
+      <Layout>
+        <SEO
+          title="Personalized Gaming News Feed — The Grid Nexus"
+          description="Your curated gaming security news feed. Filter by category, bookmark stories, and stay ahead of threats."
+        />
+        <div className="min-h-screen bg-[#0B0E14] text-gray-200">
+          <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">
 
-      <div className="container mx-auto px-4 py-10 max-w-5xl">
-        {/* Header */}
-        <div className="mb-8">
-          <Link to="/tools" className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground mb-4 transition-colors">
-            <ArrowLeft className="h-3.5 w-3.5" /> Back to Tools
-          </Link>
-          <div className="flex items-center gap-3 mb-3">
-            <div className="p-3 rounded-xl bg-[#00F0FF]/10 border border-[#00F0FF]/30">
-              <Newspaper className="h-7 w-7 text-[#00F0FF]" />
-            </div>
-            <div>
-              <h1 className="font-display font-bold text-3xl">AI News Personalizer</h1>
-              <p className="text-muted-foreground text-sm">Curated intelligence ranked by relevance to your interests</p>
-            </div>
-          </div>
-        </div>
-
-        {/* Breaking news banner */}
-        {breaking.length > 0 && (
-          <div className="mb-6 p-4 rounded-xl border border-destructive/40 bg-destructive/5 flex items-start gap-3">
-            <Zap className="h-5 w-5 text-destructive shrink-0 mt-0.5 animate-pulse" />
-            <div className="flex-1 min-w-0">
-              <span className="text-xs font-bold text-destructive uppercase tracking-wider">Breaking</span>
-              <p className="text-sm font-medium mt-0.5 line-clamp-1">{breaking[0].title}</p>
-            </div>
-            <Badge variant="destructive" className="text-xs shrink-0">Live</Badge>
-          </div>
-        )}
-
-        {/* Category tabs + sort */}
-        <div className="flex flex-wrap items-center justify-between gap-3 mb-6">
-          <div className="flex flex-wrap gap-2">
-            {CATEGORIES.map(cat => {
-              const Icon = cat.icon;
-              const isActive = activeCategory === cat.id;
-              return (
-                <button
-                  key={cat.id}
-                  onClick={() => setActiveCategory(cat.id)}
-                  className={cn(
-                    'flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm border transition-colors',
-                    isActive
-                      ? `${cat.color} ${cat.borderColor} bg-white/5`
-                      : 'text-muted-foreground border-border hover:border-foreground/30'
-                  )}
-                >
-                  <Icon className="h-3.5 w-3.5" />
-                  {cat.label}
-                </button>
-              );
-            })}
-          </div>
-          <div className="flex items-center gap-2 text-sm">
-            <Filter className="h-3.5 w-3.5 text-muted-foreground" />
-            {(['relevance', 'time'] as const).map(s => (
-              <button
-                key={s}
-                onClick={() => setSortBy(s)}
-                className={cn('px-2 py-1 rounded text-xs transition-colors', sortBy === s ? 'bg-white/10 text-foreground' : 'text-muted-foreground hover:text-foreground')}
-              >
-                {s === 'relevance' ? 'Most Relevant' : 'Latest'}
-              </button>
-            ))}
-          </div>
-        </div>
-
-        {/* Feed stats */}
-        <div className="flex items-center gap-4 mb-4 text-xs text-muted-foreground">
-          <span className="flex items-center gap-1"><TrendingUp className="h-3 w-3" /> {filtered.length} stories</span>
-          <span className="flex items-center gap-1"><Clock className="h-3 w-3" /> Updated just now</span>
-          <span className="flex items-center gap-1"><Star className="h-3 w-3" /> Sorted by {sortBy}</span>
-        </div>
-
-        {/* News list */}
-        <div className="space-y-4">
-          {filtered.map((item, idx) => {
-            const isBookmarked = bookmarked.has(item.id);
-            const catColor = CATEGORY_COLOR[item.category];
-            const priConfig = PRIORITY_CONFIG[item.priority];
-            const catInfo = CATEGORIES.find(c => c.id === item.category)!;
-            const CatIcon = catInfo.icon;
-
-            return (
-              <Card
-                key={item.id}
-                className={cn(
-                  'group hover:border-foreground/20 transition-colors',
-                  item.priority === 'breaking' && 'border-destructive/30 bg-destructive/5',
-                  item.priority === 'high' && idx === 0 && 'border-[#FFB800]/20',
-                )}
-              >
-                <CardContent className="pt-4 pb-4">
-                  <div className="flex items-start gap-4">
-                    {/* Rank */}
-                    <div className="shrink-0 w-8 text-center">
-                      <span className="text-2xl font-bold font-display text-muted-foreground/30">
-                        {String(idx + 1).padStart(2, '0')}
-                      </span>
-                    </div>
-
-                    {/* Main content */}
-                    <div className="flex-1 min-w-0">
-                      <div className="flex flex-wrap items-center gap-2 mb-2">
-                        {item.priority !== 'normal' && (
-                          <Badge className={cn('text-xs', priConfig.class)}>{priConfig.label}</Badge>
-                        )}
-                        <span className={cn('flex items-center gap-1 text-xs font-medium', catColor)}>
-                          <CatIcon className="h-3 w-3" />
-                          {item.category.charAt(0).toUpperCase() + item.category.slice(1)}
-                        </span>
-                        <span className="text-xs text-muted-foreground">{item.source}</span>
-                        <span className="text-xs text-muted-foreground">· {item.timeAgo}</span>
-                        <span className="text-xs text-muted-foreground">· {item.readTime} min read</span>
-                      </div>
-
-                      <h3 className="font-semibold text-base leading-snug mb-2 group-hover:text-[#00F0FF] transition-colors">
-                        {item.title}
-                      </h3>
-                      <p className="text-sm text-muted-foreground leading-relaxed mb-3 line-clamp-2">
-                        {item.summary}
-                      </p>
-
-                      {/* Tags + actions */}
-                      <div className="flex items-center justify-between gap-4">
-                        <div className="flex flex-wrap gap-1.5">
-                          {item.tags.slice(0, 3).map(tag => (
-                            <span key={tag} className="text-xs px-2 py-0.5 rounded-full bg-muted/50 text-muted-foreground border border-border">
-                              {tag}
-                            </span>
-                          ))}
-                        </div>
-                        <div className="flex items-center gap-2 shrink-0">
-                          <div className="text-xs text-muted-foreground flex items-center gap-1">
-                            <TrendingUp className="h-3 w-3" />
-                            <span>{item.relevanceScore}%</span>
-                          </div>
-                          <button
-                            onClick={() => setBookmarked(prev => {
-                              const next = new Set(prev);
-                              if (next.has(item.id)) next.delete(item.id);
-                              else next.add(item.id);
-                              return next;
-                            })}
-                            className={cn('p-1.5 rounded transition-colors', isBookmarked ? 'text-[#FFB800]' : 'text-muted-foreground hover:text-foreground')}
-                          >
-                            <Bookmark className="h-3.5 w-3.5" fill={isBookmarked ? 'currentColor' : 'none'} />
-                          </button>
-                          <button className="p-1.5 rounded text-muted-foreground hover:text-foreground transition-colors">
-                            <Share2 className="h-3.5 w-3.5" />
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            );
-          })}
-        </div>
-
-        {/* Bookmarks summary */}
-        {bookmarked.size > 0 && (
-          <div className="mt-6 p-4 rounded-xl border border-[#FFB800]/30 bg-[#FFB800]/5 flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <Bookmark className="h-4 w-4 text-[#FFB800]" fill="currentColor" />
-              <span className="text-sm font-medium">{bookmarked.size} story{bookmarked.size > 1 ? 'ies' : ''} bookmarked</span>
-            </div>
-            <Button variant="outline" size="sm" asChild>
-              <Link to="/bookmarks">
-                View Bookmarks <ChevronRight className="h-3.5 w-3.5 ml-1" />
+            {/* Header */}
+            <div className="flex items-center gap-4">
+              <Link to="/tools/security-scanner" className="text-gray-400 hover:text-white transition-colors">
+                <ArrowLeft className="w-5 h-5" />
               </Link>
-            </Button>
-          </div>
-        )}
+              <div>
+                <h1 className="text-3xl font-bold tracking-tight text-white flex items-center gap-3">
+                  <Newspaper className="w-7 h-7 text-[#B026FF]" />
+                  Personalized News Feed
+                </h1>
+                <p className="text-gray-400 mt-1">
+                  Stay ahead of gaming threats and industry shifts. Filter, search, and save what matters.
+                </p>
+              </div>
+            </div>
 
-        {/* CTA */}
-        <Card className="mt-8 border-[#B026FF]/20 bg-gradient-to-r from-[#B026FF]/5 to-[#00F0FF]/5">
-          <CardContent className="pt-6 flex flex-col sm:flex-row items-center justify-between gap-4">
-            <div>
-              <p className="font-semibold">Never miss a critical alert</p>
-              <p className="text-sm text-muted-foreground">Subscribe to the Live Threat Dashboard for real-time security push notifications.</p>
+            {/* Error */}
+            {status === 'error' && (
+              <ErrorState title="Filter rate limited" message="Please wait a moment before switching categories again." />
+            )}
+
+            {/* Search Bar */}
+            <div className="relative">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500" />
+              <Input
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                placeholder="Search news by title, summary, or tag…"
+                className="pl-10 bg-[#131820] border-gray-700 text-white placeholder:text-gray-500 focus:border-[#B026FF]"
+              />
             </div>
-            <div className="flex gap-2 shrink-0">
-              <Button asChild size="sm">
-                <Link to="/live-threat-dashboard" className="flex items-center gap-2">
-                  <AlertTriangle className="h-3.5 w-3.5" /> Threat Dashboard
-                </Link>
-              </Button>
-              <Button asChild variant="outline" size="sm">
-                <Link to="/tools/sentiment-analyzer" className="flex items-center gap-2">
-                  Game Sentiment <ArrowRight className="h-3.5 w-3.5" />
-                </Link>
-              </Button>
+
+            {/* Categories */}
+            <div className="flex flex-wrap gap-2">
+              {CATEGORIES.map((cat) => (
+                <Button
+                  key={cat.id}
+                  variant={activeCategory === cat.id ? 'default' : 'outline'}
+                  size="sm"
+                  onClick={() => handleCategoryChange(cat.id)}
+                  className={
+                    activeCategory === cat.id
+                      ? 'bg-[#B026FF] hover:bg-[#B026FF]/80 text-white'
+                      : 'border-gray-700 hover:border-[#B026FF] hover:text-white'
+                  }
+                >
+                  {cat.label}
+                </Button>
+              ))}
             </div>
-          </CardContent>
-        </Card>
-      </div>
-    </Layout>
+
+            {/* Breaking News Banner */}
+            {breaking.length > 0 && (
+              <div className="space-y-2">
+                <h2 className="text-sm font-semibold text-red-400 flex items-center gap-2 uppercase tracking-wider">
+                  <Zap className="w-4 h-4" />
+                  Breaking
+                </h2>
+                {breaking.map((item) => (
+                  <NewsCard
+                    key={item.id}
+                    item={item}
+                    isBookmarked={bookmarked.has(item.id)}
+                    onToggleBookmark={toggleBookmark}
+                    isBreaking
+                  />
+                ))}
+              </div>
+            )}
+
+            {/* Feed */}
+            <div className="space-y-2">
+              <div className="flex items-center justify-between">
+                <h2 className="text-sm font-semibold text-gray-400 uppercase tracking-wider">
+                  {activeCategory === 'all' ? 'All Stories' : CATEGORIES.find((c) => c.id === activeCategory)?.label || 'Stories'}
+                  <span className="ml-2 text-gray-600">({filtered.length})</span>
+                </h2>
+                {searchQuery && (
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => setSearchQuery('')}
+                    className="text-gray-400 hover:text-white"
+                  >
+                    Clear Search
+                  </Button>
+                )}
+              </div>
+
+              {/* Paginated results */}
+              {paginatedItems.length > 0 ? (
+                paginatedItems.map((item) => (
+                  <NewsCard
+                    key={item.id}
+                    item={{ ...item, isBookmarked: bookmarked.has(item.id) }}
+                    isBookmarked={bookmarked.has(item.id)}
+                    onToggleBookmark={toggleBookmark}
+                  />
+                ))
+              ) : (
+                <EmptyState
+                  title="No stories found"
+                  message={
+                    searchQuery
+                      ? `No stories match "${searchQuery}" in this category.`
+                      : 'No stories in this category yet.'
+                  }
+                />
+              )}
+            </div>
+
+            {/* Pagination */}
+            {totalPages > 1 && (
+              <div className="flex items-center justify-center gap-4 pt-2">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  disabled={currentPage <= 1}
+                  onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
+                  className="border-gray-700"
+                >
+                  <ChevronLeft className="w-4 h-4 mr-1" />
+                  Previous
+                </Button>
+                <span className="text-sm text-gray-400">
+                  Page {currentPage} of {totalPages}
+                </span>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  disabled={currentPage >= totalPages}
+                  onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
+                  className="border-gray-700"
+                >
+                  Next
+                  <ChevronRight className="w-4 h-4 ml-1" />
+                </Button>
+              </div>
+            )}
+
+            {/* Bookmark count */}
+            {bookmarked.size > 0 && (
+              <div className="text-center text-xs text-gray-500">
+                {bookmarked.size} bookmarked {bookmarked.size === 1 ? 'story' : 'stories'} saved this session
+              </div>
+            )}
+          </div>
+        </div>
+        <ToolCrossLinks related={[
+            "/tools/sentiment-analyzer",
+            "/tools/threat-scanner",
+            "/tools/release-predictor",
+            "/tools/gaming-copilot",
+          ]} />
+      </Layout>
+    </ErrorBoundary>
+  );
+}
+
+// ═══════════════════════════════════════════════════════════════════════════
+
+function NewsCard({
+  item,
+  isBookmarked,
+  onToggleBookmark,
+  isBreaking,
+}: {
+  item: NewsItem;
+  isBookmarked: boolean;
+  onToggleBookmark: (id: string) => void;
+  isBreaking?: boolean;
+}) {
+  const [relevanceVisible, setRelevanceVisible] = useState(false);
+
+  const categoryColor = (cat: string) => {
+    const colors: Record<string, string> = {
+      gaming: 'bg-green-900/30 text-green-300 border-green-700',
+      security: 'bg-blue-900/30 text-blue-300 border-blue-700',
+      tech: 'bg-purple-900/30 text-purple-300 border-purple-700',
+      threats: 'bg-red-900/30 text-red-300 border-red-700',
+      hardware: 'bg-yellow-900/30 text-yellow-300 border-yellow-700',
+      industry: 'bg-gray-900/30 text-gray-300 border-gray-700',
+    };
+    return colors[cat] || 'bg-gray-900/30 text-gray-300 border-gray-700';
+  };
+
+  return (
+    <Card className={`bg-[#131820] border-gray-800 ${isBreaking ? 'border-l-4 border-l-red-500' : ''}`}>
+      <CardContent className="pt-5">
+        <div className="flex items-start justify-between gap-4">
+          <div className="flex-1 min-w-0">
+            <div className="flex items-center gap-2 flex-wrap mb-1">
+              <Badge className={`text-xs border ${categoryColor(item.category)}`}>
+                {item.category.charAt(0).toUpperCase() + item.category.slice(1)}
+              </Badge>
+              {isBreaking && (
+                <Badge variant="destructive" className="text-xs">Breaking</Badge>
+              )}
+            </div>
+            <h3 className="text-base font-semibold text-white leading-snug">
+              {item.title}
+            </h3>
+            <p className="text-sm text-gray-400 mt-1.5 line-clamp-2">{item.summary}</p>
+            <div className="flex items-center gap-3 mt-2 text-xs text-gray-500">
+              <span className="flex items-center gap-1">
+                <Clock className="w-3 h-3" />
+                {item.date}
+              </span>
+              <span>{item.source}</span>
+            </div>
+            {item.tags.length > 0 && (
+              <div className="flex flex-wrap gap-1.5 mt-2">
+                {item.tags.map((tag, i) => (
+                  <span key={i} className="text-xs bg-gray-800 text-gray-400 px-2 py-0.5 rounded">
+                    {tag}
+                  </span>
+                ))}
+              </div>
+            )}
+          </div>
+
+          {/* Right side actions */}
+          <div className="flex flex-col items-center gap-2 shrink-0">
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => onToggleBookmark(item.id)}
+              className={isBookmarked ? 'text-[#B026FF]' : 'text-gray-500 hover:text-white'}
+              title={isBookmarked ? 'Remove bookmark' : 'Bookmark'}
+            >
+              {isBookmarked ? <BookmarkCheck className="w-4 h-4" /> : <Bookmark className="w-4 h-4" />}
+            </Button>
+            <div className="relative">
+              <Button
+                variant="ghost"
+                size="sm"
+                className="text-gray-500 hover:text-white"
+                onClick={() => setRelevanceVisible(!relevanceVisible)}
+                title="Relevance score"
+              >
+                <TrendingUp className="w-4 h-4" />
+              </Button>
+              {relevanceVisible && (
+                <div className="absolute right-0 top-full mt-1 z-10 bg-gray-800 border border-gray-700 rounded-lg p-2 text-center w-24 shadow-xl">
+                  <p className="text-xs text-gray-400">Relevance</p>
+                  <p className="text-sm font-bold text-[#B026FF]">{item.relevanceScore}%</p>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      </CardContent>
+    </Card>
   );
 }

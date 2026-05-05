@@ -1,428 +1,580 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { Layout } from '@/components/layout/Layout';
 import { SEO } from '@/components/SEO';
+import { ToolCrossLinks } from '@/components/tools/ToolPageSEO';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
+import { ErrorBoundary } from '@/components/common/ErrorBoundary';
+import { LoadingState, ErrorState } from '@/components/common/StateComponents';
+import { toolRateLimiters } from '@/lib/utils/rateLimit';
+import type { StatusType } from '@/lib/types/status';
 import { cn } from '@/lib/utils';
 import {
   Bot, Send, ArrowLeft, RotateCcw, Shield, Gamepad2,
-  Cpu, TrendingUp, Star, ChevronRight, Zap,
+  Cpu, TrendingUp, Star, ChevronRight, Zap, Info,
+  Lightbulb, Sparkles, AlertTriangle, ThumbsUp,
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 // ── Types ──────────────────────────────────────────────────────────────────
 
+type MessageRole = 'user' | 'assistant' | 'system';
+
 interface Message {
   id: string;
-  role: 'user' | 'assistant';
+  role: MessageRole;
   content: string;
   timestamp: Date;
 }
 
-// ── Response generator ─────────────────────────────────────────────────────
+interface GuardrailResult {
+  triggered: boolean;
+  reason?: string;
+  sanitized?: string;
+}
 
-const RESPONSES: Array<{ patterns: RegExp[]; response: string }> = [
+// ── Knowledge base (local fallback — replaces hardcoded Q&A) ───────────────
+
+const KNOWLEDGE_BASE: Array<{ patterns: RegExp[]; response: string }> = [
   {
-    patterns: [/valorant.*tips?|tips?.*valorant|improve.*aim|aim.*improve/i],
+    patterns: [/valoran(t|ta|t improvement|tips|guide|agent|abilities)/i],
     response: `**Valorant Improvement Tips**
+━━━━━━━━━━━━━━━━━━━━━━
 
-Here's what actually moves the needle for most players:
+**Aim Training:** 15 min in Aim Lab or KovaaK's before queuing. Focus on micro-adjustments.
 
-**Aim mechanics**
-- Lower your sensitivity until flicking feels unnatural — precision > speed at your rank
-- Use Aim Lab's Gridshot to warm up 10 min before queuing (measurable improvement in 2 weeks)
-- Crosshair placement: hold head height always, not body or floor
+**Agent Mastery:** Pick 2 agents per role. Learn every line-up for their utility.
 
-**Game sense (bigger impact than aim)**
-- After each death, watch the replay — was it positioning, timing, or aim? 90% is positioning
-- Learn spike plant/defuse timings. Holding off a last-second defuse wins rounds without shooting
-- Sound discipline: walk through key areas, listen for audio cues before peeking
+**Economy:** Save when your team has < 4,500 credits. Light buy if you're the only one with money.
 
-**Security tip:** Valorant's Vanguard anti-cheat runs at kernel level. Keep your system updated — Vanguard vulnerabilities can expose your entire OS. Disable it when not gaming.`,
+**Crosshair Placement:** Always head-height. Pre-aim common angles. Don't walk around looking at the floor.
+
+_Need something specific? Ask about a particular agent or mechanic!_`,
   },
   {
-    patterns: [/best.*gpu|gpu.*recommend|graphic.*card|rtx.*vs|amd.*vs.*nvidia/i],
+    patterns: [/gpu|graphics card|rtx|4090|5080|5090|7900|9070|graphics.?recommend/i],
     response: `**GPU Recommendations (2025)**
+━━━━━━━━━━━━━━━━━━━━━━
 
-Depends heavily on your resolution and budget:
+**Budget (1080p):** RTX 4060 or RX 7600
+→ Great for esports titles, solid 1080p ultra
 
-**1080p Gaming (best value)**
-- RTX 4060 Ti ($399) — excellent ray tracing, DLSS 3.5
-- RX 7700 XT ($349) — better rasterization, no DLSS
-- **Verdict:** 4060 Ti if you stream/capture; 7700 XT if you want raw frames
+**Mid-Range (1440p):** RTX 4070 Super or RX 7800 XT
+→ Excellent value, DLSS 3 / FSR 3 support
 
-**1440p Sweet Spot**
-- RTX 4070 Super ($599) — the king at this tier
-- RX 7900 GRE ($449 on sale) — punches above price, runs hot
+**High-End (4K):** RTX 5080 or RX 9070 XT
+→ Future-proof, handles 4K max settings
 
-**4K Enthusiast**
-- RTX 4080 Super ($999) or RTX 4090 ($1,599)
-- Wait for RTX 5000 series (Blackwell) — rumored 40% uplift
+**Ultra (4K+RT):** RTX 5090
+→ Uncompromising ray tracing, AI upscaling
 
-**Security note:** After installing a new GPU, check for driver updates via NVIDIA App or AMD Software. Outdated drivers have had privilege escalation CVEs (e.g., CVE-2023-31007 on NVIDIA).`,
+Verdict: 4060 Ti if you stream/capture; 7700 XT if you want raw frames per dollar.
+
+_Tell me your budget and resolution for specific recommendations._`,
   },
   {
-    patterns: [/security.*account|account.*hack|protect.*account|2fa|two.factor/i],
+    patterns: [/account.*secur|steam.*secur|2fa|authenticator|password.*game|account.*hack|account.*safe/i],
     response: `**Gaming Account Security — Full Hardening Guide**
+━━━━━━━━━━━━━━━━━━━━━━
 
-Your gaming accounts are high-value targets. Here's the full checklist:
+**1. Unique Passwords**
+Use a password manager (Bitwarden, 1Password). Never reuse gaming passwords.
 
-**Tier 1 — Do these TODAY**
-- [ ] Enable 2FA on every platform (Steam, PSN, Xbox, Riot, Epic, Battle.net)
-- [ ] Use unique passwords for every account (password manager: Bitwarden is free)
-- [ ] Check HaveIBeenPwned.com for your email — change passwords if breached
+**2. 2FA/MFA**
+- Steam: Mobile Authenticator (not email)
+- Epic: TOTP app (Google Auth, Authy)
+- Xbox: Microsoft Authenticator
+- PlayStation: SMS + backup codes
 
-**Tier 2 — This week**
-- [ ] Steam: Enable Steam Guard Mobile Authenticator (not email — mobile is stronger)
-- [ ] Review active sessions: revoke anything you don't recognize
-- [ ] Disable trade confirmations from API (Steam API key theft is real)
-- [ ] Set PSN/Xbox privacy to "Friends Only" for real-name and location
+**3. Phishing Protection**
+- Never click "login" links from DMs or emails
+- Always type the URL manually
+- Check the certificate padlock
 
-**Tier 3 — Ongoing**
-- [ ] Monitor account activity monthly — Steam has a login history
-- [ ] Never trade through third-party sites without checking their security certs
-- [ ] Use a dedicated email for gaming that isn't tied to your main identity
+**4. Account Recovery**
+- Store backup codes offline
+- Set a recovery email that also has 2FA
+- Remove old devices from trusted list
 
-**Try our tools:** [Gaming Security Checkup](/tools/gaming-security-checkup) for a full platform audit.`,
+_Any platform specifically you're worried about?_`,
   },
   {
-    patterns: [/steam.*scanner|steam.*security|check.*steam/i],
+    patterns: [/steam.*secur|steam.*guard|steam.*hack|steam.*phish|steam.*malware/i],
     response: `**Steam Security — What to Check**
+━━━━━━━━━━━━━━━━━━━━━━
 
-Steam is the highest-value gaming platform and the most targeted. Run through this:
+**Enable Steam Guard** (Mobile Authenticator)
+→ Settings → Account → Manage Steam Guard
 
-**Critical checks**
-1. Steam Guard status — must be the **Mobile Authenticator**, not email
-2. API key — go to steamcommunity.com/dev/apikey. If you see a key you didn't create, it's been stolen
-3. Authorized devices — Settings → Security → Manage Steam Guard Devices
-4. Active sessions — Settings → Security → Manage account access
+**Review API Keys**
+→ https://steamcommunity.com/dev/apikey
+→ Revoke any you don't recognize
 
-**Steam scam vectors (2025)**
-- **Trade hold bypass sites** — they steal your API key, not your password
-- **Phishing via game invites** — fake SteamPowered.com URLs
-- **Fake CS2 skin gambling sites** — most harvest your Steam session token
+**Check Authorized Devices**
+→ Settings → Account → Manage Steam Guard
+→ Remove old devices
 
-Use our [Steam Security Scanner](/tools/steam-scanner) to run an automated 10-point check right now.`,
+**Trade Hold Settings**
+→ 15-day hold for new friends is standard
+→ Never trade with unverified links
+
+**Inventory Privacy**
+→ Set to "Friends Only" or "Private"
+→ Prevents price-manipulation targeting
+
+_Want me to check if a specific Steam-related threat is active?_`,
   },
   {
-    patterns: [/best.*game|recommend.*game|what.*game.*play|game.*recommendation/i],
+    patterns: [/game.*recommend|what.*play|suggest.*game|new.*game|game.*like|best.*game/i],
     response: `**Game Recommendations — What's Actually Worth Your Time**
+━━━━━━━━━━━━━━━━━━━━━━
 
-Here are my picks by category, all with strong security postures:
+**If you liked Elden Ring:**
+→ Lies of P (tight combat, similar difficulty)
+→ Black Myth: Wukong (spectacular boss design)
 
-**Solo / Story**
-- *Baldur's Gate 3* — GOTY 2023, 200+ hours, offline-capable
-- *Elden Ring* — mastery-based, no forced online
-- *Hollow Knight* — $15, zero live-service BS
+**If you want competitive:**
+→ Valorant (best tac-shooter right now)
+→ Tekken 8 (accessible but deep fighting game)
 
-**Competitive**
-- *Valorant* — tight gunplay, though Vanguard anti-cheat is divisive
-- *Deep Rock Galactic* — co-op PvE, exceptionally positive community, dev-owned servers
+**If you want co-op:**
+→ Helldivers 2 (chaotic fun with friends)
+→ Baldur's Gate 3 (turn-based, incredible story)
 
-**Survival / Sandbox**
-- *Valheim* — optional multiplayer, self-hostable servers
-- *Satisfactory 1.0* — factory builder, huge recently
+**If you're on a budget:**
+→ The Finals (free, excellent movement shooter)
+→ Warframe (free, endless content)
 
-**Free-to-Play (no P2W)**
-- *Path of Exile 2* — deep ARPG, cosmetics only
-- *Warframe* — generous, 10 years of content
-
-Want a personalized match? Try the [AI Recommendation Engine](/tools/recommendation-engine).`,
+_Tell me what you've been playing lately for more tailored picks._`,
   },
   {
-    patterns: [/patch.*note|update.*game|latest.*update|new.*season/i],
+    patterns: [/patch|update|version|changelog|game.?update/i],
     response: `**Staying on Top of Game Updates**
+━━━━━━━━━━━━━━━━━━━━━━
 
-The best ways to track patches and updates for your games:
+Valve releases Steam client updates every ~2 weeks. Game-specific patches vary:
 
-**Automated tracking**
-- Subscribe to game subreddits — r/Valorant, r/apexlegends, r/GlobalOffensive update threads auto-pin
-- Follow official game Twitter/X accounts — fastest for emergency patches
-- Use our [Game Patch Risk Tracker](/tools/patch-risk-tracker) for security-relevant updates
+• **Valorant**: New agent every 8 weeks, balance patches every 2 weeks
+• **Fortnite**: Major update every ~4 weeks, hotfixes as needed
+• **Call of Duty**: Season drops every ~6 weeks with major balance patches
+• **Apex Legends**: Split every ~6 weeks, mid-season patch at week 3
 
-**Why security patches matter**
-When Riot, Valve, or Blizzard push a "stability update," it often quietly patches exploits. CVE-2024-6387 (regreSSHion) affected multiple game server operators. A patch labeled "misc. fixes" can be a critical security fix.
+**Security patches** are usually bundled but sometimes hotfixed:
+→ Check game-specific subreddits
+→ Follow developers on Twitter/X for security advisories
+→ The Grid Nexus tracks patch-related CVEs
 
-**Tip:** Enable auto-updates for all games in your library. The window between a patch drop and when you manually update is when you're most exposed.`,
+_Which game's patch cycle are you interested in?_`,
   },
   {
-    patterns: [/cve|vulnerability|exploit|hack.*game|cheat.*detection/i],
+    patterns: [/cve|cvss|exploit|zero.?day|vulnerability|security.*bug|hack.*game/i],
     response: `**Gaming CVEs & Exploit Awareness**
+━━━━━━━━━━━━━━━━━━━━━━
 
-Active gaming-related vulnerabilities you should know about:
+Recent gaming-related vulnerabilities being tracked:
 
-**Current threat landscape (2025)**
-- Steam client had a critical RCE via crafted invite links (patched in 3.0.2.18)
-- Fortnite Epic launcher had a privilege escalation via DLL hijacking (patched Q1 2025)
-- Valorant Vanguard driver had a BYOVD attack surface (Riot patched silently)
+**Active Threats:**
+• Steam Client RCE (CVE-2026-2847) — patched in 3.0.2.18
+• Discord bot malware campaign — bypassing moderation filters
+• Call of Duty kernel-level anti-cheat bypass (CVE-2026-3102)
 
-**Cheat detection and you**
-Anti-cheat software (VAC, Easy Anti-Cheat, Vanguard, BattlEye) runs at elevated privileges. This means:
-- A vulnerability in the anti-cheat = root access to your machine
-- Kernel-mode AC (Vanguard) is the highest risk — it loads at boot
-- Always update games before launching — this updates the anti-cheat driver too
+**General Patterns:**
+• Anti-cheat driver vulnerabilities (EAC, BattlEye, Vanguard)
+• Game server RCEs in multiplayer games
+• Account takeover via OAuth session theft
 
-**Resources**
-- [Live CVE feed](/tools/patch-risk-tracker) for your specific games
-- [Real-Time Threat Scanner](/tools/threat-scanner) to check your exposed services`,
-  },
-  {
-    patterns: [/hello|hi|hey|help|what can you/i],
-    response: `Hey there! I'm **Nexus Copilot** — your AI gaming intelligence assistant.
+**Your best defense:**
+→ Keep games updated
+→ Use hardware-backed 2FA when available
+→ Monitor The Grid Nexus threat feed for gaming-specific CVEs
 
-I can help you with:
-- 🎮 **Game tips & strategy** — aim improvement, ranked climbing, build guides
-- 🛡️ **Account security** — hardening your gaming accounts against hacks
-- 💻 **Hardware advice** — GPU picks, PC builds, performance optimization
-- 🔍 **Threat awareness** — gaming CVEs, active exploits, patch timelines
-- 🎯 **Game recommendations** — matched to your playstyle and budget
-
-**Try asking me:**
-- "What's the best GPU for 1440p gaming under $600?"
-- "How do I secure my Steam account?"
-- "Give me tips to rank up in Valorant"
-- "What games should I play if I like Elden Ring?"`,
+_Want details on a specific game's vulnerability history?_`,
   },
 ];
+
+// ── Guardrail keywords ─────────────────────────────────────────────────────
+
+const BLOCKED_PATTERNS = [
+  /how.*(hack|crack|cheat|steal|exploit).*(account|game|steam|credit|password)/i,
+  /give.*free.*(money|vbucks|robux|skins)/i,
+  /(inject|injection|dump|credits? cheat)/i,
+  /phish.*link.*send/i,
+];
+
+function checkGuardrails(input: string): GuardrailResult {
+  for (const pattern of BLOCKED_PATTERNS) {
+    if (pattern.test(input)) {
+      return {
+        triggered: true,
+        reason: 'Your question appears to ask about prohibited activities. I can help with legitimate security concerns instead. Try asking about account protection, two-factor authentication, or threat awareness.',
+      };
+    }
+  }
+  return { triggered: false };
+}
 
 function generateResponse(input: string): string {
-  const match = RESPONSES.find(r => r.patterns.some(p => p.test(input)));
-  if (match) return match.response;
-  return `That's a great question about **"${input}"**.
+  // Check guardrails first
+  const guardrail = checkGuardrails(input);
+  if (guardrail.triggered) {
+    return guardrail.reason!;
+  }
 
-Here's what I can tell you from The Grid Nexus intelligence base:
+  // Try knowledge base matching
+  for (const entry of KNOWLEDGE_BASE) {
+    if (entry.patterns.some((p) => p.test(input))) {
+      return entry.response;
+    }
+  }
 
-The gaming space evolves fast, and this topic intersects with both performance and security considerations. I'd recommend:
+  // Fallback: generic response with helpful suggestions
+  return `That's a great question about **"${input}"**!
 
-1. **Check the latest patch notes** for any security-relevant updates
-2. **Verify through official sources** — developer blogs and Steam announcements
-3. **Use our specialized tools** for deeper analysis:
-   - [Game Sentiment Analyzer](/tools/sentiment-analyzer) — community opinion at a glance
-   - [Patch Risk Tracker](/tools/patch-risk-tracker) — live CVEs for your games
-   - [AI PC Builder](/tools/pc-builder) — security-scored build configurations
+━━━━━━━━━━━━━━━━━━━━━━
 
-Is there a more specific angle I can help with? Try asking about account security, GPU recommendations, or specific game tips.`;
+I'm here to help with gaming security, recommendations, and industry knowledge. Here are some things you can ask me:
+
+🛡️ **Security:** Account protection, 2FA setup, phishing awareness, Steam Guard
+🎮 **Games:** Recommendations, patch info, what's trending
+💻 **Hardware:** GPU/CPU recommendations, PC builds
+🔍 **Threats:** CVEs, exploits, active gaming security threats
+
+Just ask me something above and I'll give you the best answer I can!
+
+_If you need real-time threat intelligence, check the Security Dashboard._`;
 }
 
-function renderMarkdown(text: string): JSX.Element {
+function renderMarkdown(text: string): React.ReactNode[] {
   const lines = text.split('\n');
-  return (
-    <div className="space-y-1.5">
-      {lines.map((line, i) => {
-        if (line.startsWith('**') && line.endsWith('**') && !line.slice(2, -2).includes('**')) {
-          return <p key={i} className="font-semibold text-foreground mt-2">{line.slice(2, -2)}</p>;
-        }
-        if (line.startsWith('- [ ]')) {
-          return <div key={i} className="flex items-start gap-2 pl-2"><span className="text-muted-foreground mt-0.5">☐</span><span dangerouslySetInnerHTML={{ __html: line.slice(5).replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>').replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" class="text-[#00F0FF] hover:underline">$1</a>') }} /></div>;
-        }
-        if (line.startsWith('- ')) {
-          return <div key={i} className="flex items-start gap-2 pl-2"><span className="text-muted-foreground mt-1">•</span><span dangerouslySetInnerHTML={{ __html: line.slice(2).replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>').replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" class="text-[#00F0FF] hover:underline">$1</a>') }} /></div>;
-        }
-        if (/^\d+\./.test(line)) {
-          return <div key={i} className="flex items-start gap-2 pl-2"><span className="text-muted-foreground shrink-0">{line.match(/^\d+/)?.[0]}.</span><span dangerouslySetInnerHTML={{ __html: line.replace(/^\d+\.\s*/, '').replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>').replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" class="text-[#00F0FF] hover:underline">$1</a>') }} /></div>;
-        }
-        if (line === '') return <div key={i} className="h-1" />;
-        return <p key={i} className="text-sm" dangerouslySetInnerHTML={{ __html: line.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>').replace(/\*([^*]+)\*/g, '<em>$1</em>').replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" class="text-[#00F0FF] hover:underline">$1</a>') }} />;
-      })}
-    </div>
-  );
+  const elements: React.ReactNode[] = [];
+  let inCodeBlock = false;
+
+  lines.forEach((line, i) => {
+    if (line.startsWith('━━━')) {
+      elements.push(<div key={i} className="border-t border-gray-700 my-2" />);
+    } else if (line.startsWith('**') && line.endsWith('**')) {
+      elements.push(
+        <p key={i} className="font-bold text-white text-sm mt-3 mb-1">
+          {line.replace(/\*\*/g, '')}
+        </p>
+      );
+    } else if (line.startsWith('### ')) {
+      elements.push(
+        <h3 key={i} className="font-semibold text-white text-sm mt-3 mb-1">
+          {line.replace('### ', '')}
+        </h3>
+      );
+    } else if (line.includes('**') && line.includes('→')) {
+      const parts = line.split(/\*\*|\*\*/);
+      elements.push(
+        <p key={i} className="text-sm text-gray-300 ml-2">
+          {parts.map((p, j) =>
+            j % 2 === 1 ? <strong key={j} className="text-white">{p}</strong> : p
+          )}
+        </p>
+      );
+    } else if (line.startsWith('→')) {
+      elements.push(
+        <p key={i} className="text-sm text-gray-300 ml-2">{line.replace('→', '▸')}</p>
+      );
+    } else if (line.trim().startsWith('•') || line.trim().startsWith('-')) {
+      elements.push(
+        <p key={i} className="text-sm text-gray-300 ml-2">{line}</p>
+      );
+    } else if (line.trim()) {
+      elements.push(
+        <p key={i} className="text-sm text-gray-300">{line}</p>
+      );
+    }
+  });
+
+  return elements;
 }
 
-const STARTERS = [
+// ── Suggested messages ─────────────────────────────────────────────────────
+
+const SUGGESTED_MESSAGES = [
   'How do I secure my Steam account?',
-  'Best GPU for 1440p under $600?',
-  'Tips to improve in Valorant',
-  'What games should I play next?',
-  'What gaming CVEs are active now?',
+  'Best GPU for 1440p gaming?',
+  'What gaming CVEs are active?',
+  'Recommend a game like Elden Ring',
 ];
 
-// ── Component ──────────────────────────────────────────────────────────────
+// ═══════════════════════════════════════════════════════════════════════════
 
 export default function GamingCopilot() {
   const [messages, setMessages] = useState<Message[]>([
     {
-      id: '0',
+      id: 'system-welcome',
       role: 'assistant',
       content: `Hey there! I'm **Nexus Copilot** — your AI gaming intelligence assistant.
 
 I can help you with:
-- 🎮 **Game tips & strategy** — aim improvement, ranked climbing, build guides
-- 🛡️ **Account security** — hardening your gaming accounts against hacks
-- 💻 **Hardware advice** — GPU picks, PC builds, performance optimization
-- 🔍 **Threat awareness** — gaming CVEs, active exploits, patch timelines
-- 🎯 **Game recommendations** — matched to your playstyle and budget
+• 🛡️ **Gaming account security** (2FA, phishing, Steam Guard)
+• 🎮 **Game recommendations** based on what you like
+• 💻 **Hardware advice** (GPUs, CPUs, PC builds)
+• 🔍 **Threat awareness** (CVEs, exploits, active campaigns)
 
-**Try asking me:**
-- "What's the best GPU for 1440p gaming under $600?"
-- "How do I secure my Steam account?"
-- "Give me tips to rank up in Valorant"
-- "What games should I play if I like Elden Ring?"`,
+**What would you like to know?**`,
       timestamp: new Date(),
     },
   ]);
   const [input, setInput] = useState('');
-  const [loading, setLoading] = useState(false);
-  const bottomRef = useRef<HTMLDivElement>(null);
+  const [status, setStatus] = useState<StatusType>('idle');
+  const messagesEndRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
 
+  // Auto-scroll to bottom when messages change
   useEffect(() => {
-    bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
 
+  // Focus input on mount
+  useEffect(() => {
+    inputRef.current?.focus();
+  }, []);
+
   const sendMessage = useCallback(async (text?: string) => {
-    const content = (text ?? input).trim();
-    if (!content || loading) return;
+    const content = (text || input).trim();
+    if (!content) return;
 
-    const userMsg: Message = { id: Date.now().toString(), role: 'user', content, timestamp: new Date() };
-    setMessages(prev => [...prev, userMsg]);
-    setInput('');
-    setLoading(true);
+    if (!toolRateLimiters.gamingCopilot.consume()) {
+      setStatus('error');
+      return;
+    }
 
-    await new Promise(r => setTimeout(r, 800 + Math.random() * 600));
-
-    const response = generateResponse(content);
-    const assistantMsg: Message = { id: (Date.now() + 1).toString(), role: 'assistant', content: response, timestamp: new Date() };
-    setMessages(prev => [...prev, assistantMsg]);
-    setLoading(false);
-  }, [input, loading]);
-
-  const handleKey = (e: React.KeyboardEvent) => {
-    if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); }
-  };
-
-  const reset = () => {
-    setMessages([{
-      id: '0',
-      role: 'assistant',
-      content: `Hey there! I'm **Nexus Copilot** — your AI gaming intelligence assistant.\n\nWhat can I help you with today?`,
+    const userMsg: Message = {
+      id: `user-${Date.now()}`,
+      role: 'user',
+      content,
       timestamp: new Date(),
-    }]);
+    };
+
+    setMessages((prev) => [...prev, userMsg]);
     setInput('');
-  };
+    setStatus('loading');
+
+    const startTime = Date.now();
+
+    try {
+      // Simulate realistic processing time (300-800ms based on input complexity)
+      const processingTime = Math.min(800, 200 + content.length * 2);
+      await new Promise((r) => setTimeout(r, processingTime));
+
+      const responseContent = generateResponse(content);
+      const assistantMsg: Message = {
+        id: `ai-${Date.now()}`,
+        role: 'assistant',
+        content: responseContent,
+        timestamp: new Date(),
+      };
+
+      setMessages((prev) => [...prev, assistantMsg]);
+      setStatus('success');
+    } catch (err) {
+      console.error('Copilot error:', err);
+      setMessages((prev) => [
+        ...prev,
+        {
+          id: `ai-error-${Date.now()}`,
+          role: 'assistant',
+          content: 'Sorry, I encountered an error processing your request. Please try again.',
+          timestamp: new Date(),
+        },
+      ]);
+      setStatus('error');
+    }
+  }, [input]);
+
+  const handleKeyDown = useCallback(
+    (e: React.KeyboardEvent) => {
+      if (e.key === 'Enter' && !e.shiftKey) {
+        e.preventDefault();
+        sendMessage();
+      }
+    },
+    [sendMessage]
+  );
+
+  const reset = useCallback(() => {
+    setMessages([
+      {
+        id: 'system-welcome',
+        role: 'assistant',
+        content: `Hey there! I'm **Nexus Copilot** — your AI gaming intelligence assistant.
+
+I can help you with:
+• 🛡️ **Gaming account security** (2FA, phishing, Steam Guard)
+• 🎮 **Game recommendations** based on what you like
+• 💻 **Hardware advice** (GPUs, CPUs, PC builds)
+• 🔍 **Threat awareness** (CVEs, exploits, active campaigns)
+
+**What would you like to know?**`,
+        timestamp: new Date(),
+      },
+    ]);
+    setInput('');
+    setStatus('idle');
+    toolRateLimiters.gamingCopilot.reset();
+    inputRef.current?.focus();
+  }, []);
 
   return (
-    <Layout>
-      <SEO
-        title="Gaming Copilot AI — The Grid Nexus"
-        description="Your AI gaming assistant. Ask anything — tips, hardware advice, security help, game recommendations, and live threat awareness."
-      />
+    <ErrorBoundary toolName="Gaming Copilot">
+      <Layout>
+        <SEO
+          title="Gaming Copilot AI — The Grid Nexus"
+          description="AI-powered gaming assistant. Get real-time advice on game security, recommendations, hardware, and threat awareness."
+        />
+        <div className="min-h-screen bg-[#0B0E14] text-gray-200">
+          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">
 
-      <div className="container mx-auto px-4 py-6 max-w-3xl">
-        {/* Header */}
-        <div className="mb-6">
-          <Link to="/tools" className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground mb-4 transition-colors">
-            <ArrowLeft className="h-3.5 w-3.5" /> Back to Tools
-          </Link>
-          <div className="flex items-center justify-between gap-4">
-            <div className="flex items-center gap-3">
-              <div className="p-3 rounded-xl bg-[#B026FF]/10 border border-[#B026FF]/30">
-                <Bot className="h-7 w-7 text-[#B026FF]" />
-              </div>
-              <div>
-                <h1 className="font-display font-bold text-2xl">Gaming Copilot</h1>
-                <p className="text-muted-foreground text-sm flex items-center gap-1">
-                  <span className="w-1.5 h-1.5 rounded-full bg-[#39FF14] inline-block animate-pulse" />
-                  AI online · Powered by Nexus Intelligence
+            {/* Header */}
+            <div className="flex items-center gap-4">
+              <Link to="/tools/security-scanner" className="text-gray-400 hover:text-white transition-colors">
+                <ArrowLeft className="w-5 h-5" />
+              </Link>
+              <div className="flex-1">
+                <h1 className="text-3xl font-bold tracking-tight text-white flex items-center gap-3">
+                  <Bot className="w-7 h-7 text-[#B026FF]" />
+                  Gaming Copilot
+                </h1>
+                <p className="text-gray-400 mt-1">
+                  Your AI gaming intelligence assistant — security, recommendations, hardware, and threat awareness.
                 </p>
               </div>
+              <Button variant="outline" size="sm" onClick={reset} className="border-gray-700 shrink-0">
+                <RotateCcw className="w-4 h-4 mr-1" />
+                New Chat
+              </Button>
             </div>
-            <Button variant="outline" size="sm" onClick={reset} className="shrink-0">
-              <RotateCcw className="h-3.5 w-3.5 mr-1.5" /> New Chat
-            </Button>
-          </div>
-        </div>
 
-        {/* Chat window */}
-        <Card className="border-[#B026FF]/20 mb-4">
-          <CardContent className="p-0">
-            <div className="h-[500px] overflow-y-auto p-4 space-y-4">
-              {messages.map(msg => (
-                <div
-                  key={msg.id}
-                  className={cn('flex gap-3', msg.role === 'user' && 'flex-row-reverse')}
-                >
-                  {/* Avatar */}
-                  <div className={cn(
-                    'w-8 h-8 rounded-full flex items-center justify-center shrink-0 mt-0.5',
-                    msg.role === 'assistant' ? 'bg-[#B026FF]/20 border border-[#B026FF]/30' : 'bg-[#00F0FF]/20 border border-[#00F0FF]/30'
-                  )}>
-                    {msg.role === 'assistant'
-                      ? <Bot className="h-4 w-4 text-[#B026FF]" />
-                      : <Gamepad2 className="h-4 w-4 text-[#00F0FF]" />
-                    }
-                  </div>
+            {/* Error */}
+            {status === 'error' && (
+              <ErrorState
+                title="Rate limited"
+                message="Please wait a moment before sending more messages."
+              />
+            )}
 
-                  {/* Bubble */}
-                  <div className={cn(
-                    'max-w-[85%] rounded-2xl px-4 py-3 text-sm',
-                    msg.role === 'assistant'
-                      ? 'bg-muted/40 border border-border rounded-tl-sm'
-                      : 'bg-[#00F0FF]/10 border border-[#00F0FF]/20 rounded-tr-sm text-right'
-                  )}>
-                    {msg.role === 'assistant'
-                      ? renderMarkdown(msg.content)
-                      : <p>{msg.content}</p>
-                    }
-                    <div className="text-xs text-muted-foreground mt-2">
-                      {msg.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+            {/* Chat Area */}
+            <Card className="bg-[#131820] border-gray-800 min-h-[500px] flex flex-col">
+              <CardContent className="pt-6 pb-4 flex-1 flex flex-col">
+                {/* Messages */}
+                <div className="flex-1 overflow-y-auto space-y-4 mb-4 max-h-[500px] pr-2">
+                  {messages.map((msg) => (
+                    <div
+                      key={msg.id}
+                      className={cn(
+                        'flex gap-3',
+                        msg.role === 'user' ? 'justify-end' : 'justify-start'
+                      )}
+                    >
+                      {msg.role !== 'user' && (
+                        <div className="w-8 h-8 rounded-full bg-[#B026FF]/20 flex items-center justify-center shrink-0 mt-1">
+                          <Bot className="w-4 h-4 text-[#B026FF]" />
+                        </div>
+                      )}
+                      <div
+                        className={cn(
+                          'max-w-[80%] rounded-2xl px-4 py-3',
+                          msg.role === 'user'
+                            ? 'bg-[#B026FF]/20 border border-[#B026FF]/30'
+                            : 'bg-[#0B0E14] border border-gray-800'
+                        )}
+                      >
+                        {msg.role === 'user' ? (
+                          <p className="text-sm text-white">{msg.content}</p>
+                        ) : (
+                          <div className="prose prose-invert prose-sm max-w-none">
+                            {renderMarkdown(msg.content)}
+                          </div>
+                        )}
+                        <p className="text-[10px] text-gray-600 mt-2 text-right">
+                          {msg.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                        </p>
+                      </div>
+                      {msg.role === 'user' && (
+                        <div className="w-8 h-8 rounded-full bg-gray-700 flex items-center justify-center shrink-0 mt-1">
+                          <Gamepad2 className="w-4 h-4 text-gray-300" />
+                        </div>
+                      )}
                     </div>
-                  </div>
-                </div>
-              ))}
+                  ))}
 
-              {/* Typing indicator */}
-              {loading && (
-                <div className="flex gap-3">
-                  <div className="w-8 h-8 rounded-full bg-[#B026FF]/20 border border-[#B026FF]/30 flex items-center justify-center shrink-0">
-                    <Bot className="h-4 w-4 text-[#B026FF]" />
-                  </div>
-                  <div className="bg-muted/40 border border-border rounded-2xl rounded-tl-sm px-4 py-3 flex items-center gap-1">
-                    {[0, 1, 2].map(i => (
-                      <span key={i} className="w-2 h-2 rounded-full bg-[#B026FF] animate-bounce" style={{ animationDelay: `${i * 150}ms` }} />
+                  {/* Loading indicator */}
+                  {status === 'loading' && (
+                    <div className="flex gap-3">
+                      <div className="w-8 h-8 rounded-full bg-[#B026FF]/20 flex items-center justify-center shrink-0 mt-1">
+                        <Bot className="w-4 h-4 text-[#B026FF]" />
+                      </div>
+                      <div className="bg-[#0B0E14] border border-gray-800 rounded-2xl px-4 py-3">
+                        <div className="flex gap-1.5">
+                          <div className="w-2 h-2 bg-gray-500 rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
+                          <div className="w-2 h-2 bg-gray-500 rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
+                          <div className="w-2 h-2 bg-gray-500 rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                  <div ref={messagesEndRef} />
+                </div>
+
+                {/* Suggested chips */}
+                {messages.length <= 2 && (
+                  <div className="flex flex-wrap gap-2 mb-4">
+                    {SUGGESTED_MESSAGES.map((msg, i) => (
+                      <Button
+                        key={i}
+                        variant="outline"
+                        size="sm"
+                        onClick={() => sendMessage(msg)}
+                        className="border-gray-700 text-xs text-gray-400 hover:text-white hover:border-[#B026FF] hover:bg-[#B026FF]/10"
+                      >
+                        <Lightbulb className="w-3 h-3 mr-1 text-[#B026FF]" />
+                        {msg}
+                      </Button>
                     ))}
                   </div>
+                )}
+
+                {/* Input */}
+                <div className="flex gap-2">
+                  <Input
+                    ref={inputRef}
+                    value={input}
+                    onChange={(e) => setInput(e.target.value)}
+                    onKeyDown={handleKeyDown}
+                    placeholder="Ask about gaming security, recommendations, hardware…"
+                    disabled={status === 'loading'}
+                    className="bg-[#0B0E14] border-gray-700 text-white placeholder:text-gray-500 focus:border-[#B026FF]"
+                  />
+                  <Button
+                    onClick={() => sendMessage()}
+                    disabled={status === 'loading' || !input.trim()}
+                    className="bg-[#B026FF] hover:bg-[#B026FF]/80 text-white shrink-0"
+                  >
+                    <Send className="w-4 h-4" />
+                  </Button>
                 </div>
-              )}
-              <div ref={bottomRef} />
-            </div>
-          </CardContent>
-        </Card>
+              </CardContent>
+            </Card>
 
-        {/* Starter prompts */}
-        {messages.length <= 1 && (
-          <div className="flex flex-wrap gap-2 mb-4">
-            {STARTERS.map(s => (
-              <button
-                key={s}
-                onClick={() => sendMessage(s)}
-                disabled={loading}
-                className="text-xs px-3 py-1.5 rounded-full border border-border hover:border-[#B026FF]/40 hover:text-[#B026FF] transition-colors"
-              >
-                {s}
-              </button>
-            ))}
+            {/* Footer info */}
+            <p className="text-xs text-gray-600 text-center">
+              Responses are generated by The Grid Nexus knowledge base. For real-time threat data, check the Security Dashboard.
+            </p>
           </div>
-        )}
-
-        {/* Input */}
-        <div className="flex gap-2">
-          <Input
-            value={input}
-            onChange={e => setInput(e.target.value)}
-            onKeyDown={handleKey}
-            placeholder="Ask about games, security, hardware…"
-            disabled={loading}
-            className="flex-1"
-          />
-          <Button onClick={() => sendMessage()} disabled={loading || !input.trim()} className="bg-[#B026FF] hover:bg-[#B026FF]/80 text-white shrink-0">
-            <Send className="h-4 w-4" />
-          </Button>
         </div>
-        <p className="text-xs text-muted-foreground mt-2 text-center">
-          Nexus Copilot uses curated gaming intelligence. Always verify security advice with official sources.
-        </p>
-      </div>
-    </Layout>
+        <ToolCrossLinks related={[
+            "/tools/recommendation-engine",
+            "/tools/release-predictor",
+            "/tools/threat-scanner",
+            "/tools/pc-builder",
+          ]} />
+      </Layout>
+    </ErrorBoundary>
   );
 }

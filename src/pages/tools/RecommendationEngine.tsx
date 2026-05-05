@@ -1,440 +1,509 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback, useMemo } from 'react';
 import { Layout } from '@/components/layout/Layout';
 import { SEO } from '@/components/SEO';
+import { ToolCrossLinks } from '@/components/tools/ToolPageSEO';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
-import { cn } from '@/lib/utils';
+import { Separator } from '@/components/ui/separator';
+import { ErrorBoundary } from '@/components/common/ErrorBoundary';
+import { LoadingState, ErrorState, EmptyState } from '@/components/common/StateComponents';
+import { GAME_LIBRARY } from '@/lib/data/gameLibrary';
+import { scoreGames, BUDGET_LABELS, type ScoredGame } from '@/lib/scoring/recommendationScorer';
+import { toolRateLimiters } from '@/lib/utils/rateLimit';
+import type { StatusType } from '@/lib/types/status';
+import type { GameEntry } from '@/lib/data/gameLibrary';
 import {
-  Sparkles, Gamepad2, Cpu, Star, ArrowRight, RotateCcw,
-  CheckCircle, ChevronRight, Shield, DollarSign, ArrowLeft,
-  TrendingUp, Users, Clock, Zap,
+  Gamepad2, Search, Cpu, Crosshair, Zap,
+  Star, Shield, ChevronRight, Sparkles, Info,
+  Monitor, ArrowLeft, Lightbulb, CheckCircle2,
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 // ── Types ──────────────────────────────────────────────────────────────────
 
-type Step = 'goal' | 'budget' | 'style' | 'results';
+type Goal = 'gaming_pc' | 'find_game' | 'both';
+type Budget = 'budget' | 'mid' | 'high' | 'ultra';
 
-interface GameRec {
-  title: string;
-  genre: string;
-  platform: string;
-  price: string;
-  matchScore: number;
-  securityRating: 'A' | 'B' | 'C' | 'D';
-  playerbase: string;
-  whyItFits: string;
-  tags: string[];
-}
-
-interface HardwareRec {
-  name: string;
+interface BuildComponent {
   type: string;
-  price: string;
-  matchScore: number;
-  performanceTier: string;
-  securityScore: number;
-  whyItFits: string;
+  suggestion: string;
+  note: string;
 }
 
-// ── Data ───────────────────────────────────────────────────────────────────
+interface HardwareBuild {
+  cpu: BuildComponent;
+  gpu: BuildComponent;
+  ram: BuildComponent;
+  storage: BuildComponent;
+  psu: BuildComponent;
+  estimatedCost: string;
+  note: string;
+}
 
-const GAME_LIBRARY: GameRec[] = [
-  {
-    title: 'Hollow Knight',
-    genre: 'Metroidvania',
-    platform: 'PC / Console',
-    price: '$14.99',
-    matchScore: 97,
-    securityRating: 'A',
-    playerbase: '8M+',
-    whyItFits: 'Deep solo exploration with zero live-service security risks. No account linking required.',
-    tags: ['Single-player', 'Challenging', 'Dark atmosphere', 'No microtransactions'],
+const HARDWARE_BUILDS: Record<Budget, HardwareBuild> = {
+  budget: {
+    cpu: { type: 'CPU', suggestion: 'AMD Ryzen 5 5600 / Intel i5-12400F', note: 'Best value for 1080p gaming' },
+    gpu: { type: 'GPU', suggestion: 'NVIDIA RTX 4060 / AMD RX 7600', note: 'Solid 1080p performance, DLSS 3 support' },
+    ram: { type: 'RAM', suggestion: '16GB DDR4-3200', note: 'Sufficient for most titles' },
+    storage: { type: 'Storage', suggestion: '1TB NVMe SSD', note: 'Fast load times, 1TB is the sweet spot' },
+    psu: { type: 'PSU', suggestion: '550W 80+ Bronze', note: 'Reliable and efficient' },
+    estimatedCost: '~$700–900',
+    note: 'Great entry-level build. Upgrade GPU first when budget allows.',
   },
-  {
-    title: 'Deep Rock Galactic',
-    genre: 'Co-op Shooter',
-    platform: 'PC / Xbox',
-    price: '$29.99',
-    matchScore: 94,
-    securityRating: 'B',
-    playerbase: '3M+',
-    whyItFits: 'Overwhelmingly positive reviews, developer-owned servers with strong DDoS protection, minimal data collection.',
-    tags: ['Co-op', 'PvE', 'No toxicity', 'Active updates'],
+  mid: {
+    cpu: { type: 'CPU', suggestion: 'AMD Ryzen 7 7800X3D', note: 'Best gaming CPU on the market' },
+    gpu: { type: 'GPU', suggestion: 'NVIDIA RTX 4070 Super / AMD RX 7800 XT', note: 'Excellent 1440p performance' },
+    ram: { type: 'RAM', suggestion: '32GB DDR5-6000', note: 'Future-proof, great for streaming' },
+    storage: { type: 'Storage', suggestion: '2TB NVMe SSD', note: 'Gen 4 speeds, plenty of space' },
+    psu: { type: 'PSU', suggestion: '750W 80+ Gold', note: 'Room for upgrades' },
+    estimatedCost: '~$1,300–1,700',
+    note: 'The sweet spot. Handles 1440p max settings and entry-level 4K.',
   },
-  {
-    title: 'Baldur\'s Gate 3',
-    genre: 'RPG',
-    platform: 'PC / Console',
-    price: '$59.99',
-    matchScore: 91,
-    securityRating: 'A',
-    playerbase: '12M+',
-    whyItFits: 'Award-winning RPG with no online dependency for the base game. Save data stays local.',
-    tags: ['Story-driven', 'Turn-based', 'Offline play', 'GOTY 2023'],
+  high: {
+    cpu: { type: 'CPU', suggestion: 'AMD Ryzen 9 7950X3D / Intel i9-14900K', note: 'No compromises' },
+    gpu: { type: 'GPU', suggestion: 'NVIDIA RTX 5080 / AMD RX 9070 XT', note: '4K gaming beast' },
+    ram: { type: 'RAM', suggestion: '32GB DDR5-6400', note: 'Fastest available' },
+    storage: { type: 'Storage', suggestion: '2TB Gen 5 NVMe SSD', note: 'Blazing fast load times' },
+    psu: { type: 'PSU', suggestion: '1000W 80+ Gold', note: 'Headroom for upgrades' },
+    estimatedCost: '~$2,500–3,500',
+    note: 'Top-tier gaming. 4K max settings, high refresh rate, streaming + gaming simultaneously.',
   },
-  {
-    title: 'Path of Exile 2',
-    genre: 'ARPG',
-    platform: 'PC / Console',
-    price: 'Free (F2P)',
-    matchScore: 88,
-    securityRating: 'B',
-    playerbase: '6M+',
-    whyItFits: 'F2P with no pay-to-win, optional cosmetics only. GGG has a strong security patch cadence.',
-    tags: ['Free to play', 'Deep build system', 'Online required', 'No P2W'],
+  ultra: {
+    cpu: { type: 'CPU', suggestion: 'AMD Ryzen 9 9950X3D', note: 'Absolute best in class' },
+    gpu: { type: 'GPU', suggestion: 'NVIDIA RTX 5090', note: 'The ultimate GPU, period' },
+    ram: { type: 'RAM', suggestion: '64GB DDR5-8000', note: 'Overkill but why not' },
+    storage: { type: 'Storage', suggestion: '4TB Gen 5 NVMe SSD', note: 'Massive, fast storage' },
+    psu: { type: 'PSU', suggestion: '1200W 80+ Titanium', note: 'Future-proof and efficient' },
+    estimatedCost: '~$4,000+',
+    note: 'No budget constraints. Best of everything. Consider custom water cooling.',
   },
-  {
-    title: 'Valheim',
-    genre: 'Survival',
-    platform: 'PC',
-    price: '$19.99',
-    matchScore: 86,
-    securityRating: 'B',
-    playerbase: '10M+',
-    whyItFits: 'Optional multiplayer, host-your-own servers. No mandatory cloud accounts or telemetry.',
-    tags: ['Survival', 'Co-op', 'Self-hosted', 'Open world'],
-  },
-  {
-    title: 'Apex Legends',
-    genre: 'Battle Royale',
-    platform: 'PC / Console',
-    price: 'Free (F2P)',
-    matchScore: 82,
-    securityRating: 'C',
-    playerbase: '130M registered',
-    whyItFits: 'Best movement mechanics in the genre. EA account security has improved but still requires vigilance.',
-    tags: ['Free to play', 'Competitive', 'Team-based', 'Fast-paced'],
-  },
+};
+
+// ── Game style options ─────────────────────────────────────────────────────
+
+const STYLE_OPTIONS = [
+  { id: 'action', label: 'Action / Combat', icon: '⚔️' },
+  { id: 'rpg', label: 'RPG / Story', icon: '📖' },
+  { id: 'strategy', label: 'Strategy / Tactics', icon: '🧠' },
+  { id: 'simulation', label: 'Simulation / Sandbox', icon: '🏗️' },
+  { id: 'multiplayer', label: 'Multiplayer / Co-op', icon: '👥' },
+  { id: 'horror', label: 'Horror / Survival', icon: '👻' },
+  { id: 'open-world', label: 'Open World', icon: '🌍' },
+  { id: 'competitive', label: 'Competitive / eSports', icon: '🏆' },
+  { id: 'indie', label: 'Indie / Experimental', icon: '🎨' },
+  { id: 'retro', label: 'Retro / Classic', icon: '🕹️' },
 ];
 
-const HARDWARE_LIBRARY: HardwareRec[] = [
-  {
-    name: 'AMD Ryzen 7 7700X',
-    type: 'CPU',
-    price: '$299',
-    matchScore: 96,
-    performanceTier: 'High-End Mid',
-    securityScore: 88,
-    whyItFits: 'No firmware vulnerabilities in the last 12 months. Excellent IPC for gaming and streaming simultaneously.',
-  },
-  {
-    name: 'NVIDIA RTX 4070 Super',
-    type: 'GPU',
-    price: '$599',
-    matchScore: 94,
-    performanceTier: 'High-End Mid',
-    securityScore: 85,
-    whyItFits: 'Best price-to-performance at 1440p. NVIDIA\'s GeForce Experience has optional telemetry you can disable.',
-  },
-  {
-    name: 'Corsair Vengeance DDR5-6000 32GB',
-    type: 'RAM',
-    price: '$119',
-    matchScore: 92,
-    performanceTier: 'Optimal',
-    securityScore: 95,
-    whyItFits: 'DDR5 at 6000MHz hits the Ryzen 5000/7000 memory controller sweet spot. No firmware attack surface.',
-  },
-  {
-    name: 'Samsung 990 Pro 2TB NVMe',
-    type: 'Storage',
-    price: '$149',
-    matchScore: 90,
-    performanceTier: 'Top-Tier',
-    securityScore: 92,
-    whyItFits: 'Samsung\'s enterprise-grade NAND with AES-256 hardware encryption available. Proven reliability.',
-  },
-];
-
-// ── Quiz config ────────────────────────────────────────────────────────────
-
-const GOALS = [
-  { id: 'gaming_pc', label: 'Build a Gaming PC', icon: Cpu, desc: 'Get hardware recommendations tailored to your budget and use case' },
-  { id: 'find_game', label: 'Find My Next Game', icon: Gamepad2, desc: 'Get personalized game picks based on what you love' },
-  { id: 'both', label: 'Both — Game + Hardware', icon: Sparkles, desc: 'Complete setup: the right rig for the right games' },
-];
-
-const BUDGETS = [
-  { id: 'budget', label: '< $500', sublabel: 'Budget', color: 'text-[#39FF14]' },
-  { id: 'mid', label: '$500–$1,200', sublabel: 'Mid-range', color: 'text-[#00F0FF]' },
-  { id: 'high', label: '$1,200–$2,500', sublabel: 'High-end', color: 'text-[#B026FF]' },
-  { id: 'ultra', label: '$2,500+', sublabel: 'Enthusiast', color: 'text-[#FFB800]' },
-];
-
-const STYLES = [
-  { id: 'competitive', label: 'Competitive / FPS', icon: '🎯' },
-  { id: 'story', label: 'Story / RPG', icon: '📖' },
-  { id: 'survival', label: 'Survival / Open World', icon: '🌍' },
-  { id: 'coop', label: 'Co-op with Friends', icon: '🤝' },
-  { id: 'streaming', label: 'Streaming / Content Creation', icon: '🎙️' },
-  { id: 'security', label: 'Privacy-First / Secure', icon: '🔒' },
-];
-
-// ── Component ──────────────────────────────────────────────────────────────
+// ═══════════════════════════════════════════════════════════════════════════
 
 export default function RecommendationEngine() {
-  const [step, setStep] = useState<Step>('goal');
-  const [goal, setGoal] = useState('');
-  const [budget, setBudget] = useState('');
-  const [style, setStyle] = useState('');
-  const [loading, setLoading] = useState(false);
+  const [step, setStep] = useState(0); // 0=goals, 1=budget, 2=styles, 3=results
+  const [goal, setGoal] = useState<Goal | null>(null);
+  const [budget, setBudget] = useState<Budget | null>(null);
+  const [styles, setStyles] = useState<string[]>([]);
+  const [results, setResults] = useState<ScoredGame[]>([]);
+  const [status, setStatus] = useState<StatusType>('idle');
 
-  const progress = { goal: 25, budget: 50, style: 75, results: 100 }[step];
+  const toggleStyle = useCallback((id: string) => {
+    setStyles((prev) =>
+      prev.includes(id) ? prev.filter((s) => s !== id) : [...prev, id]
+    );
+  }, []);
 
-  const handleStyleSelect = async (s: string) => {
-    setStyle(s);
-    setLoading(true);
-    await new Promise(r => setTimeout(r, 1400));
-    setLoading(false);
-    setStep('results');
-  };
+  const handleGenerate = useCallback(async () => {
+    if (!goal || !budget) return;
 
-  const reset = () => { setStep('goal'); setGoal(''); setBudget(''); setStyle(''); };
+    if (!toolRateLimiters.recommendationEngine.consume()) {
+      setStatus('error');
+      return;
+    }
 
-  const securityBadgeColor = (r: 'A' | 'B' | 'C' | 'D') => {
-    const m = { A: 'text-[#39FF14] border-[#39FF14]/30 bg-[#39FF14]/5', B: 'text-[#00F0FF] border-[#00F0FF]/30 bg-[#00F0FF]/5', C: 'text-[#FFB800] border-[#FFB800]/30 bg-[#FFB800]/5', D: 'text-destructive border-destructive/30 bg-destructive/5' };
-    return m[r];
+    setStatus('loading');
+    const startTime = Date.now();
+
+    try {
+      // Use the actual scoring engine instead of a fake delay
+      // The engine computes match percentages with budget hard-filters
+      const scored = scoreGames({
+        goal,
+        budget,
+        styles: styles.length > 0 ? styles : ['action'],
+      });
+
+      // Sort by match percentage descending
+      scored.sort((a, b) => b.matchPercent - a.matchPercent);
+
+      // Ensure processing takes a realistic time (scoreGames is instant)
+      const elapsed = Date.now() - startTime;
+      if (elapsed < 300) {
+        await new Promise((r) => setTimeout(r, 300 - elapsed));
+      }
+
+      setResults(scored);
+      setStatus('success');
+      setStep(3);
+    } catch (err) {
+      console.error('Recommendation error:', err);
+      setStatus('error');
+    }
+
+    const totalElapsed = Date.now() - startTime;
+    if (totalElapsed > 1000) {
+      console.debug(`RecommendationEngine: scored ${GAME_LIBRARY.length} games in ${totalElapsed}ms`);
+    }
+  }, [goal, budget, styles]);
+
+  const reset = useCallback(() => {
+    setStep(0);
+    setGoal(null);
+    setBudget(null);
+    setStyles([]);
+    setResults([]);
+    setStatus('idle');
+    toolRateLimiters.recommendationEngine.reset();
+  }, []);
+
+  return (
+    <ErrorBoundary toolName="Recommendation Engine">
+      <Layout>
+        <SEO
+          title="Game Recommendation Engine — The Grid Nexus"
+          description="Find your next game with AI-powered recommendations. Filter by budget, play style, and security requirements."
+        />
+        <div className="min-h-screen bg-[#0B0E14] text-gray-200">
+          <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+
+            {/* Header */}
+            <div className="flex items-center gap-4">
+              <Link to="/tools/security-scanner" className="text-gray-400 hover:text-white transition-colors">
+                <ArrowLeft className="w-5 h-5" />
+              </Link>
+              <div>
+                <h1 className="text-3xl font-bold tracking-tight text-white flex items-center gap-3">
+                  <Sparkles className="w-7 h-7 text-[#B026FF]" />
+                  Game Recommendation Engine
+                </h1>
+                <p className="text-gray-400 mt-1">
+                  Tell us what you're looking for and we'll match you with games that fit.
+                </p>
+              </div>
+            </div>
+
+            {/* Error state */}
+            {status === 'error' && (
+              <ErrorState
+                title="Rate limited"
+                message="Please wait before generating new recommendations."
+              />
+            )}
+
+            {/* Step 1: Goal */}
+            {step === 0 && (
+              <Card className="bg-[#131820] border-gray-800">
+                <CardHeader>
+                  <CardTitle className="text-white flex items-center gap-2">
+                    <Crosshair className="w-5 h-5 text-[#B026FF]" />
+                    What are you looking for?
+                  </CardTitle>
+                  <CardDescription>Choose your primary goal</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <GoalCard
+                      icon={<Gamepad2 className="w-8 h-8" />}
+                      label="Find a Game"
+                      desc="Get game recommendations tailored to your tastes"
+                      onClick={() => { setGoal('find_game'); setStep(1); }}
+                    />
+                    <GoalCard
+                      icon={<Monitor className="w-8 h-8" />}
+                      label="Build a Gaming PC"
+                      desc="Get hardware recommendations tailored to your budget and use case"
+                      onClick={() => { setGoal('gaming_pc'); setStep(1); }}
+                    />
+                    <GoalCard
+                      icon={<Zap className="w-8 h-8" />}
+                      label="Both"
+                      desc="Game recommendations with a PC build that runs them"
+                      onClick={() => { setGoal('both'); setStep(1); }}
+                    />
+                  </div>
+                </CardContent>
+              </Card>
+            )}
+
+            {/* Step 2: Budget */}
+            {step === 1 && (
+              <Card className="bg-[#131820] border-gray-800">
+                <CardHeader>
+                  <CardTitle className="text-white flex items-center gap-2">
+                    <Shield className="w-5 h-5 text-[#B026FF]" />
+                    What's your budget?
+                  </CardTitle>
+                  <CardDescription>
+                    {goal === 'gaming_pc'
+                      ? 'PC build budget range'
+                      : 'How much are you willing to spend on games?'}
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="grid grid-cols-1 md:grid-cols-4 gap-3">
+                    {(['budget', 'mid', 'high', 'ultra'] as const).map((b) => (
+                      <Button
+                        key={b}
+                        variant="outline"
+                        onClick={() => { setBudget(b); setStep(2); }}
+                        className="h-auto py-6 border-gray-700 hover:border-[#B026FF] hover:text-white flex flex-col items-center gap-1"
+                      >
+                        <span className="text-lg font-semibold">
+                          {b === 'budget' ? 'Budget' : b === 'mid' ? 'Mid-Range' : b === 'high' ? 'High-End' : 'Ultra'}
+                        </span>
+                        <span className="text-sm text-gray-400">{BUDGET_LABELS[b]}</span>
+                      </Button>
+                    ))}
+                  </div>
+                  <div className="flex justify-start mt-4">
+                    <Button variant="ghost" onClick={() => setStep(0)} className="text-gray-400">
+                      ← Back to goal
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+            )}
+
+            {/* Step 3: Styles */}
+            {step === 2 && (
+              <Card className="bg-[#131820] border-gray-800">
+                <CardHeader>
+                  <CardTitle className="text-white flex items-center gap-2">
+                    <Star className="w-5 h-5 text-[#B026FF]" />
+                    Pick your preferred styles
+                  </CardTitle>
+                  <CardDescription>
+                    Select all that apply (optional — leave empty for "surprise me")
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-6">
+                  <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
+                    {STYLE_OPTIONS.map((style) => (
+                      <Button
+                        key={style.id}
+                        variant={styles.includes(style.id) ? 'default' : 'outline'}
+                        onClick={() => toggleStyle(style.id)}
+                        className={`h-auto py-3 ${
+                          styles.includes(style.id)
+                            ? 'bg-[#B026FF] hover:bg-[#B026FF]/80 text-white'
+                            : 'border-gray-700 hover:border-[#B026FF] hover:text-white'
+                        }`}
+                      >
+                        <span className="text-lg mr-1">{style.icon}</span>
+                        <span className="text-sm">{style.label}</span>
+                      </Button>
+                    ))}
+                  </div>
+                  <div className="flex justify-between">
+                    <Button variant="ghost" onClick={() => setStep(1)} className="text-gray-400">
+                      ← Back to budget
+                    </Button>
+                    <Button
+                      onClick={handleGenerate}
+                      disabled={status === 'loading'}
+                      className="bg-[#B026FF] hover:bg-[#B026FF]/80 text-white"
+                    >
+                      {status === 'loading' ? 'Matching…' : 'Generate Recommendations'}
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+            )}
+
+            {/* Loading */}
+            {status === 'loading' && <LoadingState />}
+
+            {/* Results */}
+            {status === 'success' && results.length > 0 && (
+              <>
+                {/* PC Hardware Build (gaming_pc or both) */}
+                {(goal === 'gaming_pc' || goal === 'both') && budget && (
+                  <Card className="bg-gradient-to-r from-[#131820] to-[#1a1040] border-[#B026FF]/30">
+                    <CardHeader>
+                      <CardTitle className="text-white flex items-center gap-2">
+                        <Monitor className="w-5 h-5 text-[#B026FF]" />
+                        Recommended PC Build
+                      </CardTitle>
+                      <CardDescription>
+                        Estimated cost: {HARDWARE_BUILDS[budget].estimatedCost}
+                      </CardDescription>
+                    </CardHeader>
+                    <CardContent className="space-y-4">
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                        {(['cpu', 'gpu', 'ram', 'storage', 'psu'] as const).map((part) => {
+                          const comp = HARDWARE_BUILDS[budget][part];
+                          return (
+                            <div key={part} className="p-3 bg-[#0B0E14] rounded-lg border border-gray-800">
+                              <div className="flex items-center justify-between">
+                                <span className="text-xs font-medium text-[#B026FF] uppercase tracking-wider">{comp.type}</span>
+                              </div>
+                              <p className="text-sm font-medium text-white mt-1">{comp.suggestion}</p>
+                              <p className="text-xs text-gray-400 mt-0.5">{comp.note}</p>
+                            </div>
+                          );
+                        })}
+                      </div>
+                      <div className="flex items-center gap-2 p-3 bg-[#B026FF]/10 rounded-lg border border-[#B026FF]/20">
+                        <Lightbulb className="w-4 h-4 text-[#FFB800]" />
+                        <p className="text-sm text-gray-300">{HARDWARE_BUILDS[budget].note}</p>
+                      </div>
+                    </CardContent>
+                  </Card>
+                )}
+
+                {/* Game Recommendations */}
+                {(goal === 'find_game' || goal === 'both') && (
+                  <Card className="bg-[#131820] border-gray-800">
+                    <CardHeader>
+                      <CardTitle className="text-white flex items-center gap-2">
+                        <Star className="w-5 h-5 text-[#B026FF]" />
+                        Game Recommendations
+                      </CardTitle>
+                      <CardDescription>
+                        Sorted by match percentage. {results.length} games match your criteria.
+                      </CardDescription>
+                    </CardHeader>
+                    <CardContent className="space-y-3">
+                      {results.slice(0, 12).map((scored, i) => (
+                        <GameRecommendation key={scored.game.slug} scored={scored} rank={i + 1} />
+                      ))}
+                    </CardContent>
+                  </Card>
+                )}
+
+                {/* Reset */}
+                <div className="flex justify-center">
+                  <Button variant="outline" onClick={reset} className="border-gray-700">
+                    Start Over
+                  </Button>
+                </div>
+              </>
+            )}
+
+            {/* Empty results */}
+            {status === 'success' && results.length === 0 && (
+              <EmptyState
+                title="No matches found"
+                message="Try adjusting your budget or style preferences for more results."
+                action={{ label: 'Try Again', onClick: reset }}
+              />
+            )}
+          </div>
+        </div>
+        <ToolCrossLinks related={[
+            "/tools/pc-builder",
+            "/tools/sentiment-analyzer",
+            "/tools/gaming-security-checkup",
+            "/tools/gaming-copilot",
+          ]} />
+      </Layout>
+    </ErrorBoundary>
+  );
+}
+
+// ═══════════════════════════════════════════════════════════════════════════
+
+function GoalCard({
+  icon,
+  label,
+  desc,
+  onClick,
+}: {
+  icon: React.ReactNode;
+  label: string;
+  desc: string;
+  onClick: () => void;
+}) {
+  return (
+    <button
+      onClick={onClick}
+      className="flex flex-col items-center gap-3 p-8 rounded-xl bg-[#0B0E14] border border-gray-800 hover:border-[#B026FF] hover:bg-[#B026FF]/5 transition-all cursor-pointer text-center group"
+    >
+      <div className="text-[#B026FF] group-hover:scale-110 transition-transform">{icon}</div>
+      <div>
+        <h3 className="text-lg font-semibold text-white">{label}</h3>
+        <p className="text-sm text-gray-400 mt-1">{desc}</p>
+      </div>
+      <ChevronRight className="w-5 h-5 text-gray-600 group-hover:text-[#B026FF] transition-colors" />
+    </button>
+  );
+}
+
+function GameRecommendation({
+  scored,
+  rank,
+}: {
+  scored: ScoredGame;
+  rank: number;
+}) {
+  const { game, matchPercent, matchReasons, isFallback, fallbackNote } = scored;
+
+  const securityColor = (grade: string) => {
+    switch (grade) {
+      case 'A': return 'text-green-400 bg-green-900/20 border-green-700';
+      case 'B': return 'text-blue-400 bg-blue-900/20 border-blue-700';
+      case 'C': return 'text-yellow-400 bg-yellow-900/20 border-yellow-700';
+      case 'D': return 'text-orange-400 bg-orange-900/20 border-orange-700';
+      case 'F': return 'text-red-400 bg-red-900/20 border-red-700';
+      default: return 'text-gray-400 bg-gray-900/20 border-gray-700';
+    }
   };
 
   return (
-    <Layout>
-      <SEO
-        title="AI Game & PC Recommendation Engine — The Grid Nexus"
-        description="Get personalized game and hardware recommendations. Tell us your budget and play style; our AI matches you with the best options, security-rated."
-      />
+    <div className="flex items-start gap-4 p-4 bg-[#0B0E14] rounded-lg border border-gray-800 hover:border-gray-700 transition-colors">
+      {/* Rank */}
+      <div className="flex-shrink-0 w-8 h-8 rounded-full bg-[#B026FF]/20 flex items-center justify-center">
+        <span className="text-sm font-bold text-[#B026FF]">{rank}</span>
+      </div>
 
-      <div className="container mx-auto px-4 py-10 max-w-3xl">
-        {/* Header */}
-        <div className="mb-8">
-          <Link to="/tools" className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground mb-4 transition-colors">
-            <ArrowLeft className="h-3.5 w-3.5" /> Back to Tools
-          </Link>
-          <div className="flex items-center gap-3 mb-3">
-            <div className="p-3 rounded-xl bg-[#39FF14]/10 border border-[#39FF14]/30">
-              <Sparkles className="h-7 w-7 text-[#39FF14]" />
-            </div>
-            <div>
-              <h1 className="font-display font-bold text-3xl">AI Recommendation Engine</h1>
-              <p className="text-muted-foreground text-sm">Personalized game & hardware picks, security-scored</p>
-            </div>
-          </div>
+      {/* Info */}
+      <div className="flex-1 min-w-0">
+        <div className="flex items-center gap-2 flex-wrap">
+          <h3 className="font-semibold text-white text-base">{game.name}</h3>
+          <Badge className={`text-xs border ${securityColor(game.securityGrade)}`}>
+            <Shield className="w-3 h-3 mr-1" />
+            Security: {game.securityGrade}
+          </Badge>
+          {isFallback && (
+            <Badge variant="outline" className="text-yellow-400 border-yellow-700 text-xs">
+              Budget pick
+            </Badge>
+          )}
         </div>
 
-        {/* Progress */}
-        {step !== 'results' && (
-          <div className="mb-8">
-            <div className="flex justify-between text-xs text-muted-foreground mb-2">
-              <span>Step {['goal', 'budget', 'style'].indexOf(step) + 1} of 3</span>
-              <span>{progress}%</span>
-            </div>
-            <Progress value={progress} className="h-1.5" />
+        {/* Match reasons */}
+        {matchReasons.length > 0 && (
+          <div className="flex flex-wrap gap-1.5 mt-2">
+            {matchReasons.map((reason, i) => (
+              <span key={i} className="flex items-center gap-1 text-xs text-gray-400 bg-gray-800 px-2 py-0.5 rounded-full">
+                <CheckCircle2 className="w-3 h-3 text-green-400" />
+                {reason}
+              </span>
+            ))}
           </div>
         )}
 
-        {/* Step: Goal */}
-        {step === 'goal' && (
-          <div className="space-y-4">
-            <h2 className="text-xl font-semibold mb-6">What are you looking for?</h2>
-            {GOALS.map(g => {
-              const Icon = g.icon;
-              return (
-                <button
-                  key={g.id}
-                  onClick={() => { setGoal(g.id); setStep('budget'); }}
-                  className="w-full flex items-start gap-4 p-5 rounded-xl border border-border hover:border-[#39FF14]/40 hover:bg-[#39FF14]/5 transition-all text-left group"
-                >
-                  <div className="p-2.5 rounded-lg bg-muted group-hover:bg-[#39FF14]/10 transition-colors">
-                    <Icon className="h-5 w-5 text-muted-foreground group-hover:text-[#39FF14] transition-colors" />
-                  </div>
-                  <div>
-                    <div className="font-semibold">{g.label}</div>
-                    <div className="text-sm text-muted-foreground mt-0.5">{g.desc}</div>
-                  </div>
-                  <ChevronRight className="h-5 w-5 text-muted-foreground ml-auto self-center group-hover:text-[#39FF14] transition-colors" />
-                </button>
-              );
-            })}
-          </div>
-        )}
-
-        {/* Step: Budget */}
-        {step === 'budget' && (
-          <div>
-            <h2 className="text-xl font-semibold mb-6">What's your budget?</h2>
-            <div className="grid grid-cols-2 gap-4">
-              {BUDGETS.map(b => (
-                <button
-                  key={b.id}
-                  onClick={() => { setBudget(b.id); setStep('style'); }}
-                  className="p-5 rounded-xl border border-border hover:border-foreground/30 transition-all text-left group"
-                >
-                  <div className={cn('text-2xl font-bold mb-1', b.color)}>{b.label}</div>
-                  <div className="text-sm text-muted-foreground">{b.sublabel}</div>
-                </button>
-              ))}
-            </div>
-            <Button variant="ghost" size="sm" onClick={() => setStep('goal')} className="mt-4">
-              ← Back
-            </Button>
-          </div>
-        )}
-
-        {/* Step: Play style */}
-        {step === 'style' && (
-          <div>
-            <h2 className="text-xl font-semibold mb-6">What's your play style?</h2>
-            <div className="grid grid-cols-2 gap-3">
-              {STYLES.map(s => (
-                <button
-                  key={s.id}
-                  onClick={() => handleStyleSelect(s.id)}
-                  disabled={loading}
-                  className="flex items-center gap-3 p-4 rounded-xl border border-border hover:border-[#39FF14]/40 hover:bg-[#39FF14]/5 transition-all text-left"
-                >
-                  <span className="text-2xl">{s.icon}</span>
-                  <span className="font-medium text-sm">{s.label}</span>
-                </button>
-              ))}
-            </div>
-            <Button variant="ghost" size="sm" onClick={() => setStep('budget')} className="mt-4" disabled={loading}>
-              ← Back
-            </Button>
-          </div>
-        )}
-
-        {/* Loading */}
-        {loading && (
-          <div className="text-center py-16">
-            <Sparkles className="h-10 w-10 text-[#39FF14] mx-auto mb-4 animate-pulse" />
-            <p className="text-muted-foreground">AI is matching your preferences…</p>
-            <div className="flex justify-center gap-1 mt-3">
-              {[0, 1, 2].map(i => (
-                <span key={i} className="w-2 h-2 rounded-full bg-[#39FF14] animate-bounce" style={{ animationDelay: `${i * 150}ms` }} />
-              ))}
-            </div>
-          </div>
-        )}
-
-        {/* Results */}
-        {step === 'results' && !loading && (
-          <div className="space-y-8">
-            <div className="flex items-center justify-between">
-              <div>
-                <h2 className="text-xl font-semibold">Your Personalized Picks</h2>
-                <p className="text-sm text-muted-foreground">Security-rated · Matched to your preferences</p>
-              </div>
-              <Button variant="outline" size="sm" onClick={reset}>
-                <RotateCcw className="h-3.5 w-3.5 mr-1.5" /> Start Over
-              </Button>
-            </div>
-
-            {/* Game recommendations */}
-            {(goal === 'find_game' || goal === 'both') && (
-              <div>
-                <h3 className="font-semibold text-base flex items-center gap-2 mb-4">
-                  <Gamepad2 className="h-4 w-4 text-[#39FF14]" /> Top Game Picks
-                </h3>
-                <div className="space-y-4">
-                  {GAME_LIBRARY.slice(0, 4).map((game, i) => (
-                    <Card key={game.title} className={cn('border transition-colors', i === 0 && 'border-[#39FF14]/30 bg-[#39FF14]/5')}>
-                      <CardContent className="pt-4 pb-4">
-                        <div className="flex items-start justify-between gap-4">
-                          <div className="flex-1 min-w-0">
-                            <div className="flex items-center gap-2 mb-1">
-                              {i === 0 && <Badge className="bg-[#39FF14] text-black text-xs">Best Match</Badge>}
-                              <Badge className={cn('text-xs border', securityBadgeColor(game.securityRating))}>
-                                <Shield className="h-2.5 w-2.5 mr-1" /> Security {game.securityRating}
-                              </Badge>
-                            </div>
-                            <h4 className="font-semibold">{game.title}</h4>
-                            <p className="text-xs text-muted-foreground mb-2">{game.genre} · {game.platform} · {game.price}</p>
-                            <p className="text-sm text-muted-foreground">{game.whyItFits}</p>
-                            <div className="flex flex-wrap gap-1.5 mt-3">
-                              {game.tags.map(t => (
-                                <span key={t} className="text-xs px-2 py-0.5 rounded-full bg-muted/50 border border-border text-muted-foreground">{t}</span>
-                              ))}
-                            </div>
-                          </div>
-                          <div className="text-right shrink-0">
-                            <div className="text-2xl font-bold text-[#39FF14]">{game.matchScore}%</div>
-                            <div className="text-xs text-muted-foreground">match</div>
-                            <div className="flex items-center gap-1 text-xs text-muted-foreground mt-1">
-                              <Users className="h-3 w-3" /> {game.playerbase}
-                            </div>
-                          </div>
-                        </div>
-                      </CardContent>
-                    </Card>
-                  ))}
-                </div>
-              </div>
-            )}
-
-            {/* Hardware recommendations */}
-            {(goal === 'gaming_pc' || goal === 'both') && (
-              <div>
-                <h3 className="font-semibold text-base flex items-center gap-2 mb-4">
-                  <Cpu className="h-4 w-4 text-[#00F0FF]" /> Recommended Hardware
-                </h3>
-                <div className="space-y-3">
-                  {HARDWARE_LIBRARY.map((hw, i) => (
-                    <Card key={hw.name} className={cn('border', i === 0 && 'border-[#00F0FF]/30')}>
-                      <CardContent className="pt-4 pb-4">
-                        <div className="flex items-center justify-between gap-4">
-                          <div className="flex-1 min-w-0">
-                            <div className="flex items-center gap-2 mb-0.5">
-                              <Badge variant="outline" className="text-xs">{hw.type}</Badge>
-                              <span className="text-xs text-muted-foreground">{hw.performanceTier}</span>
-                            </div>
-                            <h4 className="font-semibold">{hw.name}</h4>
-                            <p className="text-xs text-muted-foreground mt-0.5">{hw.whyItFits}</p>
-                          </div>
-                          <div className="text-right shrink-0 space-y-1">
-                            <div className="font-bold">{hw.price}</div>
-                            <div className="text-xs text-muted-foreground">
-                              <Shield className="h-3 w-3 inline mr-0.5" />
-                              Security {hw.securityScore}/100
-                            </div>
-                          </div>
-                        </div>
-                      </CardContent>
-                    </Card>
-                  ))}
-                </div>
-                <div className="mt-3 text-sm text-muted-foreground flex items-center gap-1">
-                  <DollarSign className="h-3.5 w-3.5" />
-                  Total estimated build cost: <span className="font-semibold text-foreground ml-1">$1,166</span>
-                </div>
-              </div>
-            )}
-
-            {/* CTA */}
-            <Card className="border-[#00F0FF]/20 bg-gradient-to-r from-[#00F0FF]/5 to-[#39FF14]/5">
-              <CardContent className="pt-5 pb-5 flex flex-col sm:flex-row items-center justify-between gap-4">
-                <div>
-                  <p className="font-semibold">Build your PC with security scoring</p>
-                  <p className="text-sm text-muted-foreground">Configure your full build and get a live AI security analysis.</p>
-                </div>
-                <div className="flex gap-2 shrink-0">
-                  <Button asChild size="sm">
-                    <Link to="/tools/pc-builder" className="flex items-center gap-2">
-                      <Cpu className="h-3.5 w-3.5" /> AI PC Builder
-                    </Link>
-                  </Button>
-                  <Button asChild variant="outline" size="sm">
-                    <Link to="/tools/sentiment-analyzer" className="flex items-center gap-2">
-                      Game Reviews <ArrowRight className="h-3.5 w-3.5" />
-                    </Link>
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
-          </div>
+        {/* Fallback note */}
+        {fallbackNote && (
+          <p className="text-xs text-yellow-400 mt-1">{fallbackNote}</p>
         )}
       </div>
-    </Layout>
+
+      {/* Match percentage */}
+      <div className="flex-shrink-0 text-right">
+        <div className="text-2xl font-bold text-white">{matchPercent}%</div>
+        <div className="text-xs text-gray-400">match</div>
+        <Progress value={matchPercent} className="h-1.5 w-20 mt-1 bg-gray-700" />
+      </div>
+    </div>
   );
 }

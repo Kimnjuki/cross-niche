@@ -15,9 +15,9 @@ export interface ScoredGame {
 }
 
 const BUDGET_RANK: Record<string, number> = { free: 0, budget: 1, mid: 2, high: 3, ultra: 4 };
-const BUDGET_LABELS: Record<string, string> = { free: 'Free', budget: '< $30', mid: '$30–$60', high: '$60–$100', ultra: '$100+' };
+export const BUDGET_LABELS: Record<string, string> = { free: 'Free', budget: '< $30', mid: '$30–$60', high: '$60–$100', ultra: '$100+' };
 
-const REASON_LABELS: Record<string, string> = {
+export const REASON_LABELS: Record<string, string> = {
   goalMatch: 'Matches your goal',
   budgetFit: 'Within your budget',
   styleMatch: 'Fits your style',
