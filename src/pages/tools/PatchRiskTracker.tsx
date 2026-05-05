@@ -6,6 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
+import { ToolPageSEO } from '@/components/tools/ToolPageSEO';
 import {
   ArrowLeft, AlertTriangle, CheckCircle, XCircle, Clock,
   Gamepad2, Shield, RefreshCcw, ChevronDown, ChevronUp,
@@ -512,8 +513,8 @@ export default function PatchRiskTracker() {
   return (
     <Layout>
       <SEO
-        title="Live Game Patch Risk Tracker | The Grid Nexus"
-        description="Track active security vulnerabilities, unpatched exploits, and player action steps across Fortnite, Valorant, CS2, Minecraft, GTA Online, and more."
+        title="Game Patch Risk Tracker | The Grid Nexus"
+        description="Track patch-related security risks across your game library. Get alerts when new patches introduce vulnerabilities, break security features, or fix critical CVEs."
         canonical="https://thegridnexus.com/tools/patch-risk-tracker"
         ogType="website"
       />

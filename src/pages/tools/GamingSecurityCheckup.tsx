@@ -16,6 +16,7 @@ import { useMutation } from 'convex/react';
 import { api } from '../../../convex/_generated/api';
 import { useConvexDisabled } from '@/components/SafeConvexProvider';
 import { useAuth } from '@/contexts/AuthContext';
+import { ToolPageSEO } from '@/components/tools/ToolPageSEO';
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 
@@ -263,8 +264,8 @@ export default function GamingSecurityCheckup() {
   return (
     <Layout>
       <SEO
-        title="Gaming Account Security Checkup | The Grid Nexus"
-        description="Multi-platform gaming account security checker. Assess Steam, PSN, Xbox, Riot Games, Epic, and Battle.net security in minutes. Free."
+        title="Gaming Security Checkup Tool | The Grid Nexus"
+        description="Run a 7-point security audit across Steam, PlayStation, Xbox, Battle.net, and Epic Games. Get your Fort Knox-to-Exposed security rating with fix steps."
         canonical="https://thegridnexus.com/tools/gaming-security-checkup"
         ogType="website"
       />

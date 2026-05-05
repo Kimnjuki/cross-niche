@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { cn } from '@/lib/utils';
+import { ToolPageSEO } from '@/components/tools/ToolPageSEO';
 import {
   AlertTriangle, Shield, ArrowLeft, Search, ChevronRight,
   Users, Calendar, Database, Lock, Eye, Gamepad2, Code2,
@@ -288,8 +289,8 @@ export default function BreachExplainer() {
   return (
     <Layout>
       <SEO
-        title="AI-Powered Breach Explainer | The Grid Nexus"
-        description="Understand major data breaches clearly — what was stolen, who is affected, and exactly what to do. Covers Change Healthcare, AT&T, Salt Typhoon, PowerSchool, Snowflake."
+        title="Gaming Data Breach Explainer Tool | The Grid Nexus"
+        description="Understand how gaming data breaches happen and what they mean for your accounts. Search past breaches by platform, date, or data type exposed."
         canonical="https://thegridnexus.com/tools/breach-explainer"
         ogType="website"
       />

@@ -32,6 +32,7 @@ import { useMutation } from 'convex/react';
 import { api } from '../../../convex/_generated/api';
 import { useConvexDisabled } from '@/components/SafeConvexProvider';
 import { useAuth } from '@/contexts/AuthContext';
+import { ToolPageSEO } from '@/components/tools/ToolPageSEO';
 
 // ── Types ────────────────────────────────────────────────────────────────────
 
@@ -255,7 +256,7 @@ export default function SteamScanner() {
     <Layout>
       <SEO
         title="Steam Security Scanner | The Grid Nexus"
-        description="Check your Steam account security in 2 minutes. Assess Steam Guard, privacy settings, trading safety, and API key exposure with our free scanner."
+        description="Scan your Steam account for signs of compromise. Check login locations, API key leaks, unauthorized trade offers, and friend request anomalies in under 2 minutes."
         canonical="https://thegridnexus.com/tools/steam-scanner"
         ogType="website"
       />

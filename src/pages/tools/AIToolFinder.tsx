@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import { cn } from '@/lib/utils';
+import { ToolPageSEO } from '@/components/tools/ToolPageSEO';
 import {
   ArrowLeft, Search, ExternalLink, Star, CheckCircle, XCircle,
   ChevronDown, ChevronUp, Shield, Zap, Gamepad2, Activity,
@@ -407,8 +408,8 @@ export default function AIToolFinder() {
   return (
     <Layout>
       <SEO
-        title="AI Security Tool Finder | The Grid Nexus"
-        description="Find the best AI security tools by use case, price, and skill level. Curated directory with Nexus verdicts covering SOC, code security, gaming, identity, and vulnerability management."
+        title="AI Security Tool Finder for Gamers | The Grid Nexus"
+        description="Find the right AI-powered security tool for your gaming setup. Compare threat scanners, account checkers, and privacy tools by platform and risk level."
         canonical="https://thegridnexus.com/tools/ai-tool-finder"
         ogType="website"
       />

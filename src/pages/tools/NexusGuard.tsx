@@ -41,6 +41,7 @@ import {
 import { cn } from '@/lib/utils';
 import { Link } from 'react-router-dom';
 import { toast } from '@/components/ui/use-toast';
+import { ToolPageSEO } from '@/components/tools/ToolPageSEO';
 
 // ── Options ──────────────────────────────────────────────────────────────────
 
@@ -287,8 +288,8 @@ const NexusGuardPage = memo(function NexusGuardPage() {
   return (
     <Layout>
       <SEO
-        title="NexusGuard — Free AI Security Risk Assessment | The Grid Nexus"
-        description="Generate a personalised AI-powered security risk brief for your tech stack. Free assessment with CVE analysis, patch recommendations, and compliance guidance."
+        title="NexusGuard Security Dashboard | The Grid Nexus"
+        description="Monitor gaming security threats in real time with NexusGuard. Get threat alerts, account health scores, and platform-specific security recommendations."
         canonical="https://thegridnexus.com/tools/nexusguard"
         ogType="website"
       />

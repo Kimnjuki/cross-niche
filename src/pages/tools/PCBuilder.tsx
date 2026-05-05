@@ -19,6 +19,7 @@ import { useMutation } from 'convex/react';
 import { api } from '../../../convex/_generated/api';
 import { useConvexDisabled } from '@/components/SafeConvexProvider';
 import { useAuth } from '@/contexts/AuthContext';
+import { ToolPageSEO } from '@/components/tools/ToolPageSEO';
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 
@@ -416,7 +417,7 @@ export default function PCBuilder() {
     <Layout>
       <SEO
         title="AI PC Builder with Security Score | The Grid Nexus"
-        description="Build your gaming PC with AI-powered security analysis. Get firmware vulnerability scores, compatibility ratings, and hardening tips for every component."
+        description="Build a gaming PC optimized for security. Compare components by firmware vulnerability history, driver support lifespan, and security feature compatibility."
         canonical="https://thegridnexus.com/tools/pc-builder"
         ogType="website"
       />

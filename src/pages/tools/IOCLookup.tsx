@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { cn } from '@/lib/utils';
+import { ToolPageSEO } from '@/components/tools/ToolPageSEO';
 import {
   Search, Shield, AlertTriangle, CheckCircle, XCircle,
   Globe, Server, Hash, Mail, Link2, ArrowLeft, Copy,
@@ -312,8 +313,8 @@ export default function IOCLookup() {
   return (
     <Layout>
       <SEO
-        title="IOC / Threat-Hunting Lookup | The Grid Nexus"
-        description="Instantly analyse IPs, domains, file hashes, and email addresses against VirusTotal, AbuseIPDB, Shodan, and GreyNoise data. Free threat-hunting tool."
+        title="IOC Threat-Hunting Lookup | The Grid Nexus"
+        description="Look up indicators of compromise across gaming threat feeds. Check IPs, hashes, domains, and URLs against known gaming-related malware and phishing campaigns."
         canonical="https://thegridnexus.com/tools/ioc-lookup"
         ogType="website"
       />

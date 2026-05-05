@@ -6,6 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { ToolPageSEO } from '@/components/tools/ToolPageSEO';
 import {
   Shield,
   Search,
@@ -208,8 +209,8 @@ const SecurityScanner = memo(function SecurityScanner() {
   return (
     <Layout>
       <SEO
-        title="Security Scanner — Free Website Vulnerability Check | The Grid Nexus"
-        description="Enter any URL and get a security score with a full vulnerability list and actionable fix recommendations. Free, no sign-up required."
+        title="Security Scanner: Comprehensive Threat Scan | The Grid Nexus"
+        description="Run a full security scan on domains, servers, and gaming infrastructure. Check for CVEs, open ports, TLS weaknesses, and OWASP Top 10 vulnerabilities."
         canonical="https://thegridnexus.com/tools/security-scanner"
         ogType="website"
       />

@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
 import { cn } from '@/lib/utils';
+import { ToolPageSEO } from '@/components/tools/ToolPageSEO';
 import {
   Shield, ArrowLeft, CheckCircle, XCircle, ChevronRight,
   RotateCcw, Copy, Share2, AlertTriangle, Zap, Lock,
@@ -179,8 +180,8 @@ export default function ZeroTrustQuiz() {
   return (
     <Layout>
       <SEO
-        title="Zero-Trust Readiness Quiz | The Grid Nexus"
-        description="Assess your organisation's zero-trust security posture across 7 domains. Get a scored report with tier label, category breakdown, and prioritised fix list."
+        title="Zero-Trust Readiness Quiz for Gamers | The Grid Nexus"
+        description="Test your zero-trust security knowledge with this interactive quiz. Learn how to apply zero-trust principles to gaming accounts, servers, and communities."
         canonical="https://thegridnexus.com/tools/zero-trust-quiz"
         ogType="website"
       />
