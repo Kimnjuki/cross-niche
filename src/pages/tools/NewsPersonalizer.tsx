@@ -214,13 +214,13 @@ const ITEMS_PER_PAGE = 5;
 export default function NewsPersonalizer() {
   const [activeCategory, setActiveCategory] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
-  const [bookmarked, setBookmarked] = useState<Set<string>>(new Set(() => {
+  const [bookmarked, setBookmarked] = useState<Set<string>>(() => {
     // Restore bookmarks from sessionStorage (survives page refresh within tab)
     try {
       const saved = sessionStorage.getItem('newsBookmarks');
       return saved ? new Set(JSON.parse(saved)) : new Set();
     } catch { return new Set(); }
-  }));
+  });
   const [status, setStatus] = useState<StatusType>('idle');
   const [currentPage, setCurrentPage] = useState(1);
 
