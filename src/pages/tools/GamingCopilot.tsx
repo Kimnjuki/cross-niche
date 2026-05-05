@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { Layout } from '@/components/layout/Layout';
 import { SEO } from '@/components/SEO';
 import { ToolCrossLinks } from '@/components/tools/ToolPageSEO';
+import { useTrackToolUse } from '@/hooks/useTrackToolUse';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -305,6 +306,7 @@ const SUGGESTED_MESSAGES = [
 // ═══════════════════════════════════════════════════════════════════════════
 
 export default function GamingCopilot() {
+  const { trackTool } = useTrackToolUse();
   const [messages, setMessages] = useState<Message[]>([
     {
       id: 'system-welcome',
@@ -345,6 +347,7 @@ I can help you with:
       return;
     }
 
+    trackTool('gaming-copilot', 'start');
     const userMsg: Message = {
       id: `user-${Date.now()}`,
       role: 'user',

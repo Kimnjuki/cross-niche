@@ -1,6 +1,7 @@
 import { memo, useState, useCallback, useMemo } from 'react';
 import { Layout } from '@/components/layout/Layout';
 import { SEO } from '@/components/SEO';
+import { useTrackToolUse } from '@/hooks/useTrackToolUse';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -164,6 +165,7 @@ const STEP_ORDER: Step[] = ['industry', 'cloud', 'frameworks', 'region', 'compan
 // ── Component ─────────────────────────────────────────────────────────────────
 
 const NexusGuardPage = memo(function NexusGuardPage() {
+  const { trackTool } = useTrackToolUse();
   const [currentStep, setCurrentStep] = useState<Step>('industry');
   const [briefData, setBriefData] = useState<BriefData>({
     industry: '', cloudStack: '', frameworks: [], region: '', companySize: '',
@@ -203,9 +205,9 @@ const NexusGuardPage = memo(function NexusGuardPage() {
     if (prev >= 0) setCurrentStep(STEP_ORDER[prev]);
   }, [currentStep]);
 
-  const handleGenerate = useCallback(async () => {
+  const handleGenerate = useCallback(() => {
+    trackTool('nexusguard', 'start', { industry: briefData.industry });
     setCurrentStep('generating');
-    await new Promise((resolve) => setTimeout(resolve, 3000));
 
     const mock: GeneratedBrief = {
       executive_summary: `Based on your ${briefData.industry} organisation using ${briefData.cloudStack} with ${briefData.frameworks.length} technologies, we've identified several security concerns that require immediate attention. Your ${briefData.companySize}-scale posture shows specific risks detailed below.`,

@@ -2,6 +2,7 @@ import React, { useState, useCallback } from 'react';
 import { Layout } from '@/components/layout/Layout';
 import { SEO } from '@/components/SEO';
 import { ToolCrossLinks } from '@/components/tools/ToolPageSEO';
+import { useTrackToolUse } from '@/hooks/useTrackToolUse';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -48,6 +49,7 @@ const EXAMPLES = [
 // ═══════════════════════════════════════════════════════════════════════════
 
 export default function CommunityModerator() {
+  const { trackTool } = useTrackToolUse();
   const [customText, setCustomText] = useState('');
   const [mode, setMode] = useState<'example' | 'custom'>('example');
   const [content, setContent] = useState('');
@@ -61,6 +63,7 @@ export default function CommunityModerator() {
       setStatus('error');
       return;
     }
+    trackTool('community-moderator', 'start');
 
     setStatus('loading');
     setContent(text);

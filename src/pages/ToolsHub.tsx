@@ -1,4 +1,6 @@
 import { Link } from 'react-router-dom';
+import { useQuery } from 'convex/react';
+import { api } from '../../convex/_generated/api';
 import { Layout } from '@/components/layout/Layout';
 import { SEOHead } from '@/components/seo/SEOHead';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -25,6 +27,7 @@ import {
   Sparkles,
   Bot,
   Calendar,
+  TrendingUp,
 } from 'lucide-react';
 
 const tools = [
@@ -282,7 +285,15 @@ const tools = [
   },
 ];
 
+function toolIdFromHref(href: string): string {
+  const parts = href.split('/').filter(Boolean);
+  return parts[parts.length - 1] ?? href;
+}
+
 export default function ToolsHub() {
+  const trendingTools = useQuery(api.toolAnalytics.getTrendingTools) ?? [];
+  const trendingSet = new Set(trendingTools);
+
   return (
     <Layout>
       <SEOHead
@@ -355,6 +366,7 @@ export default function ToolsHub() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-16">
           {tools.map((tool) => {
             const Icon = tool.icon;
+            const isTrending = trendingSet.has(toolIdFromHref(tool.href));
             return (
               <Card
                 key={tool.href}
@@ -363,9 +375,16 @@ export default function ToolsHub() {
                 <CardHeader className="pb-3">
                   <div className="flex items-start justify-between gap-2 mb-2">
                     <Icon className={`h-7 w-7 ${tool.iconColor}`} />
-                    <Badge variant={tool.badgeVariant} className="text-xs shrink-0">
-                      {tool.badge}
-                    </Badge>
+                    <div className="flex items-center gap-1.5 shrink-0">
+                      {isTrending && (
+                        <Badge className="text-xs bg-[#FFB800]/15 text-[#FFB800] border border-[#FFB800]/40 flex items-center gap-1">
+                          <TrendingUp className="h-3 w-3" /> Trending
+                        </Badge>
+                      )}
+                      <Badge variant={tool.badgeVariant} className="text-xs">
+                        {tool.badge}
+                      </Badge>
+                    </div>
                   </div>
                   <CardTitle className="text-xl">{tool.name}</CardTitle>
                   <p className="text-sm font-medium text-muted-foreground">{tool.tagline}</p>

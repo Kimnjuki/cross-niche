@@ -2,6 +2,7 @@ import React, { useState, useCallback } from 'react';
 import { Layout } from '@/components/layout/Layout';
 import { SEO } from '@/components/SEO';
 import { ToolCrossLinks } from '@/components/tools/ToolPageSEO';
+import { useTrackToolUse } from '@/hooks/useTrackToolUse';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -168,6 +169,7 @@ const QUICK_TARGETS = ['example.com', 'gaming-target.net', 'vulnerable-site.com'
 // ═══════════════════════════════════════════════════════════════════════════
 
 export default function ThreatScanner() {
+  const { trackTool } = useTrackToolUse();
   const [target, setTarget] = useState('');
   const [result, setResult] = useState<ScanResult | null>(null);
   const [status, setStatus] = useState<StatusType>('idle');
@@ -192,6 +194,7 @@ export default function ThreatScanner() {
       return;
     }
     setValidationError('');
+    trackTool('threat-scanner', 'start', { target: scanTarget });
 
     setStatus('loading');
     setScanProgress(0);

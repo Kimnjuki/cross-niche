@@ -2,6 +2,7 @@ import React, { useState, useCallback } from 'react';
 import { Layout } from '@/components/layout/Layout';
 import { SEO } from '@/components/SEO';
 import { ToolCrossLinks } from '@/components/tools/ToolPageSEO';
+import { useTrackToolUse } from '@/hooks/useTrackToolUse';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -120,6 +121,7 @@ const MOCK_SENTIMENT: Record<string, SentimentResult> = {
 // ═══════════════════════════════════════════════════════════════════════════
 
 export default function SentimentAnalyzer() {
+  const { trackTool } = useTrackToolUse();
   const [query, setQuery] = useState('');
   const [result, setResult] = useState<SentimentResult | null>(null);
   const [status, setStatus] = useState<StatusType>('idle');
@@ -133,6 +135,7 @@ export default function SentimentAnalyzer() {
       setStatus('error');
       return;
     }
+    trackTool('sentiment-analyzer', 'start', { game: trimmed });
 
     setStatus('loading');
     const startTime = Date.now();

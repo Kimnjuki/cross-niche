@@ -2,6 +2,7 @@ import React, { useState, useCallback, useMemo } from 'react';
 import { Layout } from '@/components/layout/Layout';
 import { SEO } from '@/components/SEO';
 import { ToolCrossLinks } from '@/components/tools/ToolPageSEO';
+import { useTrackToolUse } from '@/hooks/useTrackToolUse';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -99,6 +100,7 @@ const STYLE_OPTIONS = [
 // ═══════════════════════════════════════════════════════════════════════════
 
 export default function RecommendationEngine() {
+  const { trackTool } = useTrackToolUse();
   const [step, setStep] = useState(0); // 0=goals, 1=budget, 2=styles, 3=results
   const [goal, setGoal] = useState<Goal | null>(null);
   const [budget, setBudget] = useState<Budget | null>(null);
@@ -120,6 +122,7 @@ export default function RecommendationEngine() {
       return;
     }
 
+    trackTool('recommendation-engine', 'start', { goal: goal.id, budget: budget.id });
     setStatus('loading');
     const startTime = Date.now();
 

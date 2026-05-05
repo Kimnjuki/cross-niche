@@ -1,6 +1,7 @@
 import React, { useState, useCallback } from 'react';
 import { Layout } from '@/components/layout/Layout';
 import { SEO } from '@/components/SEO';
+import { useTrackToolUse } from '@/hooks/useTrackToolUse';
 import { Link } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -271,6 +272,7 @@ const EXAMPLES = [
 // ── Component ─────────────────────────────────────────────────────────────────
 
 export default function IOCLookup() {
+  const { trackTool } = useTrackToolUse();
   const [query, setQuery] = useState('');
   const [result, setResult] = useState<IOCResult | null>(null);
   const [loading, setLoading] = useState(false);
@@ -279,16 +281,15 @@ export default function IOCLookup() {
 
   const detectedType = query.trim() ? detectIOCType(query.trim()) : 'unknown';
 
-  const handleLookup = useCallback(async (value?: string) => {
+  const handleLookup = useCallback((value?: string) => {
     const ioc = (value ?? query).trim();
     if (!ioc) { setError('Enter an IP, domain, file hash, or email to analyse.'); return; }
     const type = detectIOCType(ioc);
     if (type === 'unknown') { setError('Unable to detect IOC type. Check your input.'); return; }
+    trackTool('ioc-lookup', 'start', { type });
     setError('');
     setLoading(true);
     setResult(null);
-    // Simulate network latency (swap for real API calls in production)
-    await new Promise(r => setTimeout(r, 900));
     setResult(getMockResult(ioc, type));
     setLoading(false);
   }, [query]);

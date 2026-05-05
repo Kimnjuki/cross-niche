@@ -1,9 +1,21 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, { useCallback } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { useMutation } from 'convex/react';
+import { api } from '../../../convex/_generated/api';
 import {
   ShieldCheck, Bug, Radio, ClipboardCheck,
   ChevronRight, Activity, Zap,
 } from 'lucide-react';
+
+function getSessionId(): string {
+  if (typeof window === 'undefined') return 'ssr';
+  let id = sessionStorage.getItem('_nxSessionId');
+  if (!id) {
+    id = typeof crypto !== 'undefined' ? crypto.randomUUID() : Math.random().toString(36).slice(2);
+    sessionStorage.setItem('_nxSessionId', id);
+  }
+  return id;
+}
 
 interface ToolCard {
   id: string;
@@ -79,6 +91,25 @@ const SUGGESTIONS = [
 ];
 
 export function CommandDashboard() {
+  const navigate = useNavigate();
+  const logClick = useMutation(api.toolAnalytics.logQuickActionClick);
+
+  const handleCardClick = useCallback((card: ToolCard) => {
+    logClick({
+      actionId: card.id,
+      sessionId: getSessionId(),
+      clickedAt: Date.now(),
+    }).catch(() => {});
+    if (typeof window !== 'undefined' && (window as any).gtag) {
+      (window as any).gtag('event', 'quick_action_click', {
+        action_id: card.id,
+        action_title: card.title,
+        destination: card.href,
+      });
+    }
+    navigate(card.href);
+  }, [logClick, navigate]);
+
   return (
     <section className="bg-[#0A0A0B] border-b border-[#27272A] py-10">
       <div className="container mx-auto px-4 max-w-7xl space-y-8">
@@ -106,10 +137,10 @@ export function CommandDashboard() {
             const Icon = card.icon;
             const a = ACCENT[card.accent];
             return (
-              <Link
+              <button
                 key={card.id}
-                to={card.href}
-                className={`group bg-[#16161A] border border-[#27272A] ${a.border} p-5 flex flex-col gap-3 transition-all duration-200`}
+                onClick={() => handleCardClick(card)}
+                className={`group bg-[#16161A] border border-[#27272A] ${a.border} p-5 flex flex-col gap-3 transition-all duration-200 text-left w-full`}
               >
                 <div className="flex items-start justify-between">
                   <div className={`p-2 ${a.bg}`}>
@@ -134,7 +165,7 @@ export function CommandDashboard() {
                     {card.cta} <ChevronRight className="h-3 w-3" />
                   </span>
                 </div>
-              </Link>
+              </button>
             );
           })}
         </div>
