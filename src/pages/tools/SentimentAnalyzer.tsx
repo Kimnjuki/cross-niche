@@ -142,7 +142,8 @@ export default function SentimentAnalyzer() {
 
     try {
       // 1. Try fuzzy search against the game library (returns best match)
-      const libraryHit = fuzzyGameSearch(trimmed);
+      const libraryHits = fuzzyGameSearch(trimmed);
+      const libraryHit = libraryHits.length > 0 ? libraryHits[0].game : null;
       const foundKey = libraryHit
         ? Object.keys(MOCK_SENTIMENT).find(
             (k) => k === libraryHit.slug || libraryHit.name.toLowerCase().includes(trimmed.toLowerCase())
