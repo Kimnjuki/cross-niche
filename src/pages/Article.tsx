@@ -221,10 +221,10 @@ export default function Article() {
         const authInfo = authorProfiles[authSlug];
         const authorSchema = authInfo ? {
           name: authName,
-          jobTitle: authInfo.role,
+          jobTitle: authInfo.jobTitle,
           description: authInfo.bio,
-          imageUrl: authInfo.avatar,
-          sameAs: authInfo.social ? Object.values(authInfo.social).filter(Boolean) as string[] : undefined,
+          imageUrl: authInfo.imageUrl,
+          sameAs: authInfo.sameAs,
           expertise: authInfo.expertise?.length ? authInfo.expertise : undefined,
         } : {
           name: authName,
@@ -249,7 +249,7 @@ export default function Article() {
         image={article.imageUrl ?? getPlaceholderByNiche(article.niche, article.slug ?? article.id)}
         url={`${window.location.origin}/article/${article.slug ?? articleId}`}
         type="article"
-        article={{ ...article, impactLevel: article.impactLevel ?? 'normal', isBreaking: article.isBreaking ?? false }}
+        article={{ ...article, impactLevel: article.impactLevel ?? 'low', isBreaking: article.isBreaking ?? false }}
         publishedTime={article.publishedAt}
         author={article.author ?? 'The Grid Nexus Editorial Team'}
         section={safeNiche}
