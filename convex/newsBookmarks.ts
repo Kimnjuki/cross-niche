@@ -27,7 +27,7 @@ export const toggleBookmark = mutation({
       await ctx.db.insert("newsBookmarks", {
         userId,
         articleId,
-        source: source ?? null,
+        source: source ?? undefined,
         bookmarkedAt: Date.now(),
       });
       return { bookmarked: true };
