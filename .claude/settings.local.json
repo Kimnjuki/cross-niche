@@ -1,0 +1,35 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npx tsc *)",
+      "Bash(git add *)",
+      "Bash(git commit -m ' *)",
+      "Bash(git push *)",
+      "Bash(git pull *)",
+      "Bash(git stash *)",
+      "Bash(npm install *)",
+      "Bash(node -e \"const p=require\\('./node_modules/@clerk/clerk-react/package.json'\\); console.log\\('version:', p.version\\); console.log\\('peer deps:', JSON.stringify\\(p.peerDependencies, null, 2\\)\\)\")",
+      "Bash(node -e \"const t=require\\('./node_modules/@clerk/clerk-react/dist/types/components/clerk-provider.d.ts'\\) \")",
+      "Bash(npx vite *)",
+      "Bash(python -c ' *)",
+      "Bash(node -e ' *)",
+      "Bash(git fetch *)",
+      "Bash(git mv *)",
+      "Bash(git checkout *)",
+      "Bash(Get-ChildItem -Recurse -Depth 3 -Directory)",
+      "Bash(Select-Object FullName)",
+      "Bash(grep -r \"TJ1VXE91NE\\\\|G-[A-Z0-9]\\\\{10,\\\\}\\\\|gtag\\\\|measurement\" --include=\"*.html\" --include=\"*.ts\" --include=\"*.tsx\" --include=\"*.js\" --include=\".env*\" -l)",
+      "Bash(grep -r \"TJ1VXE91NE\\\\|G-[A-Z0-9]\\\\{10,\\\\}\\\\|gtag\\\\|measurement\" --include=\"*.html\" --include=\"*.ts\" --include=\"*.tsx\" --include=\"*.js\" --include=\".env*\" -n)",
+      "Bash(findstr /s /n /i \"TJ1VXE91NE XMGRJBSN5Y gtag GA4\" src\\\\*.ts src\\\\*.tsx index.html .env .env.example .env.local)",
+      "Bash(Get-ChildItem -Path \"C:\\\\Users\\\\Administrator\\\\Downloads\" -Recurse -Filter \"*TheSynLab*\" -ErrorAction SilentlyContinue)",
+      "Bash(Select-Object -First 20)",
+      "PowerShell(Get-ChildItem -Path \"C:\\\\Users\\\\Administrator\\\\Downloads\\\\TheSynLab\" -Depth 0 | Where-Object { $_.PSIsContainer -eq $false } | Select-Object Name)",
+      "PowerShell(Get-ChildItem -Path \"C:\\\\Users\\\\Administrator\\\\Downloads\\\\TheSynLab\" -Depth 0 | Where-Object { $_.PSIsContainer } | Select-Object Name)",
+      "Bash(dir C:\\\\Users\\\\Administrator\\\\Downloads\\\\cross-niche-intelligence-main\\\\src\\\\pages\\\\tools *)",
+      "Bash(git rebase *)",
+      "Bash(sed -n '100,115p' src/pages/tools/RecommendationEngine.tsx)",
+      "Bash(sed -n '120,140p' src/pages/tools/SentimentAnalyzer.tsx)",
+      "Bash(sed -n '168,190p' src/pages/tools/ThreatScanner.tsx)"
+    ]
+  }
+}
