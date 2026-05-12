@@ -4,6 +4,7 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
+bun.lockb
 
 # Build output
 dist
@@ -19,17 +20,19 @@ dist-ssr
 .git
 .gitignore
 .github
+.gitmodules
 
-# IDE
+# IDE & local tools
 .vscode
 .idea
+.claude
 *.swp
 *.swo
 *~
 
 # OS
 .DS_Store
-Thumbs.db
+Thumbsdb
 
 # Documentation
 *.md
@@ -39,8 +42,12 @@ Thumbs.db
 coverage
 .nyc_output
 
-# Misc
+# Build cache & logs
 *.log
 .cache
+.turbo
 
-
+# Large non-essential assets
+*.psd
+*.ai
+*.fig
