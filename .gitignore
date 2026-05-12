@@ -28,3 +28,6 @@ prerender-routes.json
 *.njsproj
 *.sln
 *.sw?
+
+# Claude AI worktrees and local config
+.claude/
