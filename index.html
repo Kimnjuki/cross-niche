@@ -44,8 +44,12 @@
         var p = window.location.pathname.replace(/\/$/, '') || '/';
         var m = routes[p];
         if (!m) {
-          // Article pages
-          if (p.indexOf('/article/') === 0) {
+          // Article page SEO overrides for specific slugs
+          if (p === '/article/ai-security-threats-2026') { m = { t: 'AI Security Threats 2026: Weaponized AI, Deepfakes, and Quantum Risks Targeting Gamers | The Grid Nexus', d: 'Deepfake voice clones, weaponized AI attack pipelines, and quantum-assisted decryption threats are targeting gaming accounts. Read the full threat analysis.' }; }
+          else if (p === '/article/gaming-pc-security-hardening-guide-2026') { m = { t: 'Gaming PC Security Hardening Guide 2026: Lock Down Your Rig Without Losing FPS | The Grid Nexus', d: 'Hardened gaming rigs from Windows 11 security features to YubiKey BIOS integration and VLAN segmentation — all without sacrificing performance. Complete 2026 guide.' }; }
+          else if (p === '/article/steam-deck-2-specs-release-date-leaks') { m = { t: 'Steam Deck 2 Specs, Release Date Leaks, and Deck vs. OLED Comparison | The Grid Nexus', d: 'Leaked Steam Deck 2 specs: Zen 5 CPU, RDNA 3.5 GPU at 3.5 TFLOPS, 32GB LPDDR6X. Full comparison with OLED and original Deck. Release tracking for 2028-2029.' }; }
+          else if (p === '/article/router-security-gamers-2026') { m = { t: 'Router Security for Gamers 2026: CVE-2025-7850, KadNap Exploits, and Zero-Trust Networking | The Grid Nexus', d: 'CVE-2025-7850 TP-Link exploit, KadNap Asus backdoor campaign, and the complete router hardening checklist for gamers including VLAN segmentation.' }; }
+          else if (p.indexOf('/article/') === 0) {
             var slug = p.replace('/article/', '').replace(/-/g, ' ');
             m = { t: slug.charAt(0).toUpperCase() + slug.slice(1) + ' | The Grid Nexus', d: 'Read the full story on The Grid Nexus \u2013 your source for tech, cybersecurity, and gaming intelligence.' };
           } else {
