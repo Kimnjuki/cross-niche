@@ -1,96 +1,41 @@
-#!/usr/bin/env node
 /**
- * Generate prerender routes from sitemap.xml
- * Run after generate:sitemap. Outputs to prerender-routes.json for vite-plugin-prerender.
- * Extracts all URLs from sitemap (static + articles) for full crawlability.
- * Limits article routes to avoid very long builds (Puppeteer renders each route).
+ * Generate prerender-routes.json for vite-plugin-prerender
+ * Reads article slugs from mockData.ts and generates route paths
  */
 import fs from 'fs';
 import path from 'path';
-import { fileURLToPath } from 'url';
 
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const SITEMAP_PATH = path.join(__dirname, '../public/sitemap.xml');
-const OUTPUT_PATH = path.join(__dirname, '../prerender-routes.json');
+const mockDataPath = path.join(process.cwd(), 'src', 'data', 'mockData.ts');
+const outputPath = path.join(process.cwd(), 'prerender-routes.json');
 
-/** Max article routes to prerender (keeps build time manageable) */
-const MAX_ARTICLE_ROUTES = 50;
+// Read the mockData file
+const content = fs.readFileSync(mockDataPath, 'utf8');
 
-/** Fallback when sitemap missing or empty */
-const STATIC_ROUTES = [
-  '/',
-  '/tech',
-  '/security',
-  '/gaming',
-  '/news',
-  '/explore',
-  '/topics',
-  '/guides',
-  '/blog-series',
-  '/tutorials',
-  '/roadmap',
-  '/ai-pulse',
-  '/breach-sim',
-  '/nexus-intersection',
-  '/security-score',
-  '/reviews',
-  '/about',
-  '/contact',
-  '/privacy',
-  '/terms',
-  '/disclosure',
-  '/editorial',
-];
+// Extract all article IDs/slugs from mockData
+const routes = ['/', '/tech', '/security', '/gaming', '/news', '/topics', '/guides', '/about', '/contact', '/privacy', '/terms', '/roadmap', '/blog-series', '/security-profile', '/community-threats', '/tools'];
 
-function extractRoutesFromSitemap(xml) {
-  const routes = [];
-  const baseUrl = 'https://thegridnexus.com';
-  const matches = xml.matchAll(/<loc>(https:\/\/[^<]+)<\/loc>/g);
-  const seen = new Set();
-  let articleCount = 0;
+// Find article slugs: prefer explicit slug field over id
+const slugPatterns = [/slug:\s*'([^']+)'/g, /id:\s*'([^']+)'/g];
+const slugSet = new Set();
 
-  for (const m of matches) {
-    const fullUrl = m[1];
-    let pathname = fullUrl;
-    if (fullUrl.startsWith(baseUrl)) {
-      pathname = fullUrl.slice(baseUrl.length) || '/';
-    } else if (fullUrl.startsWith('http')) {
-      continue; // Skip external URLs
-    }
-    const routePath = pathname.split('?')[0].split('#')[0];
-    if (seen.has(routePath)) continue;
-    seen.add(routePath);
-
-    if (routePath.startsWith('/article/')) {
-      articleCount++;
-      if (articleCount <= MAX_ARTICLE_ROUTES) {
-        routes.push(routePath);
-      }
-    } else {
-      routes.push(routePath || '/');
-    }
-  }
-
-  return routes;
+// First pass: collect all explicit slugs
+let match;
+while ((match = slugPatterns[0].exec(content)) !== null) {
+  slugSet.add(match[1]);
+}
+// Second pass: collect all IDs
+while ((match = slugPatterns[1].exec(content)) !== null) {
+  slugSet.add(match[1]);
 }
 
-function main() {
-  let routes;
-  if (fs.existsSync(SITEMAP_PATH)) {
-    const xml = fs.readFileSync(SITEMAP_PATH, 'utf8');
-    routes = extractRoutesFromSitemap(xml);
-    if (routes.length === 0) {
-      routes = STATIC_ROUTES;
-      console.log('   Sitemap empty or parse failed, using static routes');
-    }
-  } else {
-    routes = STATIC_ROUTES;
-    console.log('   Sitemap not found, using static routes');
+for (const slug of slugSet) {
+  if (slug && slug.length > 5 && !routes.includes(`/article/${slug}`)) {
+    routes.push(`/article/${slug}`);
   }
-
-  fs.writeFileSync(OUTPUT_PATH, JSON.stringify(routes, null, 2));
-  const articleCount = routes.filter((r) => r.startsWith('/article/')).length;
-  console.log(`Wrote ${routes.length} prerender routes (${articleCount} articles) to prerender-routes.json`);
 }
 
-main();
+// Find niche-based routes: some use /security/{slug} format
+const nicheArticleRegex = /(?:niche):\s*'(security|tech|gaming)'.*?(?:slug|id):\s*'([^']+)'/gs;
+
+fs.writeFileSync(outputPath, JSON.stringify(routes, null, 2));
+console.log(`Generated ${routes.length} prerender routes → ${outputPath}`);

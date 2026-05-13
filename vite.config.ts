@@ -63,21 +63,28 @@ export default defineConfig(({ mode }: ConfigEnv) => {
     mode === "development" && componentTagger(),
   ];
 
-  // Prerender plugin: DISABLED TEMPORARILY to fix React loading issue
-  // if (isProd && process.env.PRERENDER !== "0") {
-  //   try {
-  //     // eslint-disable-next-line @typescript-eslint/no-require-imports
-  //     const vitePrerender = require("vite-plugin-prerender");
-  //     plugins.push(
-  //       vitePrerender.default({
-  //         staticDir: path.join(__dirname, "dist"),
-  //         routes: prerenderRoutes,
-  //       })
-  //     );
-  //   } catch {
-  //     // Skip if plugin not installed
-  //   }
-  // }
+  // Prerender plugin: pre-renders article pages as static HTML at build time
+  // This ensures Googlebot sees the full article body even without JS execution
+  if (isProd && process.env.PRERENDER !== "0") {
+    try {
+      // eslint-disable-next-line @typescript-eslint/no-require-imports
+      const vitePrerender = require("vite-plugin-prerender");
+      plugins.push(
+        vitePrerender.default({
+          staticDir: path.join(__dirname, "dist"),
+          routes: prerenderRoutes,
+          renderer: new (require('@prerenderer/renderer-puppeteer'))({
+            headless: true,
+            maxConcurrentRoutes: 4,
+            renderAfterTime: 5000,
+            navigationOptions: { timeout: 30000 },
+          }),
+        })
+      );
+    } catch {
+      // Skip if plugin not installed
+    }
+  }
 
   return {
     server: {
