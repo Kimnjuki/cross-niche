@@ -58,6 +58,11 @@ const ARTICLE_SLUG_MAP: Record<string, string> = {
   'game-6': 'xbox-rebrand-security-changes-gamers',
   'game-7': 'steam-controller-security-risks-gamers',
   'game-8': 'vpn-gaming-security-latency-test-2026',
+  // 2026 Featured Articles
+  '2026-ai-1': 'ai-security-threats-2026',
+  '2026-hardening-1': 'gaming-pc-security-hardening-guide-2026',
+  '2026-steamdeck-1': 'steam-deck-2-specs-release-date-leaks',
+  '2026-router-1': 'router-security-gamers-2026',
   'game-9': 'twitch-streamer-security-guide-doxxing-swatting',
   'game-10': 'razer-synapse-security-vulnerability-fix',
   'game-11': 'game-key-reseller-scams-g2a-cdkeys',
