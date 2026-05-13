@@ -4,8 +4,6 @@
 # ── All crawlers (default) ────────────────────────────────────────────────
 User-agent: *
 Allow: /
-# Convex API key for SEO fixes
-CONVEX_DEPLOY_KEY=dev:intent-akita-728|eyJ2MiI6IjgxMWVmNmYxZmVlZDQ3ZjI4NTJiNzQwN2UzMGI3MDkyIn0=
 
 # Private / auth pages
 Disallow: /admin/
