@@ -63,28 +63,15 @@ export default defineConfig(({ mode }: ConfigEnv) => {
     mode === "development" && componentTagger(),
   ];
 
-  // Prerender plugin: pre-renders article pages as static HTML at build time
-  // This ensures Googlebot sees the full article body even without JS execution
-  if (isProd && process.env.PRERENDER !== "0") {
-    try {
-      // eslint-disable-next-line @typescript-eslint/no-require-imports
-      const vitePrerender = require("vite-plugin-prerender");
-      plugins.push(
-        vitePrerender.default({
-          staticDir: path.join(__dirname, "dist"),
-          routes: prerenderRoutes,
-          renderer: new (require('@prerenderer/renderer-puppeteer'))({
-            headless: true,
-            maxConcurrentRoutes: 4,
-            renderAfterTime: 5000,
-            navigationOptions: { timeout: 30000 },
-          }),
-        })
-      );
-    } catch {
-      // Skip if plugin not installed
-    }
-  }
+  // Prerender plugin: DISABLED — causes build failures in Docker
+  // Static HTML content is provided via inline script + hidden nav in index.html
+  // Googlebot executes JavaScript and will see the article body via React rendering
+  // if (isProd && process.env.PRERENDER !== "0") {
+  //   try {
+  //     const vitePrerender = require("vite-plugin-prerender");
+  //     plugins.push(vitePrerender.default({ staticDir: path.join(__dirname, "dist"), routes: prerenderRoutes }));
+  //   } catch {}
+  // }
 
   return {
     server: {
