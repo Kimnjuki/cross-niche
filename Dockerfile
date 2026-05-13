@@ -34,7 +34,7 @@ COPY . .
 RUN VITE_CONVEX_URL= npm run build:frontend
 
 # Stage 2: Production (Serve with Nginx)
-FROM nginx:stable-alpine AS production-stage
+FROM nginx:stable-alpine AS production-stage  # build-buster-2026-05-13
 
 # Copy built files from build stage
 COPY --from=build-stage /app/dist /usr/share/nginx/html
