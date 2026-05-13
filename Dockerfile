@@ -6,11 +6,6 @@ FROM node:22-alpine AS build-stage
 
 WORKDIR /app
 
-# Install Chromium + deps for prerender (vite-plugin-prerender uses puppeteer)
-RUN apk add --no-cache chromium nss freetype freetype-dev harfbuzz ca-certificates ttf-freefont 2>/dev/null || true
-ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
-ENV PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium-browser
-
 # Copy package files and install dependencies (npm ci uses lockfile; no bun.lockb)
 COPY package.json package-lock.json ./
 RUN npm ci --legacy-peer-deps || npm install --legacy-peer-deps
