@@ -57,6 +57,10 @@
           }
         }
         document.title = m.t;
+        // ── Canonical link (prevents duplicate content issues) ──
+        var canEl = document.querySelector('link[rel="canonical"]');
+        if (!canEl) { canEl = document.createElement('link'); canEl.setAttribute('rel', 'canonical'); document.head.appendChild(canEl); }
+        canEl.setAttribute('href', 'https://thegridnexus.com' + window.location.pathname);
         // Create or update meta name=description (static one was removed to avoid duplicate tags)
         var descEl = document.querySelector('meta[name="description"]');
         if (!descEl) { descEl = document.createElement('meta'); descEl.setAttribute('name', 'description'); document.head.appendChild(descEl); }
