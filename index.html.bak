@@ -41,59 +41,17 @@
           '/community-threats': { t: 'Community Threat Hub \u2013 Crowd-Sourced Gaming Threats | The Grid Nexus', d: 'Crowd-sourced threat intelligence from gamers. Report suspicious links, mods, and scams. Upvote to triage emerging threats.' },
           '/tools': { t: 'Nexus Security Suite \u2013 Free Security Tools for Gamers | The Grid Nexus', d: 'Free interactive security tools for gamers: AI threat assessment, breach simulation, security score checker, game security copilot, and live threat dashboard.' }
         };
-        // ── Article meta: per-slug title/description overrides ──
-        var articleMeta = {
-  'gmail-hack-attacks-surge-gamers-2fa-2026': { t: 'Gmail Hack Attacks Surge — Every Gamer Needs 2FA Now | The Grid Nexus', d: 'A massive wave of Gmail credential-stuffing attacks is targeting gamers. Here’s how to lock down your accounts before you get hit.' },
-  'bitwarden-security-incident-gaming-password-manager': { t: 'Bitwarden Confirms Compromise — What Gamers Should Use Instead | The Grid Nexus', d: 'Bitwarden admitted a compromised build. If you’re a gamer relying on Bitwarden, here’s what happened and what to do.' },
-  'chrome-zero-day-warning-gamers-april-2026': { t: 'Chrome Zero-Day Warning Issued for 3.5 Billion Users — Gamer’s Guide | The Grid Nexus', d: 'Google’s emergency Chrome update patches a critical zero-day exploit. PC gamers need to update now.' },
-  'steam-account-takeover-protection-guide-2026': { t: 'Steam Account Hacked 2026: Complete Recovery & Lockdown Guide | The Grid Nexus', d: 'Losing your Steam account means losing your library, payment methods, and tournament access. This complete guide walks you through recovery step-by-step, then locks it down so it never happens again.' },
-  'discord-malware-gamers-how-to-stay-safe': { t: 'Discord Malware Is Spreading Fast — How Gamers Get Infected | The Grid Nexus', d: 'Discord has become the #1 malware delivery platform for gamers. Learn the tactics hackers use and how to avoid them.' },
-  'nintendo-switch-2-security-guide': { t: 'Nintendo Switch 2 Security Guide — Protect Your Account Day One | The Grid Nexus', d: 'The Switch 2 launch is a prime target for account thieves. Set up your new console securely with this complete guide.' },
-  'fake-game-cheats-malware-account-stealer': { t: 'Fake Game Cheats Are Stealing Thousands of Accounts — How to Spot Them | The Grid Nexus', d: 'Hackers hide info-stealing malware inside fake game cheats. Here’s how to spot the scams.' },
-  'sim-swapping-gaming-accounts-protection': { t: 'SIM Swapping Is Targeting Gamers — Protect Your Accounts | The Grid Nexus', d: 'SIM swap attacks are on the rise and gamers are prime targets. If SMS secures your accounts, you’re at risk.' },
-  'windows-11-anti-cheat-broken-fix-guide': { t: 'Windows 11 Update Breaks Popular Anti-Cheat Software — Fix Guide | The Grid Nexus', d: 'Microsoft’s latest Windows 11 update causes EasyAntiCheat and BattlEye failures. Here’s the fix.' },
-  'xbox-rebrand-security-changes-gamers': { t: 'Microsoft Rebrands Gaming Division — What Xbox Gamers Should Know | The Grid Nexus', d: 'Microsoft eliminated ‘Microsoft Gaming’ in favor of Xbox. Here’s what the rebrand means for account security.' },
-  'steam-controller-security-risks-gamers': { t: 'Valve’s New Steam Controller — Security Risks to Know | The Grid Nexus', d: 'The Steam Controller returns. Understand the firmware security risks before connecting yours.' },
-  'vpn-gaming-security-latency-test-2026': { t: 'VPNs for Gaming — Do They Actually Protect You? | The Grid Nexus', d: 'We tested top VPN services for gaming. Here’s what works for security, latency, and DDoS protection.' },
-  'twitch-streamer-security-guide-doxxing-swatting': { t: 'Twitch Streamer Security Guide — Protect From Doxxing and Swatting | The Grid Nexus', d: 'Streamers are prime targets. A comprehensive security guide for every level of streamer.' },
-  'razer-synapse-security-vulnerability-fix': { t: 'Razer Software Flaw Exposes Millions of Gamers | The Grid Nexus', d: 'A vulnerability in Razer Synapse could expose gaming peripherals to attack.' },
-  'game-key-reseller-scams-g2a-cdkeys': { t: 'G2A, CDKeys, and Gray Market Scams — How Hackers Steal Game Keys | The Grid Nexus', d: 'Gray market key resellers are a security concern. How stolen keys work and how to buy safely.' },
-  'roblox-parents-guide-account-security-safety': { t: 'Roblox Hackers Stealing Kids’ Accounts — Parent’s Safety Guide | The Grid Nexus', d: 'Roblox account theft is growing. Here’s how to secure your child’s account.' },
-  'minecraft-server-security-guide': { t: 'Minecraft Server Security — Protect Your Server from Hackers | The Grid Nexus', d: 'Running a Minecraft server? Secure it against griefers, hackers, and exploits.' },
-  'twitch-accounts-hacked-breach-guide-2026': { t: 'Twitch Accounts Targeted in Breach Wave — Streamer Security Guide | The Grid Nexus', d: 'Twitch account takeovers are surging. Protect your channel and earnings.' },
-  'gaming-headset-malware-privacy-guide': { t: 'Can Gaming Headsets Be Hacked? Audio Privacy Guide for Gamers | The Grid Nexus', d: 'Gaming headsets with microphones present privacy risks. Here’s how audio malware works and how to protect yourself.' },
-  'gaming-pc-antivirus-best-2026': { t: 'Best Antivirus for Gaming PCs in 2026 — Without Sacrificing Performance | The Grid Nexus', d: 'Gaming and antivirus have historically clashed. Here are tools that protect without killing frame rates.' },
-  'router-security-gamers-network-protection': { t: 'Gaming Router Security Guide — Protect Your Home Network | The Grid Nexus', d: 'Your gaming router is the gateway to your online life. Secure it against hackers and DDoS.' },
-  'complete-gaming-account-security-guide-2026': { t: 'Complete Gaming Account Security Guide 2026 | The Grid Nexus', d: 'Everything you need to lock down every gaming account you own — Steam, Xbox, PlayStation, Epic Games, Nintendo, and more — in one definitive guide.' },
-  '2fa-setup-every-gaming-platform': { t: 'Two-Factor Authentication on Every Gaming Platform — Full Setup Guide | The Grid Nexus', d: 'Step-by-step 2FA setup for Steam, Xbox, PlayStation, Epic Games, Battle.net, Nintendo, and Roblox. Takes 20 minutes. Blocks 99% of account takeover attempts.' },
-  'how-hackers-steal-gaming-accounts': { t: '7 Ways Hackers Steal Gaming Accounts — And How to Stop Each One | The Grid Nexus', d: 'Credential stuffing, phishing, info-stealers, SIM swaps — here is exactly how each attack works and the specific defence that stops it.' },
-  'gaming-pc-security-hardening-guide': { t: 'Gaming PC Security Hardening — Complete 2026 Guide | The Grid Nexus', d: 'Harden your Windows gaming PC against malware, remote exploits, and account theft without sacrificing a single FPS. Covers antivirus, firewall, Windows settings, and network.' },
-  'mobile-gaming-security-guide': { t: 'Mobile Gaming Security Guide — Protect Your Phone, Accounts, and Payments | The Grid Nexus', d: 'Mobile gaming is the biggest attack surface in gaming. Here is how to secure your iOS and Android devices, in-app purchases, and linked accounts.' },
-  'how-to-check-if-your-gaming-accounts-have-been-compromised': { t: 'How to Check If Your Gaming Accounts Have Been Compromised | The Grid Nexus', d: 'A step-by-step guide to scanning Steam, PlayStation, Xbox, and Epic Games accounts for signs of compromise. Use the Gaming Security Checkup tool to find vulnerabilities before attackers do.' },
-  'complete-guide-to-scanning-gaming-servers-for-vulnerabilities': { t: 'Complete Guide to Scanning Gaming Servers for Vulnerabilities | The Grid Nexus', d: 'Learn how to use the Threat Scanner to find CVEs, open ports, and misconfigurations in your gaming infrastructure. Includes remediation steps for the top 10 gaming server vulnerabilities.' },
-  'what-gamers-think-about-security-sentiment-analysis-2026': { t: 'What Gamers Really Think About Security: Community Sentiment Analysis 2026 | The Grid Nexus', d: 'Analysis of security sentiment across 15 major gaming communities. Which games have the most security complaints? What are players worried about? How does trust vary by platform?' },
-  'discord-moderator-guide-block-spam-scams-2026': { t: 'The Complete Discord Moderation Guide: Block Spam, Scams, and Toxicity | The Grid Nexus', d: 'How to set up AI-powered content moderation for your gaming Discord. Detect phishing links, spam messages, harassment, and PII leaks before they reach your members.' },
-  'introducing-the-gaming-copilot-your-ai-security-assistant': { t: 'Introducing the Gaming Copilot: Your AI Security Assistant for Games | The Grid Nexus', d: 'Meet the Gaming Copilot — an AI assistant that answers gaming security questions, recommends hardware, explains CVEs, and helps you stay safe. Here\' },
-  'how-we-predict-game-release-dates-signal-analysis': { t: 'How We Predict Game Release Dates: Signal-Based Analysis Explained | The Grid Nexus', d: 'Behind the scenes of the Release Predictor tool. Learn how we track ESRB filings, Steam build activity, hiring patterns, and fiscal guidance to predict release windows for upcoming games.' },
-  'game-recommendations-by-security-score-finding-safe-multiplayer-games': { t: 'Game Recommendations by Security Score: Finding Safe Multiplayer Games | The Grid Nexus', d: 'Use the Recommendation Engine to find games optimized for your security needs. Compare anti-cheat systems, data privacy practices, and community safety across genres and budgets.' },
-  'ai-security-threats-2026': { t: 'AI Security Threats 2026: Weaponized AI, Deepfakes, and Quantum Risks Targeting Gamers | The Grid Nexus', d: 'Deepfake voice clones, weaponized AI attack pipelines, and quantum-assisted decryption threats are targeting gaming accounts right now.' },
-  'gaming-pc-security-hardening-guide-2026': { t: 'Gaming PC Security Hardening Guide 2026: Lock Down Your Rig Without Losing a Single FPS | The Grid Nexus', d: 'Hardened gaming rigs from Windows 11 security features to YubiKey BIOS integration and VLAN segmentation — all without sacrificing performance.' },
-  'steam-deck-2-specs-release-date-leaks': { t: 'Steam Deck 2 Specs, Release Date Leaks, and the Full Deck vs. OLED Comparison (2026 Update) | The Grid Nexus', d: 'Leaked Steam Deck 2 specs point to Zen 5 CPU, RDNA 3.5 GPU at 3.5 TFLOPS, 32GB LPDDR6X RAM — but the release is tracking for 2028–2029.' },
-  'router-security-gamers-2026': { t: 'Router Security for Gamers 2026: Defending Against TP-Link, Asus Exploits, and Zero-Trust Networking | The Grid Nexus', d: 'CVE-2025-7850, KadNap backdoor campaign, and the complete router hardening checklist for gamers — including VLAN segmentation and Tailscale zero-trust VPN.' }
-        };
         var p = window.location.pathname.replace(/\/$/, '') || '/';
         var m = routes[p];
         if (!m) {
-          // Extract slug from niche-based paths: /security/slug, /tech/slug, /gaming/slug, /news/slug, /article/slug
-          var slugMatch = p.match(/^\/(?:security|tech|gaming|news|article)\/(.+)$/);
-          var slug = slugMatch ? slugMatch[1] : null;
-
-          if (slug && articleMeta[slug]) {
-            m = articleMeta[slug];
-          } else if (slug) {
-            // Fallback: generate title/desc from slug
-            var titleSlug = slug.replace(/-/g, ' ');
-            m = { t: titleSlug.charAt(0).toUpperCase() + titleSlug.slice(1) + ' | The Grid Nexus', d: 'Read the full story on The Grid Nexus - your source for tech, cybersecurity, and gaming intelligence.' };
+          // Article page SEO overrides for specific slugs
+          if (p === '/article/ai-security-threats-2026') { m = { t: 'AI Security Threats 2026: Weaponized AI, Deepfakes, and Quantum Risks Targeting Gamers | The Grid Nexus', d: 'Deepfake voice clones, weaponized AI attack pipelines, and quantum-assisted decryption threats are targeting gaming accounts. Read the full threat analysis.' }; }
+          else if (p === '/article/gaming-pc-security-hardening-guide-2026') { m = { t: 'Gaming PC Security Hardening Guide 2026: Lock Down Your Rig Without Losing FPS | The Grid Nexus', d: 'Hardened gaming rigs from Windows 11 security features to YubiKey BIOS integration and VLAN segmentation — all without sacrificing performance. Complete 2026 guide.' }; }
+          else if (p === '/article/steam-deck-2-specs-release-date-leaks') { m = { t: 'Steam Deck 2 Specs, Release Date Leaks, and Deck vs. OLED Comparison | The Grid Nexus', d: 'Leaked Steam Deck 2 specs: Zen 5 CPU, RDNA 3.5 GPU at 3.5 TFLOPS, 32GB LPDDR6X. Full comparison with OLED and original Deck. Release tracking for 2028-2029.' }; }
+          else if (p === '/article/router-security-gamers-2026') { m = { t: 'Router Security for Gamers 2026: CVE-2025-7850, KadNap Exploits, and Zero-Trust Networking | The Grid Nexus', d: 'CVE-2025-7850 TP-Link exploit, KadNap Asus backdoor campaign, and the complete router hardening checklist for gamers including VLAN segmentation.' }; }
+          else if (p.indexOf('/article/') === 0) {
+            var slug = p.replace('/article/', '').replace(/-/g, ' ');
+            m = { t: slug.charAt(0).toUpperCase() + slug.slice(1) + ' | The Grid Nexus', d: 'Read the full story on The Grid Nexus \u2013 your source for tech, cybersecurity, and gaming intelligence.' };
           } else {
             m = routes['/'];
           }
@@ -119,37 +77,6 @@
         var twD = document.querySelector('meta[name="twitter:description"]');
         if (!twD) { twD = document.createElement('meta'); twD.setAttribute('name', 'twitter:description'); document.head.appendChild(twD); }
         twD.setAttribute('content', m.d);
-        // ── Article JSON-LD Schema (only on article pages) ──
-        if (slug && articleMeta[slug]) {
-          var ldJson = document.createElement('script');
-          ldJson.setAttribute('type', 'application/ld+json');
-          ldJson.textContent = JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "NewsArticle",
-            "headline": articleMeta[slug].t.replace(' | The Grid Nexus', ''),
-            "description": articleMeta[slug].d,
-            "url": 'https://thegridnexus.com' + window.location.pathname,
-            "mainEntityOfPage": {
-              "@type": "WebPage",
-              "@id": 'https://thegridnexus.com' + window.location.pathname
-            },
-            "publisher": {
-              "@type": "Organization",
-              "name": "The Grid Nexus",
-              "logo": {
-                "@type": "ImageObject",
-                "url": "https://thegridnexus.com/og-image.jpg"
-              }
-            },
-            "image": {
-              "@type": "ImageObject",
-              "url": "https://thegridnexus.com/og-image.jpg",
-              "width": 1200,
-              "height": 630
-            }
-          });
-          document.head.appendChild(ldJson);
-        }
       })();
     </script>
 
