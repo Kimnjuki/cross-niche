@@ -20,6 +20,8 @@ export interface Article {
   securityScore?: number; // For gaming articles
   impactLevel?: 'high' | 'medium' | 'low'; // For security articles
   viewCount?: number; // Article view count for analytics
+  /** Article-specific FAQs for FAQPage schema — overrides auto-generated defaults */
+  faqs?: Array<{ question: string; answer: string }>;
 }
 
 export interface Guide {

@@ -491,20 +491,24 @@ export default function Article() {
         <NextArticle currentSlug={article.slug || articleId} niche={safeNiche} />
 
         <FAQSection
-          faqs={[
-            {
-              question: `What is ${article.title ?? 'this article'}?`,
-              answer: article.excerpt || 'Learn more with The Grid Nexus.',
-            },
-            {
-              question: `How does this relate to ${safeNiche === 'tech' ? 'technology' : safeNiche === 'security' ? 'cybersecurity' : 'gaming'}?`,
-              answer: `This article is part of our ${nicheLabels[safeNiche]} coverage.`,
-            },
-            {
-              question: 'Where can I find more related content?',
-              answer: `Explore our ${nicheLabels[safeNiche]} section or the full blog series.`,
-            },
-          ]}
+          faqs={
+            article.faqs && article.faqs.length > 0
+              ? article.faqs
+              : [
+                  {
+                    question: `What is ${article.title ?? 'this article'}?`,
+                    answer: article.excerpt || 'Learn more with The Grid Nexus.',
+                  },
+                  {
+                    question: `How does this relate to ${safeNiche === 'tech' ? 'technology' : safeNiche === 'security' ? 'cybersecurity' : 'gaming'}?`,
+                    answer: `This article is part of our ${nicheLabels[safeNiche]} coverage.`,
+                  },
+                  {
+                    question: 'Where can I find more related content?',
+                    answer: `Explore our ${nicheLabels[safeNiche]} section or the full blog series.`,
+                  },
+                ]
+          }
           title={`Frequently Asked Questions about ${article.title ?? 'this article'}`}
         />
         
