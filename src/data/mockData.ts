@@ -520,8 +520,8 @@ export const mockArticles: Article[] = [
   {
     id: 'sec-guide-2',
     slug: '2fa-setup-every-gaming-platform',
-    title: 'Two-Factor Authentication on Every Gaming Platform — Full Setup Guide',
-    excerpt: 'Step-by-step 2FA setup for Steam, Xbox, PlayStation, Epic Games, Battle.net, Nintendo, and Roblox. Takes 20 minutes. Blocks 99% of account takeover attempts.',
+    title: 'How to Enable Two-Factor Authentication on Xbox, PlayStation, Steam & Epic Games (2026 Guide)',
+    excerpt: 'Step-by-step 2FA setup guide for Xbox, PlayStation 5, Steam, Epic Games, Battle.net, Nintendo Switch, and Roblox. Protect your gaming accounts in 20 minutes — blocks 99% of account takeover attempts. Includes authenticator app recommendations and backup code storage tips.',
     content: `<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:1px;background:#e5e7eb;border:1px solid #e5e7eb;border-radius:8px;overflow:hidden;margin:0 0 28px">
   <div style="background:#fff;padding:16px 20px"><div style="font-size:1.6rem;color:#c8392b;font-weight:700;margin-bottom:4px">99.9%</div><div style="font-size:0.75rem;color:#6b7280">of automated attacks blocked by 2FA</div></div>
   <div style="background:#fff;padding:16px 20px"><div style="font-size:1.6rem;color:#c8392b;font-weight:700;margin-bottom:4px">47%</div><div style="font-size:0.75rem;color:#6b7280">of gamers still don't use 2FA</div></div>
@@ -551,13 +551,28 @@ export const mockArticles: Article[] = [
   <li>Back up your authenticator app (Authy cloud sync, or export from Aegis/Raivo)</li>
   <li>Test each login once to confirm everything works before ending your session</li>
 </ul>
-<div style="border-left:4px solid #d97706;background:#fffbeb;padding:12px 16px;margin:20px 0;border-radius:0 6px 6px 0"><strong style="color:#d97706">⚡ Warning:</strong> If you lose access to your authenticator app without backup codes, account recovery takes days and may require proof of purchase. Always keep backup codes somewhere safe.</div>`,
+<div style="border-left:4px solid #d97706;background:#fffbeb;padding:12px 16px;margin:20px 0;border-radius:0 6px 6px 0"><strong style="color:#d97706">⚡ Warning:</strong> If you lose access to your authenticator app without backup codes, account recovery takes days and may require proof of purchase. Always keep backup codes somewhere safe.</div>
+
+<h2>Frequently Asked Questions About Gaming 2FA</h2>
+<h3>Does 2FA slow down logging into my games?</h3>
+<p>Adding 2FA adds roughly 15 seconds to each login on a new device. Once you authorise a device, most platforms remember it for 30 days. The security gain — blocking 99.9% of automated account takeover attempts — massively outweighs the minimal inconvenience.</p>
+<h3>Which authenticator app should I use?</h3>
+<p>Aegis (free, open-source, Android), Raivo (free, open-source, iOS), and Authy (free, both platforms, with encrypted cloud backup) are the top recommended options. Avoid proprietary authenticators tied to a single platform — standard TOTP apps work with any service that uses QR-based setup.</p>
+<h3>Can hackers bypass 2FA?</h3>
+<p>Session cookie theft and real-time phishing attacks (where the attacker proxies the login page and forwards credentials plus the 2FA code in real time) can bypass 2FA, but these are significantly more targeted and rare compared to automated credential stuffing attacks. 2FA blocks the vast majority of automated account takeover attempts that target ordinary gamers.</p>
+<h3>Is SMS 2FA better than no 2FA?</h3>
+<p>SMS 2FA is better than nothing, but it is vulnerable to SIM swapping — an attacker convinces your mobile carrier to transfer your number to their SIM card, then intercepts your 2FA codes. Always use an authenticator app or hardware security key for the strongest protection.</p>
+<h3>What if I lose my phone with the authenticator app?</h3>
+<p>Your backup codes are the only way to regain access. Store them in your password manager under the relevant account entry, printed in a safe place, or in an encrypted note on another device. Without backup codes, account recovery through platform support can take days and require proof of purchase or identity verification.</p>
+
+<h2>Related Gaming Security Guides</h2>
+<p>Once your accounts are secured with 2FA, take the next step: read our <a href="https://thegridnexus.com/article/gaming-pc-security-hardening-guide">Gaming PC Security Hardening Guide</a> to lock down your actual gaming PC against malware without losing FPS. Also check <a href="https://thegridnexus.com/article/minecraft-server-security-guide">Minecraft Server Security</a> if you host your own game servers.</p>`,
     niche: 'security',
     author: 'Lisa Park',
     publishedAt: '2026-04-30',
     readTime: 10,
     imageUrl: 'https://images.unsplash.com/photo-1555949963-ff9fe0c870eb?w=800',
-    tags: ['Security Guide', 'Beginner', '2FA', 'Steam', 'Xbox', 'PlayStation', 'Epic Games', 'Authentication'],
+    tags: ['Security Guide', 'Beginner', '2FA', 'Steam', 'Xbox', 'PlayStation', 'Epic Games', 'Authentication', 'Two-Factor Authentication', 'Account Security', 'Xbox 2FA', 'PS5 Security', 'Fortnite Safety'],
     impactLevel: 'high',
     isFeatured: true,
   },
@@ -607,8 +622,8 @@ export const mockArticles: Article[] = [
   {
     id: 'sec-guide-4',
     slug: 'gaming-pc-security-hardening-guide',
-    title: 'Gaming PC Security Hardening — Complete 2026 Guide',
-    excerpt: 'Harden your Windows gaming PC against malware, remote exploits, and account theft without sacrificing a single FPS. Covers antivirus, firewall, Windows settings, and network.',
+    title: 'Gaming PC Security Hardening Guide 2026: Lock Down Your Rig Against Malware Without Losing FPS',
+    excerpt: 'Complete Windows gaming PC hardening guide: Windows Defender optimization, firewall rules, UAC, browser security, network segmentation, and Steam-specific protections — all with zero FPS impact. Updated for 2026 threats.',
     content: `<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:1px;background:#e5e7eb;border:1px solid #e5e7eb;border-radius:8px;overflow:hidden;margin:0 0 28px">
   <div style="background:#fff;padding:16px 20px"><div style="font-size:1.6rem;color:#c8392b;font-weight:700;margin-bottom:4px">0–2%</div><div style="font-size:0.75rem;color:#6b7280">FPS impact from Windows Defender</div></div>
   <div style="background:#fff;padding:16px 20px"><div style="font-size:1.6rem;color:#c8392b;font-weight:700;margin-bottom:4px">83%</div><div style="font-size:0.75rem;color:#6b7280">of gaming malware enters via browser or downloads</div></div>
@@ -654,13 +669,28 @@ export const mockArticles: Article[] = [
   <li>Set your inventory to Friends Only or Private if you don't trade actively</li>
   <li>Enable "Require Steam Guard confirmation for trades involving items"</li>
 </ul>
-<div style="border-left:4px solid #1e40af;background:#eff6ff;padding:12px 16px;margin:20px 0;border-radius:0 6px 6px 0"><strong style="color:#1e40af">ℹ Note:</strong> These steps add no meaningful latency to gaming and impose essentially no FPS cost. Security and performance are not in conflict here — a clean system runs better than a malware-infected one.</div>`,
+<div style="border-left:4px solid #1e40af;background:#eff6ff;padding:12px 16px;margin:20px 0;border-radius:0 6px 6px 0"><strong style="color:#1e40af">ℹ Note:</strong> These steps add no meaningful latency to gaming and impose essentially no FPS cost. Security and performance are not in conflict here — a clean system runs better than a malware-infected one.</div>
+
+<h2>Frequently Asked Questions About Gaming PC Security</h2>
+<h3>Does antivirus slow down gaming performance?</h3>
+<p>Modern Windows Defender has a measured 0–2% FPS impact in gaming workloads — essentially unnoticeable. The bigger performance risk is malware running in the background using your GPU for coinmining. Real-world mining malware has been found to consume 30–50% of GPU resources while throttling detection by monitoring tools. A clean, protected system will perform better than an infected one.</p>
+<h3>Should I disable Windows Defender for gaming?</h3>
+<p>No. Windows Defender has detection rates comparable to paid antivirus suites with minimal performance overhead. Disabling it removes protection against the most common gaming malware vector: fake cheat installers and mod downloads. Add Malwarebytes for on-demand weekly scans if you want a second layer with no real-time performance cost.</p>
+<h3>Do I need a paid antivirus for my gaming PC?</h3>
+<p>Not for most users. Windows Defender + uBlock Origin browser extension + common sense about downloads covers the vast majority of threats. Paid suites like Bitdefender Total Security add advanced features (VPN, dark web monitoring, parental controls) that some gamers find valuable, but the core protection difference is marginal for gaming PCs.</p>
+<h3>What is the biggest security risk for gamers in 2026?</h3>
+<p>Info-stealer malware delivered through fake cheat tools and mod downloads is the fastest-growing threat vector. Combined with credential reuse, stolen passwords give attackers access to Steam wallets, Fortnite accounts with stored payment methods, and linked platforms. Two-factor authentication on every platform — see our <a href="https://thegridnexus.com/article/2fa-setup-every-gaming-platform">2FA setup guide</a> — blocks account takeover even if credentials are stolen.</p>
+<h3>How do I know if my PC has a coinminer?</h3>
+<p>Check GPU memory usage at idle using GPU-Z or MSI Afterburner. Sustained VRAM usage above 500MB while your desktop is idle is a strong indicator of hidden mining activity. Modern coinminers throttle themselves when task manager or performance monitors are open, so use dedicated GPU monitoring tools that run in the background.</p>
+
+<h2>Next Steps — More Gaming Security Resources</h2>
+<p>Once your PC is hardened, protect your accounts with our <a href="https://thegridnexus.com/article/2fa-setup-every-gaming-platform">step-by-step 2FA guide for every gaming platform</a>. Also read <a href="https://thegridnexus.com/article/how-hackers-steal-gaming-accounts">7 Ways Hackers Steal Gaming Accounts</a> to understand the specific attack techniques these measures defend against.</p>`,
     niche: 'security',
     author: 'James Morrison',
     publishedAt: '2026-04-26',
-    readTime: 13,
+    readTime: 15,
     imageUrl: 'https://images.unsplash.com/photo-1614064641938-3bbee52942c7?w=800',
-    tags: ['Security Guide', 'Intermediate', 'PC Security', 'Windows Security', 'Antivirus', 'Firewall', 'Gaming PC'],
+    tags: ['Security Guide', 'Intermediate', 'PC Security', 'Windows Security', 'Antivirus', 'Firewall', 'Gaming PC', 'PC Hardening', 'Windows Defender', 'Gaming Security', '2026'],
     impactLevel: 'medium',
   },
   {
