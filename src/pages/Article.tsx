@@ -243,8 +243,8 @@ export default function Article() {
       })()}
 
       <SEOHead
-        title={undefined}
-        description={undefined}
+        title={`${article.title ?? 'Untitled'} | The Grid Nexus`}
+        description={article.excerpt ?? ''}
         keywords={tags}
         image={article.imageUrl ?? getPlaceholderByNiche(article.niche, article.slug ?? article.id)}
         url={`${window.location.origin}/article/${article.slug ?? articleId}`}
