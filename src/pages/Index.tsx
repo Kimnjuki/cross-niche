@@ -8,7 +8,7 @@ import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useQuery } from 'convex/react';
 import { api } from '../../convex/_generated/api';
-import { ChevronRight, Search, TrendingUp, Shield, Users, Gamepad2, Cpu, BookOpen, Activity, Radio, Swords, Target, Zap } from 'lucide-react';
+import { ChevronRight, Search, TrendingUp, Shield, ShieldCheck, Users, Gamepad2, Cpu, BookOpen, Activity, Radio, Swords, Target, Zap } from 'lucide-react';
 
 import { Layout } from '@/components/layout/Layout';
 import { SEO } from '@/components/SEO';
