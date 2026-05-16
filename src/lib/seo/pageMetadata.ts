@@ -24,9 +24,9 @@ interface PageMeta {
 export const PAGE_METADATA: Record<string, PageMeta> = {
   // ── Homepage ──────────────────────────────────────────────────────────
   '/': {
-    title: 'The Grid Nexus – Tech, Security & Gaming News',        // 48 chars
-    description: 'Breaking technology news, cybersecurity intelligence, and gaming coverage. Expert analysis, guides, and real-time threat alerts from The Grid Nexus.',
-    h1: 'Tech, Security & Gaming Intelligence',
+    title: 'Gaming Security Intelligence Hub — The Grid Nexus',   // 51 chars
+    description: 'Interactive security tools, real-time threat intel, and expert guides for gamers. Scan Steam, PSN, Xbox accounts in 2 minutes. Stop hackers from stealing your gaming identity.',
+    h1: 'Gaming Security Intelligence Hub',
   },
 
   // ── Content categories ────────────────────────────────────────────────
@@ -36,9 +36,9 @@ export const PAGE_METADATA: Record<string, PageMeta> = {
     h1: 'Technology News & Innovation',
   },
   '/security': {
-    title: 'Cybersecurity News & Intelligence 2026 | The Grid Nexus', // 58 chars
-    description: 'Real-time cybersecurity news: zero-day CVEs, data breaches, ransomware alerts, and threat actor intelligence. Expert security analysis from The Grid Nexus.',
-    h1: 'Cybersecurity & Threat Intelligence',
+    title: 'Gaming Security News & Threat Intelligence 2026 | The Grid Nexus', // 72 chars
+    description: 'Gaming-specific cybersecurity threats: account takeovers, malware in mods, Discord phishing, anti-cheat vulnerabilities. Expert security intelligence for gamers.',
+    h1: 'Gaming Security & Threat Intelligence',
   },
   '/gaming': {
     title: 'Gaming News, Reviews & Releases 2026 | The Grid Nexus', // 56 chars

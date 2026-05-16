@@ -22,6 +22,7 @@ import {
 import { useAuth } from '@/contexts/AuthContext';
 import { useReadingTracker, useUserBehavior } from '@/hooks/useUserBehavior';
 import { AITools } from '@/components/ai/AITools';
+import { InlineToolCTA } from '@/components/security/InlineToolCTA';
 import { EnhancedShareBar } from '@/components/sharing/EnhancedShareBar';
 import { SEOHead } from '@/components/seo/SEOHead';
 import { Breadcrumbs } from '@/components/seo/Breadcrumbs';
@@ -397,6 +398,15 @@ export default function Article() {
               </div>
             )}
           </div>
+
+          {/* 🔧 Inline Tool CTA — embeds the most relevant security tool for this article */}
+          <InlineToolCTA
+            tags={tags}
+            articleTitle={article.title ?? undefined}
+            variant="widget"
+            showStats={true}
+            dismissable={false}
+          />
 
           <div className="mb-12">
             <AITools

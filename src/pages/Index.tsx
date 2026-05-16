@@ -37,6 +37,7 @@ import { NewsletterForm } from '@/components/newsletter/NewsletterForm';
 import { Skeleton } from '@/components/ui/skeleton';
 import { NewsFeed } from '@/components/news/NewsFeed';
 import { SecurityToolsStrip } from '@/components/security/SecurityToolsStrip';
+import { InlineToolCTA, HeroToolWidget } from '@/components/security/InlineToolCTA';
 import { Button } from '@/components/ui/button';
 
 import { formatRelativeTime } from '@/lib/timeUtils';
@@ -164,6 +165,49 @@ export default function Index() {
       {/* P2: Command Dashboard */}
       <CommandDashboard />
 
+      {/* P6: Live Tools & Dashboards — MOVED UP for immediate tool discovery */}
+      <section className="bg-[#0A0A0B] border-b border-[#27272A]">
+        <div className="container mx-auto px-4 max-w-7xl py-6">
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-sm font-bold text-white tracking-wide section-heading-pink">
+              Live Security Tools
+            </h2>
+            <Link to="/tools" className="flex items-center gap-1 text-xs font-mono text-[#FF007A]/70 hover:text-[#FF007A]">
+              All tools <ChevronRight className="h-3 w-3" />
+            </Link>
+          </div>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+            <Link to="/tools/security-checkup" className="group flex flex-col items-center p-4 rounded-lg border border-zinc-800 hover:border-[#00F0FF]/40 bg-zinc-900/30 hover:bg-zinc-900/60 transition-all text-center">
+              <Shield className="w-6 h-6 text-[#00F0FF] mb-2" />
+              <span className="text-sm font-medium text-white mb-1">Security Checkup</span>
+              <span className="text-xs text-zinc-500">7-point gaming audit</span>
+            </Link>
+            <Link to="/tools/steam-scanner" className="group flex flex-col items-center p-4 rounded-lg border border-zinc-800 hover:border-[#FF007A]/40 bg-zinc-900/30 hover:bg-zinc-900/60 transition-all text-center">
+              <Gamepad2 className="w-6 h-6 text-[#FF007A] mb-2" />
+              <span className="text-sm font-medium text-white mb-1">Steam Scanner</span>
+              <span className="text-xs text-zinc-500">Scan your Steam account</span>
+            </Link>
+            <Link to="/breach-sim" className="group flex flex-col items-center p-4 rounded-lg border border-zinc-800 hover:border-[#EF4444]/40 bg-zinc-900/30 hover:bg-zinc-900/60 transition-all text-center">
+              <Target className="w-6 h-6 text-[#EF4444] mb-2" />
+              <span className="text-sm font-medium text-white mb-1">Breach Simulation</span>
+              <span className="text-xs text-zinc-500">Simulate real-world attacks</span>
+            </Link>
+            <Link to="/security-score" className="group flex flex-col items-center p-4 rounded-lg border border-zinc-800 hover:border-[#39FF14]/40 bg-zinc-900/30 hover:bg-zinc-900/60 transition-all text-center">
+              <Zap className="w-6 h-6 text-[#39FF14] mb-2" />
+              <span className="text-sm font-medium text-white mb-1">Security Score</span>
+              <span className="text-xs text-zinc-500">Personal rating in 2 min</span>
+            </Link>
+          </div>
+          
+          {/* Inline security stats bar — social proof */}
+          <InlineToolCTA
+            tags={['security', 'checkup', 'audit']}
+            variant="pill"
+            showStats={false}
+          />
+        </div>
+      </section>
+
       {/* P3: Featured Articles Strip — helps users discover articles from homepage */}
       {sortedArticles.length > 0 && (
         <section className="bg-[#0A0A0B] border-b border-[#27272A]">
@@ -204,43 +248,46 @@ export default function Index() {
         </section>
       )}
 
-      {/* P5: Pillar Navigation — SEO engine for category authority */}
+      {/* P5: Pillar Navigation — SEO engine for category authority, security-first */}
       <section className="bg-[#0A0A0B] border-b border-[#27272A]">
         <div className="container mx-auto px-4 max-w-7xl py-6">
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-sm font-bold text-white tracking-wide section-heading-green">
-              Explore by Topic
+              Gaming Security Hub
             </h2>
+            <Link to="/security" className="flex items-center gap-1 text-xs font-mono text-[#00F0FF]/70 hover:text-[#00F0FF]">
+              All security intel <ChevronRight className="h-3 w-3" />
+            </Link>
           </div>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
             <Link to="/security" className="group p-4 rounded-lg border border-[#00F0FF]/20 bg-gradient-to-br from-[#00F0FF]/5 to-black hover:border-[#00F0FF]/50 transition-all">
               <Shield className="w-5 h-5 text-[#00F0FF] mb-2" />
-              <h3 className="text-sm font-bold text-white mb-1">Security</h3>
+              <h3 className="text-sm font-bold text-white mb-1">Security Intel</h3>
               <p className="text-xs text-zinc-500 group-hover:text-zinc-400 transition-colors">Breaches, vulnerabilities, and gaming defense playbooks</p>
               <span className="mt-2 inline-flex items-center gap-1 text-xs text-[#00F0FF] opacity-0 group-hover:opacity-100 transition-all">
                 Explore threats <ChevronRight className="w-3 h-3" />
               </span>
             </Link>
-            <Link to="/gaming" className="group p-4 rounded-lg border border-[#FF007A]/20 bg-gradient-to-br from-[#FF007A]/5 to-black hover:border-[#FF007A]/50 transition-all">
+            <Link to="/tools" className="group p-4 rounded-lg border border-[#FF007A]/20 bg-gradient-to-br from-[#FF007A]/5 to-black hover:border-[#FF007A]/50 transition-all">
               <Gamepad2 className="w-5 h-5 text-[#FF007A] mb-2" />
-              <h3 className="text-sm font-bold text-white mb-1">Gaming</h3>
-              <p className="text-xs text-zinc-500 group-hover:text-zinc-400 transition-colors">Reviews, security guides, and anti-cheat analysis</p>
+              <h3 className="text-sm font-bold text-white mb-1">Security Tools</h3>
+              <p className="text-xs text-zinc-500 group-hover:text-zinc-400 transition-colors">Steam Scanner, Security Checkup, Breach Simulator, Threat Scanner</p>
               <span className="mt-2 inline-flex items-center gap-1 text-xs text-[#FF007A] opacity-0 group-hover:opacity-100 transition-all">
-                Browse games <ChevronRight className="w-3 h-3" />
+                Try tools <ChevronRight className="w-3 h-3" />
               </span>
             </Link>
-            <Link to="/tech" className="group p-4 rounded-lg border border-[#39FF14]/20 bg-gradient-to-br from-[#39FF14]/5 to-black hover:border-[#39FF14]/50 transition-all">
+            <Link to="/gaming" className="group p-4 rounded-lg border border-[#39FF14]/20 bg-gradient-to-br from-[#39FF14]/5 to-black hover:border-[#39FF14]/50 transition-all">
               <Cpu className="w-5 h-5 text-[#39FF14] mb-2" />
-              <h3 className="text-sm font-bold text-white mb-1">Tech</h3>
-              <p className="text-xs text-zinc-500 group-hover:text-zinc-400 transition-colors">Hardware, software, and emerging technology trends</p>
+              <h3 className="text-sm font-bold text-white mb-1">Game Security</h3>
+              <p className="text-xs text-zinc-500 group-hover:text-zinc-400 transition-colors">Account protection guides, anti-cheat analysis, and security reviews</p>
               <span className="mt-2 inline-flex items-center gap-1 text-xs text-[#39FF14] opacity-0 group-hover:opacity-100 transition-all">
-                Discover tech <ChevronRight className="w-3 h-3" />
+                Browse games <ChevronRight className="w-3 h-3" />
               </span>
             </Link>
             <Link to="/guides" className="group p-4 rounded-lg border border-[#A855F7]/20 bg-gradient-to-br from-[#A855F7]/5 to-black hover:border-[#A855F7]/50 transition-all">
               <BookOpen className="w-5 h-5 text-[#A855F7] mb-2" />
-              <h3 className="text-sm font-bold text-white mb-1">Guides</h3>
-              <p className="text-xs text-zinc-500 group-hover:text-zinc-400 transition-colors">Step-by-step tutorials and security how-tos</p>
+              <h3 className="text-sm font-bold text-white mb-1">Protection Guides</h3>
+              <p className="text-xs text-zinc-500 group-hover:text-zinc-400 transition-colors">Step-by-step security tutorials for every gaming platform</p>
               <span className="mt-2 inline-flex items-center gap-1 text-xs text-[#A855F7] opacity-0 group-hover:opacity-100 transition-all">
                 Learn now <ChevronRight className="w-3 h-3" />
               </span>
@@ -249,41 +296,7 @@ export default function Index() {
         </div>
       </section>
 
-      {/* P6: Live Tools & Dashboards — drives engagement with interactive features */}
-      <section className="bg-[#0A0A0B] border-b border-[#27272A]">
-        <div className="container mx-auto px-4 max-w-7xl py-6">
-          <div className="flex items-center justify-between mb-4">
-            <h2 className="text-sm font-bold text-white tracking-wide section-heading-pink">
-              Live Tools &amp; Dashboards
-            </h2>
-            <Link to="/tools/security-scanner" className="flex items-center gap-1 text-xs font-mono text-[#FF007A]/70 hover:text-[#FF007A]">
-              All tools <ChevronRight className="h-3 w-3" />
-            </Link>
-          </div>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-            <Link to="/security-score" className="group flex flex-col items-center p-4 rounded-lg border border-zinc-800 hover:border-[#00F0FF]/40 bg-zinc-900/30 hover:bg-zinc-900/60 transition-all text-center">
-              <Target className="w-6 h-6 text-[#00F0FF] mb-2" />
-              <span className="text-sm font-medium text-white mb-1">Security Score</span>
-              <span className="text-xs text-zinc-500">Check your gaming security posture</span>
-            </Link>
-            <Link to="/breach-sim" className="group flex flex-col items-center p-4 rounded-lg border border-zinc-800 hover:border-[#FF007A]/40 bg-zinc-900/30 hover:bg-zinc-900/60 transition-all text-center">
-              <Activity className="w-6 h-6 text-[#FF007A] mb-2" />
-              <span className="text-sm font-medium text-white mb-1">Breach Simulation</span>
-              <span className="text-xs text-zinc-500">Simulate real-world attack scenarios</span>
-            </Link>
-            <Link to="/ai-pulse" className="group flex flex-col items-center p-4 rounded-lg border border-zinc-800 hover:border-[#39FF14]/40 bg-zinc-900/30 hover:bg-zinc-900/60 transition-all text-center">
-              <Radio className="w-6 h-6 text-[#39FF14] mb-2" />
-              <span className="text-sm font-medium text-white mb-1">AI Pulse</span>
-              <span className="text-xs text-zinc-500">Track today's AI security threats</span>
-            </Link>
-            <Link to="/live-threat-dashboard" className="group flex flex-col items-center p-4 rounded-lg border border-zinc-800 hover:border-[#A855F7]/40 bg-zinc-900/30 hover:bg-zinc-900/60 transition-all text-center">
-              <Zap className="w-6 h-6 text-[#A855F7] mb-2" />
-              <span className="text-sm font-medium text-white mb-1">Threat Dashboard</span>
-              <span className="text-xs text-zinc-500">Real-time threat intelligence feed</span>
-            </Link>
-          </div>
-        </div>
-      </section>
+
 
       {/* P7: Choose Your Path — persona-based journeys */}
       <section className="bg-[#0A0A0B] border-b border-[#27272A]">

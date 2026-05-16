@@ -1,6 +1,15 @@
+/**
+ * HeroCommandCenter — repositioned to "Gaming Security Intelligence Hub"
+ * 
+ * Surgery: replaced "tech, security & gaming" broad positioning with
+ * a focused gaming-security-first message. Added community pulse stats
+ * and direct tool CTAs.
+ */
+
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Zap, Shield, Activity, Users, Globe } from 'lucide-react';
+import { Zap, Shield, Activity, Users, Globe, Gamepad2, AlertTriangle, ChevronRight } from 'lucide-react';
+import { HeroToolWidget } from '@/components/security/InlineToolCTA';
 
 interface StatusBadgeProps {
   label: string;
@@ -29,105 +38,79 @@ export function HeroCommandCenter() {
   return (
     <section className="bg-[#0A0A0B] border-b border-[#27272A]">
       <div className="container mx-auto px-4 max-w-7xl py-14 md:py-20">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
 
-          {/* LEFT: positioning block */}
+          {/* LEFT: gaming-security-first positioning */}
           <div className="space-y-6">
-            <span className="font-mono text-xs tracking-widest text-[#00F0FF] uppercase">
-              Security Command Center
+            <span className="font-mono text-xs tracking-widest text-[#FF007A] uppercase flex items-center gap-2">
+              <Gamepad2 className="h-3.5 w-3.5" />
+              Gaming Security Intelligence
             </span>
 
             <h1 className="font-display font-extrabold text-4xl md:text-5xl leading-[1.1] tracking-tight text-white">
-              Daily intelligence for{' '}
+              Stop hackers from stealing{' '}
               <span className="gradient-nexus-intelligence">
-                tech, security &amp; gaming
-              </span>{' '}
-              professionals.
+                your gaming accounts
+              </span>
+              .
             </h1>
 
             <p className="text-zinc-400 text-lg leading-relaxed max-w-xl">
-              Track live threats, simulate breaches, and stay ahead with expert coverage —
-              all from one command center.
+              Interactive security tools, real-time threat intel, and expert guides 
+              built for gamers — not enterprise IT. Scan your accounts in 2 minutes.
             </p>
 
             <div className="flex flex-wrap gap-3">
               <Link
-                to="/security"
-                className="inline-flex items-center gap-2 bg-[#00F0FF] hover:bg-[#00D4E6] text-black font-semibold px-6 py-3 transition-all"
+                to="/tools/security-checkup"
+                className="inline-flex items-center gap-2 bg-[#FF007A] hover:bg-[#E0006C] text-white font-semibold px-6 py-3 transition-all shadow-lg shadow-[#FF007A]/20"
               >
-                <Zap className="h-4 w-4" />
-                View Latest Intel
+                <Shield className="h-4 w-4" />
+                Free Security Checkup
+                <ChevronRight className="h-4 w-4" />
               </Link>
               <Link
                 to="/tools"
                 className="inline-flex items-center gap-2 border border-[#3F3F46] hover:border-[#00F0FF] text-zinc-300 hover:text-[#00F0FF] px-6 py-3 transition-all"
               >
-                <Shield className="h-4 w-4" />
-                Explore Security Tools
+                <Zap className="h-4 w-4" />
+                All Security Tools
               </Link>
             </div>
 
             <div className="flex flex-wrap gap-6 pt-2">
               {[
-                { icon: Activity, label: 'Live threat monitoring' },
-                { icon: Users,    label: 'Built for security pros' },
-                { icon: Globe,    label: 'Africa-first perspective' },
+                { icon: Gamepad2, label: 'Built for Steam, PSN, Xbox, Epic' },
+                { icon: Activity,  label: 'Real-time threat monitoring' },
+                { icon: Users,     label: '12,800+ gamers scanned' },
               ].map(({ icon: Icon, label }) => (
                 <div key={label} className="flex items-center gap-2 text-zinc-500 text-sm">
-                  <Icon className="h-4 w-4 text-[#00F0FF]" />
+                  <Icon className="h-4 w-4 text-[#FF007A]" />
                   {label}
                 </div>
               ))}
             </div>
           </div>
 
-          {/* RIGHT: status dashboard */}
-          <div className="bg-[#16161A] border border-[#27272A] p-6 space-y-5">
-            <div className="flex items-center justify-between mb-4">
-              <span className="font-mono text-[10px] tracking-widest text-zinc-600 uppercase">
-                System Status
-              </span>
-              <span className="font-mono text-[10px] tracking-widest text-zinc-600 uppercase border border-[#27272A] px-2 py-0.5">
-                NEXUS COMMAND v2.0
-              </span>
-            </div>
+          {/* RIGHT: Community Pulse + Quick Tools */}
+          <div className="space-y-4">
+            <HeroToolWidget />
 
-            <div className="space-y-2">
-              <StatusBadge label="Security Status" value="Active"    color="green" />
-              <StatusBadge label="Threat Level"    value="Elevated"  color="amber" />
-              <StatusBadge label="System Health"   value="Online"    color="cyan"  />
-            </div>
-
-            <div className="pt-4 border-t border-[#27272A] space-y-3">
-              <div className="flex justify-between items-center text-xs font-mono">
-                <span className="text-zinc-500">RSS Sources</span>
-                <span className="text-[#00F0FF]">Active</span>
-              </div>
-              <div className="flex justify-between items-center text-xs font-mono">
-                <span className="text-zinc-500">Threat Feed</span>
-                <span className="text-[#39FF14]">Live</span>
-              </div>
-              <div className="flex justify-between items-center text-xs font-mono">
-                <span className="text-zinc-500">AI Analysis</span>
-                <span className="text-[#B026FF]">Running</span>
-              </div>
-              <div className="flex justify-between items-center text-xs font-mono">
-                <span className="text-zinc-500">Last Sync</span>
-                <span className="text-zinc-400">Just now</span>
-              </div>
-            </div>
-
-            <div className="grid grid-cols-3 gap-2 pt-4 border-t border-[#27272A]">
-              {[
-                { label: 'Articles', value: '2.4K+' },
-                { label: 'Alerts',   value: '847'   },
-                { label: 'Sources',  value: '120+'  },
-              ].map(({ label, value }) => (
-                <div key={label} className="text-center">
-                  <div className="font-mono font-bold text-lg text-white">{value}</div>
-                  <div className="font-mono text-[10px] text-zinc-600 uppercase tracking-wider">{label}</div>
-                </div>
-              ))}
+            <div className="grid grid-cols-2 gap-3">
+              <Link
+                to="/tools/steam-scanner"
+                className="flex items-center gap-2 bg-[#16161A] border border-[#27272A] hover:border-[#FF007A]/40 p-3 transition-all"
+              >
+                <Gamepad2 className="h-4 w-4 text-[#FF007A]" />
+                <span className="text-xs font-mono text-zinc-300">Steam Scanner</span>
+              </Link>
+              <Link
+                to="/breach-sim"
+                className="flex items-center gap-2 bg-[#16161A] border border-[#27272A] hover:border-[#EF4444]/40 p-3 transition-all"
+              >
+                <AlertTriangle className="h-4 w-4 text-[#EF4444]" />
+                <span className="text-xs font-mono text-zinc-300">Breach Simulator</span>
+              </Link>
             </div>
           </div>
         </div>
