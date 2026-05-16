@@ -3,6 +3,7 @@
  * Drop this into any tool page instead of raw `<SEO />`.
  */
 import { SEO } from '@/components/SEO';
+import { SEOHead } from '@/components/seo/SEOHead';
 import { type SoftwareInput } from '@/lib/schemaMarkup';
 import { TOOL_PAGES } from '@/lib/sitemapGenerator';
 import { Link } from 'react-router-dom';
@@ -17,6 +18,8 @@ export interface ToolPageMeta {
   slug: string;
   /** Optional free/premium offer */
   offerPrice?: string;
+  /** Aggregate rating for rich star snippets — boosts SERP CTR */
+  aggregateRating?: { ratingValue: number; ratingCount: number };
 }
 
 /**
@@ -35,14 +38,26 @@ export function ToolPageSEO(meta: ToolPageMeta) {
     offers: meta.offerPrice
       ? { price: meta.offerPrice, priceCurrency: 'USD' }
       : { price: '0', priceCurrency: 'USD' },
+    ...(meta.aggregateRating
+      ? { aggregateRating: { ratingValue: meta.aggregateRating.ratingValue, ratingCount: meta.aggregateRating.ratingCount } }
+      : {}),
   };
 
   return (
-    <SEO
-      title={meta.title}
-      description={meta.description}
-      canonical={`https://thegridnexus.com${meta.slug}`}
-    />
+    <>
+      <SEO
+        title={meta.title}
+        description={meta.description}
+        canonical={`https://thegridnexus.com${meta.slug}`}
+      />
+      {/* Inject SoftwareApplication schema via SEOHead which supports the software prop */}
+      <SEOHead
+        title={meta.title}
+        description={meta.description}
+        url={`https://thegridnexus.com${meta.slug}`}
+        software={software}
+      />
+    </>
   );
 }
 

@@ -28,6 +28,7 @@ import { NexusTerminal } from '@/components/home/NexusTerminal';
 import { NexusGuardWidget } from '@/components/home/NexusGuardWidget';
 import { ThreatIntelWidget } from '@/components/home/ThreatIntelWidget';
 import { SecurityAuditWidget } from '@/components/home/SecurityAuditWidget';
+import { SecurityDashboard } from '@/components/security/SecurityDashboard';
 import { DenseListFeed } from '@/components/home/FeedLayouts';
 
 // Existing components kept
@@ -426,6 +427,7 @@ export default function Index() {
 
             {/* Sidebar: P14, P15, P16, P12, P13, search, trending, newsletter */}
             <aside className="space-y-5">
+              <SecurityDashboard />
               <NexusGuardWidget />
               <ThreatIntelWidget articles={securityArticles} />
               <SecurityAuditWidget />

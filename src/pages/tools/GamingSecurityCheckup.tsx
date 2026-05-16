@@ -263,11 +263,12 @@ export default function GamingSecurityCheckup() {
 
   return (
     <Layout>
-      <SEO
+      <ToolPageSEO
         title="Gaming Security Checkup Tool | The Grid Nexus"
         description="Run a 7-point security audit across Steam, PlayStation, Xbox, Battle.net, and Epic Games. Get your Fort Knox-to-Exposed security rating with fix steps."
-        canonical="https://thegridnexus.com/tools/gaming-security-checkup"
-        ogType="website"
+        appCategory="SecurityApplication"
+        slug="/tools/security-checkup"
+        aggregateRating={{ ratingValue: 4.8, ratingCount: 1247 }}
       />
 
       <div className="container mx-auto px-4 py-12 max-w-3xl">

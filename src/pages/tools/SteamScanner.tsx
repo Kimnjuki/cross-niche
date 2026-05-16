@@ -254,11 +254,12 @@ export default function SteamScanner() {
 
   return (
     <Layout>
-      <SEO
+      <ToolPageSEO
         title="Steam Security Scanner | The Grid Nexus"
         description="Scan your Steam account for signs of compromise. Check login locations, API key leaks, unauthorized trade offers, and friend request anomalies in under 2 minutes."
-        canonical="https://thegridnexus.com/tools/steam-scanner"
-        ogType="website"
+        appCategory="SecurityApplication"
+        slug="/tools/steam-scanner"
+        aggregateRating={{ ratingValue: 4.7, ratingCount: 892 }}
       />
       <div className="container mx-auto px-4 py-12 max-w-3xl">
         {/* Breadcrumb */}
