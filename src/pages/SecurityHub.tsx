@@ -33,6 +33,7 @@ import {
   Activity,
   ShieldAlert,
   Sparkles,
+  BookOpen,
 } from 'lucide-react';
 import {
   threatAlerts,
@@ -373,6 +374,95 @@ export default function SecurityHub() {
             </div>
           </div>
         )}
+
+        {/* ── Top Security Guides ────────────────────────────────── */}
+        <div className="mb-10">
+          <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center gap-2">
+              <BookOpen className="h-4 w-4 text-muted-foreground" />
+              <h2 className="font-semibold text-sm uppercase tracking-wider text-muted-foreground">
+                Top Security Guides
+              </h2>
+            </div>
+            <Link to="/guides" className="text-xs text-muted-foreground hover:text-foreground transition-colors flex items-center gap-1">
+              All guides <ChevronRight className="h-3 w-3" />
+            </Link>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <Link to="/article/2fa-setup-every-gaming-platform" className="group">
+              <Card className="h-full hover:border-primary/50 hover:shadow-md transition-all">
+                <CardContent className="p-5">
+                  <h3 className="font-semibold text-sm mb-1 group-hover:text-primary transition-colors">
+                    Two-Factor Authentication on Every Gaming Platform
+                  </h3>
+                  <p className="text-xs text-muted-foreground leading-relaxed">
+                    Set up 2FA on Xbox, Epic Games, Steam &amp; PlayStation in 20 minutes. Blocks 99% of account takeover attempts.
+                  </p>
+                </CardContent>
+              </Card>
+            </Link>
+            <Link to="/article/gaming-pc-security-hardening-guide" className="group">
+              <Card className="h-full hover:border-primary/50 hover:shadow-md transition-all">
+                <CardContent className="p-5">
+                  <h3 className="font-semibold text-sm mb-1 group-hover:text-primary transition-colors">
+                    Gaming PC Security Hardening
+                  </h3>
+                  <p className="text-xs text-muted-foreground leading-relaxed">
+                    Lock down your gaming rig against malware, RATs, and account stealers without losing FPS. Windows 11 guide.
+                  </p>
+                </CardContent>
+              </Card>
+            </Link>
+            <Link to="/article/steam-account-takeover-protection-guide-2026" className="group">
+              <Card className="h-full hover:border-primary/50 hover:shadow-md transition-all">
+                <CardContent className="p-5">
+                  <h3 className="font-semibold text-sm mb-1 group-hover:text-primary transition-colors">
+                    Steam Account Hacked? Recovery &amp; Lockdown
+                  </h3>
+                  <p className="text-xs text-muted-foreground leading-relaxed">
+                    Step-by-step Steam account recovery and hardening. Works even if the hacker changed your email and password.
+                  </p>
+                </CardContent>
+              </Card>
+            </Link>
+            <Link to="/article/router-security-gamers-2026" className="group">
+              <Card className="h-full hover:border-primary/50 hover:shadow-md transition-all">
+                <CardContent className="p-5">
+                  <h3 className="font-semibold text-sm mb-1 group-hover:text-primary transition-colors">
+                    Router Security for Gamers 2026
+                  </h3>
+                  <p className="text-xs text-muted-foreground leading-relaxed">
+                    CVE-2025-7850, KadNap backdoor campaign, and the complete router hardening checklist including VLAN segmentation.
+                  </p>
+                </CardContent>
+              </Card>
+            </Link>
+            <Link to="/article/minecraft-server-security-guide" className="group">
+              <Card className="h-full hover:border-primary/50 hover:shadow-md transition-all">
+                <CardContent className="p-5">
+                  <h3 className="font-semibold text-sm mb-1 group-hover:text-primary transition-colors">
+                    Minecraft Server Security Guide
+                  </h3>
+                  <p className="text-xs text-muted-foreground leading-relaxed">
+                    Protect your Minecraft server from Log4Shell, DDoS attacks, griefers, and unauthorized admin access.
+                  </p>
+                </CardContent>
+              </Card>
+            </Link>
+            <Link to="/article/what-gamers-think-about-security-sentiment-analysis-2026" className="group">
+              <Card className="h-full hover:border-primary/50 hover:shadow-md transition-all">
+                <CardContent className="p-5">
+                  <h3 className="font-semibold text-sm mb-1 group-hover:text-primary transition-colors">
+                    Gaming Security Sentiment Analysis
+                  </h3>
+                  <p className="text-xs text-muted-foreground leading-relaxed">
+                    Which games have the most security complaints? Analysis of 10,000+ player reviews across Steam and Reddit.
+                  </p>
+                </CardContent>
+              </Card>
+            </Link>
+          </div>
+        </div>
 
         {/* ── Bottom CTA ────────────────────────────────────────── */}
         <div className="border border-border rounded-xl p-8 bg-gradient-to-r from-muted/50 to-muted/30 text-center max-w-3xl mx-auto">

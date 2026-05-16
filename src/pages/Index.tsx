@@ -523,6 +523,48 @@ export default function Index() {
         </div>
       </section>
 
+      {/* Must-read Security Guides — internal links for SEO */}
+      <section className="bg-[#0A0A0B] border-b border-[#27272A] py-8">
+        <div className="container mx-auto px-4 max-w-7xl">
+          <div className="flex items-center gap-2 mb-5">
+            <ShieldCheck className="w-5 h-5 text-[#00F0FF]" />
+            <h2 className="font-display font-bold text-lg text-white">Must-Read Security Guides</h2>
+            <Link to="/guides" className="ml-auto flex items-center gap-1 text-xs font-mono text-[#00F0FF] hover:text-[#00D4E6]">
+              All guides <ChevronRight className="h-3 w-3" />
+            </Link>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <Link to="/article/2fa-setup-every-gaming-platform" className="group block p-5 rounded-lg border border-[#27272A] bg-[#16161A] hover:border-[#00F0FF]/40 transition-all">
+              <span className="text-[10px] font-mono text-[#00F0FF] uppercase tracking-wider">Most Read</span>
+              <h3 className="text-sm font-semibold text-white mt-2 mb-1 group-hover:text-[#00F0FF] transition-colors">
+                2FA on Every Gaming Platform
+              </h3>
+              <p className="text-xs text-zinc-400">
+                Set up 2FA on Xbox, Epic Games, Steam &amp; PlayStation in 20 minutes. Blocks 99% of account takeovers.
+              </p>
+            </Link>
+            <Link to="/article/gaming-pc-security-hardening-guide" className="group block p-5 rounded-lg border border-[#27272A] bg-[#16161A] hover:border-[#00F0FF]/40 transition-all">
+              <span className="text-[10px] font-mono text-[#00F0FF] uppercase tracking-wider">Guide</span>
+              <h3 className="text-sm font-semibold text-white mt-2 mb-1 group-hover:text-[#00F0FF] transition-colors">
+                Gaming PC Security Hardening
+              </h3>
+              <p className="text-xs text-zinc-400">
+                Lock down your rig against malware and account stealers without losing FPS.
+              </p>
+            </Link>
+            <Link to="/article/what-gamers-think-about-security-sentiment-analysis-2026" className="group block p-5 rounded-lg border border-[#27272A] bg-[#16161A] hover:border-[#00F0FF]/40 transition-all">
+              <span className="text-[10px] font-mono text-[#00F0FF] uppercase tracking-wider">Research</span>
+              <h3 className="text-sm font-semibold text-white mt-2 mb-1 group-hover:text-[#00F0FF] transition-colors">
+                Gaming Security Sentiment
+              </h3>
+              <p className="text-xs text-zinc-400">
+                Which games have the most security complaints? 10K+ player reviews analyzed.
+              </p>
+            </Link>
+          </div>
+        </div>
+      </section>
+
       {/* All articles (Explore parity) */}
       {sortedArticles.length > 0 && (
         <section className="bg-[#0A0A0B] border-b border-[#27272A] py-10">
