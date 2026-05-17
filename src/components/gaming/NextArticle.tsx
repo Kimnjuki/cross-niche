@@ -24,8 +24,8 @@ export function NextArticle({ currentSlug, niche }: NextArticleProps) {
     return sameNiche.length > 0 ? sameNiche[0] : null;
   }, [currentSlug, niche]);
 
-  // Get the niche prefix path
-  const nichePath = niche === 'security' ? '/security' : niche === 'gaming' ? '/gaming' : '/tech';
+  // Always link to canonical /article/slug format — no niche prefix duplication
+  const articlePrefix = '/article';
 
   if (!next) return null;
 
@@ -36,7 +36,7 @@ export function NextArticle({ currentSlug, niche }: NextArticleProps) {
           Keep reading
         </p>
         <Link
-          to={`${nichePath}/${next.slug}`}
+          to={`/article/${next.slug}`}
           className="group inline-flex items-center gap-3 text-xl font-display font-semibold text-foreground hover:text-primary transition-colors"
         >
           <span className="group-hover:underline decoration-primary/30 underline-offset-4">

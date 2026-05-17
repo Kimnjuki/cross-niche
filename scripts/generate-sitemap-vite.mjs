@@ -1,3 +1,16 @@
+/**
+ * Generate clean sitemap and article sitemap from mockData.ts slugs.
+ * 
+ * Fixes: 
+ * - No duplicate URLs for the same article
+ * - Only /article/slug routes (not mixed /tech/slug etc)
+ * - Canonical URLs match actual routes
+ * - All tool pages included
+ * - All 38 current article slugs included
+ * 
+ * Run: node scripts/generate-sitemap-vite.mjs (part of build)
+ */
+
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
@@ -6,179 +19,166 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const projectRoot = path.resolve(__dirname, '..');
 
-// Configuration
 const siteUrl = 'https://thegridnexus.com';
-const distDir = path.join(projectRoot, 'dist');
-const sitemapPath = path.join(distDir, 'sitemap.xml');
-const robotsPath = path.join(distDir, 'robots.txt');
+const today = new Date().toISOString().split('T')[0];
 
-// Static routes that should be included
-const staticRoutes = [
-  '/',
-  '/tech',
-  '/security', 
-  '/gaming',
-  '/news',
-  '/topics',
-  '/guides',
-  '/tutorials',
-  '/about',
-  '/contact',
-  '/privacy',
-  '/terms',
-  '/roadmap',
-  '/blog-series',
-  '/explore',
+// ── Extract slugs from mockData.ts ──────────────────────────────────────
+function extractArticleSlugs() {
+  const mockDataPath = path.join(projectRoot, 'src', 'data', 'mockData.ts');
+  if (!fs.existsSync(mockDataPath)) return [];
+
+  const content = fs.readFileSync(mockDataPath, 'utf8');
+  const slugs = new Set();
+
+  // Match slug: 'xxx' in mock data objects
+  const regex = /slug:\s*'([^']+)'/g;
+  let match;
+  while ((match = regex.exec(content)) !== null) {
+    slugs.add(match[1]);
+  }
+
+  return Array.from(slugs);
+}
+
+// ── Static pages (all valid routes from App.tsx) ─────────────────────────
+const staticPages = [
+  // Hubs
+  '/', '/tech', '/security', '/gaming', '/news',
+  '/blog', '/explore', '/topics', '/guides', '/tutorials',
+  
+  // App pages
+  '/reviews', '/startups', '/security-profile', '/community-threats',
+  '/ai-pulse', '/nexus-intersection',
+  '/media', '/about', '/contact', '/editorial', '/disclosure',
+  '/privacy', '/terms', '/quality-guidelines', '/content-policy',
+  '/sitemap', '/roadmap', '/roadmap',
+
+  // Security tool pages
+  '/breach-sim', '/security-score',
+  '/live-threat-dashboard',
+  
+  // Tool routes
+  '/tools', '/tools/sitemap',
+  '/tools/security-scanner', '/tools/nexusguard',
+  '/tools/security-briefing', '/tools/vr-cyber-training',
+  '/tools/steam-scanner', '/tools/ioc-lookup',
+  '/tools/gaming-security-checkup', '/tools/breach-explainer',
+  '/tools/ai-tool-finder', '/tools/patch-risk-tracker',
+  '/tools/zero-trust-quiz', '/tools/exploit-risk-meter',
+  '/tools/pc-builder', '/tools/sentiment-analyzer',
+  '/tools/news-personalizer', '/tools/recommendation-engine',
+  '/tools/threat-scanner', '/tools/community-moderator',
+  '/tools/gaming-copilot', '/tools/release-predictor',
 ];
 
-// Dynamic article routes (would be fetched from API/database in real implementation)
-const dynamicRoutes = [
-  // These would be generated from your content management system
-  '/article/deus-ex-remastered-controversy-2026',
-  '/article/high-on-life-2-release-2026',
-  '/article/grok-ai-market-share-growth-2026',
-  '/article/china-ai-scraping-bot-traffic-2026',
-  '/article/tiktok-us-deal-algorithm-control-2026',
-];
+// ── Prioritize security tools higher than static info pages ─────────────
+const highPriorityPages = new Set([
+  '/', '/security', '/gaming', '/breach-sim', '/security-score',
+  '/tools/gaming-security-checkup', '/tools/steam-scanner',
+  '/tools/security-scanner', '/live-threat-dashboard',
+]);
 
-// Combine all routes
-const allRoutes = [...staticRoutes, ...dynamicRoutes];
+function getPriority(path) {
+  if (highPriorityPages.has(path)) return '1.0';
+  if (path === '/' || path.startsWith('/tools/')) return '0.9';
+  if (path.startsWith('/article/')) return '0.8';
+  return '0.7';
+}
 
-// Generate sitemap XML
-function generateSitemap() {
-  const urls = allRoutes.map(route => {
-    const fullUrl = `${siteUrl}${route}`;
-    const priority = getPriority(route);
-    const changefreq = getChangeFreq(route);
-    const lastmod = new Date().toISOString().split('T')[0];
-    
-    return `  <url>
-    <loc>${fullUrl}</loc>
+function getChangeFreq(path) {
+  if (path === '/') return 'daily';
+  if (path.startsWith('/article/')) return 'weekly';
+  if (path.startsWith('/tools/')) return 'monthly';
+  return 'weekly';
+}
+
+function escapeXml(str) {
+  if (!str) return '';
+  return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&apos;');
+}
+
+function generateUrlXml(loc, lastmod, changefreq, priority) {
+  return `  <url>
+    <loc>${escapeXml(loc)}</loc>
     <lastmod>${lastmod}</lastmod>
     <changefreq>${changefreq}</changefreq>
     <priority>${priority}</priority>
   </url>`;
-  }).join('\n');
+}
 
-  const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-${urls}
+// ── Generate sitemap.xml (static pages + tool pages) ────────────────────
+function generateSitemap() {
+  const urls = staticPages.map(route => {
+    const fullUrl = `${siteUrl}${route}`;
+    return generateUrlXml(fullUrl, today, getChangeFreq(route), getPriority(route));
+  });
+
+  const xml = `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+${urls.join('\n')}
 </urlset>`;
 
-  return sitemap;
+  const outputPath = path.join(projectRoot, 'public', 'sitemap.xml');
+  fs.writeFileSync(outputPath, xml, 'utf-8');
+  console.log(`[sitemap] Written ${staticPages.length} URLs → public/sitemap.xml`);
 }
 
-// Generate robots.txt
-function generateRobots() {
-  return `# The Grid Nexus - robots.txt (SEO-optimized)
-# https://thegridnexus.com
-
-# Default: allow all crawlers, block sensitive paths
-User-agent: *
-Allow: /
-Allow: /tech
-Allow: /security
-Allow: /gaming
-Allow: /news
-Allow: /explore
-Allow: /blog-series
-Allow: /topics
-Allow: /guides
-Allow: /tutorials
-Allow: /about
-Allow: /contact
-Allow: /privacy
-Allow: /terms
-Allow: /disclosure
-Allow: /editorial
-Allow: /roadmap
-Allow: /security-score
-Allow: /article/
-Allow: /sitemap
-Disallow: /api/
-Disallow: /admin/
-Disallow: /profile
-Disallow: /auth
-Disallow: /auth/
-Disallow: /wp-admin/
-Disallow: /wp-includes/
-Disallow: /search/
-Disallow: /*?s=
-
-# Google
-User-agent: Googlebot
-Allow: /
-Disallow: /admin/
-Disallow: /profile
-Disallow: /auth
-User-agent: Googlebot-Image
-Allow: /
-User-agent: Googlebot-News
-Allow: /
-
-# Bing
-User-agent: Bingbot
-Allow: /
-Disallow: /admin/
-Disallow: /auth
-
-# AI Crawlers
-User-agent: GPTBot
-Allow: /
-User-agent: ChatGPT-User
-Allow: /
-User-agent: PerplexityBot
-Allow: /
-User-agent: OAI-SearchBot
-Allow: /
-User-agent: anthropic-ai
-Allow: /
-User-agent: Claude-Web
-Allow: /
-User-agent: CCBot
-Allow: /
-User-agent: Applebot-Extended
-Allow: /
-
-# Sitemaps
-Sitemap: ${siteUrl}/sitemap.xml`;
-}
-
-function getPriority(route) {
-  if (route === '/') return '1.0';
-  if (route.startsWith('/tech') || route.startsWith('/security') || route.startsWith('/gaming')) return '0.9';
-  if (route.startsWith('/article/')) return '0.8';
-  if (route.startsWith('/news') || route.startsWith('/topics')) return '0.7';
-  if (route.startsWith('/guides') || route.startsWith('/blog-series')) return '0.6';
-  return '0.5';
-}
-
-function getChangeFreq(route) {
-  if (route.startsWith('/article/')) return 'monthly';
-  if (route.startsWith('/news')) return 'daily';
-  if (route.startsWith('/tech') || route.startsWith('/security') || route.startsWith('/gaming')) return 'weekly';
-  return 'monthly';
-}
-
-// Main execution
-try {
-  // Ensure dist directory exists
-  if (!fs.existsSync(distDir)) {
-    fs.mkdirSync(distDir, { recursive: true });
+// ── Generate sitemap-articles.xml (only /article/slug, no duplicates) ───
+function generateArticleSitemap() {
+  const slugs = extractArticleSlugs();
+  
+  if (slugs.length === 0) {
+    console.warn('[sitemap] No article slugs found — skipping article sitemap');
+    return;
   }
 
-  // Generate and write sitemap
-  const sitemap = generateSitemap();
-  fs.writeFileSync(sitemapPath, sitemap);
-  console.log(`[OK] Sitemap generated: ${sitemapPath}`);
+  const urls = slugs.map(slug => {
+    const fullUrl = `${siteUrl}/article/${slug}`;
+    return generateUrlXml(fullUrl, today, 'weekly', '0.8');
+  });
 
-  // Generate and write robots.txt
-  const robots = generateRobots();
-  fs.writeFileSync(robotsPath, robots);
-  console.log(`[OK] Robots.txt generated: ${robotsPath}`);
+  const xml = `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+${urls.join('\n')}
+</urlset>`;
 
-  console.log(`[OK] Generated sitemap with ${allRoutes.length} URLs`);
-} catch (error) {
-  console.error('❌ Error generating sitemap:', error);
-  process.exit(1);
+  const outputPath = path.join(projectRoot, 'public', 'sitemap-articles.xml');
+  fs.writeFileSync(outputPath, xml, 'utf-8');
+  console.log(`[sitemap] Written ${slugs.length} article URLs → public/sitemap-articles.xml`);
 }
+
+// ── Generate sitemap-index.xml ──────────────────────────────────────────
+function generateSitemapIndex() {
+  const xml = `<?xml version="1.0" encoding="UTF-8"?>
+<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+
+  <sitemap>
+    <loc>${siteUrl}/sitemap.xml</loc>
+    <lastmod>${today}</lastmod>
+  </sitemap>
+
+  <sitemap>
+    <loc>${siteUrl}/sitemap-articles.xml</loc>
+    <lastmod>${today}</lastmod>
+  </sitemap>
+
+  <sitemap>
+    <loc>${siteUrl}/sitemap-news.xml</loc>
+    <lastmod>${today}</lastmod>
+  </sitemap>
+
+</sitemapindex>`;
+
+  const outputPath = path.join(projectRoot, 'public', 'sitemap-index.xml');
+  fs.writeFileSync(outputPath, xml, 'utf-8');
+  console.log(`[sitemap] Written sitemap index → public/sitemap-index.xml`);
+}
+
+// ── Main ────────────────────────────────────────────────────────────────
+generateSitemap();
+generateArticleSitemap();
+generateSitemapIndex();

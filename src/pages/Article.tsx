@@ -248,7 +248,7 @@ export default function Article() {
         description={article.excerpt ?? ''}
         keywords={tags}
         image={article.imageUrl ?? getPlaceholderByNiche(article.niche, article.slug ?? article.id)}
-        url={`${window.location.origin}/article/${article.slug ?? articleId}`}
+        url={`${window.location.origin}${window.location.pathname}`}
         type="article"
         article={{ ...article, impactLevel: article.impactLevel ?? 'low', isBreaking: article.isBreaking ?? false }}
         publishedTime={article.publishedAt}

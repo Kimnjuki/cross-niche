@@ -73,9 +73,9 @@ export function ArticleCard({ article, variant = 'default', onArticleClick }: Ar
   // Build URL with niche prefix for SEO (niche pages are content hubs)
   const niche = article.niche?.toLowerCase() ?? '';
   const articleSlug = article.slug ?? article.id ?? articleId;
-  const articleUrl = niche && ['tech', 'security', 'gaming'].includes(niche)
-    ? `/${niche}/${articleSlug}`
-    : `/article/${articleSlug}`;
+  // Always link to canonical /article/slug — no niche prefix duplication
+  // Old niche-prefix URLs (/tech/slug, /security/slug) redirect via nginx 301
+  const articleUrl = `/article/${articleSlug}`;
   const styles = nicheStyles[article.niche ?? 'tech'];
   const placeholderFallback = getPlaceholderByNiche(article.niche ?? 'tech', article.slug ?? article.id ?? articleId);
   const imageUrl = secureImageUrl(article.imageUrl, placeholderFallback);

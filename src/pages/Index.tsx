@@ -63,11 +63,7 @@ const FEED_SLUGS = [
 function articleLink(article: Article | null | undefined): string {
   if (!article) return '/';
   const slug = article.slug ?? article.id ?? '';
-  const niche = article.niche?.toLowerCase() ?? '';
-  // Use niche-prefixed paths for better SEO (niche pages are content hubs)
-  if (niche && ['tech', 'security', 'gaming'].includes(niche)) {
-    return `/${niche}/${slug}`;
-  }
+  // Always use canonical /article/slug — old niche-prefix paths redirect via nginx
   return `/article/${slug}`;
 }
 

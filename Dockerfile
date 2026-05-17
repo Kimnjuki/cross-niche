@@ -25,6 +25,9 @@ COPY . .
 # Auth0 env vars are also deliberately omitted — credentials are
 # hardcoded in src/lib/auth0Config.ts as production defaults.
 
+# Generate clean sitemap files from mock article slugs
+RUN node scripts/generate-sitemap-vite.mjs
+
 # Explicitly blank VITE_CONVEX_URL to override Coolify's injected ARG.
 # Coolify auto-injects ALL build-time env vars as Docker ARG at the top
 # of the Dockerfile. Even though Docker makes ARG values available during
@@ -32,6 +35,9 @@ COPY . .
 # This prevents Vite from baking the stale Convex deploy key into the
 # bundle, which would cause Convex queries to hang on article pages.
 RUN VITE_CONVEX_URL= npm run build:frontend
+
+# Copy sitemap files to dist/ after Vite build
+RUN node scripts/copy-sitemap-to-dist.mjs
 
 # Stage 2: Production (Serve with Nginx)
 FROM nginx:stable-alpine AS production-stage
