@@ -178,7 +178,70 @@ function generateSitemapIndex() {
   console.log(`[sitemap] Written sitemap index → public/sitemap-index.xml`);
 }
 
+// ── Generate sitemap-news.xml ───────────────────────────────────────────
+function generateNewsSitemap() {
+  const slugs = extractArticleSlugs();
+  if (slugs.length === 0) return;
+
+  // Pick the most relevant gaming-security articles for Google News
+  const newsSlugs = [
+    'gmail-hack-attacks-surge-gamers-2fa-2026',
+    'steam-account-takeover-protection-guide-2026',
+    'discord-malware-gamers-how-to-stay-safe',
+    'chrome-zero-day-warning-gamers-april-2026',
+    'nintendo-switch-2-security-guide',
+    'sim-swapping-gaming-accounts-protection',
+    'fake-game-cheats-malware-account-stealer',
+    'twitch-streamer-security-guide-doxxing-swatting',
+    'roblox-parents-guide-account-security-safety',
+    'twitch-accounts-hacked-breach-guide-2026',
+  ].filter(s => slugs.includes(s));
+
+  if (newsSlugs.length === 0) {
+    // Fallback: use first 10
+    newsSlugs.push(...slugs.slice(0, 10));
+  }
+
+  // Get publication date from mockData.ts if possible, else use today
+  const mockDataPath = path.join(projectRoot, 'src', 'data', 'mockData.ts');
+  const content = fs.readFileSync(mockDataPath, 'utf8');
+
+  // Build a lookup: slug -> publishedAt date
+  const dateRegex = /slug:\s*'([^']+)'[^}]*?publishedAt:\s*'([^']+)'/gs;
+  const dateMap = {};
+  let m;
+  while ((m = dateRegex.exec(content)) !== null) {
+    dateMap[m[1]] = m[2];
+  }
+
+  const urls = newsSlugs.map(slug => {
+    const pubDate = dateMap[slug] || today;
+    return `  <url>
+    <loc>${siteUrl}/article/${slug}</loc>
+    <news:news>
+      <news:publication>
+        <news:name>The Grid Nexus</news:name>
+        <news:language>en</news:language>
+      </news:publication>
+      <news:publication_date>${pubDate}</news:publication_date>
+      <news:title>${slug.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase())}</news:title>
+    </news:news>
+  </url>`;
+  });
+
+  const xml = `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
+${urls.join('\n')}
+</urlset>`;
+
+  const outputPath = path.join(projectRoot, 'public', 'sitemap-news.xml');
+  fs.writeFileSync(outputPath, xml, 'utf-8');
+  console.log(`[sitemap] Written ${newsSlugs.length} news URLs → public/sitemap-news.xml`);
+}
+
 // ── Main ────────────────────────────────────────────────────────────────
 generateSitemap();
 generateArticleSitemap();
+generateNewsSitemap();
 generateSitemapIndex();

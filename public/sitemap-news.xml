@@ -2,169 +2,113 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
         xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
   <url>
-    <loc>https://thegridnexus.com/article/cross-vertical-cybersecurity-intelligence-sharing-stix-misp-2026</loc>
+    <loc>https://thegridnexus.com/article/gmail-hack-attacks-surge-gamers-2fa-2026</loc>
     <news:news>
       <news:publication>
         <news:name>The Grid Nexus</news:name>
         <news:language>en</news:language>
       </news:publication>
-      <news:publication_date>2026-03-27</news:publication_date>
-      <news:title>Explore how cross-vertical cybersecurity intelligence sharing using STIX, MISP, and federation model</news:title>
+      <news:publication_date>2026-04-25</news:publication_date>
+      <news:title>Gmail Hack Attacks Surge Gamers 2fa 2026</news:title>
     </news:news>
   </url>
   <url>
-    <loc>https://thegridnexus.com/article/secure-ai-assisted-game-design-balance-analytics-2026</loc>
+    <loc>https://thegridnexus.com/article/steam-account-takeover-protection-guide-2026</loc>
     <news:news>
       <news:publication>
         <news:name>The Grid Nexus</news:name>
         <news:language>en</news:language>
       </news:publication>
-      <news:publication_date>2026-03-27</news:publication_date>
-      <news:title>Learn how AI-assisted game design and balance analytics are helping developers build exploit-resista</news:title>
+      <news:publication_date>2026-04-20</news:publication_date>
+      <news:title>Steam Account Takeover Protection Guide 2026</news:title>
     </news:news>
   </url>
   <url>
-    <loc>https://thegridnexus.com/article/game-monetization-anti-fraud-intelligence-2026-in-app-purchases</loc>
+    <loc>https://thegridnexus.com/article/discord-malware-gamers-how-to-stay-safe</loc>
     <news:news>
       <news:publication>
         <news:name>The Grid Nexus</news:name>
         <news:language>en</news:language>
       </news:publication>
-      <news:publication_date>2026-03-27</news:publication_date>
-      <news:title>Discover how gaming platforms are protecting monetization revenue in 2026 with AI-powered fraud dete</news:title>
+      <news:publication_date>2026-04-18</news:publication_date>
+      <news:title>Discord Malware Gamers How To Stay Safe</news:title>
     </news:news>
   </url>
   <url>
-    <loc>https://thegridnexus.com/article/ai-driven-endpoint-device-security-intelligence-edr-2026</loc>
+    <loc>https://thegridnexus.com/article/chrome-zero-day-warning-gamers-april-2026</loc>
     <news:news>
       <news:publication>
         <news:name>The Grid Nexus</news:name>
         <news:language>en</news:language>
       </news:publication>
-      <news:publication_date>2026-03-27</news:publication_date>
-      <news:title>Explore how AI-driven endpoint and device security intelligence is evolving EDR platforms in 2026, c</news:title>
+      <news:publication_date>2026-04-24</news:publication_date>
+      <news:title>Chrome Zero Day Warning Gamers April 2026</news:title>
     </news:news>
   </url>
   <url>
-    <loc>https://thegridnexus.com/article/secure-metaverse-virtual-world-infrastructure-security-intelligence-2026</loc>
+    <loc>https://thegridnexus.com/article/nintendo-switch-2-security-guide</loc>
     <news:news>
       <news:publication>
         <news:name>The Grid Nexus</news:name>
         <news:language>en</news:language>
       </news:publication>
-      <news:publication_date>2026-03-27</news:publication_date>
-      <news:title>Explore how metaverse and virtual world platforms are building security intelligence layers in 2026,</news:title>
+      <news:publication_date>2026-04-15</news:publication_date>
+      <news:title>Nintendo Switch 2 Security Guide</news:title>
     </news:news>
   </url>
   <url>
-    <loc>https://thegridnexus.com/article/privacy-enhancing-technologies-confidential-ai-federated-learning-2026</loc>
+    <loc>https://thegridnexus.com/article/sim-swapping-gaming-accounts-protection</loc>
     <news:news>
       <news:publication>
         <news:name>The Grid Nexus</news:name>
         <news:language>en</news:language>
       </news:publication>
-      <news:publication_date>2026-03-27</news:publication_date>
-      <news:title>Learn how privacy-enhancing technologies (PETs) including federated learning, homomorphic encryption</news:title>
+      <news:publication_date>2026-04-10</news:publication_date>
+      <news:title>Sim Swapping Gaming Accounts Protection</news:title>
     </news:news>
   </url>
   <url>
-    <loc>https://thegridnexus.com/article/ai-driven-digital-twin-security-critical-systems-2026</loc>
+    <loc>https://thegridnexus.com/article/fake-game-cheats-malware-account-stealer</loc>
     <news:news>
       <news:publication>
         <news:name>The Grid Nexus</news:name>
         <news:language>en</news:language>
       </news:publication>
-      <news:publication_date>2026-03-27</news:publication_date>
-      <news:title>Explore how AI-driven digital twin security is protecting critical infrastructure, industrial system</news:title>
+      <news:publication_date>2026-04-12</news:publication_date>
+      <news:title>Fake Game Cheats Malware Account Stealer</news:title>
     </news:news>
   </url>
   <url>
-    <loc>https://thegridnexus.com/article/game-cheating-exploit-detection-analytics-cheat-intelligence-2026</loc>
+    <loc>https://thegridnexus.com/article/twitch-streamer-security-guide-doxxing-swatting</loc>
     <news:news>
       <news:publication>
         <news:name>The Grid Nexus</news:name>
         <news:language>en</news:language>
       </news:publication>
-      <news:publication_date>2026-03-27</news:publication_date>
-      <news:title>Discover how gaming publishers are building cheat-intelligence layers in 2026 using statistical beha</news:title>
+      <news:publication_date>2026-04-16</news:publication_date>
+      <news:title>Twitch Streamer Security Guide Doxxing Swatting</news:title>
     </news:news>
   </url>
   <url>
-    <loc>https://thegridnexus.com/article/secure-devops-devsecops-intelligence-cicd-2026</loc>
+    <loc>https://thegridnexus.com/article/roblox-parents-guide-account-security-safety</loc>
     <news:news>
       <news:publication>
         <news:name>The Grid Nexus</news:name>
         <news:language>en</news:language>
       </news:publication>
-      <news:publication_date>2026-03-27</news:publication_date>
-      <news:title>Learn how DevSecOps is evolving in 2026 with automated SAST/DAST scanning, SBOM management, secrets </news:title>
+      <news:publication_date>2026-04-10</news:publication_date>
+      <news:title>Roblox Parents Guide Account Security Safety</news:title>
     </news:news>
   </url>
   <url>
-    <loc>https://thegridnexus.com/article/ai-enabled-security-awareness-training-adaptive-learning-2026</loc>
+    <loc>https://thegridnexus.com/article/twitch-accounts-hacked-breach-guide-2026</loc>
     <news:news>
       <news:publication>
         <news:name>The Grid Nexus</news:name>
         <news:language>en</news:language>
       </news:publication>
-      <news:publication_date>2026-03-27</news:publication_date>
-      <news:title>Discover how AI-enabled security awareness and training programs are replacing static compliance tra</news:title>
-    </news:news>
-  </url>
-  <url>
-    <loc>https://thegridnexus.com/article/ai-security-threats-2026</loc>
-    <lastmod>2026-05-12</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.9</priority>
-    <news:news>
-      <news:publication>
-        <news:name>The Grid Nexus</news:name>
-        <news:language>en</news:language>
-      </news:publication>
-      <news:publication_date>2026-05-12</news:publication_date>
-      <news:title>AI Security Threats 2026: Weaponized AI, Deepfakes, and Quantum Risks Targeting Gamers</news:title>
-    </news:news>
-  </url>
-  <url>
-    <loc>https://thegridnexus.com/article/gaming-pc-security-hardening-guide-2026</loc>
-    <lastmod>2026-05-12</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.9</priority>
-    <news:news>
-      <news:publication>
-        <news:name>The Grid Nexus</news:name>
-        <news:language>en</news:language>
-      </news:publication>
-      <news:publication_date>2026-05-12</news:publication_date>
-      <news:title>Gaming PC Security Hardening Guide 2026: Lock Down Your Rig Without Losing a Single FPS</news:title>
-    </news:news>
-  </url>
-  <url>
-    <loc>https://thegridnexus.com/article/steam-deck-2-specs-release-date-leaks</loc>
-    <lastmod>2026-05-12</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.9</priority>
-    <news:news>
-      <news:publication>
-        <news:name>The Grid Nexus</news:name>
-        <news:language>en</news:language>
-      </news:publication>
-      <news:publication_date>2026-05-12</news:publication_date>
-      <news:title>Steam Deck 2 Specs, Release Date Leaks, and the Full Deck vs. OLED Comparison (2026 Update)</news:title>
-    </news:news>
-  </url>
-  <url>
-    <loc>https://thegridnexus.com/article/router-security-gamers-2026</loc>
-    <lastmod>2026-05-12</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.9</priority>
-    <news:news>
-      <news:publication>
-        <news:name>The Grid Nexus</news:name>
-        <news:language>en</news:language>
-      </news:publication>
-      <news:publication_date>2026-05-12</news:publication_date>
-      <news:title>Router Security for Gamers 2026: Defending Against TP-Link, Asus Exploits, and Zero-Trust Networking</news:title>
+      <news:publication_date>2026-04-19</news:publication_date>
+      <news:title>Twitch Accounts Hacked Breach Guide 2026</news:title>
     </news:news>
   </url>
 </urlset>
