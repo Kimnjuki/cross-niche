@@ -13,28 +13,20 @@ RUN npm ci --legacy-peer-deps || npm install --legacy-peer-deps
 # Copy the rest of the code and build
 COPY . .
 
-# IMPORTANT: VITE_CONVEX_URL must be explicitly emptied at build time.
-# Coolify auto-injects ALL build-time env vars as Docker ARG, which
-# Docker makes available as environment variables during RUN commands.
-# If we don't explicitly blank it, Vite picks up Coolify's injected
-# VITE_CONVEX_URL and bakes the stale key into the bundle, which
-# causes all Convex queries to hang indefinitely on article pages.
-# SafeConvexProvider detects the empty/missing URL and disables all
-# Convex queries, allowing mock data to render immediately.
+# IMPORTANT: VITE_CONVEX_URL is passed through at build time so the Convex
+# client connects to the real production backend instead of the placeholder.
+# Coolify injects this as a Docker ARG; we pass it through when running Vite.
+# If VITE_CONVEX_URL is not set (local dev), SafeConvexProvider falls back to
+# a placeholder client and mock data — no crashes, just offline mode.
 #
-# Auth0 env vars are also deliberately omitted — credentials are
-# hardcoded in src/lib/auth0Config.ts as production defaults.
+# Auth0 env vars are deliberately hardcoded in src/lib/auth0Config.ts.
 
 # Generate clean sitemap files from mock article slugs
 RUN node scripts/generate-sitemap-vite.mjs
 
-# Explicitly blank VITE_CONVEX_URL to override Coolify's injected ARG.
-# Coolify auto-injects ALL build-time env vars as Docker ARG at the top
-# of the Dockerfile. Even though Docker makes ARG values available during
-# RUN commands, we unset the var at the shell level before running Vite.
-# This prevents Vite from baking the stale Convex deploy key into the
-# bundle, which would cause Convex queries to hang on article pages.
-RUN VITE_CONVEX_URL= npm run build:frontend
+# Build with real Convex URL (or empty for offline/placeholder mode)
+ARG VITE_CONVEX_URL
+RUN VITE_CONVEX_URL=${VITE_CONVEX_URL} npm run build:frontend
 
 # Copy sitemap files to dist/ after Vite build
 RUN node scripts/copy-sitemap-to-dist.mjs
