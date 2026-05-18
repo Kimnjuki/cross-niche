@@ -1,6 +1,5 @@
 import { createRoot } from "react-dom/client";
 import { SafeConvexProvider } from "./components/SafeConvexProvider";
-import { ClerkProvider } from "@clerk/clerk-react";
 import { HelmetProvider } from "react-helmet-async";
 import App from "./App.tsx";
 import "./index.css";
@@ -16,7 +15,7 @@ import { initCoreWebVitals } from "./lib/seo/coreWebVitals";
 import "./sentry";
 import "./lib/errorHandlers";
 
-import { clerkPublishableKey, isClerkEnabled } from "./lib/clerkConfig";
+
 
 if (import.meta.env.DEV) {
   validateConvexSetup();
@@ -63,13 +62,7 @@ const app = (
     <ConvexErrorBoundary>
       <SafeConvexProvider>
         <HelmetProvider>
-        {isClerkEnabled && clerkPublishableKey ? (
-          <ClerkProvider publishableKey={clerkPublishableKey}>
-            <App />
-          </ClerkProvider>
-        ) : (
           <App />
-        )}
         </HelmetProvider>
       </SafeConvexProvider>
     </ConvexErrorBoundary>

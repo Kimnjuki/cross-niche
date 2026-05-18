@@ -1,5 +1,4 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { useUser, useAuth as useClerkAuth } from '@clerk/clerk-react';
 import { User } from '@/types';
 
 interface AuthContextType {
@@ -22,56 +21,24 @@ const AUTH_UNAVAILABLE = 'Sign-in is not available.';
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [isClient, setIsClient] = useState(false);
-  const [user, setUser] = useState<User | null>(null);
+  const [user] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
-  const {
-    user: clerkUser,
-    isLoaded: clerkLoaded,
-    isSignedIn,
-  } = useUser();
-  const { signOut: clerkSignOut } = useClerkAuth();
 
   useEffect(() => {
     setIsClient(true);
+    setIsLoading(false);
   }, []);
 
-  useEffect(() => {
-    if (!isClient || !clerkLoaded) {
-      setIsLoading(true);
-      return;
-    }
-
-    if (!isSignedIn || !clerkUser) {
-      setUser(null);
-      setIsLoading(false);
-      return;
-    }
-
-    const email = clerkUser.primaryEmailAddress?.emailAddress ?? '';
-    const name = clerkUser.fullName ?? clerkUser.firstName ?? email ?? 'User';
-
-    setUser({
-      id: clerkUser.id ?? email ?? 'user',
-      email,
-      name,
-      avatar: clerkUser.imageUrl ?? undefined,
-      bookmarks: [],
-      createdAt: new Date().toISOString(),
-    });
-    setIsLoading(false);
-  }, [clerkUser, clerkLoaded, isSignedIn, isClient]);
-
   const login = async (): Promise<{ success: boolean; error?: string }> => {
-    return { success: false, error: 'Use the Clerk UI to sign in.' };
+    return { success: false, error: 'Sign-in is not available.' };
   };
 
   const signup = async (): Promise<{ success: boolean; error?: string }> => {
-    return { success: false, error: 'Use the Clerk UI to sign up.' };
+    return { success: false, error: 'Sign-up is not available.' };
   };
 
   const logout = () => {
-    clerkSignOut();
-    setUser(null);
+    // Not signed in — no-op
   };
 
   const toggleBookmark = async (): Promise<void> => {};
