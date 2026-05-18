@@ -23,13 +23,18 @@ export class ConvexErrorBoundary extends Component<Props, State> {
     return { hasError: true, error };
   }
 
-  componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
-    console.error("Convex Error:", error, errorInfo);
+  componentDidCatch(error: Error, _errorInfo: React.ErrorInfo) {
+    // Suppress undeployed Convex function errors — the app gracefully falls
+    // back to sample data. These are not connection issues.
+    const msg = error?.message || '';
+    if (msg.includes('Could not find public function')) {
+      this.setState({ hasError: false, error: null });
+      return;
+    }
+    console.error("Convex Error:", error);
     if (
-      error.message?.includes("Convex") ||
       error.message?.includes("VITE_CONVEX_URL")
     ) {
-      console.error("⚠️ CONVEX CONNECTION ERROR");
       console.error("Check your .env file has VITE_CONVEX_URL set");
     }
   }

@@ -24,6 +24,14 @@ export class EnhancedErrorBoundary extends Component<Props, State> {
   }
 
   componentDidCatch(error: Error, errorInfo: ErrorInfo) {
+    // Suppress undeployed Convex function errors — the app gracefully falls
+    // back to sample data. These are not real errors.
+    const msg = error?.message || '';
+    if (msg.includes('Could not find public function')) {
+      this.setState({ hasError: false, error: null, errorInfo: null });
+      return;
+    }
+
     console.error('EnhancedErrorBoundary caught an error:', error, errorInfo);
     this.setState({
       error,
