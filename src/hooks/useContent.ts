@@ -263,10 +263,17 @@ export function useLatestContent(limit = 10) {
 /** All published content for archive/explore (getAllPublishedContent). */
 export function useAllPublishedContent(limit = 30) {
   const isDisabled = useConvexDisabled();
-  const result = useQuery(api.content.listAll, isDisabled ? 'skip' : {});
-  const data = isDisabled
+  let result: unknown = [];
+  if (!isDisabled) {
+    try {
+      result = useQuery(api.content.listAll, {});
+    } catch {
+      result = undefined;
+    }
+  }
+  const data = isDisabled || result === undefined
     ? articlesToContentItems(mockArticles.slice(0, limit))
-    : toContentItems(result?.slice(0, limit) ?? []);
+    : toContentItems((result as Record<string, unknown>[])?.slice(0, limit) ?? []);
   return {
     data,
     isLoading: !isDisabled && result === undefined,

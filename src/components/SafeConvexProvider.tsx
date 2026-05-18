@@ -26,7 +26,7 @@ console.warn = function filterWarn(...args: unknown[]) {
 };
 console.error = function filterError(...args: unknown[]) {
   const msg = String(args[0] || '');
-  if (msg.includes('WebSocket') || msg.includes('reconnect') || msg.includes('Could not find public function')) return;
+  if (msg.includes('WebSocket') || msg.includes('reconnect') || msg.includes('Could not find public function') || msg.includes('[CONVEX Q(')) return;
   originalError.apply(console, args);
 };
 const PLACEHOLDER_URL = "https://no-convex-configured.convex.cloud";

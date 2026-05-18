@@ -22,6 +22,14 @@ class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundarySta
   }
 
   componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
+    // Suppress Convex undeployed function errors — the app gracefully falls
+    // back to sample data when functions aren't deployed yet.
+    const msg = error?.message || '';
+    if (msg.includes('Could not find public function')) {
+      this.setState({ hasError: false, error: undefined });
+      return;
+    }
+
     console.error('Error caught by boundary:', error, errorInfo);
     
     // Send to Sentry
