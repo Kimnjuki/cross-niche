@@ -12,24 +12,23 @@ import { ConvexProvider, ConvexReactClient } from "convex/react";
 
 // Convex URL resolution: only connect when VITE_CONVEX_URL is explicitly set.
 // In production builds (Docker/Coolify), the env var is injected at build time.
-// Suppress noisy WebSocket reconnect logging when using placeholder client.
+// Suppress noisy logs: Clerk dev key warning + Convex reconnect spam.
 const originalWarn = console.warn;
 const originalError = console.error;
 const rawUrl = (import.meta.env.VITE_CONVEX_URL ?? "").trim();
 const hasConvexUrl = rawUrl.length > 0 && rawUrl.startsWith("http");
-if (!hasConvexUrl) {
-  // Quiet the placeholder WebSocket's spurious reconnect warnings/errors
-  console.warn = function filterWarn() {
-    const msg = arguments[0] || '';
-    if (typeof msg === 'string' && (msg.includes('Attempting reconnect') || msg.includes('WebSocket reconnected') || msg.includes('closed with code'))) return;
-    originalWarn.apply(console, arguments);
-  };
-  console.error = function filterError() {
-    const msg = arguments[0] || '';
-    if (typeof msg === 'string' && (msg.includes('WebSocket') || msg.includes('reconnect'))) return;
-    originalError.apply(console, arguments);
-  };
-}
+
+// Suppress known browser console noise (development keys, placeholder WS reconnects)
+console.warn = function filterWarn(...args: unknown[]) {
+  const msg = String(args[0] || '');
+  if (msg.includes('development keys') || msg.includes('Attempting reconnect') || msg.includes('WebSocket reconnected') || msg.includes('closed with code')) return;
+  originalWarn.apply(console, args);
+};
+console.error = function filterError(...args: unknown[]) {
+  const msg = String(args[0] || '');
+  if (msg.includes('WebSocket') || msg.includes('reconnect') || msg.includes('Could not find public function')) return;
+  originalError.apply(console, args);
+};
 const PLACEHOLDER_URL = "https://no-convex-configured.convex.cloud";
 
 export const ConvexDisabledContext = createContext<boolean>(!hasConvexUrl);

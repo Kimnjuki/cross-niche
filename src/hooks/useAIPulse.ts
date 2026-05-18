@@ -60,15 +60,25 @@ function convexToAIUpdate(row: {
 
 export function useAIPulse() {
   const isDisabled = useConvexDisabled();
-  const rows = useQuery(api.aiUpdates.list, isDisabled ? 'skip' : { limit: 50 });
+  let rows: unknown;
+  let queryError = false;
+  try {
+    rows = useQuery(api.aiUpdates.list, isDisabled ? 'skip' : { limit: 50 });
+  } catch {
+    queryError = true;
+  }
 
-  const items: AIUpdate[] = isDisabled
+  // If the query failed (e.g. function not deployed to Convex yet), the app
+  // falls back to sample data gracefully instead of crashing over a single query.
+  const useSampleData = isDisabled || queryError || (rows as undefined) === undefined;
+
+  const items: AIUpdate[] = useSampleData
     ? SAMPLE_AI_UPDATES
-    : (rows ?? []).map(convexToAIUpdate);
+    : (rows as Record<string, unknown>[]).map(convexToAIUpdate);
 
   return {
     items: [...items].sort((a, b) => b.publishedAt - a.publishedAt),
-    isLoading: !isDisabled && rows === undefined,
-    isConvex: !isDisabled,
+    isLoading: !isDisabled && !queryError && rows === undefined,
+    isConvex: !isDisabled && !queryError,
   };
 }
