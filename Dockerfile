@@ -24,9 +24,10 @@ COPY . .
 # Generate clean sitemap files from mock article slugs
 RUN node scripts/generate-sitemap-vite.mjs
 
-# Build with real Convex URL (or empty for offline/placeholder mode)
+# Build with production env vars from Coolify (or defaults)
 ARG VITE_CONVEX_URL
-RUN VITE_CONVEX_URL=${VITE_CONVEX_URL} npm run build:frontend
+ARG VITE_CLERK_PUBLISHABLE_KEY
+RUN VITE_CONVEX_URL=${VITE_CONVEX_URL} VITE_CLERK_PUBLISHABLE_KEY=${VITE_CLERK_PUBLISHABLE_KEY} npm run build:frontend
 
 # Copy sitemap files to dist/ after Vite build
 RUN node scripts/copy-sitemap-to-dist.mjs

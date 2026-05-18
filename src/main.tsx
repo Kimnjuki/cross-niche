@@ -1,7 +1,9 @@
 import { createRoot } from "react-dom/client";
 import { SafeConvexProvider } from "./components/SafeConvexProvider";
+import { ClerkProvider } from "@clerk/clerk-react";
 import { HelmetProvider } from "react-helmet-async";
 import App from "./App.tsx";
+import { clerkPublishableKey, isClerkEnabled } from "./lib/clerkConfig";
 import "./index.css";
 import "./styles/design-tokens.css";
 import "./styles/globals.css";
@@ -62,7 +64,13 @@ const app = (
     <ConvexErrorBoundary>
       <SafeConvexProvider>
         <HelmetProvider>
-          <App />
+          {isClerkEnabled && clerkPublishableKey ? (
+            <ClerkProvider publishableKey={clerkPublishableKey}>
+              <App />
+            </ClerkProvider>
+          ) : (
+            <App />
+          )}
         </HelmetProvider>
       </SafeConvexProvider>
     </ConvexErrorBoundary>
