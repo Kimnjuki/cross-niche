@@ -23,6 +23,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { useReadingTracker, useUserBehavior } from '@/hooks/useUserBehavior';
 import { AITools } from '@/components/ai/AITools';
 import { InlineToolCTA } from '@/components/security/InlineToolCTA';
+import { GamingNewsletterSignup } from '@/components/gaming/GamingNewsletterSignup';
 import { EnhancedShareBar } from '@/components/sharing/EnhancedShareBar';
 import { SEOHead } from '@/components/seo/SEOHead';
 import { Breadcrumbs } from '@/components/seo/Breadcrumbs';
@@ -407,6 +408,11 @@ export default function Article() {
             showStats={true}
             dismissable={false}
           />
+
+          {/* 📬 Gaming Security Newsletter CTA */}
+          <div className="mt-8 mb-8">
+            <GamingNewsletterSignup source="article" />
+          </div>
 
           <div className="mb-12">
             <AITools
