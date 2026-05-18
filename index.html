@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" dir="ltr">
+<html lang="en" dir="ltr" class="dark">
   <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -458,7 +458,11 @@
       })();
     </script>
 
-    <style>.skip-link:focus{left:0!important;top:0!important}</style>
+    <style>
+      .skip-link:focus{left:0!important;top:0!important}
+      html.dark { background: #0f172a !important; }
+      body { background: #0f172a; color: #f8fafc; }
+    </style>
 
     <!-- ── Crawlable article links (hidden, for Googlebot discovery) ── -->
     <nav aria-label="Article Index" style="display:none">

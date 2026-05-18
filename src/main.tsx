@@ -17,8 +17,6 @@ import { initCoreWebVitals } from "./lib/seo/coreWebVitals";
 import "./sentry";
 import "./lib/errorHandlers";
 
-
-
 if (import.meta.env.DEV) {
   validateConvexSetup();
 }
