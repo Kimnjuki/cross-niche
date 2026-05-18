@@ -51,14 +51,14 @@ const staticPages = [
   '/ai-pulse', '/nexus-intersection',
   '/media', '/about', '/contact', '/editorial', '/disclosure',
   '/privacy', '/terms', '/quality-guidelines', '/content-policy',
-  '/sitemap', '/roadmap', '/roadmap',
+  '/sitemap', '/roadmap',
 
   // Security tool pages
   '/breach-sim', '/security-score',
   '/live-threat-dashboard',
   
   // Tool routes
-  '/tools', '/tools/sitemap',
+  '/tools',
   '/tools/security-scanner', '/tools/nexusguard',
   '/tools/security-briefing', '/tools/vr-cyber-training',
   '/tools/steam-scanner', '/tools/ioc-lookup',
