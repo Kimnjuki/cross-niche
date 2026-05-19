@@ -1,0 +1,529 @@
+<!doctype html>
+<html lang="en" dir="ltr" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes" />
+
+    <!-- ── Preconnect to critical origins (reduces connection latency) ──── -->
+    <link rel="preconnect" href="https://thegridnexus.com">
+    <link rel="preconnect" href="https://images.unsplash.com" crossorigin>
+    <link rel="dns-prefetch" href="https://images.unsplash.com">
+
+    <!-- ── Per-route title/description injection (crawler-friendly before JS) ── -->
+    <!-- Fixes: duplicate title tags, duplicate meta descriptions, missing h1    -->
+    <script>
+      (function () {
+        var routes = {
+          '/': { t: 'The Grid Nexus \u2013 Gaming Security Intelligence Hub', d: 'Gaming security intelligence and guides. Lock down your gaming accounts, secure your PC, and protect your identity from hackers and cheats.' },
+          '/tech': { t: 'Technology News & Analysis 2026 | The Grid Nexus', d: 'Technology news and analysis for 2026. AI breakthroughs, hardware releases, cloud computing, and emerging tech from The Grid Nexus.' },
+          '/security': { t: 'Gaming Cybersecurity Threats \u2013 News & Protection Guides | The Grid Nexus', d: 'Gaming cybersecurity news, threat alerts, and security guides for gamers. Account hacking, malware, phishing, and anti-cheat vulnerability coverage.' },
+          '/gaming': { t: 'Gaming News, Reviews & Releases 2026 | The Grid Nexus', d: 'Latest gaming news, reviews, and release dates. PS5, PC, Xbox, and esports coverage from The Grid Nexus gaming desk.' },
+          '/news': { t: 'Latest Breaking News | The Grid Nexus', d: 'Breaking tech and gaming news. Real-time updates on AI, cybersecurity, hardware, and industry developments.' },
+          '/blog': { t: 'Blog & Long-Form Features | The Grid Nexus', d: 'In-depth blog posts and long-form features on technology, cybersecurity, and gaming from The Grid Nexus editorial team.' },
+          '/explore': { t: 'Explore Tech, Security & Gaming Content | The Grid Nexus', d: 'Browse technology, cybersecurity, and gaming articles. Find the latest news, guides, and expert analysis across all categories.' },
+          '/topics': { t: 'Browse Topics \u2013 Tech, Security & Gaming | The Grid Nexus', d: 'Browse topics and keywords across technology, cybersecurity, and gaming. Find articles by subject and stay informed.' },
+          '/guides': { t: 'Gaming Security Guides \u2013 Step-by-Step Protection Tutorials | The Grid Nexus', d: 'Step-by-step gaming security guides. 2FA setup, PC hardening, account protection, network security, and anti-cheat guides from The Grid Nexus experts.' },
+          '/tutorials': { t: 'Tech & Security Tutorials | The Grid Nexus', d: 'Practical tutorials for technology and cybersecurity. Learn hands-on skills with guided walkthroughs from The Grid Nexus.' },
+          '/reviews': { t: 'Tech & Gaming Reviews | The Grid Nexus', d: 'Expert reviews of technology products, games, and security tools. Honest, in-depth analysis from The Grid Nexus.' },
+          '/startups': { t: 'Startup News & Funding Rounds | The Grid Nexus', d: 'Latest startup news, funding rounds, and venture capital moves across tech, security, and gaming sectors.' },
+          '/ai-pulse': { t: 'AI Pulse \u2013 Artificial Intelligence News & Trends | The Grid Nexus', d: 'AI Pulse tracks model releases, market moves, ethics debates, and real-world AI impact from The Grid Nexus.' },
+          '/breach-sim': { t: 'Breach Simulation \u2013 Cybersecurity Training Tool | The Grid Nexus', d: 'Simulate cyber breaches and test your defences. Interactive breach simulation for security training from The Grid Nexus.' },
+          '/security-score': { t: 'Security Score Tool \u2013 Assess Your Cyber Posture | The Grid Nexus', d: 'Measure your cybersecurity posture with our free Security Score tool. Get actionable recommendations from The Grid Nexus.' },
+          '/live-threat-dashboard': { t: 'Live Threat Dashboard | The Grid Nexus', d: 'Real-time cyber threat intelligence dashboard. Monitor active threats, CVEs, and breach alerts from The Grid Nexus.' },
+          '/roadmap': { t: 'Platform Roadmap & Upcoming Features | The Grid Nexus', d: 'See what we\u2019re building. Vote on features and track the product roadmap for The Grid Nexus tools and platform.' },
+          '/about': { t: 'About The Grid Nexus | Tech, Security & Gaming Intelligence', d: 'Learn about The Grid Nexus \u2014 our editorial team, mission, and standards for technology, security, and gaming coverage.' },
+          '/contact': { t: 'Contact The Grid Nexus | Press & Partnership Inquiries', d: 'Get in touch with The Grid Nexus for press inquiries, partnerships, editorial feedback, or advertising.' },
+          '/privacy': { t: 'Privacy Policy | The Grid Nexus', d: 'The Grid Nexus privacy policy: how we collect, use, and protect your personal data in accordance with GDPR and CCPA.' },
+          '/terms': { t: 'Terms of Service | The Grid Nexus', d: 'Terms of service for The Grid Nexus. Read our usage guidelines, content license, and legal terms.' },
+          '/editorial': { t: 'Editorial Policy | The Grid Nexus', d: 'The Grid Nexus editorial standards, fact-checking processes, correction policy, and independence guidelines.' },
+          '/disclosure': { t: 'Disclosure Policy | The Grid Nexus', d: 'Affiliate, advertising, and sponsored content disclosure for The Grid Nexus. Full transparency on commercial relationships.' },
+          '/quality-guidelines': { t: 'Content Quality Guidelines | The Grid Nexus', d: 'Our standards for accuracy, depth, and editorial quality at The Grid Nexus. How we select and review content.' },
+          '/content-policy': { t: 'Content Policy | The Grid Nexus', d: 'The Grid Nexus content policy: what we publish, prohibited content, and community standards.' },
+          '/media': { t: 'Media Kit & Press Resources | The Grid Nexus', d: 'Press kit, brand assets, media inquiries, and editorial contact information for The Grid Nexus.' },
+          '/nexus-intersection': { t: 'Nexus Intersection \u2013 Cross-Niche Intelligence | The Grid Nexus', d: 'Where tech, security, and gaming intersect. Cross-vertical intelligence and trend analysis from The Grid Nexus.' },
+          '/security-profile': { t: 'Nexus Security Profile \u2013 AI Security Suite | The Grid Nexus', d: 'Your unified AI-powered security posture dashboard. Track threats, secure your games, and build skills with the Nexus Security Suite.' },
+          '/community-threats': { t: 'Community Threat Hub \u2013 Crowd-Sourced Gaming Threats | The Grid Nexus', d: 'Crowd-sourced threat intelligence from gamers. Report suspicious links, mods, and scams. Upvote to triage emerging threats.' },
+          '/tools': { t: 'Nexus Security Suite \u2013 Free Security Tools for Gamers | The Grid Nexus', d: 'Free interactive security tools for gamers: AI threat assessment, breach simulation, security score checker, game security copilot, and live threat dashboard.' }
+        };
+        // ── Article meta: per-slug title/description overrides ──
+        var articleMeta = {
+  'gmail-hack-attacks-surge-gamers-2fa-2026': { t: 'Gmail Hack Attacks Surge — Every Gamer Needs 2FA Now | The Grid Nexus', d: 'A massive wave of Gmail credential-stuffing attacks is targeting gamers. Here’s how to lock down your accounts before you get hit.' },
+  'bitwarden-security-incident-gaming-password-manager': { t: 'Bitwarden Confirms Compromise — What Gamers Should Use Instead | The Grid Nexus', d: 'Bitwarden admitted a compromised build. If you’re a gamer relying on Bitwarden, here’s what happened and what to do.' },
+  'chrome-zero-day-warning-gamers-april-2026': { t: 'Chrome Zero-Day Warning Issued for 3.5 Billion Users — Gamer’s Guide | The Grid Nexus', d: 'Google’s emergency Chrome update patches a critical zero-day exploit. PC gamers need to update now.' },
+  'steam-account-takeover-protection-guide-2026': { t: 'Steam Account Hacked 2026: Complete Recovery & Lockdown Guide | The Grid Nexus', d: 'Losing your Steam account means losing your library, payment methods, and tournament access. This complete guide walks you through recovery step-by-step, then locks it down so it never happens again.' },
+  'discord-malware-gamers-how-to-stay-safe': { t: 'Discord Malware Is Spreading Fast — How Gamers Get Infected | The Grid Nexus', d: 'Discord has become the #1 malware delivery platform for gamers. Learn the tactics hackers use and how to avoid them.' },
+  'nintendo-switch-2-security-guide': { t: 'Nintendo Switch 2 Security Guide — Protect Your Account Day One | The Grid Nexus', d: 'The Switch 2 launch is a prime target for account thieves. Set up your new console securely with this complete guide.' },
+  'fake-game-cheats-malware-account-stealer': { t: 'Fake Game Cheats Are Stealing Thousands of Accounts — How to Spot Them | The Grid Nexus', d: 'Hackers hide info-stealing malware inside fake game cheats. Here’s how to spot the scams.' },
+  'sim-swapping-gaming-accounts-protection': { t: 'SIM Swapping Is Targeting Gamers — Protect Your Accounts | The Grid Nexus', d: 'SIM swap attacks are on the rise and gamers are prime targets. If SMS secures your accounts, you’re at risk.' },
+  'windows-11-anti-cheat-broken-fix-guide': { t: 'Windows 11 Update Breaks Popular Anti-Cheat Software — Fix Guide | The Grid Nexus', d: 'Microsoft’s latest Windows 11 update causes EasyAntiCheat and BattlEye failures. Here’s the fix.' },
+  'xbox-rebrand-security-changes-gamers': { t: 'Microsoft Rebrands Gaming Division — What Xbox Gamers Should Know | The Grid Nexus', d: 'Microsoft eliminated ‘Microsoft Gaming’ in favor of Xbox. Here’s what the rebrand means for account security.' },
+  'steam-controller-security-risks-gamers': { t: 'Valve’s New Steam Controller — Security Risks to Know | The Grid Nexus', d: 'The Steam Controller returns. Understand the firmware security risks before connecting yours.' },
+  'vpn-gaming-security-latency-test-2026': { t: 'VPNs for Gaming — Do They Actually Protect You? | The Grid Nexus', d: 'We tested top VPN services for gaming. Here’s what works for security, latency, and DDoS protection.' },
+  'twitch-streamer-security-guide-doxxing-swatting': { t: 'Twitch Streamer Security Guide — Protect From Doxxing and Swatting | The Grid Nexus', d: 'Streamers are prime targets. A comprehensive security guide for every level of streamer.' },
+  'razer-synapse-security-vulnerability-fix': { t: 'Razer Software Flaw Exposes Millions of Gamers | The Grid Nexus', d: 'A vulnerability in Razer Synapse could expose gaming peripherals to attack.' },
+  'game-key-reseller-scams-g2a-cdkeys': { t: 'G2A, CDKeys, and Gray Market Scams — How Hackers Steal Game Keys | The Grid Nexus', d: 'Gray market key resellers are a security concern. How stolen keys work and how to buy safely.' },
+  'roblox-parents-guide-account-security-safety': { t: 'Roblox Hackers Stealing Kids’ Accounts — Parent’s Safety Guide | The Grid Nexus', d: 'Roblox account theft is growing. Here’s how to secure your child’s account.' },
+  'minecraft-server-security-guide': { t: 'Minecraft Server Security — Protect Your Server from Hackers | The Grid Nexus', d: 'Running a Minecraft server? Secure it against griefers, hackers, and exploits.' },
+  'twitch-accounts-hacked-breach-guide-2026': { t: 'Twitch Accounts Targeted in Breach Wave — Streamer Security Guide | The Grid Nexus', d: 'Twitch account takeovers are surging. Protect your channel and earnings.' },
+  'gaming-headset-malware-privacy-guide': { t: 'Can Gaming Headsets Be Hacked? Audio Privacy Guide for Gamers | The Grid Nexus', d: 'Gaming headsets with microphones present privacy risks. Here’s how audio malware works and how to protect yourself.' },
+  'gaming-pc-antivirus-best-2026': { t: 'Best Antivirus for Gaming PCs in 2026 — Without Sacrificing Performance | The Grid Nexus', d: 'Gaming and antivirus have historically clashed. Here are tools that protect without killing frame rates.' },
+  'router-security-gamers-network-protection': { t: 'Gaming Router Security Guide — Protect Your Home Network | The Grid Nexus', d: 'Your gaming router is the gateway to your online life. Secure it against hackers and DDoS.' },
+  'complete-gaming-account-security-guide-2026': { t: 'Complete Gaming Account Security Guide 2026 | The Grid Nexus', d: 'Everything you need to lock down every gaming account you own — Steam, Xbox, PlayStation, Epic Games, Nintendo, and more — in one definitive guide.' },
+  '2fa-setup-every-gaming-platform': { t: 'Two-Factor Authentication on Every Gaming Platform — Full Setup Guide | The Grid Nexus', d: 'Step-by-step 2FA setup for Steam, Xbox, PlayStation, Epic Games, Battle.net, Nintendo, and Roblox. Takes 20 minutes. Blocks 99% of account takeover attempts.' },
+  'how-hackers-steal-gaming-accounts': { t: '7 Ways Hackers Steal Gaming Accounts — And How to Stop Each One | The Grid Nexus', d: 'Credential stuffing, phishing, info-stealers, SIM swaps — here is exactly how each attack works and the specific defence that stops it.' },
+  'gaming-pc-security-hardening-guide': { t: 'Gaming PC Security Hardening — Complete 2026 Guide | The Grid Nexus', d: 'Harden your Windows gaming PC against malware, remote exploits, and account theft without sacrificing a single FPS. Covers antivirus, firewall, Windows settings, and network.' },
+  'mobile-gaming-security-guide': { t: 'Mobile Gaming Security Guide — Protect Your Phone, Accounts, and Payments | The Grid Nexus', d: 'Mobile gaming is the biggest attack surface in gaming. Here is how to secure your iOS and Android devices, in-app purchases, and linked accounts.' },
+  'how-to-check-if-your-gaming-accounts-have-been-compromised': { t: 'How to Check If Your Gaming Accounts Have Been Compromised | The Grid Nexus', d: 'A step-by-step guide to scanning Steam, PlayStation, Xbox, and Epic Games accounts for signs of compromise. Use the Gaming Security Checkup tool to find vulnerabilities before attackers do.' },
+  'complete-guide-to-scanning-gaming-servers-for-vulnerabilities': { t: 'Complete Guide to Scanning Gaming Servers for Vulnerabilities | The Grid Nexus', d: 'Learn how to use the Threat Scanner to find CVEs, open ports, and misconfigurations in your gaming infrastructure. Includes remediation steps for the top 10 gaming server vulnerabilities.' },
+  'what-gamers-think-about-security-sentiment-analysis-2026': { t: 'What Gamers Really Think About Security: Community Sentiment Analysis 2026 | The Grid Nexus', d: 'Analysis of security sentiment across 15 major gaming communities. Which games have the most security complaints? What are players worried about? How does trust vary by platform?' },
+  'discord-moderator-guide-block-spam-scams-2026': { t: 'The Complete Discord Moderation Guide: Block Spam, Scams, and Toxicity | The Grid Nexus', d: 'How to set up AI-powered content moderation for your gaming Discord. Detect phishing links, spam messages, harassment, and PII leaks before they reach your members.' },
+  'introducing-the-gaming-copilot-your-ai-security-assistant': { t: 'Introducing the Gaming Copilot: Your AI Security Assistant for Games | The Grid Nexus', d: 'Meet the Gaming Copilot — an AI assistant that answers gaming security questions, recommends hardware, explains CVEs, and helps you stay safe. Here\'s everything it can do and how to use it.' },
+  'how-we-predict-game-release-dates-signal-analysis': { t: 'How We Predict Game Release Dates: Signal-Based Analysis Explained | The Grid Nexus', d: 'Behind the scenes of the Release Predictor tool. Learn how we track ESRB filings, Steam build activity, hiring patterns, and fiscal guidance to predict release windows for upcoming games.' },
+  'game-recommendations-by-security-score-finding-safe-multiplayer-games': { t: 'Game Recommendations by Security Score: Finding Safe Multiplayer Games | The Grid Nexus', d: 'Use the Recommendation Engine to find games optimized for your security needs. Compare anti-cheat systems, data privacy practices, and community safety across genres and budgets.' },
+  'ai-security-threats-2026': { t: 'AI Security Threats 2026: Weaponized AI, Deepfakes, and Quantum Risks Targeting Gamers | The Grid Nexus', d: 'Deepfake voice clones, weaponized AI attack pipelines, and quantum-assisted decryption threats are targeting gaming accounts right now.' },
+  'gaming-pc-security-hardening-guide-2026': { t: 'Gaming PC Security Hardening Guide 2026: Lock Down Your Rig Without Losing a Single FPS | The Grid Nexus', d: 'Hardened gaming rigs from Windows 11 security features to YubiKey BIOS integration and VLAN segmentation — all without sacrificing performance.' },
+  'steam-deck-2-specs-release-date-leaks': { t: 'Steam Deck 2 Specs, Release Date Leaks, and the Full Deck vs. OLED Comparison (2026 Update) | The Grid Nexus', d: 'Leaked Steam Deck 2 specs point to Zen 5 CPU, RDNA 3.5 GPU at 3.5 TFLOPS, 32GB LPDDR6X RAM — but the release is tracking for 2028–2029.' },
+  'router-security-gamers-2026': { t: 'Router Security for Gamers 2026: Defending Against TP-Link, Asus Exploits, and Zero-Trust Networking | The Grid Nexus', d: 'CVE-2025-7850, KadNap backdoor campaign, and the complete router hardening checklist for gamers — including VLAN segmentation and Tailscale zero-trust VPN.' }
+        };
+        var p = window.location.pathname.replace(/\/$/, '') || '/';
+        var m = routes[p];
+        if (!m) {
+          // Extract slug from niche-based paths: /security/slug, /tech/slug, /gaming/slug, /news/slug, /article/slug
+          var slugMatch = p.match(/^\/(?:security|tech|gaming|news|article)\/(.+)$/);
+          var slug = slugMatch ? slugMatch[1] : null;
+
+          if (slug && articleMeta[slug]) {
+            m = articleMeta[slug];
+          } else if (slug) {
+            // Fallback: generate title/desc from slug
+            var titleSlug = slug.replace(/-/g, ' ');
+            m = { t: titleSlug.charAt(0).toUpperCase() + titleSlug.slice(1) + ' | The Grid Nexus', d: 'Read the full story on The Grid Nexus - your source for tech, cybersecurity, and gaming intelligence.' };
+          } else {
+            m = routes['/'];
+          }
+        }
+        document.title = m.t;
+        // ── Canonical link (prevents duplicate content issues) ──
+        var canEl = document.querySelector('link[rel="canonical"]');
+        if (!canEl) { canEl = document.createElement('link'); canEl.setAttribute('rel', 'canonical'); document.head.appendChild(canEl); }
+        canEl.setAttribute('href', 'https://thegridnexus.com' + window.location.pathname);
+        // Create or update meta name=description (static one was removed to avoid duplicate tags)
+        var descEl = document.querySelector('meta[name="description"]');
+        if (!descEl) { descEl = document.createElement('meta'); descEl.setAttribute('name', 'description'); document.head.appendChild(descEl); }
+        descEl.setAttribute('content', m.d);
+        // Create or update og:title/description
+        var ogT = document.querySelector('meta[property="og:title"]');
+        if (ogT) ogT.setAttribute('content', m.t);
+        var ogD = document.querySelector('meta[property="og:description"]');
+        if (!ogD) { ogD = document.createElement('meta'); ogD.setAttribute('property', 'og:description'); document.head.appendChild(ogD); }
+        ogD.setAttribute('content', m.d);
+        // Create or update twitter:title/description
+        var twT = document.querySelector('meta[name="twitter:title"]');
+        if (twT) twT.setAttribute('content', m.t);
+        var twD = document.querySelector('meta[name="twitter:description"]');
+        if (!twD) { twD = document.createElement('meta'); twD.setAttribute('name', 'twitter:description'); document.head.appendChild(twD); }
+        twD.setAttribute('content', m.d);
+        // ── Article JSON-LD Schema (only on article pages) ──
+        if (slug && articleMeta[slug]) {
+          var ldJson = document.createElement('script');
+          ldJson.setAttribute('type', 'application/ld+json');
+          ldJson.textContent = JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "NewsArticle",
+            "headline": articleMeta[slug].t.replace(' | The Grid Nexus', ''),
+            "description": articleMeta[slug].d,
+            "url": 'https://thegridnexus.com' + window.location.pathname,
+            "mainEntityOfPage": {
+              "@type": "WebPage",
+              "@id": 'https://thegridnexus.com' + window.location.pathname
+            },
+            "publisher": {
+              "@type": "Organization",
+              "name": "The Grid Nexus",
+              "logo": {
+                "@type": "ImageObject",
+                "url": "https://thegridnexus.com/og-image.jpg"
+              }
+            },
+            "image": {
+              "@type": "ImageObject",
+              "url": "https://thegridnexus.com/og-image.jpg",
+              "width": 1200,
+              "height": 630
+            }
+          });
+          document.head.appendChild(ldJson);
+        }
+      })();
+    </script>
+
+    <!-- ── Google tag (gtag.js) ───────────────────────────────────────── -->
+    <!-- Measurement ID: G-XMGRJBSN5Y (injected by Vite injectGa4Id plugin at build) -->
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      try {
+        var isLocal = /^localhost$|^127\.0\.0\.1$|^\[::1\]$/i.test(window.location.hostname || '');
+        if (!isLocal) {
+          var s = document.createElement('script');
+          s.async = true;
+          s.src = 'https://www.googletagmanager.com/gtag/js?id=%VITE_GA4_MEASUREMENT_ID%';
+          s.onerror = function() {};
+          document.head.appendChild(s);
+          gtag('js', new Date());
+          // send_page_view: false — GA4PageTracker (React) owns all page_view events
+          // to avoid double-counting on SPA initial load.
+          gtag('config', '%VITE_GA4_MEASUREMENT_ID%', { send_page_view: false });
+        }
+      } catch (e) {}
+    </script>
+
+    <!-- ── Core meta ─────────────────────────────────────────────────── -->
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="theme-color" content="#0f172a" />
+    <meta name="msapplication-TileColor" content="#0f172a" />
+    <meta name="msapplication-config" content="/browserconfig.xml" />
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+    <meta name="googlebot" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+    <meta name="bingbot" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+    <meta name="revisit-after" content="1 days" />
+    <meta name="distribution" content="global" />
+    <meta name="rating" content="general" />
+    <meta name="copyright" content="The Grid Nexus" />
+    <meta name="language" content="en" />
+    <meta http-equiv="Content-Language" content="en-US" />
+    <meta name="geo.region" content="US" />
+    <meta name="geo.placename" content="United States" />
+
+    <!-- ── Default title (overwritten by per-route pre-JS script) ── -->
+    <title>Page Not Found (404) | The Grid Nexus</title>
+    <meta name="description" content="Gaming security intelligence and guides. Lock down your gaming accounts, secure your PC, and protect your identity from hackers and cheats." />
+    <meta name="keywords" content="technology news, cybersecurity, gaming, tech intelligence, AI technology, cyber threats, gaming hardware, tech reviews, security updates, gaming industry" />
+    <meta name="author" content="The Grid Nexus" />
+
+    <!-- ── hreflang (fixes "Missing hreflang" warning) ────────────────── -->
+    <link rel="alternate" hreflang="en" href="https://thegridnexus.com/" />
+    <link rel="alternate" hreflang="en-US" href="https://thegridnexus.com/" />
+    <link rel="alternate" hreflang="x-default" href="https://thegridnexus.com/" />
+
+    <!-- ── Open Graph ────────────────────────────────────────────────── -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://thegridnexus.com/" />
+    <meta property="og:title" content="The Grid Nexus – Tech, Security &amp; Gaming News" />
+    <meta property="og:image" content="https://thegridnexus.com/og-image.jpg" />
+    <meta property="og:image:secure_url" content="https://thegridnexus.com/og-image.jpg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="The Grid Nexus – Tech, Security &amp; Gaming Intelligence" />
+    <meta property="og:image:type" content="image/jpeg" />
+    <meta property="og:site_name" content="The Grid Nexus" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:locale:alternate" content="en_GB" />
+    <meta property="article:publisher" content="https://www.facebook.com/thegridnexus" />
+
+    <!-- ── Twitter Card ──────────────────────────────────────────────── -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:url" content="https://thegridnexus.com/" />
+    <meta name="twitter:title" content="The Grid Nexus – Tech, Security &amp; Gaming News" />
+    <meta name="twitter:image" content="https://thegridnexus.com/og-image.jpg" />
+    <meta name="twitter:image:alt" content="The Grid Nexus – Tech, Security &amp; Gaming Intelligence" />
+    <meta name="twitter:site" content="@thegridnexus" />
+    <meta name="twitter:creator" content="@thegridnexus" />
+
+    <!-- ── Favicons & manifest ───────────────────────────────────────── -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#0f172a" />
+
+    <!-- ── Resource hints ───────────────────────────────────────────── -->
+    <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
+    <link rel="dns-prefetch" href="https://www.google-analytics.com" />
+    <link rel="preconnect" href="https://www.googletagmanager.com" crossorigin />
+    <link rel="dns-prefetch" href="https://images.unsplash.com" />
+    <link rel="preconnect" href="https://www.google-analytics.com" crossorigin />
+
+    <!-- ── Clarity error suppression ────────────────────────────────── -->
+    <script>
+      (function() {
+        var _fetch = window.fetch;
+        window.fetch = function(input, init) {
+          var url = typeof input === 'string' ? input : (input && input.url) || '';
+          if (url.indexOf('v.clarity.ms') !== -1 || url.indexOf('clarity.ms/collect') !== -1) {
+            return _fetch.apply(this, arguments).catch(function() {
+              return new Response('', { status: 200 });
+            });
+          }
+          return _fetch.apply(this, arguments);
+        };
+      })();
+    </script>
+
+    <!-- ── Consent Mode (GDPR) ──────────────────────────────────────── -->
+    <script>
+      if (typeof gtag === 'function') {
+        gtag('consent', 'default', {
+          'ad_storage': 'granted',
+          'analytics_storage': 'granted',
+          'functionality_storage': 'granted',
+          'personalization_storage': 'granted',
+          'security_storage': 'granted',
+          'wait_for_update': 1500
+        });
+        gtag('consent', 'default', {
+          'region': ['AT','BE','BG','HR','CY','CZ','DK','EE','FI','FR','DE','GR','HU','IS','IE','IT','LV','LI','LT','LU','MT','NL','NO','PL','PT','RO','SK','SI','ES','SE','GB','CH'],
+          'ad_storage': 'denied',
+          'analytics_storage': 'denied',
+          'functionality_storage': 'denied',
+          'personalization_storage': 'denied',
+          'security_storage': 'denied',
+          'wait_for_update': 1500
+        });
+        gtag('set', 'ads_data_redaction', true);
+        gtag('set', 'url_passthrough', true);
+      }
+    </script>
+
+    <!-- ── Static Schema.org JSON-LD (visible before JS executes) ───── -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "Organization",
+          "@id": "https://thegridnexus.com/#organization",
+          "name": "The Grid Nexus",
+          "url": "https://thegridnexus.com",
+          "logo": {
+            "@type": "ImageObject",
+            "url": "https://thegridnexus.com/logo.png",
+            "width": 512,
+            "height": 512
+          },
+          "sameAs": [
+            "https://twitter.com/thegridnexus",
+            "https://facebook.com/thegridnexus",
+            "https://linkedin.com/company/thegridnexus"
+          ],
+          "contactPoint": {
+            "@type": "ContactPoint",
+            "contactType": "Customer Service",
+            "email": "contact@thegridnexus.com",
+            "availableLanguage": ["English"]
+          },
+          "description": "Tech, Security & Gaming Intelligence — breaking news, expert analysis, and comprehensive guides."
+        },
+        {
+          "@type": "WebSite",
+          "@id": "https://thegridnexus.com/#website",
+          "url": "https://thegridnexus.com",
+          "name": "The Grid Nexus",
+          "description": "Breaking technology news, cybersecurity analysis, and gaming guides.",
+          "publisher": { "@id": "https://thegridnexus.com/#organization" },
+          "potentialAction": {
+            "@type": "SearchAction",
+            "target": {
+              "@type": "EntryPoint",
+              "urlTemplate": "https://thegridnexus.com/topics?q={search_term_string}"
+            },
+            "query-input": "required name=search_term_string"
+          },
+          "inLanguage": "en-US"
+        }
+      ]
+    }
+    </script>
+  </head>
+
+  <body>
+    <a href="#main-content" class="skip-link" style="position:absolute;left:-9999px;z-index:9999;padding:1rem 1.5rem;background:#3b82f6;color:white;text-decoration:none;font-weight:600">Skip to main content</a>
+
+    <div id="root">
+      <!-- Static shell: rendered before React hydrates; improves Core Web Vitals & crawlability -->
+      <div id="static-shell" style="min-height:100vh;font-family:system-ui,sans-serif;background:#0f172a;color:#f8fafc">
+        <header style="border-bottom:1px solid rgba(148,163,184,0.2);padding:1rem 1.5rem">
+          <nav aria-label="Main navigation" style="max-width:80rem;margin:0 auto;display:flex;flex-wrap:wrap;gap:1rem;align-items:center">
+            <a href="/" aria-label="The Grid Nexus home" style="font-weight:700;font-size:1.25rem;color:#f8fafc;text-decoration:none">The Grid Nexus</a>
+            <a href="/tech" style="color:#94a3b8;text-decoration:none">Tech</a>
+            <a href="/security" style="color:#94a3b8;text-decoration:none">Security</a>
+            <a href="/gaming" style="color:#94a3b8;text-decoration:none">Gaming</a>
+            <a href="/news" style="color:#94a3b8;text-decoration:none">News</a>
+            <a href="/topics" style="color:#94a3b8;text-decoration:none">Topics</a>
+            <a href="/guides" style="color:#94a3b8;text-decoration:none">Guides</a>
+            <a href="/about" style="color:#94a3b8;text-decoration:none">About</a>
+          </nav>
+        </header>
+
+        <main id="main-content" style="max-width:80rem;margin:0 auto;padding:2rem 1.5rem">
+          <h1 style="font-size:2rem;margin-bottom:0.5rem">The Grid Nexus – Tech, Security &amp; Gaming News</h1>
+          <p style="font-size:1.125rem;color:#94a3b8;margin-bottom:1.5rem">Expert analysis and breaking coverage across technology, cybersecurity, and gaming.</p>
+          <p style="color:#cbd5e1;line-height:1.6;margin-bottom:1rem">Breaking technology news, cybersecurity analysis, and gaming guides. AI insights, security intelligence, and expert tech coverage. Stay ahead of the curve with The Grid Nexus.</p>
+          <p style="color:#cbd5e1;line-height:1.6;margin-bottom:1rem">The Grid Nexus delivers in-depth reporting on the technology, security, and gaming industries. Our editorial team covers the latest in artificial intelligence, cyber threats, hardware releases, software updates, and esports. We provide actionable intelligence for professionals and enthusiasts who need to stay informed.</p>
+          <p style="color:#cbd5e1;line-height:1.6;margin-bottom:1rem">Explore our guides and tutorials for practical advice on security best practices, gaming performance, and emerging tech. Whether you follow tech trends, manage security risk, or care about gaming and hardware, The Grid Nexus is your source for reliable, up-to-date coverage.</p>
+          <p style="color:#cbd5e1;line-height:1.6;margin-bottom:2rem">Our editorial and disclosure policies ensure transparent, accurate reporting. Contact us for press inquiries or feedback. Browse by category: Tech, Security, Gaming, News, Topics, and Guides. We publish daily updates on vulnerabilities, product launches, and industry shifts so you stay ahead.</p>
+
+          <section aria-label="Explore sections" style="margin-bottom:2rem">
+            <h2 style="font-size:1.25rem;margin-bottom:1rem;color:#f8fafc">Explore</h2>
+            <ul style="list-style:none;padding:0;margin:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:0.75rem" role="list">
+              <li><a href="/tech" style="color:#60a5fa;text-decoration:none">Technology News &amp; Innovation</a></li>
+              <li><a href="/security" style="color:#60a5fa;text-decoration:none">Cybersecurity &amp; Threat Intelligence</a></li>
+              <li><a href="/gaming" style="color:#60a5fa;text-decoration:none">Gaming &amp; Esports</a></li>
+              <li><a href="/news" style="color:#60a5fa;text-decoration:none">Breaking News</a></li>
+              <li><a href="/explore" style="color:#60a5fa;text-decoration:none">Explore All Content</a></li>
+              <li><a href="/topics" style="color:#60a5fa;text-decoration:none">Topics &amp; Tags</a></li>
+              <li><a href="/guides" style="color:#60a5fa;text-decoration:none">Guides &amp; How-Tos</a></li>
+              <li><a href="/tutorials" style="color:#60a5fa;text-decoration:none">Tutorials</a></li>
+              <li><a href="/reviews" style="color:#60a5fa;text-decoration:none">Product &amp; Game Reviews</a></li>
+              <li><a href="/ai-pulse" style="color:#60a5fa;text-decoration:none">AI Pulse Tracker</a></li>
+              <li><a href="/roadmap" style="color:#60a5fa;text-decoration:none">Platform Roadmap</a></li>
+              <li><a href="/breach-sim" style="color:#60a5fa;text-decoration:none">Breach Simulation Tool</a></li>
+              <li><a href="/nexus-intersection" style="color:#60a5fa;text-decoration:none">Nexus Intersection</a></li>
+              <li><a href="/security-score" style="color:#60a5fa;text-decoration:none">Security Score Checker</a></li>
+              <li><a href="/live-threat-dashboard" style="color:#60a5fa;text-decoration:none">Live Threat Dashboard</a></li>
+              <li><a href="/startups" style="color:#60a5fa;text-decoration:none">Startup News</a></li>
+              <li><a href="/media" style="color:#60a5fa;text-decoration:none">Media &amp; Press Kit</a></li>
+              <li><a href="/about" style="color:#60a5fa;text-decoration:none">About The Grid Nexus</a></li>
+              <li><a href="/contact" style="color:#60a5fa;text-decoration:none">Contact Us</a></li>
+              <li><a href="/privacy" style="color:#60a5fa;text-decoration:none">Privacy Policy</a></li>
+              <li><a href="/terms" style="color:#60a5fa;text-decoration:none">Terms of Service</a></li>
+              <li><a href="/disclosure" style="color:#60a5fa;text-decoration:none">Disclosure Policy</a></li>
+              <li><a href="/editorial" style="color:#60a5fa;text-decoration:none">Editorial Policy</a></li>
+              <li><a href="/quality-guidelines" style="color:#60a5fa;text-decoration:none">Quality Guidelines</a></li>
+              <li><a href="/content-policy" style="color:#60a5fa;text-decoration:none">Content Policy</a></li>
+            </ul>
+          </section>
+          <p style="font-size:0.875rem;color:#64748b" aria-live="polite">Loading full experience…</p>
+        </main>
+
+        <footer style="border-top:1px solid rgba(148,163,184,0.2);padding:1.5rem;text-align:center;color:#64748b;font-size:0.875rem">
+          <p>&copy; 2026 The Grid Nexus. All rights reserved. <a href="/privacy" style="color:#60a5fa">Privacy</a> &middot; <a href="/terms" style="color:#60a5fa">Terms</a> &middot; <a href="/disclosure" style="color:#60a5fa">Disclosure</a></p>
+        </footer>
+      </div>
+    </div>
+
+    <noscript>
+      <div style="padding:2rem;text-align:center;background:#0f172a;color:#f8fafc;font-family:system-ui,sans-serif">
+        <p style="margin-bottom:1rem">JavaScript is required for the full interactive experience. You can browse the following pages directly:</p>
+        <nav aria-label="No-JavaScript navigation">
+          <a href="/tech" style="color:#60a5fa">Tech</a> &middot;
+          <a href="/security" style="color:#60a5fa">Security</a> &middot;
+          <a href="/gaming" style="color:#60a5fa">Gaming</a> &middot;
+          <a href="/news" style="color:#60a5fa">News</a> &middot;
+          <a href="/explore" style="color:#60a5fa">Explore</a> &middot;
+          <a href="/topics" style="color:#60a5fa">Topics</a> &middot;
+          <a href="/guides" style="color:#60a5fa">Guides</a> &middot;
+          <a href="/about" style="color:#60a5fa">About</a>
+        </nav>
+      </div>
+    </noscript>
+
+    <!-- ── Application entry point ───────────────────────────────────── -->
+    <script type="module" src="/src/main.tsx"></script>
+
+    <!-- ── Deferred third-party scripts (non-localhost only) ─────────── -->
+    <script>
+      (function(){
+        var isLocalhost = /^localhost$|^127\.0\.0\.1$|^\[::1\]$/i.test(window.location.hostname || '');
+        function loadScript(src, opts) {
+          try {
+            var s = document.createElement('script');
+            s.async = true;
+            s.src = src;
+            s.onerror = function() {};
+            if (opts) { for (var k in opts) s.setAttribute(k, opts[k]); }
+            (document.body || document.documentElement).appendChild(s);
+          } catch (e) {}
+        }
+        function run() {
+          if (isLocalhost) return;
+          // Microsoft Clarity
+          try {
+            (function(c,l,a,r,i,t,y){
+              c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+              t=l.createElement(r);t.async=1;t.src='https://www.clarity.ms/tag/'+i;
+              t.onerror=function(){};
+              y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+            })(window,document,'clarity','script','vd7rgy7tu7');
+          } catch(_){}
+          loadScript('https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9278124025449370', { crossOrigin: 'anonymous', referrerPolicy: 'no-referrer-when-downgrade' });
+          loadScript('https://analytics.ahrefs.com/analytics.js', { 'data-key': 'aNTResFK8mO8Rf5gt0QKdw', crossOrigin: 'anonymous' });
+          loadScript('https://platform.foremedia.net/code/61303/analytics');
+        }
+        if (document.readyState === 'complete') run(); else window.addEventListener('load', run);
+      })();
+    </script>
+
+    <style>
+      .skip-link:focus{left:0!important;top:0!important}
+      html.dark { background: #0f172a !important; }
+      body { background: #0f172a; color: #f8fafc; }
+    </style>
+
+    <!-- ── Crawlable article links (hidden, for Googlebot discovery) ── -->
+    <nav aria-label="Article Index" style="display:none">
+      <a href="/article/ai-security-threats-2026">AI Security Threats 2026</a>
+      <a href="/article/gaming-pc-security-hardening-guide-2026">Gaming PC Security Hardening Guide 2026</a>
+      <a href="/article/steam-deck-2-specs-release-date-leaks">Steam Deck 2 Specs</a>
+      <a href="/article/router-security-gamers-2026">Router Security for Gamers 2026</a>
+      <a href="/article/cross-vertical-cybersecurity-intelligence-sharing-stix-misp-2026">Cross-Vertical Cybersecurity Intelligence</a>
+      <a href="/article/secure-ai-assisted-game-design-balance-analytics-2026">Secure AI Game Design</a>
+      <a href="/article/game-monetization-anti-fraud-intelligence-2026-in-app-purchases">Game Monetization Anti-Fraud</a>
+      <a href="/article/ai-driven-endpoint-device-security-intelligence-edr-2026">AI-Driven Endpoint Security</a>
+      <a href="/article/secure-metaverse-virtual-world-infrastructure-security-intelligence-2026">Secure Metaverse Infrastructure</a>
+      <a href="/article/ai-driven-threat-detection-response-2026-cybersecurity-roadmap">AI Threat Detection 2026</a>
+      <a href="/article/zero-trust-architecture-intelligence-2026-roadmap">Zero Trust Architecture 2026</a>
+      <a href="/article/threat-intelligence-proactive-defense-stix-taxii-2026">Threat Intelligence Proactive Defense</a>
+      <a href="/article/generative-ai-cybersecurity-llm-soc-automation-2026">Generative AI Cybersecurity</a>
+      <a href="/article/cloud-native-security-intelligence-cspm-cwpp-2026">Cloud Native Security</a>
+      <a href="/article/privacy-enhancing-technologies-confidential-ai-federated-learning-2026">Privacy Enhancing Technologies</a>
+      <a href="/article/identity-centric-security-passwordless-auth-2026-roadmap">Identity-Centric Security</a>
+      <a href="/article/secure-ai-risk-governance-trustworthy-ai-trism-2026">Secure AI Risk Governance</a>
+      <a href="/article/secure-devops-devsecops-intelligence-cicd-2026">Secure DevOps 2026</a>
+      <a href="/article/ai-driven-continuous-threat-exposure-management-ctem-2026">Continuous Threat Exposure Management</a>
+      <a href="/article/ai-driven-digital-twin-security-critical-systems-2026">AI Digital Twin Security</a>
+      <a href="/article/ai-enabled-security-awareness-training-adaptive-learning-2026">AI Security Awareness Training</a>
+      <a href="/article/ai-enhanced-game-security-anti-cheat-machine-learning-2026">AI Game Security Anti-Cheat</a>
+      <a href="/article/game-cheating-exploit-detection-analytics-cheat-intelligence-2026">Game Cheating Detection 2026</a>
+      <a href="/article/fake-game-cheats-malware-account-stealer">Fake Game Cheats Malware</a>
+      <a href="/article/game-account-security-anti-phishing-2026-gaming-platforms">Game Account Security</a>
+      <a href="/article/minecraft-server-security-guide">Minecraft Server Security</a>
+      <a href="/article/roblox-parents-guide-account-security-safety">Roblox Safety Guide</a>
+      <a href="/article/nintendo-switch-2-security-guide">Nintendo Switch 2 Security</a>
+      <a href="/article/gaming-pc-antivirus-best-2026">Best Gaming PC Antivirus 2026</a>
+      <a href="/article/steam-controller-security-risks-gamers">Steam Controller Security</a>
+      <a href="/article/best-gaming-pc-under-1000-2026">Best Gaming PC Under $1000</a>
+      <a href="/article/best-gaming-gpu-1440p-2026-rx-9070-xt-vs-rtx-5080">Best Gaming GPU 2026</a>
+      <a href="/article/fortnite-valorant-updates-2026-security-patches">Fortnite Valorant Security</a>
+      <a href="/article/game-key-reseller-scams-g2a-cdkeys">Game Key Reseller Scams</a>
+      <a href="/article/ps5-xbox-pc-games-2026-release-calendar">PS5 Xbox PC 2026 Calendar</a>
+      <a href="/article/nioh-3-announced-sony-state-of-play-instant-play-access">Nioh 3 Announced</a>
+      <a href="/article/nioh-3-release-ps5-2026">Nioh 3 Release PS5</a>
+      <a href="/article/death-stranding-2-on-the-beach-pc-launch-march-2026-steam-review">Death Stranding 2 PC</a>
+      <a href="/article/high-on-life-2-release-2026">High on Life 2</a>
+      <a href="/article/crimson-desert-review-launch-march-2026-pearl-abyss-ps5-xbox-pc">Crimson Desert Review</a>
+      <a href="/article/monster-hunter-stories-3-twisted-reflection-review-2026-capcom">Monster Hunter Stories 3</a>
+      <a href="/article/resident-evil-requiem-launch-2026">Resident Evil Requiem</a>
+      <a href="/article/dragon-quest-vii-reimagined-review-2026">Dragon Quest VII</a>
+      <a href="/article/deus-ex-remastered-controversy-2026">Deus Ex Remastered</a>
+      <a href="/article/wwe-2k26-review-sandbox-mode-division-storylines-community-creations">WWE 2K26 Review</a>
+      <a href="/article/helldivers-2-force-of-law-warbond-new-weapons-armor-and-what-it-means-for-the-live-service-shooter-m">Helldivers 2 Warbond</a>
+      <a href="/article/arc-raiders-flashpoint-update-2026-extraction-shooter-embark-studios">Arc Raiders Flashpoint</a>
+      <a href="/article/dead-by-daylight-all-kill-update-march-2026-trickster-rework-k-pop">Dead by Daylight Update</a>
+      <a href="/article/nintendo-switch-2-security-guide">Nintendo Switch 2</a>
+      <a href="/article/xbox-rebrand-security-changes-gamers">Xbox Rebrand Security</a>
+      <a href="/article/ps5-xbox-pc-games-2026-release-calendar">2026 Game Release Calendar</a>
+      <a href="/article/world-of-warcraft-midnight-expansion-review-2026-lore-void-raids">World of Warcraft Midnight</a>
+      <a href="/article/ai-enhanced-game-security-anti-cheat-machine-learning-2026">AI Anti-Cheat 2026</a>
+      <a href="/article/xai-gains-pentagon-access-amid-security-concerns-grok-classified-networks-and-the-military-ai-dilemm">xAI Pentagon Access</a>
+      <a href="/article/apple-acquires-motionvfx-final-cut-pros-ai-powered-creative-leap-and-what-it-means-for-video-editing">Apple MotionVFX Acquisition</a>
+      <a href="/article/ys-x-proud-nordics-launch-2026">Ys X Proud Nordics</a>
+      <a href="/article/microsoft-patch-tuesday-6-zero-days-february-2026">Microsoft Patch Tuesday</a>
+      <a href="/security/microsoft-patch-tuesday-6-zero-days-february-2026">Microsoft Patch Tuesday</a>
+    </nav>
+  </body>
+</html>
