@@ -27,8 +27,7 @@ console.error = function filterError(...args: unknown[]) {
   originalError.apply(console, args);
 };
 
-// When disabled, we don't create a Convex client at all to avoid reconnect spam.
-// Instead, children render directly without ConvexProvider.
+// Placeholder URL — Convex will try to connect but our custom WebSocket fails immediately.
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const PLACEHOLDER_URL = "https://no-convex-configured.convex.cloud";
 const rawUrl = (import.meta.env.VITE_CONVEX_URL ?? "").trim();
@@ -45,7 +44,32 @@ const isEffectivelyDisabled = !hasConvexUrl || !functionsDeployed;
 
 export const ConvexDisabledContext = createContext<boolean>(true);
 
-function createClient(): { client: ConvexReactClient | null; disabled: boolean } {
+/**
+ * A fake WebSocket constructor that immediately closes on creation.
+ * This prevents the Convex client from ever establishing a real connection
+ * while still allowing the ConvexProvider to render (so useQuery hooks
+ * don't throw). The app falls back to mock data because queries return
+ * undefined indefinitely.
+ */
+function noopWebSocket(this: WebSocket, _url: string | URL, _protocols?: string | string[]): void {
+  // Immediately invoke onclose asynchronously
+  setTimeout(() => {
+    if (this.onclose) {
+      this.onclose(new CloseEvent('close', { code: 1000, wasClean: true }));
+    }
+  }, 0);
+}
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+(noopWebSocket as any).CLOSED = 3;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+(noopWebSocket as any).CLOSING = 2;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+(noopWebSocket as any).CONNECTING = 0;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+(noopWebSocket as any).OPEN = 1;
+
+function createClient(): { client: ConvexReactClient; disabled: boolean } {
   if (!isEffectivelyDisabled) {
     // Functions are deployed — connect to real Convex
     try {
@@ -59,9 +83,20 @@ function createClient(): { client: ConvexReactClient | null; disabled: boolean }
     }
   }
 
-  // Disabled mode — no Convex client at all. No WebSocket, no reconnects.
-  // App uses mock/sample data for everything.
-  return { client: null, disabled: true };
+  // Disabled mode: create a client that can never connect.
+  // The noop WebSocket ensures zero reconnect attempts.
+  try {
+    const placeholder = new ConvexReactClient(PLACEHOLDER_URL, {
+      skipConvexDeploymentUrlCheck: true,
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      webSocketConstructor: noopWebSocket as any,
+      unsavedChangesWarning: false,
+    });
+    return { client: placeholder, disabled: true };
+  } catch {
+    // Last resort — minimal fake client
+    throw new Error("Failed to create Convex placeholder client");
+  }
 }
 
 interface SafeConvexProviderProps {
@@ -71,17 +106,8 @@ interface SafeConvexProviderProps {
 export function SafeConvexProvider({ children }: SafeConvexProviderProps) {
   const { client, disabled } = useMemo(() => createClient(), []);
 
-  // When disabled, skip the ConvexProvider entirely — no WebSocket, no reconnect noise.
-  if (disabled || !client) {
-    return (
-      <ConvexDisabledContext.Provider value={true}>
-        {children}
-      </ConvexDisabledContext.Provider>
-    );
-  }
-
   return (
-    <ConvexDisabledContext.Provider value={false}>
+    <ConvexDisabledContext.Provider value={disabled}>
       <ConvexProvider client={client}>{children}</ConvexProvider>
     </ConvexDisabledContext.Provider>
   );
