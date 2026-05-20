@@ -16,11 +16,10 @@ export default function Tech() {
   const [viewMode, setViewMode] = useState<'grid' | 'list' | 'compact'>('grid');
   const { data: techContent, isLoading } = useContentByFeed('innovate', 30);
 
-  const techArticles = !isLoading && techContent && techContent.length > 0
+  // Always serve articles for SEO (Googlebot needs visible internal links)
+  const techArticles = techContent && techContent.length > 0
     ? mapContentToArticles(techContent)
-    : !isLoading
-      ? mockArticles.filter(a => a.niche === 'tech')
-      : [];
+    : mockArticles.filter(a => a.niche === 'tech');
   const meta = getPageMetadata('/tech');
 
   return (
@@ -67,16 +66,8 @@ export default function Tech() {
           <ViewToggle value={viewMode} onChange={setViewMode} ariaLabel="Article layout" />
         </div>
 
-        {/* Articles Grid */}
-        {isLoading ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {[...Array(6)].map((_, i) => (
-              <Skeleton key={i} className="h-64 w-full" />
-            ))}
-          </div>
-        ) : (
-          <ArticleGrid articles={techArticles} columns={3} viewMode={viewMode} />
-        )}
+        {/* Articles Grid — always render articles for SEO */}
+        <ArticleGrid articles={techArticles} columns={3} viewMode={viewMode} />
       </div>
     </Layout>
   );

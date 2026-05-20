@@ -27,11 +27,11 @@ export default function Gaming() {
   const [viewMode, setViewMode] = useState<'grid' | 'list' | 'compact'>('grid');
   const { data: gamingContent, isLoading } = useContentByFeed('play', 30);
 
-  const gamingArticles = !isLoading && gamingContent && gamingContent.length > 0
+  // Always serve mock articles for SEO (Googlebot needs visible links)
+  // Convex data takes priority when available, but never block rendering
+  const gamingArticles = gamingContent && gamingContent.length > 0
     ? mapContentToArticles(gamingContent)
-    : !isLoading
-      ? mockArticles.filter(a => a.niche === 'gaming')
-      : [];
+    : mockArticles.filter(a => a.niche === 'gaming');
   const meta = getPageMetadata('/gaming');
 
   return (
@@ -159,16 +159,9 @@ export default function Gaming() {
           <ViewToggle value={viewMode} onChange={setViewMode} ariaLabel="Article layout" />
         </div>
 
-        {/* Articles Grid */}
-        {isLoading ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {[...Array(6)].map((_, i) => (
-              <Skeleton key={i} className="h-64 w-full" />
-            ))}
-          </div>
-        ) : (
-          <ArticleGrid articles={gamingArticles} columns={3} viewMode={viewMode} />
-        )}
+        {/* Articles Grid — always show articles (no loading state for SEO)
+            Googlebot needs visible internal links to article pages */}
+        <ArticleGrid articles={gamingArticles} columns={3} viewMode={viewMode} />
       </div>
     </Layout>
   );
