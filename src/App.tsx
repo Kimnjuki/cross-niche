@@ -171,6 +171,8 @@ const App = () => (
                     <Route path="/gaming/security-guides" element={<GamingSecurityGuides />} />
                     <Route path="/gaming/:slug" element={<ArticlePage />} />
                     <Route path="/article/:slug" element={<ArticlePage />} />
+                    {/* SEO-friendly URL aliases */}
+                    <Route path="/how-to-enable-2fa-on-all-gaming-accounts-2026" element={<Navigate to="/article/2fa-setup-every-gaming-platform" replace />} />
                     <Route path="/news" element={<News />} />
                     <Route path="/explore" element={<Explore />} />
                     <Route path="/topics" element={<Topics />} />
