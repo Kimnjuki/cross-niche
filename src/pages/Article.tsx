@@ -249,7 +249,9 @@ export default function Article() {
         description={article.excerpt ?? ''}
         keywords={tags}
         image={article.imageUrl ?? getPlaceholderByNiche(article.niche, article.slug ?? article.id)}
-        url={`${window.location.origin}${window.location.pathname}`}
+        // Always canonicalize to /article/:slug — regardless of which route served this page
+// (/tech/:slug, /security/:slug, /gaming/:slug all serve the same content)
+url={`https://thegridnexus.com/article/${article.slug ?? article.id ?? ''}`}
         type="article"
         article={{ ...article, impactLevel: article.impactLevel ?? 'low', isBreaking: article.isBreaking ?? false }}
         publishedTime={article.publishedAt}
