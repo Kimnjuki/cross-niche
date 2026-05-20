@@ -187,22 +187,7 @@ export function SEOHead({
     }
     canonicalLink.href = canonical;
 
-    // ── hreflang (fixes "Missing hreflang" warning) ────────────────────
-    const hreflangPairs: [string, string][] = [
-      ['en',       canonical],
-      ['en-US',    canonical],
-      ['x-default', canonical],
-    ];
-    hreflangPairs.forEach(([lang, href]) => {
-      let el = document.querySelector(`link[rel="alternate"][hreflang="${lang}"]`) as HTMLLinkElement | null;
-      if (!el) {
-        el = document.createElement('link');
-        el.rel = 'alternate';
-        el.setAttribute('hreflang', lang);
-        document.head.appendChild(el);
-      }
-      el.href = href;
-    });
+    // ── hreflang removed (single-language English site — no multilingual pages)
 
     // ── Structured Data: single consolidated @graph ────────────────────
     // Remove ALL existing JSON-LD scripts first (prevents duplicates)
