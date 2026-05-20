@@ -1,6 +1,18 @@
 <!doctype html>
 <html lang="en" dir="ltr" class="dark">
   <head>
+
+    <!-- ── Google tag (gtag.js) ───────────────────────────────────────── -->
+    <!-- ID: G-TJ1VXE91NE (injected by Vite injectGa4Id plugin at build) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=%VITE_GA4_MEASUREMENT_ID%"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', '%VITE_GA4_MEASUREMENT_ID%', { send_page_view: false });
+    </script>
+
+
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes" />
@@ -159,24 +171,13 @@
     </script>
 
     <!-- ── Google tag (gtag.js) ───────────────────────────────────────── -->
-    <!-- Measurement ID: G-XMGRJBSN5Y (injected by Vite injectGa4Id plugin at build) -->
+    <!-- ID: G-TJ1VXE91NE (injected by Vite injectGa4Id plugin at build) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=%VITE_GA4_MEASUREMENT_ID%"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
-      try {
-        var isLocal = /^localhost$|^127\.0\.0\.1$|^\[::1\]$/i.test(window.location.hostname || '');
-        if (!isLocal) {
-          var s = document.createElement('script');
-          s.async = true;
-          s.src = 'https://www.googletagmanager.com/gtag/js?id=%VITE_GA4_MEASUREMENT_ID%';
-          s.onerror = function() {};
-          document.head.appendChild(s);
-          gtag('js', new Date());
-          // send_page_view: false — GA4PageTracker (React) owns all page_view events
-          // to avoid double-counting on SPA initial load.
-          gtag('config', '%VITE_GA4_MEASUREMENT_ID%', { send_page_view: false });
-        }
-      } catch (e) {}
+      gtag('js', new Date());
+      gtag('config', '%VITE_GA4_MEASUREMENT_ID%', { send_page_view: false });
     </script>
 
     <!-- ── Core meta ─────────────────────────────────────────────────── -->

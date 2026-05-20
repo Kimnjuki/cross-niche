@@ -31,3 +31,7 @@ prerender-routes.json
 
 # Claude AI worktrees and local config
 .claude/
+
+# Schema backup files
+convex/schema.ts.*.bak
+convex/schema.ts.partial

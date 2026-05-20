@@ -46,7 +46,7 @@ export function useAnalyticsTracker() {
   // Initialize analytics
   useEffect(() => {
     // Google Analytics 4
-    const GA4_ID = (import.meta as Record<string, any>).env?.VITE_GA4_MEASUREMENT_ID || 'G-XMGRJBSN5Y';
+    const GA4_ID = (import.meta as Record<string, any>).env?.VITE_GA4_MEASUREMENT_ID || 'G-TJ1VXE91NE';
     if (typeof window !== 'undefined' && window.gtag) {
       window.gtag('config', GA4_ID, {
         page_title: document.title,

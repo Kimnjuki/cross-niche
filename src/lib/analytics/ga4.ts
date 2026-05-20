@@ -1,7 +1,7 @@
 /**
  * Google Analytics 4 Implementation
  * Comprehensive event tracking for SEO and content performance
- * Aligned with index.html gtag (G-XMGRJBSN5Y) - avoids duplicate script load
+ * Aligned with index.html gtag (G-TJ1VXE91NE) - avoids duplicate script load
  */
 
 declare global {
@@ -12,7 +12,7 @@ declare global {
 }
 
 // GA4 Measurement ID - must match index.html; env override for flexibility
-const GA4_MEASUREMENT_ID = import.meta.env.VITE_GA4_MEASUREMENT_ID || 'G-XMGRJBSN5Y';
+const GA4_MEASUREMENT_ID = import.meta.env.VITE_GA4_MEASUREMENT_ID || 'G-TJ1VXE91NE';
 
 /**
  * Initialize GA4 - uses existing gtag from index.html when present
