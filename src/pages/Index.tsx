@@ -218,7 +218,7 @@ export default function Index() {
               </Link>
             </div>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-              {sortedArticles.slice(0, 4).map((article, i) => (
+              {sortedArticles.slice(0, 8).map((article, i) => (
                 <Link
                   key={safeArticleId(article) || i}
                   to={articleLink(article)}
@@ -351,7 +351,7 @@ export default function Index() {
               </Link>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-              {sortedArticles.slice(0, 4).map((article, i) => (
+              {sortedArticles.map((article, i) => (
                 <Link
                   key={safeArticleId(article) || i}
                   to={articleLink(article)}

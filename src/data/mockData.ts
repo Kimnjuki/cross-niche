@@ -173,6 +173,8 @@ export const mockArticles: Article[] = [
       readTime: 7,
       imageUrl: 'https://images.unsplash.com/photo-1563013544-824ae1b704d3?w=800',
       tags: ['Gmail', '2FA', 'Account Security', 'Hacking'],
+      metaTitle: 'Gmail Hack Wave Targets Gamers — 2FA Setup Guide 2026',
+      metaDescription: 'Credential-stuffing attacks on Gmail surged 340% targeting Steam, Epic, and Xbox accounts. Enable 2FA now with our step-by-step gamer security guide.',
       impactLevel: 'high',
       isBreaking: true,
       isFeatured: true,
@@ -191,6 +193,8 @@ export const mockArticles: Article[] = [
       readTime: 8,
       imageUrl: 'https://images.unsplash.com/photo-1555949963-ff9fe0c870eb?w=800',
       tags: ['Password Manager', 'Bitwarden', 'Account Security'],
+      metaTitle: 'Bitwarden Security Incident — Gamer Password Manager Safety',
+      metaDescription: 'Bitwarden breach alert for gamers: what happened, how it affects your gaming passwords, and whether you should switch password managers.',
       impactLevel: 'medium',
     },
     {
@@ -207,6 +211,8 @@ export const mockArticles: Article[] = [
       readTime: 6,
       imageUrl: 'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=800',
       tags: ['Chrome', 'Zero-Day', 'Browser Security', 'PC Gaming'],
+      metaTitle: 'Chrome Zero-Day Warning April 2026 — Gamer Browser Safety',
+      metaDescription: 'Google Chrome zero-day exploit targets gamers. Update your browser immediately. Full protection guide for gaming account security.',
       impactLevel: 'high',
     },
     {
@@ -221,6 +227,8 @@ export const mockArticles: Article[] = [
       readTime: 8,
       imageUrl: 'https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=800',
       tags: ['Steam', 'Account Security', 'Phishing', 'Credential Stuffing', 'Gaming Security', 'Steam Guard', '2FA', 'SIM Swap'],
+      metaTitle: 'Steam Account Hacked? Recovery & Protection Guide 2026',
+      metaDescription: 'Steam account hacked? What to do in 2026. Full recovery process, support wait times, email changed recovery, and prevention tips.',
       impactLevel: 'high',
       isFeatured: true,
       securityScore: 95,
@@ -240,6 +248,8 @@ export const mockArticles: Article[] = [
       readTime: 7,
       imageUrl: 'https://images.unsplash.com/photo-1614680376573-df3480f0c6ff?w=800',
       tags: ['Discord', 'Malware', 'Phishing', 'Social Engineering'],
+      metaTitle: 'Discord Malware Wave — How Gamers Can Stay Safe 2026',
+      metaDescription: 'Discord malware attacks targeting gamers are rising. Learn to spot malicious links, protect your account, and keep your server safe.',
       impactLevel: 'high',
     },
     {
@@ -256,6 +266,8 @@ export const mockArticles: Article[] = [
       readTime: 8,
       imageUrl: 'https://images.unsplash.com/photo-1612282130111-5e648c72b9f6?w=800',
       tags: ['Nintendo', 'Switch 2', 'Console Security', 'Account Protection'],
+      metaTitle: 'Nintendo Switch 2 Security Guide — Account Protection 2026',
+      metaDescription: 'Nintendo Switch 2 security settings every owner needs. Protect your Nintendo account, enable 2FA, and avoid common scams.',
       impactLevel: 'high',
       isBreaking: true,
     },
@@ -273,6 +285,8 @@ export const mockArticles: Article[] = [
       readTime: 9,
       imageUrl: 'https://images.unsplash.com/photo-1574169208507-84376144848b?w=800',
       tags: ['Malware', 'Cheats', 'Account Security', 'Phishing'],
+      metaTitle: 'Fake Game Cheats — How Malware Steals Gaming Accounts',
+      metaDescription: 'Fake cheats and mods are the top malware vector for gamers. Learn how account stealers work and how to download mods safely.',
       impactLevel: 'medium',
     },
     {
@@ -289,6 +303,8 @@ export const mockArticles: Article[] = [
       readTime: 8,
       imageUrl: 'https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=800',
       tags: ['SIM Swapping', '2FA', 'Account Security', 'Mobile Security'],
+      metaTitle: 'SIM Swapping Attacks on Gamers — Account Protection Guide',
+      metaDescription: 'SIM swap attacks can hijack your Steam, Epic, and Xbox accounts in minutes. Protect your phone number and enable app-based 2FA today.',
       impactLevel: 'high',
     },
     {
@@ -305,6 +321,8 @@ export const mockArticles: Article[] = [
       readTime: 7,
       imageUrl: 'https://images.unsplash.com/photo-1511512578047-dfb367046420?w=800',
       tags: ['Windows 11', 'Anti-Cheat', 'EasyAntiCheat', 'BattlEye'],
+      metaTitle: 'Windows 11 Anti-Cheat Broken? Fix Guide for Gamers 2026',
+      metaDescription: 'Windows 24H2 update broke anti-cheat systems for many games. Step-by-step fix guide to get Valorant, Fortnite, and others working again.',
       securityScore: 75,
       isFeatured: true,
     },
@@ -322,6 +340,8 @@ export const mockArticles: Article[] = [
       readTime: 8,
       imageUrl: 'https://images.unsplash.com/photo-1605901309584-818e25960a8f?w=800',
       tags: ['Xbox', 'Microsoft', 'Account Security', 'Game Pass'],
+      metaTitle: 'Xbox Rebrand — What Security Changes Mean for Gamers',
+      metaDescription: 'Microsoft\'s Xbox rebrand brings new security features, account changes, and privacy updates. Everything gamers need to know about the transition.',
       securityScore: 80,
       isBreaking: true,
     },
@@ -339,6 +359,8 @@ export const mockArticles: Article[] = [
       readTime: 7,
       imageUrl: 'https://images.unsplash.com/photo-1593118247619-e2d6f056869e?w=800',
       tags: ['Steam Controller', 'Valve', 'USB Security', 'PC Gaming'],
+      metaTitle: 'Steam Controller Security Risks — What Gamers Should Know',
+      metaDescription: 'Can a Steam controller be hacked? We analyze Bluetooth security, input injection risks, and how to safely use controllers with your gaming PC.',
       securityScore: 70,
     },
     {
@@ -355,6 +377,8 @@ export const mockArticles: Article[] = [
       readTime: 11,
       imageUrl: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800',
       tags: ['VPN', 'Gaming', 'Privacy', 'DDoS Protection'],
+      metaTitle: 'Best VPN for Gaming 2026 — Security vs Latency Tested',
+      metaDescription: 'We tested 12 VPNs for gaming security and latency. Find out which VPNs protect against DDoS without ruining your ping in competitive games.',
       securityScore: 65,
     },
     {
@@ -371,6 +395,8 @@ export const mockArticles: Article[] = [
       readTime: 12,
       imageUrl: 'https://images.unsplash.com/photo-1559136555-9303baea8ebd?w=800',
       tags: ['Twitch', 'Streaming', 'Doxxing', 'Privacy', 'OBS'],
+      metaTitle: 'Twitch Streamer Security Guide — Prevent Doxxing & Swatting',
+      metaDescription: 'Essential security guide for Twitch streamers. Prevent doxxing, avoid swatting, protect your personal info, and secure your streaming setup.',
       securityScore: 85,
       isFeatured: true,
     },
@@ -388,6 +414,8 @@ export const mockArticles: Article[] = [
       readTime: 7,
       imageUrl: 'https://images.unsplash.com/photo-1542751110-97427f149e4d?w=800',
       tags: ['Razer', 'Synapse', 'Peripherals', 'Vulnerability'],
+      metaTitle: 'Razer Synapse Vulnerability — Security Fix for Gamers 2026',
+      metaDescription: 'Razer Synapse security vulnerability exposed gaming PCs to local privilege escalation. How to patch, what was affected, and ongoing risks.',
       securityScore: 70,
     },
     {
@@ -404,6 +432,8 @@ export const mockArticles: Article[] = [
       readTime: 9,
       imageUrl: 'https://images.unsplash.com/photo-1556742111-a301076d9d18?w=800',
       tags: ['Game Keys', 'G2A', 'Scams', 'Resellers'],
+      metaTitle: 'Game Key Reseller Scams — G2A, CDKeys Safety Guide 2026',
+      metaDescription: 'Are game key resellers safe? Investigation into G2A, CDKeys, and other marketplaces. How to avoid stolen keys, chargebacks, and account bans.',
       securityScore: 60,
     },
     {
@@ -420,6 +450,8 @@ export const mockArticles: Article[] = [
       readTime: 7,
       imageUrl: 'https://images.unsplash.com/photo-1612282130111-5e648c72b9f6?w=800',
       tags: ['Roblox', 'Kids Safety', 'Parental Controls', 'Phishing'],
+      metaTitle: 'Roblox Parent Guide — Account Security & Child Safety 2026',
+      metaDescription: 'Complete Roblox safety guide for parents. How to set up parental controls, enable 2FA, block inappropriate content, and protect your child\'s account.',
       securityScore: 90,
       isFeatured: true,
     },
@@ -437,6 +469,8 @@ export const mockArticles: Article[] = [
       readTime: 8,
       imageUrl: 'https://images.unsplash.com/photo-1552832230-c0197dd311b5?w=800',
       tags: ['Minecraft', 'Server Security', 'Plugins', 'Griefing'],
+      metaTitle: 'Minecraft Server Security Guide — Protect Your Server 2026',
+      metaDescription: 'How to secure your Minecraft server against griefing, DDoS, and account theft. Essential plugins, firewall rules, and backup strategies for server owners.',
       securityScore: 75,
     },
     {
@@ -453,6 +487,8 @@ export const mockArticles: Article[] = [
       readTime: 7,
       imageUrl: 'https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=800',
       tags: ['Twitch', 'Streaming', 'Account Security', 'Breach'],
+      metaTitle: 'Twitch Accounts Hacked — Breach Recovery Guide 2026',
+      metaDescription: 'Twitch account breach wave hits streamers. Recover your hacked Twitch account, secure your channel, and prevent future takeovers with our step-by-step guide.',
       isFeatured: true,
     },
     {
@@ -469,6 +505,8 @@ export const mockArticles: Article[] = [
       readTime: 9,
       imageUrl: 'https://images.unsplash.com/photo-1599669454699-248893623440?w=800',
       tags: ['Headsets', 'Privacy', 'Audio Security', 'Malware'],
+      metaTitle: 'Gaming Headset Malware Risk — Privacy Guide for Gamers',
+      metaDescription: 'Can your gaming headset be hacked? We investigate microphone malware, audio surveillance risks, and how to protect your privacy while gaming.',
     },
     {
       id: 'tech-7',
@@ -484,6 +522,8 @@ export const mockArticles: Article[] = [
       readTime: 10,
       imageUrl: 'https://images.unsplash.com/photo-1614064641938-3bbee52942c7?w=800',
       tags: ['Antivirus', 'PC Gaming', 'Performance', 'Security Software'],
+      metaTitle: 'Best Antivirus for Gaming PC 2026 — Performance Tested',
+      metaDescription: 'Best antivirus for gaming in 2026. We tested 10 security suites for gaming performance impact, malware protection, and gamer-friendly features.',
     },
     {
       id: 'tech-8',
@@ -499,6 +539,8 @@ export const mockArticles: Article[] = [
       readTime: 10,
       imageUrl: 'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=800',
       tags: ['Router', 'Network Security', 'Wi-Fi', 'Gaming Setup'],
+      metaTitle: 'Router Security for Gamers — Network Protection Guide 2026',
+      metaDescription: 'Secure your home router for gaming. DDoS protection, port forwarding safety, DNS settings, and network segmentation tips for competitive gamers.',
     },
 
   // ── GAMING SECURITY GUIDES ──────────────────────────────────────────────────
@@ -553,6 +595,8 @@ export const mockArticles: Article[] = [
     readTime: 12,
     imageUrl: 'https://images.unsplash.com/photo-1563013544-824ae1b704d3?w=800',
     tags: ['Security Guide', 'Beginner', 'Account Security', '2FA', 'Password Manager', 'Gaming'],
+      metaTitle: 'Complete Gaming Account Security Guide 2026 — All Platforms',
+      metaDescription: 'Ultimate gaming account security guide covering Steam, Xbox, PlayStation, Nintendo, Epic Games, and more. 2FA setup, password managers, and breach response.',
     impactLevel: 'high',
     isFeatured: true,
   },
@@ -597,6 +641,8 @@ export const mockArticles: Article[] = [
     readTime: 10,
     imageUrl: 'https://images.unsplash.com/photo-1555949963-ff9fe0c870eb?w=800',
     tags: ['Security Guide', 'Beginner', '2FA', 'Steam', 'Xbox', 'PlayStation', 'Epic Games', 'Authentication'],
+      metaTitle: 'How to Enable 2FA on Every Gaming Platform — Complete Guide',
+      metaDescription: 'Step-by-step 2FA setup guide for Steam, Xbox, PlayStation, Nintendo, Epic Games, and Battle.net. Includes authenticator apps vs SMS comparison.',
     impactLevel: 'high',
     isFeatured: true,
   },
@@ -641,6 +687,8 @@ export const mockArticles: Article[] = [
     readTime: 14,
     imageUrl: 'https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=800',
     tags: ['Security Guide', 'Intermediate', 'Phishing', 'Malware', 'Credential Stuffing', 'SIM Swapping', 'Social Engineering'],
+      metaTitle: 'How Hackers Steal Gaming Accounts — Methods & Prevention',
+      metaDescription: 'How hackers steal gaming accounts: phishing, credential stuffing, SIM swapping, and session hijacking. Learn their methods and how to block them.',
     impactLevel: 'high',
   },
   {
@@ -700,6 +748,8 @@ export const mockArticles: Article[] = [
     readTime: 13,
     imageUrl: 'https://images.unsplash.com/photo-1614064641938-3bbee52942c7?w=800',
     tags: ['Security Guide', 'Intermediate', 'PC Security', 'Windows Security', 'Antivirus', 'Firewall', 'Gaming PC'],
+      metaTitle: 'PC Hardening Guide for Gamers — Security Without Lag 2026',
+      metaDescription: 'Hardening your gaming PC doesn\'t mean sacrificing performance. Complete guide to Windows security settings, firewall rules, and privacy tweaks for gamers.',
     impactLevel: 'medium',
   },
   {
@@ -766,6 +816,8 @@ export const mockArticles: Article[] = [
     readTime: 11,
     imageUrl: 'https://images.unsplash.com/photo-1612282130111-5e648c72b9f6?w=800',
     tags: ['Security Guide', 'Beginner', 'Mobile Gaming', 'iOS', 'Android', 'In-App Purchases', 'App Permissions'],
+      metaTitle: 'Mobile Gaming Security Guide — Protect Your Phone 2026',
+      metaDescription: 'Mobile gaming security risks are exploding. Protect your phone from game malware, fake apps, in-game scams, and account theft on iOS and Android.',
     impactLevel: 'medium',
   },
   // ── SECURITY TOOL COMPANION ARTICLES ──────────────────────────────────────
@@ -781,6 +833,8 @@ export const mockArticles: Article[] = [
     readTime: 7,
     imageUrl: 'https://images.unsplash.com/photo-1563013544-824ae1b704d3?w=800',
     tags: ['Account Security', 'Steam', 'PlayStation', 'Xbox', 'Epic Games', 'Gaming', 'Tool Companion'],
+      metaTitle: 'How to Check if Your Gaming Accounts Have Been Hacked',
+      metaDescription: 'Signs your gaming accounts are compromised and how to check. Use Have I Been Pwned, check login history, and audit active sessions across all platforms.',
     impactLevel: 'high',
   },
   {
@@ -795,6 +849,8 @@ export const mockArticles: Article[] = [
     readTime: 9,
     imageUrl: 'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=800',
     tags: ['Server Security', 'Vulnerability Scanning', 'CVE', 'Game Servers', 'Minecraft', 'DevOps', 'Tool Companion'],
+      metaTitle: 'Gaming Server Vulnerability Scanning — Complete Guide',
+      metaDescription: 'How to scan your gaming servers for vulnerabilities. Essential tools, port scanning safety, DDoS mitigation, and securing game server infrastructure.',
     impactLevel: 'high',
   },
   {
@@ -809,6 +865,8 @@ export const mockArticles: Article[] = [
     readTime: 8,
     imageUrl: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800',
     tags: ['Sentiment Analysis', 'Community Research', 'Player Trust', 'Gaming Security', 'Data Analysis', 'Tool Companion'],
+      metaTitle: 'What Gamers Think About Security — Sentiment Analysis 2026',
+      metaDescription: 'Survey of 5,000 gamers reveals security attitudes, password habits, 2FA adoption rates, and what actually motivates players to protect their accounts.',
     impactLevel: 'medium',
   },
   {
@@ -823,6 +881,8 @@ export const mockArticles: Article[] = [
     readTime: 8,
     imageUrl: 'https://images.unsplash.com/photo-1611605698335-8b1569810432?w=800',
     tags: ['Discord Moderation', 'Community Management', 'Toxicity', 'Spam Detection', 'PII Protection', 'Tool Companion'],
+      metaTitle: 'Discord Moderator Guide — Block Spam & Scams 2026',
+      metaDescription: 'Discord server moderation guide for 2026. Block spam bots, identify crypto and nitro scams, protect members, and automate security with bots.',
     impactLevel: 'medium',
   },
   {
@@ -837,6 +897,8 @@ export const mockArticles: Article[] = [
     readTime: 6,
     imageUrl: 'https://images.unsplash.com/photo-1677442136019-21780ecad995?w=800',
     tags: ['AI Assistant', 'Gaming Copilot', 'Security', 'Tool Guide', 'FAQ', 'Tool Companion'],
+      metaTitle: 'The Gaming Copilot — AI Security Assistant for Gamers',
+      metaDescription: 'Meet Gaming Copilot: your AI-powered security assistant that monitors threats, suggests protections, and helps you secure every gaming account you own.',
     impactLevel: 'low',
   },
   {
@@ -851,6 +913,8 @@ export const mockArticles: Article[] = [
     readTime: 7,
     imageUrl: 'https://images.unsplash.com/photo-1629909613654-28e377c37b09?w=800',
     tags: ['Release Predictions', 'Data Analysis', 'Gaming Industry', 'ESRB', 'SteamDB', 'Tool Companion', 'Methodology'],
+      metaTitle: 'How We Predict Game Release Dates — Signal Analysis Method',
+      metaDescription: 'Our game release date prediction methodology. Analyzing social signals, developer patterns, trademark filings, and leak data for accurate release forecasts.',
     impactLevel: 'low',
   },
   {
@@ -865,6 +929,8 @@ export const mockArticles: Article[] = [
     readTime: 7,
     imageUrl: 'https://images.unsplash.com/photo-1493711662062-fa541adb3fc8?w=800',
     tags: ['Game Recommendations', 'Security Score', 'Multiplayer', 'Anti-Cheat', 'Privacy', 'Tool Companion'],
+      metaTitle: 'Games by Security Score — Find Safe Multiplayer Games 2026',
+      metaDescription: 'Find multiplayer games with the best security practices. We rank games by encryption, MFA support, data privacy, and anti-cheat effectiveness.',
     impactLevel: 'medium',
   },
   {
@@ -879,6 +945,8 @@ export const mockArticles: Article[] = [
     readTime: 6,
     imageUrl: 'https://images.unsplash.com/photo-1504711434969-e33886168d6c?w=800',
     tags: ['News Personalization', 'Security News', 'Gaming News', 'Curated Feed', 'Tool Companion'],
+      metaTitle: 'Personalized Gaming Security News Feed — Stay Informed',
+      metaDescription: 'Build your personalized gaming security news feed. Track threats to your platforms, get breach alerts, and stay ahead of attacks targeting your accounts.',
     impactLevel: 'low',
   },
 
@@ -932,6 +1000,8 @@ export const mockGuides: Guide[] = [
     readTime: 9,
     imageUrl: 'https://images.unsplash.com/photo-1633265486064-086b219458ec?w=800',
     tags: ['AI', 'Deepfakes', 'Security', 'Gaming', 'Quantum'],
+      metaTitle: 'AI Security Threats 2026 — What Gamers Need to Know',
+      metaDescription: 'AI-powered cyber threats targeting gamers in 2026. Deepfake voice scams, AI phishing, automated account takeovers, and how to defend against them.',
     isFeatured: true,
   },
   {
@@ -960,6 +1030,8 @@ export const mockGuides: Guide[] = [
     readTime: 10,
     imageUrl: 'https://images.unsplash.com/photo-1612287230202-1ff1d85d1bdf?w=800',
     tags: ['Steam Deck', 'Valve', 'Hardware', 'Gaming'],
+      metaTitle: 'Steam Deck 2 — Specs, Release Date & Latest Leaks 2026',
+      metaDescription: 'Steam Deck 2 rumors, leaked specifications, expected release date, and security features. Everything we know about Valve\'s next handheld gaming PC.',
     isFeatured: true,
   },
   {
@@ -974,6 +1046,8 @@ export const mockGuides: Guide[] = [
     readTime: 11,
     imageUrl: 'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=800',
     tags: ['Router', 'Security', 'Gaming', 'CVE-2025-7850', 'VLAN'],
+      metaTitle: 'Router Security for Gamers 2026 — Complete Network Guide',
+      metaDescription: '2026 router security guide for competitive gamers. DDoS protection strategies, QoS settings for low ping, and network hardening without lag.',
     isFeatured: true,
   },
 ];

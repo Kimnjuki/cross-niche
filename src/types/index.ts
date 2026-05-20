@@ -20,6 +20,10 @@ export interface Article {
   securityScore?: number; // For gaming articles
   impactLevel?: 'high' | 'medium' | 'low'; // For security articles
   viewCount?: number; // Article view count for analytics
+  /** SEO-optimized title for SERP display (overrides title) */
+  metaTitle?: string;
+  /** SEO-optimized meta description for SERP snippet (overrides excerpt) */
+  metaDescription?: string;
 }
 
 export interface Guide {

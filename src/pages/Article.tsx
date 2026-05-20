@@ -245,13 +245,14 @@ export default function Article() {
       })()}
 
       <SEOHead
-        title={`${article.title ?? 'Untitled'} | The Grid Nexus`}
-        description={article.excerpt ?? ''}
+        /* Use metaTitle for SERP title when available, fallback to article title */
+        title={article.metaTitle ? `${article.metaTitle} | The Grid Nexus` : `${article.title ?? 'Untitled'} | The Grid Nexus`}
+        /* Use metaDescription for SERP snippet when available, fallback to excerpt */
+        description={article.metaDescription || article.excerpt || ''}
         keywords={tags}
         image={article.imageUrl ?? getPlaceholderByNiche(article.niche, article.slug ?? article.id)}
-        // Always canonicalize to /article/:slug — regardless of which route served this page
-// (/tech/:slug, /security/:slug, /gaming/:slug all serve the same content)
-url={`https://thegridnexus.com/article/${article.slug ?? article.id ?? ''}`}
+        /* Always canonicalize to /article/:slug — regardless of route */
+        url={`https://thegridnexus.com/article/${article.slug ?? article.id ?? ''}`}
         type="article"
         article={{ ...article, impactLevel: article.impactLevel ?? 'low', isBreaking: article.isBreaking ?? false }}
         publishedTime={article.publishedAt}

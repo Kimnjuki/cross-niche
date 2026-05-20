@@ -35,3 +35,4 @@ prerender-routes.json
 # Schema backup files
 convex/schema.ts.*.bak
 convex/schema.ts.partial
+*.v3-bak

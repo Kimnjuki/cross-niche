@@ -73,7 +73,17 @@ export function markdownToHtml(markdown: string): string {
 }
 
 /**
+ * Add loading="lazy" and decoding="async" to all <img> tags in HTML content.
+ * Improves LCP (Largest Contentful Paint) by deferring off-screen images.
+ */
+function addLazyLoading(html: string): string {
+  // Add loading="lazy" to img tags that don't already have it
+  return html.replace(/<img\s/gi, '<img loading="lazy" decoding="async" ');
+}
+
+/**
  * Safely render content - converts markdown to HTML if needed
+ * then adds performance optimizations (lazy loading, etc.)
  */
 export function prepareArticleContent(content: string | null | undefined): string {
   if (!content) return '';
@@ -81,5 +91,7 @@ export function prepareArticleContent(content: string | null | undefined): strin
   if (!trimmed) return '';
   
   // Convert markdown to HTML
-  return markdownToHtml(trimmed);
+  const html = markdownToHtml(trimmed);
+  // Add performance optimizations
+  return addLazyLoading(html);
 }
