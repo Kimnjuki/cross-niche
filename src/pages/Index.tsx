@@ -4,7 +4,7 @@
  *         → Intelligence sidebar layout → Feed → All articles
  */
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useQuery } from 'convex/react';
 import { api } from '../../convex/_generated/api';
@@ -17,6 +17,7 @@ import { LandingPageTracker } from '@/components/analytics/LandingPageTracker';
 
 // New v2 components
 import { HeroCommandCenter } from '@/components/home/HeroCommandCenter';
+import { OnboardingFlow } from '@/components/onboarding/OnboardingFlow';
 import { CommandDashboard } from '@/components/home/CommandDashboard';
 import { BreakingNewsTicker } from '@/components/home/BreakingNewsTicker';
 import { BriefingsGrid } from '@/components/home/BriefingsGrid';
@@ -72,6 +73,14 @@ function safeArticleId(article: Article | null | undefined): string {
 }
 
 export default function Index() {
+  // Onboarding: show flow on first visit
+  const [showOnboarding, setShowOnboarding] = useState(false);
+  useEffect(() => {
+    const completed = localStorage.getItem('onboardingCompleted');
+    if (!completed) {
+      setShowOnboarding(true);
+    }
+  }, []);
   const navigate = useNavigate();
 
   const { data: allContent, isLoading: loadingPublished } = useAllPublishedContent(150);
@@ -118,6 +127,11 @@ export default function Index() {
   const homeMeta = getPageMetadata('/');
 
   // Empty state
+  // Show onboarding overlay on first visit
+  if (showOnboarding) {
+    return <OnboardingFlow onDismiss={() => setShowOnboarding(false)} />;
+  }
+
   if (!isLoading && sortedArticles.length === 0) {
     return (
       <Layout showPulseSidebar={false}>

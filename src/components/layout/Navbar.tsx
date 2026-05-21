@@ -15,29 +15,28 @@ import {
 import { cn } from '@/lib/utils';
 import { LiveTicker } from '@/components/layout/LiveTicker';
 
+// Simplified navigation: 6 primary items max (per spec UX-002)
 const navLinks = [
   { href: '/security', label: 'Threat Intel', color: 'text-security' },
   { href: '/gaming', label: 'Game Security', color: 'text-gaming' },
-  { href: '/tech', label: 'Tech', color: 'text-tech' },
-  { href: '/tools', label: 'Security Suite', color: 'text-security' },
-  { href: '/security-profile', label: 'My Profile', color: 'text-[#00F0FF]' },
-  { href: '/community-threats', label: 'Community', color: 'text-[#FF007A]' },
   { href: '/guides', label: 'Guides', color: 'text-foreground' },
-  { href: '/topics', label: 'Topics', color: 'text-foreground' },
+  { href: '/tools', label: 'Tools', color: 'text-tech' },
+  { href: '/community-threats', label: 'Community', color: 'text-[#FF007A]' },
+  { href: '/about', label: 'About', color: 'text-muted-foreground' },
 ];
 
 /** Primary CTAs for mobile: Security-first to reinforce gaming security positioning. */
 const mobilePrimaryLinks = [
   { href: '/security', label: 'Threat Intel', color: 'text-security' },
   { href: '/gaming', label: 'Game Security', color: 'text-gaming' },
-  { href: '/tech', label: 'Tech', color: 'text-tech' },
+  { href: '/tools', label: 'Tools', color: 'text-tech' },
 ];
 
 const roleFilters = [
   { id: 'all', label: 'All Roles' },
-  { id: 'streamer', label: 'Streamer' },
-  { id: 'sysadmin', label: 'SysAdmin' },
   { id: 'gamer', label: 'Gamer' },
+  { id: 'streamer', label: 'Streamer' },
+  { id: 'dev', label: 'Developer' },
 ];
 
 // Generate breadcrumbs from current path

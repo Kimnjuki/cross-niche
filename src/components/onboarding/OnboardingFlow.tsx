@@ -1,377 +1,301 @@
 /**
- * TheGridNexus Personalized Onboarding Flow
- * Implements interest selection and personalized homepage feed
+ * OnboardingFlow v2 — Personalized onboarding wizard (UX-004 spec)
+ * 4-screen flow: Gamer type → Platforms → Priorities → Done
+ * Triggers on first visit (localStorage check)
  */
 
-import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { Check, ChevronRight, Shield, Cpu, Gamepad2, Grid3X3, ArrowRight } from 'lucide-react';
+import React, { useState, useEffect, useCallback } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { Check, ChevronRight, Shield, Gamepad2, Monitor, Smartphone, Cloud, Sparkles, Zap, HeartHandshake, Users, Layers, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Progress } from '@/components/ui/progress';
-import { Badge } from '@/components/ui/badge';
 
-interface OnboardingStep {
-  id: string;
-  title: string;
-  description: string;
-  component: React.ComponentType<any>;
+type StepScreen = 'welcome' | 'userType' | 'platforms' | 'priorities' | 'complete';
+
+interface OnboardingState {
+  userType: string | null;
+  platforms: string[];
+  priorities: string[];
+  completed: boolean;
 }
 
-interface UserInterests {
-  tech: boolean;
-  security: boolean;
-  gaming: boolean;
-  all: boolean;
-}
+const userTypes = [
+  { id: 'competitive', label: 'Competitive Gamer', icon: Zap, desc: 'Ranked play, tournaments, high-stakes gaming' },
+  { id: 'casual', label: 'Casual Player', icon: Gamepad2, desc: 'Solo campaigns, co-op, weekend gaming' },
+  { id: 'enthusiast', label: 'Tech Enthusiast', icon: Monitor, desc: 'Hardware builds, VR, latest gaming tech' },
+  { id: 'developer', label: 'Game Developer', icon: Layers, desc: 'Indie dev, modding, game security' },
+  { id: 'creator', label: 'Content Creator', icon: Users, desc: 'Streaming, YouTube, gaming content' },
+];
 
-export function OnboardingFlow() {
-  const [currentStep, setCurrentStep] = useState(0);
-  const [interests, setInterests] = useState<UserInterests>({
-    tech: false,
-    security: false,
-    gaming: false,
-    all: false
+const platforms = [
+  { id: 'pc', label: 'PC / Steam', icon: Monitor },
+  { id: 'playstation', label: 'PlayStation', icon: Gamepad2 },
+  { id: 'xbox', label: 'Xbox', icon: Zap },
+  { id: 'nintendo', label: 'Nintendo', icon: Sparkles },
+  { id: 'mobile', label: 'Mobile', icon: Smartphone },
+  { id: 'cloud', label: 'Cloud Gaming', icon: Cloud },
+];
+
+const priorityOptions = [
+  { id: 'security', label: 'Security & Privacy', icon: Shield, desc: 'Account protection, 2FA, breach monitoring' },
+  { id: 'performance', label: 'Performance', icon: Zap, desc: 'PC optimization, latency, hardware guides' },
+  { id: 'value', label: 'Value for Money', icon: HeartHandshake, desc: 'Best deals, subscription value, free tools' },
+  { id: 'community', label: 'Community', icon: Users, desc: 'Discord servers, forums, multiplayer' },
+  { id: 'tools', label: 'Security Tools', icon: Layers, desc: 'Scanners, checkups, threat monitors' },
+];
+
+export function OnboardingFlow({ onDismiss }: { onDismiss?: () => void }) {
+  const [screen, setScreen] = useState<StepScreen>('welcome');
+  const [state, setState] = useState<OnboardingState>({
+    userType: null,
+    platforms: [],
+    priorities: [],
+    completed: false,
   });
-  const [completed, setCompleted] = useState(false);
   const navigate = useNavigate();
 
-  const steps: OnboardingStep[] = [
-    {
-      id: 'interests',
-      title: 'Choose Your Interests',
-      description: 'Personalize your experience by selecting the topics that matter most to you.',
-      component: InterestSelection
-    },
-    {
-      id: 'security',
-      title: 'Security Score Assessment',
-      description: 'Get your personalized security posture assessment in 2 minutes.',
-      component: SecurityAssessment
-    },
-    {
-      id: 'newsletter',
-      title: 'Stay Informed',
-      description: 'Get weekly intelligence briefings delivered to your inbox.',
-      component: NewsletterSignup
-    }
-  ];
+  const dismiss = useCallback(() => {
+    localStorage.setItem('onboardingCompleted', 'true');
+    if (onDismiss) onDismiss();
+  }, [onDismiss]);
 
-  const handleNext = () => {
-    if (currentStep < steps.length - 1) {
-      setCurrentStep(currentStep + 1);
-    } else {
-      setCompleted(true);
-      // Save preferences and redirect
-      localStorage.setItem('userInterests', JSON.stringify(interests));
-      localStorage.setItem('onboardingCompleted', 'true');
-      setTimeout(() => navigate('/'), 2000);
-    }
-  };
+  const handleComplete = useCallback(() => {
+    localStorage.setItem('onboardingState', JSON.stringify(state));
+    localStorage.setItem('onboardingCompleted', 'true');
+    setState(s => ({ ...s, completed: true }));
+    setTimeout(() => {
+      navigate('/security');
+    }, 1500);
+  }, [state, navigate]);
 
-  const handlePrevious = () => {
-    if (currentStep > 0) {
-      setCurrentStep(currentStep - 1);
-    }
-  };
+  const totalSteps = 4;
+  const stepIndex = screen === 'welcome' ? 0 : screen === 'userType' ? 1 : screen === 'platforms' ? 2 : screen === 'priorities' ? 3 : 4;
+  const progress = screen === 'complete' ? 100 : ((stepIndex) / totalSteps) * 100;
 
-  const CurrentComponent = steps[currentStep].component;
-
-  if (completed) {
-    return (
-      <div className="min-h-screen bg-background flex items-center justify-center p-4">
-        <Card className="w-full max-w-md text-center">
-          <CardContent className="pt-6">
-            <div className="w-16 h-16 bg-security-green/20 rounded-full flex items-center justify-center mx-auto mb-4">
-              <Check className="w-8 h-8 text-security-green" />
-            </div>
-            <h2 className="text-2xl font-bold mb-2">Welcome to TheGridNexus</h2>
-            <p className="text-muted-foreground mb-4">
-              Your personalized intelligence feed is ready. Redirecting to your homepage...
-            </p>
-            <Progress value={100} className="mb-4" />
-          </CardContent>
-        </Card>
-      </div>
-    );
-  }
-
-  return (
-    <div className="min-h-screen bg-background">
-      {/* Progress Bar */}
-      <div className="border-b border-border">
-        <div className="container mx-auto px-4 py-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <Grid3X3 className="w-6 h-6 text-nexus-blue" />
-              <span className="font-display font-bold">TheGridNexus</span>
-            </div>
-            <div className="flex items-center gap-4">
-              <span className="text-sm text-muted-foreground">
-                Step {currentStep + 1} of {steps.length}
-              </span>
-              <Progress 
-                value={((currentStep + 1) / steps.length) * 100} 
-                className="w-32"
-              />
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Main Content */}
-      <div className="container mx-auto px-4 py-12">
-        <div className="max-w-2xl mx-auto">
-          {/* Step Header */}
-          <div className="text-center mb-8">
-            <h1 className="text-3xl font-bold mb-2">{steps[currentStep].title}</h1>
-            <p className="text-lg text-muted-foreground">{steps[currentStep].description}</p>
-          </div>
-
-          {/* Step Component */}
-          <div className="mb-8">
-            <CurrentComponent 
-              interests={interests}
-              setInterests={setInterests}
-              onNext={handleNext}
-            />
-          </div>
-
-          {/* Navigation */}
-          <div className="flex justify-between">
-            <Button
-              variant="outline"
-              onClick={handlePrevious}
-              disabled={currentStep === 0}
-            >
-              Previous
-            </Button>
-            <Button onClick={handleNext}>
-              {currentStep === steps.length - 1 ? 'Complete Setup' : 'Next Step'}
-              <ChevronRight className="w-4 h-4 ml-2" />
-            </Button>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-// Interest Selection Component
-function InterestSelection({ interests, setInterests }: any) {
-  const interestOptions = [
-    {
-      id: 'tech',
-      title: 'Technology',
-      description: 'AI, hardware, software development, and innovation',
-      icon: Cpu,
-      color: 'text-nexus-blue',
-      bgColor: 'bg-nexus-blue/10',
-      borderColor: 'border-nexus-blue'
-    },
-    {
-      id: 'security',
-      title: 'Cybersecurity',
-      description: 'Threats, vulnerabilities, breach analysis, and defense',
-      icon: Shield,
-      color: 'text-threat-red',
-      bgColor: 'bg-threat-red/10',
-      borderColor: 'border-threat-red'
-    },
-    {
-      id: 'gaming',
-      title: 'Gaming',
-      description: 'Industry news, esports, hardware, and game security',
-      icon: Gamepad2,
-      color: 'text-gaming-purple',
-      bgColor: 'bg-gaming-purple/10',
-      borderColor: 'border-gaming-purple'
-    }
-  ];
-
-  const handleInterestToggle = (interestId: keyof UserInterests) => {
-    setInterests(prev => ({
-      ...prev,
-      [interestId]: !prev[interestId],
-      all: false
+  // Toggle platform selection
+  const togglePlatform = (id: string) => {
+    setState(s => ({
+      ...s,
+      platforms: s.platforms.includes(id)
+        ? s.platforms.filter(p => p !== id)
+        : [...s.platforms, id]
     }));
   };
 
-  const handleSelectAll = () => {
-    setInterests({
-      tech: true,
-      security: true,
-      gaming: true,
-      all: true
-    });
+  // Toggle priority selection
+  const togglePriority = (id: string) => {
+    setState(s => ({
+      ...s,
+      priorities: s.priorities.includes(id)
+        ? s.priorities.filter(p => p !== id)
+        : [...s.priorities, id]
+    }));
   };
 
+  if (state.completed) {
+    return (
+      <div className="fixed inset-0 z-50 bg-[#0A0E1A]/95 flex items-center justify-center p-4">
+        <div className="max-w-md text-center space-y-4">
+          <div className="w-20 h-20 rounded-full bg-accent-purple/20 flex items-center justify-center mx-auto">
+            <Shield className="w-10 h-10 text-accent-purple" />
+          </div>
+          <h2 className="text-2xl font-bold text-white">You're All Set!</h2>
+          <p className="text-zinc-400">Your personalized security dashboard is ready. Redirecting...</p>
+          <div className="w-full h-1 bg-zinc-800 rounded-full overflow-hidden">
+            <div className="h-full bg-accent-purple animate-pulse rounded-full transition-all duration-1000" style={{ width: '100%' }} />
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
-    <div className="space-y-6">
-      <div className="grid gap-4 md:grid-cols-3">
-        {interestOptions.map((option) => {
-          const Icon = option.icon;
-          const isSelected = interests[option.id as keyof UserInterests];
-          
-          return (
-            <Card 
-              key={option.id}
-              className={`cursor-pointer transition-all hover:shadow-md ${
-                isSelected ? option.borderColor + ' border-2' : 'border-border'
-              }`}
-              onClick={() => handleInterestToggle(option.id as keyof UserInterests)}
-            >
-              <CardContent className="p-6">
-                <div className="flex flex-col items-center text-center space-y-3">
-                  <div className={`w-12 h-12 rounded-lg ${option.bgColor} flex items-center justify-center`}>
-                    <Icon className={`w-6 h-6 ${option.color}`} />
-                  </div>
-                  <h3 className="font-semibold">{option.title}</h3>
-                  <p className="text-sm text-muted-foreground">{option.description}</p>
-                  {isSelected && (
-                    <Badge variant="secondary" className="mt-2">
-                      <Check className="w-3 h-3 mr-1" />
-                      Selected
-                    </Badge>
-                  )}
-                </div>
-              </CardContent>
-            </Card>
-          );
-        })}
+    <div className="fixed inset-0 z-50 bg-[#0A0E1A]/98 flex flex-col">
+      {/* Header */}
+      <div className="border-b border-border-subtle">
+        <div className="container mx-auto px-4 max-w-3xl py-4 flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <Shield className="h-5 w-5 text-accent-purple" />
+            <span className="font-display font-bold text-white text-lg">The Grid Nexus</span>
+          </div>
+          <div className="flex items-center gap-3">
+            <span className="text-xs font-mono text-zinc-500">Step {Math.min(stepIndex + 1, 4)} of {totalSteps}</span>
+            <div className="w-24 h-1 bg-zinc-800 rounded-full overflow-hidden">
+              <div className="h-full bg-accent-purple transition-all duration-500" style={{ width: `${progress}%` }} />
+            </div>
+            <button type="button" onClick={dismiss} className="text-zinc-500 hover:text-white p-1" aria-label="Skip onboarding">
+              <X className="h-5 w-5" />
+            </button>
+          </div>
+        </div>
       </div>
 
-      <div className="text-center">
-        <Button
-          variant="outline"
-          onClick={handleSelectAll}
-          className="mb-4"
-        >
-          Select All Interests
-        </Button>
-        <p className="text-sm text-muted-foreground">
-          You can always change these preferences later in your profile settings.
-        </p>
+      {/* Content */}
+      <div className="flex-1 flex items-center justify-center p-4">
+        <div className="w-full max-w-2xl">
+          {screen === 'welcome' && (
+            <div className="text-center space-y-6 animate-fade-in">
+              <div className="w-24 h-24 rounded-2xl bg-accent-purple/20 flex items-center justify-center mx-auto">
+                <Shield className="w-12 h-12 text-accent-purple" />
+              </div>
+              <h1 className="text-3xl md:text-4xl font-bold text-white">
+                Welcome to<br />
+                <span className="bg-gradient-to-r from-accent-purple to-accent-cyan bg-clip-text text-transparent">
+                  The Grid Nexus
+                </span>
+              </h1>
+              <p className="text-lg text-zinc-400 max-w-md mx-auto">
+                Your personalized gaming security intelligence hub. Let's tailor your experience in under 90 seconds.
+              </p>
+              <div className="flex flex-wrap justify-center gap-3 pt-4">
+                {[
+                  { icon: Shield, text: 'Account security alerts' },
+                  { icon: Zap, text: 'Threat monitoring tools' },
+                  { icon: Users, text: 'Community intel' },
+                ].map(({ icon: Icon, text }) => (
+                  <span key={text} className="flex items-center gap-1.5 px-3 py-1.5 bg-surface-card border border-border-subtle text-xs text-zinc-300">
+                    <Icon className="h-3 w-3 text-accent-cyan" />
+                    {text}
+                  </span>
+                ))}
+              </div>
+              <Button
+                onClick={() => setScreen('userType')}
+                className="bg-accent-purple hover:bg-[#5A52E0] text-white px-8 py-3 text-base font-semibold"
+              >
+                Get Started
+                <ChevronRight className="h-4 w-4 ml-2" />
+              </Button>
+              <p className="text-xs text-zinc-600">
+                Or <button type="button" onClick={dismiss} className="underline hover:text-zinc-400">skip</button> — you can customize any time
+              </p>
+            </div>
+          )}
+
+          {screen === 'userType' && (
+            <div className="space-y-6 animate-fade-in">
+              <div className="text-center">
+                <h2 className="text-2xl font-bold text-white mb-2">What kind of gamer are you?</h2>
+                <p className="text-zinc-400">Choose the type that fits best</p>
+              </div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                {userTypes.map(({ id, label, icon: Icon, desc }) => (
+                  <button
+                    key={id}
+                    type="button"
+                    onClick={() => { setState(s => ({ ...s, userType: id })); setScreen('platforms'); }}
+                    className={`flex items-start gap-3 p-4 border text-left transition-all ${
+                      state.userType === id
+                        ? 'border-accent-purple bg-accent-purple/10'
+                        : 'border-border-subtle bg-surface-card hover:border-accent-purple/40'
+                    }`}
+                  >
+                    <div className="w-10 h-10 rounded-lg bg-accent-purple/10 flex items-center justify-center shrink-0">
+                      <Icon className="h-5 w-5 text-accent-purple" />
+                    </div>
+                    <div>
+                      <p className="font-semibold text-white text-sm">{label}</p>
+                      <p className="text-xs text-zinc-500 mt-0.5">{desc}</p>
+                    </div>
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {screen === 'platforms' && (
+            <div className="space-y-6 animate-fade-in">
+              <div className="text-center">
+                <h2 className="text-2xl font-bold text-white mb-2">Which platforms do you use?</h2>
+                <p className="text-zinc-400">Select all that apply</p>
+              </div>
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                {platforms.map(({ id, label, icon: Icon }) => {
+                  const selected = state.platforms.includes(id);
+                  return (
+                    <button
+                      key={id}
+                      type="button"
+                      onClick={() => togglePlatform(id)}
+                      className={`flex flex-col items-center gap-2 p-4 border transition-all ${
+                        selected
+                          ? 'border-accent-purple bg-accent-purple/10'
+                          : 'border-border-subtle bg-surface-card hover:border-accent-purple/40'
+                      }`}
+                    >
+                      <Icon className={`h-6 w-6 ${selected ? 'text-accent-purple' : 'text-zinc-400'}`} />
+                      <span className={`text-sm font-medium ${selected ? 'text-white' : 'text-zinc-400'}`}>{label}</span>
+                      {selected && <Check className="h-4 w-4 text-accent-purple" />}
+                    </button>
+                  );
+                })}
+              </div>
+              <div className="flex justify-between">
+                <Button variant="outline" onClick={() => setScreen('userType')} className="border-border-default text-zinc-300">
+                  Back
+                </Button>
+                <Button
+                  onClick={() => setScreen('priorities')}
+                  className="bg-accent-purple hover:bg-[#5A52E0] text-white"
+                  disabled={state.platforms.length === 0}
+                >
+                  Next
+                  <ChevronRight className="h-4 w-4 ml-2" />
+                </Button>
+              </div>
+            </div>
+          )}
+
+          {screen === 'priorities' && (
+            <div className="space-y-6 animate-fade-in">
+              <div className="text-center">
+                <h2 className="text-2xl font-bold text-white mb-2">What matters most to you?</h2>
+                <p className="text-zinc-400">Pick your top priorities for gaming security</p>
+              </div>
+              <div className="grid grid-cols-1 gap-3">
+                {priorityOptions.map(({ id, label, icon: Icon, desc }) => {
+                  const selected = state.priorities.includes(id);
+                  return (
+                    <button
+                      key={id}
+                      type="button"
+                      onClick={() => togglePriority(id)}
+                      className={`flex items-center gap-4 p-4 border transition-all ${
+                        selected
+                          ? 'border-accent-purple bg-accent-purple/10'
+                          : 'border-border-subtle bg-surface-card hover:border-accent-purple/40'
+                      }`}
+                    >
+                      <div className={`w-10 h-10 rounded-lg flex items-center justify-center shrink-0 ${
+                        selected ? 'bg-accent-purple/20' : 'bg-zinc-800'
+                      }`}>
+                        <Icon className={`h-5 w-5 ${selected ? 'text-accent-purple' : 'text-zinc-400'}`} />
+                      </div>
+                      <div className="flex-1 text-left">
+                        <p className="font-semibold text-white text-sm">{label}</p>
+                        <p className="text-xs text-zinc-500">{desc}</p>
+                      </div>
+                      {selected && <Check className="h-5 w-5 text-accent-purple shrink-0" />}
+                    </button>
+                  );
+                })}
+              </div>
+              <div className="flex justify-between">
+                <Button variant="outline" onClick={() => setScreen('platforms')} className="border-border-default text-zinc-300">
+                  Back
+                </Button>
+                <Button
+                  onClick={handleComplete}
+                  className="bg-accent-purple hover:bg-[#5A52E0] text-white"
+                  disabled={state.priorities.length === 0}
+                >
+                  Complete Setup
+                  <ChevronRight className="h-4 w-4 ml-2" />
+                </Button>
+              </div>
+            </div>
+          )}
+        </div>
       </div>
     </div>
-  );
-}
-
-// Security Assessment Component
-function SecurityAssessment({ onNext }: any) {
-  const [started, setStarted] = useState(false);
-
-  if (!started) {
-    return (
-      <Card className="text-center">
-        <CardContent className="pt-6">
-          <div className="w-16 h-16 bg-security-green/20 rounded-full flex items-center justify-center mx-auto mb-4">
-            <Shield className="w-8 h-8 text-security-green" />
-          </div>
-          <h3 className="text-xl font-semibold mb-2">Security Posture Assessment</h3>
-          <p className="text-muted-foreground mb-6">
-            Take our 15-question assessment to get your personalized security score 
-            and actionable improvement steps.
-          </p>
-          <div className="space-y-4">
-            <div className="flex items-center justify-center gap-4 text-sm text-muted-foreground">
-              <span>⏱️ 2 minutes</span>
-              <span>•</span>
-              <span>📊 Instant results</span>
-              <span>•</span>
-              <span>🎯 Actionable insights</span>
-            </div>
-            <Button onClick={() => setStarted(true)} className="w-full">
-              Start Assessment
-              <ArrowRight className="w-4 h-4 ml-2" />
-            </Button>
-          </div>
-        </CardContent>
-      </Card>
-    );
-  }
-
-  return (
-    <Card>
-      <CardContent className="pt-6">
-        <div className="text-center mb-6">
-          <Badge variant="outline" className="mb-2">Coming Soon</Badge>
-          <h3 className="text-xl font-semibold mb-2">Security Assessment Tool</h3>
-          <p className="text-muted-foreground">
-            Our comprehensive security assessment tool is currently in development. 
-            You'll be able to access it from your dashboard once it's ready.
-          </p>
-        </div>
-        <Button onClick={onNext} className="w-full">
-          Continue to Newsletter Setup
-        </Button>
-      </CardContent>
-    </Card>
-  );
-}
-
-// Newsletter Signup Component
-function NewsletterSignup({ onNext }: any) {
-  const [email, setEmail] = useState('');
-  const [subscribed, setSubscribed] = useState(false);
-
-  const handleSubscribe = (e: React.FormEvent) => {
-    e.preventDefault();
-    // TODO: Implement newsletter subscription
-    setSubscribed(true);
-    setTimeout(() => onNext(), 1500);
-  };
-
-  if (subscribed) {
-    return (
-      <Card className="text-center">
-        <CardContent className="pt-6">
-          <div className="w-16 h-16 bg-nexus-blue/20 rounded-full flex items-center justify-center mx-auto mb-4">
-            <Check className="w-8 h-8 text-nexus-blue" />
-          </div>
-          <h3 className="text-xl font-semibold mb-2">Welcome to Nexus Radar</h3>
-          <p className="text-muted-foreground">
-            You'll receive your first intelligence briefing this Friday at 07:00 UTC.
-          </p>
-        </CardContent>
-      </Card>
-    );
-  }
-
-  return (
-    <Card>
-      <CardContent className="pt-6">
-        <div className="text-center mb-6">
-          <h3 className="text-xl font-semibold mb-2">Nexus Radar Weekly Briefing</h3>
-          <p className="text-muted-foreground">
-            Get curated intelligence delivered every Friday. Critical insights you won't find elsewhere.
-          </p>
-        </div>
-        
-        <form onSubmit={handleSubscribe} className="space-y-4">
-          <input
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            placeholder="Enter your email address"
-            className="w-full px-4 py-3 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-nexus-blue"
-            required
-          />
-          <div className="text-sm text-muted-foreground">
-            <p>✅ CRITICAL: Must-know stories</p>
-            <p>✅ SIGNAL: Underreported insights</p>
-            <p>✅ NOISE: What hype got wrong</p>
-          </div>
-          <Button type="submit" className="w-full">
-            Subscribe to Nexus Radar
-            <ArrowRight className="w-4 h-4 ml-2" />
-          </Button>
-        </form>
-        
-        <p className="text-xs text-muted-foreground text-center mt-4">
-          Unsubscribe anytime. We respect your privacy.
-        </p>
-      </CardContent>
-    </Card>
   );
 }

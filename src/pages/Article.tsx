@@ -1,4 +1,5 @@
 import { useParams, Link } from 'react-router-dom';
+import { TrustScoreBadge } from '@/components/ui/TrustScoreBadge';
 import { useMemo, useEffect } from 'react';
 import { Layout } from '@/components/layout/Layout';
 import { mockArticles } from '@/data/mockData';
@@ -294,10 +295,15 @@ export default function Article() {
               </Badge>
             )}
             {article.securityScore !== undefined && (
-              <Badge className="bg-gaming/10 text-gaming border-gaming/20 gap-1">
-                <Shield className="h-3 w-3" />
-                Security Score: {article.securityScore}
-              </Badge>
+              <div className="inline-flex items-center gap-2">
+                <TrustScoreBadge score={article.securityScore} size="md" />
+                {article.impactLevel && (
+                  <Badge variant={article.impactLevel === 'high' ? 'breaking' : 'topic'} className="gap-1 ml-1">
+                    <AlertTriangle className="h-3 w-3" />
+                    {article.impactLevel.toUpperCase()} IMPACT
+                  </Badge>
+                )}
+              </div>
             )}
           </div>
 
@@ -369,6 +375,53 @@ export default function Article() {
           className="max-w-4xl"
         >
           <div className="mb-12">
+            {/* Decision Card — quick verdict for skimmers (UX-003) */}
+            {article.securityScore !== undefined && (
+              <div className="border border-border-subtle bg-surface-card p-5 mb-6">
+                <div className="flex items-start gap-4">
+                  <div className="hidden sm:block shrink-0">
+                    <div className={`w-16 h-16 rounded-full flex items-center justify-center text-xl font-bold ${
+                      article.securityScore >= 80 ? 'bg-emerald-500/20 text-emerald-400' :
+                      article.securityScore >= 60 ? 'bg-amber-500/20 text-amber-400' :
+                      'bg-red-500/20 text-red-400'
+                    }`}>
+                      {article.securityScore}
+                    </div>
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-2 mb-1">
+                      <span className="text-[10px] font-mono uppercase tracking-widest text-zinc-500">Verdict</span>
+                      {article.securityScore >= 70 ? (
+                        <span className="text-[10px] font-mono px-2 py-0.5 bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">SAFE</span>
+                      ) : article.securityScore >= 40 ? (
+                        <span className="text-[10px] font-mono px-2 py-0.5 bg-amber-500/10 text-amber-400 border border-amber-500/20">CAUTION</span>
+                      ) : (
+                        <span className="text-[10px] font-mono px-2 py-0.5 bg-red-500/10 text-red-400 border border-red-500/20">RISK</span>
+                      )}
+                    </div>
+                    <h3 className="font-bold text-white text-base mb-1">
+                      {article.securityScore >= 80 ? 'Strong Security Posture' :
+                       article.securityScore >= 60 ? 'Moderate Risk — Read Before Proceeding' :
+                       'Critical — Immediate Action Required'}
+                    </h3>
+                    <p className="text-sm text-zinc-400 leading-relaxed">
+                      {article.securityScore >= 80
+                        ? `This guide covers ${article.title}. The security team rates it highly. Recommended for all ${article.niche} users.`
+                        : article.securityScore >= 60
+                        ? `This ${article.niche} guide covers critical information but has gaps. Supplement with our security checkup tools.`
+                        : `High-priority reading for ${article.niche} users. We strongly recommend reviewing the full guide and running a security checkup.`
+                      }
+                    </p>
+                  </div>
+                </div>
+                <div className="mt-3 pt-3 border-t border-border-subtle flex flex-wrap gap-2">
+                  {article.tags?.slice(0, 4).map(tag => (
+                    <span key={tag} className="text-[10px] font-mono px-2 py-0.5 bg-nexus-void/60 text-zinc-400 border border-border-subtle">{tag}</span>
+                  ))}
+                </div>
+              </div>
+            )}
+
             {/* Quick Answer — structured for AI Overviews & Featured Snippets */}
             <QuickAnswer
               question={`What is ${article.title ?? 'this article about'}?`}
