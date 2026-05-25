@@ -27,7 +27,8 @@ RUN node scripts/generate-sitemap-vite.mjs
 # Build with production env vars from Coolify (or defaults)
 ARG VITE_CONVEX_URL
 ARG VITE_CLERK_PUBLISHABLE_KEY
-RUN VITE_CONVEX_URL=${VITE_CONVEX_URL} VITE_CLERK_PUBLISHABLE_KEY=${VITE_CLERK_PUBLISHABLE_KEY} npm run build:frontend
+ARG VITE_NVIDIA_API_KEY
+RUN VITE_CONVEX_URL=${VITE_CONVEX_URL} VITE_CLERK_PUBLISHABLE_KEY=${VITE_CLERK_PUBLISHABLE_KEY} VITE_NVIDIA_API_KEY=${VITE_NVIDIA_API_KEY} npm run build:frontend
 
 # Copy sitemap files to dist/ after Vite build
 RUN node scripts/copy-sitemap-to-dist.mjs
