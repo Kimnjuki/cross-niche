@@ -341,7 +341,7 @@ export const mockArticles: Article[] = [
       imageUrl: 'https://images.unsplash.com/photo-1605901309584-818e25960a8f?w=800',
       tags: ['Xbox', 'Microsoft', 'Account Security', 'Game Pass'],
       metaTitle: 'Xbox Rebrand 2026 — What the Microsoft Gaming Restructure Means for Security',
-      metaDescription: 'Microsoft restructured its gaming division in 2026. What Xbox rebranding means for account security, game library access, and subscription management.'s Xbox rebrand brings new security features, account changes, and privacy updates. Everything gamers need to know about the transition.',
+      metaDescription: 'Microsoft restructured its gaming division in 2026. Full breakdown of what the Xbox rebrand means for account security, game library access, and subscription management changes for gamers.',
       securityScore: 80,
       isBreaking: true,
     },
@@ -1009,7 +1009,7 @@ export const mockGuides: Guide[] = [
     slug: 'gaming-pc-security-hardening-guide-2026',
     title: 'Gaming PC Security Hardening Guide 2026: Lock Down Your Rig Without Losing a Single FPS',
       metaTitle: 'Gaming PC Security Hardening Guide 2026 — Lock Down Your Rig',
-      metaDescription: 'Comprehensive gaming PC hardening guide for 2026. Windows security settings, firewall configuration, antivirus optimization, and privacy protection for serious gamers.'
+      metaDescription: 'Comprehensive gaming PC hardening guide for 2026. Windows security settings, firewall configuration, antivirus optimization, and privacy protection for serious gamers.',
     excerpt: 'Hardened gaming rigs from Windows 11 security features to YubiKey BIOS integration and VLAN segmentation — all without sacrificing performance.',
     content: '<p>Gaming PC security has become a specialized discipline. Gaming rigs are uniquely attractive targets because of high-performance hardware ideal for coinmining, linked financial accounts (Steam Wallet, PayPal, crypto wallets), and a reduced security posture — most gamers deliberately weaken endpoint security to maximize performance.</p><p>Bitdefender and Malwarebytes 2026 reports confirm that gaming-specific malware delivery through mod sites, cheat tools, and unofficial game clients represents the fastest-growing delivery vector for both coinminers and info-stealers in the consumer endpoint space.</p><p>Windows 11 security features every gamer must enable: ASLR, DEP, and SEHOP — the three pillars of Windows memory protection with zero FPS impact. Verify they\'re active by running Get-ProcessMitigation -System as Administrator. If ASLR shows NotConfigured or DEP shows ApplicationOptIn, enforce system-wide via bcdedit /set nx AlwaysOn and Set-ProcessMitigation -System -Enable ForceRelocateImages. Gaming impact: zero. Tested on systems averaging 180FPS in competitive titles.</p><p>Enable Windows Defender Exploit Guard Attack Surface Reduction rules to block process injection techniques used by the majority of 2026 gaming malware. Hypervisor-Protected Code Integrity (HVCI) uses hardware virtualization to protect the Windows kernel — enabled in Windows Security → Device Security → Core Isolation.</p><p>Best gaming PC security software: Bitdefender Total Security layered with Malwarebytes Premium (on-demand weekly sweep). The two products don\'t conflict and cover each other\'s detection gap areas. Modern coinminer malware throttles CPU/GPU usage when monitoring tools are detected and uses VRAM-based mining invisible to standard CPU monitoring. Install GPU-Z and check VRAM usage during idle periods — any sustained usage exceeding 500MB at idle is a red flag.</p><p>Advanced hardening includes YubiKey integration at BIOS level for modern ASUS ROG and MSI MEG motherboards via FIDO2 authentication. Network segmentation with a dedicated gaming VLAN is the single most impactful architectural change — a compromised IoT device behind a properly segmented network is contained, without segmentation it\'s a foothold into everything you own.</p><p>Gaming PC security in 2026 is not about choosing between security and performance. The performance cost of proper hardening is essentially zero, while the cost of a successful attack — a coinminer running at 30% VRAM utilization for months — is substantial.</p>',
     niche: 'security',
@@ -1033,7 +1033,7 @@ export const mockGuides: Guide[] = [
     imageUrl: 'https://images.unsplash.com/photo-1612287230202-1ff1d85d1bdf?w=800',
     tags: ['Steam Deck', 'Valve', 'Hardware', 'Gaming'],
       metaTitle: 'Steam Deck 2 — Specs, Release Date & OLED Comparison 2026',
-      metaDescription: 'Steam Deck 2 leaked specs, rumored release date window, and full comparison between the original Steam Deck and OLED model. Everything we know so far.'s next handheld gaming PC.',
+      metaDescription: 'Steam Deck 2 leaked specs, rumored release date window, and full comparison between the original Steam Deck and OLED model. Everything we know about Valve next handheld.',
     isFeatured: true,
   },
   {
