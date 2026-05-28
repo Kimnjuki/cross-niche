@@ -10,12 +10,13 @@ import { Badge } from '@/components/ui/badge';
 import { ErrorBoundary } from '@/components/common/ErrorBoundary';
 import { LoadingState, ErrorState } from '@/components/common/StateComponents';
 import { toolRateLimiters } from '@/lib/utils/rateLimit';
+import { chatCompletion } from '@/lib/ai/client';
 import type { StatusType } from '@/lib/types/status';
 import { cn } from '@/lib/utils';
 import {
   Bot, Send, ArrowLeft, RotateCcw, Shield, Gamepad2,
   Cpu, TrendingUp, Star, ChevronRight, Zap, Info,
-  Lightbulb, Sparkles, AlertTriangle, ThumbsUp,
+  Lightbulb, Sparkles, AlertTriangle, ThumbsUp, CpuIcon,
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
@@ -216,7 +217,7 @@ function checkGuardrails(input: string): GuardrailResult {
   return { triggered: false };
 }
 
-function generateResponse(input: string): string {
+function checkKnowledgeBase(input: string): string | null {
   // Check guardrails first
   const guardrail = checkGuardrails(input);
   if (guardrail.triggered) {
@@ -230,7 +231,14 @@ function generateResponse(input: string): string {
     }
   }
 
-  // Fallback: generic response with helpful suggestions
+  return null;
+}
+
+/**
+ * Static fallback used when both NVIDIA API and knowledge base miss.
+ * Shows helpful suggestions to guide the user toward supported topics.
+ */
+function generateFallbackResponse(input: string): string {
   return `That's a great question about **"${input}"**!
 
 ━━━━━━━━━━━━━━━━━━━━━━
@@ -338,6 +346,10 @@ I can help you with:
     inputRef.current?.focus();
   }, []);
 
+  const hasNvidiaKey = Boolean(
+    typeof import.meta !== 'undefined' && import.meta.env?.VITE_NVIDIA_API_KEY
+  );
+
   const sendMessage = useCallback(async (text?: string) => {
     const content = (text || input).trim();
     if (!content) return;
@@ -359,14 +371,58 @@ I can help you with:
     setInput('');
     setStatus('loading');
 
-    const startTime = Date.now();
-
     try {
-      // Simulate realistic processing time (300-800ms based on input complexity)
-      const processingTime = Math.min(800, 200 + content.length * 2);
-      await new Promise((r) => setTimeout(r, processingTime));
+      let responseContent: string;
 
-      const responseContent = generateResponse(content);
+      // Check guardrails before any AI call
+      const guardrail = checkGuardrails(content);
+      if (guardrail.triggered) {
+        responseContent = guardrail.reason!;
+      } else if (hasNvidiaKey) {
+        // ── NVIDIA-powered response ──
+        try {
+          // Build context from conversation history (last 5 messages)
+          const historyContext = messages
+            .slice(-5)
+            .map((m) => `${m.role}: ${m.content.slice(0, 500)}`)
+            .join('\n');
+
+          responseContent = await chatCompletion([
+            {
+              role: 'system',
+              content: `You are Nexus Copilot, a gaming intelligence assistant on theGRIDNEXUS.com. You help gamers with:
+
+1. Account security (2FA, phishing, Steam Guard, password hygiene)
+2. Gaming hardware recommendations (GPUs, CPUs, peripherals)
+3. Game recommendations based on player preferences
+4. Threat awareness (CVEs, exploits, active security campaigns)
+5. PC building and optimization advice
+
+Rules:
+- Be conversational, direct, and knowledgeable about gaming.
+- Keep responses under 250 words.
+- Use markdown for formatting (bold for emphasis, bullet points for lists).
+- If asked about something outside your expertise, say so honestly.
+- Reference real product names and technologies accurately.
+- For security questions, always recommend enabling 2FA as the first step.
+
+Conversation so far:\n${historyContext}`,
+            },
+            { role: 'user', content },
+          ], { temperature: 0.7, maxTokens: 768 });
+
+          if (!responseContent || responseContent.startsWith('Based on')) {
+            throw new Error('AI response was empty or fallback');
+          }
+        } catch {
+          // Fallback to knowledge base
+          responseContent = checkKnowledgeBase(content) ?? generateFallbackResponse(content);
+        }
+      } else {
+        // ── Knowledge-base-only mode (no NVIDIA key) ──
+        responseContent = checkKnowledgeBase(content) ?? generateFallbackResponse(content);
+      }
+
       const assistantMsg: Message = {
         id: `ai-${Date.now()}`,
         role: 'assistant',
@@ -389,7 +445,7 @@ I can help you with:
       ]);
       setStatus('error');
     }
-  }, [input]);
+  }, [input, messages, hasNvidiaKey]);
 
   const handleKeyDown = useCallback(
     (e: React.KeyboardEvent) => {
@@ -444,8 +500,13 @@ I can help you with:
                   <Bot className="w-7 h-7 text-[#B026FF]" />
                   Gaming Copilot
                 </h1>
-                <p className="text-gray-400 mt-1">
+                <p className="text-gray-400 mt-1 flex items-center gap-2 flex-wrap">
                   Your AI gaming intelligence assistant — security, recommendations, hardware, and threat awareness.
+                  {hasNvidiaKey && (
+                    <Badge variant="outline" className="text-[10px] border-purple-500/40 text-purple-400">
+                      NVIDIA NIM
+                    </Badge>
+                  )}
                 </p>
               </div>
               <Button variant="outline" size="sm" onClick={reset} className="border-gray-700 shrink-0">

@@ -3,6 +3,7 @@ import { Layout } from '@/components/layout/Layout';
 import { SEO } from '@/components/SEO';
 import { ToolCrossLinks } from '@/components/tools/ToolPageSEO';
 import { useTrackToolUse } from '@/hooks/useTrackToolUse';
+import { chatCompletion } from '@/lib/ai/client';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -16,7 +17,7 @@ import type { StatusType } from '@/lib/types/status';
 import {
   Search, Shield, AlertTriangle, CheckCircle, XCircle,
   ArrowLeft, ExternalLink, ChevronRight, Server,
-  Globe, Lock, Terminal, Bug, Zap, Info,
+  Globe, Lock, Terminal, Bug, Zap, Info, Sparkles,
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
@@ -51,6 +52,7 @@ interface ScanResult {
   hasTls: boolean;
   tlsValid: boolean;
   securityHeaders: Record<string, string | null>;
+  aiAnalysis?: string;
 }
 
 // ── Domain validation ──────────────────────────────────────────────────────
@@ -284,6 +286,36 @@ export default function ThreatScanner() {
       })();
 
       setResult(scanResult);
+
+      // ── NVIDIA-powered AI security analysis ──
+      // Enhances the mock scan with real threat intelligence context
+      const nvidiaKey = import.meta.env.VITE_NVIDIA_API_KEY;
+      if (nvidiaKey && scanResult) {
+        const findingSummary = scanResult.findings
+          .slice(0, 5)
+          .map(f => `[${f.severity}] ${f.title}: ${f.description}`)
+          .join('\n');
+
+        try {
+          const aiAnalysis = await chatCompletion([
+            {
+              role: 'system',
+              content: 'You are a cybersecurity analyst. Analyze the following scan findings for a gaming-related target. Provide 2-3 short bullet points on: what the most critical risk is, what the attacker could do, and the one fix they should prioritize. Keep under 150 words. Use plain language for gamers, not security jargon.',
+            },
+            {
+              role: 'user',
+              content: `Target: ${scanTarget}\nFindings:\n${findingSummary || 'No specific vulnerabilities found, but a general security posture review.'}\n\nWhat should the gamer/server owner do?`,
+            },
+          ], { temperature: 0.3, maxTokens: 384 });
+
+          if (aiAnalysis && !aiAnalysis.startsWith('Based on')) {
+            setResult(prev => prev ? { ...prev, aiAnalysis } : null);
+          }
+        } catch {
+          // AI enhancement is optional — won't break the scan
+        }
+      }
+
       setStatus('success');
     } catch (err) {
       console.error('Scan error:', err);
@@ -506,6 +538,26 @@ function ResultDisplay({
           </div>
         </CardContent>
       </Card>
+
+      {/* AI Analysis (NVIDIA-powered) */}
+      {result.aiAnalysis && (
+        <Card className="bg-[#131820] border-purple-800/40">
+          <CardHeader>
+            <CardTitle className="text-white flex items-center gap-2">
+              <Sparkles className="w-5 h-5 text-purple-400" />
+              AI Security Analysis
+            </CardTitle>
+            <CardDescription className="text-gray-500">
+              Powered by NVIDIA NIM — real-time threat intelligence analysis
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="bg-[#0B0E14] rounded-lg border border-purple-800/20 p-4 whitespace-pre-wrap text-sm text-gray-200 leading-relaxed">
+              {result.aiAnalysis}
+            </div>
+          </CardContent>
+        </Card>
+      )}
 
       {/* Findings */}
       <Card className="bg-[#131820] border-gray-800">

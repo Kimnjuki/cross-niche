@@ -50,9 +50,11 @@ function getApiKey(): string | null {
 function getConfig(): Required<AIClientOptions> {
   return {
     provider: 'nvidia',
-    model: import.meta.env.VITE_NVIDIA_MODEL ?? 'meta/llama-3.1-8b-instruct',
+    // Use stronger model by default. 70B gives much better answers for gaming security Q&A.
+    // Override via VITE_NVIDIA_MODEL env var if you need a different model.
+    model: import.meta.env.VITE_NVIDIA_MODEL ?? 'meta/llama-3.1-70b-instruct',
     temperature: 0.7,
-    maxTokens: 1024,
+    maxTokens: 2048,
   };
 }
 
