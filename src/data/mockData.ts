@@ -749,7 +749,7 @@ export const mockArticles: Article[] = [
     imageUrl: 'https://images.unsplash.com/photo-1614064641938-3bbee52942c7?w=800',
     tags: ['Security Guide', 'Intermediate', 'PC Security', 'Windows Security', 'Antivirus', 'Firewall', 'Gaming PC'],
       metaTitle: "PC Hardening for Gamers 2026 — Gaming PC Security Guide",
-      metaDescription: "How to harden your gaming PC in 2026. Security measures every gamer needs: firewall rules, antivirus config, account protection, and network security for safe online gaming."t mean sacrificing performance. Complete guide to Windows security settings, firewall rules, and privacy tweaks for gamers.',
+      metaDescription: 'How to harden your gaming PC in 2026. Security measures every gamer needs: firewall rules, antivirus config, account protection, and network security for safe online gaming. Windows security settings, firewall rules, and privacy tweaks for gamers.',
     impactLevel: 'medium',
   },
   {
