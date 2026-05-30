@@ -329,6 +329,15 @@ export default function Article() {
                   })
                 : '—'}
             </span>
+            {(article as any).updatedAt && (
+              <span className="text-xs text-emerald-500 border border-emerald-500/30 px-2 py-0.5 rounded-full">
+                Updated {new Date((article as any).updatedAt).toLocaleDateString('en-US', {
+                  month: 'short',
+                  day: 'numeric',
+                  year: 'numeric',
+                })}
+              </span>
+            )}
             <span className="flex items-center gap-1">
               <Clock className="h-4 w-4" />
               {article.readTime ?? 5} min read

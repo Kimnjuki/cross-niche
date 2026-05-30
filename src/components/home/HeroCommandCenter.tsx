@@ -141,6 +141,14 @@ export function HeroCommandCenter() {
               </span>
             </div>
 
+            <div className="flex flex-wrap items-center gap-2 mb-4">
+              <span className="text-[10px] font-mono uppercase tracking-widest text-[#00F0FF] bg-[#00F0FF]/10 border border-[#00F0FF]/30 px-3 py-1">
+                First Gaming Security Intelligence Hub
+              </span>
+              <span className="text-[10px] font-mono uppercase tracking-widest text-amber-400 bg-amber-400/10 border border-amber-400/30 px-3 py-1">
+                Free Security Tools
+              </span>
+            </div>
             <h1 className="font-display font-extrabold text-4xl md:text-5xl lg:text-6xl leading-[1.05] tracking-tight text-white">
               Stop hackers from stealing{' '}
               <span className="bg-gradient-to-r from-accent-purple via-accent-cyan to-accent-purple bg-clip-text text-transparent">

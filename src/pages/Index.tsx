@@ -245,6 +245,11 @@ export default function Index() {
                     {article.readTime && (
                       <span className="text-[10px] text-zinc-600">{article.readTime} min</span>
                     )}
+                    {(article as any).updatedAt ? (
+                      <span className="text-[10px] text-emerald-500/70">Updated {new Date((article as any).updatedAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}</span>
+                    ) : article.publishedAt && (
+                      <span className="text-[10px] text-zinc-600">{new Date(article.publishedAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}</span>
+                    )}
                   </div>
                   <h3 className="text-sm font-medium text-zinc-300 group-hover:text-white transition-colors line-clamp-2 mb-1">
                     {article.title}
@@ -267,7 +272,7 @@ export default function Index() {
               Gaming Security Hub
             </h2>
             <Link to="/security" className="flex items-center gap-1 text-xs font-mono text-[#00F0FF]/70 hover:text-[#00F0FF]">
-              All security intel <ChevronRight className="h-3 w-3" />
+              Explore platforms <ChevronRight className="h-3 w-3" />
             </Link>
           </div>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
@@ -308,6 +313,36 @@ export default function Index() {
       </section>
 
 
+
+      {/* P6.5: Platform-Specific Security — unique differentiator, no competitor does this */}
+      <section className="bg-[#0A0A0B] border-b border-[#27272A]">
+        <div className="container mx-auto px-4 max-w-7xl py-6">
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-sm font-bold text-white tracking-wide">
+              <span className="text-[#00F0FF]">//</span> Platform-Specific Security Guides
+            </h2>
+            <Link to="/security" className="flex items-center gap-1 text-xs font-mono text-[#00F0FF]/70 hover:text-[#00F0FF]">
+              All platform guides <ChevronRight className="h-3 w-3" />
+            </Link>
+          </div>
+          <div className="grid grid-cols-3 md:grid-cols-6 gap-3">
+            {[
+              { name: 'Steam', href: '/article/steam-account-takeover-protection-guide-2026', color: 'hover:border-[#1b2838]/50', bg: 'from-[#1b2838]/30', icon: '🎮' },
+              { name: 'Discord', href: '/article/discord-malware-gamers-how-to-stay-safe', color: 'hover:border-[#5865F2]/50', bg: 'from-[#5865F2]/30', icon: '💬' },
+              { name: 'Xbox', href: '/article/xbox-rebrand-security-changes-gamers', color: 'hover:border-[#107C10]/50', bg: 'from-[#107C10]/30', icon: '🎯' },
+              { name: 'Twitch', href: '/article/twitch-streamer-security-guide-doxxing-swatting', color: 'hover:border-[#9146FF]/50', bg: 'from-[#9146FF]/30', icon: '📺' },
+              { name: 'Roblox', href: '/article/roblox-parents-guide-account-security-safety', color: 'hover:border-[#FF0045]/50', bg: 'from-[#FF0045]/30', icon: '🔴' },
+              { name: 'Minecraft', href: '/article/minecraft-server-security-guide', color: 'hover:border-[#44B137]/50', bg: 'from-[#44B137]/30', icon: '⛏️' },
+            ].map(p => (
+              <Link key={p.name} to={p.href} className={`group p-4 rounded-lg border border-zinc-800 bg-gradient-to-br ${p.bg} to-black ${p.color} transition-all text-center`}>
+                <span className="text-2xl block mb-2">{p.icon}</span>
+                <h3 className="text-xs font-bold text-white group-hover:text-white transition-colors">{p.name}</h3>
+                <p className="text-[10px] text-zinc-600 mt-1 group-hover:text-zinc-400 transition-colors">Security Guide</p>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
 
       {/* P7: Choose Your Path — persona-based journeys */}
       <section className="bg-[#0A0A0B] border-b border-[#27272A]">

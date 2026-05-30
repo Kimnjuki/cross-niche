@@ -25,7 +25,7 @@ export const PAGE_METADATA: Record<string, PageMeta> = {
   // ── Homepage ──────────────────────────────────────────────────────────
   '/': {
     title: 'Gaming Security Intelligence Hub — The Grid Nexus',   // 51 chars
-    description: 'Interactive security tools, real-time threat intel, and expert guides for gamers. Scan Steam, PSN, Xbox accounts in 2 minutes. Stop hackers from stealing your gaming identity.',
+    description: 'The first gaming-focused security intelligence hub. Free interactive tools to scan your accounts, breach simulator, threat dashboard, and expert guides for Steam, Xbox, Discord, Twitch, and PSN security.',
     h1: 'Gaming Security Intelligence Hub',
   },
 
