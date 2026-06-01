@@ -139,6 +139,9 @@ function generateArticleSitemap() {
     return generateUrlXml(fullUrl, today, 'weekly', '0.8');
   });
 
+  // Add SEO-friendly alias routes
+  urls.push(generateUrlXml(`${siteUrl}/how-to-enable-2fa-on-all-gaming-accounts-2026`, today, 'weekly', '0.9'));
+
   const xml = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
         xmlns:xhtml="http://www.w3.org/1999/xhtml"
