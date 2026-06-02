@@ -71,7 +71,7 @@ export function LazyImage({
       className={cn('w-full h-full object-cover', className)}
       onLoad={handleLoad}
       onError={handleError}
-      loading="eager"
+      loading="lazy"
       decoding="async"
       {...({ fetchpriority: 'high' } as React.ImgHTMLAttributes<HTMLImageElement>)}
       width={finalWidth}
