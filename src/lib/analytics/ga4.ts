@@ -12,6 +12,19 @@ declare global {
 }
 
 // GA4 Measurement ID - must match index.html; env override for flexibility
+//
+// ── GA4 ADMIN: MARK THESE AS KEY EVENTS ──────────────────────────────────
+// In GA4 Admin > Events > Key events, mark these for reporting:
+//   - article_view          → Tracks every article page visit
+//   - article_read_time     → 30s/60s/deep read completion
+//   - article_completed     → User scrolled 90%+ of article
+//   - user_engagement       → 10s+ engaged session
+//   - generate_lead         → Newsletter signup
+//   - page_view_404         → 404 error pages
+//   - share                 → Social shares
+//   - outbound_click        → External link clicks
+//   - search                → Site search queries
+// ──────────────────────────────────────────────────────────────────────────
 const GA4_MEASUREMENT_ID = import.meta.env.VITE_GA4_MEASUREMENT_ID || 'G-TJ1VXE91NE';
 
 /**
@@ -326,10 +339,20 @@ export function trackExternalLinks() {
     const link = target.closest('a');
 
     if (link && link.href && !link.href.startsWith(window.location.origin)) {
+      // Fire standard click + named outbound_click for Key Event reporting
       trackEvent('click', {
         event_category: 'outbound',
         event_label: link.href,
+        link_url: link.href,
+        link_domain: new URL(link.href).hostname,
+        outbound: true,
         transport_type: 'beacon'
+      });
+      trackEvent('outbound_click', {
+        link_url: link.href,
+        link_domain: new URL(link.href).hostname,
+        link_text: (link.textContent?.trim() || '').slice(0, 100),
+        event_label: link.href,
       });
     }
   });

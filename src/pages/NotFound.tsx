@@ -4,6 +4,7 @@ import { useLocation } from 'react-router-dom';
 import { Layout } from '@/components/layout/Layout';
 import { Button } from '@/components/ui/button';
 import { SEOHead } from '@/components/seo/SEOHead';
+import { trackEvent } from '@/lib/analytics/ga4';
 import { Home, ArrowLeft, TrendingUp, Shield, Gamepad2, Search, ExternalLink } from 'lucide-react';
 
 const SUGGESTED_ARTICLES = [
@@ -30,15 +31,14 @@ const NotFound = () => {
     }
   }, [location.pathname]);
 
-  // Track 404 in GA4
+  // Track 404 in GA4 via the shared ga4 module so it shows in Key Events
   useEffect(() => {
-    if (typeof window !== 'undefined' && (window as any).gtag) {
-      (window as any).gtag('event', 'page_view_404', {
-        page_path: location.pathname + location.search,
-        page_title: '404: ' + location.pathname,
-        engagement_time_msec: 1
-      });
-    }
+    trackEvent('page_view_404', {
+      page_path: location.pathname + location.search,
+      page_title: '404: ' + location.pathname,
+      engagement_time_msec: 1,
+      event_label: '404: ' + location.pathname,
+    });
   }, [location.pathname, location.search]);
 
   return (
