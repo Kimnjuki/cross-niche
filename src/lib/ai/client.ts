@@ -4,12 +4,14 @@
  * Supports NVIDIA NIM (OpenAI-compatible) as primary inference provider.
  * Falls back gracefully when API is unavailable.
  * 
- * NVIDIA endpoint: https://integrate.api.nvidia.com/v1
+ * NVIDIA endpoint: proxied through nginx (/api/ai) to avoid browser CORS/DNS
  * Compatible models: meta/llama-3.1-8b-instruct, meta/llama-3.1-70b-instruct,
  *   mistralai/mistral-7b-instruct-v0.3, etc.
+ *
+ * Note: API key is injected by nginx at the proxy layer, not sent from the browser.
  */
 
-const NVIDIA_BASE_URL = 'https://integrate.api.nvidia.com/v1';
+const NVIDIA_BASE_URL = '/api/ai';
 
 interface AIClientOptions {
   provider?: 'nvidia';
@@ -77,12 +79,12 @@ export async function chatCompletion(
   const nonSystem = messages.filter(m => m.role !== 'system');
 
   try {
-    const response = await fetch(`${NVIDIA_BASE_URL}/chat/completions`, {
+    const response = await fetch(`${NVIDIA_BASE_URL}/chat`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${apiKey}`,
       },
+      // No Authorization header — API key is injected server-side by nginx
       body: JSON.stringify({
         model: config.model,
         messages: [
@@ -126,12 +128,12 @@ export async function chatCompletionStream(
   const nonSystem = messages.filter(m => m.role !== 'system');
 
   try {
-    const response = await fetch(`${NVIDIA_BASE_URL}/chat/completions`, {
+    const response = await fetch(`${NVIDIA_BASE_URL}/chat`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${apiKey}`,
       },
+      // No Authorization header — API key is injected server-side by nginx
       body: JSON.stringify({
         model: config.model,
         messages: [

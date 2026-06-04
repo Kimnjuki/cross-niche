@@ -35,14 +35,17 @@ RUN node scripts/copy-sitemap-to-dist.mjs
 
 # Stage 2: Production (Serve with Nginx)
 FROM nginx:stable-alpine AS production-stage
-# Build cache buster 2026-05-13-2
-RUN echo "build-2026-05-13-2" > /dev/null
+# Build cache buster 2026-06-04-1 — NVIDIA proxy via envsubst
+RUN echo "build-2026-06-04-1" > /dev/null
+
+# Install envsubst (gettext) for runtime env var injection into nginx config
+RUN apk add --no-cache gettext
 
 # Copy built files from build stage
 COPY --from=build-stage /app/dist /usr/share/nginx/html
 
-# Copy nginx configuration
-COPY nginx.conf /etc/nginx/conf.d/default.conf
+# Copy nginx configuration (template with \${VARIABLE} placeholders)
+COPY nginx.conf /etc/nginx/conf.d/default.conf.template
 
 # Change ownership to non-root user
 RUN chown -R nginx:nginx /usr/share/nginx/html
@@ -61,4 +64,10 @@ USER nginx
 
 EXPOSE 80
 
-CMD ["nginx", "-g", "daemon off;"]
+# Use envsubst to inject runtime env vars into nginx config, validate, then start nginx
+# NVIDIA_API_KEY and ANTHROPIC_API_KEY are injected at container startup
+CMD sh -c "\
+    envsubst '\${NVIDIA_API_KEY} \${ANTHROPIC_API_KEY}' < /etc/nginx/conf.d/default.conf.template > /etc/nginx/conf.d/default.conf && \
+    nginx -t && \
+    exec nginx -g 'daemon off;' \
+    "
