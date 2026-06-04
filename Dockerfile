@@ -33,6 +33,10 @@ RUN VITE_CONVEX_URL=${VITE_CONVEX_URL} VITE_CLERK_PUBLISHABLE_KEY=${VITE_CLERK_P
 # Copy sitemap files to dist/ after Vite build
 RUN node scripts/copy-sitemap-to-dist.mjs
 
+# Generate prerendered static HTML pages for SEO (blog articles, static pages, niches)
+# These are served by nginx directly so Googlebot gets content without JS
+RUN node scripts/generate-prerender-pages.mjs
+
 # Stage 2: Production (Serve with Nginx)
 FROM nginx:stable-alpine AS production-stage
 # Build cache buster 2026-06-04-1 — NVIDIA proxy via envsubst
