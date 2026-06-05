@@ -39,8 +39,8 @@ RUN node scripts/generate-prerender-pages.mjs
 
 # Stage 2: Production (Serve with Nginx)
 FROM nginx:stable-alpine AS production-stage
-# Build cache buster 2026-06-04-1 — NVIDIA proxy via envsubst
-RUN echo "build-2026-06-04-1" > /dev/null
+# Build cache buster 2026-06-04-2 — nginx logs to /tmp + stdout
+RUN echo "build-2026-06-04-2" > /dev/null
 
 # Install envsubst (gettext) for runtime env var injection into nginx config
 RUN apk add --no-cache gettext
