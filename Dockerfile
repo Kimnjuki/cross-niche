@@ -40,7 +40,7 @@ RUN node scripts/generate-prerender-pages.mjs
 # Stage 2: Production (Serve with Nginx)
 FROM nginx:stable-alpine AS production-stage
 # Build cache buster 2026-06-04-2 — nginx logs to /tmp + stdout
-RUN echo "build-2026-06-04-3" > /dev/null
+RUN echo "build-2026-06-05-1" > /dev/null
 
 # Install envsubst (gettext) for runtime env var injection into nginx config
 RUN apk add --no-cache gettext
@@ -64,25 +64,22 @@ RUN mkdir -p /var/cache/nginx/client_temp /var/cache/nginx/proxy_temp \
 # ⚠️ These seds must NOT use | as delimiter because /var/log/nginx/.log
 # contains forward slashes that interact badly with | in some sed versions.
 # Also, the stock nginx.conf lines have variant spacing, so match loosely.
+# Keep user nginx; directive intact so master runs as root and workers drop to nginx.
+# Master as root = no permission issues with logs and cache.
+# Workers as nginx = restricted for security.
 RUN sed -i \
     -e 's@pid\s*/run/nginx.pid;@pid /tmp/nginx.pid;@' \
     -e 's@error_log  */var/log/nginx/error\.log@error_log /dev/stderr@' \
     -e 's@access_log  */var/log/nginx/access\.log@access_log /dev/stdout@' \
-    -e '/^user /s/^/# /' \
     /etc/nginx/nginx.conf
 
-# Install su-exec for privilege dropping in entrypoint (run as root, drop to nginx)
-RUN apk add --no-cache su-exec
-
-# Copy entrypoint script for runtime env var injection
-COPY scripts/docker-entrypoint.sh /docker-entrypoint.sh
-RUN chmod +x /docker-entrypoint.sh
 
 # Install wget for Coolify healthcheck
 RUN apk add --no-cache wget
 
-# Keep root as default so ENTRYPOINT can do envsubst, then drops to nginx
+# Keep root as USER so nginx master can open logs (workers drop via user directive)
 EXPOSE 80
 
-ENTRYPOINT ["/docker-entrypoint.sh"]
-CMD ["nginx", "-g", "daemon off;"]
+# ENVSUBST at runtime: injects NVIDIA_API_KEY and ANTHROPIC_API_KEY into nginx.conf,
+# then validates and starts nginx. No su-exec/setgroups needed — master runs as root.
+CMD ["/bin/sh", "-c", "envsubst '${NVIDIA_API_KEY} ${ANTHROPIC_API_KEY}' < /etc/nginx/conf.d/default.conf.template > /etc/nginx/conf.d/default.conf && nginx -t && nginx -g 'daemon off;'"]
