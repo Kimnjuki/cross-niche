@@ -59,9 +59,14 @@ RUN mkdir -p /var/cache/nginx/client_temp /var/cache/nginx/proxy_temp \
     && chown -R nginx:nginx /var/cache/nginx \
     && chmod -R 755 /var/cache/nginx
 
-# Redirect PID file to /tmp (survives container tmpfs mounts) and fix log ownership
-RUN sed -i 's|pid\s*/run/nginx.pid;|pid /tmp/nginx.pid;|' /etc/nginx/nginx.conf \
-    && chown -R nginx:nginx /var/log/nginx
+# Redirect PID file, error log to /tmp (survives container tmpfs mounts)
+# and redirect access log to stdout for container-friendly logging
+RUN sed -i \
+    -e 's|pid\s*/run/nginx.pid;|pid /tmp/nginx.pid;|' \
+    -e 's|error_log /var/log/nginx/error.log;|error_log /tmp/error.log;|' \
+    -e 's|access_log /var/log/nginx/access.log;|access_log /dev/stdout;|' \
+    -e '/^user /s/^/# /' \
+    /etc/nginx/nginx.conf
 
 # Install su-exec for privilege dropping in entrypoint (run as root, drop to nginx)
 RUN apk add --no-cache su-exec
