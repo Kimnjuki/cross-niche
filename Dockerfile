@@ -63,15 +63,15 @@ RUN mkdir -p /var/cache/nginx/client_temp /var/cache/nginx/proxy_temp \
 RUN sed -i 's|pid\s*/run/nginx.pid;|pid /tmp/nginx.pid;|' /etc/nginx/nginx.conf \
     && chown -R nginx:nginx /var/log/nginx
 
-# Switch to non-root user for security
-USER nginx
+# Install su-exec for privilege dropping in entrypoint (run as root, drop to nginx)
+RUN apk add --no-cache su-exec
 
+# Copy entrypoint script for runtime env var injection
+COPY scripts/docker-entrypoint.sh /docker-entrypoint.sh
+RUN chmod +x /docker-entrypoint.sh
+
+# Keep root as default so ENTRYPOINT can do envsubst, then drops to nginx
 EXPOSE 80
 
-# Use envsubst to inject runtime env vars into nginx config, validate, then start nginx
-# NVIDIA_API_KEY and ANTHROPIC_API_KEY are injected at container startup
-CMD sh -c "\
-    envsubst '\${NVIDIA_API_KEY} \${ANTHROPIC_API_KEY}' < /etc/nginx/conf.d/default.conf.template > /etc/nginx/conf.d/default.conf && \
-    nginx -t && \
-    exec nginx -g 'daemon off;' \
-    "
+ENTRYPOINT ["/docker-entrypoint.sh"]
+CMD ["nginx", "-g", "daemon off;"]
