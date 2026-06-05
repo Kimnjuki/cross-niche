@@ -62,15 +62,24 @@ export function SEOHead({
   software,
 }: SEOHeadProps) {
   // ── Title construction (unique per page, 50-60 chars) ──────────────────
+  // Priority: providedTitle > article.metaTitle > article.title + autoGenerate > SITE_NAME
   const rawTitle =
-    type === 'article' && article && autoGenerate
-      ? `${article.title || 'Untitled'} | ${SITE_NAME}`
-      : providedTitle || SITE_NAME;
+    providedTitle ||
+    (type === 'article' && article
+      ? (article.metaTitle
+          ? `${article.metaTitle} | ${SITE_NAME}`
+          : autoGenerate
+            ? `${article.title || 'Untitled'} | ${SITE_NAME}`
+            : '')
+      : SITE_NAME);
 
+  // Priority: providedDescription > article.metaDescription > autoGenerate from article > ''
   const rawDescription =
-    type === 'article' && article && autoGenerate
-      ? generateArticleMetaDescription(article)
-      : providedDescription || '';
+    providedDescription ||
+    (type === 'article' && article
+      ? (article.metaDescription ||
+          (autoGenerate ? generateArticleMetaDescription(article) : ''))
+      : '');
 
   const optimizedTitle       = optimizeTitle(rawTitle, 60);
   const optimizedDescription = optimizeMetaDescription(rawDescription, 160);

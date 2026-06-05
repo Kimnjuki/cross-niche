@@ -62,10 +62,15 @@ function loadArticles() {
     // Handle the case where backtick is inside the template literal (shouldn't happen)
     // But some articles may have escaped backticks
     
+    const metaTitleMatch = block.match(/metaTitle:\s*['"]([^'"]+)['"]/);
+    const metaDescMatch = block.match(/metaDescription:\s*['"]([^'"]+)['"]/);
+
     articles.set(slug, {
       id,
       slug,
       title: titleMatch ? titleMatch[1] : 'Untitled',
+      metaTitle: metaTitleMatch ? metaTitleMatch[1] : undefined,
+      metaDescription: metaDescMatch ? metaDescMatch[1] : undefined,
       excerpt: excerptMatch ? excerptMatch[1] : '',
       content: contentRaw,
       niche: nicheMatch ? nicheMatch[1] : 'tech',
@@ -123,18 +128,18 @@ function generateArticleHtml(article, baseHref = '/') {
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>${h(article.title)} | The Grid Nexus</title>
-  <meta name="description" content="${h(article.excerpt.substring(0, 160))}" />
+  <title>${h(article.metaTitle || article.title)} | The Grid Nexus</title>
+  <meta name="description" content="${h((article.metaDescription || article.excerpt).substring(0, 160))}" />
   <meta name="robots" content="index, follow, max-image-preview:large" />
   <link rel="canonical" href="https://thegridnexus.com/article/${article.slug}" />
-  <meta property="og:title" content="${h(article.title)}" />
-  <meta property="og:description" content="${h(article.excerpt.substring(0, 200))}" />
+  <meta property="og:title" content="${h(article.metaTitle || article.title)}" />
+  <meta property="og:description" content="${h((article.metaDescription || article.excerpt).substring(0, 200))}" />
   <meta property="og:url" content="https://thegridnexus.com/article/${article.slug}" />
   <meta property="og:type" content="article" />
   <meta property="og:site_name" content="The Grid Nexus" />
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="${h(article.title)}" />
-  <meta name="twitter:description" content="${h(article.excerpt.substring(0, 200))}" />
+  <meta name="twitter:title" content="${h(article.metaTitle || article.title)}" />
+  <meta name="twitter:description" content="${h((article.metaDescription || article.excerpt).substring(0, 200))}" />
   ${article.imageUrl ? `<meta property="og:image" content="${article.imageUrl}" />` : ''}
   <script type="application/ld+json">${breadcrumbJsonLd}</script>
   <script type="application/ld+json">${articleJsonLd}</script>
