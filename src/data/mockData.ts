@@ -550,6 +550,142 @@ export const mockArticles: Article[] = [
       metaDescription: 'Secure your gaming router against DNS hijacking, port scanning, and DDoS attacks. Essential settings for TP-Link, Asus, Netgear, and gaming routers.',
     },
 
+
+  // Pillar 1 — Ultimate Gaming Account Security Guide
+  {
+    id: 'pillar-1',
+    slug: 'ultimate-gaming-account-security-guide-2026',
+    title: 'Ultimate Gaming Account Security Guide 2026: Protect Steam, Epic, Discord, Twitch, Xbox, PlayStation, Nintendo & More',
+    excerpt: 'The complete guide to securing every gaming account you own. Covers Steam, Epic Games, Discord, Twitch, Xbox, PlayStation, Nintendo, Roblox, Minecraft, and Battle.net — with platform-specific 2FA setup, breach recovery, and proactive hardening for each.',
+    content: `<p>In 2026, gaming accounts are worth more than ever — libraries worth thousands of dollars, rare skins worth real money, linked payment methods, and access to esports tournaments. It's no surprise that account takeover is the #1 threat vector targeting gamers. This is your complete pillar guide to securing every gaming account you own. Work through it platform by platform — each section links to our dedicated deep-dive article for that platform.</p>
+
+<h2>Steam Account Security</h2>
+<p>Valve's Steam is the largest PC gaming storefront with over 120 million monthly active users — and the most-targeted platform for account thieves. <a href="/article/steam-account-takeover-protection-guide-2026">If your Steam account is already compromised, start with our recovery guide</a>. To prevent it: enable Steam Guard via the mobile authenticator (not email), generate unique passwords stored in a password manager, and never click links from fake "Steam Support" accounts on Discord. See also: <a href="/article/fake-game-cheats-malware-account-stealer">how fake game cheats steal accounts</a> and learn <a href="/article/how-hackers-steal-gaming-accounts">7 ways hackers target gaming accounts</a>.</p>
+
+<h2>Epic Games Account Security</h2>
+<p>Epic Games Store now has over 270 million accounts, making it a prime target for credential stuffing attacks. Enable <a href="/article/2fa-setup-every-gaming-platform">two-factor authentication on Epic Games</a> using an authenticator app — SMS-based 2FA is vulnerable to SIM swapping (<a href="/article/sim-swapping-gaming-accounts-protection">see our SIM swapping guide</a>). Use a unique email address for your Epic account if possible, and never link payment methods you don't regularly use. Check <a href="/article/how-to-check-if-your-gaming-accounts-have-been-compromised">how to verify if your accounts have been compromised</a>.</p>
+
+<h2>Discord Account Security</h2>
+<p>Discord is the most common entry point for gaming account theft in 2026. Malware spread through Discord DMs, fake server invites, and malicious mods is rampant. <a href="/article/discord-malware-gamers-how-to-stay-safe">Read our Discord malware guide</a> for how infections spread. Enable 2FA on Discord via the built-in authenticator, disable DMs from non-friends, and never download files from untrusted server members. For server owners: <a href="/article/discord-moderator-guide-block-spam-scams-2026">our Discord moderation guide covers blocking spam and scams</a>.</p>
+
+<h2>Twitch Account Security</h2>
+<p>Twitch streamers face unique threats: doxxing, swatting, and account takeover can end careers. Our <a href="/article/twitch-streamer-security-guide-doxxing-swatting">Twitch streamer security guide covers doxxing prevention and swatting protocols</a>. Enable 2FA, use a VPN for streaming IP protection, and separate your streaming identity from personal accounts. If you're a moderator: <a href="/article/twitch-accounts-hacked-breach-guide-2026">our Twitch breach guide covers the latest attack wave</a>.</p>
+
+<h2>Xbox, PlayStation, and Nintendo Account Security</h2>
+<p>Console account security is often overlooked because console users assume hardware-level protection. <a href="/article/nintendo-switch-2-security-guide">Our Nintendo Switch 2 security guide covers account protection on day one</a>. For Xbox: enable Microsoft Authenticator, not SMS. For PlayStation: use a passkey or hardware security key. For all three: enable 2FA on the platform's account portal, not just the console. The <a href="/article/complete-gaming-account-security-guide-2026">complete gaming account security guide</a> has the full walkthrough for every console platform.</p>
+
+<h2>Roblox, Minecraft, and Battle.net Account Security</h2>
+<p>Younger gamers on Roblox need parental supervision — our <a href="/article/roblox-parents-guide-account-security-safety">Roblox parent's safety guide</a> explains account controls and monitoring. <a href="/article/minecraft-server-security-guide">Minecraft server security</a> covers both account protection and server hardening. For Battle.net: enable the Blizzard Authenticator app and never reuse your WoW or Overwatch password on any other site. Our <a href="/article/gaming-pc-antivirus-best-2026">gaming PC antivirus guide</a> covers the best security software that won't tank your frame rate.</p>
+
+<h2>Password Manager Setup</h2>
+<p>Using a password manager is the single highest-impact security improvement you can make. Every gaming account should have a unique, randomly generated password. We recommend Bitwarden (open-source) or 1Password. <a href="/article/bitwarden-security-incident-gaming-password-manager">See our analysis of the recent Bitwarden incident</a> and why it still remains a solid choice.</p>
+
+<h2>Email Security — Your Gaming Life Depends on It</h2>
+<p>Your email is the master key to every gaming account. If an attacker gets your email, they can reset every linked password. Use a dedicated email for gaming accounts, enable 2FA on the email itself, and never reuse that email on sketchy sites. <a href="/article/gmail-hack-attacks-surge-gamers-2fa-2026">Gmail hack attacks targeting gamers are surging in 2026</a> — protect your inbox.</p>
+
+<h2>Breach Monitoring and Proactive Checking</h2>
+<p>Regularly check if your accounts appear in known breaches using Have I Been Pwned. Our guide to <a href="/article/how-to-check-if-your-gaming-accounts-have-been-compromised">checking if your gaming accounts have been compromised</a> walks through every platform's breach history and how to audit your exposure.</p>
+`,
+    niche: 'gaming',
+    author: 'The Grid Nexus Security Team',
+    publishedAt: '2026-06-05',
+    readTime: 18,
+    imageUrl: 'https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=800',
+    tags: ['Account Security', 'Steam', 'Epic Games', 'Discord', 'Twitch', 'Xbox', 'PlayStation', 'Nintendo', '2FA', 'Password Manager'],
+    isFeatured: true,
+    impactLevel: 'high',
+    metaTitle: 'Ultimate Gaming Account Security Guide 2026 — Full Platform Coverage',
+    metaDescription: 'Complete gaming account security guide covering Steam, Epic Games, Discord, Twitch, Xbox, PlayStation, Nintendo, Roblox, Minecraft and Battle.net — with platform-specific 2FA setup and breach recovery steps.',
+  },
+  // Pillar 2 — Gaming PC & Network Security Hub
+  {
+    id: 'pillar-2',
+    slug: 'gaming-pc-network-security-hub-2026',
+    title: 'Gaming PC & Network Security Hub 2026: The Complete Guide to a Secure Gaming Setup',
+    excerpt: 'Hardened gaming PCs eat malware for breakfast. This pillar covers every layer of your gaming setup — from hardware TPM and secure boot to router hardening, VPNs, antivirus selection, and anti-cheat integrity — so you can game with confidence.',
+    content: `<p>Your gaming setup is a stack: the OS, the hardware, the peripherals, the network, and the software. A vulnerability in any layer compromises the rest. This pillar guide walks through securing every layer of your gaming PC and home network, with links to detailed articles on each topic.</p>
+
+<h2>Operating System Security for Gamers</h2>
+<p>Windows 11 includes significant security improvements over Windows 10: TPM 2.0 requirement, Secure Boot, Virtualization-Based Security (VBS), and Credential Guard. Enable all of them. VBS has a small performance impact (3-5% in some games), but the security benefit against kernel-level malware is dramatic. Keep Windows Update active — <a href="/article/windows-11-anti-cheat-broken-fix-guide">the Windows 11 anti-cheat breakage incident</a> was a temporary bug, not a reason to delay patches. For additional hardening, see our <a href="/article/gaming-pc-security-hardening-guide-2026">Gaming PC Security Hardening Guide</a>.</p>
+
+<h2>Gaming PC Antivirus and Malware Protection</h2>
+<p>The best antivirus for gaming balances protection against performance. Our <a href="/article/gaming-pc-antivirus-best-2026">best antivirus for gaming PCs in 2026</a> compares Windows Defender, Bitdefender, ESET, and Malwarebytes head-to-head with FPS benchmarks. The short version: Windows Defender is sufficient for most gamers if combined with good habits, but power users benefit from ESET's gaming mode. Avoid McAfee and Norton — they're performance hogs with average detection rates. Use the <a href="/article/threat-scanner">Threat Scanner</a> to check your current security posture.</p>
+
+<h2>Router and Network Security</h2>
+<p>Your home network is the perimeter. A compromised router can intercept DNS requests, inject malicious ads, and even enable DDoS attacks against you during competitive matches. Our <a href="/article/router-security-gamers-2026">router security guide for gamers</a> covers protecting against TP-Link and Asus exploits, zero-trust networking, and DNS hijacking. Most consumer routers ship with default credentials — change them immediately. The <a href="/article/router-security-gamers-network-protection">gaming router security guide</a> provides the full network protection walkthrough.</p>
+
+<h2>VPNs for Gaming: Protection or Performance Trap?</h2>
+<p>VPNs can protect your IP from DDoS attacks during competitive gaming and prevent ISP throttling, but they add latency. Our <a href="/article/vpn-gaming-security-latency-test-2026">comprehensive gaming VPN test</a> measures latency impact across 8 major VPN providers. The verdict: gaming-optimized VPNs (ExitLag, WTFast, NordVPN's gaming servers) add 5-15ms — acceptable for most games. General-purpose VPNs add 20-50ms — too much for competitive shooters. Use a gaming VPN only during competitive sessions, not 24/7.</p>
+
+<h2>Peripheral Security</h2>
+<p>Gaming peripherals — headsets, controllers, mice, keyboards — are increasingly connected and increasingly vulnerable. Our <a href="/article/gaming-headset-malware-privacy-guide">gaming headset privacy guide</a> covers audio surveillance risks. For Steam Controller users: <a href="/article/steam-controller-security-risks-gamers">Valve's controller introduces Bluetooth attack surfaces</a>. Razer's Synapse software had a <a href="/article/razer-synapse-security-vulnerability-fix">significant vulnerability affecting millions of gamers</a>. Keep peripheral firmware updated and avoid installing manufacturer bloatware you don't need.</p>
+
+<h2>Anti-Cheat Integrity and Security</h2>
+<p>Anti-cheat systems like Easy Anti-Cheat, BattlEye, and Vanguard have kernel-level access — meaning a vulnerability in the anti-cheat itself is catastrophic. <a href="/article/windows-11-anti-cheat-broken-fix-guide">The Windows 11 update that broke anti-cheat software</a> showed how fragile this ecosystem is. Only install games from official storefronts. Fake anti-cheat installers are a common malware vector — <a href="/article/fake-game-cheats-malware-account-stealer">see how fake game cheats steal accounts</a> for the full story. Use the <a href="/article/breach-simulator">Breach Simulator</a> to test your current setup against common attack patterns.</p>
+
+<h2>Secure Gaming PC Build Guide</h2>
+<p>Building a new gaming PC? Choose components with security features in mind. Modern motherboards have TPM headers, secure boot, and BIOS password protection. Use a UEFI password, enable secure boot, and <a href="/article/gaming-pc-security-hardening-guide">follow our gaming PC hardening checklist</a>. For existing builds: our <a href="/article/gaming-pc-antivirus-best-2026">antivirus comparison guide</a> includes setup instructions for each recommended tool. The <a href="/article/gaming-pc-security-hardening-guide-2026">comprehensive 2026 hardening guide</a> covers registry tweaks, Group Policy settings, and network firewall rules specific to gaming.</p>
+
+<h2>Browser Security for Gamers</h2>
+<p>Chrome Zero-Day vulnerabilities are increasingly used to steal gaming session cookies and bypass 2FA. <a href="/article/chrome-zero-day-warning-gamers-april-2026">Our Chrome Zero-Day warning guide</a> covers the specific risks for gamers and how to protect your browser sessions. Use a dedicated browser profile for gaming logins, install uBlock Origin, and enable "Always use secure connections" in Chrome settings.</p>
+`,
+    niche: 'gaming',
+    author: 'The Grid Nexus Security Team',
+    publishedAt: '2026-06-05',
+    readTime: 16,
+    imageUrl: 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=800',
+    tags: ['PC Security', 'Network Security', 'Router', 'VPN', 'Antivirus', 'Anti-Cheat', 'Peripherals', 'Secure Boot', 'Windows Security'],
+    isFeatured: true,
+    impactLevel: 'high',
+    metaTitle: 'Gaming PC & Network Security Hub 2026 — Complete Setup Guide',
+    metaDescription: 'Complete gaming PC and network security guide covering Windows hardening, antivirus selection, router security, VPNs for gaming, anti-cheat integrity, peripheral security, and browser protection.',
+  },
+  // Pillar 3 — Stealer Malware, Social Engineering & the Threat Landscape for Gamers
+  {
+    id: 'pillar-3',
+    slug: 'stealer-malware-social-engineering-gamers-2026',
+    title: 'Stealer Malware, Social Engineering & the Gaming Threat Landscape 2026',
+    excerpt: 'The modern gaming threat landscape explained: info-stealer malware, social engineering on Discord, fake cheat downloads, SIM swapping, session cookie theft, and supply chain attacks — and how to defend against every one of them.',
+    content: `<p>Gamers in 2026 face a threat landscape that would have been unthinkable five years ago. Info-stealer malware targeting gaming credentials is a multi-million-dollar criminal industry. Social engineering on Discord and Telegram has evolved into a professionalized scam ecosystem. SIM swapping, session cookie theft, and supply chain attacks are now everyday realities. This pillar breaks down the entire threat landscape and how to defend against each attack vector, with links to our detailed guides on every topic.</p>
+
+<h2>Info-Stealer Malware: The #1 Gaming Threat</h2>
+<p>Info-stealers — malware that steals browser cookies, saved passwords, cryptocurrency wallets, and gaming session tokens — are the single largest threat to gamers in 2026. They spread primarily through <a href="/article/fake-game-cheats-malware-account-stealer">fake game cheats and cracks</a>. A single infection can compromise every account you're logged into. Our <a href="/article/steam-account-takeover-protection-guide-2026">Steam account takeover recovery guide</a> covers what to do if a stealer hits you. To prevent infection: never download cheats, cracks, or "free" software from untrusted sources. Use <a href="/article/gaming-pc-antivirus-best-2026">dedicated gaming antivirus</a> with real-time protection. The <a href="/article/threat-scanner">Threat Scanner tool</a> can check your PC for common stealer indicators.</p>
+
+<h2>Discord: The Social Engineering Superhighway</h2>
+<p>Discord has become the primary platform for gaming-related social engineering attacks. Fake "Steam Support" accounts DM victims with urgent account "verification" links. Malicious bots in popular servers distribute stealer malware disguised as mods or plugins. Our <a href="/article/discord-malware-gamers-how-to-stay-safe">Discord malware guide</a> explains the infection chain step by step. For server operators, the <a href="/article/discord-moderator-guide-block-spam-scams-2026">Discord moderation guide</a> covers blocking scam bots and malicious links. Never click links from strangers in DMs, never run code from untrusted users, and always verify "support" claims by going directly to the official platform.</p>
+
+<h2>Fake Cheats, Cracks, and Mod Installers</h2>
+<p>The most common delivery mechanism for gaming malware in 2026 is fake cheat software, game cracks, and mod installers on sites like GameCopyWorld, unknown YouTube tutorials, and Discord servers. These installers typically contain a stealer that exfiltrates cookies, passwords, and wallet files. <a href="/article/fake-game-cheats-malware-account-stealer">Our deep-dive on fake cheat malware</a> covers the mechanics. The tips section of our <a href="/article/complete-gaming-account-security-guide-2026">complete gaming account security guide</a> has a full safe-download checklist. Only download mods from official stores (Steam Workshop, CurseForge, Nexus Mods).</p>
+
+<h2>SIM Swapping: When Your Phone Number Betrays You</h2>
+<p>SIM swapping — where an attacker social-engineers a mobile carrier to transfer your phone number to their SIM — is increasingly used to bypass SMS-based 2FA on gaming accounts. Once the attacker controls your number, they can reset passwords on any account that uses SMS recovery. <a href="/article/sim-swapping-gaming-accounts-protection">Our SIM swapping protection guide</a> explains how to lock your mobile account with a PIN, port-out protection, and why you should migrate away from SMS 2FA to authenticator apps or hardware security keys. See also <a href="/article/2fa-setup-every-gaming-platform">the complete 2FA setup guide</a> for every major gaming platform.</p>
+
+<h2>Gaming Session Cookie Theft</h2>
+<p>Attackers are increasingly targeting browser session cookies rather than passwords. If a stealer malware gets your Steam, Discord, or Twitch session cookies, the attacker can bypass 2FA entirely — they're already authenticated. <a href="/article/chrome-zero-day-warning-gamers-april-2026">Chrome Zero-Days are a primary vector</a>. Protection: clear cookies regularly, enable Chrome's "Always use secure connections" and use a dedicated browser profile for gaming logins. Separate your gaming sessions from your daily browsing. The <a href="/article/how-to-check-if-your-gaming-accounts-have-been-compromised">compromised account checker</a> includes session-cookie-specific indicators to watch for.</p>
+
+<h2>Gray Market Scams: G2A, CDKeys, and Key Resellers</h2>
+<p>Gray market key resellers are not just a piracy-adjacent issue — they're a security risk. Stolen credit card keys can be revoked, and some resellers have been caught bundling malware. <a href="/article/game-key-reseller-scams-g2a-cdkeys">Our gray market scam guide</a> covers how to identify legitimate sellers and why buying from official stores or authorized retailers is safer. The security score checker tool can flag known scam key reseller domains.</p>
+
+<h2>The Gaming-Specific AI Threat Landscape</h2>
+<p>AI-generated deepfake voice scams (imitating friends on Discord to request "verification codes"), AI-written phishing messages that pass grammar checks, and AI-powered brute-force credential attacks are all rising. <a href="/article/ai-security-threats-2026">Our AI security threats guide</a> covers how weaponized AI targets gamers specifically. The <a href="/article/ai-security-threats-2026">Gaming Copilot AI assistant</a> can help you identify AI-powered phishing attempts in real-time.</p>
+
+<h2>Server-Side Threats: DDoS, Moderation, and Supply Chain</h2>
+<p>Gaming server operators face additional threats: DDoS attacks during competitive events, moderation failures that lead to doxxing, and supply chain attacks through compromised server plugins. <a href="/article/minecraft-server-security-guide">Minecraft server security</a> covers plugin vetting and access control. <a href="/article/complete-guide-to-scanning-gaming-servers-for-vulnerabilities">Our server vulnerability scanning guide</a> walks through how to audit your game server's security posture. The <a href="/article/breach-simulator">Breach Simulator tool</a> lets server operators test their defenses against common attack patterns.</p>
+
+<h2>Understanding the Full Threat Chain</h2>
+<p>The most dangerous attacks combine multiple vectors: a fake cheat download drops a stealer, which steals Discord session cookies, the attacker uses your Discord to message your friends with a "Steam code" scam, which compromises their accounts. Understanding the chain helps you break it at every link. Our <a href="/article/how-hackers-steal-gaming-accounts">7 ways hackers steal gaming accounts</a> explains the complete attack taxonomy. The <a href="/article/threat-scanner">Threat Scanner</a> can help identify weaknesses in your personal threat chain. The <a href="/article/what-gamers-think-about-security-sentiment-analysis-2026">gaming security sentiment analysis</a> reveals what other gamers are getting wrong — so you don't make the same mistakes.</p>
+`,
+    niche: 'gaming',
+    author: 'The Grid Nexus Security Team',
+    publishedAt: '2026-06-05',
+    readTime: 20,
+    imageUrl: 'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=800',
+    tags: ['Malware', 'Social Engineering', 'Discord', 'SIM Swapping', 'Session Hijacking', 'Phishing', 'AI Threats', 'DDoS', 'Supply Chain'],
+    isFeatured: true,
+    impactLevel: 'high',
+    metaTitle: 'Stealer Malware & Social Engineering Threats for Gamers 2026',
+    metaDescription: 'Complete guide to the gaming threat landscape in 2026: info-stealer malware, Discord social engineering, fake cheat scams, SIM swapping, session cookie theft, AI-powered phishing, and supply chain attacks.',
+  },
   // ── GAMING SECURITY GUIDES ──────────────────────────────────────────────────
   {
     id: 'sec-guide-1',
