@@ -40,7 +40,7 @@ RUN node scripts/generate-prerender-pages.mjs
 # Stage 2: Production (Serve with Nginx)
 FROM nginx:stable-alpine AS production-stage
 # Build cache buster 2026-06-04-2 — nginx logs to /tmp + stdout
-RUN echo "build-2026-06-04-2" > /dev/null
+RUN echo "build-2026-06-04-3" > /dev/null
 
 # Install envsubst (gettext) for runtime env var injection into nginx config
 RUN apk add --no-cache gettext
@@ -60,11 +60,14 @@ RUN mkdir -p /var/cache/nginx/client_temp /var/cache/nginx/proxy_temp \
     && chmod -R 755 /var/cache/nginx
 
 # Redirect PID file, error log to /tmp (survives container tmpfs mounts)
-# and redirect access log to stdout for container-friendly logging
+# and redirect access log to stdout/stderr for container-friendly logging
+# ⚠️ These seds must NOT use | as delimiter because /var/log/nginx/.log
+# contains forward slashes that interact badly with | in some sed versions.
+# Also, the stock nginx.conf lines have variant spacing, so match loosely.
 RUN sed -i \
-    -e 's|pid\s*/run/nginx.pid;|pid /tmp/nginx.pid;|' \
-    -e 's|error_log /var/log/nginx/error.log;|error_log /tmp/error.log;|' \
-    -e 's|access_log /var/log/nginx/access.log;|access_log /dev/stdout;|' \
+    -e 's@pid\s*/run/nginx.pid;@pid /tmp/nginx.pid;@' \
+    -e 's@error_log  */var/log/nginx/error\.log@error_log /dev/stderr@' \
+    -e 's@access_log  */var/log/nginx/access\.log@access_log /dev/stdout@' \
     -e '/^user /s/^/# /' \
     /etc/nginx/nginx.conf
 
@@ -74,6 +77,9 @@ RUN apk add --no-cache su-exec
 # Copy entrypoint script for runtime env var injection
 COPY scripts/docker-entrypoint.sh /docker-entrypoint.sh
 RUN chmod +x /docker-entrypoint.sh
+
+# Install wget for Coolify healthcheck
+RUN apk add --no-cache wget
 
 # Keep root as default so ENTRYPOINT can do envsubst, then drops to nginx
 EXPOSE 80
