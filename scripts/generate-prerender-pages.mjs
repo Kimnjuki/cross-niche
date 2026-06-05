@@ -50,9 +50,14 @@ function loadArticles() {
       if (tagItems) tags = tagItems.map(t => t.replace(/'/g, ''));
     }
 
-    // Extract content — between backticks after `content:`
+    // Extract content — must use backtick template literal (not single/double quotes)
+    // Single-quoted content: '...' is NOT supported to avoid split-on-} parser bugs
     const contentMatch = block.match(/content:\s*`((?:[^`]|\\`)*)`/s);
-    if (!contentMatch) continue;
+    if (!contentMatch) {
+      const slug = slugMatch ? slugMatch[1] : idMatch[1];
+      console.warn(`  ⚠ Skipping article "${slug}" — content must use backtick (\`) not single quotes`);
+      continue;
+    }
 
     const id = idMatch[1];
     const slug = slugMatch ? slugMatch[1] : id;

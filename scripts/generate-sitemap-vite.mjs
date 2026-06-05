@@ -6,7 +6,7 @@
  * - Only /article/slug routes (not mixed /tech/slug etc)
  * - Canonical URLs match actual routes
  * - All tool pages included
- * - All 38 current article slugs included
+ * - All 41 current article slugs included
  * 
  * Run: node scripts/generate-sitemap-vite.mjs (part of build)
  */
@@ -40,20 +40,18 @@ function extractArticleSlugs() {
   return Array.from(slugs);
 }
 
-// ── Static pages (all valid routes from App.tsx) ─────────────────────────
+// ── Static pages (only routes with prerender HTML or tool pages) ────────
 const staticPages = [
-  // Hubs
+  // Hubs with prerender pages
   '/', '/tech', '/security', '/gaming', '/news',
-  '/blog', '/explore', '/topics', '/guides', '/tutorials',
+  '/topics', '/guides',
   
-  // App pages
-  '/reviews', '/startups', '/security-profile', '/community-threats',
-  '/ai-pulse', '/nexus-intersection',
-  '/media', '/about', '/contact', '/editorial', '/disclosure',
-  '/privacy', '/terms', '/quality-guidelines', '/content-policy',
-  '/sitemap', '/roadmap',
+  // Static info pages with prerender
+  '/about', '/contact',
+  '/privacy', '/terms',
 
   // Security tool pages
+  '/sitemap',
   '/breach-sim', '/security-score',
   '/live-threat-dashboard',
   
@@ -70,6 +68,10 @@ const staticPages = [
   '/tools/threat-scanner', '/tools/community-moderator',
   '/tools/gaming-copilot', '/tools/release-predictor',
 ];
+// Note: /blog, /explore, /tutorials, /reviews, /startups, /security-profile,
+// /community-threats, /ai-pulse, /nexus-intersection, /media, /editorial,
+// /disclosure, /quality-guidelines, /content-policy, /roadmap removed —
+// no prerender HTML, would cause 'discovered-not-indexed' noise.
 
 // ── Prioritize security tools higher than static info pages ─────────────
 const highPriorityPages = new Set([
@@ -139,8 +141,8 @@ function generateArticleSitemap() {
     return generateUrlXml(fullUrl, today, 'weekly', '0.8');
   });
 
-  // Add SEO-friendly alias routes
-  urls.push(generateUrlXml(`${siteUrl}/how-to-enable-2fa-on-all-gaming-accounts-2026`, today, 'weekly', '0.9'));
+  // SEO-friendly alias '/how-to-enable-2fa...' NOT included in sitemap
+  // nginx 301 redirect handles this from the alternate URL to the canonical article
 
   const xml = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
