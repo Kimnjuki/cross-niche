@@ -47,6 +47,42 @@ export const setBrokenLinkRedirect = mutation({
     redirectTo: v.string(),
   },
   handler: async (ctx, args) => {
+    const normalize = (input: string) => {
+      try {
+        if (input.startsWith("http")) {
+          return new URL(input).pathname.replace(/\/$/, "") || "/";
+        }
+        return (input.startsWith("/") ? input : `/${input}`).replace(/\/$/, "") || "/";
+      } catch {
+        return input;
+      }
+    };
+
+    const from = normalize(args.url);
+    const to = normalize(args.redirectTo);
+    if (from === to) {
+      throw new Error("Self-referential redirect rejected");
+    }
+
+    // Walk existing redirect graph + proposed edge for cycles
+    const all = await ctx.db.query("brokenLinks").collect();
+    const graph = new Map<string, string>();
+    for (const row of all) {
+      if (!row.redirectTo) continue;
+      graph.set(normalize(row.url), normalize(row.redirectTo));
+    }
+    graph.set(from, to);
+
+    const seen = new Set<string>();
+    let cur: string | undefined = from;
+    for (let i = 0; i < 8 && cur; i++) {
+      if (seen.has(cur)) {
+        throw new Error(`Redirect loop detected involving ${from}`);
+      }
+      seen.add(cur);
+      cur = graph.get(cur);
+    }
+
     const existing = await ctx.db
       .query("brokenLinks")
       .withIndex("by_url", (q) => q.eq("url", args.url))

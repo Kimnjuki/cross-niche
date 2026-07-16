@@ -8,7 +8,10 @@ export const buttonVariants = cva(
         primary: "bg-[var(--accent-cyan)] text-[var(--bg-base)] shadow-[var(--shadow-button-primary)] hover:bg-[#19EEFF] hover:-translate-y-1 hover:shadow-[0_0_28px_rgba(0,229,255,0.4)] active:translate-y-0 active:scale-[0.98] rounded-[var(--radius-sm)]",
         secondary: "bg-transparent border border-[var(--border-cyan)] text-[var(--accent-cyan)] hover:bg-[var(--accent-cyan-glow)] hover:border-[var(--accent-cyan)] rounded-[var(--radius-sm)]",
         ghost: "bg-transparent text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[rgba(255,255,255,0.04)] rounded-[var(--radius-sm)]",
-        danger: "bg-[var(--accent-red)] text-[#fff] hover:bg-[#DC2626] rounded-[var(--radius-sm)]"
+        danger: "bg-[var(--accent-red)] text-[#fff] hover:bg-[#DC2626] rounded-[var(--radius-sm)]",
+        default: "bg-[var(--bg-elevated)] text-[var(--text-primary)] border border-[var(--border-default)] hover:bg-[var(--accent-cyan-glow)] rounded-[var(--radius-sm)]",
+        outline: "bg-transparent border border-[var(--border-cyan)] text-[var(--text-primary)] hover:bg-[var(--accent-cyan-glow)] rounded-[var(--radius-sm)]",
+        destructive: "bg-[var(--accent-red)] text-[#fff] hover:bg-[#DC2626] rounded-[var(--radius-sm)]"
       },
       size: {
         xs: "h-7 px-3 text-xs",

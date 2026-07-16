@@ -1,18 +1,18 @@
-/**
- * THE GRID NEXUS — CONVEX SCHEMA v2.0
+﻿/**
+ * THE GRID NEXUS ΓÇö CONVEX SCHEMA v2.0
  *
- * ✅ Added: affiliateEvents (affiliate click/conversion tracking)
- * ✅ Added: subscriptions (premium subscription state)
- * ✅ Added: experiments + experimentAssignments (A/B testing)
- * ✅ Added: enterpriseAccounts + enterpriseMembers (NexusGuard B2B)
- * ✅ Added: geoVisibility (AI crawler / GEO signal tracking)
- * ✅ Added: revenueEvents (unified revenue event log)
- * ✅ Modified: users — lifecycleStage, source, accountType, enterpriseId, referredBy
- * ✅ Modified: newsletterSubscribers — source
- * ✅ Modified: contentAnalytics — adRevenue, affiliateRevenue, adImpressions
- * ✅ Modified: internalLinks — positionInContent, ctaType
- * ✅ Modified: seoMetrics — newsletterSubscribers, registeredUsers, premiumUsers, totalRevenue, aiReferralVisits
- * ✅ Modified: content — affiliateMeta, geoOptimized, targetAudience
+ * Γ£à Added: affiliateEvents (affiliate click/conversion tracking)
+ * Γ£à Added: subscriptions (premium subscription state)
+ * Γ£à Added: experiments + experimentAssignments (A/B testing)
+ * Γ£à Added: enterpriseAccounts + enterpriseMembers (NexusGuard B2B)
+ * Γ£à Added: geoVisibility (AI crawler / GEO signal tracking)
+ * Γ£à Added: revenueEvents (unified revenue event log)
+ * Γ£à Modified: users ΓÇö lifecycleStage, source, accountType, enterpriseId, referredBy
+ * Γ£à Modified: newsletterSubscribers ΓÇö source
+ * Γ£à Modified: contentAnalytics ΓÇö adRevenue, affiliateRevenue, adImpressions
+ * Γ£à Modified: internalLinks ΓÇö positionInContent, ctaType
+ * Γ£à Modified: seoMetrics ΓÇö newsletterSubscribers, registeredUsers, premiumUsers, totalRevenue, aiReferralVisits
+ * Γ£à Modified: content ΓÇö affiliateMeta, geoOptimized, targetAudience
  *
  * Use this with: npx convex dev (push schema)
  */
@@ -21,9 +21,9 @@ import { defineSchema, defineTable } from "convex/server";
 import { v } from "convex/values";
 
 export default defineSchema({
-  // ─── Lookup / reference tables (no app FKs) ─────────────────────────────
+  // ΓöÇΓöÇΓöÇ Lookup / reference tables (no app FKs) ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
   niches: defineTable({
-    idNum: v.number(), // Supabase niches.id (smallint) – 1=Tech, 2=Security, 3=Gaming
+    idNum: v.number(), // Supabase niches.id (smallint) ΓÇô 1=Tech, 2=Security, 3=Gaming
     name: v.string(),
     colorCode: v.optional(v.string()),
   })
@@ -50,7 +50,7 @@ export default defineSchema({
     .index("by_slug", ["slug"])
     .index("by_active_order", ["isActive", "displayOrder"]),
 
-  // ─── Users (optional: use if you sync from Supabase Auth) ────────────────
+  // ΓöÇΓöÇΓöÇ Users (optional: use if you sync from Supabase Auth) ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
   users: defineTable({
     supabaseUserId: v.string(), // Supabase auth.users.id (UUID)
     username: v.string(),
@@ -81,7 +81,7 @@ export default defineSchema({
     publicProfile: v.optional(v.boolean()),
     headline: v.optional(v.string()),
     primaryPersona: v.optional(v.union(v.literal("gamer"), v.literal("security_enthusiast"), v.literal("builder"))),
-    // Growth v2.0 — lifecycle, attribution & B2B
+    // Growth v2.0 ΓÇö lifecycle, attribution & B2B
     lifecycleStage: v.optional(v.union(
       v.literal("visitor"),
       v.literal("free_user"),
@@ -105,7 +105,7 @@ export default defineSchema({
     .index("by_lifecycle_stage", ["lifecycleStage"])
     .index("by_enterprise", ["enterpriseId"]),
 
-  // ─── Content (core) ─────────────────────────────────────────────────────
+  // ΓöÇΓöÇΓöÇ Content (core) ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
   // For listPublished/listTrending: set publishedAt (ms) on published items so by_status_published_at ordering is correct.
   // News Agency Ingestion: externalId, source, isAutomated, originalUrl for NewsAPI/Reuters ingested content.
   content: defineTable({
@@ -117,7 +117,7 @@ export default defineSchema({
     authorUserId: v.optional(v.id("users")), // Optional strict FK when author rows exist in users
     status: v.string(), // "draft" | "published" | "new" | "archived" | "unlisted"
     isPremium: v.optional(v.boolean()),
-    securityScore: v.optional(v.number()), // 1–5
+    securityScore: v.optional(v.number()), // 1ΓÇô5
     publishedAt: v.optional(v.number()), // ms; required for published items when using by_status_published_at
     subtitle: v.optional(v.string()),
     metaTitle: v.optional(v.string()),
@@ -172,7 +172,7 @@ export default defineSchema({
     ),
     factCheckId: v.optional(v.id("factChecks")),
     isEditorialSelection: v.optional(v.boolean()),
-    // Growth v2.0 — monetization & GEO signals
+    // Growth v2.0 ΓÇö monetization & GEO signals
     affiliateMeta: v.optional(v.object({
       program: v.string(),
       payoutRate: v.float64(),
@@ -201,7 +201,7 @@ export default defineSchema({
     .index("by_is_premium", ["isPremium", "publishedAt"])
     .index("by_target_audience", ["targetAudience", "publishedAt"]),
 
-  // ─── Editorial & fact-checking (AdSense / trust signals) ───────────────
+  // ΓöÇΓöÇΓöÇ Editorial & fact-checking (AdSense / trust signals) ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
   factChecks: defineTable({
     contentId: v.id("content"),
     claims: v.array(v.string()),
@@ -224,7 +224,7 @@ export default defineSchema({
     reviewedAt: v.optional(v.number()),
   }).index("by_content", ["contentId"]),
 
-  // ─── Content ↔ Niches (many-to-many) ─────────────────────────────────────
+  // ΓöÇΓöÇΓöÇ Content Γåö Niches (many-to-many) ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
   contentNiches: defineTable({
     contentId: v.id("content"),
     nicheId: v.number(), // matches niches table; Convex has no smallint, use number
@@ -233,7 +233,7 @@ export default defineSchema({
     .index("by_niche", ["nicheId"])
     .index("by_content_niche", ["contentId", "nicheId"]),
 
-  // ─── Content ↔ Tags (many-to-many) ──────────────────────────────────────
+  // ΓöÇΓöÇΓöÇ Content Γåö Tags (many-to-many) ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
   contentTags: defineTable({
     contentId: v.id("content"),
     tagId: v.id("tags"),
@@ -242,7 +242,7 @@ export default defineSchema({
     .index("by_tag", ["tagId"])
     .index("by_content_tag", ["contentId", "tagId"]),
 
-  // ─── Content ↔ Feeds (many-to-many) ─────────────────────────────────────
+  // ΓöÇΓöÇΓöÇ Content Γåö Feeds (many-to-many) ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
   contentFeeds: defineTable({
     contentId: v.id("content"),
     feedId: v.id("feeds"),
@@ -251,7 +251,7 @@ export default defineSchema({
     .index("by_feed", ["feedId"])
     .index("by_content_feed", ["contentId", "feedId"]),
 
-  // ─── Comments ──────────────────────────────────────────────────────────
+  // ΓöÇΓöÇΓöÇ Comments ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
   comments: defineTable({
     contentId: v.id("content"),
     userId: v.string(), // Supabase auth user id (or Convex users._id)
@@ -272,7 +272,7 @@ export default defineSchema({
     .index("by_user_created", ["userId", "createdAt"])
     .index("by_content_created", ["contentId", "createdAt"]),
 
-  // ─── User bookmarks (content ids) ───────────────────────────────────────
+  // ΓöÇΓöÇΓöÇ User bookmarks (content ids) ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
   userBookmarks: defineTable({
     userId: v.string(), // Supabase auth user id
     contentId: v.id("content"),
@@ -281,7 +281,7 @@ export default defineSchema({
     .index("by_content", ["contentId"])
     .index("by_user_content", ["userId", "contentId"]),
 
-  // ─── Media (images etc. per content) ─────────────────────────────────────
+  // ΓöÇΓöÇΓöÇ Media (images etc. per content) ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
   media: defineTable({
     contentId: v.id("content"),
     url: v.string(),
@@ -291,7 +291,7 @@ export default defineSchema({
     positionInArticle: v.optional(v.number()),
   }).index("by_content", ["contentId"]),
 
-  // ─── Content tables (e.g. comparison tables, JSON) ───────────────────────
+  // ΓöÇΓöÇΓöÇ Content tables (e.g. comparison tables, JSON) ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
   contentTables: defineTable({
     contentId: v.id("content"),
     tableTitle: v.optional(v.string()),
@@ -299,17 +299,17 @@ export default defineSchema({
     orderIndex: v.optional(v.number()),
   }).index("by_content", ["contentId"]),
 
-  // ─── Nexus Risk-to-Reward Gaming Index (nexus-001) ────────────────────
-  // Privacy & Security rating per game/review. NexusSecurityScore 0–100 from E, M, P.
+  // ΓöÇΓöÇΓöÇ Nexus Risk-to-Reward Gaming Index (nexus-001) ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+  // Privacy & Security rating per game/review. NexusSecurityScore 0ΓÇô100 from E, M, P.
   securityRatings: defineTable({
     contentId: v.optional(v.id("content")), // link to review article
     gameTitle: v.optional(v.string()),
     gameSlug: v.optional(v.string()),
     dataEncryption: v.boolean(), // E
     accountMFA: v.boolean(), // M
-    dataSharingPolicy: v.string(), // "minimal" | "standard" | "extensive" | "unknown" → P
-    nexusSecurityScore: v.number(), // 0–100, computed from E,M,P
-    funFactor: v.optional(v.number()), // 0–100 for radar (Fun vs Security Risk)
+    dataSharingPolicy: v.string(), // "minimal" | "standard" | "extensive" | "unknown" ΓåÆ P
+    nexusSecurityScore: v.number(), // 0ΓÇô100, computed from E,M,P
+    funFactor: v.optional(v.number()), // 0ΓÇô100 for radar (Fun vs Security Risk)
     // Nexus Security Profile enrichments
     riskVector: v.optional(v.array(v.string())),
     lastReviewedAt: v.optional(v.float64()),
@@ -317,7 +317,7 @@ export default defineSchema({
     .index("by_content", ["contentId"])
     .index("by_game_slug", ["gameSlug"]),
 
-  // ─── Multi-source news feed (NewsAPI + GNews) ───────────────────────────
+  // ΓöÇΓöÇΓöÇ Multi-source news feed (NewsAPI + GNews) ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
   // Dual-index: by_url (deduplication) + by_publishedAt (sorting). Used by ingest + getLatestFeed.
   articles: defineTable({
     title: v.string(),
@@ -339,7 +339,7 @@ export default defineSchema({
     .index("by_expiresAt", ["expiresAt"])
     .index("by_sourceType", ["sourceType"]),
 
-  // ─── AI-Pulse Roadmap (nexus-002) ──────────────────────────────────────
+  // ΓöÇΓöÇΓöÇ AI-Pulse Roadmap (nexus-002) ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
   // Live-updating timeline: AI/ML tech trends. category = Productivity | Creative | Gaming AI.
   // Enhanced with benchmarks, features, competitive analysis, and future predictions.
   aiUpdates: defineTable({
@@ -347,8 +347,8 @@ export default defineSchema({
     description: v.string(),
     category: v.string(), // "productivity" | "creative" | "gaming_ai"
     publishedAt: v.float64(), // ms
-    isHype: v.boolean(), // marketing fluff → dim when Hype view
-    hasBenchmarks: v.boolean(), // confirmed ML benchmarks → highlight when Utility view
+    isHype: v.boolean(), // marketing fluff ΓåÆ dim when Hype view
+    hasBenchmarks: v.boolean(), // confirmed ML benchmarks ΓåÆ highlight when Utility view
     sourceUrl: v.optional(v.string()),
     // NEW: TTL Control
     expiresAt: v.optional(v.float64()),
@@ -385,7 +385,7 @@ export default defineSchema({
     // NEW INDEX: Crucial for blazing-fast database cleanup
     .index("by_expiresAt", ["expiresAt"]),
 
-  // ─── Guides & Tutorials ───────────────────────────────────────────────
+  // ΓöÇΓöÇΓöÇ Guides & Tutorials ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
   guides: defineTable({
     title: v.string(),
     slug: v.string(),
@@ -404,7 +404,7 @@ export default defineSchema({
     .index("by_difficulty", ["difficulty"])
     .index("by_published_at", ["publishedAt"]),
 
-  // ─── Guide Progress Tracking ──────────────────────────────────────────
+  // ΓöÇΓöÇΓöÇ Guide Progress Tracking ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
   guideProgress: defineTable({
     userId: v.string(), // User identifier (can be session-based)
     guideId: v.id("guides"),
@@ -416,7 +416,7 @@ export default defineSchema({
     .index("by_guide", ["guideId"])
     .index("by_user_guide", ["userId", "guideId"]),
 
-  // ─── Roadmap Voting System ─────────────────────────────────────────────
+  // ΓöÇΓöÇΓöÇ Roadmap Voting System ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
   roadmapVotes: defineTable({
     featureId: v.string(), // ID of the roadmap feature
     userId: v.string(), // User or session identifier (required for anonymous / legacy)
@@ -428,7 +428,7 @@ export default defineSchema({
     .index("by_user", ["userId"])
     .index("by_feature_user", ["featureId", "userId"]),
 
-  // ─── User Gamification (XP, Levels, Badges) ───────────────────────────
+  // ΓöÇΓöÇΓöÇ User Gamification (XP, Levels, Badges) ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
   userGamification: defineTable({
     userId: v.string(), // User identifier
     xp: v.number(), // Total XP points
@@ -444,7 +444,7 @@ export default defineSchema({
       unlockedAt: v.number(), // ms timestamp
       progress: v.optional(v.number()), // Progress percentage if applicable
     })),
-    // Tool cohesion — track suite module usage
+    // Tool cohesion ΓÇö track suite module usage
     lastModuleCompleted: v.optional(v.string()),
     preferredModule: v.optional(v.string()),
   })
@@ -452,7 +452,7 @@ export default defineSchema({
     .index("by_level", ["level"])
     .index("by_xp", ["xp"]),
 
-  // ─── User Preferences ──────────────────────────────────────────────────
+  // ΓöÇΓöÇΓöÇ User Preferences ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
   userPreferences: defineTable({
     userId: v.string(),
     theme: v.optional(v.union(v.literal("light"), v.literal("dark"), v.literal("system"))),
@@ -464,7 +464,7 @@ export default defineSchema({
   })
     .index("by_user", ["userId"]),
 
-  // ─── Threat Intelligence (external feeds) ───────────────────────────────
+  // ΓöÇΓöÇΓöÇ Threat Intelligence (external feeds) ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
   // Ingested from sources like CISA KEV. Used by Live Threat Dashboard.
   threatIntel: defineTable({
     source: v.string(), // e.g. "cisa_kev"
@@ -489,7 +489,7 @@ export default defineSchema({
     // Gaming context enrichment
     affectsGamers: v.optional(v.boolean()),
     gamingPlatforms: v.optional(v.array(v.string())),  // ["Steam","PlayStation","Xbox","PC","Mobile"]
-    gamerImpactScore: v.optional(v.number()),          // 0–100
+    gamerImpactScore: v.optional(v.number()),          // 0ΓÇô100
     // Game Security Copilot enrichment
     gameSlugs: v.optional(v.array(v.string())),
   })
@@ -500,20 +500,20 @@ export default defineSchema({
     .index("by_expiresAt", ["expiresAt"])
     .index("by_affects_gamers", ["affectsGamers", "publishedAt"]),
 
-  // ─── Threat alert subscriptions & notifications ─────────────────────────
+  // ΓöÇΓöÇΓöÇ Threat alert subscriptions & notifications ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
   threatSubscriptions: defineTable({
     userId: v.string(),
     type: v.union(v.literal("cve"), v.literal("tag")),
     value: v.string(),
     createdAt: v.number(),
-    // Threat Intel usability — persona filter
+    // Threat Intel usability ΓÇö persona filter
     persona: v.optional(v.union(v.literal("gamer"), v.literal("it_pro"), v.literal("developer"))),
   })
     .index("by_user", ["userId"])
     .index("by_type_value", ["type", "value"])
     .index("by_user_type_value", ["userId", "type", "value"]),
 
-  // ─── Newsletter Subscribers ─────────────────────────────────────────────
+  // ΓöÇΓöÇΓöÇ Newsletter Subscribers ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
   newsletterSubscribers: defineTable({
     email: v.string(),
     name: v.optional(v.string()),
@@ -533,7 +533,7 @@ export default defineSchema({
     openRate: v.optional(v.float64()),
     clickRate: v.optional(v.float64()),
     isActive: v.boolean(),
-    // Growth v2.0 — source attribution
+    // Growth v2.0 ΓÇö source attribution
     source: v.optional(v.string()), // "organic" | "tool_cta" | "social" | "referral" | "paid"
   })
     .index("by_email", ["email"])
@@ -542,7 +542,7 @@ export default defineSchema({
     .index("by_confirmation_token", ["confirmationToken"])
     .index("by_frequency_status", ["frequency", "status"]),
 
-  // ─── Newsletter Send History ────────────────────────────────────────────
+  // ΓöÇΓöÇΓöÇ Newsletter Send History ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
   newsletterSends: defineTable({
     subscriberId: v.id("newsletterSubscribers"),
     subject: v.string(),
@@ -567,7 +567,7 @@ export default defineSchema({
     .index("by_user_read", ["userId", "readAt"])
     .index("by_user_threat", ["userId", "threatId"]),
 
-  // ─── SEO & Content Optimization ────────────────────────────────────────────
+  // ΓöÇΓöÇΓöÇ SEO & Content Optimization ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
   contentOptimization: defineTable({
     contentId: v.id("content"),
     targetKeyword: v.string(),
@@ -597,7 +597,7 @@ export default defineSchema({
     currentRank: v.optional(v.number()),
     contentId: v.optional(v.id("content")),
     createdAt: v.number(), // ms
-    // Brand Intelligence Copilot — editorial assignment
+    // Brand Intelligence Copilot ΓÇö editorial assignment
     assignedTo: v.optional(v.id("users")),
     briefId: v.optional(v.id("editorialAiBriefs")),
   })
@@ -611,9 +611,9 @@ export default defineSchema({
     views: v.number(),
     uniqueVisitors: v.number(),
     avgTimeOnPage: v.number(), // seconds
-    bounceRate: v.number(), // 0–100
+    bounceRate: v.number(), // 0ΓÇô100
     organicTraffic: v.number(),
-    // Growth v2.0 — revenue attribution per content piece
+    // Growth v2.0 ΓÇö revenue attribution per content piece
     adRevenue: v.optional(v.float64()),        // USD from programmatic ads
     affiliateRevenue: v.optional(v.float64()), // USD from affiliate clicks/conversions
     adImpressions: v.optional(v.float64()),    // raw ad impression count
@@ -633,7 +633,7 @@ export default defineSchema({
     .index("by_content", ["contentId"])
     .index("by_refreshDate", ["refreshDate"]),
 
-  // ─── Link Intelligence & Redirects ────────────────────────────────────────
+  // ΓöÇΓöÇΓöÇ Link Intelligence & Redirects ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
   brokenLinks: defineTable({
     url: v.string(),
     statusCode: v.number(),
@@ -653,7 +653,7 @@ export default defineSchema({
     context: v.string(),
     createdAt: v.number(), // ms
     clickCount: v.optional(v.number()),
-    // Growth v2.0 — CTA placement signals
+    // Growth v2.0 ΓÇö CTA placement signals
     positionInContent: v.optional(v.union(
       v.literal("top"),
       v.literal("middle"),
@@ -719,7 +719,7 @@ export default defineSchema({
     .index("by_target_url", ["targetUrl"])
     .index("by_type", ["type"]),
 
-  // ─── Page Speed & SEO Metrics ─────────────────────────────────────────────
+  // ΓöÇΓöÇΓöÇ Page Speed & SEO Metrics ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
   pageSpeed: defineTable({
     url: v.string(),
     fcp: v.number(), // First Contentful Paint (ms)
@@ -752,7 +752,7 @@ export default defineSchema({
     criticalIssues: v.optional(v.number()),
     avgPageSpeed: v.optional(v.number()),
     mobileUsability: v.optional(v.number()),
-    // Growth v2.0 — consolidated growth KPIs
+    // Growth v2.0 ΓÇö consolidated growth KPIs
     newsletterSubscribers: v.optional(v.float64()),
     registeredUsers: v.optional(v.float64()),
     premiumUsers: v.optional(v.float64()),
@@ -769,11 +769,28 @@ export default defineSchema({
     issues: v.optional(v.any()),
   }).index("by_date", ["date"]),
 
+  // ─── Google Search Console Integration ──────────────────────────────────────
+  gscAnalytics: defineTable({
+    date: v.number(), // ms (start of day)
+    clicks: v.number(),
+    impressions: v.number(),
+    ctr: v.number(),
+    position: v.number(),
+    query: v.optional(v.string()),
+    page: v.optional(v.string()),
+    country: v.optional(v.string()),
+    device: v.optional(v.string()),
+    syncedAt: v.number(), // ms
+  })
+    .index("by_date", ["date"])
+    .index("by_query", ["query"])
+    .index("by_page", ["page"]),
+
   // ════════════════════════════════════════════════════════════════════════════
   // NEXUS AI FEATURES SCHEMA (TheGridNexus AI Feature Expansion v2.0)
-  // ════════════════════════════════════════════════════════════════════════════
+  // ΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉ
 
-  // ─── FEAT-001: NexusGuard Security Briefs ──────────────────────────────────
+  // ΓöÇΓöÇΓöÇ FEAT-001: NexusGuard Security Briefs ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
   securityBriefs: defineTable({
     userId: v.optional(v.string()),
     email: v.optional(v.string()),
@@ -806,7 +823,7 @@ export default defineSchema({
     .index("by_generated_at", ["generatedAt"])
     .index("by_industry", ["industry"]),
 
-  // ─── FEAT-002: Nexus Copilot Interactions ──────────────────────────────────
+  // ΓöÇΓöÇΓöÇ FEAT-002: Nexus Copilot Interactions ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
   copilotInteractions: defineTable({
     sessionId: v.string(),
     userId: v.optional(v.string()),
@@ -831,7 +848,7 @@ export default defineSchema({
     .index("by_session", ["sessionId"])
     .index("by_created_at", ["createdAt"]),
 
-  // ─── FEAT-003: Nexus Path Learning Paths ───────────────────────────────────
+  // ΓöÇΓöÇΓöÇ FEAT-003: Nexus Path Learning Paths ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
   learningPaths: defineTable({
     userId: v.optional(v.string()),
     goal: v.string(),
@@ -883,14 +900,14 @@ export default defineSchema({
     lastActivityAt: v.float64(),
     completedAt: v.optional(v.float64()),
     weeklyReminderEnabled: v.boolean(),
-    // Adaptive Learning Copilot — last recommendation timestamp
+    // Adaptive Learning Copilot ΓÇö last recommendation timestamp
     lastRecommendationAt: v.optional(v.float64()),
   })
     .index("by_user", ["userId"])
     .index("by_user_path", ["userId", "pathId"])
     .index("by_path", ["pathId"]),
 
-  // ─── FEAT-004: Nexus Pulse Real-Time News Feed ─────────────────────────────
+  // ΓöÇΓöÇΓöÇ FEAT-004: Nexus Pulse Real-Time News Feed ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
   pulseStories: defineTable({
     sourceUrl: v.string(),
     sourceName: v.string(),
@@ -934,7 +951,7 @@ export default defineSchema({
     .index("by_active", ["isActive"])
     .index("by_topics", ["topics"]),
 
-  // ─── Gaming Security Tools ─────────────────────────────────────────────────
+  // ΓöÇΓöÇΓöÇ Gaming Security Tools ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
   // Backs /security-score interactive quiz
   gamingSecurityScores: defineTable({
     sessionId: v.string(),
@@ -954,7 +971,7 @@ export default defineSchema({
     ),
     weakAreaCount: v.number(),
     createdAt: v.number(),
-    // Game Security Copilot — per-game context
+    // Game Security Copilot ΓÇö per-game context
     gameSlug: v.optional(v.string()),
     platform: v.optional(v.string()),
   })
@@ -1016,7 +1033,7 @@ export default defineSchema({
     verifiedByAdmin: v.optional(v.boolean()),
     linkedThreatId: v.optional(v.id("threatIntel")),  // link to official CVE if escalated
     createdAt: v.number(),
-    // Community Threat Hub — cluster membership
+    // Community Threat Hub ΓÇö cluster membership
     clusterId: v.optional(v.string()),
   })
     .index("by_user", ["userId"])
@@ -1025,7 +1042,7 @@ export default defineSchema({
     .index("by_severity_created", ["severity", "createdAt"])
     .index("by_created_at", ["createdAt"]),
 
-  // ─── FEAT-005: Nexus Search Logs ───────────────────────────────────────────
+  // ΓöÇΓöÇΓöÇ FEAT-005: Nexus Search Logs ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
   searchLogs: defineTable({
     query: v.string(),
     userId: v.optional(v.string()),
@@ -1040,11 +1057,11 @@ export default defineSchema({
     .index("by_searched_at", ["searchedAt"])
     .index("by_user", ["userId"]),
 
-  // ════════════════════════════════════════════════════════════════════════════
+  // ΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉ
   // NEXUS v2.0 SCHEMA ADDITIONS
-  // ════════════════════════════════════════════════════════════════════════════
+  // ΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉ
 
-  // ─── Topics — taxonomy nodes ("the map of the grid") ────────────────────
+  // ΓöÇΓöÇΓöÇ Topics ΓÇö taxonomy nodes ("the map of the grid") ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
   topics: defineTable({
     name: v.string(),
     slug: v.string(),
@@ -1073,7 +1090,7 @@ export default defineSchema({
     .index("by_trending", ["trending", "lastActivityAt"])
     .index("by_sort", ["sortOrder"]),
 
-  // ─── Authors — bylines and contributor profiles ──────────────────────────
+  // ΓöÇΓöÇΓöÇ Authors ΓÇö bylines and contributor profiles ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
   authors: defineTable({
     userId: v.optional(v.id("users")),
     name: v.string(),
@@ -1097,7 +1114,7 @@ export default defineSchema({
     .index("by_slug", ["slug"])
     .index("by_user", ["userId"]),
 
-  // ─── Alerts — real-time notification system ("signal alerts") ───────────
+  // ΓöÇΓöÇΓöÇ Alerts ΓÇö real-time notification system ("signal alerts") ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
   alerts: defineTable({
     type: v.union(
       v.literal("breaking"),
@@ -1137,7 +1154,7 @@ export default defineSchema({
     .index("by_category", ["category", "createdAt"])
     .index("by_type", ["type", "createdAt"]),
 
-  // ─── UserAlerts — per-user alert read state ──────────────────────────────
+  // ΓöÇΓöÇΓöÇ UserAlerts ΓÇö per-user alert read state ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
   userAlerts: defineTable({
     userId: v.id("users"),
     alertId: v.id("alerts"),
@@ -1149,7 +1166,7 @@ export default defineSchema({
     .index("by_user_unread", ["userId", "read", "createdAt"])
     .index("by_user_alert", ["userId", "alertId"]),
 
-  // ─── Series — multi-part intel series / deep dives ──────────────────────
+  // ΓöÇΓöÇΓöÇ Series ΓÇö multi-part intel series / deep dives ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
   series: defineTable({
     title: v.string(),
     slug: v.string(),
@@ -1168,7 +1185,7 @@ export default defineSchema({
     .index("by_slug", ["slug"])
     .index("by_category", ["category", "status"]),
 
-  // ─── Newsletter Subscriptions v2 — decoupled from auth ──────────────────
+  // ΓöÇΓöÇΓöÇ Newsletter Subscriptions v2 ΓÇö decoupled from auth ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
   newsletterSubscriptions: defineTable({
     email: v.string(),
     firstName: v.optional(v.string()),
@@ -1183,7 +1200,7 @@ export default defineSchema({
     .index("by_email", ["email"])
     .index("by_confirmed", ["confirmed", "subscribedAt"]),
 
-  // ─── Contact Submissions — the "secure channel" ──────────────────────────
+  // ΓöÇΓöÇΓöÇ Contact Submissions ΓÇö the "secure channel" ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
   contactSubmissions: defineTable({
     name: v.string(),
     email: v.string(),
@@ -1210,7 +1227,7 @@ export default defineSchema({
     .index("by_status", ["status", "submittedAt"])
     .index("by_category", ["category", "submittedAt"]),
 
-  // ─── Site Config — CMS-controlled site settings (single-doc pattern) ─────
+  // ΓöÇΓöÇΓöÇ Site Config ΓÇö CMS-controlled site settings (single-doc pattern) ΓöÇΓöÇΓöÇΓöÇΓöÇ
   siteConfig: defineTable({
     key: v.string(),
     value: v.any(),
@@ -1218,11 +1235,11 @@ export default defineSchema({
     updatedBy: v.optional(v.id("users")),
   }).index("by_key", ["key"]),
 
-  // ════════════════════════════════════════════════════════════════════════════
-  // NEXUS v3.0 AI MODULES — Competitive differentiation layer
-  // ════════════════════════════════════════════════════════════════════════════
+  // ΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉ
+  // NEXUS v3.0 AI MODULES ΓÇö Competitive differentiation layer
+  // ΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉ
 
-  // ─── Nexus Security Profile & Risk Graph ────────────────────────────────
+  // ΓöÇΓöÇΓöÇ Nexus Security Profile & Risk Graph ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
   userRiskProfiles: defineTable({
     userId: v.string(),
     overallRiskScore: v.float64(),
@@ -1264,7 +1281,7 @@ export default defineSchema({
     .index("by_user", ["userId", "eventAt"])
     .index("by_threat", ["threatId", "eventAt"]),
 
-  // ─── Game Security Copilot ───────────────────────────────────────────────
+  // ΓöÇΓöÇΓöÇ Game Security Copilot ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
   gameSecurityAdvisories: defineTable({
     gameSlug: v.string(),
     platform: v.optional(v.string()),
@@ -1283,7 +1300,7 @@ export default defineSchema({
     .index("by_game", ["gameSlug", "platform", "createdAt"])
     .index("by_risk", ["riskLevel", "createdAt"]),
 
-  // ─── Adaptive Learning & Practice Copilot ───────────────────────────────
+  // ΓöÇΓöÇΓöÇ Adaptive Learning & Practice Copilot ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
   learningRecommendations: defineTable({
     userId: v.string(),
     pathId: v.optional(v.id("learningPaths")),
@@ -1300,7 +1317,7 @@ export default defineSchema({
     .index("by_user", ["userId", "generatedAt"])
     .index("by_status", ["status", "generatedAt"]),
 
-  // ─── Brand & Content Intelligence Copilot ───────────────────────────────
+  // ΓöÇΓöÇΓöÇ Brand & Content Intelligence Copilot ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
   editorialAiBriefs: defineTable({
     contentId: v.optional(v.id("content")),
     status: v.union(
@@ -1317,7 +1334,7 @@ export default defineSchema({
     .index("by_status", ["status", "createdAt"])
     .index("by_content", ["contentId"]),
 
-  // ─── Community Threat Hub ────────────────────────────────────────────────
+  // ΓöÇΓöÇΓöÇ Community Threat Hub ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
   communityThreatClusters: defineTable({
     clusterId: v.string(),
     title: v.string(),
@@ -1338,7 +1355,7 @@ export default defineSchema({
     .index("by_severity", ["severity", "updatedAt"])
     .index("by_cluster_id", ["clusterId"]),
 
-  // ─── Personalized Feed ──────────────────────────────────────────────────
+  // ΓöÇΓöÇΓöÇ Personalized Feed ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
   personalizedFeeds: defineTable({
     userId: v.string(),
     generatedAt: v.float64(),
@@ -1352,7 +1369,7 @@ export default defineSchema({
   })
     .index("by_user", ["userId", "generatedAt"]),
 
-  // ─── AI Search Summaries ─────────────────────────────────────────────────
+  // ΓöÇΓöÇΓöÇ AI Search Summaries ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
   aiSearchSummaries: defineTable({
     sessionId: v.string(),
     query: v.string(),
@@ -1363,11 +1380,11 @@ export default defineSchema({
     .index("by_session", ["sessionId", "generatedAt"])
     .index("by_query", ["query", "generatedAt"]),
 
-  // ════════════════════════════════════════════════════════════════════════════
-  // GROWTH v2.0 — Revenue, Experiments, Attribution & GEO
-  // ════════════════════════════════════════════════════════════════════════════
+  // ΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉ
+  // GROWTH v2.0 ΓÇö Revenue, Experiments, Attribution & GEO
+  // ΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉ
 
-  // ─── A/B Experiments ────────────────────────────────────────────────────
+  // ΓöÇΓöÇΓöÇ A/B Experiments ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
   experiments: defineTable({
     name: v.string(),
     hypothesis: v.string(),
@@ -1375,7 +1392,7 @@ export default defineSchema({
       id: v.string(),
       name: v.string(),
       description: v.optional(v.string()),
-      weight: v.number(), // 0–100 traffic allocation %
+      weight: v.number(), // 0ΓÇô100 traffic allocation %
     })),
     status: v.union(
       v.literal("draft"),
@@ -1409,7 +1426,7 @@ export default defineSchema({
     .index("by_session", ["sessionId", "experimentId"])
     .index("by_user", ["userId", "experimentId"]),
 
-  // ─── Affiliate Event Tracking ────────────────────────────────────────────
+  // ΓöÇΓöÇΓöÇ Affiliate Event Tracking ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
   affiliateEvents: defineTable({
     userId: v.optional(v.string()),
     sessionId: v.string(),
@@ -1428,7 +1445,7 @@ export default defineSchema({
     .index("by_content", ["contentId", "clickedAt"])
     .index("by_network", ["affiliateNetwork", "clickedAt"]),
 
-  // ─── Revenue Events ──────────────────────────────────────────────────────
+  // ΓöÇΓöÇΓöÇ Revenue Events ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
   revenueEvents: defineTable({
     userId: v.optional(v.string()),
     type: v.union(
@@ -1454,7 +1471,7 @@ export default defineSchema({
     .index("by_user", ["userId", "recordedAt"])
     .index("by_content", ["contentId", "recordedAt"]),
 
-  // ─── Premium Subscriptions ───────────────────────────────────────────────
+  // ΓöÇΓöÇΓöÇ Premium Subscriptions ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
   subscriptions: defineTable({
     userId: v.string(),
     plan: v.union(v.literal("free"), v.literal("pro"), v.literal("team")),
@@ -1477,7 +1494,7 @@ export default defineSchema({
     .index("by_status", ["status", "currentPeriodEnd"])
     .index("by_stripe_subscription", ["stripeSubscriptionId"]),
 
-  // ─── Enterprise Accounts (NexusGuard B2B) ───────────────────────────────
+  // ΓöÇΓöÇΓöÇ Enterprise Accounts (NexusGuard B2B) ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
   enterpriseAccounts: defineTable({
     companyName: v.string(),
     contactEmail: v.string(),
@@ -1502,7 +1519,7 @@ export default defineSchema({
     .index("by_contact_email", ["contactEmail"])
     .index("by_plan", ["plan", "status"]),
 
-  // ─── GEO Visibility (Generative Engine Optimization) ────────────────────
+  // ΓöÇΓöÇΓöÇ GEO Visibility (Generative Engine Optimization) ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
   // Track when The Grid Nexus content is cited by AI platforms
   geoVisibility: defineTable({
     contentId: v.optional(v.id("content")),
@@ -1526,7 +1543,7 @@ export default defineSchema({
     .index("by_content", ["contentId", "detectedAt"])
     .index("by_citation", ["citationDetected", "detectedAt"]),
 
-  // ─── Enterprise Members (NexusGuard B2B seat management) ─────────────────
+  // ΓöÇΓöÇΓöÇ Enterprise Members (NexusGuard B2B seat management) ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
   enterpriseMembers: defineTable({
     enterpriseId: v.id("enterpriseAccounts"),
     userId: v.optional(v.id("users")),
@@ -1550,7 +1567,7 @@ export default defineSchema({
     .index("by_user", ["userId"])
     .index("by_email", ["email"]),
 
-  // ─── AI PC Builder (pcBuilds) ────────────────────────────────────────────
+  // ΓöÇΓöÇΓöÇ AI PC Builder (pcBuilds) ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
   pcBuilds: defineTable({
     userId: v.optional(v.string()),
     sessionId: v.string(),
@@ -1560,13 +1577,13 @@ export default defineSchema({
       name: v.string(),
       price: v.float64(),
       asin: v.optional(v.string()),
-      securityVulnScore: v.optional(v.float64()), // 0–100 firmware vuln exposure
+      securityVulnScore: v.optional(v.float64()), // 0ΓÇô100 firmware vuln exposure
       notes: v.optional(v.string()),
     })),
     totalPrice: v.float64(),
     totalWatts: v.float64(),
-    compatibilityScore: v.float64(),   // 0–100
-    aiSecurityScore: v.float64(),      // 0–100
+    compatibilityScore: v.float64(),   // 0ΓÇô100
+    aiSecurityScore: v.float64(),      // 0ΓÇô100
     aiSecurityIssues: v.array(v.string()),
     aiOptimizationTips: v.array(v.string()),
     useCase: v.string(),               // "gaming" | "streaming" | "workstation" | "budget_gaming"
@@ -1581,11 +1598,11 @@ export default defineSchema({
     .index("by_share_token", ["shareToken"])
     .index("by_public", ["isPublic", "createdAt"]),
 
-  // ════════════════════════════════════════════════════════════════════════════
-  // TOOLS v3.0 — Implementation Plan Tables
-  // ════════════════════════════════════════════════════════════════════════════
+  // ΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉ
+  // TOOLS v3.0 ΓÇö Implementation Plan Tables
+  // ΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉ
 
-  // ─── Game Library — unified game metadata for Tools 02, 03, 07, 08 ────────
+  // ΓöÇΓöÇΓöÇ Game Library ΓÇö unified game metadata for Tools 02, 03, 07, 08 ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
   gameLibrary: defineTable({
     slug: v.string(),
     name: v.string(),
@@ -1666,7 +1683,7 @@ export default defineSchema({
     .index("by_budget_tier", ["budgetTier"])
     .index("by_updated", ["updatedAt"]),
 
-  // ─── Tool Usage Logs — analytics/debugging for all 8 tools ────────────────
+  // ΓöÇΓöÇΓöÇ Tool Usage Logs ΓÇö analytics/debugging for all 8 tools ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
   toolUsageLogs: defineTable({
     toolId: v.string(),
     userId: v.optional(v.string()),
@@ -1684,7 +1701,7 @@ export default defineSchema({
     .index("by_tool", ["toolId", "createdAt"])
     .index("by_user", ["userId", "createdAt"]),
 
-  // ─── News Bookmarks — server-side bookmark persistence for Tool 04 ────────
+  // ΓöÇΓöÇΓöÇ News Bookmarks ΓÇö server-side bookmark persistence for Tool 04 ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
   newsBookmarks: defineTable({
     userId: v.string(),
     articleId: v.string(),
@@ -1694,7 +1711,7 @@ export default defineSchema({
     .index("by_user", ["userId", "bookmarkedAt"])
     .index("by_user_article", ["userId", "articleId"]),
 
-  // ─── Moderation Results — audit trail for Tool 06 ─────────────────────────
+  // ΓöÇΓöÇΓöÇ Moderation Results ΓÇö audit trail for Tool 06 ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
   moderationResults: defineTable({
     sessionId: v.string(),
     userId: v.optional(v.string()),
@@ -1732,7 +1749,7 @@ export default defineSchema({
     .index("by_verdict", ["verdict", "analyzedAt"])
     .index("by_user", ["userId", "analyzedAt"]),
 
-  // ─── Copilot Sessions — conversation history for Tool 07 ──────────────────
+  // ΓöÇΓöÇΓöÇ Copilot Sessions ΓÇö conversation history for Tool 07 ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
   copilotSessions: defineTable({
     sessionId: v.string(),
     userId: v.optional(v.string()),

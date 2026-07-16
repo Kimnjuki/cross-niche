@@ -29,6 +29,7 @@ import { NexusGuardWidget } from '@/components/home/NexusGuardWidget';
 import { ThreatIntelWidget } from '@/components/home/ThreatIntelWidget';
 import { SecurityAuditWidget } from '@/components/home/SecurityAuditWidget';
 import { DenseListFeed } from '@/components/home/FeedLayouts';
+import { PopularArticles, HotTopicsWidget } from '@/components/seo/PopularArticles';
 
 // Existing components kept
 import { ArticleCard } from '@/components/articles/ArticleCard';
@@ -459,6 +460,16 @@ export default function Index() {
                     </li>
                   ))}
                 </ul>
+              </div>
+
+              {/* Popular Articles - Based on GSC performance data */}
+              <div className="bg-[#16161A] border border-[#27272A] p-4">
+                <PopularArticles limit={5} />
+              </div>
+
+              {/* Hot Topics - Quick links to top articles */}
+              <div className="bg-[#16161A] border border-[#27272A] p-4">
+                <HotTopicsWidget />
               </div>
 
               {/* Newsletter */}

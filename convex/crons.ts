@@ -58,6 +58,13 @@ crons.interval(
   internal.newsIngestor.ingestFromNewsApi
 );
 
+// Nightly SEO health snapshot (orphan counts → seoAudits)
+crons.daily(
+  "seo-health-snapshot",
+  { hourUTC: 6, minuteUTC: 15 },
+  internal.seoHealth.runSeoHealthSnapshot
+);
+
 // refresh-news-feed-articles DISABLED: Live Wire page removed; articles table has no
 // active frontend readers. ingestFromNewsApi (above) already covers the content table.
 // crons.interval("refresh-news-feed-articles", { minutes: 30 }, internal.ingest.runIngestion);

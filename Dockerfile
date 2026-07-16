@@ -31,7 +31,8 @@ COPY . .
 # RUN commands, we unset the var at the shell level before running Vite.
 # This prevents Vite from baking the stale Convex deploy key into the
 # bundle, which would cause Convex queries to hang on article pages.
-RUN VITE_CONVEX_URL= npm run build:frontend
+RUN VITE_CONVEX_URL=https://intent-akita-728.convex.cloud npm run generate:sitemap \
+    && VITE_CONVEX_URL= npm run build:frontend
 
 # Stage 2: Production (Serve with Nginx)
 FROM nginx:stable-alpine AS production-stage

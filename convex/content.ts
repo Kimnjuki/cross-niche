@@ -176,6 +176,7 @@ export const upsertIngestedContent = mutation({
       publishedAt: args.publishedAt || Date.now(),
       isAutomated: args.isAutomated ?? true,
       status: args.status || "published",
+      canonicalUrl: `https://thegridnexus.com/article/${args.slug}`,
     });
     
     return contentId;
@@ -189,16 +190,23 @@ export const updateSEOFields = mutation({
     seoDescription: v.optional(v.string()),
     focusKeyword: v.optional(v.string()),
     schema_org: v.optional(v.any()),
+    canonicalUrl: v.optional(v.string()),
   },
   handler: async (ctx, args) => {
     const existing = await ctx.db.get(args.contentId);
     if (!existing) throw new Error("Content not found");
+
+    const canonicalUrl =
+      args.canonicalUrl ??
+      existing.canonicalUrl ??
+      `https://thegridnexus.com/article/${existing.slug}`;
 
     await ctx.db.patch(args.contentId, {
       metaTitle: args.metaTitle,
       seoDescription: args.seoDescription,
       focusKeyword: args.focusKeyword,
       schema_org: args.schema_org,
+      canonicalUrl,
       lastModifiedAt: Date.now(),
     });
 

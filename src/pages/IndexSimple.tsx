@@ -19,9 +19,9 @@ export default function IndexSimple() {
   return (
     <Layout showPulseSidebar={false}>
       <SEOHead
-        noindex={true}
         title="The Grid Nexus – Tech, Security & Gaming News"
         description="Breaking technology news, cybersecurity analysis, and gaming guides. One hub for tech, security, and gaming intelligence."
+        noindex={true}
         keywords={[
           'tech news',
           'cybersecurity',

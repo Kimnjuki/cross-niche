@@ -54,7 +54,7 @@ export function Footer() {
               <Link to="/guides" className="text-muted-foreground hover:text-foreground transition-colors">
                 Guides & Playbooks
               </Link>
-              <Link to="/blog-series" className="text-muted-foreground hover:text-foreground transition-colors">
+              <Link to="/blog" className="text-muted-foreground hover:text-foreground transition-colors">
                 Blog Series
               </Link>
               <Link to="/topics" className="text-muted-foreground hover:text-foreground transition-colors">
@@ -62,6 +62,9 @@ export function Footer() {
               </Link>
               <Link to="/explore" className="text-muted-foreground hover:text-foreground transition-colors">
                 Explore all coverage
+              </Link>
+              <Link to="/forums" className="text-muted-foreground hover:text-foreground transition-colors">
+                Community Forums
               </Link>
             </div>
           </div>
@@ -72,6 +75,12 @@ export function Footer() {
               Tools & Resources
             </h4>
             <div className="flex flex-col gap-2 text-sm">
+              <Link to="/tools" className="text-muted-foreground hover:text-foreground transition-colors">
+                Security Tools Hub
+              </Link>
+              <Link to="/tools/security-scanner" className="text-muted-foreground hover:text-foreground transition-colors">
+                Security Scanner
+              </Link>
               <Link to="/security-score" className="text-muted-foreground hover:text-foreground transition-colors">
                 Security Score
               </Link>
@@ -90,8 +99,11 @@ export function Footer() {
               <Link to="/live-threat-dashboard" className="text-muted-foreground hover:text-foreground transition-colors">
                 Live Threat Dashboard
               </Link>
-              <Link to="/topics" className="text-muted-foreground hover:text-foreground transition-colors">
-                Topics & Tags
+              <Link to="/community-threats" className="text-muted-foreground hover:text-foreground transition-colors">
+                Community Threats
+              </Link>
+              <Link to="/security-profile" className="text-muted-foreground hover:text-foreground transition-colors">
+                Security Profile
               </Link>
               <Link to="/media" className="text-muted-foreground hover:text-foreground transition-colors">
                 Media & Podcast

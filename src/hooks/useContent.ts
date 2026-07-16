@@ -31,6 +31,7 @@ export interface ContentItem {
   niches?: string[];
   tags?: string[];
   view_count?: number | null;
+  canonicalUrl?: string | null;
 }
 
 export type Niche = { idNum: number; name: string; colorCode?: string };
@@ -85,6 +86,7 @@ function toContentItem(row: Record<string, unknown> | null): ContentItem | null 
     niches: Array.isArray(row.niches) ? row.niches.map(String) : [],
     tags: Array.isArray(row.tags) ? row.tags.map(String) : [],
     view_count: typeof row.view_count === 'number' ? row.view_count : typeof row.viewCount === 'number' ? row.viewCount : 0,
+    canonicalUrl: row.canonicalUrl != null ? String(row.canonicalUrl) : null,
   };
 }
 

@@ -2,7 +2,6 @@ import { defineConfig, type ConfigEnv, loadEnv } from "vite";
 import react from "@vitejs/plugin-react-swc";
 import path from "path";
 import fs from "fs";
-import { componentTagger } from "lovable-tagger";
 
 /** Injects VITE_GA4_MEASUREMENT_ID into index.html at build (from .env). */
 function injectGa4Id(mode: string) {
@@ -26,10 +25,8 @@ export default defineConfig(({ mode }: ConfigEnv) => {
   // VITE_CONVEX_URL is NOT injected here. SafeConvexProvider handles
   // Convex connection at runtime and disables all queries when the URL
   // is not explicitly set (preventing stale deploy keys from hanging).
-  // The old fallback "https://intent-akita-728.convex.cloud" was removed
-  // because it forced Convex connection even in Docker builds.
   const convexUrl = (import.meta as Record<string, any>).env?.VITE_CONVEX_URL || "";
-  
+
   // Load prerender routes: static + article routes from prerender-routes.json (generated in prebuild)
   let prerenderRoutes = [
     "/",
@@ -44,7 +41,7 @@ export default defineConfig(({ mode }: ConfigEnv) => {
     "/privacy",
     "/terms",
     "/roadmap",
-    "/blog-series",
+    "/blog",
     "/security-profile",
     "/community-threats",
     "/tools",
@@ -60,24 +57,29 @@ export default defineConfig(({ mode }: ConfigEnv) => {
   const plugins = [
     injectGa4Id(mode),
     react(),
-    mode === "development" && componentTagger(),
+    mode === "development" && // @ts-ignore
+      // eslint-disable-next-line @typescript-eslint/no-var-requires
+      require("lovable-tagger").componentTagger(),
   ];
 
-  // Prerender plugin: DISABLED TEMPORARILY to fix React loading issue
-  // if (isProd && process.env.PRERENDER !== "0") {
-  //   try {
-  //     // eslint-disable-next-line @typescript-eslint/no-require-imports
-  //     const vitePrerender = require("vite-plugin-prerender");
-  //     plugins.push(
-  //       vitePrerender.default({
-  //         staticDir: path.join(__dirname, "dist"),
-  //         routes: prerenderRoutes,
-  //       })
-  //     );
-  //   } catch {
-  //     // Skip if plugin not installed
-  //   }
-  // }
+  // Prerender plugin: ENABLED for production to improve SEO and AI crawler visibility
+  if (isProd && process.env.PRERENDER !== "0") {
+    try {
+      // eslint-disable-next-line @typescript-eslint/no-require-imports
+      const vitePrerender = require("vite-plugin-prerender");
+      plugins.push(
+        vitePrerender.default({
+          staticDir: path.join(__dirname, "dist"),
+          routes: prerenderRoutes,
+          // Optional: wait for a specific element to ensure content is rendered
+          // renderAfterDocumentEvent: "render-event",
+          // renderAfterTime: 5000, // wait 5 seconds if needed
+        })
+      );
+    } catch {
+      // Skip if plugin not installed
+    }
+  }
 
   return {
     server: {

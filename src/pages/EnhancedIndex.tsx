@@ -96,12 +96,15 @@ export default function EnhancedIndex() {
   const [activeSection, setActiveSection] = useState('home');
   const [showSecurityTools, setShowSecurityTools] = useState(false);
 
+
   useEffect(() => {
-    // Noindex: dev/preview page
     let meta = document.querySelector('meta[name="robots"]') as HTMLMetaElement | null;
-    if (!meta) { meta = document.createElement('meta'); meta.name = 'robots'; document.head.appendChild(meta); }
+    if (!meta) {
+      meta = document.createElement('meta');
+      meta.setAttribute('name', 'robots');
+      document.head.appendChild(meta);
+    }
     meta.content = 'noindex, nofollow';
-    return () => { if (meta) meta.content = 'index, follow'; };
   }, []);
 
   useEffect(() => {

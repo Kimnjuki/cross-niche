@@ -165,6 +165,9 @@ export default {
         fast: "150ms",
         base: "300ms",
         slow: "600ms",
+        "180ms": "180ms",
+        "220ms": "220ms",
+        "280ms": "280ms",
       },
       transitionProperty: {
         "scale-hover": "transform",

@@ -52,11 +52,13 @@ export default function EnhancedIndexSimple() {
   const [isDarkMode, setIsDarkMode] = useState(true);
 
   useEffect(() => {
-    // Noindex: dev/preview page
     let meta = document.querySelector('meta[name="robots"]') as HTMLMetaElement | null;
-    if (!meta) { meta = document.createElement('meta'); meta.name = 'robots'; document.head.appendChild(meta); }
+    if (!meta) {
+      meta = document.createElement('meta');
+      meta.setAttribute('name', 'robots');
+      document.head.appendChild(meta);
+    }
     meta.content = 'noindex, nofollow';
-    return () => { if (meta) meta.content = 'index, follow'; };
   }, []);
 
   useEffect(() => {

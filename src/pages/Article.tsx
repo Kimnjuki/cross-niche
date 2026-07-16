@@ -28,6 +28,7 @@ import { Breadcrumbs } from '@/components/seo/Breadcrumbs';
 import { FAQSection } from '@/components/seo/FAQSection';
 import { QuickAnswer } from '@/components/seo/QuickAnswer';
 import { TableOfContents } from '@/components/seo/TableOfContents';
+import { RelatedTools } from '@/components/seo/RelatedTools';
 import { RelatedArticles } from '@/components/RelatedArticles';
 import { NextArticle } from '@/components/gaming/NextArticle';
 import { LazyImage } from '@/components/ui/lazy-image';
@@ -48,8 +49,8 @@ import type { Article as ArticleType } from '@/types';
 
 const nicheStyles = {
   tech: { badge: 'bg-tech/10 text-tech border-tech/20', color: 'text-tech' },
-  security: { badge: 'bg-security/10 text-security border-security/20', color: 'text-security' },
-  gaming: { badge: 'bg-gaming/10 text-gaming border-gaming/20', color: 'text-gaming' },
+  security: { bg: 'bg-security/10 text-security border-security/20', color: 'text-security' },
+  gaming: { bg: 'bg-gaming/10 text-gaming border-gaming/20', color: 'text-gaming' },
 };
 
 const nicheLabels = { tech: 'Innovate', security: 'Secured', gaming: 'Play' };
@@ -58,6 +59,16 @@ const nicheRoutes = { tech: '/tech', security: '/security', gaming: '/gaming' };
 // Safe article ID helper
 const getArticleId = (a: ArticleType | null | undefined): string =>
   (a as ArticleType & { _id?: string })?._id ?? a?.id ?? a?.slug ?? '';
+
+// Helper to extract platform name from URL
+function getPlatformFromUrl(url: string): string {
+  try {
+    const hostname = new URL(url).hostname.replace('www.', '');
+    return hostname.split('.')[0]?.toUpperCase() ?? url;
+  } catch {
+    return url;
+  }
+}
 
 export default function Article() {
   const params = useParams<{ slug?: string; id?: string }>();
@@ -181,6 +192,16 @@ export default function Article() {
     );
   }
 
+  // 10. AUTHOR PROFILE FOR E-E-A-T
+  const authorName = article.author ?? 'The Grid Nexus Editorial Team';
+  const authorSlugValue = authorSlug(authorName);
+  const authorProfile = authorProfiles[authorSlugValue] ?? {
+    name: 'The Grid Nexus Editorial Team',
+    jobTitle: 'Editorial Team',
+    bio: 'Our editorial team brings together experts in technology, cybersecurity, and gaming to deliver accurate, timely, and insightful coverage. We are committed to journalistic integrity and helping readers stay informed.',
+    expertise: ['Technology', 'Cybersecurity', 'Gaming', 'News'],
+  };
+
   // 11. SAFE DERIVED VALUES (article is guaranteed to exist here)
   const safeNiche: 'tech' | 'security' | 'gaming' =
     article.niche === 'tech' || article.niche === 'security' || article.niche === 'gaming'
@@ -190,64 +211,44 @@ export default function Article() {
   const tags = Array.isArray(article.tags) ? article.tags : [];
   const isBookmarked = user?.bookmarks?.includes(articleId);
 
-  // 11. EVENT HANDLERS
-  const handleShare = (platform: string) => {
-    const url = window.location.href;
-    const text = article.title ?? '';
-    const shareUrls = {
-      twitter: `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`,
-      facebook: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`,
-      linkedin: `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}`,
-    };
-    window.open(shareUrls[platform as keyof typeof shareUrls], '_blank');
-    trackArticleShare(article);
-    trackSocialShare(platform, articleId, article.title ?? undefined);
+  // 12. AUTHOR SCHEMA JSON-LD
+  const authorSchema = authorProfile ? {
+    name: authorProfile.name,
+    jobTitle: authorProfile.jobTitle,
+    description: authorProfile.bio,
+    imageUrl: authorProfile.imageUrl,
+    sameAs: authorProfile.sameAs,
+    expertise: authorProfile.expertise?.length ? authorProfile.expertise : undefined,
+  } : {
+    name: authorName,
+    jobTitle: 'Contributor',
   };
 
-  const handleBookmark = async () => {
-    if (articleId) {
-      await toggleBookmark(articleId);
-      trackArticleBookmark(article);
-    }
-  };
-
-  // 12. RENDER (article is guaranteed to exist and have an ID)
+  // 13. RENDER (article is guaranteed to exist and have an ID)
   return (
     <Layout>
       {/* Build author schema from article author */}
-      {(() => {
-        const authName = article.author ?? 'The Grid Nexus Editorial Team';
-        const authSlug = authorSlug(authName);
-        const authInfo = authorProfiles[authSlug];
-        const authorSchema = authInfo ? {
-          name: authName,
-          jobTitle: authInfo.jobTitle,
-          description: authInfo.bio,
-          imageUrl: authInfo.imageUrl,
-          sameAs: authInfo.sameAs,
-          expertise: authInfo.expertise?.length ? authInfo.expertise : undefined,
-        } : {
-          name: authName,
-          jobTitle: 'Contributor',
-        };
-        return <script
-          type="application/ld+json"
-          id="author-schema"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
-              '@context': 'https://schema.org',
-              '@graph': [generatePersonSchema(authorSchema)],
-            }),
-          }}
-        />;
-      })()}
+      <script
+        type="application/ld+json"
+        id="author-schema"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            '@context': 'https://schema.org',
+            '@graph': [generatePersonSchema(authorSchema)],
+          }),
+        }}
+      />
 
       <SEOHead
         title={undefined}
         description={undefined}
         keywords={tags}
         image={article.imageUrl ?? getPlaceholderByNiche(article.niche, article.slug ?? article.id)}
-        url={`${window.location.origin}/article/${article.slug ?? articleId}`}
+        url={`https://thegridnexus.com/article/${article.slug ?? articleId}`}
+        canonicalUrl={
+          contentData?.canonicalUrl ||
+          `https://thegridnexus.com/article/${article.slug ?? articleId}`
+        }
         type="article"
         article={{ ...article, impactLevel: article.impactLevel ?? 'low', isBreaking: article.isBreaking ?? false }}
         publishedTime={article.publishedAt}
@@ -304,10 +305,10 @@ export default function Article() {
 
           <div className="flex flex-wrap items-center gap-6 text-sm text-muted-foreground">
             <Link
-              to={`/author/${authorSlug(article.author ?? '')}`}
+              to={`/author/${authorSlug(authorName)}`}
               className="font-medium text-foreground hover:underline"
             >
-              {article.author ?? 'Anonymous'}
+              {authorName}
             </Link>
             <span>
               {article.publishedAt
@@ -382,6 +383,47 @@ export default function Article() {
                 }}
               />
             </div>
+
+            {/* Author Bio for E-E-A-T */}
+            {authorProfile && (
+              <div className="mt-8 pt-6 border-t border-border/50">
+                <div className="flex flex-col md:flex-row items-start gap-6">
+                  <div className="flex-shrink-0">
+                    <LazyImage
+                      src={authorProfile.imageUrl ?? getPlaceholderByNiche(safeNiche, article.slug ?? articleId)}
+                      alt={`${authorProfile.name} avatar`}
+                      className="h-12 w-12 rounded-full object-cover"
+                    />
+                  </div>
+                  <div className="flex-1 space-y-2">
+                    <div className="flex items-baseline">
+                      <h3 className="font-semibold text-lg">{authorProfile.name}</h3>
+                      <span className="ml-2 text-xs text-muted-foreground">{authorProfile.jobTitle}</span>
+                    </div>
+                    <p className="text-sm text-muted-foreground">{authorProfile.bio}</p>
+                    {authorProfile.sameAs?.length && (
+                      <div className="flex flex-wrap gap-3 mt-2">
+                        {authorProfile.sameAs.map((url, index) => {
+                          const platform = getPlatformFromUrl(url);
+                          return (
+                            <a
+                              key={index}
+                              href={url}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="text-xs text-primary hover:underline"
+                              aria-label={`Follow ${authorProfile.name} on ${platform}`}
+                            >
+                              {platform}
+                            </a>
+                          );
+                        })}
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </div>
+            )}
 
             <AdPlacement 
               position="in-article" 
@@ -463,7 +505,7 @@ export default function Article() {
                   .filter((r): r is ArticleType => r != null && !!getArticleId(r))
                   .map((related) => (
                     <ArticleCard
-                      key={getArticleId(related) || related.title}
+                      key={getArticleId(related) ?? related.title}
                       article={related}
                       onArticleClick={() =>
                         trackRelatedArticleClick(
@@ -486,33 +528,37 @@ export default function Article() {
               </div>
             </section>
           )}
-        </NexusScrollBridge>
 
-        <NextArticle currentSlug={article.slug || articleId} niche={safeNiche} />
+          {/* Related Tools Section - Connects articles to interactive tools */}
+          <RelatedTools niche={safeNiche} tags={tags} className="max-w-4xl" />
 
-        <FAQSection
-          faqs={[
-            {
-              question: `What is ${article.title ?? 'this article'}?`,
-              answer: article.excerpt || 'Learn more with The Grid Nexus.',
-            },
-            {
-              question: `How does this relate to ${safeNiche === 'tech' ? 'technology' : safeNiche === 'security' ? 'cybersecurity' : 'gaming'}?`,
-              answer: `This article is part of our ${nicheLabels[safeNiche]} coverage.`,
-            },
-            {
-              question: 'Where can I find more related content?',
-              answer: `Explore our ${nicheLabels[safeNiche]} section or the full blog series.`,
-            },
-          ]}
-          title={`Frequently Asked Questions about ${article.title ?? 'this article'}`}
-        />
-        
-        <RelatedArticles 
-          currentSlug={article.slug || articleId} 
-          category={safeNiche} 
-        />
-      </article>
-    </Layout>
-  );
-}
+          </NexusScrollBridge>
+
+          <NextArticle currentSlug={article.slug || articleId} niche={safeNiche} />
+
+          <FAQSection
+            faqs={[
+              {
+                question: `What is ${article.title ?? 'this article'}?`,
+                answer: article.excerpt || 'Learn more with The Grid Nexus.',
+              },
+              {
+                question: `How does this relate to ${safeNiche === 'tech' ? 'technology' : safeNiche === 'security' ? 'cybersecurity' : 'gaming'}?`,
+                answer: `This article is part of our ${nicheLabels[safeNiche]} coverage.`,
+              },
+              {
+                question: 'Where can I find more related content?',
+                answer: `Explore our ${nicheLabels[safeNiche]} section or the full blog series.`,
+              },
+            ]}
+            title={`Frequently Asked Questions about ${article.title ?? 'this article'}`}
+          />
+
+          <RelatedArticles 
+            currentSlug={article.slug || articleId} 
+            category={safeNiche} 
+          />
+        </article>
+      </Layout>
+    );
+  }

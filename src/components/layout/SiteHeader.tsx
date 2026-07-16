@@ -161,7 +161,7 @@ export function SiteHeader() {
                   <Link to="/signin">Sign in</Link>
                 </Button>
                 <Button variant="primary" size="sm" asChild>
-                  <Link to="/join">Join the Grid</Link>
+                  <Link to="/signup">Join the Grid</Link>
                 </Button>
               </>
             )}
@@ -222,7 +222,7 @@ export function SiteHeader() {
             {!user && (
               <>
                 <Button variant="primary" size="md" className="w-full" asChild>
-                  <Link to="/join" onClick={() => setIsOpen(false)}>Join the Grid</Link>
+                  <Link to="/signup" onClick={() => setIsOpen(false)}>Join the Grid</Link>
                 </Button>
                 <Button variant="ghost" size="md" className="w-full" asChild>
                   <Link to="/signin" onClick={() => setIsOpen(false)}>Sign in</Link>

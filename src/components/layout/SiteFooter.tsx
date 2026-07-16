@@ -3,6 +3,24 @@ import { Twitter, Linkedin, Rss } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 
+const EXPLORE_LINKS = [
+  { to: '/tech', label: 'Tech Intelligence' },
+  { to: '/security', label: 'Security Intel' },
+  { to: '/gaming', label: 'Gaming Hub' },
+  { to: '/topics', label: 'All Topics' },
+  { to: '/news', label: 'Latest Signals' },
+  { to: '/explore', label: 'Explore' },
+] as const;
+
+const COMPANY_LINKS = [
+  { to: '/about', label: 'About' },
+  { to: '/contact', label: 'Contact' },
+  { to: '/editorial', label: 'Editorial Policy' },
+  { to: '/terms', label: 'Terms of Service' },
+  { to: '/privacy', label: 'Privacy Policy' },
+  { to: '/disclosure', label: 'Disclosure' },
+] as const;
+
 export function SiteFooter() {
   return (
     <footer className="bg-[#020408] border-t border-[var(--border-default)] mt-auto">
@@ -34,13 +52,13 @@ export function SiteFooter() {
               Explore
             </h3>
             <ul className="space-y-2">
-              {['Tech Intelligence', 'Security Intel', 'Gaming Hub', 'All Topics', 'Latest Signals', 'Breaking Alerts'].map((item) => (
-                <li key={item}>
+              {EXPLORE_LINKS.map((item) => (
+                <li key={item.to}>
                   <Link
-                    to="/"
+                    to={item.to}
                     className="text-[var(--text-secondary)] text-sm transition-colors duration-180ms hover:text-[var(--text-primary)]"
                   >
-                    {item}
+                    {item.label}
                   </Link>
                 </li>
               ))}
@@ -53,13 +71,13 @@ export function SiteFooter() {
               Company
             </h3>
             <ul className="space-y-2">
-              {['About', 'Contact', 'Editorial Policy', 'Terms of Service', 'Privacy Policy', 'Cookie Preferences'].map((item) => (
-                <li key={item}>
+              {COMPANY_LINKS.map((item) => (
+                <li key={item.to}>
                   <Link
-                    to="/"
+                    to={item.to}
                     className="text-[var(--text-secondary)] text-sm transition-colors duration-180ms hover:text-[var(--text-primary)]"
                   >
-                    {item}
+                    {item.label}
                   </Link>
                 </li>
               ))}
@@ -73,13 +91,13 @@ export function SiteFooter() {
             </h3>
 
             <div className="flex items-center gap-4 mb-6">
-              <a href="#" className="text-[var(--text-tertiary)] transition-colors duration-180ms hover:text-[var(--text-primary)]">
+              <a href="https://twitter.com/thegridnexus" className="text-[var(--text-tertiary)] transition-colors duration-180ms hover:text-[var(--text-primary)]" aria-label="Twitter">
                 <Twitter className="h-5 w-5" />
               </a>
-              <a href="#" className="text-[var(--text-tertiary)] transition-colors duration-180ms hover:text-[var(--text-primary)]">
+              <a href="https://linkedin.com/company/thegridnexus" className="text-[var(--text-tertiary)] transition-colors duration-180ms hover:text-[var(--text-primary)]" aria-label="LinkedIn">
                 <Linkedin className="h-5 w-5" />
               </a>
-              <a href="#" className="text-[var(--text-tertiary)] transition-colors duration-180ms hover:text-[var(--text-primary)]">
+              <a href="/rss.xml" className="text-[var(--text-tertiary)] transition-colors duration-180ms hover:text-[var(--text-primary)]" aria-label="RSS">
                 <Rss className="h-5 w-5" />
               </a>
             </div>

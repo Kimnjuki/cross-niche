@@ -1,0 +1,23 @@
+version: '3.8'
+
+services:
+  web:
+    image: x2njvj4owio2rehys3l97m81:defaa76975104325ad2d22fb393ab8d7403d63e6
+    container_name: cross-niche-web
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    environment:
+      - NODE_ENV=production
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:80/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 5s
+    networks:
+      - coolify
+
+networks:
+  coolify:
+    external: true

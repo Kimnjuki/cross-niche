@@ -10,7 +10,11 @@ export const tagVariants = cva(
         "category-gaming": "bg-[rgba(245,158,11,0.1)] text-[var(--accent-amber)] border border-[rgba(245,158,11,0.2)]",
         "topic": "bg-[rgba(255,255,255,0.05)] text-[var(--text-secondary)] border border-[var(--border-default)] hover:bg-[var(--accent-cyan-glow)]",
         "breaking": "bg-[var(--accent-red)] text-[#fff] border-none animate-[breaking-pulse_1200ms_infinite]",
-        "live": "bg-[rgba(239,68,68,0.15)] text-[var(--accent-red)] border border-[rgba(239,68,68,0.3)] animate-[breaking-pulse_1200ms_infinite]"
+        "live": "bg-[rgba(239,68,68,0.15)] text-[var(--accent-red)] border border-[rgba(239,68,68,0.3)] animate-[breaking-pulse_1200ms_infinite]",
+        "outline": "bg-transparent border border-[var(--border-default)] text-[var(--text-secondary)]",
+        "default": "bg-[var(--bg-elevated)] text-[var(--text-secondary)] border border-[var(--border-default)]",
+        "secondary": "bg-[rgba(255,255,255,0.08)] text-[var(--text-secondary)] border border-[rgba(255,255,255,0.12)]",
+        "destructive": "bg-[var(--accent-red)] text-[#fff] border-none"
       },
     },
     defaultVariants: {

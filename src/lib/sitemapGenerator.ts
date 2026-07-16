@@ -92,7 +92,7 @@ export function getBaseUrls(baseUrl: string = 'https://thegridnexus.com'): Sitem
     { loc: `${baseUrl}/tech`,             lastmod: today, changefreq: 'daily',   priority: 0.9 },
     { loc: `${baseUrl}/security`,         lastmod: today, changefreq: 'daily',   priority: 0.9 },
     { loc: `${baseUrl}/gaming`,           lastmod: today, changefreq: 'daily',   priority: 0.9 },
-    { loc: `${baseUrl}/blog-series`,      lastmod: today, changefreq: 'daily',   priority: 0.8 },
+    { loc: `${baseUrl}/blog`,              lastmod: today, changefreq: 'daily',   priority: 0.8 },
     { loc: `${baseUrl}/topics`,           lastmod: today, changefreq: 'daily',   priority: 0.9 },
     { loc: `${baseUrl}/guides`,           lastmod: today, changefreq: 'weekly',  priority: 0.7 },
     { loc: `${baseUrl}/tools`,            lastmod: today, changefreq: 'daily',   priority: 0.9 },

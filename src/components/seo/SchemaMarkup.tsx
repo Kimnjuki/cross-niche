@@ -6,7 +6,7 @@
 import React from 'react';
 
 interface SchemaMarkupProps {
-  type: 'Article' | 'NewsArticle' | 'BreadcrumbList' | 'FAQPage' | 'WebSite';
+  type: 'Article' | 'NewsArticle' | 'BreadcrumbList' | 'FAQPage' | 'WebSite' | 'TechArticle' | 'Event';
   data: any;
 }
 

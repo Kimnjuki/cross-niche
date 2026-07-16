@@ -43,11 +43,21 @@
         };
         var p = window.location.pathname.replace(/\/$/, '') || '/';
         var m = routes[p];
+        // Keep canonical path as the actual URL — SEOHead.tsx will normalize it
+        // to /article/{slug} for article pages via JavaScript. Removing the pre-JS
+        // rewrite prevents "Google chose different canonical than user" errors
+        // caused by mismatch between pre-rendered and client-rendered canonical tags.
+        var canonicalPath = p;
+        // Check if this is a niche-prefixed article URL (e.g., /tech/slug, /security/slug)
+        var nicheArticle = p.match(/^\/(tech|security|gaming)\/([^/]+)$/);
         if (!m) {
           // Article pages
           if (p.indexOf('/article/') === 0) {
             var slug = p.replace('/article/', '').replace(/-/g, ' ');
             m = { t: slug.charAt(0).toUpperCase() + slug.slice(1) + ' | The Grid Nexus', d: 'Read the full story on The Grid Nexus \u2013 your source for tech, cybersecurity, and gaming intelligence.' };
+          } else if (nicheArticle) {
+            var nicheSlug = nicheArticle[2].replace(/-/g, ' ');
+            m = { t: nicheSlug.charAt(0).toUpperCase() + nicheSlug.slice(1) + ' | The Grid Nexus', d: 'Read the full story on The Grid Nexus \u2013 your source for tech, cybersecurity, and gaming intelligence.' };
           } else {
             m = routes['/'];
           }
@@ -57,6 +67,10 @@
         var descEl = document.querySelector('meta[name="description"]');
         if (!descEl) { descEl = document.createElement('meta'); descEl.setAttribute('name', 'description'); document.head.appendChild(descEl); }
         descEl.setAttribute('content', m.d);
+        // Pre-JS canonical (crawlers that skip React still see a correct canonical)
+        var canonEl = document.querySelector('link[rel="canonical"]');
+        if (!canonEl) { canonEl = document.createElement('link'); canonEl.setAttribute('rel', 'canonical'); document.head.appendChild(canonEl); }
+        canonEl.setAttribute('href', 'https://thegridnexus.com' + canonicalPath);
         // Create or update og:title/description
         var ogT = document.querySelector('meta[property="og:title"]');
         if (ogT) ogT.setAttribute('content', m.t);
@@ -112,6 +126,9 @@
     <meta http-equiv="Content-Language" content="en-US" />
     <meta name="geo.region" content="US" />
     <meta name="geo.placename" content="United States" />
+
+    <!-- ── Default canonical (overwritten per-route by pre-JS script) ── -->
+    <link rel="canonical" href="https://thegridnexus.com/" />
 
     <!-- ── Default title (overwritten by per-route pre-JS script) ── -->
     <title>The Grid Nexus – Tech, Security &amp; Gaming News</title>
@@ -297,6 +314,13 @@
               <li><a href="/nexus-intersection" style="color:#60a5fa;text-decoration:none">Nexus Intersection</a></li>
               <li><a href="/security-score" style="color:#60a5fa;text-decoration:none">Security Score Checker</a></li>
               <li><a href="/live-threat-dashboard" style="color:#60a5fa;text-decoration:none">Live Threat Dashboard</a></li>
+              <li><a href="/tools" style="color:#60a5fa;text-decoration:none">Security Tools Hub</a></li>
+              <li><a href="/tools/security-scanner" style="color:#60a5fa;text-decoration:none">Security Scanner</a></li>
+              <li><a href="/community-threats" style="color:#60a5fa;text-decoration:none">Community Threat Hub</a></li>
+              <li><a href="/security-profile" style="color:#60a5fa;text-decoration:none">Security Profile</a></li>
+              <li><a href="/forums" style="color:#60a5fa;text-decoration:none">Community Forums</a></li>
+              <li><a href="/blog" style="color:#60a5fa;text-decoration:none">Blog &amp; Features</a></li>
+              <li><a href="/sitemap" style="color:#60a5fa;text-decoration:none">HTML Sitemap</a></li>
               <li><a href="/startups" style="color:#60a5fa;text-decoration:none">Startup News</a></li>
               <li><a href="/media" style="color:#60a5fa;text-decoration:none">Media &amp; Press Kit</a></li>
               <li><a href="/about" style="color:#60a5fa;text-decoration:none">About The Grid Nexus</a></li>

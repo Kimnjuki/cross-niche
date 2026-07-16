@@ -1,8 +1,162 @@
 [
   {
-    "from": "/old-path-example",
-    "to": "/new-path",
-    "status": 301,
-    "note": "Add entries from broken_pages_with_links.csv. Run scripts/verify_redirects.ts"
+    "from": "/gamming",
+    "to": "/gaming",
+    "type": "nginx"
+  },
+  {
+    "from": "/secuirty",
+    "to": "/security",
+    "type": "nginx"
+  },
+  {
+    "from": "/teck",
+    "to": "/tech",
+    "type": "nginx"
+  },
+  {
+    "from": "/securty",
+    "to": "/security",
+    "type": "nginx"
+  },
+  {
+    "from": "/cyber",
+    "to": "/security",
+    "type": "nginx"
+  },
+  {
+    "from": "/cybersecurity",
+    "to": "/security",
+    "type": "nginx"
+  },
+  {
+    "from": "/p/",
+    "to": "/article/",
+    "type": "nginx"
+  },
+  {
+    "from": "/post/",
+    "to": "/article/",
+    "type": "nginx"
+  },
+  {
+    "from": "/posts/",
+    "to": "/article/",
+    "type": "nginx"
+  },
+  {
+    "from": "/2026/",
+    "to": "/article/",
+    "type": "nginx"
+  },
+  {
+    "from": "/articles",
+    "to": "/blog",
+    "type": "nginx"
+  },
+  {
+    "from": "/live",
+    "to": "/live-updates",
+    "type": "nginx"
+  },
+  {
+    "from": "/ai",
+    "to": "/ai-pulse",
+    "type": "nginx"
+  },
+  {
+    "from": "/security-tools",
+    "to": "/tools/security-scanner",
+    "type": "nginx"
+  },
+  {
+    "from": "/blog-series",
+    "to": "/blog",
+    "type": "nginx"
+  },
+  {
+    "from": "/billing",
+    "to": "/subscription/management",
+    "type": "nginx"
+  },
+  {
+    "from": "/settings",
+    "to": "/subscription/management",
+    "type": "nginx"
+  },
+  {
+    "from": "/nexus/nexusguard",
+    "to": "/tools/nexusguard",
+    "type": "nginx"
+  },
+  {
+    "from": "/nexus/nexuspath",
+    "to": "/learn/nexus-path",
+    "type": "nginx"
+  },
+  {
+    "from": "/nexus/nexuspulse",
+    "to": "/pulse/nexus-pulse",
+    "type": "nginx"
+  },
+  {
+    "from": "/cybersecurity",
+    "to": "/security",
+    "type": "react-router"
+  },
+  {
+    "from": "/blog-series",
+    "to": "/blog",
+    "type": "react-router"
+  },
+  {
+    "from": "/articles",
+    "to": "/blog",
+    "type": "react-router"
+  },
+  {
+    "from": "/live",
+    "to": "/live-updates",
+    "type": "react-router"
+  },
+  {
+    "from": "/ai",
+    "to": "/ai-pulse",
+    "type": "react-router"
+  },
+  {
+    "from": "/security-tools",
+    "to": "/tools/security-scanner",
+    "type": "react-router"
+  },
+  {
+    "from": "/billing",
+    "to": "/subscription/management",
+    "type": "react-router"
+  },
+  {
+    "from": "/settings",
+    "to": "/subscription/management",
+    "type": "react-router"
+  },
+  {
+    "from": "/auth",
+    "to": "/signin",
+    "type": "react-router"
+  },
+  {
+    "from": "/nexus/nexusguard",
+    "to": "/tools/nexusguard",
+    "type": "react-router"
+  },
+  {
+    "from": "/nexus/nexuspath",
+    "to": "/learn/nexus-path",
+    "type": "react-router"
+  },
+  {
+    "from": "/nexus/nexuspulse",
+    "to": "/pulse/nexus-pulse",
+    "type": "react-router"
   }
 ]

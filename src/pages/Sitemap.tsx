@@ -1,5 +1,5 @@
 /**
- * Human-readable Sitemap page – linked from footer for crawlability (fixes "no incoming internal links" / "no outgoing links").
+ * Human-readable Sitemap page – linked from footer for crawlability (fixes orphan pages).
  * XML sitemap is served statically at /sitemap.xml.
  */
 
@@ -7,6 +7,7 @@ import { Link } from 'react-router-dom';
 import { Layout } from '@/components/layout/Layout';
 import { SEOHead } from '@/components/seo/SEOHead';
 import { getPageMetadata } from '@/lib/seo/pageMetadata';
+import { TOOL_PAGES } from '@/lib/sitemapGenerator';
 
 const SECTION_LINKS = [
   { to: '/', label: 'Home' },
@@ -18,13 +19,19 @@ const SECTION_LINKS = [
   { to: '/topics', label: 'Topics' },
   { to: '/guides', label: 'Guides' },
   { to: '/tutorials', label: 'Tutorials' },
-  { to: '/blog-series', label: 'Blog Series' },
+  { to: '/blog', label: 'Blog' },
+  { to: '/reviews', label: 'Reviews' },
+  { to: '/startups', label: 'Startups' },
   { to: '/roadmap', label: 'Roadmap' },
   { to: '/ai-pulse', label: 'AI Pulse' },
   { to: '/breach-sim', label: 'Breach Sim' },
   { to: '/nexus-intersection', label: 'Nexus Intersection' },
   { to: '/security-score', label: 'Security Score' },
-  { to: '/reviews', label: 'Reviews' },
+  { to: '/live-threat-dashboard', label: 'Live Threat Dashboard' },
+  { to: '/community-threats', label: 'Community Threats' },
+  { to: '/security-profile', label: 'Security Profile' },
+  { to: '/forums', label: 'Community Forums' },
+  { to: '/tools', label: 'Tools Hub' },
   { to: '/media', label: 'Media' },
   { to: '/about', label: 'About' },
   { to: '/contact', label: 'Contact' },
@@ -32,6 +39,8 @@ const SECTION_LINKS = [
   { to: '/terms', label: 'Terms' },
   { to: '/disclosure', label: 'Disclosure' },
   { to: '/editorial', label: 'Editorial Policy' },
+  { to: '/quality-guidelines', label: 'Quality Guidelines' },
+  { to: '/content-policy', label: 'Content Policy' },
 ] as const;
 
 export default function Sitemap() {
@@ -41,8 +50,7 @@ export default function Sitemap() {
       <SEOHead
         title={meta.title}
         description={meta.description}
-        url={typeof window !== 'undefined' ? `${window.location.origin}/sitemap` : '/sitemap'}
-        noindex={true}
+        url={typeof window !== 'undefined' ? `${window.location.origin}/sitemap` : 'https://thegridnexus.com/sitemap'}
       />
       <div className="container mx-auto px-4 py-12">
         <h1 className="font-display font-bold text-4xl mb-4">Sitemap</h1>
@@ -64,11 +72,27 @@ export default function Sitemap() {
           </ul>
         </section>
 
+        <section className="mb-10">
+          <h2 className="text-xl font-semibold mb-4">Tools</h2>
+          <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2">
+            {TOOL_PAGES.map(({ slug, name }) => (
+              <li key={slug}>
+                <Link to={slug} className="text-primary hover:underline">
+                  {name}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </section>
+
         <section>
           <h2 className="text-xl font-semibold mb-4">Sitemap files</h2>
           <ul className="space-y-2 text-muted-foreground">
             <li>
               <a href="/sitemap.xml" className="text-primary hover:underline">sitemap.xml</a> – Main sitemap (articles and pages)
+            </li>
+            <li>
+              <a href="/sitemap-articles.xml" className="text-primary hover:underline">sitemap-articles.xml</a> – Article URLs
             </li>
             <li>
               <a href="/sitemap-news.xml" className="text-primary hover:underline">sitemap-news.xml</a> – News sitemap
@@ -82,61 +106,3 @@ export default function Sitemap() {
     </Layout>
   );
 }
-
-/**
- * Server-side sitemap generation function
- * Use this in your server/API route
- */
-export async function generateSitemapResponse() {
-  // In a real implementation, fetch content from your database/API
-  // For now, return a basic structure
-  const baseUrl = 'https://thegridnexus.com';
-  const today = new Date().toISOString().split('T')[0];
-  
-  const staticPages = [
-    { loc: '/', priority: 1.0, changefreq: 'daily' },
-    { loc: '/tech', priority: 0.9, changefreq: 'daily' },
-    { loc: '/security', priority: 0.9, changefreq: 'daily' },
-    { loc: '/gaming', priority: 0.9, changefreq: 'daily' },
-    { loc: '/topics', priority: 0.9, changefreq: 'daily' },
-    { loc: '/blog-series', priority: 0.8, changefreq: 'daily' },
-    { loc: '/guides', priority: 0.7, changefreq: 'weekly' },
-    { loc: '/tutorials', priority: 0.7, changefreq: 'weekly' },
-    { loc: '/about', priority: 0.5, changefreq: 'monthly' },
-    { loc: '/contact', priority: 0.4, changefreq: 'monthly' },
-    { loc: '/privacy', priority: 0.3, changefreq: 'monthly' },
-    { loc: '/terms', priority: 0.3, changefreq: 'monthly' },
-    { loc: '/disclosure', priority: 0.3, changefreq: 'monthly' },
-    { loc: '/roadmap', priority: 0.6, changefreq: 'weekly' },
-    { loc: '/security-score', priority: 0.6, changefreq: 'weekly' },
-  ];
-
-  let sitemap = `<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
-        xmlns:news="http://www.google.com/schemas/sitemap-news/0.9"
-        xmlns:xhtml="http://www.w3.org/1999/xhtml"
-        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1"
-        xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">`;
-
-  staticPages.forEach(page => {
-    sitemap += `
-  <url>
-    <loc>${baseUrl}${page.loc}</loc>
-    <lastmod>${today}</lastmod>
-    <changefreq>${page.changefreq}</changefreq>
-    <priority>${page.priority}</priority>
-  </url>`;
-  });
-
-  // Add dynamic article URLs here (fetch from database)
-  // For now, articles will be discovered through internal linking
-
-  sitemap += `
-</urlset>`;
-
-  return sitemap;
-}
-
-
-
-

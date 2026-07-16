@@ -1,0 +1,452 @@
+[
+  {
+    "from": "/",
+    "to": "/tech",
+    "anchor": "Technology News",
+    "context": "homepage-nav"
+  },
+  {
+    "from": "/",
+    "to": "/security",
+    "anchor": "Cybersecurity and Threat Intelligence",
+    "context": "homepage-nav"
+  },
+  {
+    "from": "/",
+    "to": "/gaming",
+    "anchor": "Gaming and Esports",
+    "context": "homepage-nav"
+  },
+  {
+    "from": "/",
+    "to": "/tools",
+    "anchor": "Security Tools Hub",
+    "context": "homepage-nav"
+  },
+  {
+    "from": "/",
+    "to": "/guides",
+    "anchor": "Guides and How-Tos",
+    "context": "homepage-nav"
+  },
+  {
+    "from": "/",
+    "to": "/topics",
+    "anchor": "Browse Topics",
+    "context": "homepage-nav"
+  },
+  {
+    "from": "/",
+    "to": "/news",
+    "anchor": "Breaking News",
+    "context": "homepage-nav"
+  },
+  {
+    "from": "/",
+    "to": "/ai-pulse",
+    "anchor": "AI Pulse Tracker",
+    "context": "homepage-nav"
+  },
+  {
+    "from": "/",
+    "to": "/security-profile",
+    "anchor": "Security Profile",
+    "context": "homepage-nav"
+  },
+  {
+    "from": "/",
+    "to": "/community-threats",
+    "anchor": "Community Threat Hub",
+    "context": "homepage-nav"
+  },
+  {
+    "from": "/",
+    "to": "/breach-sim",
+    "anchor": "Breach Simulation",
+    "context": "homepage-nav"
+  },
+  {
+    "from": "/",
+    "to": "/security-score",
+    "anchor": "Security Score",
+    "context": "homepage-nav"
+  },
+  {
+    "from": "/",
+    "to": "/live-threat-dashboard",
+    "anchor": "Live Threat Dashboard",
+    "context": "homepage-nav"
+  },
+  {
+    "from": "/",
+    "to": "/nexus-intersection",
+    "anchor": "Nexus Intersection",
+    "context": "homepage-nav"
+  },
+  {
+    "from": "/",
+    "to": "/roadmap",
+    "anchor": "Platform Roadmap",
+    "context": "homepage-nav"
+  },
+  {
+    "from": "/",
+    "to": "/startups",
+    "anchor": "Startup News",
+    "context": "homepage-nav"
+  },
+  {
+    "from": "/",
+    "to": "/reviews",
+    "anchor": "Product and Game Reviews",
+    "context": "homepage-nav"
+  },
+  {
+    "from": "/",
+    "to": "/tutorials",
+    "anchor": "Tutorials",
+    "context": "homepage-nav"
+  },
+  {
+    "from": "/",
+    "to": "/blog",
+    "anchor": "Blog and Features",
+    "context": "homepage-nav"
+  },
+  {
+    "from": "/",
+    "to": "/sitemap",
+    "anchor": "HTML Sitemap",
+    "context": "homepage-nav"
+  },
+  {
+    "from": "/tech",
+    "to": "/security",
+    "anchor": "Cybersecurity News",
+    "context": "cross-niche"
+  },
+  {
+    "from": "/tech",
+    "to": "/gaming",
+    "anchor": "Gaming Security",
+    "context": "cross-niche"
+  },
+  {
+    "from": "/tech",
+    "to": "/ai-pulse",
+    "anchor": "AI Pulse",
+    "context": "cross-niche"
+  },
+  {
+    "from": "/security",
+    "to": "/tech",
+    "anchor": "Tech News",
+    "context": "cross-niche"
+  },
+  {
+    "from": "/security",
+    "to": "/gaming",
+    "anchor": "Gaming Security Guides",
+    "context": "cross-niche"
+  },
+  {
+    "from": "/security",
+    "to": "/tools/security-scanner",
+    "anchor": "Security Scanner",
+    "context": "cross-niche"
+  },
+  {
+    "from": "/security",
+    "to": "/breach-sim",
+    "anchor": "Breach Simulation",
+    "context": "cross-niche"
+  },
+  {
+    "from": "/security",
+    "to": "/security-score",
+    "anchor": "Security Score",
+    "context": "cross-niche"
+  },
+  {
+    "from": "/security",
+    "to": "/live-threat-dashboard",
+    "anchor": "Live Threat Dashboard",
+    "context": "cross-niche"
+  },
+  {
+    "from": "/security",
+    "to": "/community-threats",
+    "anchor": "Community Threats",
+    "context": "cross-niche"
+  },
+  {
+    "from": "/gaming",
+    "to": "/security",
+    "anchor": "Gaming Security",
+    "context": "cross-niche"
+  },
+  {
+    "from": "/gaming",
+    "to": "/tech",
+    "anchor": "Tech News",
+    "context": "cross-niche"
+  },
+  {
+    "from": "/gaming",
+    "to": "/tools/gaming-security-checkup",
+    "anchor": "Gaming Security Checkup",
+    "context": "cross-niche"
+  },
+  {
+    "from": "/gaming",
+    "to": "/tools/steam-scanner",
+    "anchor": "Steam Scanner",
+    "context": "cross-niche"
+  },
+  {
+    "from": "/gaming",
+    "to": "/tools/gaming-copilot",
+    "anchor": "Gaming Copilot",
+    "context": "cross-niche"
+  },
+  {
+    "from": "/tools",
+    "to": "/tools/security-scanner",
+    "anchor": "Security Scanner",
+    "context": "tools-hub"
+  },
+  {
+    "from": "/tools",
+    "to": "/tools/nexusguard",
+    "anchor": "NexusGuard",
+    "context": "tools-hub"
+  },
+  {
+    "from": "/tools",
+    "to": "/tools/steam-scanner",
+    "anchor": "Steam Scanner",
+    "context": "tools-hub"
+  },
+  {
+    "from": "/tools",
+    "to": "/tools/ioc-lookup",
+    "anchor": "IOC Lookup",
+    "context": "tools-hub"
+  },
+  {
+    "from": "/tools",
+    "to": "/tools/gaming-security-checkup",
+    "anchor": "Gaming Security Checkup",
+    "context": "tools-hub"
+  },
+  {
+    "from": "/tools",
+    "to": "/tools/breach-explainer",
+    "anchor": "Breach Explainer",
+    "context": "tools-hub"
+  },
+  {
+    "from": "/tools",
+    "to": "/tools/patch-risk-tracker",
+    "anchor": "Patch Risk Tracker",
+    "context": "tools-hub"
+  },
+  {
+    "from": "/tools",
+    "to": "/tools/exploit-risk-meter",
+    "anchor": "Exploit Risk Meter",
+    "context": "tools-hub"
+  },
+  {
+    "from": "/tools",
+    "to": "/tools/pc-builder",
+    "anchor": "PC Builder",
+    "context": "tools-hub"
+  },
+  {
+    "from": "/tools",
+    "to": "/tools/threat-scanner",
+    "anchor": "Threat Scanner",
+    "context": "tools-hub"
+  },
+  {
+    "from": "/tools",
+    "to": "/tools/gaming-copilot",
+    "anchor": "Gaming Copilot",
+    "context": "tools-hub"
+  },
+  {
+    "from": "/tools",
+    "to": "/security-score",
+    "anchor": "Security Score",
+    "context": "tools-hub"
+  },
+  {
+    "from": "/tools",
+    "to": "/breach-sim",
+    "anchor": "Breach Simulation",
+    "context": "tools-hub"
+  },
+  {
+    "from": "/tools",
+    "to": "/live-threat-dashboard",
+    "anchor": "Live Threat Dashboard",
+    "context": "tools-hub"
+  },
+  {
+    "from": "/guides",
+    "to": "/tutorials",
+    "anchor": "Tutorials",
+    "context": "guides"
+  },
+  {
+    "from": "/guides",
+    "to": "/security",
+    "anchor": "Security Guides",
+    "context": "guides"
+  },
+  {
+    "from": "/guides",
+    "to": "/tech",
+    "anchor": "Tech Guides",
+    "context": "guides"
+  },
+  {
+    "from": "/blog",
+    "to": "/tech",
+    "anchor": "Tech News",
+    "context": "blog"
+  },
+  {
+    "from": "/blog",
+    "to": "/security",
+    "anchor": "Security News",
+    "context": "blog"
+  },
+  {
+    "from": "/blog",
+    "to": "/gaming",
+    "anchor": "Gaming News",
+    "context": "blog"
+  },
+  {
+    "from": "/about",
+    "to": "/editorial",
+    "anchor": "Editorial Policy",
+    "context": "about"
+  },
+  {
+    "from": "/about",
+    "to": "/disclosure",
+    "anchor": "Disclosure Policy",
+    "context": "about"
+  },
+  {
+    "from": "/about",
+    "to": "/contact",
+    "anchor": "Contact Us",
+    "context": "about"
+  },
+  {
+    "from": "/about",
+    "to": "/quality-guidelines",
+    "anchor": "Quality Guidelines",
+    "context": "about"
+  },
+  {
+    "from": "/about",
+    "to": "/content-policy",
+    "anchor": "Content Policy",
+    "context": "about"
+  },
+  {
+    "from": "/privacy",
+    "to": "/terms",
+    "anchor": "Terms of Service",
+    "context": "legal"
+  },
+  {
+    "from": "/terms",
+    "to": "/privacy",
+    "anchor": "Privacy Policy",
+    "context": "legal"
+  },
+  {
+    "from": "/security-profile",
+    "to": "/security-score",
+    "anchor": "Security Score",
+    "context": "profile"
+  },
+  {
+    "from": "/security-profile",
+    "to": "/breach-sim",
+    "anchor": "Breach Simulation",
+    "context": "profile"
+  },
+  {
+    "from": "/security-profile",
+    "to": "/tools/threat-scanner",
+    "anchor": "Threat Scanner",
+    "context": "profile"
+  },
+  {
+    "from": "/security-profile",
+    "to": "/community-threats",
+    "anchor": "Community Threats",
+    "context": "profile"
+  },
+  {
+    "from": "/community-threats",
+    "to": "/security",
+    "anchor": "Security News",
+    "context": "community"
+  },
+  {
+    "from": "/community-threats",
+    "to": "/live-threat-dashboard",
+    "anchor": "Live Threat Dashboard",
+    "context": "community"
+  },
+  {
+    "from": "/nexus-intersection",
+    "to": "/tech",
+    "anchor": "Tech",
+    "context": "intersection"
+  },
+  {
+    "from": "/nexus-intersection",
+    "to": "/security",
+    "anchor": "Security",
+    "context": "intersection"
+  },
+  {
+    "from": "/nexus-intersection",
+    "to": "/gaming",
+    "anchor": "Gaming",
+    "context": "intersection"
+  },
+  {
+    "from": "/ai-pulse",
+    "to": "/tech",
+    "anchor": "Tech News",
+    "context": "ai-pulse"
+  },
+  {
+    "from": "/ai-pulse",
+    "to": "/security",
+    "anchor": "AI Security",
+    "context": "ai-pulse"
+  },
+  {
+    "from": "/roadmap",
+    "to": "/about",
+    "anchor": "About Us",
+    "context": "roadmap"
+  },
+  {
+    "from": "/roadmap",
+    "to": "/contact",
+    "anchor": "Feedback",
+    "context": "roadmap"
+  }
+]
