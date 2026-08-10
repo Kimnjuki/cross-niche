@@ -167,11 +167,77 @@ export const PAGE_METADATA: Record<string, PageMeta> = {
     h1: 'Media Kit & Press Resources',
   },
 
+  // ── Additional routed pages ───────────────────────────────────────────
+  '/blog-series': {
+    title: 'Blog Series & Long-Form Features | The Grid Nexus',    // 52 chars
+    description: 'In-depth blog series and long-form features on technology, cybersecurity, and gaming. Expert perspectives, analysis, and investigative journalism.',
+    h1: 'Blog Series & Features',
+  },
+  '/for-studios': {
+    title: 'For Studios & Publishers | The Grid Nexus',            // 44 chars
+    description: 'Developer and publisher resources from The Grid Nexus. Security best practices, platform guides, and industry intelligence for game studios and tech companies.',
+    h1: 'For Studios & Publishers',
+  },
+  '/africa-threat-pulse': {
+    title: 'Africa Threat Pulse | Cybersecurity Intel | The Grid Nexus', // 58 chars
+    description: 'Africa-focused cybersecurity threat intelligence: regional attack trends, threat actors, malware campaigns, and security advisories from The Grid Nexus.',
+    h1: 'Africa Threat Pulse',
+  },
+  '/security-center': {
+    title: 'Security Center | Threat Intelligence Hub | The Grid Nexus', // 58 chars
+    description: 'The Grid Nexus Security Center: real-time threat intelligence, security tools, vulnerability databases, and cybersecurity resources for professionals.',
+    h1: 'Security Center',
+  },
+  '/game-security-index': {
+    title: 'Game Security Index | Security Grades | The Grid Nexus', // 56 chars
+    description: 'Game Security Index rates games on account protection, anti-cheat, data privacy, and community safety. Find secure gaming platforms and avoid risky titles.',
+    h1: 'Game Security Index',
+  },
+  '/threats': {
+    title: 'Threat Intelligence | The Grid Nexus',                 // 42 chars
+    description: 'Community-verified threat intelligence from The Grid Nexus. Explore threat clusters, attack patterns, malware campaigns, and cybersecurity incidents.',
+    h1: 'Threat Intelligence',
+  },
+  '/threats/report': {
+    title: 'Submit Threat Report | The Grid Nexus',                // 44 chars
+    description: 'Submit a threat report to The Grid Nexus. Report suspicious links, malware, phishing campaigns, or cybersecurity incidents to our community threat intelligence platform.',
+    h1: 'Submit Threat Report',
+  },
+  '/tools/gaming-copilot': {
+    title: 'Gaming Security Copilot | AI Assistant | The Grid Nexus', // 56 chars
+    description: 'Gaming Security Copilot: AI-powered assistant for game safety, account protection, and secure server setup. Ask questions about gaming security best practices.',
+    h1: 'Gaming Security Copilot',
+  },
+
   // ── Utility ───────────────────────────────────────────────────────────
   '/sitemap': {
     title: 'Site Map | The Grid Nexus',                            // 26 chars
     description: 'Complete site map for The Grid Nexus. Find all published pages, articles, tools, guides, and category sections in one place.',
     h1: 'Site Map',
+  },
+};
+
+// ── Article-specific metadata (Semrush Priority Pages) ───────────────────
+export const ARTICLE_METADATA: Record<string, PageMeta> = {
+  '/article/gaming-pc-antivirus-best-2026': {
+    title: 'Best Antivirus for Gaming PC 2026 | Complete Guide',
+    description: 'Discover the best antivirus for gaming PCs in 2026. Compare top protection tools, performance impact, gaming mode features, and real-time scanning options.',
+    h1: 'Best Antivirus for Gaming PC 2026',
+  },
+  '/article/minecraft-server-security-guide': {
+    title: 'Minecraft Server Security Guide 2026 | Protect Your Server',
+    description: 'Learn how to secure your Minecraft server against DDoS attacks, hackers, exploits, and enforce secure profile. Complete security checklist for server admins.',
+    h1: 'Minecraft Server Security Guide 2026',
+  },
+  '/article/steam-account-takeover-protection-guide-2026': {
+    title: 'Steam Account Takeover Protection Guide 2026 | The Grid Nexus',
+    description: 'Complete guide to protecting your Steam account from hackers, phishing, and credential stuffing. Learn 2FA setup, recovery options, and security best practices.',
+    h1: 'Steam Account Takeover Protection Guide 2026',
+  },
+  '/article/2fa-setup-every-gaming-platform': {
+    title: '2FA Setup for Every Gaming Platform 2026 | The Grid Nexus',
+    description: 'Step-by-step guide to enabling two-factor authentication on Steam, PlayStation, Xbox, Epic Games, and all major gaming platforms. Secure your accounts.',
+    h1: '2FA Setup for Every Gaming Platform',
   },
 };
 
@@ -189,14 +255,17 @@ export function getPageMetadata(
 ): PageMeta {
   const base = pathname.replace(/\/$/, '') || '/';
 
-  // Article detail pages
-  if (article && base.startsWith('/article/')) {
-    const rawDesc = (article.excerpt || '').slice(0, 155);
-    return {
-      title:       getArticleTitle(article.title || ''),
-      description: rawDesc || `Read ${article.title || 'this article'} on ${SITE_NAME}.`,
-      h1:          article.title || 'Article',
-    };
+  // Article detail pages - any niche-prefixed path
+  if (article) {
+    const isArticlePage = base.startsWith('/article/') || base.startsWith('/tech/') || base.startsWith('/security/') || base.startsWith('/gaming/');
+    if (isArticlePage) {
+      const rawDesc = (article.excerpt || '').slice(0, 155);
+      return {
+        title:       getArticleTitle(article.title || ''),
+        description: rawDesc || `Read ${article.title || 'this article'} on ${SITE_NAME}.`,
+        h1:          article.title || 'Article',
+      };
+    }
   }
 
   return (

@@ -329,7 +329,37 @@ export default function Index() {
         </div>
       </section>
 
-      {/* P8: Must-Read This Week — evergreen high-value articles */}
+      {/* P8: Essential Security Guides — Semrush Priority Internal Links */}
+      {sortedArticles.length > 0 && (
+        <section className="bg-[#0A0A0B] border-b border-[#27272A]">
+          <div className="container mx-auto px-4 max-w-7xl py-6">
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-sm font-bold text-white tracking-wide section-heading-cyan">
+                Essential Security Guides
+              </h2>
+              <Link to="/security" className="flex items-center gap-1 text-xs font-mono text-[#00F0FF]/70 hover:text-[#00F0FF]">
+                All guides <ChevronRight className="h-3 w-3" />
+              </Link>
+            </div>
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+              <Link to="/article/gaming-pc-antivirus-best-2026" className="group p-3 rounded-lg border border-[#00F0FF]/20 hover:border-[#00F0FF]/40 bg-zinc-900/30 transition-all">
+                <h3 className="text-sm font-medium text-zinc-300 group-hover:text-white transition-colors">Best Antivirus for Gaming PC 2026</h3>
+                <p className="text-xs text-zinc-600 mt-1">Top protection for gaming systems</p>
+              </Link>
+              <Link to="/article/minecraft-server-security-guide" className="group p-3 rounded-lg border border-[#FF007A]/20 hover:border-[#FF007A]/40 bg-zinc-900/30 transition-all">
+                <h3 className="text-sm font-medium text-zinc-300 group-hover:text-white transition-colors">Minecraft Server Security</h3>
+                <p className="text-xs text-zinc-600 mt-1">Protect your server from exploits</p>
+              </Link>
+              <Link to="/article/gaming-pc-security-hardening-guide" className="group p-3 rounded-lg border border-[#39FF14]/20 hover:border-[#39FF14]/40 bg-zinc-900/30 transition-all">
+                <h3 className="text-sm font-medium text-zinc-300 group-hover:text-white transition-colors">Gaming PC Security Hardening</h3>
+                <p className="text-xs text-zinc-600 mt-1">Complete PC security checklist</p>
+              </Link>
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* P8b: Must-Read This Week — evergreen high-value articles */}
       {sortedArticles.length > 0 && (
         <section className="bg-[#0A0A0B] border-b border-[#27272A]">
           <div className="container mx-auto px-4 max-w-7xl py-6">

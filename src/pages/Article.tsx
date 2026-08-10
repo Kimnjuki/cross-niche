@@ -45,12 +45,13 @@ import {
 import { getPlaceholderByNiche, secureImageUrl } from '@/lib/placeholderImages';
 import { prepareArticleContent } from '@/lib/markdownToHtml';
 import { getRelatedClusterContent } from '@/lib/seo/topicClusters';
+import { addContextualLinks } from '@/lib/seo/keywordMapping';
 import type { Article as ArticleType } from '@/types';
 
 const nicheStyles = {
   tech: { badge: 'bg-tech/10 text-tech border-tech/20', color: 'text-tech' },
-  security: { bg: 'bg-security/10 text-security border-security/20', color: 'text-security' },
-  gaming: { bg: 'bg-gaming/10 text-gaming border-gaming/20', color: 'text-gaming' },
+  security: { badge: 'bg-security/10 text-security border-security/20', color: 'text-security' },
+  gaming: { badge: 'bg-gaming/10 text-gaming border-gaming/20', color: 'text-gaming' },
 };
 
 const nicheLabels = { tech: 'Innovate', security: 'Secured', gaming: 'Play' };
@@ -68,6 +69,18 @@ function getPlatformFromUrl(url: string): string {
   } catch {
     return url;
   }
+}
+
+// Validate article has minimum required fields to render
+function isValidArticle(article: ArticleType | null): article is ArticleType {
+  return !!article && !!article.id && !!article.title && !!article.slug;
+}
+
+// Safe accessor for optional article fields
+function getOptionalField<T>(article: ArticleType | null, field: keyof ArticleType, fallback: T): T {
+  if (!article) return fallback;
+  const value = article[field];
+  return value !== undefined && value !== null ? (value as T) : fallback;
 }
 
 export default function Article() {
@@ -94,7 +107,7 @@ export default function Article() {
 
   // 3. SAFE ARTICLE ID (compute before using in hooks/memos)
   const articleId = getArticleId(article);
-  const hasArticle = !!article && !!articleId;
+  const hasArticle = isValidArticle(article);
 
   // 4. RELATED ARTICLES (feed-based fallback)
   const relatedArticles = useMemo(() => {
@@ -160,8 +173,8 @@ export default function Article() {
   // 6b. GA4 article tracking (when article is loaded)
   useEffect(() => {
     if (!hasArticle || !article) return;
-    trackArticleView(articleId, article.title ?? 'Untitled', article.niche);
-    trackArticleReadTime(articleId, article.readTime ?? 5);
+    trackArticleView(articleId, getOptionalField(article, 'title', 'Untitled'), getOptionalField(article, 'niche', 'tech'));
+    trackArticleReadTime(articleId, getOptionalField(article, 'readTime', 5));
   }, [hasArticle, article, articleId]);
 
   // 7. READING TRACKER (only track if article exists and has id)
@@ -207,9 +220,15 @@ export default function Article() {
     article.niche === 'tech' || article.niche === 'security' || article.niche === 'gaming'
       ? article.niche
       : 'tech';
-  const styles = nicheStyles[safeNiche];
+  const styles = nicheStyles[safeNiche] as { badge?: string; color: string };
   const tags = Array.isArray(article.tags) ? article.tags : [];
   const isBookmarked = user?.bookmarks?.includes(articleId);
+
+  // Bookmark handler
+  const handleBookmark = async () => {
+    if (!toggleBookmark) return;
+    await toggleBookmark(articleId);
+  };
 
   // 12. AUTHOR SCHEMA JSON-LD
   const authorSchema = authorProfile ? {
@@ -243,16 +262,16 @@ export default function Article() {
         title={undefined}
         description={undefined}
         keywords={tags}
-        image={article.imageUrl ?? getPlaceholderByNiche(article.niche, article.slug ?? article.id)}
+        image={getOptionalField(article, 'imageUrl', getPlaceholderByNiche(safeNiche, article.slug ?? articleId))}
         url={`https://thegridnexus.com/article/${article.slug ?? articleId}`}
         canonicalUrl={
           contentData?.canonicalUrl ||
           `https://thegridnexus.com/article/${article.slug ?? articleId}`
         }
         type="article"
-        article={{ ...article, impactLevel: article.impactLevel ?? 'low', isBreaking: article.isBreaking ?? false }}
-        publishedTime={article.publishedAt}
-        author={article.author ?? 'The Grid Nexus Editorial Team'}
+        article={{ ...article, impactLevel: getOptionalField(article, 'impactLevel', 'low'), isBreaking: getOptionalField(article, 'isBreaking', false) }}
+        publishedTime={getOptionalField(article, 'publishedAt', undefined)}
+        author={getOptionalField(article, 'author', 'The Grid Nexus Editorial Team')}
         section={safeNiche}
         tags={tags}
         autoGenerate={true}
@@ -263,7 +282,7 @@ export default function Article() {
           items={[
             { label: 'Home', href: '/' },
             { label: nicheLabels[safeNiche], href: nicheRoutes[safeNiche] },
-            { label: article.title ?? 'Untitled', href: window.location.pathname },
+            { label: getOptionalField(article, 'title', 'Untitled'), href: window.location.pathname },
           ]}
         />
 
@@ -278,21 +297,21 @@ export default function Article() {
 
         <header className="max-w-4xl mb-8">
           <h1 className="font-display font-bold text-4xl md:text-5xl mb-4 text-slate-900">
-            {article.title || 'Untitled Article'}
+            {getOptionalField(article, 'title', 'Untitled Article')}
           </h1>
           <div className="flex flex-wrap gap-2 mb-4">
             <Badge className={styles.badge}>{nicheLabels[safeNiche]}</Badge>
-            {article.isSponsored && <Badge variant="topic">Sponsored</Badge>}
-            {article.impactLevel && (
-              <Badge variant={article.impactLevel === 'high' ? 'breaking' : 'topic'} className="gap-1">
+            {getOptionalField(article, 'isSponsored', false) && <Badge variant="topic">Sponsored</Badge>}
+            {getOptionalField(article, 'impactLevel', undefined) && (
+              <Badge variant={getOptionalField(article, 'impactLevel', 'low') === 'high' ? 'breaking' : 'topic'} className="gap-1">
                 <AlertTriangle className="h-3 w-3" />
-                {article.impactLevel.toUpperCase()} IMPACT
+                {(getOptionalField(article, 'impactLevel', 'low') as string).toUpperCase()} IMPACT
               </Badge>
             )}
-            {article.securityScore !== undefined && (
+            {getOptionalField(article, 'securityScore', undefined) !== undefined && (
               <Badge className="bg-gaming/10 text-gaming border-gaming/20 gap-1">
                 <Shield className="h-3 w-3" />
-                Security Score: {article.securityScore}
+                Security Score: {getOptionalField(article, 'securityScore', 0)}
               </Badge>
             )}
           </div>
@@ -300,7 +319,7 @@ export default function Article() {
           {/* h1 removed — already rendered above (was causing duplicate H1 crawl error) */}
 
           <p className="text-xl text-muted-foreground mb-6">
-            {article.excerpt ?? ''}
+            {getOptionalField(article, 'excerpt', '')}
           </p>
 
           <div className="flex flex-wrap items-center gap-6 text-sm text-muted-foreground">
@@ -311,8 +330,8 @@ export default function Article() {
               {authorName}
             </Link>
             <span>
-              {article.publishedAt
-                ? new Date(article.publishedAt).toLocaleDateString('en-US', {
+              {getOptionalField(article, 'publishedAt', null)
+                ? new Date(getOptionalField(article, 'publishedAt', '') as string).toLocaleDateString('en-US', {
                     month: 'long',
                     day: 'numeric',
                     year: 'numeric',
@@ -321,16 +340,19 @@ export default function Article() {
             </span>
             <span className="flex items-center gap-1">
               <Clock className="h-4 w-4" />
-              {article.readTime ?? 5} min read
+              {getOptionalField(article, 'readTime', 5)} min read
             </span>
           </div>
         </header>
 
         <div className="max-w-4xl mb-8">
           <LazyImage
-            src={secureImageUrl(article.imageUrl, getPlaceholderByNiche(article.niche, article.slug ?? article.id))}
-            alt={article.title ?? 'Article'}
-            fallbackSrc={getPlaceholderByNiche(article.niche, article.slug ?? article.id)}
+            src={secureImageUrl(
+              getOptionalField(article, 'imageUrl', getPlaceholderByNiche(safeNiche, article.slug ?? articleId)),
+              getPlaceholderByNiche(safeNiche, article.slug ?? articleId)
+            )}
+            alt={getOptionalField(article, 'title', 'Article')}
+            fallbackSrc={getPlaceholderByNiche(safeNiche, article.slug ?? articleId)}
             className="w-full aspect-video rounded-xl"
           />
         </div>
@@ -367,19 +389,19 @@ export default function Article() {
           <div className="mb-12">
             {/* Quick Answer — structured for AI Overviews & Featured Snippets */}
             <QuickAnswer
-              question={`What is ${article.title ?? 'this article about'}?`}
-              answer={article.excerpt || `Expert analysis and coverage of ${article.title ?? 'this topic'} from The Grid Nexus.`}
+              question={`What is ${getOptionalField(article, 'title', 'this article about')}?`}
+              answer={getOptionalField(article, 'excerpt', `Expert analysis and coverage of ${getOptionalField(article, 'title', 'this topic')} from The Grid Nexus.`)}
               keyPoints={tags.length > 0 ? tags.slice(0, 5).map(t => `Coverage includes: ${t}`) : undefined}
             />
 
             {/* Table of Contents — signals topic depth to Google */}
-            <TableOfContents content={article.content} />
+            <TableOfContents content={getOptionalField(article, 'content', '')} />
 
             <div className="prose prose-lg max-w-none" data-article-content>
               <div
                 className="text-lg leading-relaxed text-slate-900 article-content"
                 dangerouslySetInnerHTML={{
-                  __html: prepareArticleContent(article.content) || prepareArticleContent(article.excerpt) || '<p class="text-muted-foreground">No content available for this article.</p>',
+                  __html: prepareArticleContent(getOptionalField(article, 'content', '')) || prepareArticleContent(getOptionalField(article, 'excerpt', '')) || '<p class="text-muted-foreground">No content available for this article.</p>',
                 }}
               />
             </div>
@@ -427,8 +449,8 @@ export default function Article() {
 
             <AdPlacement 
               position="in-article" 
-              contentLength={article.content ? article.content.split(/\s+/).length : 0}
-              hasSubstantialContent={!!article.content && article.content.length > 500}
+              contentLength={getOptionalField(article, 'content', '').split(/\s+/).length}
+              hasSubstantialContent={!!getOptionalField(article, 'content', '') && getOptionalField(article, 'content', '').length > 500}
             />
 
             {tags.length > 0 && (
@@ -442,8 +464,8 @@ export default function Article() {
 
           <div className="mb-12">
             <AITools
-              articleContent={article.content ?? article.excerpt ?? ''}
-              articleTitle={article.title ?? 'Article'}
+              articleContent={getOptionalField(article, 'content', getOptionalField(article, 'excerpt', ''))}
+              articleTitle={getOptionalField(article, 'title', 'Article')}
             />
           </div>
 
@@ -534,13 +556,13 @@ export default function Article() {
 
           </NexusScrollBridge>
 
-          <NextArticle currentSlug={article.slug || articleId} niche={safeNiche} />
+          <NextArticle currentSlug={getOptionalField(article, 'slug', articleId)} niche={safeNiche} />
 
           <FAQSection
             faqs={[
               {
-                question: `What is ${article.title ?? 'this article'}?`,
-                answer: article.excerpt || 'Learn more with The Grid Nexus.',
+                question: `What is ${getOptionalField(article, 'title', 'this article')}?`,
+                answer: getOptionalField(article, 'excerpt', 'Learn more with The Grid Nexus.'),
               },
               {
                 question: `How does this relate to ${safeNiche === 'tech' ? 'technology' : safeNiche === 'security' ? 'cybersecurity' : 'gaming'}?`,
@@ -551,11 +573,11 @@ export default function Article() {
                 answer: `Explore our ${nicheLabels[safeNiche]} section or the full blog series.`,
               },
             ]}
-            title={`Frequently Asked Questions about ${article.title ?? 'this article'}`}
+            title={`Frequently Asked Questions about ${getOptionalField(article, 'title', 'this article')}`}
           />
 
           <RelatedArticles 
-            currentSlug={article.slug || articleId} 
+            currentSlug={getOptionalField(article, 'slug', articleId)} 
             category={safeNiche} 
           />
         </article>

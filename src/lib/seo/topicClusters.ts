@@ -87,7 +87,7 @@ export const TOPIC_CLUSTERS: Record<string, TopicCluster[]> = {
       },
       spokes: [
         { title: 'Gaming PC Security Hardening Guide', url: '/article/gaming-pc-security-hardening-guide', keywords: ['pc hardening', 'gaming security'] },
-        { title: 'Best Antivirus for Gaming PC 2026', url: '/article/gaming-pc-antivirus-best-2026', keywords: ['antivirus gaming', 'best antivirus'] },
+        { title: 'Best Antivirus for Gaming PC 2026', url: '/article/gaming-pc-antivirus-best-2026', keywords: ['antivirus gaming', 'best antivirus', 'gaming pc'] },
         { title: 'Fake Game Cheats Malware', url: '/article/fake-game-cheats-malware-account-stealer', keywords: ['game cheats', 'malware'] },
         { title: 'Discord Malware Guide', url: '/article/discord-malware-gamers-how-to-stay-safe', keywords: ['discord malware', 'gaming safety'] },
       ]
@@ -109,13 +109,14 @@ export const TOPIC_CLUSTERS: Record<string, TopicCluster[]> = {
       hub: {
         title: 'Minecraft Server Security',
         url: '/security?q=minecraft',
-        description: 'Secure your Minecraft server against DDoS, hackers, and exploits',
-        keywords: ['minecraft', 'server security', 'ddos', 'minecraft server']
+        description: 'Complete guide to securing Minecraft servers against DDoS, hackers, exploits, and enforce secure profile settings',
+        keywords: ['minecraft', 'server security', 'ddos', 'minecraft server', 'enforce secure profile', 'server admin']
       },
       spokes: [
-        { title: 'Minecraft Server Security Guide', url: '/article/minecraft-server-security-guide', keywords: ['minecraft security', 'server protection'] },
+        { title: 'Minecraft Server Security Guide', url: '/article/minecraft-server-security-guide', keywords: ['minecraft security', 'server protection', 'enforce secure profile'] },
         { title: 'Router Security for Gamers', url: '/article/router-security-gamers-network-protection', keywords: ['router security', 'ddos protection'] },
         { title: 'Gaming PC Security Hardening Guide', url: '/article/gaming-pc-security-hardening-guide', keywords: ['pc hardening', 'server security'] },
+        { title: 'Network Security Scanner Tool', url: '/tools/security-scanner', keywords: ['network scan', 'vulnerability scanner'] },
       ]
     },
     {
