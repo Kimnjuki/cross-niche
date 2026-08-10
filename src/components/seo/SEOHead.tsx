@@ -1,7 +1,8 @@
 import { useEffect } from 'react';
 import type { Article } from '@/types';
 import { optimizeTitle, optimizeMetaDescription, generateArticleMetaDescription } from '@/lib/seoUtils';
-import { generateAllSchemas, generatePersonSchema, type SoftwareInput } from '@/lib/schemaMarkup';
+import { getPageMetadata } from '@/lib/seo/pageMetadata';
+import { generateAllSchemas, generatePersonSchema } from '@/lib/schemaMarkup';
 
 const SITE_NAME = 'The Grid Nexus';
 const BASE_URL = 'https://thegridnexus.com';
@@ -38,7 +39,7 @@ interface SEOHeadProps {
     totalTime?: string;
   };
   person?: PersonSchema;
-  software?: SoftwareInput;
+  software?: any;
 }
 
 export function SEOHead({

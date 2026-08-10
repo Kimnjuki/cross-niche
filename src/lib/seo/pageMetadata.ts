@@ -167,6 +167,33 @@ export const PAGE_METADATA: Record<string, PageMeta> = {
     h1: 'Media Kit & Press Resources',
   },
 
+  // ── Article-specific metadata ─────────────────────────────────────────
+  '/article/gaming-pc-antivirus-best-2026': {
+    title: 'Best Antivirus for Gaming PC 2026 | Complete Guide',
+    description: 'Discover the best antivirus for gaming PCs in 2026. We tested Norton, McAfee, Bitdefender, and Kaspersky for gaming performance, FPS impact, and security features.',
+    h1: 'Best Antivirus for Gaming PC 2026',
+  },
+  '/article/minecraft-server-security-guide': {
+    title: 'Minecraft Server Security Guide 2026 | Protect Your Server',
+    description: 'Learn how to secure your Minecraft server against DDoS attacks, exploits, and unauthorized access. Essential security guide for server administrators.',
+    h1: 'Minecraft Server Security Guide 2026',
+  },
+  '/article/gaming-pc-security-hardening-guide': {
+    title: 'Gaming PC Security Hardening Guide 2026 | Step-by-Step',
+    description: 'Complete step-by-step guide to hardening your gaming PC for maximum security. Includes firewall configuration, encryption, and malware prevention tips.',
+    h1: 'Gaming PC Security Hardening Guide 2026',
+  },
+  '/article/steam-account-security-guide': {
+    title: 'Steam Account Security Guide 2026 | Protect Your Games',
+    description: 'Protect your Steam account from hackers, phishing, and scams. Complete security guide with 2FA setup, password best practices, and recovery options.',
+    h1: 'Steam Account Security Guide 2026',
+  },
+  '/article/2fa-setup-gaming-accounts': {
+    title: '2FA Setup for Gaming Accounts 2026 | Complete Guide',
+    description: 'Enable two-factor authentication for all your gaming accounts. Step-by-step guides for Steam, Epic, PlayStation, Xbox, and Nintendo accounts.',
+    h1: '2FA Setup for Gaming Accounts 2026',
+  },
+
   // ── Utility ───────────────────────────────────────────────────────────
   '/sitemap': {
     title: 'Site Map | The Grid Nexus',                            // 26 chars
