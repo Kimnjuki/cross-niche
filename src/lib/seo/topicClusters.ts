@@ -117,6 +117,21 @@ export const TOPIC_CLUSTERS: Record<string, TopicCluster[]> = {
     },
     {
       hub: {
+        title: 'Gaming PC & Antivirus Security',
+        url: '/article/gaming-pc-antivirus-best-2026',
+        description: 'Best antivirus for gaming PCs in 2026',
+        keywords: ['antivirus gaming', 'best antivirus', 'gaming pc', 'gaming antivirus', 'antivirus for gaming', 'best antivirus for gaming computer']
+      },
+      spokes: [
+        { title: 'Best Antivirus for Gaming PC 2026', url: '/article/gaming-pc-antivirus-best-2026', keywords: ['best antivirus', 'gaming pc', 'antivirus gaming'] },
+        { title: 'Gaming PC Security Hardening Guide', url: '/article/gaming-pc-security-hardening-guide', keywords: ['gaming pc security', 'hardening'] },
+        { title: 'Free Antivirus for Gaming', url: '/article/free-antivirus-gaming', keywords: ['free antivirus', 'gaming'] },
+        { title: 'Antivirus Performance Impact on Gaming', url: '/article/antivirus-gaming-performance', keywords: ['antivirus performance', 'gaming fps'] },
+        { title: 'Gaming Malware Protection', url: '/article/gaming-malware-protection', keywords: ['gaming malware', 'protection'] },
+      ]
+    },
+    {
+      hub: {
         title: 'Gaming Hardware Reviews',
         url: '/gaming?q=hardware',
         description: 'Gaming hardware reviews and comparisons',
