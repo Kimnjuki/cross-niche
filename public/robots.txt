@@ -41,12 +41,10 @@ Disallow: /nexus/nexuspulse
 # ── Google ───────────────────────────────────────────────────────────────
 User-agent: Googlebot
 Allow: /
-Crawl-delay: 1
 
 # ── Bing ─────────────────────────────────────────────────────────────────
 User-agent: Bingbot
 Allow: /
-Crawl-delay: 2
 
 # ── AI / LLM crawlers (explicitly welcome) ──────────────────────────────
 User-agent: GPTBot
@@ -86,6 +84,15 @@ User-agent: Google-Extended
 Allow: /
 
 User-agent: Amazonbot
+Allow: /
+
+User-agent: Bytespider
+Allow: /
+
+User-agent: DuckAssist
+Allow: /
+
+User-agent: DuckAssistBot
 Allow: /
 
 # ── Sitemaps ─────────────────────────────────────────────────────────────

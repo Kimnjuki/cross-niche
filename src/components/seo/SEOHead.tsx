@@ -40,6 +40,45 @@ interface SEOHeadProps {
   };
   person?: PersonSchema;
   software?: any;
+  videos?: Array<{
+    name: string;
+    description: string;
+    thumbnailUrl: string;
+    contentUrl: string;
+    embedUrl?: string;
+    duration?: string;
+    uploadDate: string;
+  }>;
+  events?: Array<{
+    name: string;
+    description: string;
+    startDate: string;
+    endDate?: string;
+    location?: string;
+    eventStatus?: 'EventScheduled' | 'EventCancelled' | 'EventPostponed' | 'EventRescheduled';
+    eventAttendanceMode?: 'OfflineEventAttendanceMode' | 'OnlineEventAttendanceMode' | 'MixedEventAttendanceMode';
+    url?: string;
+    image?: string;
+    organizer?: { name: string; url?: string };
+  }>;
+  itemList?: {
+    name?: string;
+    items: Array<{ name: string; url: string; position: number }>;
+  };
+  review?: {
+    itemName: string;
+    itemType: 'Product' | 'VideoGame' | 'SoftwareApplication' | 'TechArticle';
+    reviewBody: string;
+    ratingValue: number;
+    bestRating?: number;
+    worstRating?: number;
+    author: string;
+    datePublished: string;
+    pros?: string[];
+    cons?: string[];
+    url: string;
+    imageUrl?: string;
+  };
 }
 
 export function SEOHead({
@@ -61,6 +100,10 @@ export function SEOHead({
   howTo,
   person,
   software,
+  videos,
+  events,
+  itemList,
+  review,
 }: SEOHeadProps) {
   // ── Title construction (unique per page, 50-60 chars) ──────────────────
   const rawTitle =
@@ -240,6 +283,10 @@ export function SEOHead({
         type === 'website' && !article
           ? { name: optimizedTitle, description: optimizedDescription, url: canonical }
           : undefined,
+      videos:   videos && videos.length > 0 ? videos : undefined,
+      events:   events && events.length > 0 ? events : undefined,
+      itemList: itemList?.items?.length ? itemList : undefined,
+      review:   review,
     });
 
     if (person) schemas.push(generatePersonSchema(person));
@@ -257,7 +304,7 @@ export function SEOHead({
   }, [
     optimizedTitle, optimizedDescription, keywords, ogImage, canonical,
     type, article, publishedTime, modifiedTime, author, section, tags,
-    noindex, faqs, howTo, person, software,
+    noindex, faqs, howTo, person, software, videos, events, itemList, review,
   ]);
 
   return null;

@@ -51,3 +51,28 @@ coverage
 *.psd
 *.ai
 *.fig
+
+# Heavy / non-essential content not needed for a static frontend build.
+# Reduces the Docker build context (was ~118 MB) to avoid disk/memory pressure
+# in the build container, which was getting OOM-killed during npm ci (exit 255).
+data/
+convex/
+chrome-extension/
+tests/
+docs/
+seo/
+playwright-report/
+cross-niche/
+*.docx
+*.pdf
+content_*.csv
+view_*.csv
+*_rows.csv
+internal_all.csv
+
+# Large non-essential assets that can be served from CDN or regenerated
+assets/unsplash.jpg
+assets/circuit.jpg
+public/assets/unsplash.jpg
+public/assets/circuit.jpg
+

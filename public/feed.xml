@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>The Grid Nexus – Tech, Security &amp; Gaming News</title>
+  <subtitle>Breaking technology news, cybersecurity analysis, and gaming guides.</subtitle>
+  <link href="https://thegridnexus.com/feed.xml" rel="self"/>
+  <link href="https://thegridnexus.com"/>
+  <updated>2026-08-10T21:01:46.649Z</updated>
+  <author>
+    <name>The Grid Nexus</name>
+    <email>contact@thegridnexus.com</email>
+  </author>
+  <id>https://thegridnexus.com/</id>
+  <generator>The Grid Nexus Feed Generator</generator>
+  <rights>Copyright 2026 The Grid Nexus. All rights reserved.</rights>
+  
+  <entry>
+    <title>AI Security Threats 2026: Weaponized AI, Deepfakes, and Quantum Risks Targeting Gamers</title>
+    <link href="https://thegridnexus.com/article/ai-security-threats-2026"/>
+    <updated>2026-01-20T10:00:00.000Z</updated>
+    <published>2026-01-15T08:00:00.000Z</published>
+    <author>
+      <name>The Grid Nexus Editorial Team</name>
+    </author>
+    <id>https://thegridnexus.com/article/ai-security-threats-2026</id>
+    <summary>Deepfake voice clones, weaponized AI attack pipelines, and quantum-assisted decryption threats are targeting gaming accounts.</summary>
+    <category term="security"/>
+    <category term="AI security"/>
+    <category term="deepfakes"/>
+    <category term="quantum computing"/>
+    <category term="gaming security"/>
+  </entry>
+  <entry>
+    <title>Gaming PC Security Hardening Guide 2026: Lock Down Your Rig Without Losing FPS</title>
+    <link href="https://thegridnexus.com/article/gaming-pc-security-hardening-guide-2026"/>
+    <updated>2026-01-18T14:00:00.000Z</updated>
+    <published>2026-01-10T08:00:00.000Z</published>
+    <author>
+      <name>Security Team</name>
+    </author>
+    <id>https://thegridnexus.com/article/gaming-pc-security-hardening-guide-2026</id>
+    <summary>Hardened gaming rigs from Windows 11 security features to YubiKey BIOS integration and VLAN segmentation.</summary>
+    <category term="security"/>
+    <category term="gaming PC"/>
+    <category term="security hardening"/>
+    <category term="Windows 11"/>
+    <category term="YubiKey"/>
+  </entry>
+  <entry>
+    <title>Steam Deck 2 Specs, Release Date Leaks, and Deck vs. OLED Comparison</title>
+    <link href="https://thegridnexus.com/article/steam-deck-2-specs-release-date-leaks"/>
+    <updated>2026-01-08T08:00:00.000Z</updated>
+    <published>2026-01-08T08:00:00.000Z</published>
+    <author>
+      <name>Gaming Team</name>
+    </author>
+    <id>https://thegridnexus.com/article/steam-deck-2-specs-release-date-leaks</id>
+    <summary>Leaked Steam Deck 2 specs: Zen 5 CPU, RDNA 3.5 GPU at 3.5 TFLOPS, 32GB LPDDR6X.</summary>
+    <category term="gaming"/>
+    <category term="Steam Deck"/>
+    <category term="Valve"/>
+    <category term="handheld gaming"/>
+    <category term="PC gaming"/>
+  </entry>
+  <entry>
+    <title>Router Security for Gamers 2026: CVE-2025-7850, KadNap Exploits, and Zero-Trust Networking</title>
+    <link href="https://thegridnexus.com/article/router-security-gamers-2026"/>
+    <updated>2026-01-12T09:00:00.000Z</updated>
+    <published>2026-01-05T08:00:00.000Z</published>
+    <author>
+      <name>Security Team</name>
+    </author>
+    <id>https://thegridnexus.com/article/router-security-gamers-2026</id>
+    <summary>CVE-2025-7850 TP-Link exploit, KadNap Asus backdoor campaign, and the complete router hardening checklist for gamers.</summary>
+    <category term="security"/>
+    <category term="router security"/>
+    <category term="CVE"/>
+    <category term="gaming network"/>
+    <category term="zero-trust"/>
+  </entry>
+  <entry>
+    <title>Microsoft Patch Tuesday: 6 Zero-Days Patched in February 2026</title>
+    <link href="https://thegridnexus.com/article/microsoft-patch-tuesday-6-zero-days-february-2026"/>
+    <updated>2026-02-10T08:00:00.000Z</updated>
+    <published>2026-02-10T08:00:00.000Z</published>
+    <author>
+      <name>Security Team</name>
+    </author>
+    <id>https://thegridnexus.com/article/microsoft-patch-tuesday-6-zero-days-february-2026</id>
+    <summary>Microsoft patches six actively exploited zero-day vulnerabilities in February 2026 Patch Tuesday release.</summary>
+    <category term="security"/>
+    <category term="Microsoft"/>
+    <category term="Patch Tuesday"/>
+    <category term="zero-day"/>
+    <category term="CVEs"/>
+  </entry>
+  <entry>
+    <title>Crimson Desert Review: Launching March 2026 on PS5, Xbox, and PC</title>
+    <link href="https://thegridnexus.com/article/crimson-desert-review-launch-march-2026"/>
+    <updated>2026-02-28T08:00:00.000Z</updated>
+    <published>2026-02-28T08:00:00.000Z</published>
+    <author>
+      <name>Gaming Team</name>
+    </author>
+    <id>https://thegridnexus.com/article/crimson-desert-review-launch-march-2026</id>
+    <summary>Pearl Abyss open-world RPG Crimson Desert launches March 2026. Full review and analysis.</summary>
+    <category term="gaming"/>
+    <category term="Crimson Desert"/>
+    <category term="Pearl Abyss"/>
+    <category term="RPG"/>
+    <category term="PS5"/>
+    <category term="Xbox"/>
+  </entry>
+  <entry>
+    <title>xAI Gains Pentagon Access Amid Security Concerns</title>
+    <link href="https://thegridnexus.com/article/xai-gains-pentagon-access-amid-security-concerns"/>
+    <updated>2026-03-01T08:00:00.000Z</updated>
+    <published>2026-03-01T08:00:00.000Z</published>
+    <author>
+      <name>Tech Team</name>
+    </author>
+    <id>https://thegridnexus.com/article/xai-gains-pentagon-access-amid-security-concerns</id>
+    <summary>Elon Musk&apos;s xAI secures Pentagon access raising security concerns over classified network integration.</summary>
+    <category term="tech"/>
+    <category term="xAI"/>
+    <category term="Grok"/>
+    <category term="Pentagon"/>
+    <category term="military AI"/>
+    <category term="security"/>
+  </entry>
+  <entry>
+    <title>Apple Acquires MotionVFX: Final Cut Pro&apos;s AI-Powered Creative Leap</title>
+    <link href="https://thegridnexus.com/article/apple-acquires-motionvfx-final-cut-pros-ai-powered-creative-leap"/>
+    <updated>2026-02-25T08:00:00.000Z</updated>
+    <published>2026-02-25T08:00:00.000Z</published>
+    <author>
+      <name>Tech Team</name>
+    </author>
+    <id>https://thegridnexus.com/article/apple-acquires-motionvfx-final-cut-pros-ai-powered-creative-leap</id>
+    <summary>Apple acquires MotionVFX to bring AI-powered creative tools to Final Cut Pro.</summary>
+    <category term="tech"/>
+    <category term="Apple"/>
+    <category term="MotionVFX"/>
+    <category term="Final Cut Pro"/>
+    <category term="AI"/>
+    <category term="video editing"/>
+  </entry>
+  <entry>
+    <title>Nintendo Switch 2 Security Guide: Protect Your Console and Accounts</title>
+    <link href="https://thegridnexus.com/article/nintendo-switch-2-security-guide"/>
+    <updated>2026-01-25T11:00:00.000Z</updated>
+    <published>2026-01-20T08:00:00.000Z</published>
+    <author>
+      <name>Security Team</name>
+    </author>
+    <id>https://thegridnexus.com/article/nintendo-switch-2-security-guide</id>
+    <summary>Complete security guide for Nintendo Switch 2. Protect your console, accounts, and digital purchases.</summary>
+    <category term="gaming"/>
+    <category term="Nintendo Switch 2"/>
+    <category term="console security"/>
+    <category term="account protection"/>
+  </entry>
+  <entry>
+    <title>Best Gaming PC Under $1000 in 2026: Top Budget Builds</title>
+    <link href="https://thegridnexus.com/article/best-gaming-pc-under-1000-2026"/>
+    <updated>2026-01-12T08:00:00.000Z</updated>
+    <published>2026-01-12T08:00:00.000Z</published>
+    <author>
+      <name>Gaming Team</name>
+    </author>
+    <id>https://thegridnexus.com/article/best-gaming-pc-under-1000-2026</id>
+    <summary>Top budget gaming PC builds under $1000 for 2026. Best value components and pre-built options.</summary>
+    <category term="gaming"/>
+    <category term="gaming PC"/>
+    <category term="budget gaming"/>
+    <category term="PC builds"/>
+    <category term="under $1000"/>
+  </entry>
+</feed>

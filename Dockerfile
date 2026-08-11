@@ -8,7 +8,17 @@ WORKDIR /app
 
 # Copy package files and install dependencies (npm ci uses lockfile; no bun.lockb)
 COPY package.json package-lock.json ./
-RUN npm ci --legacy-peer-deps || npm install --legacy-peer-deps
+# Skip heavy browser downloads and reduce npm noise
+ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true PUPPETEER_SKIP_DOWNLOAD=true \
+    PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=1 \
+    SENTRY_SKIP_DOWNLOAD=1 \
+    npm_config_loglevel=warn \
+    npm_config_audit=false \
+    npm_config_fund=false \
+    npm_config_progress=false \
+    npm_config_legacy_peer_deps=true \
+    NODE_OPTIONS=--max-old-space-size=4096
+RUN npm ci --legacy-peer-deps --no-audit --no-fund --prefer-offline || npm install --legacy-peer-deps --no-audit --no-fund --prefer-offline
 
 # Copy the rest of the code and build
 COPY . .

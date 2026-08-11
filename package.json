@@ -15,7 +15,14 @@
     "seed": "tsx scripts/seed-convex.ts",
     "insert-articles": "npx convex run insertArticlesAsContent:insertArticlesAsContent",
     "seed:roadmap-full": "node scripts/seed-roadmap-full.mjs",
-    "expand:roadmap-bodies": "tsx scripts/expand-roadmap-bodies.ts"
+    "expand:roadmap-bodies": "tsx scripts/expand-roadmap-bodies.ts",
+    "generate:feed": "node scripts/generate-feed.mjs",
+    "generate:placeholders": "node scripts/generate-placeholders.mjs",
+    "validate:seo": "node scripts/validate-site.mjs",
+    "validate:all": "npm run validate:seo && npm run lint && npx tsc --noEmit",
+    "audit:seo": "node scripts/audit-seo.mjs",
+    "generate:og": "powershell -ExecutionPolicy Bypass -File scripts/generate-og.ps1",
+    "prebuild:seo": "npm run generate:feed && npm run generate:placeholders"
   },
   "dependencies": {
     "@auth0/auth0-react": "^2.15.0",

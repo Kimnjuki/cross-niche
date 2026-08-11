@@ -3,7 +3,7 @@
   publish = "dist"
   command = "npm run build"
 
-# 301 redirect: www to non-www (avoids duplicate content; Seobility)
+# 301 redirect: www to non-www (avoids duplicate content)
 [[redirects]]
   from = "https://www.thegridnexus.com/*"
   to = "https://thegridnexus.com/:splat"
@@ -16,7 +16,16 @@
   status = 301
   force = true
 
-# Headers for SEO crawlers (Ahrefs health: correct content types)
+# Security and SEO headers
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Permissions-Policy = "camera=(), microphone=(), geolocation=()"
+    X-XSS-Protection = "1; mode=block"
+
 [[headers]]
   for = "/robots.txt"
   [headers.values]
@@ -36,3 +45,13 @@
   for = "/sitemap-news.xml"
   [headers.values]
     Content-Type = "application/xml; charset=utf-8"
+
+[[headers]]
+  for = "/feed.xml"
+  [headers.values]
+    Content-Type = "application/atom+xml; charset=utf-8"
+
+[[headers]]
+  for = "/ai.txt"
+  [headers.values]
+    Content-Type = "text/plain; charset=utf-8"

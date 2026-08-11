@@ -413,6 +413,57 @@ export function generateVideoSchema(video: {
 }
 
 // ────────────────────────────────────────────────────────────────────────────
+// Event (game releases, esports tournaments, launch events)
+// ────────────────────────────────────────────────────────────────────────────
+export function generateEventSchema(event: {
+  name: string;
+  description: string;
+  startDate: string;
+  endDate?: string;
+  location?: string;
+  eventStatus?: 'EventScheduled' | 'EventCancelled' | 'EventPostponed' | 'EventRescheduled';
+  eventAttendanceMode?: 'OfflineEventAttendanceMode' | 'OnlineEventAttendanceMode' | 'MixedEventAttendanceMode';
+  url?: string;
+  image?: string;
+  organizer?: {
+    name: string;
+    url?: string;
+  };
+}) {
+  return {
+    '@type': 'Event',
+    name: event.name,
+    description: event.description,
+    startDate: event.startDate,
+    ...(event.endDate ? { endDate: event.endDate } : {}),
+    ...(event.location ? { location: { '@type': 'Place', name: event.location } } : {}),
+    eventStatus: event.eventStatus || 'EventScheduled',
+    eventAttendanceMode: event.eventAttendanceMode || 'OnlineEventAttendanceMode',
+    ...(event.url ? { url: event.url.startsWith('http') ? event.url : `${BASE_URL}${event.url}` } : {}),
+    ...(event.image ? { image: event.image.startsWith('http') ? event.image : `${BASE_URL}${event.image}` } : {}),
+    organizer: event.organizer
+      ? { '@type': 'Organization', name: event.organizer.name, ...(event.organizer.url ? { url: event.organizer.url } : {}) }
+      : { '@id': `${BASE_URL}/#organization` },
+  };
+}
+
+// ────────────────────────────────────────────────────────────────────────────
+// ItemList (article listing / search result pages)
+// ────────────────────────────────────────────────────────────────────────────
+export function generateItemListSchema(items: Array<{ name: string; url: string; position: number }>, listName?: string) {
+  return {
+    '@type': 'ItemList',
+    name: listName || 'Articles',
+    itemListElement: items.map(item => ({
+      '@type': 'ListItem',
+      position: item.position,
+      url: item.url.startsWith('http') ? item.url : `${BASE_URL}${item.url}`,
+      name: item.name,
+    })),
+  };
+}
+
+// ────────────────────────────────────────────────────────────────────────────
 // generateAllSchemas — orchestrator
 // Returns an array of schema objects (no @context) suitable for a @graph.
 // ────────────────────────────────────────────────────────────────────────────
@@ -434,6 +485,32 @@ export function generateAllSchemas(options: {
     url: string;
     itemCount?: number;
   };
+  videos?: Array<{
+    name: string;
+    description: string;
+    thumbnailUrl: string;
+    contentUrl: string;
+    embedUrl?: string;
+    duration?: string;
+    uploadDate: string;
+  }>;
+  events?: Array<{
+    name: string;
+    description: string;
+    startDate: string;
+    endDate?: string;
+    location?: string;
+    eventStatus?: 'EventScheduled' | 'EventCancelled' | 'EventPostponed' | 'EventRescheduled';
+    eventAttendanceMode?: 'OfflineEventAttendanceMode' | 'OnlineEventAttendanceMode' | 'MixedEventAttendanceMode';
+    url?: string;
+    image?: string;
+    organizer?: { name: string; url?: string };
+  }>;
+  itemList?: {
+    name?: string;
+    items: Array<{ name: string; url: string; position: number }>;
+  };
+  review?: Parameters<typeof generateReviewSchema>[0];
 }) {
   const schemas: object[] = [];
 
@@ -470,6 +547,26 @@ export function generateAllSchemas(options: {
   // SoftwareApplication (tool page)
   if (options.software) {
     schemas.push(generateSoftwareSchema(options.software));
+  }
+
+  // VideoObject
+  if (options.videos?.length) {
+    options.videos.forEach(video => schemas.push(generateVideoSchema(video)));
+  }
+
+  // Event
+  if (options.events?.length) {
+    options.events.forEach(event => schemas.push(generateEventSchema(event)));
+  }
+
+  // ItemList
+  if (options.itemList?.items?.length) {
+    schemas.push(generateItemListSchema(options.itemList.items, options.itemList.name));
+  }
+
+  // Review
+  if (options.review) {
+    schemas.push(generateReviewSchema(options.review));
   }
 
   return schemas;
