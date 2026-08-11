@@ -56,7 +56,10 @@ coverage
 # Reduces the Docker build context (was ~118 MB) to avoid disk/memory pressure
 # in the build container, which was getting OOM-killed during npm ci (exit 255).
 data/
+# Include convex/_generated for Vite build (src imports ../../convex/_generated/api)
+# while excluding the rest of convex/ to keep build context small.
 convex/
+!convex/_generated/
 chrome-extension/
 tests/
 docs/
