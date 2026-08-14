@@ -66,6 +66,8 @@ docs/
 seo/
 playwright-report/
 cross-niche/
+cross-niche-intelligence-main/
+cleanup-repo-bloat.md
 *.docx
 *.pdf
 content_*.csv
@@ -78,4 +80,3 @@ assets/unsplash.jpg
 assets/circuit.jpg
 public/assets/unsplash.jpg
 public/assets/circuit.jpg
-

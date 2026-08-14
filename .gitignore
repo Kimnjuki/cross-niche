@@ -31,3 +31,29 @@ prerender-routes.json
 
 # Claude AI worktrees and local config
 .claude/
+
+# Nested project copies (bloat — never commit these)
+cross-niche/
+cross-niche-intelligence-main/
+
+# Test / build artifacts
+playwright-report/
+test-results/
+coverage/
+.nyc_output
+
+# Scratch / one-off files
+complete-homepage-component.tsx
+convex-admin-mutations.ts
+convex-content-queries.ts
+diagnostic-script.sh
+install.cmd
+
+# Data dumps & docs not needed in repo
+*.docx
+*.pdf
+content_*_rows.csv
+view_*.csv
+*_rows.csv
+internal_all.csv
+bun.lockb
