@@ -43,6 +43,11 @@ COPY . .
 # bundle, which would cause Convex queries to hang on article pages.
 RUN VITE_CONVEX_URL= npm run build:frontend
 
+# Generate SEO sitemaps (only valid, indexable URLs) and static article HTML
+# files so Googlebot can crawl article content without executing JavaScript.
+# This fixes "Discovered/Crawled - currently not indexed" and "Server error (5xx)".
+RUN node scripts/generate-seo-sitemaps.mjs && node scripts/generate-static-articles.mjs
+
 # Stage 2: Production (Serve with Nginx)
 FROM nginx:stable-alpine AS production-stage
 # Build cache buster 2026-05-13-2

@@ -6,7 +6,7 @@
   "scripts": {
     "copy-assets": "node -e \"const fs=require('fs');if(fs.existsSync('assets')){fs.cpSync('assets','public/assets',{recursive:true});console.log('Assets copied to public/assets');}\"",
     "predev": "npm run copy-assets",
-    "prebuild": "npm run copy-assets && node scripts/generate-prerender-routes.mjs",
+    "prebuild": "npm run copy-assets && node scripts/generate-prerender-routes.mjs && node scripts/generate-seo-sitemaps.mjs",
     "dev": "convex dev & vite",
     "build": "convex deploy && tsc && vite build",
     "build:frontend": "tsc && vite build",
@@ -18,11 +18,12 @@
     "expand:roadmap-bodies": "tsx scripts/expand-roadmap-bodies.ts",
     "generate:feed": "node scripts/generate-feed.mjs",
     "generate:placeholders": "node scripts/generate-placeholders.mjs",
+    "generate:sitemaps": "node scripts/generate-seo-sitemaps.mjs",
     "validate:seo": "node scripts/validate-site.mjs",
     "validate:all": "npm run validate:seo && npm run lint && npx tsc --noEmit",
     "audit:seo": "node scripts/audit-seo.mjs",
     "generate:og": "powershell -ExecutionPolicy Bypass -File scripts/generate-og.ps1",
-    "prebuild:seo": "npm run generate:feed && npm run generate:placeholders"
+    "prebuild:seo": "npm run generate:feed && npm run generate:placeholders && npm run generate:sitemaps"
   },
   "dependencies": {
     "@auth0/auth0-react": "^2.15.0",
