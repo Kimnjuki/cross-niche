@@ -78,7 +78,7 @@ export function ProductReviewsSection({ articles }: ProductReviewsSectionProps) 
                     <p className="font-semibold">{review.product}</p>
                   </div>
                   <Button variant="ghost" size="sm" asChild>
-                    <Link to={`/blog-series?q=${encodeURIComponent(review.product)}`}>
+                    <Link to={`/blog?q=${encodeURIComponent(review.product)}`}>
                       Read Review
                       <ArrowRight className="h-3 w-3 ml-1" />
                     </Link>

@@ -329,7 +329,7 @@ const Roadmap = () => {
               <span className="text-muted-foreground">•</span>
               <Link to="/contact" className="text-primary hover:underline">Contact</Link>
               <span className="text-muted-foreground">•</span>
-              <Link to="/blog-series" className="text-primary hover:underline">Latest Articles</Link>
+              <Link to="/blog" className="text-primary hover:underline">Latest Articles</Link>
             </div>
           </div>
 

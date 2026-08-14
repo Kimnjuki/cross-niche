@@ -17,6 +17,9 @@ Disallow: /signup
 Disallow: /settings
 Disallow: /billing
 Disallow: /subscription/management
+Disallow: /subscription/
+Disallow: /original-index
+Disallow: /tools-old
 
 # Dev / test pages (not for indexing)
 Disallow: /simple
@@ -29,14 +32,25 @@ Disallow: /newsletter/verify
 Disallow: /search
 Disallow: /search/
 
+# Articles archive util pages
+Disallow: /article-detail
+Disallow: /article/*/edit
+
 # WordPress scanner bait (not applicable; block probes)
 Disallow: /wp-admin/
 Disallow: /wp-includes/
 
 # Alias routes handled by nginx 301 (avoid duplicate crawling)
+Disallow: /blog-series
+Disallow: /articles
+Disallow: /live
+Disallow: /ai
+Disallow: /security-tools
 Disallow: /nexus/nexusguard
 Disallow: /nexus/nexuspath
 Disallow: /nexus/nexuspulse
+Disallow: /cybersecurity
+Disallow: /tools-old
 
 # ── Google ───────────────────────────────────────────────────────────────
 User-agent: Googlebot
@@ -97,5 +111,3 @@ Allow: /
 
 # ── Sitemaps ─────────────────────────────────────────────────────────────
 Sitemap: https://thegridnexus.com/sitemap-index.xml
-Sitemap: https://thegridnexus.com/sitemap.xml
-Sitemap: https://thegridnexus.com/sitemap-news.xml

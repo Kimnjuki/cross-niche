@@ -123,15 +123,15 @@ export function SEOHead({
   function buildCanonical(href: string): string {
     try {
       const parsed = new URL(href.split('?')[0].split('#')[0]);
-      const origin =
-        typeof import.meta !== 'undefined' && import.meta.env?.PROD
-          ? BASE_URL
-          : parsed.origin;
+      // Always use production origin for canonical to avoid www/http variants
+      const origin = BASE_URL;
       let path = parsed.pathname;
       // Normalise trailing slash: keep only for root '/', strip everywhere else
       if (path !== '/' && path.endsWith('/')) {
         path = path.slice(0, -1);
       }
+      // Lowercase path for consistency (avoids duplicate-page variants)
+      path = path.toLowerCase();
       return `${origin}${path}`;
     } catch {
       return href.split('?')[0].split('#')[0];
@@ -231,21 +231,21 @@ export function SEOHead({
     }
     canonicalLink.href = canonical;
 
-    // ── hreflang (fixes "Missing hreflang" warning) ────────────────────
-    const hreflangPairs: [string, string][] = [
-      ['en',       canonical],
-      ['en-US',    canonical],
-      ['x-default', canonical],
+    // ── hreflang (self-referencing + x-default) ────────────────────────
+    // Remove any stale alternate links first to avoid duplicates
+    document.querySelectorAll('link[rel="alternate"][hreflang]').forEach(el => el.remove());
+
+    const hreflangPairs: Array<{ lang: string; href: string }> = [
+      { lang: 'en',        href: canonical },
+      { lang: 'en-US',     href: canonical },
+      { lang: 'x-default', href: canonical },
     ];
-    hreflangPairs.forEach(([lang, href]) => {
-      let el = document.querySelector(`link[rel="alternate"][hreflang="${lang}"]`) as HTMLLinkElement | null;
-      if (!el) {
-        el = document.createElement('link');
-        el.rel = 'alternate';
-        el.setAttribute('hreflang', lang);
-        document.head.appendChild(el);
-      }
+    hreflangPairs.forEach(({ lang, href }) => {
+      const el = document.createElement('link');
+      el.rel = 'alternate';
+      el.setAttribute('hreflang', lang);
       el.href = href;
+      document.head.appendChild(el);
     });
 
     // ── Structured Data: single consolidated @graph ────────────────────

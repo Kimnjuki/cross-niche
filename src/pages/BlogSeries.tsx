@@ -28,7 +28,7 @@ export default function BlogSeries() {
   const hero = articles[0];
   const heroAi = aiUpdates[0];
 
-  const meta = getPageMetadata('/blog-series');
+  const meta = getPageMetadata('/blog');
   return (
     <Layout>
       <SEOHead
@@ -84,7 +84,7 @@ export default function BlogSeries() {
                   <img src={article.imageUrl} alt={article.title} className="h-44 w-full object-cover" />
                   <div className="p-4">
                     <div className="mb-2 flex items-center justify-between">
-                      <Badge variant="outline" className="border-white/15 text-zinc-300">
+                      <Badge variant="topic" className="border-white/15 text-zinc-300">
                         Nexus Intelligence
                       </Badge>
                       <span className="font-mono text-xs text-zinc-500">{article.niche}</span>
@@ -121,7 +121,7 @@ export default function BlogSeries() {
               <div key={item.id} className="mb-4 break-inside-avoid">
                 <ContentCard className="p-4">
                   <div className="mb-2 flex items-center justify-between">
-                    <Badge variant="outline" className="border-[#7000FF]/40 text-[#bca3ff]">Benchmarks</Badge>
+                    <Badge variant="topic" className="border-[#7000FF]/40 text-[#bca3ff]">Benchmarks</Badge>
                     <span className="font-mono text-xs text-zinc-500">AI Update</span>
                   </div>
                   <h4 className="font-display text-base font-semibold">{item.title}</h4>

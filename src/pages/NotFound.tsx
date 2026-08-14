@@ -137,7 +137,7 @@ const NotFound = () => {
               </Link>
             </div>
             <div className="mt-6 flex flex-wrap justify-center gap-4 text-sm">
-              <Link to="/blog-series" className="text-primary hover:underline">All Articles</Link>
+              <Link to="/blog" className="text-primary hover:underline">All Articles</Link>
               <span className="text-muted-foreground">•</span>
               <Link to="/guides" className="text-primary hover:underline">Security Guides</Link>
               <span className="text-muted-foreground">•</span>

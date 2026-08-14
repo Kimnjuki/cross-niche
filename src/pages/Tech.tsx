@@ -58,7 +58,7 @@ export default function Tech() {
             <span className="text-muted-foreground">•</span>
             <Link to="/guides" className="text-primary hover:underline">Tech Guides</Link>
             <span className="text-muted-foreground">•</span>
-            <Link to="/blog-series" className="text-primary hover:underline">All Articles</Link>
+            <Link to="/blog" className="text-primary hover:underline">All Articles</Link>
           </div>
         </div>
 

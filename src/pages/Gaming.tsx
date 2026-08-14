@@ -71,7 +71,7 @@ export default function Gaming() {
             <span className="text-muted-foreground">•</span>
             <Link to="/gaming/security-guides" className="text-primary hover:underline font-medium">Security Guides</Link>
             <span className="text-muted-foreground">•</span>
-            <Link to="/blog-series" className="text-primary hover:underline">All Articles</Link>
+            <Link to="/blog" className="text-primary hover:underline">All Articles</Link>
           </div>
         </div>
 

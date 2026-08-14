@@ -53,7 +53,7 @@ export function TrendingTopicsWidget() {
                 {topic.keyword}
               </span>
               {topic.volume && (
-                <Badge variant="secondary" className="text-xs ml-1">
+                <Badge variant="topic" className="text-xs ml-1">
                   {topic.volume}
                 </Badge>
               )}
@@ -62,7 +62,7 @@ export function TrendingTopicsWidget() {
         </div>
         <div className="mt-4 pt-4 border-t border-border">
           <Link
-            to="/blog-series"
+            to="/blog"
             className="text-sm text-primary hover:underline font-medium"
           >
             Explore all topics →

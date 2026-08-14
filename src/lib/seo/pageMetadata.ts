@@ -119,6 +119,75 @@ export const PAGE_METADATA: Record<string, PageMeta> = {
     description: 'Where technology, cybersecurity, and gaming intersect. Cross-vertical trend analysis and strategic intelligence from The Grid Nexus.',
     h1: 'Nexus Intersection',
   },
+  '/tools': {
+    title: 'Security Tools Suite | The Grid Nexus',                // 43 chars
+    description: 'Free security tools for gamers and IT pros: threat scanners, breach simulators, AI PC builder, gaming copilot. Run security audits in your browser.',
+    h1: 'Security Tools & Utilities',
+  },
+  '/live-updates': {
+    title: 'Live Tech & Security Updates | The Grid Nexus',        // 49 chars
+    description: 'Real-time breaking news feed covering the latest technology releases, cybersecurity incidents, and gaming industry developments as they unfold.',
+    h1: 'Live Updates Feed',
+  },
+  '/community-threats': {
+    title: 'Community Threat Reports | The Grid Nexus',            // 46 chars
+    description: 'Community-submitted threat reports and security incidents across gaming, technology, and cybersecurity. Share and discuss threats with other professionals.',
+    h1: 'Community Threat Reports',
+  },
+  '/security-profile': {
+    title: 'Security Profile Dashboard | The Grid Nexus',          // 48 chars
+    description: 'Your personal cybersecurity profile and risk assessment dashboard. Track account security scores, breach exposure, and recommended security actions.',
+    h1: 'Security Profile Dashboard',
+  },
+
+  // ── AI Modules & Learning ────────────────────────────────────────────
+  '/pulse/nexus-pulse': {
+    title: 'Nexus Pulse – Real-Time AI Insights | The Grid Nexus', // 53 chars
+    description: 'Nexus Pulse delivers real-time AI insights, model performance tracking, and automated analysis across technology, security, and gaming verticals.',
+    h1: 'Nexus Pulse Dashboard',
+  },
+  '/learn/nexus-path': {
+    title: 'Nexus Path – Security Learning Platform | The Grid Nexus', // 55 chars
+    description: 'Learn cybersecurity and gaming security through interactive Nexus Path courses. Earn certifications and build skills with hands-on labs.',
+    h1: 'Nexus Learning Path',
+  },
+  '/nexus-studio': {
+    title: 'Nexus Studio – AI Content Creation | The Grid Nexus',   // 52 chars
+    description: 'Nexus Studio: AI-powered content creation for tech, security, and gaming. Generate articles, visuals, and intelligence reports with AI assistance.',
+    h1: 'Nexus Studio',
+  },
+  '/gaming/security-guides': {
+    title: 'Gaming Security Guides & Tutorials | The Grid Nexus',   // 51 chars
+    description: 'Comprehensive security guides for gamers: account protection, anti-cheat, network security, and privacy best practices for PC, console, and mobile.',
+    h1: 'Gaming Security Guides',
+  },
+
+  // ── Community & platform ─────────────────────────────────────────────
+  '/forums': {
+    title: 'Community Forums | The Grid Nexus',                    // 39 chars
+    description: 'Join discussions on technology, cybersecurity, and gaming. Share knowledge, ask questions, and connect with security professionals and gamers.',
+    h1: 'Community Forums',
+  },
+  '/community-guidelines': {
+    title: 'Community Guidelines | The Grid Nexus',                // 39 chars
+    description: 'Read The Grid Nexus community guidelines. Learn about respectful discussion, content standards, reporting violations, and account policies.',
+    h1: 'Community Guidelines',
+  },
+  '/api': {
+    title: 'API Documentation | The Grid Nexus',                  // 40 chars
+    description: 'The Grid Nexus API documentation. Access security data, threat intelligence, gaming stats, and AI insights programmatically via REST endpoints.',
+    h1: 'API Documentation',
+  },
+  '/mobile': {
+    title: 'Mobile App | The Grid Nexus',                         // 35 chars
+    description: 'Download The Grid Nexus mobile app for iOS and Android. Get real-time security alerts, tech news, and gaming intelligence on the go.',
+    h1: 'Mobile App',
+  },
+  '/podcasts': {
+    title: 'Podcasts | The Grid Nexus',                           // 33 chars
+    description: 'The Grid Nexus podcast network. Listen to expert discussions on cybersecurity, gaming, AI, and technology trends with industry leaders.',
+    h1: 'Podcast Network',
+  },
 
   // ── Company / legal ───────────────────────────────────────────────────
   '/about': {

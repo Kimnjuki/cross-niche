@@ -3,22 +3,17 @@
 
   <sitemap>
     <loc>https://thegridnexus.com/sitemap.xml</loc>
-    <lastmod>2026-08-10</lastmod>
+    <lastmod>2026-08-11</lastmod>
   </sitemap>
 
   <sitemap>
     <loc>https://thegridnexus.com/sitemap-articles.xml</loc>
-    <lastmod>2026-08-10</lastmod>
+    <lastmod>2026-08-11</lastmod>
   </sitemap>
 
   <sitemap>
     <loc>https://thegridnexus.com/sitemap-news.xml</loc>
-    <lastmod>2026-08-10</lastmod>
-  </sitemap>
-
-  <sitemap>
-    <loc>https://thegridnexus.com/feed.xml</loc>
-    <lastmod>2026-08-10</lastmod>
+    <lastmod>2026-08-11</lastmod>
   </sitemap>
 
 </sitemapindex>

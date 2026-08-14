@@ -45,7 +45,7 @@ export function LatestUpdatesSection({
             Latest Updates
           </h2>
           <Link
-            to="/blog-series"
+            to="/blog"
             className="text-primary hover:underline text-sm font-medium shrink-0"
             aria-label="View all articles"
           >
@@ -63,7 +63,7 @@ export function LatestUpdatesSection({
           </TabsList>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
-            {filtered.map((article) => (
+            {filtered.map((article, index) => (
               <ArticleCard key={(article as Article & { _id?: string })?._id ?? article?.id ?? article?.slug ?? index} article={article} />
             ))}
           </div>

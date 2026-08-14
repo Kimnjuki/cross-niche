@@ -25,7 +25,7 @@ export function BreakingNewsSection({ articles, maxItems = 5 }: BreakingNewsSect
             <AlertCircle className="h-5 w-5 text-white" />
           </div>
           <h2 className="font-display font-bold text-2xl text-destructive">Breaking News</h2>
-          <Badge variant="destructive" className="animate-pulse">LIVE</Badge>
+          <Badge variant="breaking" className="animate-pulse">LIVE</Badge>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -64,7 +64,7 @@ export function BreakingNewsSection({ articles, maxItems = 5 }: BreakingNewsSect
 
         <div className="mt-6 text-center">
           <Link
-            to="/blog-series?filter=latest"
+            to="/blog?filter=latest"
             className="text-sm text-primary hover:underline font-medium"
           >
             View all latest tech news →

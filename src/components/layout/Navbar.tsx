@@ -334,7 +334,7 @@ export function Navbar() {
                     <button type="button" onClick={() => { logout(); setIsOpen(false); }} className="min-h-[44px] flex items-center px-3 rounded-md text-left text-destructive text-base">Logout</button>
                   </>
                 ) : (
-                  <Link to="/auth" onClick={() => setIsOpen(false)} className="min-h-[44px] flex items-center mt-2">
+                  <Link to="/signin" onClick={() => setIsOpen(false)} className="min-h-[44px] flex items-center mt-2">
                     <Button className="w-full min-h-[44px] text-base">Sign In</Button>
                   </Link>
                 )}

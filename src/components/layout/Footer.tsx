@@ -54,7 +54,7 @@ export function Footer() {
               <Link to="/guides" className="text-muted-foreground hover:text-foreground transition-colors">
                 Guides & Playbooks
               </Link>
-              <Link to="/blog-series" className="text-muted-foreground hover:text-foreground transition-colors">
+              <Link to="/blog" className="text-muted-foreground hover:text-foreground transition-colors">
                 Blog Series
               </Link>
               <Link to="/topics" className="text-muted-foreground hover:text-foreground transition-colors">
@@ -95,6 +95,24 @@ export function Footer() {
               </Link>
               <Link to="/media" className="text-muted-foreground hover:text-foreground transition-colors">
                 Media & Podcast
+              </Link>
+              <Link to="/tools/security-scanner" className="text-muted-foreground hover:text-foreground transition-colors">
+                Security Scanner
+              </Link>
+              <Link to="/tools/gaming-copilot" className="text-muted-foreground hover:text-foreground transition-colors">
+                Gaming Copilot
+              </Link>
+              <Link to="/tools/threat-scanner" className="text-muted-foreground hover:text-foreground transition-colors">
+                Threat Scanner
+              </Link>
+              <Link to="/tools/ioc-lookup" className="text-muted-foreground hover:text-foreground transition-colors">
+                IOC Lookup
+              </Link>
+              <Link to="/tools/pc-builder" className="text-muted-foreground hover:text-foreground transition-colors">
+                AI PC Builder
+              </Link>
+              <Link to="/tools/patch-risk-tracker" className="text-muted-foreground hover:text-foreground transition-colors">
+                Patch Risk Tracker
               </Link>
               <Link to="/sitemap" className="text-muted-foreground hover:text-foreground transition-colors">
                 HTML Sitemap

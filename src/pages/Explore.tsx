@@ -69,7 +69,7 @@ export default function Explore() {
             <span className="text-muted-foreground">·</span>
             <Link to="/gaming" className="text-primary hover:underline">Gaming Security</Link>
             <span className="text-muted-foreground">·</span>
-            <Link to="/blog-series" className="text-primary hover:underline flex items-center gap-1">
+            <Link to="/blog" className="text-primary hover:underline flex items-center gap-1">
               Blog series <ChevronRight className="h-4 w-4" />
             </Link>
           </div>
