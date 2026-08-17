@@ -1,6 +1,5 @@
 import React, { useState, useCallback, useRef } from 'react';
 import { Layout } from '@/components/layout/Layout';
-import { SEO } from '@/components/SEO';
 import { Link } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -257,8 +256,8 @@ export default function SteamScanner() {
       <SEO
         title="Steam Security Scanner | The Grid Nexus"
         description="Scan your Steam account for signs of compromise. Check login locations, API key leaks, unauthorized trade offers, and friend request anomalies in under 2 minutes."
-        canonical="https://thegridnexus.com/tools/steam-scanner"
-        ogType="website"
+        slug="/tools/steam-scanner"
+        appCategory="SecurityApplication"
       />
       <div className="container mx-auto px-4 py-12 max-w-3xl">
         {/* Breadcrumb */}
@@ -575,3 +574,4 @@ export default function SteamScanner() {
     </Layout>
   );
 }
+

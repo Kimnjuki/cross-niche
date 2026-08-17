@@ -140,6 +140,7 @@ const NexusSecurityProfilePage = lazy(() => import("./pages/NexusSecurityProfile
 const CommunityThreats = lazy(() => import("./pages/CommunityThreats"));
 const NexusStudio = lazy(() => import("./pages/NexusStudio"));
 const GamingSecurityGuides = lazy(() => import("./pages/GamingSecurityGuides"));
+const GamingSecurityHub = lazy(() => import("./pages/GamingSecurityHub"));
 
 // SEO Tools
 const SEOChecklist = lazy(() => import("./pages/SEOChecklist"));
@@ -172,6 +173,7 @@ const App = () => (
                     <Route path="/cybersecurity" element={<Navigate to="/security" replace />} />
                     <Route path="/gaming" element={<Gaming />} />
                     <Route path="/gaming/security-guides" element={<GamingSecurityGuides />} />
+                    <Route path="/gaming/security" element={<GamingSecurityHub />} />
                     <Route path="/gaming/:slug" element={<ArticlePage />} />
                     <Route path="/article/:slug" element={<ArticlePage />} />
                     <Route path="/news" element={<News />} />

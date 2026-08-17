@@ -15,22 +15,23 @@ import {
 import { cn } from '@/lib/utils';
 import { LiveTicker } from '@/components/layout/LiveTicker';
 
+/** Primary navigation — user intent, gaming-security first. */
 const navLinks = [
-  { href: '/security', label: 'Threat Intel', color: 'text-security' },
-  { href: '/gaming', label: 'Game Security', color: 'text-gaming' },
-  { href: '/tech', label: 'Tech', color: 'text-tech' },
+  { href: '/gaming/security', label: 'Gaming Security', color: 'text-security' },
+  { href: '/gaming', label: 'Account Protection', color: 'text-gaming' },
+  { href: '/tech', label: 'Scams & Threats', color: 'text-tech' },
   { href: '/tools', label: 'Security Suite', color: 'text-security' },
-  { href: '/security-profile', label: 'My Profile', color: 'text-[#00F0FF]' },
-  { href: '/community-threats', label: 'Community', color: 'text-[#FF007A]' },
+  { href: '/tools/steam-scanner', label: 'Steam Scanner', color: 'text-[#00F0FF]' },
+  { href: '/tools/gaming-security-checkup', label: 'Security Checkup', color: 'text-[#FF007A]' },
   { href: '/guides', label: 'Guides', color: 'text-foreground' },
-  { href: '/topics', label: 'Topics', color: 'text-foreground' },
+  { href: '/topics', label: 'Latest', color: 'text-foreground' },
 ];
 
 /** Primary CTAs for mobile: Security-first to reinforce gaming security positioning. */
 const mobilePrimaryLinks = [
-  { href: '/security', label: 'Threat Intel', color: 'text-security' },
-  { href: '/gaming', label: 'Game Security', color: 'text-gaming' },
-  { href: '/tech', label: 'Tech', color: 'text-tech' },
+  { href: '/gaming/security', label: 'Gaming Security', color: 'text-security' },
+  { href: '/tools/steam-scanner', label: 'Steam Scanner', color: 'text-[#00F0FF]' },
+  { href: '/tools/gaming-security-checkup', label: 'Security Checkup', color: 'text-[#FF007A]' },
 ];
 
 const roleFilters = [
