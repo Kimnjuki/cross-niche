@@ -26,9 +26,10 @@
     "clean:placeholder": "tsx scripts/clean-placeholder-content.ts",
     "convex:clean-placeholder": "npx convex run admin:cleanPlaceholderContent",
     "phase0:seo": "node scripts/run-phase0-seo-hygiene.mjs",
-    "seo:rewrite-p1": "npx tsx scripts/apply-p1-seo-rewrites.ts",
+    "seo:rewrite-p1": "tsx scripts/apply-p1-seo-rewrites.ts",
     "generate:og": "powershell -ExecutionPolicy Bypass -File scripts/generate-og.ps1",
-    "prebuild:seo": "npm run generate:feed && npm run generate:placeholders && npm run generate:sitemaps"
+    "prebuild:seo": "npm run generate:feed && npm run generate:placeholders && npm run generate:sitemaps",
+    "seo:hub": "node scripts/apply-gaming-hub.mjs"
   },
   "dependencies": {
     "@auth0/auth0-react": "^2.15.0",
