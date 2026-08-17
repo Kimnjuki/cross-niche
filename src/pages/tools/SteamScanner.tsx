@@ -167,11 +167,11 @@ const CATEGORY_COLORS: Record<CheckItem['category'], string> = {
 
 // ── Score band helpers ───────────────────────────────────────────────────────
 
-function getBand(pct: number): { label: string; color: string; bg: string; desc: string } {
-  if (pct >= 85) return { label: 'Excellent', color: 'text-green-600 dark:text-green-400', bg: 'bg-green-500', desc: 'Your Steam account is well-secured. Review weak areas to reach 100%.' };
-  if (pct >= 65) return { label: 'Good', color: 'text-gaming', bg: 'bg-gaming', desc: 'Solid foundation, but a few gaps could put your account at risk.' };
-  if (pct >= 40) return { label: 'Fair', color: 'text-yellow-600 dark:text-yellow-400', bg: 'bg-yellow-500', desc: 'Several security gaps. Attackers can exploit these — fix them today.' };
-  return { label: 'At Risk', color: 'text-destructive', bg: 'bg-destructive', desc: 'High risk of account takeover. Address critical items immediately.' };
+function getBand(pct: number): { key: 'excellent' | 'good' | 'fair' | 'needs_work'; label: string; color: string; bg: string; desc: string } {
+  if (pct >= 85) return { key: 'excellent', label: 'Excellent', color: 'text-green-600 dark:text-green-400', bg: 'bg-green-500', desc: 'Your Steam account is well-secured. Review weak areas to reach 100%.' };
+  if (pct >= 65) return { key: 'good', label: 'Good', color: 'text-gaming', bg: 'bg-gaming', desc: 'Solid foundation, but a few gaps could put your account at risk.' };
+  if (pct >= 40) return { key: 'fair', label: 'Fair', color: 'text-yellow-600 dark:text-yellow-400', bg: 'bg-yellow-500', desc: 'Several security gaps. Attackers can exploit these - fix them today.' };
+  return { key: 'needs_work', label: 'At Risk', color: 'text-destructive', bg: 'bg-destructive', desc: 'High risk of account takeover. Address critical items immediately.' };
 }
 
 // ── Component ────────────────────────────────────────────────────────────────
@@ -235,7 +235,7 @@ export default function SteamScanner() {
       totalScore: score,
       maxScore: MAX_SCORE,
       percentScore: pct,
-      band: band.label,
+      band: band.key,
       weakAreaCount: failedItems.length,
     }).catch(() => {});
   }, [isDisabled, answers, score, pct, band.label, failedItems.length, saveScore, user?.id]);
@@ -253,7 +253,7 @@ export default function SteamScanner() {
 
   return (
     <Layout>
-      <SEO
+      <ToolPageSEO
         title="Steam Security Scanner | The Grid Nexus"
         description="Scan your Steam account for signs of compromise. Check login locations, API key leaks, unauthorized trade offers, and friend request anomalies in under 2 minutes."
         slug="/tools/steam-scanner"

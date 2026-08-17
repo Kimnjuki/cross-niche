@@ -3,7 +3,6 @@
  * Drop this into any tool page instead of raw `<SEO />`.
  */
 import { SEO } from '@/components/SEO';
-import { type SoftwareInput } from '@/lib/schemaMarkup';
 import { TOOL_PAGES } from '@/lib/sitemapGenerator';
 import { Link } from 'react-router-dom';
 import { Badge } from '@/components/ui/badge';
@@ -24,19 +23,6 @@ export interface ToolPageMeta {
  * Pass canonical url manually or uses window.location.href.
  */
 export function ToolPageSEO(meta: ToolPageMeta) {
-  const software: SoftwareInput = {
-    name: meta.title.replace(/\s*[—|] The Grid Nexus$/, '').trim(),
-    description: meta.description,
-    applicationCategory: meta.appCategory,
-    operatingSystem: 'Web',
-    url: meta.slug.startsWith('http')
-      ? meta.slug
-      : `https://thegridnexus.com${meta.slug}`,
-    offers: meta.offerPrice
-      ? { price: meta.offerPrice, priceCurrency: 'USD' }
-      : { price: '0', priceCurrency: 'USD' },
-  };
-
   return (
     <SEO
       title={meta.title}
