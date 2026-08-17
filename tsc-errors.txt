@@ -1,0 +1,682 @@
+convex/cleanAndSeedArticles.ts(6,1): error TS6133: 'v' is declared but its value is never read.
+convex/cleanAndSeedArticles.ts(130,29): error TS2345: Argument of type 'Id<"content">' is not assignable to parameter of type 'never'.
+convex/import.ts(102,16): error TS2345: Argument of type 'Id<"niches">' is not assignable to parameter of type 'never'.
+convex/import.ts(117,16): error TS2345: Argument of type 'Id<"tags">' is not assignable to parameter of type 'never'.
+convex/import.ts(151,16): error TS2345: Argument of type 'Id<"users">' is not assignable to parameter of type 'never'.
+convex/import.ts(184,16): error TS2345: Argument of type 'Id<"content">' is not assignable to parameter of type 'never'.
+convex/liveWire.ts(3,1): error TS6133: 'v' is declared but its value is never read.
+convex/migrations/001_add_default_values.ts(12,1): error TS6133: 'v' is declared but its value is never read.
+convex/newsIngestor.ts(39,7): error TS6133: 'CATEGORY_MAP' is declared but its value is never read.
+convex/newsIngestor.ts(90,13): error TS6133: 'sourceName' is declared but its value is never read.
+convex/nexusAI.ts(694,19): error TS6133: 'ctx' is declared but its value is never read.
+convex/nexusAI.ts(720,59): error TS6133: 'r' is declared but its value is never read.
+src/AppMinimal.tsx(1,1): error TS6133: 'React' is declared but its value is never read.
+src/AppMinimal.tsx(6,36): error TS2307: Cannot find module '@/components/providers/SafeConvexProvider' or its corresponding type declarations.
+src/components/admin/ContentEditor.tsx(19,21): error TS6133: 'setIsLoading' is declared but its value is never read.
+src/components/ads/AdScriptInitializer.tsx(1,1): error TS6133: 'useEffect' is declared but its value is never read.
+src/components/ai/AICompetitiveAnalysis.tsx(10,1): error TS6133: 'cn' is declared but its value is never read.
+src/components/ai/AIFuturePredictions.tsx(9,39): error TS6133: 'AlertTriangle' is declared but its value is never read.
+src/components/ai/AIPulseEngine.tsx(43,10): error TS6133: 'userPreferences' is declared but its value is never read.
+src/components/ai/AIPulseEngine.tsx(43,27): error TS6133: 'setUserPreferences' is declared but its value is never read.
+src/components/ai/AISummary.tsx(1,8): error TS6133: 'React' is declared but its value is never read.
+src/components/ai/AITools.tsx(5,1): error TS6133: 'Textarea' is declared but its value is never read.
+src/components/ai/AITools.tsx(19,3): error TS6133: 'Clock' is declared but its value is never read.
+src/components/ai/AIVisualizations.tsx(9,60): error TS6133: 'LineChart' is declared but its value is never read.
+src/components/ai/AIVisualizations.tsx(9,71): error TS6133: 'Line' is declared but its value is never read.
+src/components/ai/AIVisualizations.tsx(9,77): error TS6133: 'ResponsiveContainer' is declared but its value is never read.
+src/components/ai/NexusCopilotWidget.tsx(13,1): error TS6133: 'Textarea' is declared but its value is never read.
+src/components/ai/NexusCopilotWidget.tsx(27,21): error TS6133: 'useAction' is declared but its value is never read.
+src/components/ai/NexusCopilotWidget.tsx(172,19): error TS6133: 'i' is declared but its value is never read.
+src/components/analytics/AnalyticsTracker.tsx(6,8): error TS6133: 'React' is declared but its value is never read.
+src/components/analytics/AnalyticsTracker.tsx(90,34): error TS2554: Expected 1 arguments, but got 4.
+src/components/analytics/AnalyticsTracker.tsx(94,34): error TS2554: Expected 1 arguments, but got 4.
+src/components/analytics/AnalyticsTracker.tsx(98,34): error TS2554: Expected 1 arguments, but got 4.
+src/components/analytics/AnalyticsTracker.tsx(102,34): error TS2554: Expected 1 arguments, but got 4.
+src/components/analytics/AnalyticsTracker.tsx(119,32): error TS2554: Expected 1 arguments, but got 3.
+src/components/analytics/AnalyticsTracker.tsx(128,32): error TS2554: Expected 1 arguments, but got 3.
+src/components/analytics/AnalyticsTracker.tsx(137,32): error TS2554: Expected 1 arguments, but got 3.
+src/components/analytics/AnalyticsTracker.tsx(147,32): error TS2554: Expected 1 arguments, but got 3.
+src/components/analytics/AnalyticsTracker.tsx(412,5): error TS2687: All declarations of 'gtag' must have identical modifiers.
+src/components/analytics/AnalyticsTracker.tsx(412,5): error TS2717: Subsequent property declarations must have the same type.  Property 'gtag' must be of type '(...args: any[]) => void', but here has type '((...args: any[]) => void) | undefined'.
+src/components/analytics/LandingPageTracker.tsx(3,38): error TS6133: 'trackScrollDepth' is declared but its value is never read.
+src/components/article/TableOfContents.tsx(1,1): error TS6133: 'React' is declared but its value is never read.
+src/components/articles/ArticleCard.tsx(5,50): error TS6133: 'TrendingUp' is declared but its value is never read.
+src/components/articles/IndustryNarrative.tsx(4,34): error TS6133: 'AvatarImage' is declared but its value is never read.
+src/components/articles/IndustryNarrative.tsx(5,1): error TS6133: 'Separator' is declared but its value is never read.
+src/components/articles/IndustryNarrative.tsx(13,3): error TS6133: 'Users' is declared but its value is never read.
+src/components/articles/LongFormArticle.tsx(3,34): error TS6133: 'AvatarImage' is declared but its value is never read.
+src/components/articles/LongFormArticle.tsx(5,1): error TS6133: 'Separator' is declared but its value is never read.
+src/components/articles/LongFormArticle.tsx(8,3): error TS6133: 'BookOpen' is declared but its value is never read.
+src/components/auth/SignInSignUp.tsx(11,9): error TS6133: 'signOut' is declared but its value is never read.
+src/components/cards/ArticleCard.tsx(1,1): error TS6133: 'React' is declared but its value is never read.
+src/components/cards/ArticleCard.tsx(26,9): error TS6133: 'categoryColors' is declared but its value is never read.
+src/components/cards/TopicCard.tsx(1,1): error TS6133: 'React' is declared but its value is never read.
+src/components/comments/CommentSection.tsx(12,3): error TS6133: 'Heart' is declared but its value is never read.
+src/components/comments/CommentSection.tsx(15,3): error TS6133: 'ThumbsDown' is declared but its value is never read.
+src/components/comments/CommentSection.tsx(85,11): error TS6133: 'ageInHours' is declared but its value is never read.
+src/components/comments/CommentSection.tsx(86,11): error TS6133: 'score' is declared but its value is never read.
+src/components/common/EmptyState.tsx(1,1): error TS6133: 'React' is declared but its value is never read.
+src/components/common/ErrorBoundary.tsx(1,8): error TS6133: 'React' is declared but its value is never read.
+src/components/common/ErrorState.tsx(1,1): error TS6133: 'React' is declared but its value is never read.
+src/components/common/LoadingState.tsx(1,1): error TS6133: 'React' is declared but its value is never read.
+src/components/common/NotFoundState.tsx(1,1): error TS6133: 'React' is declared but its value is never read.
+src/components/community/CommunityThreatHub.tsx(6,29): error TS6133: 'CardHeader' is declared but its value is never read.
+src/components/community/CommunityThreatHub.tsx(6,41): error TS6133: 'CardTitle' is declared but its value is never read.
+src/components/community/CommunityThreatHub.tsx(12,17): error TS6133: 'AlertTriangle' is declared but its value is never read.
+src/components/consent/CookieConsent.tsx(4,79): error TS6133: 'DialogTrigger' is declared but its value is never read.
+src/components/consent/CookieConsent.tsx(9,1): error TS6133: 'cn' is declared but its value is never read.
+src/components/error/DevErrorBoundary.tsx(1,8): error TS6133: 'React' is declared but its value is never read.
+src/components/error/EnhancedErrorBoundary.tsx(1,8): error TS6133: 'React' is declared but its value is never read.
+src/components/games/GameReviewCard.tsx(8,3): error TS6133: 'Star' is declared but its value is never read.
+src/components/games/GameReviewCard.tsx(12,3): error TS6133: 'Award' is declared but its value is never read.
+src/components/games/GameReviewCard.tsx(14,3): error TS6133: 'Users' is declared but its value is never read.
+src/components/games/GameReviewCard.tsx(35,10): error TS6133: 'playingTrailer' is declared but its value is never read.
+src/components/games/GameReviewCard.tsx(39,9): error TS6133: 'scoreBg' is declared but its value is never read.
+src/components/games/GameReviewWithTrailers.tsx(4,1): error TS6133: 'Button' is declared but its value is never read.
+src/components/games/GameReviewWithTrailers.tsx(5,1): error TS6192: All imports in import declaration are unused.
+src/components/games/GameReviewWithTrailers.tsx(11,3): error TS6133: 'ThumbsUp' is declared but its value is never read.
+src/components/games/GameReviewWithTrailers.tsx(12,3): error TS6133: 'ThumbsDown' is declared but its value is never read.
+src/components/games/GameReviewWithTrailers.tsx(13,3): error TS6133: 'Award' is declared but its value is never read.
+src/components/games/GameReviewWithTrailers.tsx(14,3): error TS6133: 'Calendar' is declared but its value is never read.
+src/components/games/GameReviewWithTrailers.tsx(15,3): error TS6133: 'Users' is declared but its value is never read.
+src/components/games/GameReviewWithTrailers.tsx(16,3): error TS6133: 'Gamepad2' is declared but its value is never read.
+src/components/games/GameReviewWithTrailers.tsx(19,3): error TS6133: 'ExternalLink' is declared but its value is never read.
+src/components/games/StrategyGuide.tsx(5,1): error TS6192: All imports in import declaration are unused.
+src/components/games/StrategyGuide.tsx(15,3): error TS6133: 'Bookmark' is declared but its value is never read.
+src/components/gaming/GamingNewsletterSignup.tsx(1,20): error TS6133: 'useEffect' is declared but its value is never read.
+src/components/gaming/GamingNewsletterSignup.tsx(4,20): error TS6133: 'Shield' is declared but its value is never read.
+src/components/gaming/GamingNewsletterSignup.tsx(27,34): error TS2554: Expected 0-1 arguments, but got 2.
+src/components/gaming/NextArticle.tsx(1,19): error TS6133: 'useState' is declared but its value is never read.
+src/components/gaming/NextArticle.tsx(1,29): error TS6133: 'useEffect' is declared but its value is never read.
+src/components/gaming/NextArticle.tsx(3,22): error TS6133: 'ChevronDown' is declared but its value is never read.
+src/components/gaming/NextArticle.tsx(5,1): error TS6133: 'Article' is declared but its value is never read.
+src/components/gaming/NextArticle.tsx(55,19): error TS2551: Property 'readingTime' does not exist on type 'Article'. Did you mean 'readTime'?
+src/components/gaming/NextArticle.tsx(60,19): error TS2339: Property 'views' does not exist on type 'Article'.
+src/components/home/AIMiniStrip.tsx(1,1): error TS6133: 'React' is declared but its value is never read.
+src/components/home/BriefingsGrid.tsx(1,1): error TS6133: 'React' is declared but its value is never read.
+src/components/home/CommandDashboard.tsx(7,27): error TS6133: 'Zap' is declared but its value is never read.
+src/components/home/FeedLayouts.tsx(1,1): error TS6133: 'React' is declared but its value is never read.
+src/components/home/GamingStrip.tsx(1,1): error TS6133: 'React' is declared but its value is never read.
+src/components/home/HeroCommandCenter.tsx(1,1): error TS6133: 'React' is declared but its value is never read.
+src/components/home/HeroSection.tsx(1,8): error TS6133: 'React' is declared but its value is never read.
+src/components/home/HeroSection.tsx(5,1): error TS6133: 'NewsletterForm' is declared but its value is never read.
+src/components/home/NexusGuardWidget.tsx(1,1): error TS6133: 'React' is declared but its value is never read.
+src/components/home/NexusTerminal.tsx(1,8): error TS6133: 'React' is declared but its value is never read.
+src/components/home/NicheSection.tsx(77,111): error TS2304: Cannot find name 'index'.
+src/components/home/PersonalizedFeed.tsx(19,10): error TS6133: 'personalizedFeed' is declared but its value is never read.
+src/components/home/PersonalizedFeed.tsx(133,104): error TS2304: Cannot find name 'index'.
+src/components/home/SecurityAuditWidget.tsx(1,8): error TS6133: 'React' is declared but its value is never read.
+src/components/home/SecurityRankWidget.tsx(1,1): error TS6133: 'React' is declared but its value is never read.
+src/components/home/SpotlightStrip.tsx(1,1): error TS6133: 'React' is declared but its value is never read.
+src/components/home/ThreatIntelWidget.tsx(3,31): error TS6133: 'AlertTriangle' is declared but its value is never read.
+src/components/home/ThreatIntelWidget.tsx(58,35): error TS6133: 'articles' is declared but its value is never read.
+src/components/home/TopStoryHero.tsx(57,38): error TS2304: Cannot find name 'authorSlug'.
+src/components/home/TrendingSection.tsx(38,113): error TS2304: Cannot find name 'index'.
+src/components/layout/LiveTicker.tsx(46,32): error TS2339: Property 'niche' does not exist on type '{}'.
+src/components/layout/LiveTicker.tsx(58,27): error TS2339: Property 'id' does not exist on type '{}'.
+src/components/layout/LiveTicker.tsx(58,38): error TS2339: Property 'slug' does not exist on type '{}'.
+src/components/layout/LiveTicker.tsx(59,38): error TS2339: Property 'slug' does not exist on type '{}'.
+src/components/layout/LiveTicker.tsx(59,51): error TS2339: Property 'id' does not exist on type '{}'.
+src/components/layout/LiveTicker.tsx(76,25): error TS2339: Property 'title' does not exist on type '{}'.
+src/components/layout/SiteHeader.tsx(3,25): error TS6133: 'Bookmark' is declared but its value is never read.
+src/components/layout/SiteHeader.tsx(3,35): error TS6133: 'LogOut' is declared but its value is never read.
+src/components/layout/SiteHeader.tsx(24,17): error TS6133: 'logout' is declared but its value is never read.
+src/components/learning/LearningCopilot.tsx(51,9): error TS6133: 'updateStatus' is declared but its value is never read.
+src/components/live/LiveUpdates.tsx(1,8): error TS6133: 'React' is declared but its value is never read.
+src/components/live/LiveUpdatesFeed.tsx(13,3): error TS6133: 'Bell' is declared but its value is never read.
+src/components/monetization/MonetizationManager.tsx(6,8): error TS6133: 'React' is declared but its value is never read.
+src/components/monetization/MonetizationManager.tsx(9,1): error TS6133: 'Badge' is declared but its value is never read.
+src/components/monetization/MonetizationManager.tsx(10,1): error TS6133: 'Progress' is declared but its value is never read.
+src/components/monetization/MonetizationManager.tsx(14,3): error TS6133: 'Users' is declared but its value is never read.
+src/components/monetization/MonetizationManager.tsx(18,3): error TS6133: 'CreditCard' is declared but its value is never read.
+src/components/monetization/MonetizationManager.tsx(342,10): error TS6133: 'timeRange' is declared but its value is never read.
+src/components/monetization/MonetizationManager.tsx(342,21): error TS6133: 'setTimeRange' is declared but its value is never read.
+src/components/monetization/MonetizationManager.tsx(361,9): error TS6133: 'getStreamColor' is declared but its value is never read.
+src/components/news/NewsFeed.tsx(25,1): error TS6133: 'MockNewsItem' is declared but its value is never read.
+src/components/newsletter/NewsletterForm.tsx(27,10): error TS6133: 'showAdvanced' is declared but its value is never read.
+src/components/newsletter/NewsletterForm.tsx(27,24): error TS6133: 'setShowAdvanced' is declared but its value is never read.
+src/components/nexus/BreachSimulation.tsx(14,1): error TS6192: All imports in import declaration are unused.
+src/components/nexus/BreachSimulation.tsx(16,1): error TS6133: 'Badge' is declared but its value is never read.
+src/components/nexus/BreachSimulation.tsx(42,10): error TS6133: 'gameStartBreach' is declared but its value is never read.
+src/components/notifications/AlertToast.tsx(1,8): error TS6133: 'React' is declared but its value is never read.
+src/components/notifications/InlineFeedAlert.tsx(1,8): error TS6133: 'React' is declared but its value is never read.
+src/components/notifications/NotificationBell.tsx(1,8): error TS6133: 'React' is declared but its value is never read.
+src/components/notifications/NotificationBell.tsx(3,1): error TS6133: 'Button' is declared but its value is never read.
+src/components/onboarding/OnboardingFlow.tsx(7,10): error TS6133: 'Link' is declared but its value is never read.
+src/components/onboarding/OnboardingFlow.tsx(10,29): error TS6133: 'CardDescription' is declared but its value is never read.
+src/components/onboarding/OnboardingFlow.tsx(10,46): error TS6133: 'CardHeader' is declared but its value is never read.
+src/components/onboarding/OnboardingFlow.tsx(10,58): error TS6133: 'CardTitle' is declared but its value is never read.
+src/components/reviews/ProductReviewCard.tsx(8,3): error TS6133: 'Star' is declared but its value is never read.
+src/components/reviews/ProductReviewCard.tsx(14,3): error TS6133: 'TrendingUp' is declared but its value is never read.
+src/components/reviews/ProductReviewsSection.tsx(97,115): error TS2304: Cannot find name 'index'.
+src/components/roadmap/RoadmapKanban.tsx(13,15): error TS2614: Module '"@/pages/Roadmap"' has no exported member 'Feature'. Did you mean to use 'import Feature from "@/pages/Roadmap"' instead?
+src/components/search/AdvancedSearch.tsx(6,3): error TS6133: 'Tag' is declared but its value is never read.
+src/components/search/AdvancedSearch.tsx(77,53): error TS6133: 'searchFilters' is declared but its value is never read.
+src/components/search/EnhancedSearch.tsx(2,21): error TS6133: 'Clock' is declared but its value is never read.
+src/components/sections/SectionWrapper.tsx(22,3): error TS6133: 'ctaHref' is declared but its value is never read.
+src/components/security/EnterpriseThreatReport.tsx(15,3): error TS6133: 'Globe' is declared but its value is never read.
+src/components/security/EnterpriseThreatReport.tsx(16,3): error TS6133: 'Users' is declared but its value is never read.
+src/components/security/InvestigativeBreachReport.tsx(5,1): error TS6133: 'Separator' is declared but its value is never read.
+src/components/security/SecurityScoreCalculator.tsx(1,27): error TS6133: 'useEffect' is declared but its value is never read.
+src/components/security/SecurityScoreCalculator.tsx(260,28): error TS2345: Argument of type '"Implement multi-factor authentication across all systems"' is not assignable to parameter of type 'never'.
+src/components/security/SecurityScoreCalculator.tsx(261,28): error TS2345: Argument of type '"Enhance network monitoring with SIEM solutions"' is not assignable to parameter of type 'never'.
+src/components/security/SecurityScoreCalculator.tsx(262,28): error TS2345: Argument of type '"Conduct regular vulnerability assessments"' is not assignable to parameter of type 'never'.
+src/components/security/SecurityScoreCalculator.tsx(266,28): error TS2345: Argument of type '"Develop comprehensive incident response plan"' is not assignable to parameter of type 'never'.
+src/components/security/SecurityScoreCalculator.tsx(267,28): error TS2345: Argument of type '"Increase security awareness training frequency"' is not assignable to parameter of type 'never'.
+src/components/security/SecurityScoreCalculator.tsx(268,28): error TS2345: Argument of type '"Implement zero-trust architecture"' is not assignable to parameter of type 'never'.
+src/components/security/SecurityScoreCalculator.tsx(272,28): error TS2345: Argument of type '"Immediate security audit required"' is not assignable to parameter of type 'never'.
+src/components/security/SecurityScoreCalculator.tsx(273,28): error TS2345: Argument of type '"Engage external security consultants"' is not assignable to parameter of type 'never'.
+src/components/security/SecurityScoreCalculator.tsx(274,28): error TS2345: Argument of type '"Consider security-first architecture redesign"' is not assignable to parameter of type 'never'.
+src/components/security/ThreatIntelligenceDashboard.tsx(2,18): error TS6133: 'AlertTriangle' is declared but its value is never read.
+src/components/security/ThreatIntelligenceDashboard.tsx(6,16): error TS6133: 'TabsContent' is declared but its value is never read.
+src/components/security/VulnerabilityGuide.tsx(15,3): error TS6133: 'Clock' is declared but its value is never read.
+src/components/seo/Breadcrumbs.tsx(24,26): error TS6133: 'index' is declared but its value is never read.
+src/components/seo/OpenGraph.tsx(6,1): error TS6133: 'React' is declared but its value is never read.
+src/components/seo/SchemaMarkup.tsx(6,1): error TS6133: 'React' is declared but its value is never read.
+src/components/seo/SEOAuditCard.tsx(34,7): error TS6133: 'keywordCoverageColors' is declared but its value is never read.
+src/components/seo/SEOHead.tsx(4,1): error TS6133: 'getPageMetadata' is declared but its value is never read.
+src/components/seo/SEOOptimization.tsx(2,27): error TS6133: 'useEffect' is declared but its value is never read.
+src/components/seo/SEOOptimization.tsx(9,1): error TS6133: 'Input' is declared but its value is never read.
+src/components/seo/SEOOptimization.tsx(11,1): error TS6133: 'Textarea' is declared but its value is never read.
+src/components/seo/SEOOptimization.tsx(13,1): error TS6133: 'Progress' is declared but its value is never read.
+src/components/seo/SEOOptimization.tsx(25,10): error TS6133: 'isOptimizingGoogleNews' is declared but its value is never read.
+src/components/seo/SEOOptimization.tsx(32,9): error TS6133: 'getSEOContent' is declared but its value is never read.
+src/components/seo/SEOOptimization.tsx(44,9): error TS2322: Type 'string' is not assignable to type '"NewsArticle" | "Article" | "BlogPosting"'.
+src/components/seo/SEOOptimization.tsx(72,9): error TS6133: 'handleGoogleNewsOptimization' is declared but its value is never read.
+src/components/seo/SEOOptimization.tsx(346,23): error TS2322: Type '"default" | "destructive"' is not assignable to type '"link" | "default" | "primary" | "secondary" | "ghost" | "danger" | "outline" | null | undefined'.
+  Type '"destructive"' is not assignable to type '"link" | "default" | "primary" | "secondary" | "ghost" | "danger" | "outline" | null | undefined'.
+src/components/seo/TechnicalSEO.tsx(6,8): error TS6133: 'React' is declared but its value is never read.
+src/components/sharing/EnhancedShareBar.tsx(201,41): error TS2322: Type 'string | ForwardRefExoticComponent<Omit<LucideProps, "ref"> & RefAttributes<SVGSVGElement>>' is not assignable to type 'ReactNode'.
+  Type 'ForwardRefExoticComponent<Omit<LucideProps, "ref"> & RefAttributes<SVGSVGElement>>' is not assignable to type 'ReactNode'.
+src/components/sharing/EnhancedShareBar.tsx(281,45): error TS2322: Type 'string | ForwardRefExoticComponent<Omit<LucideProps, "ref"> & RefAttributes<SVGSVGElement>>' is not assignable to type 'ReactNode'.
+  Type 'ForwardRefExoticComponent<Omit<LucideProps, "ref"> & RefAttributes<SVGSVGElement>>' is not assignable to type 'ReactNode'.
+src/components/startups/StartupVCSection.tsx(91,115): error TS2304: Cannot find name 'index'.
+src/components/tech/GadgetDeepDive.tsx(5,1): error TS6192: All imports in import declaration are unused.
+src/components/tech/GadgetDeepDive.tsx(10,3): error TS6133: 'Play' is declared but its value is never read.
+src/components/tech/GadgetDeepDive.tsx(11,12): error TS6133: 'ImageIcon' is declared but its value is never read.
+src/components/tech/GadgetDeepDive.tsx(12,3): error TS6133: 'Video' is declared but its value is never read.
+src/components/tech/GadgetDeepDive.tsx(13,3): error TS6133: 'ExternalLink' is declared but its value is never read.
+src/components/tech/GadgetDeepDive.tsx(16,3): error TS6133: 'TrendingUp' is declared but its value is never read.
+src/components/tech/GadgetDeepDive.tsx(17,3): error TS6133: 'Camera' is declared but its value is never read.
+src/components/tech/GadgetDeepDive.tsx(37,10): error TS6133: 'selectedVideo' is declared but its value is never read.
+src/components/tech/GadgetDeepDive.tsx(37,25): error TS6133: 'setSelectedVideo' is declared but its value is never read.
+src/components/theme/ThemeToggle.tsx(8,1): error TS6133: 'cn' is declared but its value is never read.
+src/components/threats/ThreatIntelligenceCard.tsx(5,1): error TS6133: 'Progress' is declared but its value is never read.
+src/components/threats/ThreatIntelligenceCard.tsx(17,3): error TS6133: 'Globe' is declared but its value is never read.
+src/components/tools/GridSignal.tsx(6,8): error TS6133: 'React' is declared but its value is never read.
+src/components/tools/GridSignal.tsx(7,43): error TS6133: 'Clock' is declared but its value is never read.
+src/components/tools/GridSignal.tsx(7,64): error TS6133: 'Filter' is declared but its value is never read.
+src/components/tools/GridSignal.tsx(9,29): error TS6133: 'CardDescription' is declared but its value is never read.
+src/components/tools/GridSignal.tsx(11,16): error TS6133: 'TabsContent' is declared but its value is never read.
+src/components/tools/GridSignal.tsx(230,47): error TS6133: 'index' is declared but its value is never read.
+src/components/tools/ToolPageSEO.tsx(6,15): error TS2305: Module '"@/lib/schemaMarkup"' has no exported member 'SoftwareInput'.
+src/components/tools/ToolPageSEO.tsx(27,9): error TS6133: 'software' is declared but its value is never read.
+src/components/ui/alert-dialog.tsx(5,10): error TS2459: Module '"@/components/ui/button"' declares 'buttonVariants' locally, but it is not exported.
+src/components/ui/ArticleCard.tsx(1,1): error TS6133: 'React' is declared but its value is never read.
+src/components/ui/breadcrumb.tsx(2,10): error TS6133: 'ChevronRight' is declared but its value is never read.
+src/components/ui/calendar.tsx(6,10): error TS2459: Module '"@/components/ui/button"' declares 'buttonVariants' locally, but it is not exported.
+src/components/ui/calendar.tsx(45,20): error TS6133: '_props' is declared but its value is never read.
+src/components/ui/calendar.tsx(46,21): error TS6133: '_props' is declared but its value is never read.
+src/components/ui/cyber/HolographicButton.tsx(44,24): error TS6133: 'e' is declared but its value is never read.
+src/components/ui/cyber/RadialMenu.tsx(29,10): error TS6133: 'triggerRef' is declared but its value is never read.
+src/components/ui/cyber/RadialMenu.tsx(107,33): error TS6133: 'index' is declared but its value is never read.
+src/components/ui/NicheTagBadge.tsx(1,1): error TS6133: 'React' is declared but its value is never read.
+src/components/ui/pagination.tsx(5,23): error TS2459: Module '"@/components/ui/button"' declares 'buttonVariants' locally, but it is not exported.
+src/components/ui/pagination.tsx(50,52): error TS2322: Type '"default"' is not assignable to type '"xs" | "sm" | "md" | "lg" | "xl" | "icon" | null | undefined'.
+src/components/ui/pagination.tsx(58,48): error TS2322: Type '"default"' is not assignable to type '"xs" | "sm" | "md" | "lg" | "xl" | "icon" | null | undefined'.
+src/data/mockData.ts(960,5): error TS2353: Object literal may only specify known properties, and 'slug' does not exist in type 'Guide'.
+src/data/mockData.ts(974,5): error TS2353: Object literal may only specify known properties, and 'slug' does not exist in type 'Guide'.
+src/data/mockData.ts(988,5): error TS2353: Object literal may only specify known properties, and 'slug' does not exist in type 'Guide'.
+src/data/mockData.ts(1002,5): error TS2353: Object literal may only specify known properties, and 'slug' does not exist in type 'Guide'.
+src/hooks/useAIPulse.ts(43,73): error TS2536: Type '"sector"' cannot be used to index type 'T'.
+src/hooks/useGuideProgress.ts(31,54): error TS6133: 'totalSteps' is declared but its value is never read.
+src/hooks/useGuideProgress.ts(54,45): error TS6133: 'isLoading' is declared but its value is never read.
+src/hooks/useGuideProgress.ts(65,17): error TS2304: Cannot find name 'isDisabled'.
+src/hooks/useGuideProgress.ts(65,31): error TS2552: Cannot find name 'progress'. Did you mean 'onprogress'?
+src/hooks/useNexusIntersection.ts(11,7): error TS6133: 'NICHE_NAMES' is declared but its value is never read.
+src/hooks/useNexusIntersection.ts(44,23): error TS2339: Property 'length' does not exist on type '{}'.
+src/hooks/useNexusIntersection.ts(45,17): error TS2339: Property 'map' does not exist on type '{}'.
+src/hooks/useNexusIntersection.ts(50,23): error TS2339: Property 'length' does not exist on type '{}'.
+src/hooks/useNexusIntersection.ts(51,17): error TS2339: Property 'map' does not exist on type '{}'.
+src/hooks/useNexusIntersection.ts(56,23): error TS2339: Property 'length' does not exist on type '{}'.
+src/hooks/useNexusIntersection.ts(57,17): error TS2339: Property 'map' does not exist on type '{}'.
+src/hooks/useNexusIntersection.ts(95,27): error TS2339: Property 'isError' does not exist on type '{ data: {}; isLoading: boolean; }'.
+src/hooks/useNexusIntersection.ts(95,52): error TS2339: Property 'isError' does not exist on type '{ data: {}; isLoading: boolean; }'.
+src/hooks/useNexusIntersection.ts(95,75): error TS2339: Property 'isError' does not exist on type '{ data: {}; isLoading: boolean; }'.
+src/hooks/usePageSpeed.ts(3,21): error TS2307: Cannot find module '@/convex/_generated/api' or its corresponding type declarations.
+src/hooks/usePageSpeed.ts(5,7): error TS6133: 'PAGE_SPEED_MUTATION' is declared but its value is never read.
+src/hooks/useUserBehavior.ts(2,33): error TS6133: 'Niche' is declared but its value is never read.
+src/lib/ai/newsletter.ts(2,1): error TS6133: 'mockArticles' is declared but its value is never read.
+src/lib/ai/personalization.ts(2,1): error TS6133: 'mockArticles' is declared but its value is never read.
+src/lib/ai/personalization.ts(215,28): error TS6133: 'userBehaviors' is declared but its value is never read.
+src/lib/analytics/ga4.ts(9,5): error TS2687: All declarations of 'gtag' must have identical modifiers.
+src/lib/data/gameLibrary.ts(670,7): error TS2561: Object literal may only specify known properties, but 'leakleakScore' does not exist in type 'ReleaseSignals'. Did you mean to write 'leakScore'?
+src/lib/externalScriptHandler.ts(18,32): error TS6133: 'reject' is declared but its value is never read.
+src/lib/insertArticles.ts(4,10): error TS6133: 'createSlug' is declared but its value is never read.
+src/lib/insertArticles.ts(12,10): error TS6133: 'estimateReadTime' is declared but its value is never read.
+src/lib/insertArticles.ts(19,10): error TS6133: 'formatContentAsHTML' is declared but its value is never read.
+src/lib/insertArticles.ts(57,54): error TS6133: 'c' is declared but its value is never read.
+src/lib/insertArticles.ts(95,7): error TS6133: 'articles' is declared but its value is never read.
+src/lib/placeholderImages.ts(80,3): error TS6133: 'width' is declared but its value is never read.
+src/lib/placeholderImages.ts(81,3): error TS6133: 'height' is declared but its value is never read.
+src/lib/scoring/recommendationScorer.ts(101,11): error TS6133: 'relaxedBudgetLabel' is declared but its value is never read.
+src/lib/seedEditorialTopStories.ts(127,29): error TS2345: Argument of type 'string' is not assignable to parameter of type 'FunctionReference<"mutation">'.
+src/lib/seo.ts(43,9): error TS6133: 'origin' is declared but its value is never read.
+src/lib/seo/headingAudit.ts(130,44): error TS6133: 'i' is declared but its value is never read.
+src/lib/seo/imageOptimization.ts(150,56): error TS2345: Argument of type '"webp" | "avif" | "original"' is not assignable to parameter of type '"webp" | "avif" | undefined'.
+  Type '"original"' is not assignable to type '"webp" | "avif" | undefined'.
+src/lib/seo/inpOptimization.ts(80,13): error TS6133: 'action' is declared but its value is never read.
+src/lib/seo/inpOptimization.ts(100,13): error TS6133: 'formData' is declared but its value is never read.
+src/lib/seo/lookerStudioConfig.ts(179,3): error TS6133: 'config' is declared but its value is never read.
+src/lib/seo/rankTracking.ts(67,44): error TS6133: 'days' is declared but its value is never read.
+src/lib/seo/rankTracking.ts(113,32): error TS6133: 'csv' is declared but its value is never read.
+src/lib/seo/rankTracking.ts(119,27): error TS6133: 'keyword' is declared but its value is never read.
+src/lib/seo/rankTracking.ts(119,44): error TS6133: 'days' is declared but its value is never read.
+src/lib/seo/rankTracking.ts(124,31): error TS6133: 'keyword' is declared but its value is never read.
+src/lib/seo/rankTracking.ts(124,48): error TS6133: 'competitors' is declared but its value is never read.
+src/lib/seo/rankTracking.ts(161,31): error TS6133: 'data' is declared but its value is never read.
+src/lib/seo/rankTracking.ts(166,27): error TS6133: 'keyword' is declared but its value is never read.
+src/lib/seo/rankTracking.ts(166,44): error TS6133: 'days' is declared but its value is never read.
+src/lib/seo/rankTracking.ts(170,31): error TS6133: 'keyword' is declared but its value is never read.
+src/lib/seo/rankTracking.ts(170,48): error TS6133: 'competitors' is declared but its value is never read.
+src/lib/seo/rankTracking.ts(209,27): error TS6133: 'days' is declared but its value is never read.
+src/lib/seo/schemaValidator.ts(84,68): error TS6133: 'warnings' is declared but its value is never read.
+src/lib/seo/schemaValidator.ts(123,59): error TS6133: 'warnings' is declared but its value is never read.
+src/lib/seo/schemaValidator.ts(141,61): error TS6133: 'warnings' is declared but its value is never read.
+src/lib/seo/schemaValidator.ts(192,49): error TS6133: 'schema' is declared but its value is never read.
+src/lib/seo/schemaValidator.ts(198,9): error TS6133: 'url' is declared but its value is never read.
+src/pages/Admin.tsx(33,10): error TS6133: 'diagnosticResult' is declared but its value is never read.
+src/pages/Admin.tsx(38,57): error TS2345: Argument of type '{}' is not assignable to parameter of type 'ContentItem[]'.
+  Type '{}' is missing the following properties from type 'ContentItem[]': length, pop, push, concat, and 29 more.
+src/pages/Admin.tsx(522,45): error TS2304: Cannot find name 'Article'.
+src/pages/Admin.tsx(522,113): error TS2304: Cannot find name 'index'.
+src/pages/APIAccess.tsx(12,3): error TS6133: 'Download' is declared but its value is never read.
+src/pages/APIAccess.tsx(13,3): error TS6133: 'Copy' is declared but its value is never read.
+src/pages/APIAccess.tsx(17,3): error TS6133: 'Shield' is declared but its value is never read.
+src/pages/APIAccess.tsx(18,3): error TS6133: 'Clock' is declared but its value is never read.
+src/pages/APIAccess.tsx(23,3): error TS6133: 'ExternalLink' is declared but its value is never read.
+src/pages/APIAccess.tsx(109,9): error TS2353: Object literal may only specify known properties, and 'success' does not exist in type '(prevState: null) => null'.
+src/pages/APIAccess.tsx(116,9): error TS2353: Object literal may only specify known properties, and 'success' does not exist in type '(prevState: null) => null'.
+src/pages/APIAccess.tsx(117,16): error TS18046: 'error' is of type 'unknown'.
+src/pages/APIAccess.tsx(485,44): error TS2339: Property 'success' does not exist on type 'never'.
+src/pages/APIAccess.tsx(488,47): error TS2339: Property 'success' does not exist on type 'never'.
+src/pages/APIAccess.tsx(494,49): error TS2339: Property 'success' does not exist on type 'never'.
+src/pages/APIAccess.tsx(496,62): error TS2339: Property 'success' does not exist on type 'never'.
+src/pages/APIAccess.tsx(497,49): error TS2339: Property 'status' does not exist on type 'never'.
+src/pages/APIAccess.tsx(502,56): error TS2339: Property 'timestamp' does not exist on type 'never'.
+src/pages/APIAccess.tsx(505,45): error TS2339: Property 'data' does not exist on type 'never'.
+src/pages/APIAccess.tsx(509,66): error TS2339: Property 'data' does not exist on type 'never'.
+src/pages/APIAccess.tsx(514,45): error TS2339: Property 'error' does not exist on type 'never'.
+src/pages/APIAccess.tsx(517,85): error TS2339: Property 'error' does not exist on type 'never'.
+src/pages/Article.tsx(194,9): error TS6133: 'handleShare' is declared but its value is never read.
+src/pages/ArticleDetail.tsx(5,1): error TS6133: 'ArticleCard' is declared but its value is never read.
+src/pages/ArticleDetail.tsx(58,18): error TS2339: Property 'tags' does not exist on type '{ _id: Id<"content">; _creationTime: number; source?: string | undefined; summary?: string | undefined; subtitle?: string | undefined; isPremium?: boolean | undefined; authorId?: string | undefined; ... 34 more ...; slug: string; }'.
+src/pages/ArticleDetail.tsx(58,34): error TS2339: Property 'tags' does not exist on type '{ _id: Id<"content">; _creationTime: number; source?: string | undefined; summary?: string | undefined; subtitle?: string | undefined; isPremium?: boolean | undefined; authorId?: string | undefined; ... 34 more ...; slug: string; }'.
+src/pages/ArticleDetail.tsx(60,23): error TS2339: Property 'tags' does not exist on type '{ _id: Id<"content">; _creationTime: number; source?: string | undefined; summary?: string | undefined; subtitle?: string | undefined; isPremium?: boolean | undefined; authorId?: string | undefined; ... 34 more ...; slug: string; }'.
+src/pages/Auth.tsx(8,1): error TS6192: All imports in import declaration are unused.
+src/pages/Auth.tsx(30,9): error TS6133: 'toastHook' is declared but its value is never read.
+src/pages/Auth.tsx(33,9): error TS6133: 'handleOAuthCallback' is declared but its value is never read.
+src/pages/Author.tsx(31,28): error TS2339: Property 'length' does not exist on type '{}'.
+src/pages/Author.tsx(31,62): error TS2345: Argument of type '{}' is not assignable to parameter of type 'ContentItem[]'.
+  Type '{}' is missing the following properties from type 'ContentItem[]': length, pop, push, concat, and 29 more.
+src/pages/BlogSeries.tsx(24,55): error TS2345: Argument of type '{}' is not assignable to parameter of type 'ContentItem[]'.
+  Type '{}' is missing the following properties from type 'ContentItem[]': length, pop, push, concat, and 29 more.
+src/pages/BreachSimEnhanced.tsx(6,8): error TS6133: 'React' is declared but its value is never read.
+src/pages/BreachSimEnhanced.tsx(6,27): error TS6133: 'useEffect' is declared but its value is never read.
+src/pages/BreachSimEnhanced.tsx(7,1): error TS6133: 'Link' is declared but its value is never read.
+src/pages/BreachSimEnhanced.tsx(11,1): error TS6192: All imports in import declaration are unused.
+src/pages/BreachSimEnhanced.tsx(22,3): error TS6133: 'Zap' is declared but its value is never read.
+src/pages/BreachSimEnhanced.tsx(26,3): error TS6133: 'Code' is declared but its value is never read.
+src/pages/BreachSimEnhanced.tsx(27,3): error TS6133: 'Monitor' is declared but its value is never read.
+src/pages/BreachSimEnhanced.tsx(31,3): error TS6133: 'TrendingUp' is declared but its value is never read.
+src/pages/BreachSimEnhanced.tsx(32,3): error TS6133: 'Award' is declared but its value is never read.
+src/pages/BreachSimEnhanced.tsx(33,3): error TS6133: 'Filter' is declared but its value is never read.
+src/pages/BreachSimEnhanced.tsx(40,1): error TS6133: 'Progress' is declared but its value is never read.
+src/pages/BreachSimEnhanced.tsx(235,10): error TS6133: 'selectedPlatform' is declared but its value is never read.
+src/pages/BreachSimEnhanced.tsx(236,10): error TS6133: 'selectedScenario' is declared but its value is never read.
+src/pages/BreachSimEnhanced.tsx(285,21): error TS2322: Type '"TechArticle"' is not assignable to type '"WebSite" | "NewsArticle" | "Article" | "BreadcrumbList" | "FAQPage"'.
+src/pages/CommunityForums.tsx(6,38): error TS6133: 'Clock' is declared but its value is never read.
+src/pages/CommunityForums.tsx(6,45): error TS6133: 'TrendingUp' is declared but its value is never read.
+src/pages/CommunityForums.tsx(6,57): error TS6133: 'Star' is declared but its value is never read.
+src/pages/CommunityForums.tsx(6,63): error TS6133: 'Pin' is declared but its value is never read.
+src/pages/CommunityForums.tsx(6,68): error TS6133: 'Lock' is declared but its value is never read.
+src/pages/CommunityForums.tsx(6,74): error TS6133: 'Eye' is declared but its value is never read.
+src/pages/CommunityForums.tsx(6,79): error TS6133: 'ThumbsUp' is declared but its value is never read.
+src/pages/CommunityForums.tsx(6,89): error TS6133: 'ThumbsDown' is declared but its value is never read.
+src/pages/CommunityForums.tsx(6,101): error TS6133: 'Reply' is declared but its value is never read.
+src/pages/CommunityForums.tsx(9,10): error TS6133: 'activeTab' is declared but its value is never read.
+src/pages/CommunityForums.tsx(9,21): error TS6133: 'setActiveTab' is declared but its value is never read.
+src/pages/CommunityForums.tsx(11,10): error TS6133: 'searchQuery' is declared but its value is never read.
+src/pages/CommunityForums.tsx(11,23): error TS6133: 'setSearchQuery' is declared but its value is never read.
+src/pages/CommunityForums.tsx(12,10): error TS6133: 'sortBy' is declared but its value is never read.
+src/pages/CommunityForums.tsx(12,18): error TS6133: 'setSortBy' is declared but its value is never read.
+src/pages/ContentPolicy.tsx(6,1): error TS6133: 'React' is declared but its value is never read.
+src/pages/Disclosure.tsx(2,25): error TS6133: 'ExternalLink' is declared but its value is never read.
+src/pages/EnhancedIndex.tsx(1,8): error TS6133: 'React' is declared but its value is never read.
+src/pages/EnhancedIndex.tsx(12,3): error TS6133: 'TrendingUp' is declared but its value is never read.
+src/pages/EnhancedIndex.tsx(13,3): error TS6133: 'AlertTriangle' is declared but its value is never read.
+src/pages/EnhancedIndex.tsx(14,3): error TS6133: 'Play' is declared but its value is never read.
+src/pages/EnhancedIndex.tsx(17,3): error TS6133: 'Eye' is declared but its value is never read.
+src/pages/EnhancedIndex.tsx(18,3): error TS6133: 'MessageSquare' is declared but its value is never read.
+src/pages/EnhancedIndex.tsx(19,3): error TS6133: 'Share2' is declared but its value is never read.
+src/pages/EnhancedIndex.tsx(20,3): error TS6133: 'Bookmark' is declared but its value is never read.
+src/pages/EnhancedIndex.tsx(24,3): error TS6133: 'Wifi' is declared but its value is never read.
+src/pages/EnhancedIndex.tsx(26,1): error TS6133: 'GlassCard' is declared but its value is never read.
+src/pages/EnhancedIndex.tsx(97,10): error TS6133: 'showSecurityTools' is declared but its value is never read.
+src/pages/EnhancedIndex.tsx(97,29): error TS6133: 'setShowSecurityTools' is declared but its value is never read.
+src/pages/EnhancedIndexSimple.tsx(1,8): error TS6133: 'React' is declared but its value is never read.
+src/pages/EnhancedIndexSimple.tsx(3,35): error TS6133: 'TrendingUp' is declared but its value is never read.
+src/pages/EnhancedIndexSimple.tsx(3,47): error TS6133: 'AlertTriangle' is declared but its value is never read.
+src/pages/EnhancedIndexSimple.tsx(3,62): error TS6133: 'Play' is declared but its value is never read.
+src/pages/EnhancedIndexSimple.tsx(3,68): error TS6133: 'ChevronRight' is declared but its value is never read.
+src/pages/EnhancedIndexSimple.tsx(3,82): error TS6133: 'Zap' is declared but its value is never read.
+src/pages/EnhancedIndexSimple.tsx(3,107): error TS6133: 'Share2' is declared but its value is never read.
+src/pages/EnhancedIndexSimple.tsx(3,115): error TS6133: 'Bookmark' is declared but its value is never read.
+src/pages/EnhancedIndexSimple.tsx(3,146): error TS6133: 'Wifi' is declared but its value is never read.
+src/pages/EnhancedIndexSimple.tsx(52,22): error TS6133: 'setIsDarkMode' is declared but its value is never read.
+src/pages/Explore.tsx(12,1): error TS6133: 'SEO' is declared but its value is never read.
+src/pages/GamingSecurityGuides.tsx(9,1): error TS6133: 'SEO' is declared but its value is never read.
+src/pages/GamingSecurityHub.tsx(4,1): error TS6133: 'Badge' is declared but its value is never read.
+src/pages/GamingSecurityHub.tsx(6,65): error TS6133: 'Clock' is declared but its value is never read.
+src/pages/GamingSecurityHub.tsx(49,9): error TS2322: Type '{ title: string; description: string; keywords: string[]; canonical: string; type: "website"; }' is not assignable to type 'IntrinsicAttributes & SEOHeadProps'.
+  Property 'canonical' does not exist on type 'IntrinsicAttributes & SEOHeadProps'.
+src/pages/GuideDetail.tsx(7,38): error TS6133: 'AlertTriangle' is declared but its value is never read.
+src/pages/GuideDetail.tsx(9,1): error TS6133: 'Skeleton' is declared but its value is never read.
+src/pages/GuideDetail.tsx(12,1): error TS6133: 'HowToGuide' is declared but its value is never read.
+src/pages/Guides.tsx(7,16): error TS6133: 'TabsContent' is declared but its value is never read.
+src/pages/Guides.tsx(8,28): error TS6133: 'ExternalLink' is declared but its value is never read.
+src/pages/Guides.tsx(8,95): error TS6133: 'CheckCircle2' is declared but its value is never read.
+src/pages/Guides.tsx(13,63): error TS6133: 'HowToGuide' is declared but its value is never read.
+src/pages/GuidesEnhanced.tsx(6,8): error TS6133: 'React' is declared but its value is never read.
+src/pages/GuidesEnhanced.tsx(6,38): error TS6133: 'useRef' is declared but its value is never read.
+src/pages/GuidesEnhanced.tsx(7,16): error TS6133: 'useNavigate' is declared but its value is never read.
+src/pages/GuidesEnhanced.tsx(19,3): error TS6133: 'TrendingUp' is declared but its value is never read.
+src/pages/GuidesEnhanced.tsx(30,3): error TS6133: 'AlertCircle' is declared but its value is never read.
+src/pages/GuidesEnhanced.tsx(40,1): error TS6133: 'Progress' is declared but its value is never read.
+src/pages/GuidesEnhanced.tsx(41,1): error TS6192: All imports in import declaration are unused.
+src/pages/GuidesEnhanced.tsx(42,1): error TS6133: 'Skeleton' is declared but its value is never read.
+src/pages/Home.tsx(5,1): error TS6133: 'ErrorState' is declared but its value is never read.
+src/pages/Homepage.tsx(1,1): error TS6133: 'React' is declared but its value is never read.
+src/pages/HomepageCommandCenter.tsx(3,1): error TS6133: 'HolographicButton' is declared but its value is never read.
+src/pages/HomepageCommandCenter.tsx(16,10): error TS6133: 'scanning' is declared but its value is never read.
+src/pages/HomepageCommandCenter.tsx(21,22): error TS2345: Argument of type '(prev: never[]) => { id: number; type: string; severity: string; timestamp: string; }[]' is not assignable to parameter of type 'SetStateAction<never[]>'.
+  Type '(prev: never[]) => { id: number; type: string; severity: string; timestamp: string; }[]' is not assignable to type '(prevState: never[]) => never[]'.
+    Type '{ id: number; type: string; severity: string; timestamp: string; }[]' is not assignable to type 'never[]'.
+      Type '{ id: number; type: string; severity: string; timestamp: string; }' is not assignable to type 'never'.
+src/pages/HomepageCommandCenter.tsx(126,30): error TS2339: Property 'id' does not exist on type 'never'.
+src/pages/HomepageCommandCenter.tsx(127,24): error TS2339: Property 'timestamp' does not exist on type 'never'.
+src/pages/HomepageCommandCenter.tsx(127,72): error TS2339: Property 'type' does not exist on type 'never'.
+src/pages/HomepageCommandCenter.tsx(127,88): error TS2339: Property 'severity' does not exist on type 'never'.
+src/pages/Index.tsx(7,1): error TS6133: 'React' is declared but its value is never read.
+src/pages/Index.tsx(9,1): error TS6133: 'useQuery' is declared but its value is never read.
+src/pages/Index.tsx(10,1): error TS6133: 'api' is declared but its value is never read.
+src/pages/Index.tsx(14,1): error TS6133: 'SEO' is declared but its value is never read.
+src/pages/Index.tsx(40,1): error TS6133: 'Button' is declared but its value is never read.
+src/pages/Index.tsx(42,1): error TS6133: 'formatRelativeTime' is declared but its value is never read.
+src/pages/Index.tsx(80,9): error TS6133: 'latest' is declared but its value is never read.
+src/pages/Index.tsx(102,9): error TS6133: 'techArticles' is declared but its value is never read.
+src/pages/learn/NexusPath.tsx(25,3): error TS6133: 'Circle' is declared but its value is never read.
+src/pages/learn/NexusPath.tsx(26,3): error TS6133: 'Clock' is declared but its value is never read.
+src/pages/learn/NexusPath.tsx(31,3): error TS6133: 'Calendar' is declared but its value is never read.
+src/pages/learn/NexusPath.tsx(35,3): error TS6133: 'Play' is declared but its value is never read.
+src/pages/learn/NexusPath.tsx(136,10): error TS6133: 'isGenerating' is declared but its value is never read.
+src/pages/learn/NexusPath.tsx(139,10): error TS6133: 'currentWeek' is declared but its value is never read.
+src/pages/learn/NexusPath.tsx(139,23): error TS6133: 'setCurrentWeek' is declared but its value is never read.
+src/pages/learn/NexusPath.tsx(247,25): error TS6133: 'goal' is declared but its value is never read.
+src/pages/learn/NexusPath.tsx(549,60): error TS6133: 'index' is declared but its value is never read.
+src/pages/MobileApp.tsx(13,3): error TS6133: 'CheckCircle' is declared but its value is never read.
+src/pages/MobileApp.tsx(20,3): error TS6133: 'Lock' is declared but its value is never read.
+src/pages/NexusIntersectionEnhanced.tsx(6,8): error TS6133: 'React' is declared but its value is never read.
+src/pages/NexusIntersectionEnhanced.tsx(6,27): error TS6133: 'useEffect' is declared but its value is never read.
+src/pages/NexusIntersectionEnhanced.tsx(6,38): error TS6133: 'useRef' is declared but its value is never read.
+src/pages/NexusIntersectionEnhanced.tsx(11,1): error TS6192: All imports in import declaration are unused.
+src/pages/NexusIntersectionEnhanced.tsx(16,3): error TS6133: 'Filter' is declared but its value is never read.
+src/pages/NexusIntersectionEnhanced.tsx(22,3): error TS6133: 'Zap' is declared but its value is never read.
+src/pages/NexusIntersectionEnhanced.tsx(23,3): error TS6133: 'ChevronRight' is declared but its value is never read.
+src/pages/NexusIntersectionEnhanced.tsx(24,3): error TS6133: 'BarChart3' is declared but its value is never read.
+src/pages/NexusIntersectionEnhanced.tsx(25,3): error TS6133: 'Award' is declared but its value is never read.
+src/pages/NexusIntersectionEnhanced.tsx(26,3): error TS6133: 'Play' is declared but its value is never read.
+src/pages/NexusIntersectionEnhanced.tsx(27,3): error TS6133: 'Download' is declared but its value is never read.
+src/pages/NexusIntersectionEnhanced.tsx(34,3): error TS6133: 'ArrowRight' is declared but its value is never read.
+src/pages/NexusIntersectionEnhanced.tsx(43,1): error TS6133: 'Progress' is declared but its value is never read.
+src/pages/NexusIntersectionEnhanced.tsx(212,10): error TS6133: 'selectedStory' is declared but its value is never read.
+src/pages/NexusIntersectionEnhanced.tsx(215,10): error TS6133: 'convergenceScore' is declared but its value is never read.
+src/pages/NexusIntersectionEnhanced.tsx(215,28): error TS6133: 'setConvergenceScore' is declared but its value is never read.
+src/pages/NexusStudio.tsx(13,1): error TS6192: All imports in import declaration are unused.
+src/pages/NotFound.tsx(7,57): error TS6133: 'Search' is declared but its value is never read.
+src/pages/PodcastPlatform.tsx(6,16): error TS6133: 'Pause' is declared but its value is never read.
+src/pages/PodcastPlatform.tsx(6,23): error TS6133: 'SkipBack' is declared but its value is never read.
+src/pages/PodcastPlatform.tsx(6,33): error TS6133: 'SkipForward' is declared but its value is never read.
+src/pages/PodcastPlatform.tsx(6,46): error TS6133: 'Volume2' is declared but its value is never read.
+src/pages/PodcastPlatform.tsx(10,10): error TS6133: 'selectedPodcast' is declared but its value is never read.
+src/pages/PodcastPlatform.tsx(10,27): error TS6133: 'setSelectedPodcast' is declared but its value is never read.
+src/pages/PodcastPlatform.tsx(11,10): error TS6133: 'isPlaying' is declared but its value is never read.
+src/pages/PodcastPlatform.tsx(11,21): error TS6133: 'setIsPlaying' is declared but its value is never read.
+src/pages/PodcastPlatform.tsx(12,10): error TS6133: 'currentTime' is declared but its value is never read.
+src/pages/PodcastPlatform.tsx(12,23): error TS6133: 'setCurrentTime' is declared but its value is never read.
+src/pages/PodcastPlatform.tsx(13,10): error TS6133: 'duration' is declared but its value is never read.
+src/pages/PodcastPlatform.tsx(13,20): error TS6133: 'setDuration' is declared but its value is never read.
+src/pages/Profile.tsx(12,3): error TS6133: 'Settings' is declared but its value is never read.
+src/pages/Profile.tsx(50,10): error TS6133: 'diagnosticResult' is declared but its value is never read.
+src/pages/Profile.tsx(58,57): error TS2345: Argument of type '{}' is not assignable to parameter of type 'ContentItem[]'.
+  Type '{}' is missing the following properties from type 'ContentItem[]': length, pop, push, concat, and 29 more.
+src/pages/Profile.tsx(116,9): error TS6133: 'handleForceFix' is declared but its value is never read.
+src/pages/Profile.tsx(247,38): error TS6133: 'contentId' is declared but its value is never read.
+src/pages/Profile.tsx(643,47): error TS2304: Cannot find name 'Article'.
+src/pages/Profile.tsx(643,115): error TS2304: Cannot find name 'index'.
+src/pages/Profile.tsx(661,78): error TS2304: Cannot find name 'Article'.
+src/pages/pulse/NexusPulse.tsx(10,29): error TS6133: 'CardHeader' is declared but its value is never read.
+src/pages/pulse/NexusPulse.tsx(10,41): error TS6133: 'CardTitle' is declared but its value is never read.
+src/pages/pulse/NexusPulse.tsx(10,52): error TS6133: 'CardDescription' is declared but its value is never read.
+src/pages/pulse/NexusPulse.tsx(12,16): error TS6133: 'TabsContent' is declared but its value is never read.
+src/pages/pulse/NexusPulse.tsx(15,3): error TS6133: 'Clock' is declared but its value is never read.
+src/pages/QualityGuidelines.tsx(6,1): error TS6133: 'React' is declared but its value is never read.
+src/pages/Reviews.tsx(16,46): error TS2339: Property 'length' does not exist on type '{}'.
+src/pages/Reviews.tsx(16,80): error TS2345: Argument of type '{}' is not assignable to parameter of type 'ContentItem[]'.
+  Type '{}' is missing the following properties from type 'ContentItem[]': length, pop, push, concat, and 29 more.
+src/pages/Roadmap.tsx(8,51): error TS6133: 'BarChart3' is declared but its value is never read.
+src/pages/Roadmap.tsx(15,1): error TS6133: 'cn' is declared but its value is never read.
+src/pages/Roadmap.tsx(246,9): error TS6133: 'getTierIcon' is declared but its value is never read.
+src/pages/RoadmapEnhanced.tsx(6,8): error TS6133: 'React' is declared but its value is never read.
+src/pages/RoadmapEnhanced.tsx(6,38): error TS6133: 'useRef' is declared but its value is never read.
+src/pages/RoadmapEnhanced.tsx(7,1): error TS6133: 'Link' is declared but its value is never read.
+src/pages/RoadmapEnhanced.tsx(11,1): error TS6192: All imports in import declaration are unused.
+src/pages/RoadmapEnhanced.tsx(16,3): error TS6133: 'Filter' is declared but its value is never read.
+src/pages/RoadmapEnhanced.tsx(18,3): error TS6133: 'Star' is declared but its value is never read.
+src/pages/RoadmapEnhanced.tsx(22,3): error TS6133: 'Zap' is declared but its value is never read.
+src/pages/RoadmapEnhanced.tsx(23,3): error TS6133: 'ChevronRight' is declared but its value is never read.
+src/pages/RoadmapEnhanced.tsx(24,3): error TS6133: 'BarChart3' is declared but its value is never read.
+src/pages/RoadmapEnhanced.tsx(25,3): error TS6133: 'Award' is declared but its value is never read.
+src/pages/RoadmapEnhanced.tsx(26,3): error TS6133: 'AlertCircle' is declared but its value is never read.
+src/pages/RoadmapEnhanced.tsx(27,3): error TS6133: 'CheckCircle' is declared but its value is never read.
+src/pages/RoadmapEnhanced.tsx(28,3): error TS6133: 'Play' is declared but its value is never read.
+src/pages/RoadmapEnhanced.tsx(37,1): error TS6192: All imports in import declaration are unused.
+src/pages/RoadmapEnhanced.tsx(118,10): error TS6133: 'selectedMilestone' is declared but its value is never read.
+src/pages/RoadmapEnhanced.tsx(118,29): error TS6133: 'setSelectedMilestone' is declared but its value is never read.
+src/pages/RoadmapEnhanced.tsx(207,21): error TS2322: Type '"Event"' is not assignable to type '"WebSite" | "NewsArticle" | "Article" | "BreadcrumbList" | "FAQPage"'.
+src/pages/RoadmapEnhanced.tsx(340,53): error TS6133: 'index' is declared but its value is never read.
+src/pages/SecurityBriefingRoom.tsx(27,24): error TS2345: Argument of type '(prev: never[]) => { id: number; type: string; severity: string; source: string; timestamp: string; }[]' is not assignable to parameter of type 'SetStateAction<never[]>'.
+  Type '(prev: never[]) => { id: number; type: string; severity: string; source: string; timestamp: string; }[]' is not assignable to type '(prevState: never[]) => never[]'.
+    Type '{ id: number; type: string; severity: string; source: string; timestamp: string; }[]' is not assignable to type 'never[]'.
+      Type '{ id: number; type: string; severity: string; source: string; timestamp: string; }' is not assignable to type 'never'.
+src/pages/SecurityBriefingRoom.tsx(175,29): error TS2339: Property 'id' does not exist on type 'never'.
+src/pages/SecurityBriefingRoom.tsx(180,29): error TS2339: Property 'type' does not exist on type 'never'.
+src/pages/SecurityBriefingRoom.tsx(180,45): error TS2339: Property 'severity' does not exist on type 'never'.
+src/pages/SecurityBriefingRoom.tsx(183,29): error TS2339: Property 'source' does not exist on type 'never'.
+src/pages/SecurityBriefingRoom.tsx(187,36): error TS2339: Property 'timestamp' does not exist on type 'never'.
+src/pages/SecurityHub.tsx(12,29): error TS6133: 'CardHeader' is declared but its value is never read.
+src/pages/SecurityHub.tsx(12,41): error TS6133: 'CardTitle' is declared but its value is never read.
+src/pages/SecurityScanner.tsx(9,1): error TS6133: 'ToolPageSEO' is declared but its value is never read.
+src/pages/SecurityScore.tsx(139,9): error TS6133: 'answered' is declared but its value is never read.
+src/pages/Startups.tsx(7,16): error TS6133: 'TabsContent' is declared but its value is never read.
+src/pages/Startups.tsx(11,3): error TS6133: 'Building2' is declared but its value is never read.
+src/pages/Startups.tsx(12,3): error TS6133: 'DollarSign' is declared but its value is never read.
+src/pages/Startups.tsx(13,3): error TS6133: 'Calendar' is declared but its value is never read.
+src/pages/Startups.tsx(14,3): error TS6133: 'Users' is declared but its value is never read.
+src/pages/Startups.tsx(17,3): error TS6133: 'Filter' is declared but its value is never read.
+src/pages/Startups.tsx(18,3): error TS6133: 'ArrowUpRight' is declared but its value is never read.
+src/pages/Startups.tsx(19,3): error TS6133: 'MapPin' is declared but its value is never read.
+src/pages/Startups.tsx(124,28): error TS6133: 'setSelectedIndustry' is declared but its value is never read.
+src/pages/SubscriptionManagement.tsx(14,3): error TS6133: 'Check' is declared but its value is never read.
+src/pages/SubscriptionManagement.tsx(17,3): error TS6133: 'Star' is declared but its value is never read.
+src/pages/SubscriptionManagement.tsx(22,10): error TS6133: 'selectedPlan' is declared but its value is never read.
+src/pages/SubscriptionManagement.tsx(22,24): error TS6133: 'setSelectedPlan' is declared but its value is never read.
+src/pages/SubscriptionManagement.tsx(25,9): error TS6133: 'userSubscription' is declared but its value is never read.
+src/pages/SubscriptionPlans.tsx(6,16): error TS6133: 'TabsContent' is declared but its value is never read.
+src/pages/TestFeatures.tsx(1,8): error TS6133: 'React' is declared but its value is never read.
+src/pages/tools/AIToolFinder.tsx(5,29): error TS6133: 'CardHeader' is declared but its value is never read.
+src/pages/tools/AIToolFinder.tsx(5,41): error TS6133: 'CardTitle' is declared but its value is never read.
+src/pages/tools/AIToolFinder.tsx(7,1): error TS6133: 'Badge' is declared but its value is never read.
+src/pages/tools/AIToolFinder.tsx(10,1): error TS6133: 'ToolPageSEO' is declared but its value is never read.
+src/pages/tools/BreachExplainer.tsx(10,1): error TS6133: 'ToolPageSEO' is declared but its value is never read.
+src/pages/tools/CommunityModerator.tsx(10,1): error TS6133: 'Separator' is declared but its value is never read.
+src/pages/tools/CommunityModerator.tsx(13,24): error TS6133: 'redactPII' is declared but its value is never read.
+src/pages/tools/CommunityModerator.tsx(20,3): error TS6133: 'ThumbsUp' is declared but its value is never read.
+src/pages/tools/CommunityModerator.tsx(115,10): error TS2741: Property 'canonical' is missing in type '{ title: string; description: string; }' but required in type 'SEOProps'.
+src/pages/tools/CommunityModerator.tsx(141,17): error TS2322: Type '{ title: string; message: string; }' is not assignable to type 'IntrinsicAttributes & ErrorStateProps'.
+  Property 'title' does not exist on type 'IntrinsicAttributes & ErrorStateProps'.
+src/pages/tools/CommunityModerator.tsx(216,43): error TS2741: Property 'variant' is missing in type '{}' but required in type 'LoadingStateProps'.
+src/pages/tools/ExploitRiskMeter.tsx(5,29): error TS6133: 'CardHeader' is declared but its value is never read.
+src/pages/tools/ExploitRiskMeter.tsx(5,41): error TS6133: 'CardTitle' is declared but its value is never read.
+src/pages/tools/ExploitRiskMeter.tsx(6,1): error TS6133: 'Badge' is declared but its value is never read.
+src/pages/tools/ExploitRiskMeter.tsx(9,1): error TS6133: 'ToolPageSEO' is declared but its value is never read.
+src/pages/tools/ExploitRiskMeter.tsx(14,3): error TS6133: 'RefreshCcw' is declared but its value is never read.
+src/pages/tools/ExploitRiskMeter.tsx(14,15): error TS6133: 'Zap' is declared but its value is never read.
+src/pages/tools/ExploitRiskMeter.tsx(367,9): error TS6133: 'highestRisk' is declared but its value is never read.
+src/pages/tools/GamingCopilot.tsx(9,1): error TS6133: 'Badge' is declared but its value is never read.
+src/pages/tools/GamingCopilot.tsx(11,10): error TS6133: 'LoadingState' is declared but its value is never read.
+src/pages/tools/GamingCopilot.tsx(16,36): error TS6133: 'Shield' is declared but its value is never read.
+src/pages/tools/GamingCopilot.tsx(17,3): error TS6133: 'Cpu' is declared but its value is never read.
+src/pages/tools/GamingCopilot.tsx(17,8): error TS6133: 'TrendingUp' is declared but its value is never read.
+src/pages/tools/GamingCopilot.tsx(17,20): error TS6133: 'Star' is declared but its value is never read.
+src/pages/tools/GamingCopilot.tsx(17,26): error TS6133: 'ChevronRight' is declared but its value is never read.
+src/pages/tools/GamingCopilot.tsx(17,40): error TS6133: 'Zap' is declared but its value is never read.
+src/pages/tools/GamingCopilot.tsx(17,45): error TS6133: 'Info' is declared but its value is never read.
+src/pages/tools/GamingCopilot.tsx(18,14): error TS6133: 'Sparkles' is declared but its value is never read.
+src/pages/tools/GamingCopilot.tsx(18,24): error TS6133: 'AlertTriangle' is declared but its value is never read.
+src/pages/tools/GamingCopilot.tsx(18,39): error TS6133: 'ThumbsUp' is declared but its value is never read.
+src/pages/tools/GamingCopilot.tsx(253,7): error TS6133: 'inCodeBlock' is declared but its value is never read.
+src/pages/tools/GamingCopilot.tsx(362,11): error TS6133: 'startTime' is declared but its value is never read.
+src/pages/tools/GamingCopilot.tsx(430,10): error TS2741: Property 'canonical' is missing in type '{ title: string; description: string; }' but required in type 'SEOProps'.
+src/pages/tools/GamingCopilot.tsx(460,17): error TS2322: Type '{ title: string; message: string; }' is not assignable to type 'IntrinsicAttributes & ErrorStateProps'.
+  Property 'title' does not exist on type 'IntrinsicAttributes & ErrorStateProps'.
+src/pages/tools/GamingSecurityCheckup.tsx(13,37): error TS6133: 'Activity' is declared but its value is never read.
+src/pages/tools/GamingSecurityCheckup.tsx(19,1): error TS6133: 'ToolPageSEO' is declared but its value is never read.
+src/pages/tools/IOCLookup.tsx(6,52): error TS6133: 'CardDescription' is declared but its value is never read.
+src/pages/tools/IOCLookup.tsx(11,1): error TS6133: 'ToolPageSEO' is declared but its value is never read.
+src/pages/tools/IOCLookup.tsx(16,3): error TS6133: 'ChevronRight' is declared but its value is never read.
+src/pages/tools/NewsPersonalizer.tsx(5,29): error TS6133: 'CardHeader' is declared but its value is never read.
+src/pages/tools/NewsPersonalizer.tsx(5,41): error TS6133: 'CardTitle' is declared but its value is never read.
+src/pages/tools/NewsPersonalizer.tsx(5,52): error TS6133: 'CardDescription' is declared but its value is never read.
+src/pages/tools/NewsPersonalizer.tsx(9,1): error TS6133: 'Separator' is declared but its value is never read.
+src/pages/tools/NewsPersonalizer.tsx(11,10): error TS6133: 'LoadingState' is declared but its value is never read.
+src/pages/tools/NewsPersonalizer.tsx(15,24): error TS6133: 'Share2' is declared but its value is never read.
+src/pages/tools/NewsPersonalizer.tsx(16,3): error TS6133: 'Filter' is declared but its value is never read.
+src/pages/tools/NewsPersonalizer.tsx(16,41): error TS6133: 'Shield' is declared but its value is never read.
+src/pages/tools/NewsPersonalizer.tsx(17,3): error TS6133: 'RefreshCw' is declared but its value is never read.
+src/pages/tools/NewsPersonalizer.tsx(295,10): error TS2741: Property 'canonical' is missing in type '{ title: string; description: string; }' but required in type 'SEOProps'.
+src/pages/tools/NewsPersonalizer.tsx(320,27): error TS2322: Type '{ title: string; message: string; }' is not assignable to type 'IntrinsicAttributes & ErrorStateProps'.
+  Property 'title' does not exist on type 'IntrinsicAttributes & ErrorStateProps'.
+src/pages/tools/NewsPersonalizer.tsx(404,19): error TS2322: Type '{ title: string; message: string; }' is not assignable to type 'IntrinsicAttributes & EmptyStateProps'.
+  Property 'message' does not exist on type 'IntrinsicAttributes & EmptyStateProps'.
+src/pages/tools/NexusGuard.tsx(45,1): error TS6133: 'ToolPageSEO' is declared but its value is never read.
+src/pages/tools/PatchRiskTracker.tsx(5,29): error TS6133: 'CardHeader' is declared but its value is never read.
+src/pages/tools/PatchRiskTracker.tsx(5,41): error TS6133: 'CardTitle' is declared but its value is never read.
+src/pages/tools/PatchRiskTracker.tsx(9,1): error TS6133: 'ToolPageSEO' is declared but its value is never read.
+src/pages/tools/PatchRiskTracker.tsx(13,49): error TS6133: 'Zap' is declared but its value is never read.
+src/pages/tools/PatchRiskTracker.tsx(418,9): error TS6133: 'highCount' is declared but its value is never read.
+src/pages/tools/PCBuilder.tsx(15,3): error TS6133: 'Share2' is declared but its value is never read.
+src/pages/tools/PCBuilder.tsx(15,50): error TS6133: 'Star' is declared but its value is never read.
+src/pages/tools/PCBuilder.tsx(22,1): error TS6133: 'ToolPageSEO' is declared but its value is never read.
+src/pages/tools/PCBuilder.tsx(314,39): error TS2769: No overload matches this call.
+  Overload 1 of 3, '(initialValue: string): MutableRefObject<string>', gave the following error.
+    Argument of type '() => string' is not assignable to parameter of type 'string'.
+  Overload 2 of 3, '(initialValue: string | null): RefObject<string>', gave the following error.
+    Argument of type '() => string' is not assignable to parameter of type 'string'.
+  Overload 3 of 3, '(initialValue?: undefined): MutableRefObject<string | undefined>', gave the following error.
+    Argument of type '() => string' is not assignable to parameter of type 'undefined'.
+src/pages/tools/PCBuilder.tsx(375,33): error TS2349: This expression is not callable.
+  Type 'String' has no call signatures.
+src/pages/tools/RecommendationEngine.tsx(1,40): error TS6133: 'useMemo' is declared but its value is never read.
+src/pages/tools/RecommendationEngine.tsx(10,1): error TS6133: 'Separator' is declared but its value is never read.
+src/pages/tools/RecommendationEngine.tsx(17,1): error TS6133: 'GameEntry' is declared but its value is never read.
+src/pages/tools/RecommendationEngine.tsx(19,13): error TS6133: 'Search' is declared but its value is never read.
+src/pages/tools/RecommendationEngine.tsx(19,21): error TS6133: 'Cpu' is declared but its value is never read.
+src/pages/tools/RecommendationEngine.tsx(20,41): error TS6133: 'Info' is declared but its value is never read.
+src/pages/tools/RecommendationEngine.tsx(125,62): error TS2339: Property 'id' does not exist on type 'Goal'.
+  Property 'id' does not exist on type '"both"'.
+src/pages/tools/RecommendationEngine.tsx(125,81): error TS2339: Property 'id' does not exist on type 'Budget'.
+  Property 'id' does not exist on type '"high"'.
+src/pages/tools/RecommendationEngine.tsx(174,10): error TS2741: Property 'canonical' is missing in type '{ title: string; description: string; }' but required in type 'SEOProps'.
+src/pages/tools/RecommendationEngine.tsx(200,17): error TS2322: Type '{ title: string; message: string; }' is not assignable to type 'IntrinsicAttributes & ErrorStateProps'.
+  Property 'title' does not exist on type 'IntrinsicAttributes & ErrorStateProps'.
+src/pages/tools/RecommendationEngine.tsx(326,39): error TS2741: Property 'variant' is missing in type '{}' but required in type 'LoadingStateProps'.
+src/pages/tools/RecommendationEngine.tsx(399,17): error TS2322: Type '{ title: string; message: string; action: { label: string; onClick: () => void; }; }' is not assignable to type 'IntrinsicAttributes & EmptyStateProps'.
+  Property 'message' does not exist on type 'IntrinsicAttributes & EmptyStateProps'.
+src/pages/tools/ReleasePredictor.tsx(1,8): error TS6133: 'React' is declared but its value is never read.
+src/pages/tools/ReleasePredictor.tsx(5,29): error TS6133: 'CardHeader' is declared but its value is never read.
+src/pages/tools/ReleasePredictor.tsx(5,41): error TS6133: 'CardTitle' is declared but its value is never read.
+src/pages/tools/ReleasePredictor.tsx(5,52): error TS6133: 'CardDescription' is declared but its value is never read.
+src/pages/tools/ReleasePredictor.tsx(9,1): error TS6133: 'Separator' is declared but its value is never read.
+src/pages/tools/ReleasePredictor.tsx(11,24): error TS6133: 'EmptyState' is declared but its value is never read.
+src/pages/tools/ReleasePredictor.tsx(15,13): error TS6133: 'TrendingUp' is declared but its value is never read.
+src/pages/tools/ReleasePredictor.tsx(15,25): error TS6133: 'TrendingDown' is declared but its value is never read.
+src/pages/tools/ReleasePredictor.tsx(15,39): error TS6133: 'Minus' is declared but its value is never read.
+src/pages/tools/ReleasePredictor.tsx(15,46): error TS6133: 'Clock' is declared but its value is never read.
+src/pages/tools/ReleasePredictor.tsx(15,53): error TS6133: 'Shield' is declared but its value is never read.
+src/pages/tools/ReleasePredictor.tsx(17,3): error TS6133: 'Info' is declared but its value is never read.
+src/pages/tools/ReleasePredictor.tsx(17,9): error TS6133: 'Star' is declared but its value is never read.
+src/pages/tools/ReleasePredictor.tsx(17,15): error TS6133: 'Zap' is declared but its value is never read.
+src/pages/tools/ReleasePredictor.tsx(20,1): error TS6133: 'cn' is declared but its value is never read.
+src/pages/tools/ReleasePredictor.tsx(245,10): error TS2741: Property 'canonical' is missing in type '{ title: string; description: string; }' but required in type 'SEOProps'.
+src/pages/tools/ReleasePredictor.tsx(286,17): error TS2322: Type '{ title: string; message: string; }' is not assignable to type 'IntrinsicAttributes & ErrorStateProps'.
+  Property 'title' does not exist on type 'IntrinsicAttributes & ErrorStateProps'.
+src/pages/tools/ReleasePredictor.tsx(292,39): error TS2741: Property 'variant' is missing in type '{}' but required in type 'LoadingStateProps'.
+src/pages/tools/SentimentAnalyzer.tsx(10,1): error TS6133: 'Separator' is declared but its value is never read.
+src/pages/tools/SentimentAnalyzer.tsx(13,24): error TS6133: 'EmptyState' is declared but its value is never read.
+src/pages/tools/SentimentAnalyzer.tsx(164,9): error TS2322: Type 'SentimentResult | undefined' is not assignable to type 'SentimentResult'.
+  Type 'undefined' is not assignable to type 'SentimentResult'.
+src/pages/tools/SentimentAnalyzer.tsx(228,10): error TS2741: Property 'canonical' is missing in type '{ title: string; description: string; }' but required in type 'SEOProps'.
+src/pages/tools/SentimentAnalyzer.tsx(282,39): error TS2741: Property 'variant' is missing in type '{}' but required in type 'LoadingStateProps'.
+src/pages/tools/SentimentAnalyzer.tsx(310,17): error TS2322: Type '{ title: string; message: string; }' is not assignable to type 'IntrinsicAttributes & NotFoundStateProps'.
+  Property 'title' does not exist on type 'IntrinsicAttributes & NotFoundStateProps'.
+src/pages/tools/SentimentAnalyzer.tsx(318,17): error TS2322: Type '{ title: string; message: string; }' is not assignable to type 'IntrinsicAttributes & ErrorStateProps'.
+  Property 'title' does not exist on type 'IntrinsicAttributes & ErrorStateProps'.
+src/pages/tools/SteamScanner.tsx(34,1): error TS6133: 'ToolPageSEO' is declared but its value is never read.
+src/pages/tools/SteamScanner.tsx(238,7): error TS2322: Type 'string' is not assignable to type '"excellent" | "good" | "fair" | "needs_work"'.
+src/pages/tools/SteamScanner.tsx(256,8): error TS2304: Cannot find name 'SEO'.
+src/pages/tools/ThreatScanner.tsx(6,52): error TS6133: 'CardDescription' is declared but its value is never read.
+src/pages/tools/ThreatScanner.tsx(11,1): error TS6133: 'Separator' is declared but its value is never read.
+src/pages/tools/ThreatScanner.tsx(13,10): error TS6133: 'LoadingState' is declared but its value is never read.
+src/pages/tools/ThreatScanner.tsx(13,51): error TS6133: 'EmptyState' is declared but its value is never read.
+src/pages/tools/ThreatScanner.tsx(17,3): error TS6133: 'Search' is declared but its value is never read.
+src/pages/tools/ThreatScanner.tsx(17,19): error TS6133: 'AlertTriangle' is declared but its value is never read.
+src/pages/tools/ThreatScanner.tsx(18,14): error TS6133: 'ExternalLink' is declared but its value is never read.
+src/pages/tools/ThreatScanner.tsx(18,42): error TS6133: 'Server' is declared but its value is never read.
+src/pages/tools/ThreatScanner.tsx(19,31): error TS6133: 'Zap' is declared but its value is never read.
+src/pages/tools/ThreatScanner.tsx(202,11): error TS6133: 'startTime' is declared but its value is never read.
+src/pages/tools/ThreatScanner.tsx(329,10): error TS2741: Property 'canonical' is missing in type '{ title: string; description: string; }' but required in type 'SEOProps'.
+src/pages/tools/ThreatScanner.tsx(433,17): error TS2322: Type '{ title: string; message: string; }' is not assignable to type 'IntrinsicAttributes & NotFoundStateProps'.
+  Property 'title' does not exist on type 'IntrinsicAttributes & NotFoundStateProps'.
+src/pages/tools/ThreatScanner.tsx(441,17): error TS2322: Type '{ title: string; message: string; }' is not assignable to type 'IntrinsicAttributes & ErrorStateProps'.
+  Property 'title' does not exist on type 'IntrinsicAttributes & ErrorStateProps'.
+src/pages/tools/ZeroTrustQuiz.tsx(10,1): error TS6133: 'ToolPageSEO' is declared but its value is never read.
+src/pages/tools/ZeroTrustQuiz.tsx(13,20): error TS6133: 'Share2' is declared but its value is never read.
+src/pages/ToolsHub.tsx(21,3): error TS6133: 'BookOpen' is declared but its value is never read.
+src/pages/Topics.tsx(9,36): error TS6133: 'Filter' is declared but its value is never read.
+src/pages/Topics.tsx(9,54): error TS6133: 'Eye' is declared but its value is never read.
+src/pages/Topics.tsx(9,92): error TS6133: 'Users' is declared but its value is never read.
+src/pages/Topics.tsx(9,99): error TS6133: 'Zap' is declared but its value is never read.
+src/pages/Topics.tsx(9,161): error TS6133: 'RefreshCw' is declared but its value is never read.
+src/pages/Topics.tsx(9,172): error TS6133: 'ChevronRight' is declared but its value is never read.
+src/pages/Topics.tsx(9,186): error TS6133: 'Star' is declared but its value is never read.
+src/pages/Topics.tsx(75,24): error TS6133: 'setSearchParams' is declared but its value is never read.
+src/pages/Topics.tsx(87,57): error TS2345: Argument of type '{}' is not assignable to parameter of type 'ContentItem[]'.
+  Type '{}' is missing the following properties from type 'ContentItem[]': length, pop, push, concat, and 29 more.
+src/pages/TutorialDetail.tsx(22,30): error TS6133: 'Tutorial' is declared but its value is never read.
+src/pages/TutorialDetail.tsx(119,24): error TS2367: This comparison appears to be unintentional because the types '"windows" | "macos" | "linux"' and '"all"' have no overlap.
+src/pages/TutorialDetail.tsx(277,28): error TS2367: This comparison appears to be unintentional because the types '"windows" | "macos" | "linux"' and '"all"' have no overlap.
+src/pages/Tutorials.tsx(32,19): error TS6133: 'isLoading' is declared but its value is never read.
+src/pages/VRCyberTraining.tsx(8,9): error TS6133: 'navigate' is declared but its value is never read.
+src/utils/domSafety.ts(71,26): error TS2339: Property 'classList' does not exist on type 'DOMTokenList'.
+src/utils/domSafety.ts(81,26): error TS2339: Property 'classList' does not exist on type 'DOMTokenList'.

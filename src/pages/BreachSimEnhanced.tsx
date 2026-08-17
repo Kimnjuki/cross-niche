@@ -805,6 +805,7 @@ export default function BreachSimEnhanced() {
                         </div>
                       </div>
                     </div>
+                  </div>
                   </CardContent>
                 </Card>
             </div>
