@@ -63,15 +63,21 @@ export default defineConfig(({ mode }: ConfigEnv) => {
     mode === "development" && componentTagger(),
   ];
 
-  // Prerender plugin: DISABLED — causes build failures in Docker
-  // Static HTML content is provided via inline script + hidden nav in index.html
-  // Googlebot executes JavaScript and will see the article body via React rendering
-  // if (isProd && process.env.PRERENDER !== "0") {
-  //   try {
-  //     const vitePrerender = require("vite-plugin-prerender");
-  //     plugins.push(vitePrerender.default({ staticDir: path.join(__dirname, "dist"), routes: prerenderRoutes }));
-  //   } catch {}
-  // }
+  // Prerender plugin: statically generate critical routes for crawlers.
+  // If this causes build failures in your environment, set PRERENDER=0 to disable.
+  if (isProd && process.env.PRERENDER !== "0") {
+    try {
+      const vitePrerender = require("vite-plugin-prerender");
+      plugins.push(
+        vitePrerender.default({
+          staticDir: path.join(__dirname, "dist"),
+          routes: prerenderRoutes,
+        })
+      );
+    } catch (error) {
+      console.warn("vite-plugin-prerender disabled:", error.message);
+    }
+  }
 
   return {
     server: {

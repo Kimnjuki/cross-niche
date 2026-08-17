@@ -24,6 +24,7 @@ const SECTION_LINKS = [
   { to: '/breach-sim', label: 'Breach Sim' },
   { to: '/nexus-intersection', label: 'Nexus Intersection' },
   { to: '/security-score', label: 'Security Score' },
+  { to: '/seo-checklist', label: 'SEO Checklist' },
   { to: '/reviews', label: 'Reviews' },
   { to: '/media', label: 'Media' },
   { to: '/about', label: 'About' },

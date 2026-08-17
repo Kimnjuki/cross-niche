@@ -331,6 +331,7 @@ export default function Article() {
             alt={article.title ?? 'Article'}
             fallbackSrc={getPlaceholderByNiche(article.niche, article.slug ?? article.id)}
             className="w-full aspect-video rounded-xl"
+            priority
           />
         </div>
 

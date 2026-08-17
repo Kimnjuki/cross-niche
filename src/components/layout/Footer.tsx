@@ -117,6 +117,9 @@ export function Footer() {
               <Link to="/sitemap" className="text-muted-foreground hover:text-foreground transition-colors">
                 HTML Sitemap
               </Link>
+              <Link to="/seo-checklist" className="text-muted-foreground hover:text-foreground transition-colors">
+                SEO Audit Checklist
+              </Link>
             </div>
           </div>
 

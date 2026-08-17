@@ -136,3 +136,228 @@ export const seedSampleContent = mutation({
     return { created };
   },
 });
+
+const PLACEHOLDER_TITLE_PATTERNS = [
+  /^Sec\s+\d+(\s*\|.*)?$/i,
+  /^Tech\s+\d+(\s*\|.*)?$/i,
+  /^Game\s+\d+(\s*\|.*)?$/i,
+  /^Rivacy(\s*\|.*)?$/i,
+];
+
+function isPlaceholderTitle(title: string): boolean {
+  return PLACEHOLDER_TITLE_PATTERNS.some((pattern) => pattern.test(title.trim()));
+}
+
+/**
+ * Audit published content for placeholder/seed titles and either delete or
+ * demote them to draft so they are no longer publicly indexable.
+ */
+export const cleanPlaceholderContent = mutation({
+  args: {},
+  handler: async (ctx) => {
+    const published = await ctx.db
+      .query("content")
+      .withIndex("by_status", (q) => q.eq("status", "published"))
+      .collect();
+
+    const placeholders = published.filter((c) => isPlaceholderTitle(c.title));
+    let deleted = 0;
+    let drafted = 0;
+    const affected: Array<{ _id: string; title: string; action: "deleted" | "drafted" }> = [];
+
+    for (const item of placeholders) {
+      if (item.body && item.body.trim().length > 0) {
+        await ctx.db.patch(item._id, {
+          status: "draft",
+          isDeleted: true,
+          deletedAt: Date.now(),
+        });
+        drafted++;
+        affected.push({ _id: item._id, title: item.title, action: "drafted" });
+      } else {
+        await ctx.db.delete(item._id);
+        deleted++;
+        affected.push({ _id: item._id, title: item.title, action: "deleted" });
+      }
+    }
+
+  console.log(`Placeholder cleanup complete`, { deleted, drafted, total: placeholders.length });
+  return { deleted, drafted, total: placeholders.length, affected };
+},
+});
+
+/**
+ * Find duplicate content rows whose titles match case-insensitively and
+ * report merge candidates. Intended to be run manually, then the deprecated
+ * slug can be redirected in next.config.js.
+ */
+export const findDuplicateContent = query({
+  args: {},
+  handler: async (ctx) => {
+    const all = await ctx.db.query("content").collect();
+    const byLowerTitle = new Map<string, typeof all>();
+
+    for (const item of all) {
+      const key = item.title.trim().toLowerCase();
+      const existing = byLowerTitle.get(key) ?? [];
+      existing.push(item);
+      byLowerTitle.set(key, existing);
+    }
+
+    const duplicates = Array.from(byLowerTitle.entries())
+      .filter(([, items]) => items.length > 1)
+      .map(([title, items]) => ({
+        title,
+        ids: items.map((i) => i._id),
+        slugs: items.map((i) => i.slug),
+        statuses: items.map((i) => i.status),
+        publishedAt: items.map((i) => i.publishedAt),
+      }));
+
+    return { duplicates, totalDuplicateGroups: duplicates.length };
+  },
+});
+
+/**
+ * Merge duplicate content rows for a specific title. Keeps the row with the
+ * earliest _creationTime as canonical, demotes the rest to draft+deleted, and
+ * rewires internalLinks to point at the canonical row.
+ */
+export const mergeDuplicateContent = mutation({
+  args: {
+    title: v.string(),
+  },
+  handler: async (ctx, args) => {
+    const matches = await ctx.db
+      .query("content")
+      .filter((q) => q.eq(q.field("title"), args.title))
+      .collect();
+
+    const normalized = matches.map((m) => ({
+      ...m,
+      lowerTitle: m.title.trim().toLowerCase(),
+    }));
+
+    const byLowerTitle = new Map<string, typeof normalized>();
+    for (const item of normalized) {
+      const existing = byLowerTitle.get(item.lowerTitle) ?? [];
+      existing.push(item);
+      byLowerTitle.set(item.lowerTitle, existing);
+    }
+
+    const duplicateGroup = byLowerTitle.get(args.title.trim().toLowerCase());
+    if (!duplicateGroup || duplicateGroup.length < 2) {
+      return { merged: 0, message: "No duplicate group found for the provided title." };
+    }
+
+    const canonical = duplicateGroup[0];
+    const deprecated = duplicateGroup.slice(1);
+
+    let internalLinksUpdated = 0;
+    for (const dep of deprecated) {
+      const links = await ctx.db
+        .query("internalLinks")
+        .withIndex("by_target", (q) => q.eq("targetContentId", dep._id))
+        .collect();
+
+      for (const link of links) {
+        await ctx.db.patch(link._id, {
+          targetContentId: canonical._id,
+        });
+        internalLinksUpdated++;
+      }
+
+      await ctx.db.patch(dep._id, {
+        status: "draft",
+        isDeleted: true,
+        deletedAt: Date.now(),
+        canonicalUrl: `/article/${canonical.slug}`,
+      });
+    }
+
+    await ctx.db.patch(canonical._id, {
+      canonicalUrl: `/article/${canonical.slug}`,
+      lastModifiedAt: Date.now(),
+    });
+
+    return {
+      merged: deprecated.length,
+      canonicalId: canonical._id,
+      canonicalSlug: canonical.slug,
+      deprecatedSlugs: deprecated.map((d) => d.slug),
+      internalLinksUpdated,
+    };
+  },
+});
+
+/**
+ * Update SEO fields for a content row identified by slug.
+ */
+export const updateSEOBySlug = mutation({
+  args: {
+    slug: v.string(),
+    metaTitle: v.optional(v.string()),
+    seoDescription: v.optional(v.string()),
+    focusKeyword: v.optional(v.string()),
+  },
+  handler: async (ctx, args) => {
+    const existing = await ctx.db
+      .query("content")
+      .withIndex("by_slug", (q) => q.eq("slug", args.slug))
+      .first();
+
+    if (!existing) {
+      throw new Error(`Content with slug "${args.slug}" not found`);
+    }
+
+    await ctx.db.patch(existing._id, {
+      metaTitle: args.metaTitle,
+      seoDescription: args.seoDescription,
+      focusKeyword: args.focusKeyword,
+      lastModifiedAt: Date.now(),
+    });
+
+    return { success: true, contentId: existing._id };
+  },
+});
+
+/**
+ * Update siteConfig with new homepage positioning.
+ */
+export const updateHomepagePositioning = mutation({
+  args: {
+    title: v.string(),
+    description: v.string(),
+    heroHeadline: v.string(),
+    heroSubheadline: v.string(),
+    primaryCta: v.string(),
+    secondaryCta: v.string(),
+  },
+  handler: async (ctx, args) => {
+    const now = Date.now();
+
+    const upsert = async (key: string, value: any) => {
+      const existing = await ctx.db
+        .query("siteConfig")
+        .withIndex("by_key", (q) => q.eq("key", key))
+        .first();
+
+      if (existing) {
+        await ctx.db.patch(existing._id, { value, updatedAt: now });
+      } else {
+        await ctx.db.insert("siteConfig", { key, value, updatedAt: now });
+      }
+    };
+
+    await upsert("homepage.title", args.title);
+    await upsert("homepage.description", args.description);
+    await upsert("homepage.heroHeadline", args.heroHeadline);
+    await upsert("homepage.heroSubheadline", args.heroSubheadline);
+    await upsert("homepage.primaryCta", args.primaryCta);
+    await upsert("homepage.secondaryCta", args.secondaryCta);
+
+    return { success: true };
+  },
+});
+
+

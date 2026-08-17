@@ -141,6 +141,9 @@ const CommunityThreats = lazy(() => import("./pages/CommunityThreats"));
 const NexusStudio = lazy(() => import("./pages/NexusStudio"));
 const GamingSecurityGuides = lazy(() => import("./pages/GamingSecurityGuides"));
 
+// SEO Tools
+const SEOChecklist = lazy(() => import("./pages/SEOChecklist"));
+
 const queryClient = new QueryClient();
 
 const App = () => (
@@ -222,6 +225,9 @@ const App = () => (
                     <Route path="/quality-guidelines" element={<QualityGuidelines />} />
                     <Route path="/content-policy" element={<ContentPolicy />} />
                     <Route path="/community-guidelines" element={<CommunityGuidelines />} />
+                    {/* SEO Tools */}
+                    <Route path="/seo-checklist" element={<SEOChecklist />} />
+
                     {/* Utility pages */}
                     <Route path="/sitemap" element={<Sitemap />} />
                     <Route path="/nexus-intersection" element={<NexusIntersection />} />

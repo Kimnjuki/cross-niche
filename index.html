@@ -10,7 +10,7 @@
     <script>
       (function () {
         var routes = {
-          '/': { t: 'The Grid Nexus \u2013 Tech, Security & Gaming News', d: 'Breaking technology news, cybersecurity analysis, and gaming guides. AI insights, security intelligence, and expert tech coverage.' },
+          '/': { t: 'Gaming Security Intelligence for Players | The Grid Nexus', d: 'Protect gaming accounts, PCs, and identity with security checkups, threat explainers, and tested guides. Practical gaming-security intelligence from The Grid Nexus.' },
           '/tech': { t: 'Technology News & Analysis 2026 | The Grid Nexus', d: 'Technology news and analysis for 2026. AI breakthroughs, hardware releases, cloud computing, and emerging tech from The Grid Nexus.' },
           '/security': { t: 'Cybersecurity News & Threat Intelligence 2026 | The Grid Nexus', d: 'Stay ahead of cyber threats. Zero-day vulnerabilities, breach analyses, threat intelligence, and security guides from The Grid Nexus.' },
           '/gaming': { t: 'Gaming News, Reviews & Releases 2026 | The Grid Nexus', d: 'Latest gaming news, reviews, and release dates. PS5, PC, Xbox, and esports coverage from The Grid Nexus gaming desk.' },
@@ -51,7 +51,7 @@
           else if (p === '/article/router-security-gamers-2026') { m = { t: 'Router Security for Gamers 2026: CVE-2025-7850, KadNap Exploits, and Zero-Trust Networking | The Grid Nexus', d: 'CVE-2025-7850 TP-Link exploit, KadNap Asus backdoor campaign, and the complete router hardening checklist for gamers including VLAN segmentation.' }; }
           else if (p.indexOf('/article/') === 0) {
             var slug = p.replace('/article/', '').replace(/-/g, ' ');
-            m = { t: slug.charAt(0).toUpperCase() + slug.slice(1) + ' | The Grid Nexus', d: 'Read the full story on The Grid Nexus \u2013 your source for tech, cybersecurity, and gaming intelligence.' };
+            m = { t: slug.charAt(0).toUpperCase() + slug.slice(1) + ' | The Grid Nexus', d: slug.charAt(0).toUpperCase() + slug.slice(1) + '. Expert gaming-security guide and threat analysis from The Grid Nexus.' };
           } else {
             m = routes['/'];
           }
@@ -118,8 +118,8 @@
     <meta name="geo.placename" content="United States" />
 
     <!-- ── Default title (overwritten by per-route pre-JS script) ── -->
-    <title>The Grid Nexus – Tech, Security &amp; Gaming News</title>
-    <meta name="keywords" content="technology news, cybersecurity, gaming, tech intelligence, AI technology, cyber threats, gaming hardware, tech reviews, security updates, gaming industry" />
+    <title>Gaming Security Intelligence for Players | The Grid Nexus</title>
+    <meta name="keywords" content="gaming security, account protection, PC security, threat intelligence, cybersecurity for gamers, gaming guides" />
     <meta name="author" content="The Grid Nexus" />
 
     <!-- ── hreflang (fixes "Missing hreflang" warning) ────────────────── -->
@@ -158,11 +158,15 @@
     <link rel="manifest" href="/site.webmanifest" />
     <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#0f172a" />
 
-    <!-- ── Resource hints ───────────────────────────────────────────── -->
+    <!-- ── Resource hints ───────────────────────────────────────────────── -->
     <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
     <link rel="dns-prefetch" href="https://www.google-analytics.com" />
+    <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
+    <link rel="dns-prefetch" href="https://fonts.gstatic.com" />
     <link rel="preconnect" href="https://www.googletagmanager.com" crossorigin />
     <link rel="preconnect" href="https://www.google-analytics.com" crossorigin />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 
     <!-- ── Clarity error suppression ────────────────────────────────── -->
     <script>
@@ -232,14 +236,14 @@
             "email": "contact@thegridnexus.com",
             "availableLanguage": ["English"]
           },
-          "description": "Tech, Security & Gaming Intelligence — breaking news, expert analysis, and comprehensive guides."
+          "description": "Practical gaming-security intelligence: protect gaming accounts, devices, identity, and competitive play with expert guides and free tools."
         },
         {
           "@type": "WebSite",
           "@id": "https://thegridnexus.com/#website",
           "url": "https://thegridnexus.com",
           "name": "The Grid Nexus",
-          "description": "Breaking technology news, cybersecurity analysis, and gaming guides.",
+          "description": "Practical gaming-security intelligence: protect gaming accounts, devices, identity, and competitive play with expert guides and free tools.",
           "publisher": { "@id": "https://thegridnexus.com/#organization" },
           "potentialAction": {
             "@type": "SearchAction",

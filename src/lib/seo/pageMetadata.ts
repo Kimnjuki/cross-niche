@@ -24,9 +24,9 @@ interface PageMeta {
 export const PAGE_METADATA: Record<string, PageMeta> = {
   // ── Homepage ──────────────────────────────────────────────────────────
   '/': {
-    title: 'The Grid Nexus – Tech, Security & Gaming News',        // 48 chars
-    description: 'Breaking technology news, cybersecurity intelligence, and gaming coverage. Expert analysis, guides, and real-time threat alerts from The Grid Nexus.',
-    h1: 'Tech, Security & Gaming Intelligence',
+    title: 'Gaming Security Intelligence for Players | The Grid Nexus',        // 55 chars
+    description: 'Protect gaming accounts, PCs, and identity with security checkups, threat explainers, and tested guides. Practical gaming-security intelligence from The Grid Nexus.',
+    h1: 'Gaming security intelligence for players, parents, and competitive teams.',
   },
 
   // ── Content categories ────────────────────────────────────────────────
@@ -261,6 +261,13 @@ export const PAGE_METADATA: Record<string, PageMeta> = {
     title: '2FA Setup for Gaming Accounts 2026 | Complete Guide',
     description: 'Enable two-factor authentication for all your gaming accounts. Step-by-step guides for Steam, Epic, PlayStation, Xbox, and Nintendo accounts.',
     h1: '2FA Setup for Gaming Accounts 2026',
+  },
+
+  // ── SEO Tools ──────────────────────────────────────────────────────────
+  '/seo-checklist': {
+    title: 'SEO Audit Checklist – Issues & Ideas | The Grid Nexus',  // 56 chars
+    description: 'Track remediation of SEO issues and improvement ideas from our audit. Interactive checklist covering security headers, content quality, hreflang, canonicals, and more.',
+    h1: 'SEO Audit Checklist',
   },
 
   // ── Utility ───────────────────────────────────────────────────────────

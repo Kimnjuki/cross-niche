@@ -278,3 +278,51 @@ export const upsertAnchorTextAnalysis = mutation({
   },
 });
 
+/**
+ * Scan all internalLinks rows and flag targets whose content is missing,
+ * deleted, or not-published. Populates/updates the brokenLinks table.
+ */
+export const scanBrokenInternalLinks = mutation({
+  args: {},
+  handler: async (ctx) => {
+    const links = await ctx.db.query("internalLinks").collect();
+    const now = Date.now();
+    let created = 0;
+    let updated = 0;
+
+    for (const link of links) {
+      const target = await ctx.db.get(link.targetContentId);
+      const isBroken = !target || target.isDeleted === true || (target.status !== "published" && target.status !== "new" && target.status !== "unlisted");
+
+      if (!isBroken) continue;
+
+      const existing = await ctx.db
+        .query("brokenLinks")
+        .withIndex("by_url", (q) => q.eq("url", `/article/${target?.slug ?? link.targetContentId}`))
+        .first();
+
+      if (existing) {
+        await ctx.db.patch(existing._id, {
+          statusCode: 404,
+          lastChecked: now,
+          fixed: false,
+        });
+        updated++;
+      } else {
+        await ctx.db.insert("brokenLinks", {
+          url: `/article/${target?.slug ?? link.targetContentId}`,
+          statusCode: 404,
+          backlinkCount: 1,
+          referringDomains: [],
+          lastChecked: now,
+          fixed: false,
+        });
+        created++;
+      }
+    }
+
+    return { created, updated, totalLinksScanned: links.length };
+  },
+});
+
+

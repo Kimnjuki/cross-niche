@@ -22,6 +22,10 @@
     "validate:seo": "node scripts/validate-site.mjs",
     "validate:all": "npm run validate:seo && npm run lint && npx tsc --noEmit",
     "audit:seo": "node scripts/audit-seo.mjs",
+    "audit:placeholder": "tsx scripts/audit-placeholder-content.ts",
+    "clean:placeholder": "tsx scripts/clean-placeholder-content.ts",
+    "convex:clean-placeholder": "npx convex run admin:cleanPlaceholderContent",
+    "phase0:seo": "node scripts/run-phase0-seo-hygiene.mjs",
     "generate:og": "powershell -ExecutionPolicy Bypass -File scripts/generate-og.ps1",
     "prebuild:seo": "npm run generate:feed && npm run generate:placeholders && npm run generate:sitemaps"
   },

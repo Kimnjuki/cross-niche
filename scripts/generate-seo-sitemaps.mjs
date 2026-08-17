@@ -9,8 +9,7 @@
  *   - "Discovered/Crawled - currently not indexed" (SPA pages Google can't render)
  *   - "Duplicate, Google chose different canonical" (route/canonical mismatch)
  *
- * Data source: src/data/mockData.ts (the only article source available when
- * Convex is disabled in the Docker production build).
+ * Data source: Convex (preferred) or src/data/mockData.ts (fallback).
  *
  * Run: node scripts/generate-seo-sitemaps.mjs
  */
@@ -25,12 +24,11 @@ const projectRoot = path.resolve(__dirname, '..');
 const BASE_URL = 'https://thegridnexus.com';
 const TODAY = new Date().toISOString().split('T')[0];
 
-// ── Parse mockData.ts ──────────────────────────────────────────────────────
+// ── Parse mockData.ts ────────────────────────────────────────────────────────
 function parseMockArticles() {
   const mockDataPath = path.join(projectRoot, 'src', 'data', 'mockData.ts');
   const content = fs.readFileSync(mockDataPath, 'utf8');
 
-  // Split into article object blocks (each starts with `{` and has `id:`)
   const blocks = content.split(/\n\s*\{\n/).slice(1);
   const articles = [];
 
@@ -51,7 +49,6 @@ function parseMockArticles() {
       niche: nicheMatch ? nicheMatch[1] : 'tech',
     };
 
-    // Only include articles with a proper slug (SEO-friendly URL)
     if (article.slug && article.slug.length > 3) {
       articles.push(article);
     }
@@ -60,7 +57,56 @@ function parseMockArticles() {
   return articles;
 }
 
-// ── XML helpers ────────────────────────────────────────────────────────────
+// ── Query Convex for published content ──────────────────────────────────────
+async function fetchConvexContent() {
+  const convexUrl = process.env.VITE_CONVEX_URL || process.env.CONVEX_URL;
+  if (!convexUrl) return null;
+
+  try {
+    const { ConvexHttpClient } = await import('convex/browser');
+    const client = new ConvexHttpClient(convexUrl);
+
+    const [contentRows, guides, topics] = await Promise.all([
+      client.query('content:getAllPublishedContent', {}).catch(() => []),
+      client.query('guides:list', {}).catch(() => []),
+      client.query('topics:list', {}).catch(() => []),
+    ]);
+
+    const articles = (contentRows ?? [])
+      .filter((c) => c.slug && c.slug.length > 3 && c.status === 'published' && c.isDeleted !== true)
+      .map((c) => ({
+        slug: c.slug,
+        title: c.title,
+        publishedAt: c.publishedAt ? new Date(c.publishedAt).toISOString().split('T')[0] : TODAY,
+        niche: c.contentType ?? 'tech',
+      }));
+
+    const guideUrls = (guides ?? [])
+      .filter((g) => g.slug && g.isPublished !== false)
+      .map((g) => ({
+        slug: g.slug,
+        title: g.title,
+        publishedAt: g.publishedAt ? new Date(g.publishedAt).toISOString().split('T')[0] : TODAY,
+        niche: 'guides',
+      }));
+
+    const topicUrls = (topics ?? [])
+      .filter((t) => t.slug)
+      .map((t) => ({
+        slug: t.slug,
+        title: t.name,
+        publishedAt: TODAY,
+        niche: t.category ?? 'topics',
+      }));
+
+    return [...articles, ...guideUrls, ...topicUrls];
+  } catch (error) {
+    console.warn('Failed to fetch Convex content for sitemap:', error.message);
+    return null;
+  }
+}
+
+// ── XML helpers ─────────────────────────────────────────────────────────────
 function escapeXml(str) {
   if (!str) return '';
   const amp = String.fromCharCode(38);
@@ -81,7 +127,7 @@ function urlEntry(loc, lastmod, changefreq, priority) {
   </url>`;
 }
 
-// ── Static pages (only routes that exist in App.tsx and are indexable) ────
+// ── Static pages (only routes that exist in App.tsx and are indexable) ──────
 function getStaticPages() {
   return [
     { loc: `${BASE_URL}/`, lastmod: TODAY, changefreq: 'daily', priority: 1.0 },
@@ -150,23 +196,21 @@ function getStaticPages() {
   ];
 }
 
-// ── Generate sitemap.xml (static pages + featured articles) ───────────────
+// ── Generate sitemap.xml (static pages + dynamic content) ───────────────────
 function generateMainSitemap(articles) {
   const urls = [...getStaticPages()];
   const seen = new Set(urls.map((u) => u.loc));
 
-  // Add the 4 featured/hero articles (they have dedicated static content in index.html)
-  const featuredSlugs = [
-    'ai-security-threats-2026',
-    'gaming-pc-security-hardening-guide-2026',
-    'steam-deck-2-specs-release-date-leaks',
-    'router-security-gamers-2026',
-  ];
-  for (const slug of featuredSlugs) {
-    const loc = `${BASE_URL}/article/${slug}`;
+  for (const article of articles) {
+    const loc = article.niche === 'guides'
+      ? `${BASE_URL}/guides/${article.slug}`
+      : article.niche === 'topics'
+        ? `${BASE_URL}/topics/${article.slug}`
+        : `${BASE_URL}/article/${article.slug}`;
+
     if (!seen.has(loc)) {
       seen.add(loc);
-      urls.push({ loc, lastmod: TODAY, changefreq: 'weekly', priority: 0.9 });
+      urls.push({ loc, lastmod: article.publishedAt || TODAY, changefreq: 'weekly', priority: 0.8 });
     }
   }
 
@@ -179,31 +223,34 @@ ${urls.map((u) => urlEntry(u.loc, u.lastmod, u.changefreq, u.priority)).join('\n
   return xml;
 }
 
-// ── Generate sitemap-articles.xml (ALL valid article URLs) ────────────────
+// ── Generate sitemap-articles.xml (ALL valid article URLs) ──────────────────
 function generateArticlesSitemap(articles) {
-  const urls = articles.map((a) => ({
-    loc: `${BASE_URL}/article/${a.slug}`,
-    lastmod: a.publishedAt || TODAY,
-    changefreq: 'weekly',
-    priority: 0.7,
-  }));
+  const articleUrls = articles
+    .filter((a) => a.niche !== 'guides' && a.niche !== 'topics')
+    .map((a) => ({
+      loc: `${BASE_URL}/article/${a.slug}`,
+      lastmod: a.publishedAt || TODAY,
+      changefreq: 'weekly',
+      priority: 0.7,
+    }));
 
   const xml = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
         xmlns:xhtml="http://www.w3.org/1999/xhtml"
         xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
-${urls.map((u) => urlEntry(u.loc, u.lastmod, u.changefreq, u.priority)).join('\n')}
+${articleUrls.map((u) => urlEntry(u.loc, u.lastmod, u.changefreq, u.priority)).join('\n')}
 </urlset>`;
   return xml;
 }
 
-// ── Generate sitemap-news.xml (recent articles, max 1000) ─────────────────
+// ── Generate sitemap-news.xml (recent articles, max 1000) ──────────────────
 function generateNewsSitemap(articles) {
-  // Sort by publishedAt descending, take most recent
-  const sorted = [...articles].sort((a, b) => (b.publishedAt || '').localeCompare(a.publishedAt || ''));
-  const recent = sorted.slice(0, 1000);
+  const articleEntries = articles
+    .filter((a) => a.niche !== 'guides' && a.niche !== 'topics')
+    .sort((a, b) => (b.publishedAt || '').localeCompare(a.publishedAt || ''))
+    .slice(0, 1000);
 
-  const entries = recent.map((a) => {
+  const entries = articleEntries.map((a) => {
     const title = escapeXml(a.title || a.slug);
     return `  <url>
     <loc>${BASE_URL}/article/${a.slug}</loc>
@@ -220,13 +267,13 @@ function generateNewsSitemap(articles) {
 
   const xml = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
-        xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
+        xmlns:news="http://www.google.com/schemas/news/sitemap/2.0">
 ${entries}
 </urlset>`;
   return xml;
 }
 
-// ── Generate sitemap-index.xml ────────────────────────────────────────────
+// ── Generate sitemap-index.xml ──────────────────────────────────────────────
 function generateIndexSitemap() {
   return `<?xml version="1.0" encoding="UTF-8"?>
 <sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
@@ -245,10 +292,16 @@ function generateIndexSitemap() {
 </sitemapindex>`;
 }
 
-// ── Main ──────────────────────────────────────────────────────────────────
-function main() {
-  const articles = parseMockArticles();
-  console.log(`📄 Found ${articles.length} articles with valid slugs in mockData.ts`);
+// ── Main ────────────────────────────────────────────────────────────────────
+async function main() {
+  let articles = await fetchConvexContent();
+
+  if (!articles) {
+    console.log('Convex unavailable, falling back to mockData.ts');
+    articles = parseMockArticles();
+  }
+
+  console.log(`📄 Found ${articles.length} indexable URLs`);
 
   const publicDir = path.join(projectRoot, 'public');
 
@@ -265,7 +318,7 @@ function main() {
     console.log(`[OK] ${filename} → ${outPath}`);
   }
 
-  console.log(`\n✅ Sitemaps regenerated with ${articles.length} valid article URLs.`);
+  console.log(`\n✅ Sitemaps regenerated with ${articles.length} valid URLs.`);
 }
 
 main();

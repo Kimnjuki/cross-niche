@@ -18,8 +18,9 @@ interface LazyImageProps {
 }
 
 /**
- * Image component that always loads immediately (no lazy loading).
- * Renders the exact same content as a full page refresh for troubleshooting.
+ * Image component with lazy loading support.
+ * - priority=true: loads eagerly for above-the-fold images (LCP)
+ * - priority=false (default): lazy loads for below-the-fold images
  */
 export function LazyImage({
   src,
@@ -31,7 +32,8 @@ export function LazyImage({
   width,
   height,
   aspectRatio,
-}: LazyImageProps) {
+  priority = false,
+}: LazyImageProps & { priority?: boolean }) {
   const [hasError, setHasError] = useState(false);
   const [currentSrc, setCurrentSrc] = useState(src);
   useEffect(() => {
@@ -71,9 +73,9 @@ export function LazyImage({
       className={cn('w-full h-full object-cover', className)}
       onLoad={handleLoad}
       onError={handleError}
-      loading="eager"
+      loading={priority ? 'eager' : 'lazy'}
       decoding="async"
-      {...({ fetchpriority: 'high' } as React.ImgHTMLAttributes<HTMLImageElement>)}
+      fetchPriority={priority ? 'high' : 'auto'}
       width={finalWidth}
       height={finalHeight}
       style={{ aspectRatio: finalAspectRatio }}
