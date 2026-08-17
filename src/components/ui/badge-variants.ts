@@ -5,12 +5,18 @@ export const tagVariants = cva(
   {
     variants: {
       variant: {
-        "category-tech": "bg-[rgba(0,229,255,0.1)] text-[var(--accent-cyan)] border border-[rgba(0,229,255,0.2)]",
-        "category-security": "bg-[rgba(168,85,247,0.1)] text-[var(--accent-violet)] border border-[rgba(168,85,247,0.2)]",
-        "category-gaming": "bg-[rgba(245,158,11,0.1)] text-[var(--accent-amber)] border border-[rgba(245,158,11,0.2)]",
-        "topic": "bg-[rgba(255,255,255,0.05)] text-[var(--text-secondary)] border border-[var(--border-default)] hover:bg-[var(--accent-cyan-glow)]",
-        "breaking": "bg-[var(--accent-red)] text-[#fff] border-none animate-[breaking-pulse_1200ms_infinite]",
-        "live": "bg-[rgba(239,68,68,0.15)] text-[var(--accent-red)] border border-[rgba(239,68,68,0.3)] animate-[breaking-pulse_1200ms_infinite]"
+        "category-tech": "...",
+        "category-security": "...",
+        "category-gaming": "...",
+        "topic": "...",
+        "breaking": "...",
+        "live": "...",
+        /* Standard shadcn variants used across the codebase */
+        "default": "bg-[var(--bg-secondary)] text-[var(--text-primary)] hover:bg-[var(--bg-tertiary)] border border-[var(--border-default)]",
+        "outline": "bg-transparent border border-[var(--border-strong)] text-[var(--text-primary)] hover:bg-[rgba(255,255,255,0.04)]",
+        "destructive": "bg-[var(--accent-red)] text-[#fff] hover:bg-[#DC2626]",
+        "secondary": "bg-[var(--bg-secondary)] text-[var(--text-secondary)] hover:bg-[rgba(255,255,255,0.04)]",
+        "link": "text-[var(--text-secondary)] underline-offset-4 hover:underline"
       },
     },
     defaultVariants: {

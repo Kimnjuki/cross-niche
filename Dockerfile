@@ -41,7 +41,13 @@ COPY . .
 # RUN commands, we unset the var at the shell level before running Vite.
 # This prevents Vite from baking the stale Convex deploy key into the
 # bundle, which would cause Convex queries to hang on article pages.
-RUN VITE_CONVEX_URL= npm run build:frontend
+#
+# PRERENDER=0 disables vite-plugin-prerender. That plugin launches a
+# headless Chromium to statically render routes, but Chromium is never
+# downloaded here (PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true), so the plugin
+# crashes the build with exit code 255 on Linux. Static article HTML is
+# generated separately by scripts/generate-static-articles.mjs below.
+RUN VITE_CONVEX_URL= PRERENDER=0 npm run build:frontend
 
 # Generate SEO sitemaps (only valid, indexable URLs) and static article HTML
 # files so Googlebot can crawl article content without executing JavaScript.

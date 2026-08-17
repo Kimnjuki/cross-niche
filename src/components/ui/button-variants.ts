@@ -5,10 +5,13 @@ export const buttonVariants = cva(
   {
     variants: {
       variant: {
-        primary: "bg-[var(--accent-cyan)] text-[var(--bg-base)] shadow-[var(--shadow-button-primary)] hover:bg-[#19EEFF] hover:-translate-y-1 hover:shadow-[0_0_28px_rgba(0,229,255,0.4)] active:translate-y-0 active:scale-[0.98] rounded-[var(--radius-sm)]",
-        secondary: "bg-transparent border border-[var(--border-cyan)] text-[var(--accent-cyan)] hover:bg-[var(--accent-cyan-glow)] hover:border-[var(--accent-cyan)] rounded-[var(--radius-sm)]",
-        ghost: "bg-transparent text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[rgba(255,255,255,0.04)] rounded-[var(--radius-sm)]",
-        danger: "bg-[var(--accent-red)] text-[#fff] hover:bg-[#DC2626] rounded-[var(--radius-sm)]"
+        primary: "...",
+        secondary: "...",
+        ghost: "...",
+        danger: "...",
+        outline: "...",
+        link: "...",
+        default: "..."
       },
       size: {
         xs: "h-7 px-3 text-xs",
