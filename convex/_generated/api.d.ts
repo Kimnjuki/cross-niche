@@ -8,8 +8,17 @@
  * @module
  */
 
-import type * as admin from "../admin.js";
+import type * as admin_cleanPlaceholderContent from "../admin/cleanPlaceholderContent.js";
+import type * as admin_findDuplicateContent from "../admin/findDuplicateContent.js";
+import type * as admin_fixPublishedDates from "../admin/fixPublishedDates.js";
+import type * as admin_getContentStats from "../admin/getContentStats.js";
+import type * as admin_mergeDuplicateContent from "../admin/mergeDuplicateContent.js";
+import type * as admin_publishAllDrafts from "../admin/publishAllDrafts.js";
+import type * as admin_runSoftDeleteContent from "../admin/runSoftDeleteContent.js";
 import type * as admin_seedRoadmap from "../admin/seedRoadmap.js";
+import type * as admin_seedSampleContent from "../admin/seedSampleContent.js";
+import type * as admin_updateHomepagePositioning from "../admin/updateHomepagePositioning.js";
+import type * as admin_updateSEOBySlug from "../admin/updateSEOBySlug.js";
 import type * as aiAutomation from "../aiAutomation.js";
 import type * as aiUpdates from "../aiUpdates.js";
 import type * as articles from "../articles.js";
@@ -74,8 +83,17 @@ import type {
 } from "convex/server";
 
 declare const fullApi: ApiFromModules<{
-  admin: typeof admin;
+  "admin/cleanPlaceholderContent": typeof admin_cleanPlaceholderContent;
+  "admin/findDuplicateContent": typeof admin_findDuplicateContent;
+  "admin/fixPublishedDates": typeof admin_fixPublishedDates;
+  "admin/getContentStats": typeof admin_getContentStats;
+  "admin/mergeDuplicateContent": typeof admin_mergeDuplicateContent;
+  "admin/publishAllDrafts": typeof admin_publishAllDrafts;
+  "admin/runSoftDeleteContent": typeof admin_runSoftDeleteContent;
   "admin/seedRoadmap": typeof admin_seedRoadmap;
+  "admin/seedSampleContent": typeof admin_seedSampleContent;
+  "admin/updateHomepagePositioning": typeof admin_updateHomepagePositioning;
+  "admin/updateSEOBySlug": typeof admin_updateSEOBySlug;
   aiAutomation: typeof aiAutomation;
   aiUpdates: typeof aiUpdates;
   articles: typeof articles;
