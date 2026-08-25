@@ -33,10 +33,11 @@ const NotFound = () => {
   // Track 404 in GA4
   useEffect(() => {
     if (typeof window !== 'undefined' && (window as any).gtag) {
-      (window as any).gtag('event', 'page_view_404', {
+      (window as any).gtag('event', '404_view', {
         page_path: location.pathname + location.search,
         page_title: '404: ' + location.pathname,
-        engagement_time_msec: 1
+        referrer: document.referrer || 'direct',
+        engagement_time_msec: 1,
       });
     }
   }, [location.pathname, location.search]);

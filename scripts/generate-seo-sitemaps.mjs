@@ -24,6 +24,18 @@ const projectRoot = path.resolve(__dirname, '..');
 const BASE_URL = 'https://thegridnexus.com';
 const TODAY = new Date().toISOString().split('T')[0];
 
+const PLACEHOLDER_TITLE_PATTERNS = [
+  /^Sec\s+\d+(\s*\|.*)?$/i,
+  /^Tech\s+\d+(\s*\|.*)?$/i,
+  /^Game\s+\d+(\s*\|.*)?$/i,
+  /^Rivacy(\s*\|.*)?$/i,
+];
+
+function isPlaceholderTitle(title) {
+  if (!title) return false;
+  return PLACEHOLDER_TITLE_PATTERNS.some((pattern) => pattern.test(title.trim()));
+}
+
 // ── Parse mockData.ts ────────────────────────────────────────────────────────
 function parseMockArticles() {
   const mockDataPath = path.join(projectRoot, 'src', 'data', 'mockData.ts');
@@ -202,6 +214,7 @@ function generateMainSitemap(articles) {
   const seen = new Set(urls.map((u) => u.loc));
 
   for (const article of articles) {
+    if (isPlaceholderTitle(article.title)) continue;
     const loc = article.niche === 'guides'
       ? `${BASE_URL}/guides/${article.slug}`
       : article.niche === 'topics'
@@ -226,7 +239,7 @@ ${urls.map((u) => urlEntry(u.loc, u.lastmod, u.changefreq, u.priority)).join('\n
 // ── Generate sitemap-articles.xml (ALL valid article URLs) ──────────────────
 function generateArticlesSitemap(articles) {
   const articleUrls = articles
-    .filter((a) => a.niche !== 'guides' && a.niche !== 'topics')
+    .filter((a) => a.niche !== 'guides' && a.niche !== 'topics' && !isPlaceholderTitle(a.title))
     .map((a) => ({
       loc: `${BASE_URL}/article/${a.slug}`,
       lastmod: a.publishedAt || TODAY,
@@ -251,6 +264,7 @@ function generateNewsSitemap(articles) {
     .slice(0, 1000);
 
   const entries = articleEntries.map((a) => {
+    if (isPlaceholderTitle(a.title)) return null;
     const title = escapeXml(a.title || a.slug);
     return `  <url>
     <loc>${BASE_URL}/article/${a.slug}</loc>
@@ -263,7 +277,7 @@ function generateNewsSitemap(articles) {
       <news:title>${title}</news:title>
     </news:news>
   </url>`;
-  }).join('\n');
+  }).filter(Boolean).join('\n');
 
   const xml = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"

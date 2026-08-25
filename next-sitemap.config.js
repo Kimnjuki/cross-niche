@@ -17,6 +17,13 @@ export default {
     '/*?ref=*',
     '/*?utm_source=*',
     '/*?page=1',
+    '/test-features',
+    '/simple',
+    '/enhanced',
+    '/enhanced-simple',
+    '/original-index',
+    '/tools-old',
+    '/newsletter/verify',
   ],
 
   // Transform URLs to ensure canonical format

@@ -3,7 +3,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { SafeConvexProvider } from "@/components/SafeConvexProvider";
 import { EnhancedErrorBoundary } from "@/components/error/EnhancedErrorBoundary";
@@ -92,7 +92,6 @@ const PodcastPlatform = lazy(() => import("./pages/PodcastPlatform"));
 const AdvancedSearch = lazy(() => import("./components/search/AdvancedSearch"));
 const LiveUpdatesFeed = lazy(() => import("./components/live/LiveUpdatesFeed"));
 const SignInSignUp = lazy(() => import("./components/auth/SignInSignUp"));
-const TestFeatures = lazy(() => import("./pages/TestFeatures"));
 const NewsletterVerify = lazy(() => import("./pages/NewsletterVerify"));
 const About = lazy(() => import("./pages/About"));
 const Contact = lazy(() => import("./pages/Contact"));
@@ -168,38 +167,30 @@ const App = () => (
                     <Route path="/enhanced-simple" element={<EnhancedIndexSimple />} />
                     <Route path="/tech" element={<Tech />} />
                     <Route path="/tech/:slug" element={<ArticlePage />} />
-                    <Route path="/security" element={<Security />} />
-                    <Route path="/security/:slug" element={<ArticlePage />} />
-                    <Route path="/cybersecurity" element={<Navigate to="/security" replace />} />
-                    <Route path="/gaming" element={<Gaming />} />
+                     <Route path="/security" element={<Security />} />
+                     <Route path="/security/:slug" element={<ArticlePage />} />
+                     <Route path="/gaming" element={<Gaming />} />
                     <Route path="/gaming/security-guides" element={<GamingSecurityGuides />} />
                     <Route path="/gaming/security" element={<GamingSecurityHub />} />
-                    <Route path="/gaming/:slug" element={<ArticlePage />} />
-                    <Route path="/article/:slug" element={<ArticlePage />} />
-                    <Route path="/news" element={<News />} />
-                    <Route path="/explore" element={<Explore />} />
+                     <Route path="/gaming/:slug" element={<ArticlePage />} />
+                     <Route path="/article/:slug" element={<ArticlePage />} />
+                     <Route path="/news" element={<News />} />
+                     {/* Legacy aliases handled by vercel.json 301 redirects */}
+                     <Route path="/explore" element={<Explore />} />
                     <Route path="/topics" element={<Topics />} />
                     <Route path="/guides" element={<Guides />} />
                     <Route path="/guides/:slug" element={<GuideDetail />} />
-                    <Route path="/tutorials" element={<Tutorials />} />
-                    <Route path="/blog-series" element={<Navigate to="/blog" replace />} />
-                    <Route path="/blog" element={<BlogSeries />} />
-                    {/* Legacy URL aliases (Phase 1 SEO 404/4XX fixes) */}
-                    <Route path="/articles" element={<Navigate to="/blog" replace />} />
-                    <Route path="/live" element={<Navigate to="/live-updates" replace />} />
-                    <Route path="/ai" element={<Navigate to="/ai-pulse" replace />} />
-                    <Route path="/security-tools" element={<Navigate to="/tools/security-scanner" replace />} />
-                    <Route path="/roadmap" element={<RoadmapV3 />} />
+                     <Route path="/tutorials" element={<Tutorials />} />
+                     <Route path="/blog" element={<BlogSeries />} />
+                     {/* Legacy aliases handled by vercel.json 301 redirects: /blog-series, /articles, /live, /ai, /security-tools */}
+                     <Route path="/roadmap" element={<RoadmapV3 />} />
                     <Route path="/roadmap/:featureId" element={<RoadmapFeature />} />
                     <Route path="/breach-sim" element={<BreachSim />} />
                     <Route path="/security-score" element={<SecurityScore />} />
                     <Route path="/live-threat-dashboard" element={<LiveThreatDashboard />} />
                     <Route path="/subscription" element={<SubscriptionPlans />} />
-                    <Route path="/subscription/management" element={<SubscriptionManagement />} />
-                    {/* 301-equivalent client-side redirects for duplicate-render aliases */}
-                    <Route path="/billing" element={<Navigate to="/subscription/management" replace />} />
-                    <Route path="/settings" element={<Navigate to="/subscription/management" replace />} />
-                    <Route path="/forums" element={<CommunityForums />} />
+                     <Route path="/subscription/management" element={<SubscriptionManagement />} />
+                     <Route path="/forums" element={<CommunityForums />} />
                     <Route path="/tools/security-scanner" element={<SecurityScanner />} />
                     <Route path="/tools" element={<SecurityHub />} />
                     <Route path="/tools-old" element={<ToolsHub />} />
@@ -208,13 +199,11 @@ const App = () => (
                     <Route path="/podcasts" element={<PodcastPlatform />} />
                     <Route path="/search" element={<AdvancedSearch />} />
                     <Route path="/live-updates" element={<LiveUpdatesFeed />} />
-                    <Route path="/ai-pulse" element={<AIPulse />} />
-                    <Route path="/auth" element={<Navigate to="/signin" replace />} />
-                    <Route path="/signin" element={<SignInSignUp />} />
-                    <Route path="/signup" element={<SignInSignUp />} />
-                    <Route path="/newsletter/verify" element={<NewsletterVerify />} />
-                    <Route path="/test-features" element={<TestFeatures />} />
-                    {/* Company / legal pages */}
+                     <Route path="/ai-pulse" element={<AIPulse />} />
+                     <Route path="/signin" element={<SignInSignUp />} />
+                     <Route path="/signup" element={<SignInSignUp />} />
+                     <Route path="/newsletter/verify" element={<NewsletterVerify />} />
+                     {/* Company / legal pages */}
                     <Route path="/about" element={<About />} />
                     <Route path="/contact" element={<Contact />} />
                     <Route path="/privacy" element={<Privacy />} />
@@ -241,12 +230,9 @@ const App = () => (
                     <Route path="/tools/nexusguard" element={<NexusGuard />} />
 <Route path="/tools/security-briefing" element={<SecurityBriefingRoom />} />
 <Route path="/tools/vr-cyber-training" element={<VRCyberTraining />} />
-                    <Route path="/tools/steam-scanner" element={<SteamScanner />} />
-                    <Route path="/nexus/nexusguard" element={<Navigate to="/tools/nexusguard" replace />} />
-                    <Route path="/learn/nexus-path" element={<NexusPath />} />
-                    <Route path="/nexus/nexuspath" element={<Navigate to="/learn/nexus-path" replace />} />
-                    <Route path="/pulse/nexus-pulse" element={<NexusPulse />} />
-                    <Route path="/nexus/nexuspulse" element={<Navigate to="/pulse/nexus-pulse" replace />} />
+                     <Route path="/tools/steam-scanner" element={<SteamScanner />} />
+                     <Route path="/learn/nexus-path" element={<NexusPath />} />
+                     <Route path="/pulse/nexus-pulse" element={<NexusPulse />} />
                     {/* Security Tools Suite */}
                     <Route path="/tools/ioc-lookup" element={<IOCLookup />} />
                     <Route path="/tools/gaming-security-checkup" element={<GamingSecurityCheckup />} />

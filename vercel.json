@@ -11,6 +11,70 @@
       "has": [{ "type": "host", "value": "thegridnexus.vercel.app" }],
       "destination": "https://thegridnexus.com/:path*",
       "permanent": true
+    },
+    {
+      "source": "/test-features",
+      "statusCode": 410
+    },
+    {
+      "source": "/articles",
+      "destination": "/blog",
+      "permanent": true
+    },
+    {
+      "source": "/live",
+      "destination": "/live-updates",
+      "permanent": true
+    },
+    {
+      "source": "/ai",
+      "destination": "/ai-pulse",
+      "permanent": true
+    },
+    {
+      "source": "/security-tools",
+      "destination": "/tools/security-scanner",
+      "permanent": true
+    },
+    {
+      "source": "/billing",
+      "destination": "/subscription/management",
+      "permanent": true
+    },
+    {
+      "source": "/settings",
+      "destination": "/subscription/management",
+      "permanent": true
+    },
+    {
+      "source": "/blog-series",
+      "destination": "/blog",
+      "permanent": true
+    },
+    {
+      "source": "/cybersecurity",
+      "destination": "/security",
+      "permanent": true
+    },
+    {
+      "source": "/auth",
+      "destination": "/signin",
+      "permanent": true
+    },
+    {
+      "source": "/nexus/nexusguard",
+      "destination": "/tools/nexusguard",
+      "permanent": true
+    },
+    {
+      "source": "/nexus/nexuspath",
+      "destination": "/learn/nexus-path",
+      "permanent": true
+    },
+    {
+      "source": "/nexus/nexuspulse",
+      "destination": "/pulse/nexus-pulse",
+      "permanent": true
     }
   ],
   "rewrites": [

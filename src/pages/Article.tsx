@@ -59,6 +59,18 @@ const nicheRoutes = { tech: '/tech', security: '/security', gaming: '/gaming' };
 const getArticleId = (a: ArticleType | null | undefined): string =>
   (a as ArticleType & { _id?: string })?._id ?? a?.id ?? a?.slug ?? '';
 
+const PLACEHOLDER_TITLE_PATTERNS = [
+  /^Sec\s+\d+(\s*\|.*)?$/i,
+  /^Tech\s+\d+(\s*\|.*)?$/i,
+  /^Game\s+\d+(\s*\|.*)?$/i,
+  /^Rivacy(\s*\|.*)?$/i,
+];
+
+function isPlaceholderTitle(title: string | undefined): boolean {
+  if (!title) return false;
+  return PLACEHOLDER_TITLE_PATTERNS.some((pattern) => pattern.test(title.trim()));
+}
+
 export default function Article() {
   const params = useParams<{ slug?: string; id?: string }>();
   const slugOrId = (params.slug ?? params.id ?? '').trim();
@@ -151,7 +163,7 @@ export default function Article() {
     if (!hasArticle || !article) return;
     trackArticleView(articleId, article.title ?? 'Untitled', article.niche);
     trackArticleReadTime(articleId, article.readTime ?? 5);
-  }, [hasArticle, article, articleId]);
+  }, [articleId, hasArticle]);
 
   // 7. READING TRACKER (only track if article exists and has id)
   useReadingTracker(hasArticle ? article : undefined, user?.id ?? 'demo-user');
@@ -159,6 +171,26 @@ export default function Article() {
   // 8. LOADING STATE - AFTER ALL HOOKS
   if (isLoading) {
     return <ArticleSkeleton />;
+  }
+
+  // 8b. PLACEHOLDER / TEST CONTENT GUARD
+  if (hasArticle && isPlaceholderTitle(article.title)) {
+    return (
+      <Layout>
+        <SEOHead
+          title="Page Not Found | The Grid Nexus"
+          description="The page you're looking for doesn't exist."
+          noindex={true}
+        />
+        <div className="container mx-auto px-4 py-16 text-center">
+          <h1 className="font-display font-bold text-4xl mb-4">Page Not Found</h1>
+          <p className="text-muted-foreground mb-8">The page you're looking for doesn't exist.</p>
+          <Button asChild>
+            <Link to="/">Go Home</Link>
+          </Button>
+        </div>
+      </Layout>
+    );
   }
 
   // 9. NOT FOUND STATE - AFTER ALL HOOKS
