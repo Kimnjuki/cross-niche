@@ -26,7 +26,12 @@ import {
   ArrowLeft,
   Activity,
   Zap,
+  BrainCircuit,
+  Loader2,
+  Sparkles,
+  Bot,
 } from 'lucide-react';
+import { useNvidiaSecurityScan } from '@/hooks/useNvidiaSecurityScan';
 import { useMutation } from 'convex/react';
 import { api } from '../../../convex/_generated/api';
 import { useConvexDisabled } from '@/components/SafeConvexProvider';
@@ -207,6 +212,42 @@ export default function SteamScanner() {
 
   const failedItems = CHECK_ITEMS.filter(item => answers[item.id] !== 'yes');
   const criticalFails = failedItems.filter(item => item.weight >= 12);
+  const passedItems = CHECK_ITEMS.filter(item => answers[item.id] === 'yes');
+
+  // NVIDIA NIM deep-scan analysis
+  const nvidiaScan = useNvidiaSecurityScan();
+  const scanInputRef = useRef<{
+    platform: string;
+    handle?: string;
+    scorePct: number;
+    passed: string[];
+    failed: string[];
+    critical: string[];
+  }>({
+    platform: 'Steam',
+    handle: undefined,
+    scorePct: 0,
+    passed: [],
+    failed: [],
+    critical: [],
+  });
+
+  // Refresh the latest scan inputs for the AI analyzer on every answer change.
+  React.useEffect(() => {
+    if (phase !== 'results') return;
+    scanInputRef.current = {
+      platform: 'Steam',
+      handle: steamHandle || undefined,
+      scorePct: pct,
+      passed: passedItems.map(i => i.question),
+      failed: failedItems.map(i => i.question),
+      critical: criticalFails.map(i => i.question),
+    };
+  }, [phase, steamHandle, pct, passedItems, failedItems, criticalFails]);
+
+  const runAiScan = useCallback(() => {
+    nvidiaScan.run({ ...scanInputRef.current }).catch(() => {});
+  }, [nvidiaScan]);
 
   const handleAnswer = useCallback((id: string, answer: Answer) => {
     setAnswers(prev => ({ ...prev, [id]: answer }));
@@ -243,11 +284,13 @@ export default function SteamScanner() {
   const handleReset = useCallback(() => {
     sessionIdRef.current = crypto.randomUUID();
     sessionStorage.setItem('gnx_steam_scan_session', sessionIdRef.current);
+    nvidiaScan.reset();
     setSteamHandle('');
     setAnswers({});
     setCurrentIndex(0);
     setPhase('input');
-  }, []);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [nvidiaScan.reset]);
 
   const currentItem = CHECK_ITEMS[currentIndex];
 
@@ -453,6 +496,112 @@ export default function SteamScanner() {
                 <p className="text-sm text-muted-foreground">
                   Score: {score} / {MAX_SCORE} pts • {failedItems.length} gaps found
                 </p>
+              </CardContent>
+            </Card>
+
+            {/* AI-Powered Threat Analysis (NVIDIA NIM) */}
+            <Card className="border-security/20 bg-security/5">
+              <CardHeader>
+                <div className="flex items-start gap-3">
+                  <div className="p-2 rounded-lg bg-security/10 border border-security/20 shrink-0">
+                    <BrainCircuit className="h-5 w-5 text-security" />
+                  </div>
+                  <div className="flex-1">
+                    <CardTitle className="flex items-center gap-2 text-lg">
+                      AI-Powered Threat Analysis
+                      {nvidiaScan.nvidiaConfigured ? (
+                        <Badge className="bg-security/15 text-security border-security/30 text-[10px] uppercase tracking-wide">
+                          NVIDIA NIM
+                        </Badge>
+                      ) : (
+                        <Badge variant="outline" className="text-muted-foreground text-[10px] uppercase tracking-wide">
+                          Built-in engine
+                        </Badge>
+                      )}
+                    </CardTitle>
+                    <CardDescription>
+                      Deep-dive analysis of your scan answers — the NVIDIA model explains the risk and gives personalised remediation.
+                    </CardDescription>
+                  </div>
+                </div>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                {nvidiaScan.status === 'idle' && (
+                  <div className="flex flex-col sm:flex-row items-center gap-3 justify-between">
+                    <p className="text-sm text-muted-foreground">
+                      Run a deep scan to get an AI security report with tailored recommendations.
+                    </p>
+                    <Button
+                      onClick={runAiScan}
+                      className="bg-security hover:bg-security/90 text-black font-semibold shrink-0"
+                    >
+                      <Sparkles className="mr-1.5 h-4 w-4" />
+                      Analyze with AI
+                    </Button>
+                  </div>
+                )}
+
+                {nvidiaScan.isLoading && (
+                  <div className="flex items-center justify-center gap-3 py-4 text-muted-foreground">
+                    <Loader2 className="h-5 w-5 animate-spin text-security" />
+                    <span className="text-sm">Analyzing your security posture…</span>
+                  </div>
+                )}
+
+                {nvidiaScan.findings && !nvidiaScan.isLoading && (
+                  <div className="space-y-4">
+                    <div className="flex items-center gap-2">
+                      <Bot className="h-4 w-4 text-security" />
+                      <Badge className={cn(
+                        nvidiaScan.findings.severity === 'excellent' && 'bg-green-500/15 text-green-600 border-green-500/30',
+                        nvidiaScan.findings.severity === 'good' && 'bg-gaming/15 text-gaming border-gaming/30',
+                        nvidiaScan.findings.severity === 'fair' && 'bg-yellow-500/15 text-yellow-600 border-yellow-500/30',
+                        nvidiaScan.findings.severity === 'needs_work' && 'bg-destructive/15 text-destructive border-destructive/30'
+                      )}>
+                        {nvidiaScan.findings.severity === 'excellent' ? 'Excellent' :
+                         nvidiaScan.findings.severity === 'good' ? 'Good' :
+                         nvidiaScan.findings.severity === 'fair' ? 'Fair' : 'At Risk'}
+                      </Badge>
+                      {nvidiaScan.findings.model && (
+                        <span className="text-xs text-muted-foreground">
+                          via {nvidiaScan.findings.model}
+                        </span>
+                      )}
+                    </div>
+
+                    <p className="text-sm text-foreground/90 leading-relaxed">
+                      {nvidiaScan.findings.summary}
+                    </p>
+
+                    {nvidiaScan.findings.recommendations.length > 0 && (
+                      <div className="space-y-2">
+                        <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Recommended next steps</p>
+                        <ul className="space-y-1.5">
+                          {nvidiaScan.findings.recommendations.map((r, i) => (
+                            <li key={i} className="flex items-start gap-2 text-sm">
+                              <CheckCircle className="h-4 w-4 text-gaming shrink-0 mt-0.5" />
+                              <span>{r}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
+                  </div>
+                )}
+
+                {nvidiaScan.status === 'error' && (
+                  <div className="rounded-lg border border-destructive/20 bg-destructive/5 p-3 text-sm text-destructive">
+                    <p>{nvidiaScan.error}</p>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={runAiScan}
+                      className="mt-2 h-8 px-2 text-xs"
+                    >
+                      <RotateCcw className="mr-1 h-3 w-3" /> Retry
+                    </Button>
+                  </div>
+                )}
               </CardContent>
             </Card>
 
