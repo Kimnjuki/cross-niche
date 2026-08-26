@@ -14,15 +14,30 @@ const NVIDIA_BASE_URL = 'https://integrate.api.nvidia.com/v1';
 // Use a model that is still available in the live NVIDIA NIM catalog.
 const DEFAULT_MODEL = 'nvidia/llama-3.1-nemotron-70b-instruct';
 
-/** Well-known, publicly available NVIDIA NIM model slots. */
-export const NVIDIA_MODELS = {
-  default: DEFAULT_MODEL,
-  nemotron70b: 'nvidia/llama-3.1-nemotron-70b-instruct',
-  nemotron51b: 'nvidia/llama-3.1-nemotron-51b-instruct',
-  mistralLarge: 'mistralai/mistral-large-2-instruct',
-} as const;
+/**
+ * Prioritised list of models to try, fastest/cheapest first. Auto-discovery
+ * probes these in order and picks the first one this API key is actually
+ * entitled to run — this adapts to whichever model access the key has, so the
+ * integration self-tunes rather than failing on a single hard-coded model.
+ */
+const MODEL_CANDIDATES: string[] = [
+  'nvidia/nemotron-3-nano-omni-30b-a3b-reasoning', // fast, modern reasoning
+  'nvidia/nemotron-3.5-lightning-30b-a3b',
+  'nvidia/llama-3.1-nemotron-70b-instruct',
+  'nvidia/llama-3.1-nemotron-51b-instruct',
+  'meta/llama-3.2-11b-vision-instruct',
+  'mistralai/mistral-large-2-instruct',
+  'nvidia/nemotron-nano-3-30b-a3b',
+];
 
-export type NvidiaModel = (typeof NVIDIA_MODELS)[keyof typeof NVIDIA_MODELS];
+/** Default per-request timeout (ms) and transient-retry budget. */
+const DEFAULT_TIMEOUT_MS = 60_000;
+const MAX_RETRIES = 2;
+
+// Discovery result cache + in-flight dedupe (module-level, client-only).
+let cachedOptimalModel: string | null | undefined = undefined;
+
+export type NvidiaModel = string;
 
 /** Read the NVIDIA NIM API key from the Vite environment. */
 export function getNvidiaApiKey(): string {
@@ -50,6 +65,10 @@ export interface NvidiaChatOptions {
   temperature?: number;
   maxTokens?: number;
   signal?: AbortSignal;
+  /** Per-request timeout in ms (default 60s). */
+  timeoutMs?: number;
+  /** Number of retries on transient errors (default 2). */
+  retries?: number;
 }
 
 export interface NvidiaChatResult {
@@ -63,7 +82,88 @@ export interface NvidiaChatResult {
 }
 
 /**
- * Send a chat completion request to the NVIDIA NIM OpenAI-compatible API.
+ * Resolve the model to use for a request. If the caller passed an explicit
+ * model we honour it; otherwise we return the auto-discovered optimal model,
+ * cached so discovery only happens once per page session.
+ */
+async function resolveModel(apiKey: string, explicit?: string): Promise<string> {
+  if (explicit) return explicit;
+  if (cachedOptimalModel !== undefined) {
+    return cachedOptimalModel ?? DEFAULT_MODEL;
+  }
+  const found = await discoverOptimalModel(apiKey);
+  cachedOptimalModel = found;
+  return found ?? DEFAULT_MODEL;
+}
+
+/**
+ * Probe the candidate models with a tiny request and return the first one this
+ * key is entitled to run. Favours the fastest, cheapest model in the list.
+ * Returns `null` when the key has no working inference entitlement (e.g. 403).
+ */
+export async function discoverOptimalModel(
+  apiKey: string,
+  candidates: string[] = MODEL_CANDIDATES
+): Promise<string | null> {
+  for (const model of candidates) {
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), 8_000);
+    try {
+      const res = await fetch(`${NVIDIA_BASE_URL}/chat/completions`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${apiKey}` },
+        body: JSON.stringify({
+          model,
+          messages: [{ role: 'user', content: 'ping' }],
+          max_tokens: 1,
+        }),
+        signal: controller.signal,
+      });
+      if (res.ok) return model;
+    } catch {
+      // network / timeout — try the next candidate
+    } finally {
+      clearTimeout(timer);
+    }
+  }
+  return null;
+}
+
+/** Abort-aware fetch wrapper enforcing a per-request timeout. */
+async function fetchWithTimeout(
+  url: string,
+  init: RequestInit & { timeoutMs?: number },
+  signal: AbortSignal | undefined
+): Promise<Response> {
+  const timeoutMs = init.timeoutMs ?? DEFAULT_TIMEOUT_MS;
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), timeoutMs);
+
+  // Chain the caller's signal so both can cancel the request.
+  const onAbort = () => controller.abort();
+  if (signal) {
+    if (signal.aborted) controller.abort();
+    else signal.addEventListener('abort', onAbort, { once: true });
+  }
+
+  try {
+    return await fetch(url, { ...init, signal: controller.signal });
+  } finally {
+    clearTimeout(timeoutId);
+    if (signal) signal.removeEventListener('abort', onAbort);
+  }
+}
+
+/** Tiny sleep helper for retry backoff. */
+function sleep(ms: number): Promise<void> {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+/**
+ * Send a chat completion request to the NVIDIA NIM OpenAI-compatible API with
+ * automatic model selection, retry-with-backoff on transient errors, and a
+ * per-request timeout.
+ *
  * Throws `Error('NVIDIA_API_KEY_MISSING')` when no valid key is configured.
  */
 export async function nvidiaChat(
@@ -75,63 +175,92 @@ export async function nvidiaChat(
     throw new Error('NVIDIA_API_KEY_MISSING');
   }
 
-  let response: Response;
-  try {
-    response = await fetch(`${NVIDIA_BASE_URL}/chat/completions`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${apiKey}`,
-      },
-      body: JSON.stringify({
-        model: options.model ?? DEFAULT_MODEL,
-        temperature: options.temperature ?? 0.3,
-        top_p: 0.9,
-        max_tokens: options.maxTokens ?? 1024,
-        messages,
-      }),
-      signal: options.signal,
-    });
-  } catch (error) {
-    if (error instanceof DOMException && error.name === 'AbortError') {
-      throw error;
-    }
-    throw new Error('NVIDIA_API_NETWORK_ERROR');
-  }
+  const maxRetries = options.retries ?? MAX_RETRIES;
+  const model = await resolveModel(apiKey, options.model);
 
-  if (!response.ok) {
-    let detail = '';
+  let lastError: Error | null = null;
+  for (let attempt = 0; attempt <= maxRetries; attempt++) {
     try {
-      const body = (await response.json()) as { error?: { message?: string } };
-      detail = body?.error?.message ?? '';
-    } catch {
-      // ignore parse failures
+      const response = await fetchWithTimeout(
+        `${NVIDIA_BASE_URL}/chat/completions`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${apiKey}`,
+          },
+          body: JSON.stringify({
+            model,
+            temperature: options.temperature ?? 0.3,
+            top_p: 0.9,
+            max_tokens: options.maxTokens ?? 1024,
+            messages,
+          }),
+          timeoutMs: options.timeoutMs,
+        },
+        options.signal
+      );
+
+      if (!response.ok) {
+        let detail = '';
+        try {
+          const body = (await response.json()) as {
+            error?: { message?: string };
+          };
+          detail = body?.error?.message ?? '';
+        } catch {
+          // ignore parse failures
+        }
+        // 401/403 mean the key is valid but not entitled to run this model.
+        if (response.status === 401 || response.status === 403) {
+          throw new Error('NVIDIA_API_UNAUTHORIZED');
+        }
+        // Transient server errors are retried with backoff.
+        if (response.status >= 500 || response.status === 429) {
+          if (attempt < maxRetries) {
+            await sleep(300 * 2 ** attempt);
+            continue;
+          }
+        }
+        throw new Error(
+          `NVIDIA API error ${response.status}: ${detail || response.statusText}`.trim()
+        );
+      }
+
+      const data = (await response.json()) as {
+        choices?: Array<{ message?: { content?: unknown } }>;
+        model?: string;
+        usage?: NvidiaChatResult['usage'];
+      };
+
+      const content =
+        typeof data?.choices?.[0]?.message?.content === 'string'
+          ? data.choices[0].message.content
+          : '';
+
+      return {
+        content,
+        model: data?.model ?? model,
+        usage: data?.usage,
+      };
+    } catch (error) {
+      // Re-throw cancellation and deterministic (auth) errors immediately.
+      if (error instanceof DOMException && error.name === 'AbortError') {
+        throw error;
+      }
+      lastError = error instanceof Error ? error : new Error(String(error));
+      if (
+        lastError.message === 'NVIDIA_API_UNAUTHORIZED' ||
+        lastError.message === 'NVIDIA_API_KEY_MISSING'
+      ) {
+        throw lastError;
+      }
+      if (attempt >= maxRetries) break;
+      await sleep(attempt === 0 ? 400 : 800 * 2 ** attempt);
     }
-    // 401/403 mean the key is valid but not entitled to run this model.
-    if (response.status === 401 || response.status === 403) {
-      throw new Error('NVIDIA_API_UNAUTHORIZED');
-    }
-    throw new Error(
-      `NVIDIA API error ${response.status}: ${detail || response.statusText}`.trim()
-    );
   }
 
-  const data = (await response.json()) as {
-    choices?: Array<{ message?: { content?: unknown } }>;
-    model?: string;
-    usage?: NvidiaChatResult['usage'];
-  };
-
-  const content =
-    typeof data?.choices?.[0]?.message?.content === 'string'
-      ? data.choices[0].message.content
-      : '';
-
-  return {
-    content,
-    model: data?.model ?? '',
-    usage: data?.usage,
-  };
+  throw lastError ?? new Error('NVIDIA_API_NETWORK_ERROR');
 }
 
 // ── Gaming-security scan analysis ──────────────────────────────────────────
