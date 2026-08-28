@@ -89,6 +89,7 @@ const SecurityHub = lazy(() => import("./pages/SecurityHub"));
 const ToolsHub = lazy(() => import("./pages/ToolsHub"));
 const MobileApp = lazy(() => import("./pages/MobileApp"));
 const PodcastPlatform = lazy(() => import("./pages/PodcastPlatform"));
+const Videos = lazy(() => import("./pages/Videos"));
 const AdvancedSearch = lazy(() => import("./components/search/AdvancedSearch"));
 const LiveUpdatesFeed = lazy(() => import("./components/live/LiveUpdatesFeed"));
 const SignInSignUp = lazy(() => import("./components/auth/SignInSignUp"));
@@ -212,6 +213,7 @@ const App = () => (
                     <Route path="/media" element={<Media />} />
                     <Route path="/disclosure" element={<Disclosure />} />
                     <Route path="/reviews" element={<Reviews />} />
+                    <Route path="/videos" element={<Videos />} />
                     <Route path="/startups" element={<Startups />} />
                     <Route path="/quality-guidelines" element={<QualityGuidelines />} />
                     <Route path="/content-policy" element={<ContentPolicy />} />

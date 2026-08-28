@@ -76,6 +76,7 @@ const navLinks = [
   { href: '/tools/gaming-security-checkup', label: 'Security Checkup', color: 'text-[#FF007A]' },
   { href: '/guides', label: 'Guides', color: 'text-foreground' },
   { href: '/topics', label: 'Latest', color: 'text-foreground' },
+  { href: '/videos', label: 'Videos', color: 'text-foreground' },
 ];
 
 /** Primary CTAs for mobile: Security-first to reinforce gaming security positioning. */

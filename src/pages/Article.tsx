@@ -9,6 +9,7 @@ import { mapContentToArticle, mapContentToArticles } from '@/lib/contentMapper';
 import { NexusScrollBridge } from '@/components/nexus/NexusScrollBridge';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { CommentSection } from '@/components/comments/CommentSection';
 import { ArticleCard } from '@/components/articles/ArticleCard';
 import { ArticleSkeleton } from '@/components/articles/ArticleSkeleton';
@@ -18,6 +19,8 @@ import {
   Bookmark,
   Shield,
   AlertTriangle,
+  Star,
+  Play,
 } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { useReadingTracker, useUserBehavior } from '@/hooks/useUserBehavior';
@@ -437,6 +440,77 @@ export default function Article() {
               articleTitle={article.title ?? 'Article'}
             />
           </div>
+
+          {(article.reviews?.length ?? 0) > 0 && (
+            <div className="mb-12">
+              <h2 className="font-display font-bold text-2xl mb-4">
+                Expert Reviews
+              </h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                {(article.reviews ?? []).map((review) => (
+                  <Card key={review.id} className="border border-border">
+                    <CardHeader>
+                      <div className="flex items-center justify-between">
+                        <CardTitle className="text-base">{review.product}</CardTitle>
+                        <div className="flex items-center gap-1 text-sm">
+                          <Star className="h-4 w-4 fill-yellow-500 text-yellow-500" />
+                          <span className="font-semibold">{review.rating}</span>
+                        </div>
+                      </div>
+                      <CardDescription className="text-sm">
+                        {review.summary}
+                      </CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                      <p className="text-xs text-muted-foreground">
+                        Pros: {(review.pros ?? []).join(', ') || '—'}
+                      </p>
+                      <p className="text-xs text-muted-foreground mt-1">
+                        Cons: {(review.cons ?? []).join(', ') || '—'}
+                      </p>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {(article.videos?.length ?? 0) > 0 && (
+            <div className="mb-12">
+              <h2 className="font-display font-bold text-2xl mb-4">
+                Related Videos
+              </h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {(article.videos ?? []).map((video) => (
+                  <Card key={video.id} className="border border-border">
+                    <CardContent className="p-4">
+                      <div className="flex items-center gap-3">
+                        <div className="w-12 h-12 rounded-full bg-muted flex items-center justify-center">
+                          <Play className="h-5 w-5 text-foreground" />
+                        </div>
+                        <div>
+                          <p className="font-medium text-sm">{video.title}</p>
+                          <p className="text-xs text-muted-foreground">
+                            {video.duration ? `${video.duration}` : 'Video'}
+                          </p>
+                        </div>
+                      </div>
+                      {video.url && (
+                        <a
+                          href={video.url}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="text-sm text-primary mt-3 inline-block hover:underline"
+                        >
+                          Watch video
+                        </a>
+                      )}
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            </div>
+          )}
 
           <div className="mb-16">
             <CommentSection articleId={articleId} />

@@ -26,6 +26,24 @@ export const mockArticles: Article[] = [
     readTime: 6,
     imageUrl: 'https://images.unsplash.com/photo-1591488320449-011701bb6704?w=800',
     tags: ['NVIDIA', 'GPU', 'Hardware', 'Gaming'],
+    reviews: [
+      {
+        id: 'review-tech-2',
+        product: 'NVIDIA RTX 5090',
+        rating: 4.6,
+        summary: 'Massive ray tracing uplift, but pricing may limit mainstream adoption.',
+        pros: ['2x ray tracing gain', 'GDDR7 bandwidth', 'Similar 450W TDP'],
+        cons: ['Premium pricing', 'Availability risk at launch'],
+      },
+    ],
+    videos: [
+      {
+        id: 'video-tech-2',
+        title: 'RTX 5090 Benchmark Breakdown',
+        url: 'https://www.youtube.com/watch?v=example-rtx5090',
+        duration: '12:04',
+      },
+    ],
   },
   {
     id: 'tech-3',
@@ -121,6 +139,24 @@ export const mockArticles: Article[] = [
     tags: ['GTA', 'Rockstar', 'Open World'],
     securityScore: 85,
     isFeatured: true,
+    reviews: [
+      {
+        id: 'review-game-1',
+        product: 'Grand Theft Auto VI',
+        rating: 4.8,
+        summary: 'A generational open-world leap with memorable leads and smarter systems.',
+        pros: ['Large Vice City map', 'Lucia/Jason duo', 'Refined RAGE engine'],
+        cons: ['PC launch timing unknown', 'Online service risk'],
+      },
+    ],
+    videos: [
+      {
+        id: 'video-game-1',
+        title: 'GTA VI First Trailer Breakdown',
+        url: 'https://www.youtube.com/watch?v=example-gtavi',
+        duration: '18:21',
+      },
+    ],
   },
   {
     id: 'game-2',

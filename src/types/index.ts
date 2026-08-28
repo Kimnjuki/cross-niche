@@ -22,6 +22,20 @@ export interface Article {
   viewCount?: number; // Article view count for analytics
   /** Article-specific FAQs for FAQPage schema — overrides auto-generated defaults */
   faqs?: Array<{ question: string; answer: string }>;
+  reviews?: Array<{
+    id: string;
+    product: string;
+    rating: number;
+    summary: string;
+    pros: string[];
+    cons: string[];
+  }>;
+  videos?: Array<{
+    id: string;
+    title: string;
+    url?: string;
+    duration?: string;
+  }>;
 }
 
 export interface Guide {
