@@ -90,6 +90,8 @@ const ToolsHub = lazy(() => import("./pages/ToolsHub"));
 const MobileApp = lazy(() => import("./pages/MobileApp"));
 const PodcastPlatform = lazy(() => import("./pages/PodcastPlatform"));
 const Videos = lazy(() => import("./pages/Videos"));
+const NotificationsPage = lazy(() => import("./pages/Notifications"));
+const SettingsPage = lazy(() => import("./pages/Settings"));
 const AdvancedSearch = lazy(() => import("./components/search/AdvancedSearch"));
 const LiveUpdatesFeed = lazy(() => import("./components/live/LiveUpdatesFeed"));
 const SignInSignUp = lazy(() => import("./components/auth/SignInSignUp"));
@@ -228,6 +230,8 @@ const App = () => (
                     <Route path="/author/:authorSlug" element={<Author />} />
                     <Route path="/bookmarks" element={<Bookmarks />} />
                     <Route path="/profile" element={<Profile />} />
+                    <Route path="/notifications" element={<NotificationsPage />} />
+                    <Route path="/settings" element={<SettingsPage />} />
                     {/* Nexus AI Features */}
                     <Route path="/tools/nexusguard" element={<NexusGuard />} />
 <Route path="/tools/security-briefing" element={<SecurityBriefingRoom />} />
