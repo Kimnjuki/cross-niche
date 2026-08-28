@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { Menu, X, User, Bookmark, LogOut, Search, ChevronRight, Home } from 'lucide-react';
+import { Menu, X, User, Bookmark, LogOut, Search, ChevronRight, Home, Bell } from 'lucide-react';
 import { ThemeToggle } from '@/components/theme/ThemeToggle';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -14,6 +14,57 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { cn } from '@/lib/utils';
 import { LiveTicker } from '@/components/layout/LiveTicker';
+import { useNotifications } from '@/hooks/useNotifications';
+
+function NotificationsDropdown() {
+  const { notifications, unreadCount } = useNotifications();
+  const [open, setOpen] = useState(false);
+  const navigate = useNavigate();
+
+  return (
+    <DropdownMenu open={open} onOpenChange={setOpen}>
+      <DropdownMenuTrigger asChild>
+        <Button variant="ghost" size="icon" className="relative">
+          <Bell className="h-5 w-5" />
+          {unreadCount > 0 && (
+            <span className="absolute -top-1 -right-1 inline-flex h-4 min-w-[1rem] items-center justify-center rounded-full bg-destructive px-1 text-[10px] font-medium text-destructive-foreground">
+              {unreadCount}
+            </span>
+          )}
+        </Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent align="end" className="w-80">
+        <div className="px-3 py-2">
+          <p className="text-sm font-semibold">Notifications</p>
+        </div>
+        <DropdownMenuSeparator />
+        <div className="max-h-80 overflow-y-auto">
+          {notifications.length === 0 ? (
+            <div className="px-3 py-6 text-center text-sm text-muted-foreground">No notifications yet</div>
+          ) : (
+            notifications.slice(0, 20).map((n) => (
+              <DropdownMenuItem
+                key={n.id}
+                className="flex flex-col items-start gap-1 whitespace-normal"
+                onSelect={() => {
+                  setOpen(false);
+                  if (n.category === 'breaking') navigate('/security');
+                  if (n.category === 'feed') navigate('/explore');
+                }}
+              >
+                <span className="text-sm font-medium">{n.title}</span>
+                <span className="text-xs text-muted-foreground line-clamp-2">{n.message}</span>
+                <span className="text-[11px] text-muted-foreground">
+                  {new Date(n.createdAt).toLocaleString(undefined, { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })}
+                </span>
+              </DropdownMenuItem>
+            ))
+          )}
+        </div>
+      </DropdownMenuContent>
+    </DropdownMenu>
+  );
+}
 
 /** Primary navigation — user intent, gaming-security first. */
 const navLinks = [
@@ -203,6 +254,7 @@ export function Navbar() {
                   <Link to="/signin">Sign In</Link>
                 </Button>
               )}
+              <NotificationsDropdown />
             </div>
 
             {/* Mobile Menu Button – 44px min tap target (GA mobile UX) */}
