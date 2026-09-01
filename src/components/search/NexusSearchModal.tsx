@@ -102,7 +102,7 @@ export function NexusSearchModal({ isOpen, onClose }: { isOpen: boolean; onClose
         e.preventDefault();
         const result = results[selectedIndex];
         if (result) {
-          window.location.href = `/articles/${result.slug}`;
+          window.location.href = `/article/${result.slug}`;
         }
       }
     };
@@ -352,7 +352,7 @@ export function NexusSearchModal({ isOpen, onClose }: { isOpen: boolean; onClose
                 {results.map((result, index) => (
                   <a
                     key={result._id}
-                    href={`/articles/${result.slug}`}
+                    href={`/article/${result.slug}`}
                     className={cn(
                       'block p-4 rounded-lg border transition-colors',
                       selectedIndex === index

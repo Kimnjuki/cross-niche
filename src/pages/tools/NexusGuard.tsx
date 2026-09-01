@@ -234,9 +234,9 @@ const NexusGuardPage = memo(function NexusGuardPage() {
       ],
       compliance_notes: `For your ${briefData.region} region, ensure compliance with local data protection regulations. Consider additional controls for ${briefData.industry} industry requirements.`,
       article_recommendations: [
-        { title: 'Kubernetes Security Best Practices', url: '/articles/kubernetes-security' },
-        { title: 'Node.js Security Checklist', url: '/articles/nodejs-security' },
-        { title: 'Cloud Security Fundamentals', url: '/articles/cloud-security' },
+        { title: 'Gaming PC Security Hardening Guide', url: '/article/gaming-pc-security-hardening-guide' },
+        { title: 'Complete Gaming Account Security Guide 2026', url: '/article/complete-gaming-account-security-guide-2026' },
+        { title: 'Router Security for Gamers', url: '/article/router-security-gamers-network-protection' },
       ],
     };
 

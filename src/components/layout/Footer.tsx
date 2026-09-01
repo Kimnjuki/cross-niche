@@ -127,7 +127,7 @@ export function Footer() {
               <Link to="/article/router-security-gamers-2026" className="text-muted-foreground hover:text-foreground transition-colors">
                 Router Security for Gamers 2026
               </Link>
-              <Link to="/article/game-account-security-anti-phishing-2026-gaming-platforms" className="text-muted-foreground hover:text-foreground transition-colors">
+              <Link to="/article/complete-gaming-account-security-guide-2026" className="text-muted-foreground hover:text-foreground transition-colors">
                 Game Account Anti-Phishing Guide
               </Link>
               <Link to="/article/gaming-pc-security-hardening-guide-2026" className="text-muted-foreground hover:text-foreground transition-colors">

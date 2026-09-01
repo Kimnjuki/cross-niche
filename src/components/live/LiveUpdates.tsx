@@ -39,7 +39,7 @@ const mockUpdates: LiveUpdate[] = [
     priority: 'critical',
     category: 'Security',
     imageUrl: '/api/placeholder/400/200',
-    link: '/article/critical-zero-day-vulnerability',
+    link: '/article/chrome-zero-day-warning-gamers-april-2026',
     metrics: { views: 1250, shares: 89, comments: 23 },
     isLive: true
   },
@@ -52,7 +52,7 @@ const mockUpdates: LiveUpdate[] = [
     priority: 'high',
     category: 'AI',
     imageUrl: '/api/placeholder/400/200',
-    link: '/article/ai-breakthrough-human-level',
+    link: '/article/ai-security-threats-2026',
     metrics: { views: 5432, shares: 234, comments: 67 }
   },
   {
@@ -63,7 +63,7 @@ const mockUpdates: LiveUpdate[] = [
     timestamp: new Date(Date.now() - 45 * 60 * 1000), // 45 minutes ago
     priority: 'high',
     category: 'Security',
-    link: '/article/major-data-breach-ecommerce',
+    link: '/article/bitwarden-security-incident-gaming-password-manager',
     metrics: { views: 8901, shares: 456, comments: 123 }
   },
   {
@@ -75,7 +75,7 @@ const mockUpdates: LiveUpdate[] = [
     priority: 'medium',
     category: 'Tech',
     imageUrl: '/api/placeholder/400/200',
-    link: '/article/quantum-computing-breakthrough',
+    link: '/article/microsoft-patch-tuesday-6-zero-days-february-2026',
     metrics: { views: 12345, shares: 789, comments: 234 }
   },
   {
@@ -86,7 +86,7 @@ const mockUpdates: LiveUpdate[] = [
     timestamp: new Date(Date.now() - 3 * 60 * 60 * 1000), // 3 hours ago
     priority: 'medium',
     category: 'Gaming',
-    link: '/article/gaming-industry-record-quarter',
+    link: '/article/game-recommendations-by-security-score-finding-safe-multiplayer-games',
     metrics: { views: 6789, shares: 345, comments: 89 }
   }
 ];

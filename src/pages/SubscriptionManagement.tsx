@@ -75,7 +75,7 @@ export default function SubscriptionManagement() {
               >
                 Subscription
               </Link>
-              <Link to="/billing" className="text-muted-foreground hover:text-foreground">
+              <Link to="/subscription/management" className="text-muted-foreground hover:text-foreground">
                 Billing
               </Link>
               <Link to="/settings" className="text-muted-foreground hover:text-foreground">
