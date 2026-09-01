@@ -184,6 +184,10 @@ function getStaticPages() {
     { loc: `${BASE_URL}/nexus-studio`, lastmod: TODAY, changefreq: 'weekly', priority: 0.7 },
     { loc: `${BASE_URL}/gaming/security-guides`, lastmod: TODAY, changefreq: 'weekly', priority: 0.7 },
     { loc: `${BASE_URL}/seo-checklist`, lastmod: TODAY, changefreq: 'monthly', priority: 0.4 },
+    { loc: `${BASE_URL}/videos`, lastmod: TODAY, changefreq: 'weekly', priority: 0.6 },
+    { loc: `${BASE_URL}/notifications`, lastmod: TODAY, changefreq: 'weekly', priority: 0.5 },
+    { loc: `${BASE_URL}/settings`, lastmod: TODAY, changefreq: 'monthly', priority: 0.5 },
+    // Author pages will be added dynamically from authorData
     // Tool pages
     { loc: `${BASE_URL}/tools/security-scanner`, lastmod: TODAY, changefreq: 'weekly', priority: 0.9 },
     { loc: `${BASE_URL}/tools/nexusguard`, lastmod: TODAY, changefreq: 'weekly', priority: 0.8 },

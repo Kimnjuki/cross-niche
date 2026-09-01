@@ -13,12 +13,8 @@
       "permanent": true
     },
     {
-      "source": "/test-features",
-      "statusCode": 410
-    },
-    {
       "source": "/articles",
-      "destination": "/blog",
+      "destination": "/topics",
       "permanent": true
     },
     {
@@ -39,16 +35,6 @@
     {
       "source": "/billing",
       "destination": "/subscription/management",
-      "permanent": true
-    },
-    {
-      "source": "/settings",
-      "destination": "/subscription/management",
-      "permanent": true
-    },
-    {
-      "source": "/blog-series",
-      "destination": "/blog",
       "permanent": true
     },
     {

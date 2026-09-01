@@ -139,6 +139,9 @@ export function SEOHead({
   }
   const canonical = buildCanonical(url);
 
+  // Ensure canonical is never self-conflicting
+  const safeCanonical = canonical && canonical !== `${BASE_URL}/` ? canonical : `${BASE_URL}/`;
+
   // ── Absolute image URL (always HTTPS — fixes "mixed content" warnings) ─
   function absoluteImage(src: string): string {
     if (src.startsWith('https://')) return src;
