@@ -16,6 +16,30 @@
   status = 301
   force = true
 
+[[redirects]]
+  from = "http://thegridnexus.com/*"
+  to = "https://thegridnexus.com/:splat"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/article/ulse/nexus-pulse"
+  to = "/pulse/nexus-pulse"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/article/odcasts"
+  to = "/podcasts"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/article/rivity"
+  to = "/privacy"
+  status = 301
+  force = true
+
 # Security and SEO headers
 [[headers]]
   for = "/*"

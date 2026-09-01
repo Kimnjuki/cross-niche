@@ -61,6 +61,21 @@
       "source": "/nexus/nexuspulse",
       "destination": "/pulse/nexus-pulse",
       "permanent": true
+    },
+    {
+      "source": "/article/ulse/nexus-pulse",
+      "destination": "/pulse/nexus-pulse",
+      "permanent": true
+    },
+    {
+      "source": "/article/odcasts",
+      "destination": "/podcasts",
+      "permanent": true
+    },
+    {
+      "source": "/article/rivity",
+      "destination": "/privacy",
+      "permanent": true
     }
   ],
   "rewrites": [
