@@ -76,6 +76,61 @@
       "source": "/article/rivity",
       "destination": "/privacy",
       "permanent": true
+    },
+    {
+      "source": "/article/:slug/",
+      "destination": "/article/:slug",
+      "permanent": true
+    },
+    {
+      "source": "/news/",
+      "destination": "/news",
+      "permanent": true
+    },
+    {
+      "source": "/about/",
+      "destination": "/about",
+      "permanent": true
+    },
+    {
+      "source": "/contact/",
+      "destination": "/contact",
+      "permanent": true
+    },
+    {
+      "source": "/terms/",
+      "destination": "/terms",
+      "permanent": true
+    },
+    {
+      "source": "/privacy/",
+      "destination": "/privacy",
+      "permanent": true
+    },
+    {
+      "source": "/topics/",
+      "destination": "/topics",
+      "permanent": true
+    },
+    {
+      "source": "/security/",
+      "destination": "/security",
+      "permanent": true
+    },
+    {
+      "source": "/tech/",
+      "destination": "/tech",
+      "permanent": true
+    },
+    {
+      "source": "/gaming/",
+      "destination": "/gaming",
+      "permanent": true
+    },
+    {
+      "source": "/ai-pulse/",
+      "destination": "/ai-pulse",
+      "permanent": true
     }
   ],
   "rewrites": [

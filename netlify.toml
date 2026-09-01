@@ -40,6 +40,72 @@
   status = 301
   force = true
 
+[[redirects]]
+  from = "/article/*/"
+  to = "/article/:splat"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/news/"
+  to = "/news"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/about/"
+  to = "/about"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/contact/"
+  to = "/contact"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/terms/"
+  to = "/terms"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/privacy/"
+  to = "/privacy"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/topics/"
+  to = "/topics"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/security/"
+  to = "/security"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/tech/"
+  to = "/tech"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/gaming/"
+  to = "/gaming"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/ai-pulse/"
+  to = "/ai-pulse"
+  status = 301
+  force = true
+
 # Security and SEO headers
 [[headers]]
   for = "/*"
