@@ -126,8 +126,12 @@ export function SEOHead({
       // Always use production origin for canonical to avoid www/http variants
       const origin = BASE_URL;
       let path = parsed.pathname;
-      // Normalise trailing slash: keep only for root '/', strip everywhere else
-      if (path !== '/' && path.endsWith('/')) {
+      // Preserve `/blog` as `/blog/` so `/blog` and `/blog/` don't become duplicates
+      if (path === '/blog') {
+        path = '/blog/';
+      }
+      // Normalise trailing slash: keep only for root `/` and `/blog/`, strip everywhere else
+      if (path !== '/' && path !== '/blog/' && path.endsWith('/')) {
         path = path.slice(0, -1);
       }
       // Lowercase path for consistency (avoids duplicate-page variants)

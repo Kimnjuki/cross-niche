@@ -244,12 +244,11 @@ export function TechnicalSEO({ pageType = 'article', customMeta, structuredData 
       {/* Font Preload (disabled to avoid console warnings when font isn't used immediately) */}
       {/* <link rel="preload" href="/fonts/inter-var.woff2" as="font" type="font/woff2" crossOrigin="anonymous" /> */}
 
-      {/* Canonical URL */}
-      <link rel="canonical" href={customMeta?.url || 'https://thegridnexus.com'} />
+      {/* Canonical URL is managed centrally by SEOHead to avoid duplicates */}
 
       {/* Alternate Language */}
-      <link rel="alternate" hrefLang="en" href={customMeta?.url || 'https://thegridnexus.com'} />
-      <link rel="alternate" hrefLang="x-default" href={customMeta?.url || 'https://thegridnexus.com'} />
+      <link rel="alternate" hrefLang="en" href="https://thegridnexus.com" />
+      <link rel="alternate" hrefLang="x-default" href="https://thegridnexus.com" />
 
       {/* Sitemap */}
       <link rel="sitemap" type="application/xml" href="https://thegridnexus.com/sitemap.xml" />

@@ -81,7 +81,6 @@ export function OpenGraph({
   return (
     <Helmet>
       <title>{title}</title>
-      <link rel="canonical" href={url} />
       {metaTags.map((tag, index) => (
         <meta key={index} {...tag} />
       ))}

@@ -1,15 +1,15 @@
 {
   "redirects": [
     {
-      "source": "/:path*",
+      "source": "/(.*)",
       "has": [{ "type": "host", "value": "www.thegridnexus.com" }],
-      "destination": "https://thegridnexus.com/:path*",
+      "destination": "https://thegridnexus.com/:splat",
       "permanent": true
     },
     {
-      "source": "/:path*",
+      "source": "/(.*)",
       "has": [{ "type": "host", "value": "thegridnexus.vercel.app" }],
-      "destination": "https://thegridnexus.com/:path*",
+      "destination": "https://thegridnexus.com/:splat",
       "permanent": true
     },
     {
