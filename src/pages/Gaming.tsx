@@ -169,6 +169,22 @@ export default function Gaming() {
         ) : (
           <ArticleGrid articles={gamingArticles} columns={3} viewMode={viewMode} />
         )}
+
+        {/* Orphan rescue links */}
+        <section className="mt-12">
+          <h2 className="font-display font-bold text-2xl mb-4">More Gaming Coverage</h2>
+          <div className="flex flex-wrap gap-3">
+            <Link to="/article/best-gaming-gpu-1440p-2026-rx-9070-xt-vs-rtx-5080" className="text-sm hover:underline">Best Gaming GPU 1440p 2026</Link>
+            <Link to="/article/best-gaming-pc-under-1000-2026" className="text-sm hover:underline">Best Gaming PC Under $1000</Link>
+            <Link to="/article/crimson-desert-review-launch-march-2026-pearl-abyss-ps5-xbox-pc" className="text-sm hover:underline">Crimson Desert Review</Link>
+            <Link to="/article/arc-raiders-flashpoint-update-2026-extraction-shooter-embark-studios" className="text-sm hover:underline">Arc Raiders Flashpoint Update</Link>
+            <Link to="/article/dead-by-daylight-all-kill-update-march-2026-trickster-rework-k-pop" className="text-sm hover:underline">Dead by Daylight Update</Link>
+            <Link to="/article/death-stranding-2-on-the-beach-pc-launch-march-2026-steam-review" className="text-sm hover:underline">Death Stranding 2 Review</Link>
+            <Link to="/article/helldivers-2-force-of-law-warbond-new-weapons-armor-and-what-it-means-for-the-live-service-shooter-m" className="text-sm hover:underline">Helldivers 2 Warbond</Link>
+            <Link to="/article/high-on-life-2-release-2026" className="text-sm hover:underline">High on Life 2</Link>
+            <Link to="/article/ps5-xbox-pc-games-2026-release-calendar" className="text-sm hover:underline">2026 Release Calendar</Link>
+          </div>
+        </section>
       </div>
     </Layout>
   );

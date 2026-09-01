@@ -114,6 +114,31 @@ export function Footer() {
               <Link to="/tools/patch-risk-tracker" className="text-muted-foreground hover:text-foreground transition-colors">
                 Patch Risk Tracker
               </Link>
+              <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mt-2">Featured Articles</span>
+              <Link to="/article/gaming-pc-antivirus-best-2026" className="text-muted-foreground hover:text-foreground transition-colors">
+                Best Gaming PC Antivirus 2026
+              </Link>
+              <Link to="/article/minecraft-server-security-guide" className="text-muted-foreground hover:text-foreground transition-colors">
+                Minecraft Server Security Guide
+              </Link>
+              <Link to="/article/steam-controller-security-risks-gamers" className="text-muted-foreground hover:text-foreground transition-colors">
+                Steam Controller Security Risks
+              </Link>
+              <Link to="/article/router-security-gamers-2026" className="text-muted-foreground hover:text-foreground transition-colors">
+                Router Security for Gamers 2026
+              </Link>
+              <Link to="/article/game-account-security-anti-phishing-2026-gaming-platforms" className="text-muted-foreground hover:text-foreground transition-colors">
+                Game Account Anti-Phishing Guide
+              </Link>
+              <Link to="/article/gaming-pc-security-hardening-guide-2026" className="text-muted-foreground hover:text-foreground transition-colors">
+                Gaming PC Security Hardening Guide
+              </Link>
+              <Link to="/article/fake-game-cheats-malware-account-stealer" className="text-muted-foreground hover:text-foreground transition-colors">
+                Fake Cheats and Malware Guide
+              </Link>
+              <Link to="/article/ai-security-threats-2026" className="text-muted-foreground hover:text-foreground transition-colors">
+                AI Security Threats 2026
+              </Link>
               <Link to="/sitemap" className="text-muted-foreground hover:text-foreground transition-colors">
                 HTML Sitemap
               </Link>

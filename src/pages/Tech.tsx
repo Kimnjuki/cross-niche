@@ -77,6 +77,21 @@ export default function Tech() {
         ) : (
           <ArticleGrid articles={techArticles} columns={3} viewMode={viewMode} />
         )}
+
+        {/* Orphan rescue links */}
+        <section className="mt-12">
+          <h2 className="font-display font-bold text-2xl mb-4">More Tech & AI Coverage</h2>
+          <div className="flex flex-wrap gap-3">
+            <Link to="/article/ai-driven-continuous-threat-exposure-management-ctem-2026" className="text-sm hover:underline">AI-Driven CTEM 2026</Link>
+            <Link to="/article/ai-driven-digital-twin-security-critical-systems-2026" className="text-sm hover:underline">AI Digital Twin Security</Link>
+            <Link to="/article/ai-driven-endpoint-device-security-intelligence-edr-2026" className="text-sm hover:underline">AI-Driven EDR Intelligence</Link>
+            <Link to="/article/ai-driven-threat-detection-response-2026-cybersecurity-roadmap" className="text-sm hover:underline">AI Threat Detection Roadmap</Link>
+            <Link to="/article/ai-enabled-security-awareness-training-adaptive-learning-2026" className="text-sm hover:underline">AI Security Awareness Training</Link>
+            <Link to="/article/ai-enhanced-game-security-anti-cheat-machine-learning-2026" className="text-sm hover:underline">AI Anti-Cheat ML</Link>
+            <Link to="/article/generative-ai-cybersecurity-llm-soc-automation-2026" className="text-sm hover:underline">Generative AI SOC Automation</Link>
+            <Link to="/article/secure-ai-assisted-game-design-balance-analytics-2026" className="text-sm hover:underline">Secure AI Game Design</Link>
+          </div>
+        </section>
       </div>
     </Layout>
   );

@@ -124,6 +124,21 @@ export default function Security() {
         ) : (
           <ArticleGrid articles={securityArticles} columns={3} viewMode={viewMode} />
         )}
+
+        {/* Orphan rescue links */}
+        <section className="mt-12">
+          <h2 className="font-display font-bold text-2xl mb-4">More Security Coverage</h2>
+          <div className="flex flex-wrap gap-3">
+            <Link to="/article/ai-security-threats-2026" className="text-sm hover:underline">AI Security Threats 2026</Link>
+            <Link to="/article/fake-game-cheats-malware-account-stealer" className="text-sm hover:underline">Fake Cheats and Malware Guide</Link>
+            <Link to="/article/game-key-reseller-scams-g2a-cdkeys" className="text-sm hover:underline">Game Key Reseller Scams</Link>
+            <Link to="/article/gaming-pc-security-hardening-guide-2026" className="text-sm hover:underline">Gaming PC Security Hardening Guide</Link>
+            <Link to="/article/nintendo-switch-2-security-guide" className="text-sm hover:underline">Nintendo Switch 2 Security Guide</Link>
+            <Link to="/article/roblox-parents-guide-account-security-safety" className="text-sm hover:underline">Roblox Parents Guide</Link>
+            <Link to="/article/steam-deck-2-specs-release-date-leaks" className="text-sm hover:underline">Steam Deck 2 Security</Link>
+            <Link to="/article/xbox-rebrand-security-changes-gamers" className="text-sm hover:underline">Xbox Rebrand Security Changes</Link>
+          </div>
+        </section>
       </div>
     </Layout>
   );
