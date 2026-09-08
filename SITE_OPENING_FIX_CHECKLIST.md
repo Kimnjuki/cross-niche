@@ -1,8 +1,19 @@
 # The Grid Nexus — Site Won't Open: Diagnosis & Fix Checklist
 
-**Date:** 2026-09-09 (updated with origin/DNS findings)
+**Date:** 2026-09-09 (updated with origin/DNS findings + deployment-log analysis)
 **Domain:** `https://thegridnexus.com` / `https://www.thegridnexus.com`
 **Symptom:** The platform never opens in a browser (`ERR_TOO_MANY_REDIRECTS` — page shows "This page isn't working / redirected you too many times").
+
+> ## 🚨 DEPLOYMENT-LOG FINDING (2026-09-08/09) — why the latest deploy didn't fix it
+> The Coolify deployment log shows it deployed commit **`03fa592`** (the commit BEFORE all fixes)
+> and printed: *"No build configuration changed & image found (…:03fa592…) with the same Git Commit
+> SHA. Build step skipped."* → Coolify **did not build** the new code; it just restarted the OLD
+> image, so the old redirecting `nginx.conf` stayed live.
+> **Cause:** the fix commits existed only locally and were never pushed. They have since been
+> **pushed** — GitHub `main` is now **`f8d64b7`** (all 4 fix commits). ⚠️ YOU MUST trigger a
+> **new deployment in Coolify** so it sees the new SHA and actually builds.
+> Also note: due to Coolify's cache-skip behavior, **changing a file and redeploying the same
+> commit SHA will skip the build** — always ensure a NEW commit SHA is deployed (or force rebuild).
 
 ---
 
@@ -82,10 +93,11 @@ server {
 ## 4. DEPLOYMENT CHECKLIST — REQUIRED (make the fix live)
 
 > Cloudflare SSL/TLS mode: **FLEXIBLE** (confirmed 2026-09-09) — everything below is aligned to it.
-> The repo fix is **committed but not deployed**, and Coolify's Traefik still has `redirect-to-https`
-> on the http routers — those are the only two remaining actions.
+> The repo fix is committed **AND pushed** — GitHub `main` = `f8d64b7` (all 4 fix commits).
+> ✅ Remaining: (1) trigger a NEW Coolify deployment so it builds from the new SHA (a redeploy of
+> the same cached SHA will skip the build), and (2) fix the Coolify Traefik labels.
 
-- [ ] **1. Redeploy the app from this repo** (Dockerfile copies the fixed `nginx.conf` → `/etc/nginx/conf.d/default.conf`; it has NO `listen 443` and a CF-Ray guard). Confirm `nginx -t` passes in build logs.
+- [ ] **1. Redeploy from GitHub `main` = `f8d64b7`** — in Coolify trigger **"Deploy"** (or force rebuild) so it pulls the new commit and actually builds the image (Dockerfile copies the fixed `nginx.conf` → `/etc/nginx/conf.d/default.conf`; it has NO `listen 443` and a CF-Ray guard). Confirm `nginx -t` passes in build logs. If Coolify again says "Build step skipped", that means the old SHA is cached — re-push a marker commit or use **Rebuild** enforcement.
 - [ ] **2. Fix the Coolify Traefik labels** — in Coolify → project → deployment → **Advanced**, replace the http-router middlewares from `redirect-to-https` to `gzip` (delete the `redirect-to-https` middleware definition). Full corrected block: see **`COOLIFY_TRAEFIK_LABELS_FLEXIBLE.md`**.
 - [ ] **3. Cloudflare SSL/TLS mode = FLEXIBLE** ✅ already set — do NOT change it for now (it matches this nginx config). Optionally upgrade to **Full/Full-strict later** once Traefik owns origin `:443`.
 - [ ] **4. Purge Cloudflare cache** for `thegridnexus.com` and `www.thegridnexus.com`.
