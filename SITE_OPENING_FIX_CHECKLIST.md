@@ -61,18 +61,19 @@ server {
 
 ---
 
-## 3. VERIFICATION (done in Docker nginx with the fixed config — all PASS)
+## 3. VERIFICATION (final — Docker nginx, Cloudflare FLEXIBLE matrix; all PASS 2026-09-09)
 
-| # | Test (simulates production path) | Result |
+| # | Test (simulates the production Flexible path) | Result |
 |---|------|--------|
 | nginx syntax | `docker exec … nginx -t` | ✅ `syntax is ok` |
-| **T1 — CF Flexible + Traefik** (root `/`, `CF-Ray` present, `X-Forwarded-Proto: http` — the OLD active loop) | nginx + `CF-Ray: 123abc` + `XFP: http` | ✅ **200** / 0 redirects |
-| **T2 — CF Full/Full-strict + Traefik** (`CF-Ray` present, `XFP: https`) | nginx + `CF-Ray` + `XFP: https` | ✅ **200** / 0 redirects |
-| **T5 — deep path** `/security` (CF-Ray + XFP http) | nginx + headers | ✅ **200** / 0 redirects |
-| **T6 — deep path** `/sitemap.xml` (CF-Ray + XFP http) | nginx + headers | ✅ **200** / 0 redirects |
-| **T3 — direct plain HTTP** (no CF-Ray, no XFP) | nginx without headers | ✅ **301** → `https://thegridnexus.com/` (single hop) |
-| **T4 — www + CF-Ray + XFP http** | nginx `Host: www.thegridnexus.com` | ✅ **301** → non-www (canonical, one hop) |
-| Body served | T1 response returns `<!doctype html>…` | ✅ |
+| **F1 — https://thegridnexus.com/** via CF Flexible + Traefik (`CF-Ray`, `XFP: http`) — **the old active loop** | nginx + `CF-Ray` + `XFP: http` | ✅ **200** / 0 redirects |
+| **F2 — https://thegridnexus.com/security** (CF-Ray + XFP http) | nginx + headers | ✅ **200** / 0 redirects |
+| **F3 — https://thegridnexus.com/sitemap.xml** (CF-Ray + XFP http) | nginx + headers | ✅ **200** / 0 redirects |
+| **F4 — http://thegridnexus.com/** via CF (`CF-Ray`, XFP http) | nginx + headers | ✅ **200** / 0 redirects |
+| **F5 — https://www.thegridnexus.com/** via CF | nginx `Host: www` + `CF-Ray` + XFP http | ✅ **301** → `https://thegridnexus.com/` (single canonical hop) |
+| **F6 — direct origin `:80` plain HTTP** (no CF-Ray) | nginx without headers | ✅ **301** → `https://thegridnexus.com/` (single hop) |
+| **F7 — direct origin via Traefik https router** (`XFP: https`, e.g. Full mode later) | nginx + `XFP: https` | ✅ **200** / 0 redirects |
+| Body served | F1 returns `<!doctype html>…` | ✅ |
 | Built assets | 9/9 JS/CSS refs exist in `dist/index.html` | ✅ |
 | robots.txt / sitemaps | `dist/robots.txt`, `sitemap-index.xml` present & valid | ✅ |
 
@@ -80,36 +81,19 @@ server {
 
 ## 4. DEPLOYMENT CHECKLIST — REQUIRED (make the fix live)
 
-> The repo fix is **committed but not deployed**. The live origin still runs the OLD nginx image **and** the Coolify Traefik `redirect-to-https` middleware.
+> Cloudflare SSL/TLS mode: **FLEXIBLE** (confirmed 2026-09-09) — everything below is aligned to it.
+> The repo fix is **committed but not deployed**, and Coolify's Traefik still has `redirect-to-https`
+> on the http routers — those are the only two remaining actions.
 
-- [ ] **1. Redeploy the app from this repo** (Dockerfile copies the fixed `nginx.conf` → `/etc/nginx/conf.d/default.conf`; it has NO `listen 443`, so the stale `:443` redirecting nginx disappears). Confirm `nginx -t` passes in build logs.
-- [ ] **2. Fix the Coolify Traefik labels** (the confirmed active loop) — in Coolify → project → deployment/domain settings → **Advanced** (docker-compose/traefik labels), change for BOTH hosts:
-
-  - Remove `traefik.http.middlewares.redirect-to-https.redirectscheme.scheme=https`
-    → or simply stop referencing it. Use gzip (or no middleware) on the http routers:
-    ```
-    traefik.http.middlewares.gzip.compress=true
-    traefik.http.routers.http-0-x2njvj4owio2rehys3l97m81.entryPoints=http
-    traefik.http.routers.http-0-x2njvj4owio2rehys3l97m81.middlewares=gzip
-    traefik.http.routers.http-0-x2njvj4owio2rehys3l97m81.rule=Host(`thegridnexus.com`) && PathPrefix(`/`)
-    traefik.http.routers.http-0-x2njvj4owio2rehys3l97m81.service=http-0-x2njvj4owio2rehys3l97m81
-    traefik.http.routers.http-1-x2njvj4owio2rehys3l97m81.entryPoints=http
-    traefik.http.routers.http-1-x2njvj4owio2rehys3l97m81.middlewares=gzip
-    traefik.http.routers.http-1-x2njvj4owio2rehys3l97m81.rule=Host(`www.thegridnexus.com`) && PathPrefix(`/`)
-    traefik.http.routers.http-1-x2njvj4owio2rehys3l97m81.service=http-1-x2njvj4owio2rehys3l97m81
-    ```
-    (Keep the `https-0`/`https-1` routers as-is — they terminate LetsEncrypt TLS for direct origin access; the app nginx's CF-Ray guard makes them safe.)
-
-- [ ] **3. Cloudflare SSL/TLS mode — choose one supported configuration:**
-  - **Option A (recommended, works with unchanged CF settings):** keep **Flexible**. Cloudflare → origin `:80` → Traefik (no redirect) → app nginx (CF-Ray present ⇒ serves content). ✅
-  - **Option B (more secure, optional):** set **Full** or **Full (strict)**. Cloudflare → origin `:443` → Traefik `https-0` router (LetsEncrypt) → app nginx (`X-Forwarded-Proto: https` ⇒ serves content). ✅ Requires Traefik to own origin `:443` (no stale nginx bound to it) — satisfied by step 1.
-  - **Do NOT** leave Flexible + the `redirect-to-https` middleware — that is the current broken state (req. steps 1+2 fix it).
+- [ ] **1. Redeploy the app from this repo** (Dockerfile copies the fixed `nginx.conf` → `/etc/nginx/conf.d/default.conf`; it has NO `listen 443` and a CF-Ray guard). Confirm `nginx -t` passes in build logs.
+- [ ] **2. Fix the Coolify Traefik labels** — in Coolify → project → deployment → **Advanced**, replace the http-router middlewares from `redirect-to-https` to `gzip` (delete the `redirect-to-https` middleware definition). Full corrected block: see **`COOLIFY_TRAEFIK_LABELS_FLEXIBLE.md`**.
+- [ ] **3. Cloudflare SSL/TLS mode = FLEXIBLE** ✅ already set — do NOT change it for now (it matches this nginx config). Optionally upgrade to **Full/Full-strict later** once Traefik owns origin `:443`.
 - [ ] **4. Purge Cloudflare cache** for `thegridnexus.com` and `www.thegridnexus.com`.
 - [ ] **5. Smoke-test (after deploy):**
   - `curl -sI https://thegridnexus.com/` → `200` (no `location:`)
   - `curl -sI https://thegridnexus.com/security` → `200`
   - `curl -sI https://www.thegridnexus.com/` → single `301` → non-www → `200`
-  - `curl -sI http://thegridnexus.com/` → `200` (CF strips edge HTTP; or single `301` → `https`) — no infinite chain
+  - `curl -sI http://thegridnexus.com/` → `200` (CF forwards it; CF-Ray present) — no infinite chain
 - [ ] **6. Open in a browser (incognito):** `/`, `/tech`, `/security`, `/gaming`, `/article/…` all load.
 
 ---
@@ -118,9 +102,10 @@ server {
 
 - [ ] **Pin the origin fingerprints:** after redeploy, `curl -sk https://<origin>/` no longer returns a redirecting nginx; `http://<origin>/` with `CF-Ray` + `XFP: http` returns `200`.
 - [ ] **Confirm no Cloudflare Redirect Rule / Page Rule** additionally redirects `https://thegridnexus.com/*` (a CF-side self-redirect would loop regardless of origin).
-- [ ] **HSTS:** keep `Strict-Transport-Security` only on the HTTPS path that actually terminates TLS; if switching CF modes, re-test headers.
+- [ ] **HSTS (Flexible note):** the `Strict-Transport-Security` header from nginx passes through Cloudflare to the browser over the edge-HTTPS leg — keep it. On origin `:80` it is harmless. If you later upgrade to Full/Full-strict, re-test headers.
+- [ ] **Optional future upgrade — Full/Full-strict:** only after verifying Traefik binds origin `:443` (its `https-0`/`https-1` LetsEncrypt routers) with **no** stale nginx on 443. nginx already handles `X-Forwarded-Proto: https` (test F7 passes).
 - [ ] **Add a regression test** to `scripts/` (curl assertions from §4) so every release fails CI if a self-referencing 301/302 appears.
-- [ ] **Consolidate redirect logic:** host-canonical (www→non-www) + scheme (http→https) belong in ONE layer (nginx). Keep middlewares to gzip only.
+- [ ] **Consolidate redirect logic:** host-canonical (www→non-www) + scheme (http→https) belong in ONE layer (nginx). Keep Traefik middlewares to gzip only.
 - [ ] Remove `next.config.js` / `vercel.json` redirect rules if the site is truly Docker/Coolify-hosted (stale rules mislead future debugging).
 
 ---
@@ -129,13 +114,13 @@ server {
 
 ```
 ERR_TOO_MANY_REDIRECTS + 3xx whose Location equals the requested URL
-+ Server: cloudflare + Coolify Traefik on :80 with
++ Server: cloudflare (Flexible) + Coolify Traefik on :80 with
   traefik.http.middlewares.redirect-to-https.redirectscheme.scheme=https
 + stale app nginx on :443 with `listen 443 ssl` + `return 301 https://…`
 ⇒ With Cloudflare Flexible, every edge-HTTPS request lands on origin :80 and
   Traefik 302-redirects it back to the same https URL forever.
-Fix:
+Fix (Cloudflare FLEXIBLE - CONFIRMED):
   1) deploy repo nginx.conf (CF-Ray guard, no 443 listener)
-  2) Coolify labels: remove redirect-to-https from http routers (gzip only)
-  3) Cloudflare: Flexible (or switch to Full/Full-strict once Traefik owns 443)
+  2) Coolify labels: http routers use gzip (delete redirect-to-https middleware)
+  3) Cloudflare mode: Flexible (already set) - purge cache after deploy
 ```
