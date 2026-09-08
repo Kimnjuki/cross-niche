@@ -1,46 +1,36 @@
 # The Grid Nexus — Site Won't Open: Diagnosis & Fix Checklist
 
-**Date:** 2026-09-07
+**Date:** 2026-09-09 (updated with origin/DNS findings)
 **Domain:** `https://thegridnexus.com` / `https://www.thegridnexus.com`
 **Symptom:** The platform never opens in a browser (`ERR_TOO_MANY_REDIRECTS` — page shows "This page isn't working / redirected you too many times").
 
 ---
 
-## 1. ROOT CAUSE (confirmed)
+## 1. ROOT CAUSE (confirmed at every layer)
 
-The site was stuck in an **infinite 301 redirect loop**.
+The site is stuck in an **infinite HTTPS redirect loop**. Requests can never land on a `200`.
 
-| Check | Evidence |
-|---|---|
-| DNS resolves | `thegridnexus.com` → Cloudflare `104.21.63.78 / 172.67.170.72` (proxied) ✅ |
-| TLS terminates at | Cloudflare edge (`Server: cloudflare`, `alt-svc: h3`) |
-| Response for `https://thegridnexus.com/` | **`HTTP/1.1 301 Moved Permanently` → `location: https://thegridnexus.com/`** (points to ITSELF) ❌ |
-| Response for `https://thegridnexus.com/sitemap.xml` | 301 → the **same** URL (loop on every path) ❌ |
-| `curl -L` trace | `curl: (47) Maximum (50) redirects followed` — confirms loop |
+| Check | Evidence | Status |
+|---|---|---|
+| DNS (zone export 2026-09-08) | `A thegridnexus.com` + `A www.thegridnexus.com` → `169.58.3.171` (IBM Cloud), `cf-proxied:true`, NS = Cloudflare | ✅ DNS fine |
+| Public `https://thegridnexus.com/` | `HTTP 302/301` → `location: https://thegridnexus.com/` (points to ITSELF) | ❌ |
+| `curl -L` trace | `curl: (47) Maximum (50) redirects followed` — loop, 50+ hops | ❌ |
+| Origin `:80` (bypassing CF) | `302/307` → `https://thegridnexus.com/<path>` even when `X-Forwarded-Proto: https` is sent | ❌ |
+| Origin `:443` (bypassing CF) | `301 Moved Permanently` → `https://thegridnexus.com/<path>` **for already-HTTPS requests** (`Server: nginx/1.30.4`, `Alt-Svc: h3`) | ❌ |
+| CF SSL mode observed | Public response body `Found`/`Content-Length: 5` = origin `:80` relayed ⇒ **Cloudflare is in Flexible mode** (HTTP to origin) | ⚠️ |
 
-### Why the loop happens
+### Why it loops in EVERY Cloudflare SSL mode
 
-- The origin runs **nginx in Docker** (see `Dockerfile` + `nginx.conf`) and only listens on **port 80**.
-- Cloudflare is set to **Flexible SSL mode**: it terminates TLS at the edge and forwards **every** request (including original HTTPS ones) to the origin as **plain HTTP on port 80**, setting header `X-Forwarded-Proto: https`.
-- The old `nginx.conf` had an **unconditional** redirect block:
-
-  ```nginx
-  server {
-      listen 80;
-      server_name thegridnexus.com;
-      return 301 https://thegridnexus.com$request_uri;   # fires EVERY time
-  }
-  ```
-
-- Flow: Browser → `https://thegridnexus.com/` → Cloudflare → origin over HTTP:80 →
-  nginx sees "HTTP", returns `301 → https://thegridnexus.com/` → browser follows → **repeat forever**.
+- The origin has **TWO independent, unconditional `http→https`-style redirects**:
+  1. **Port 80 — proxy middleware layer** (Traefik/Coolify; plain `404 page not found` + reason-phrase bodies): every HTTP request → `302/307 https://…` regardless of `X-Forwarded-Proto`. With Cloudflare **Flexible**, an original *HTTPS* request is forwarded as HTTP to `:80`, so it gets redirected back to the same HTTPS URL → infinite loop.
+  2. **Port 443 — stale nginx** (`nginx/1.30.4`, from the old SSL-era `nginx.conf` that had `listen 443 ssl` + `return 301 https://thegridnexus.com$request_uri`): even an *already-HTTPS* request is `301`'d back to itself. So **Full/Full-strict** CF modes also loop.
+- The deployed container is NOT running the current repo `nginx.conf` (which has no 443 listener and gates the `:80` redirect on `X-Forwarded-Proto`). It is running an **old build**.
 
 ---
 
-## 2. FIX APPLIED (in this repo)
+## 2. FIX APPLIED (in this repo — commit 80024df)
 
-Edited **`nginx.conf`** — removed the unconditional HTTP→HTTPS block and made the upgrade conditional on
-`X-Forwarded-Proto`, so it only redirects when the original client request was actually HTTP:
+Edited **`nginx.conf`** in this repo: removed the unconditional HTTP→HTTPS block and made the upgrade conditional on `X-Forwarded-Proto`, so it only redirects when the original client request was actually HTTP:
 
 ```nginx
 server {
@@ -57,12 +47,13 @@ server {
 }
 ```
 
-- The `www → non-www` 301 block is unchanged and remains a single hop (not a loop).
+- The `www → non-www` 301 block is unchanged and remains a single host-based hop.
 - HTTPS-forwarded (`X-Forwarded-Proto: https`) requests now fall through and serve the SPA (`try_files $uri /index.html`).
+- This repo's `nginx.conf` has **no `listen 443`** — TLS is meant to terminate at Coolify/Traefik or Cloudflare.
 
 ---
 
-## 3. VERIFICATION (done — all PASS)
+## 3. VERIFICATION (done in Docker nginx with the fixed config — all PASS)
 
 | # | Test | Result |
 |---|------|--------|
@@ -71,40 +62,51 @@ server {
 | HTTPS-forwarded deep path `/sitemap.xml` | nginx + `X-Forwarded-Proto: https` | ✅ `200` / `0` redirects |
 | Plain HTTP (no proxy header) | nginx without header | ✅ `301` → `https://thegridnexus.com/` (single hop) |
 | `www` host (HTTPS-forwarded) | nginx `Host: www.thegridnexus.com` | ✅ `301` → non-www (canonical, one hop) |
-| Served body | `/` now returns `<!doctype html>…` | ✅ |
-| Built assets | 9/9 JS/CSS refs in `dist/index.html` exist | ✅ |
+| Served body | `/` returns `<!doctype html>…` | ✅ |
+| Built assets | 9/9 JS/CSS refs exist in `dist/index.html` | ✅ |
 | robots.txt / sitemaps | `dist/robots.txt`, `sitemap-index.xml` present & valid | ✅ |
 
 ---
 
-## 4. DEPLOYMENT CHECKLIST (must do to make it live)
+## 4. DEPLOYMENT CHECKLIST — REQUIRED (make the fix live)
 
-- [ ] **Commit** the `nginx.conf` change.
-- [ ] **Rebuild** the Docker image (this Dockerfile copies `nginx.conf` → `/etc/nginx/conf.d/default.conf`).
-- [ ] **Redeploy** the container (Coolify / whatever runs the origin) and confirm `nginx -t` passes in logs.
-- [ ] **Purge Cloudflare cache** for `thegridnexus.com` (+ `www`), and verify outside/incognito.
-- [ ] Smoke-test: `curl -sI https://thegridnexus.com/` → expect `HTTP/2 200` (no `location:` header).
-- [ ] Smoke-test a deep URL: `curl -sI https://thegridnexus.com/security` → `200`.
-- [ ] Smoke-test www: `curl -sI https://www.thegridnexus.com/` → `301` to non-www, then `200`.
-- [ ] Smoke-test `http://thegridnexus.com/` → `301` → `https://thegridnexus.com/` → `200`.
-- [ ] Open in a browser: site loads with no "too many redirects", `/`, `/tech`, `/security`, `/gaming`.
+> The repo fix is **committed but not deployed**. The live origin still serves the OLD nginx.conf (stale image) + an unconditional proxy redirect on `:80`.
+
+- [ ] **Redeploy the app container** from this repo (this Dockerfile copies the fixed `nginx.conf` → `/etc/nginx/conf.d/default.conf`). Confirm `nginx -t` passes in build logs. ← *the nginx on `:443` must disappear / stop redirecting*
+- [ ] **Remove or disable any unconditional HTTP→HTTPS redirect middleware/rule** for `thegridnexus.com` / `www.thegridnexus.com` in the hosting proxy (Coolify domain settings / Traefik rule / IBM Cloud LB) — the `:80` layer must NOT 302/307 every request; it must pass `X-Forwarded-Proto` through to the app nginx.
+- [ ] **Align Cloudflare SSL/TLS mode** (one of the two supported combos):
+  - **Option A (recommended, simplest):** Cloudflare **Flexible** + this repo's nginx (listens only on `:80`, gates redirect on `X-Forwarded-Proto`).
+  - **Option B:** Cloudflare **Full (strict)** with a Cloudflare Origin certificate on the origin `:443` and a corrected `:443` server block that **serves content instead of redirecting** (never `return 301 https://thegridnexus.com…` from a `listen 443` block for `thegridnexus.com`).
+  - **Do NOT** leave Flexible + proxy-layer redirect + stale 443 nginx — that is the current broken state.
+- [ ] **Purge Cloudflare cache** for `thegridnexus.com` and `www.thegridnexus.com`.
+- [ ] Smoke-test (after deploy):
+  - `curl -sI https://thegridnexus.com/` → `200` (no `location:`)
+  - `curl -sI https://thegridnexus.com/security` → `200`
+  - `curl -sI https://www.thegridnexus.com/` → single `301` → non-www → `200`
+  - `curl -sI http://thegridnexus.com/` → single `301` → `https://…` → `200`
+- [ ] Open in a browser (incognito): `/`, `/tech`, `/security`, `/gaming`, `/article/…` all load.
 
 ---
 
 ## 5. PREVENTIVE / HARDENING CHECKLIST (recommended)
 
-- [ ] **Cloudflare SSL/TLS mode:** either keep **Flexible** (works now, thanks to the X-Forwarded-Proto guard) or ideally move to **Full (strict)** and add a `listen 443 ssl` origin server block with a Cloudflare Origin certificate. Full/strict is preferred for real end-to-end encryption.
-- [ ] Confirm **no Cloudflare redirect Rule / Page Rule** also redirects `https://thegridnexus.com/*` (a CF-side self-redirect would loop regardless of nginx).
-- [ ] Verify HSTS: with the current setup the `Strict-Transport-Security` header is served after the fix; if you switch to Full SSL keep it.
-- [ ] Add a loop guard test to `scripts/` (curl assertions above) before each release.
-- [ ] Confirm the `next.config.js` / `vercel.json` redirect rules match only if the deployment is actually Vercel-hosted (live origin is Docker/nginx; keep redirect logic in one place).
+- [ ] **Pin the origin fingerprints:** after redeploy verify `openssl s_client -connect <origin>:443` no longer serves a redirecting vhost, and `:80` respects `X-Forwarded-Proto: https` (returns 200).
+- [ ] **Confirm no Cloudflare Redirect Rule / Page Rule** additionally redirects `https://thegridnexus.com/*` (a CF-side self-redirect would loop regardless of origin).
+- [ ] **HSTS:** keep `Strict-Transport-Security` only on the HTTPS path that actually terminates TLS; if switching CF modes, re-test headers.
+- [ ] **Add a regression test** to `scripts/` (curl assertions from §4) so every release fails CI if a self-referencing 301/302 appears.
+- [ ] **Consolidate redirect logic:** keep host-canonical (www→non-www) + scheme (http→https) redirects in ONE layer. Current stack (CF + Traefik/Coolify middleware + nginx) had two extra layers, which is precisely how the loop slipped in.
+- [ ] Remove `next.config.js` / `vercel.json` redirect rules if the site is truly Docker/Coolify-hosted (stale rules mislead future debugging).
 
 ---
 
 ## 6. SIGNATURE SNIPPET (for dashboards / future incidents)
 
 ```
-ERR_TOO_MANY_REDIRECTS + 301 whose Location equals the requested URL
-+ Server: cloudflare + nginx origin listening only on :80
-⇒ HTTP→HTTPS redirect at origin is unconditional while Cloudflare is in Flexible SSL.
+ERR_TOO_MANY_REDIRECTS + 3xx whose Location equals the requested URL
++ Server: cloudflare + origin answers on BOTH :80 and :443 with unconditional
+  redirects to https://thegridnexus.com (proxy middleware on :80, stale
+  nginx with `listen 443 ssl` + `return 301` on :443)
+⇒ No Cloudflare SSL mode (Flexible / Full / Full-strict) can break the cycle.
+  Fix = deploy repo nginx.conf (no 443 listener, X-Forwarded-Proto guard on
+  :80) AND remove the unconditional proxy-layer redirect.
 ```
