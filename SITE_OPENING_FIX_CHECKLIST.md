@@ -4,16 +4,15 @@
 **Domain:** `https://thegridnexus.com` / `https://www.thegridnexus.com`
 **Symptom:** The platform never opens in a browser (`ERR_TOO_MANY_REDIRECTS` — page shows "This page isn't working / redirected you too many times").
 
-> ## 🚨 DEPLOYMENT-LOG FINDING (2026-09-08/09) — why the latest deploy didn't fix it
-> The Coolify deployment log shows it deployed commit **`03fa592`** (the commit BEFORE all fixes)
-> and printed: *"No build configuration changed & image found (…:03fa592…) with the same Git Commit
-> SHA. Build step skipped."* → Coolify **did not build** the new code; it just restarted the OLD
-> image, so the old redirecting `nginx.conf` stayed live.
-> **Cause:** the fix commits existed only locally and were never pushed. They have since been
-> **pushed** — GitHub `main` is now **`f8d64b7`** (all 4 fix commits). ⚠️ YOU MUST trigger a
-> **new deployment in Coolify** so it sees the new SHA and actually builds.
-> Also note: due to Coolify's cache-skip behavior, **changing a file and redeploying the same
-> commit SHA will skip the build** — always ensure a NEW commit SHA is deployed (or force rebuild).
+> ## ✅ STATUS UPDATE (2026-09-09, after 2nd deployment)
+> - Deployment #2 pulled **`9f9ba50`** (our fix SHA) and deployed image `7b4f553a8a7b`.
+> - **Verified LIVE:** origin `:443` now returns **`200 OK`** serving the fixed app nginx
+>   (`/health` → `healthy`; headers match the repo `nginx.conf`). **The stale redirecting nginx is GONE.**
+> - **REMAINING BLOCKER (only one):** origin `:80` still returns Traefik **`302 Found`**
+>   (`Content-Length: 5`) on `/` and `/health` — the Coolify **`redirect-to-https` middleware is
+>   STILL active** on the http routers. While it's on, Cloudflare Flexible → `:80` → 302 → same URL = loop.
+> - ✅ **Action left:** change the two Coolify http-router `middlewares` labels from
+>   `redirect-to-https` → `gzip` (see `COOLIFY_TRAEFIK_LABELS_FLEXIBLE.md`), then purge CF cache.
 
 ---
 
