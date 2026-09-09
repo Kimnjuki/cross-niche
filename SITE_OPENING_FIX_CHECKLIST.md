@@ -12,24 +12,42 @@
 > | App deployed (fixed image `7b4f553a8a7b`) | **origin `:443` → `200 OK` on EVERY path** (`/`, `/security`, `/gaming`, `/tech`, `/sitemap.xml`, `/robots.txt`, `/health`) | ✅ |
 > | `www` canonicalization | origin `:443` Host `www` → single `301 → https://thegridnexus.com` then 200 | ✅ |
 > | Origin `:80` | still Traefik **`302 Found`** (`redirect-to-https` middleware active in Coolify) | ❌ |
-> | Public `https://…` via Cloudflare | still loops (`302` × N) because **Cloudflare SSL mode = Flexible → origin `:80`** | ❌ |
->
-> ## ⚡ THE FASTEST FIX (1 change, no code, no Coolify): switch Cloudflare SSL mode to **Full**
->
-> The fixed app is ALREADY serving every path with 200 on origin **`:443`**. Cloudflare **Flexible**
-> is the only thing forcing traffic to the broken `:80` (Traefik redirect). Changing the zone to
-> **Full** makes Cloudflare connect to origin `:443` instead → the site opens immediately.
->
-> **In Cloudflare → SSL/TLS → Edge Certificates → SSL/TLS encryption mode: change Flexible → Full → Save.**
-> (Full-strict also works; Full is enough and doesn't require origin cert validation.)
->
-> Then verify (should go green instantly):
-> ```
-> curl -sI https://thegridnexus.com/        → 200, no location:
-> curl -sI https://www.thegridnexus.com/    → single 301 → non-www → 200
-> curl.exe -sS -o NUL -w "%{http_code}" -L https://thegridnexus.com/   → 200
-> ```
->
+> | Public `https://…` via Cloudflare | now **`200 OK`** (CF switched to Full → hits origin `:443`) | ✅ |
+
+---
+
+## 📄 2026-09-09 ADDENDUM — article-URL 301 loop (crawler report)
+
+The SEO crawler showed every `/article/<slug>` returning `301`. Hop-by-hop trace exposed a loop:
+
+```
+https://…/article/foo       → 301 → http://…/article/foo/     (nginx directory-index adds slash; $scheme=http behind TLS proxy)
+http://…/article/foo/       → 301 → https://…/article/foo/    (scheme upgrade)
+https://…/article/foo/      → 301 → http://…/article/foo      (server-level trailing-slash stripper)
+http://…/article/foo        → 301 → https://…/article/foo     (scheme upgrade) → repeat
+```
+
+**Root cause:** `location ^~ /article/ { try_files $uri $uri/ /index.html; }` — the static articles
+are generated as `dist/article/{slug}/index.html`, so `$uri/` matched a real directory and nginx's
+built-in index module issued `301 → /article/<slug>/`; the server-level
+`rewrite ^/(.+)/$ /$1 permanent;` then stripped it → infinite loop.
+
+**Fix (committed):** `try_files $uri $uri/index.html /index.html;` — serves the static article
+directly (internal redirect, no directory 301). **Validated in Docker:** canonical
+`/article/test-article` → **200 / 0 redirects**; trailing-slash → single canonical chain;
+missing slug → SPA fallback 200; root/categories 200.
+Sitemap + internal links already use the canonical no-slash HTTPS form; static article HTML
+emits `<link rel="canonical">`.
+
+⚠️ Requires a **Coolify redeploy** (new commit SHA) to go live.
+
+---
+
+## ⚡ HOW IT WAS OPENED (2026-09-09)
+
+Cloudflare SSL mode was switched to **Full** (`https://thegridnexus.com/` → `200 OK` now), and the
+trailing-scheme loop was eliminated by the CF-Ray guard. The only leftover redirect issues were the
+article URLs (fixed above, pending redeploy).
 > ## 🛠 ALTERNATIVE / PERMANENT FIX (Coolify Traefik :80)
 > Change the two Coolify http-router `middlewares` labels from `redirect-to-https` → `gzip`
 > (delete the `redirect-to-https` middleware definition). Full corrected block:
