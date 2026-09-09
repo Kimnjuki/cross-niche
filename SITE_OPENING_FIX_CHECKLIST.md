@@ -1,18 +1,40 @@
 # The Grid Nexus — Site Won't Open: Diagnosis & Fix Checklist
 
-**Date:** 2026-09-09 (updated with origin/DNS findings + deployment-log analysis)
+**Date:** 2026-09-09 (origin :443 verified working — see status)
 **Domain:** `https://thegridnexus.com` / `https://www.thegridnexus.com`
 **Symptom:** The platform never opens in a browser (`ERR_TOO_MANY_REDIRECTS` — page shows "This page isn't working / redirected you too many times").
 
-> ## ✅ STATUS UPDATE (2026-09-09, after 2nd deployment)
-> - Deployment #2 pulled **`9f9ba50`** (our fix SHA) and deployed image `7b4f553a8a7b`.
-> - **Verified LIVE:** origin `:443` now returns **`200 OK`** serving the fixed app nginx
->   (`/health` → `healthy`; headers match the repo `nginx.conf`). **The stale redirecting nginx is GONE.**
-> - **REMAINING BLOCKER (only one):** origin `:80` still returns Traefik **`302 Found`**
->   (`Content-Length: 5`) on `/` and `/health` — the Coolify **`redirect-to-https` middleware is
->   STILL active** on the http routers. While it's on, Cloudflare Flexible → `:80` → 302 → same URL = loop.
-> - ✅ **Action left:** change the two Coolify http-router `middlewares` labels from
->   `redirect-to-https` → `gzip` (see `COOLIFY_TRAEFIK_LABELS_FLEXIBLE.md`), then purge CF cache.
+> ## ✅ CURRENT STATE (2026-09-09, re-verified directly against origin)
+>
+> | Layer | State | Verdict |
+> |---|---|---|
+> | Repo fixes (`nginx.conf` CF-Ray guard, no 443 listener) | committed + pushed (`21ce693`) | ✅ |
+> | App deployed (fixed image `7b4f553a8a7b`) | **origin `:443` → `200 OK` on EVERY path** (`/`, `/security`, `/gaming`, `/tech`, `/sitemap.xml`, `/robots.txt`, `/health`) | ✅ |
+> | `www` canonicalization | origin `:443` Host `www` → single `301 → https://thegridnexus.com` then 200 | ✅ |
+> | Origin `:80` | still Traefik **`302 Found`** (`redirect-to-https` middleware active in Coolify) | ❌ |
+> | Public `https://…` via Cloudflare | still loops (`302` × N) because **Cloudflare SSL mode = Flexible → origin `:80`** | ❌ |
+>
+> ## ⚡ THE FASTEST FIX (1 change, no code, no Coolify): switch Cloudflare SSL mode to **Full**
+>
+> The fixed app is ALREADY serving every path with 200 on origin **`:443`**. Cloudflare **Flexible**
+> is the only thing forcing traffic to the broken `:80` (Traefik redirect). Changing the zone to
+> **Full** makes Cloudflare connect to origin `:443` instead → the site opens immediately.
+>
+> **In Cloudflare → SSL/TLS → Edge Certificates → SSL/TLS encryption mode: change Flexible → Full → Save.**
+> (Full-strict also works; Full is enough and doesn't require origin cert validation.)
+>
+> Then verify (should go green instantly):
+> ```
+> curl -sI https://thegridnexus.com/        → 200, no location:
+> curl -sI https://www.thegridnexus.com/    → single 301 → non-www → 200
+> curl.exe -sS -o NUL -w "%{http_code}" -L https://thegridnexus.com/   → 200
+> ```
+>
+> ## 🛠 ALTERNATIVE / PERMANENT FIX (Coolify Traefik :80)
+> Change the two Coolify http-router `middlewares` labels from `redirect-to-https` → `gzip`
+> (delete the `redirect-to-https` middleware definition). Full corrected block:
+> **`COOLIFY_TRAEFIK_LABELS_FLEXIBLE.md`**. This removes the root cause entirely and lets you
+> keep Flexible (or use Full). Either fix opens the site; doing **both** is belt-and-suspenders.
 
 ---
 
