@@ -133,17 +133,13 @@ export function getBaseUrls(baseUrl: string = 'https://thegridnexus.com'): Sitem
 
 /**
  * Convert articles to sitemap URLs
+ * Single canonical pattern: /article/<slug> (P0-3). Niche-prefixed paths are
+ * removed because they are duplicate-content sources; edge 301s point them to
+ * /article/<slug>.
  */
 export function articlesToSitemapUrls(articles: Article[], baseUrl: string = 'https://thegridnexus.com'): SitemapUrl[] {
-  const nicheRoute = (article: Article): string => {
-    const niche = (article as any).niche;
-    if (niche === 'security') return 'security';
-    if (niche === 'gaming') return 'gaming';
-    if (niche === 'tech') return 'tech';
-    return 'article';
-  };
   return articles.map(article => ({
-    loc: `${baseUrl}/${nicheRoute(article)}/${article.slug ?? article.id ?? ''}`,
+    loc: `${baseUrl}/article/${article.slug ?? article.id ?? ''}`,
     lastmod: article.updatedAt 
       ? new Date(article.updatedAt).toISOString().split('T')[0]
       : new Date(article.publishedAt).toISOString().split('T')[0],

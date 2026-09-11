@@ -1,17 +1,15 @@
-# The Grid Nexus – robots.txt
+# The Grid Nexus - robots.txt
 # https://thegridnexus.com
+# Last updated: 2026-09-10
 
-# ── All crawlers (default) ────────────────────────────────────────────────
+# Default: allow all crawlers (no blocking rules for search or AI bots)
 User-agent: *
 Allow: /
 
-# Private / auth pages (never index)
+# Private / member pages (never index)
 Disallow: /admin/
-Disallow: /admin
 Disallow: /profile
-Disallow: /profile/
 Disallow: /auth
-Disallow: /auth/
 Disallow: /signin
 Disallow: /signup
 Disallow: /settings
@@ -19,6 +17,7 @@ Disallow: /billing
 Disallow: /subscription/
 Disallow: /bookmarks
 Disallow: /original-index
+Disallow: /notifications
 
 # Dev / test pages (not for indexing)
 Disallow: /simple
@@ -28,74 +27,15 @@ Disallow: /test-features
 Disallow: /newsletter/verify
 Disallow: /tools-old
 
-# Search (duplicate content risk)
+# Search results (duplicate content risk)
 Disallow: /search
-Disallow: /search/
 
-# Articles archive util pages
+# Legacy / malformed article helpers
 Disallow: /article-detail
 Disallow: /article/*/edit
 
-# WordPress scanner bait (not applicable; block probes)
+# WordPress scanner bait (block probes only; not WordPress)
 Disallow: /wp-admin/
 Disallow: /wp-includes/
 
-# ── Google ───────────────────────────────────────────────────────────────
-User-agent: Googlebot
-Allow: /
-
-# ── Bing ─────────────────────────────────────────────────────────────────
-User-agent: Bingbot
-Allow: /
-
-# ── AI / LLM crawlers (explicitly welcome) ──────────────────────────────
-User-agent: GPTBot
-Allow: /
-
-User-agent: OAI-SearchBot
-Allow: /
-
-User-agent: ChatGPT-User
-Allow: /
-
-User-agent: PerplexityBot
-Allow: /
-
-User-agent: Claude-Web
-Allow: /
-
-User-agent: ClaudeBot
-Allow: /
-
-User-agent: CCBot
-Allow: /
-
-User-agent: Applebot
-Allow: /
-
-User-agent: Applebot-Extended
-Allow: /
-
-User-agent: anthropic-ai
-Allow: /
-
-User-agent: cohere-ai
-Allow: /
-
-User-agent: Google-Extended
-Allow: /
-
-User-agent: Amazonbot
-Allow: /
-
-User-agent: Bytespider
-Allow: /
-
-User-agent: DuckAssist
-Allow: /
-
-User-agent: DuckAssistBot
-Allow: /
-
-# ── Sitemaps ─────────────────────────────────────────────────────────────
 Sitemap: https://thegridnexus.com/sitemap-index.xml

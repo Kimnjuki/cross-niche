@@ -212,23 +212,32 @@ function getStaticPages() {
   ];
 }
 
-// ── Generate sitemap.xml (static pages + dynamic content) ───────────────────
+// ── Generate sitemap.xml (STATIC pages + guides/topics only) ──────────────
+// P1-5 fix: article URLs must NOT appear here (they live in
+// sitemap-articles.xml). Listing articles in both sitemaps caused
+// "pages listed in multiple sitemaps" (38 URLs in the audit).
 function generateMainSitemap(articles) {
   const urls = [...getStaticPages()];
   const seen = new Set(urls.map((u) => u.loc));
 
   for (const article of articles) {
     if (isPlaceholderTitle(article.title)) continue;
-    const loc = article.niche === 'guides'
-      ? `${BASE_URL}/guides/${article.slug}`
-      : article.niche === 'topics'
-        ? `${BASE_URL}/topics/${article.slug}`
-        : `${BASE_URL}/article/${article.slug}`;
-
-    if (!seen.has(loc)) {
-      seen.add(loc);
-      urls.push({ loc, lastmod: article.publishedAt || TODAY, changefreq: 'weekly', priority: 0.8 });
+    // Guides and topics are NOT articles — keep them in the main sitemap.
+    // Everything with a real /article/<slug> goes to sitemap-articles.xml only.
+    if (article.niche === 'guides') {
+      const loc = `${BASE_URL}/guides/${article.slug}`;
+      if (!seen.has(loc)) {
+        seen.add(loc);
+        urls.push({ loc, lastmod: article.publishedAt || TODAY, changefreq: 'weekly', priority: 0.8 });
+      }
+    } else if (article.niche === 'topics') {
+      const loc = `${BASE_URL}/topics/${article.slug}`;
+      if (!seen.has(loc)) {
+        seen.add(loc);
+        urls.push({ loc, lastmod: TODAY, changefreq: 'weekly', priority: 0.8 });
+      }
     }
+    // else: article URLs are intentionally NOT added to sitemap.xml
   }
 
   const xml = `<?xml version="1.0" encoding="UTF-8"?>

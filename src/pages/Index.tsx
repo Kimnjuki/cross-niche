@@ -61,11 +61,9 @@ const FEED_SLUGS = [
 function articleLink(article: Article | null | undefined): string {
   if (!article) return '/';
   const slug = article.slug ?? article.id ?? '';
-  const niche = article.niche?.toLowerCase() ?? '';
-  // Use niche-prefixed paths for better SEO (niche pages are content hubs)
-  if (niche && ['tech', 'security', 'gaming'].includes(niche)) {
-    return `/${niche}/${slug}`;
-  }
+  // Single canonical URL pattern: /article/<slug>. Niche-prefixed paths
+  // (/security/<slug>, /tech/<slug>, /gaming/<slug>) are duplicate-content
+  // sources (P0-3) — they are 301-redirected at the edge to this canonical.
   return `/article/${slug}`;
 }
 
