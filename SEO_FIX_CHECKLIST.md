@@ -25,3 +25,11 @@ Generated from thegridnexus.com_pages_20260901.csv
 - [ ] Verify trailing-slash / http:// / www variants each return a single 301 to canonical (no loops)
 - [ ] Check sitemap includes all article pages (canonical form)
 - [ ] Verify no 302 chains remain
+
+## Fix Log — 2026-09-11 (nginx edge layer, commit round 2)
+
+- [x] **P1-3 (edge portion): scheme-downgrade redirect chains eliminated** — added `absolute_redirect off;` so every nginx 301/rewrite emits a RELATIVE `Location:` (e.g. `Location: /article/x`). Browsers resolve it against the current https edge scheme. Previously every redirect emitted `Location: http://...` (because `$scheme` is http behind Cloudflare Flexible / TLS-terminating proxy), producing https→http→https chains.
+- [x] **Root cause of malformed crawler URLs found & fixed**: legacy rewrite `^/p/?(.*)$` → `/article/$1` had an OPTIONAL slash, so it swallowed every path starting with `/p`: `/podcasts` → `/article/odcasts`, `/pulse/nexus-pulse` → `/article/ulse/nexus-pulse`. The existing band-aid rewrites (`/article/odcasts → /podcasts`) then created a **ping-pong 301 loop** on real routes. Slashes are now required (`^/p/(.*)$`, `^/post/(.*)$`, `^/2026/(.*)$`); `/podcasts` and `/pulse/nexus-pulse` return 200 directly. Band-aid rewrites kept (single-hop cleanup of already-crawled malformed URLs).
+- [x] **P0-3 (edge portion): single canonical article pattern enforced** — `~ ^/(tech|security|gaming)/([^/]+)/?$` now 301s niche-prefixed article URLs to `/article/<slug>` in ONE hop; `/gaming/security` and `/gaming/security-guides` are excluded (real pages, 200).
+- [x] Validated in Docker (11/11 pass): canonical article 200/0 redirects; full `/security/<slug>` chain resolves to 200 in exactly 1 redirect; direct plain-HTTP clients still get single-hop 301 → https (CF-Ray guard intact); `nginx -t` syntax ok.
+- [ ] **REDEPLOY REQUIRED** — Coolify must rebuild the image (Rolling Update / Force Rebuild if it says "Build step skipped") for these nginx fixes to go live.

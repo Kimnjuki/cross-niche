@@ -27,3 +27,5 @@ Source: thegridnexus.com_pages_20260901.csv + PDF summary
 - [ ] Re-run `npm run validate:seo` after each batch
 - [ ] Re-crawl in Ahrefs after deploy
 - [ ] Confirm 0 redirect-loop, 0 sitemap 3XX, 0 canonical→redirect
+
+## 2026-09-11 update: fixed nginx ^/p/?(.*)$ over-broad legacy rewrite (caused /podcasts + /pulse ping-pong loops and malformed /article/odcasts, /article/ulse/* URLs) and added absolute_redirect off (relative Location = no scheme-downgrade chains). Edge 301s for niche-prefixed article URLs added. Docker-validated 11/11. Redeploy required.
