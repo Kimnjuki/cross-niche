@@ -331,6 +331,12 @@ async function main() {
   console.log(`📄 Found ${articles.length} indexable URLs`);
 
   const publicDir = path.join(projectRoot, 'public');
+  // Docker build order: vite build copies public/ → dist/ BEFORE this script
+  // runs (Dockerfile: build:frontend && generate-seo-sitemaps.mjs). Writing
+  // only to public/ therefore leaves the STALE committed sitemap.xml in dist/,
+  // which is what nginx actually serves. Write to both so dist/ always gets
+  // the freshly generated, deduped sitemaps.
+  const distDir = path.join(projectRoot, 'dist');
 
   const files = {
     'sitemap.xml': generateMainSitemap(articles),
@@ -343,6 +349,13 @@ async function main() {
     const outPath = path.join(publicDir, filename);
     fs.writeFileSync(outPath, content, 'utf-8');
     console.log(`[OK] ${filename} → ${outPath}`);
+    // Overwrite the vite-copied stale copy in dist/ (if dist exists, i.e.
+    // script runs after vite build — the Docker production path).
+    if (fs.existsSync(path.join(distDir, 'index.html'))) {
+      const distPath = path.join(distDir, filename);
+      fs.writeFileSync(distPath, content, 'utf-8');
+      console.log(`[OK] ${filename} → ${distPath}`);
+    }
   }
 
   console.log(`\n✅ Sitemaps regenerated with ${articles.length} valid URLs.`);
