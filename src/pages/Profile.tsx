@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { Layout } from '@/components/layout/Layout';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -10,9 +10,10 @@ import { Switch } from '@/components/ui/switch';
 import { Separator } from '@/components/ui/separator';
 import { SEOHead } from '@/components/seo/SEOHead';
 import { useAuth } from '@/contexts/AuthContext';
-import { User, Settings, Bookmark, Trash2 } from 'lucide-react';
+import { User, Settings, Bookmark, Trash2, Search, Bell, Shield, Monitor, Globe } from 'lucide-react';
 import { toast } from 'sonner';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
+import type { Article } from '@/types';
 
 export default function Profile() {
   const { user, logout } = useAuth();
@@ -23,8 +24,36 @@ export default function Profile() {
   const [emailNotifications, setEmailNotifications] = useState(true);
   const [breakingAlerts, setBreakingAlerts] = useState(true);
   const [weeklyDigest, setWeeklyDigest] = useState(false);
+  const [compactMode, setCompactMode] = useState(false);
   const [savedSearches, setSavedSearches] = useState<string[]>([]);
   const [newSearch, setNewSearch] = useState('');
+  const [bookmarks, setBookmarks] = useState<Article[]>([]);
+
+  useEffect(() => {
+    const raw = localStorage.getItem('gridnexus_bookmarks');
+    if (raw) {
+      try {
+        setBookmarks(JSON.parse(raw));
+      } catch {
+        setBookmarks([]);
+      }
+    }
+  }, []);
+
+  const distinctTags = useMemo(() => {
+    const tagCount = new Map<string, number>();
+    bookmarks.forEach((article) => {
+      const list = Array.isArray(article.tags) ? article.tags : [];
+      list.forEach((tag: string) => {
+        const key = tag.toLowerCase().trim();
+        tagCount.set(key, (tagCount.get(key) || 0) + 1);
+      });
+    });
+    return Array.from(tagCount.entries())
+      .sort((a, b) => b[1] - a[1])
+      .slice(0, 20)
+      .map(([tag]) => tag);
+  }, [bookmarks]);
 
   if (!user) {
     navigate('/signin');
@@ -48,6 +77,8 @@ export default function Profile() {
   };
 
   const handleClearBookmarks = () => {
+    setBookmarks([]);
+    localStorage.removeItem('gridnexus_bookmarks');
     toast.success('Bookmark cache cleared');
   };
 
@@ -66,7 +97,9 @@ export default function Profile() {
       <div className="container mx-auto px-4 py-8 max-w-7xl">
         <div className="mb-8">
           <h1 className="font-display font-bold text-4xl md:text-5xl mb-4">Profile</h1>
-          <p className="text-xl text-muted-foreground">Manage your account, bookmarks, and preferences.</p>
+          <p className="text-xl text-muted-foreground">
+            Manage your account, bookmarks, and preferences.
+          </p>
         </div>
 
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
@@ -109,24 +142,80 @@ export default function Profile() {
                   <Bookmark className="h-5 w-5" />
                   Saved Bookmarks
                 </CardTitle>
-                <CardDescription>Review and manage your saved content.</CardDescription>
+                <CardDescription>
+                  {bookmarks.length} saved item{bookmarks.length !== 1 ? 's' : ''} in your reading list.
+                </CardDescription>
               </CardHeader>
-              <CardContent className="space-y-3">
-                <div className="flex items-center justify-between rounded-lg border p-4">
-                  <div>
-                    <p className="font-medium">{user?.bookmarks?.length ?? 0} saved items</p>
-                    <p className="text-sm text-muted-foreground">Manage your reading list</p>
+              <CardContent className="space-y-4">
+                <div className="flex flex-wrap items-center justify-between gap-3">
+                  <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                    <Globe className="h-4 w-4" />
+                    {distinctTags.length} topic{distinctTags.length !== 1 ? 's' : ''} in library
                   </div>
                   <div className="flex gap-2">
                     <Button variant="outline" size="sm" onClick={handleExportData}>Export</Button>
                     <Button variant="destructive" size="sm" onClick={handleClearBookmarks}>
                       <Trash2 className="h-4 w-4 mr-2" />
-                      Clear cache
+                      Clear all
                     </Button>
                   </div>
                 </div>
+
+                {distinctTags.length > 0 && (
+                  <>
+                    <Separator />
+                    <div className="flex flex-wrap gap-2">
+                      {distinctTags.map((tag) => (
+                        <Badge key={tag} variant="secondary" asChild>
+                          <Link to={`/search?q=${encodeURIComponent(tag)}`}>
+                            <Search className="h-3.5 w-3.5 mr-1" />
+                            {tag}
+                          </Link>
+                        </Badge>
+                      ))}
+                    </div>
+                  </>
+                )}
+
                 <Separator />
-                <p className="text-sm text-muted-foreground">Bookmark management UI can be extended with saved article cards.</p>
+                <div className="grid gap-3 sm:grid-cols-2">
+                  {bookmarks.map((article) => (
+                    <Card key={article.slug} className="border border-border/60">
+                      <CardHeader className="pb-2">
+                        <CardTitle className="text-base leading-snug">
+                          <Link
+                            to={`/article/${article.slug}`}
+                            className="hover:underline"
+                          >
+                            {article.title}
+                          </Link>
+                        </CardTitle>
+                        {article.author && (
+                          <CardDescription className="text-xs">
+                            By {article.author}
+                          </CardDescription>
+                        )}
+                      </CardHeader>
+                      {Array.isArray(article.tags) && article.tags.length > 0 && (
+                        <CardContent className="pt-0">
+                          <div className="flex flex-wrap gap-1">
+                            {article.tags.slice(0, 4).map((tag: string) => (
+                              <Badge key={tag} variant="secondary" className="text-[11px]">
+                                {tag}
+                              </Badge>
+                            ))}
+                          </div>
+                        </CardContent>
+                      )}
+                    </Card>
+                  ))}
+                </div>
+
+                {bookmarks.length === 0 && (
+                  <p className="text-sm text-muted-foreground">
+                    No bookmarks yet. Save articles from article pages or search results.
+                  </p>
+                )}
               </CardContent>
             </Card>
           </TabsContent>
@@ -165,8 +254,19 @@ export default function Profile() {
                   <Switch checked={weeklyDigest} onCheckedChange={setWeeklyDigest} />
                 </div>
                 <Separator />
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="font-medium">Compact mode</p>
+                    <p className="text-sm text-muted-foreground">Use tighter spacing and denser cards.</p>
+                  </div>
+                  <Switch checked={compactMode} onCheckedChange={setCompactMode} />
+                </div>
+                <Separator />
                 <div className="space-y-2">
-                  <Label>Saved searches</Label>
+                  <Label className="flex items-center gap-2">
+                    <Search className="h-4 w-4" />
+                    Saved searches
+                  </Label>
                   <div className="flex flex-wrap gap-2">
                     {savedSearches.map((s) => (
                       <Badge key={s} variant="secondary" className="gap-2">

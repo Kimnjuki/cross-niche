@@ -11,7 +11,7 @@ import { mapContentToArticles } from '@/lib/contentMapper';
 import { ArticleCard } from '@/components/articles/ArticleCard';
 import { SEOHead } from '@/components/seo/SEOHead';
 import { authorSlug } from '@/lib/utils';
-import { getAuthorProfile } from '@/data/authorData';
+import { getAuthorProfile, defaultAuthorProfile } from '@/data/authorData';
 import { Skeleton } from '@/components/ui/skeleton';
 import {
   User,
@@ -23,11 +23,17 @@ import {
   Newspaper,
   Users,
   BarChart3,
+  ShieldCheck,
+  Globe,
+  Link as LinkIcon,
+  BookOpen,
+  Eye,
 } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Separator } from '@/components/ui/separator';
 import type { Article } from '@/types';
 
 function slugToDisplayName(slug: string): string {
@@ -52,26 +58,42 @@ export default function Author() {
     : [];
 
   const profile = paramSlug ? getAuthorProfile(paramSlug) : null;
+  const effectiveProfile = profile ?? defaultAuthorProfile;
 
-  const seoDescription = profile?.bio
-    ? `${profile.bio.slice(0, 155)}...`
+  const seoDescription = effectiveProfile.bio
+    ? `${effectiveProfile.bio.slice(0, 155)}...`
     : `Articles and reviews by ${authorDisplay} on The Grid Nexus.`;
 
-  const personSchema = profile
-    ? {
-        name: profile.name,
-        jobTitle: profile.jobTitle,
-        description: profile.bio,
-        imageUrl: profile.imageUrl,
-        sameAs: profile.sameAs,
-        expertise: profile.expertise,
-      }
-    : undefined;
+  const verifiedSocials = effectiveProfile.sameAs?.filter((url) =>
+    /twitter\.com|x\.com|linkedin\.com|youtube\.com|twitch\.tv|github\.com|scholar\.google\.com/i.test(
+      url,
+    ),
+  );
+
+  const personSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'Person',
+    name: effectiveProfile.name,
+    jobTitle: effectiveProfile.jobTitle,
+    description: effectiveProfile.bio,
+    image: effectiveProfile.imageUrl,
+    sameAs: effectiveProfile.sameAs,
+    knowsAbout: effectiveProfile.expertise,
+    publisher: {
+      '@type': 'Organization',
+      name: 'The Grid Nexus',
+      url: 'https://thegridnexus.com',
+    },
+  };
 
   const popular = byAuthor
     .slice()
     .sort((a, b) => (b.viewCount ?? 0) - (a.viewCount ?? 0))
     .slice(0, 3);
+
+  const totalViews = byAuthor.reduce((acc, a) => acc + (a.viewCount ?? 0), 0);
+  const hasProfileImage = !!effectiveProfile.imageUrl;
+  const hasExternalProfiles = !!effectiveProfile.sameAs?.length;
 
   if (isLoading) {
     return (
@@ -97,11 +119,11 @@ export default function Author() {
       />
       <div className="container mx-auto px-4 py-8">
         <header className="mb-10 flex flex-col items-start gap-6 sm:flex-row sm:items-start">
-          <div className="flex h-28 w-28 flex-shrink-0 overflow-hidden rounded-full bg-muted">
-            {profile?.imageUrl ? (
+          <div className="flex h-28 w-28 flex-shrink-0 overflow-hidden rounded-full bg-muted ring-2 ring-primary/10">
+            {hasProfileImage ? (
               <img
-                src={profile.imageUrl}
-                alt={authorDisplay}
+                src={effectiveProfile.imageUrl}
+                alt={effectiveProfile.name}
                 className="h-full w-full object-cover"
               />
             ) : (
@@ -114,19 +136,19 @@ export default function Author() {
           <div className="flex-1">
             <div className="flex flex-wrap items-center gap-2">
               <h1 className="font-display font-bold text-3xl text-foreground">
-                {authorDisplay}
+                {effectiveProfile.name}
               </h1>
-              {profile?.jobTitle && (
+              {effectiveProfile.jobTitle && (
                 <Badge variant="topic" className="capitalize">
-                  {profile.jobTitle}
+                  {effectiveProfile.jobTitle}
                 </Badge>
               )}
             </div>
 
-            {profile?.jobTitle && (
+            {effectiveProfile.jobTitle && (
               <p className="mt-1 flex items-center gap-2 text-muted-foreground">
                 <Briefcase className="h-4 w-4" />
-                {profile.jobTitle}
+                {effectiveProfile.jobTitle}
               </p>
             )}
 
@@ -136,25 +158,25 @@ export default function Author() {
                 {byAuthor.length} article{byAuthor.length !== 1 ? 's' : ''}
               </span>
               <span className="flex items-center gap-1">
-                <BarChart3 className="h-4 w-4" />
-                {byAuthor.reduce((acc, a) => acc + (a.viewCount ?? 0), 0).toLocaleString()} views
+                <Eye className="h-4 w-4" />
+                {totalViews.toLocaleString()} views
               </span>
               <span className="flex items-center gap-1">
-                <Users className="h-4 w-4" />
+                <ShieldCheck className="h-4 w-4" />
                 The Grid Nexus
               </span>
             </div>
 
-            {profile?.bio && (
+            {effectiveProfile.bio && (
               <p className="mt-4 text-foreground/90 leading-relaxed max-w-2xl">
-                {profile.bio}
+                {effectiveProfile.bio}
               </p>
             )}
 
-            {profile?.expertise && profile.expertise.length > 0 && (
+            {effectiveProfile.expertise && effectiveProfile.expertise.length > 0 && (
               <div className="mt-4 flex flex-wrap gap-2">
                 <Award className="h-4 w-4 text-muted-foreground self-center" />
-                {profile.expertise.map((exp) => (
+                {effectiveProfile.expertise.map((exp) => (
                   <span
                     key={exp}
                     className="inline-flex items-center rounded-md bg-muted px-2.5 py-0.5 text-xs font-medium text-muted-foreground"
@@ -165,13 +187,13 @@ export default function Author() {
               </div>
             )}
 
-            {profile?.sameAs && profile.sameAs.length > 0 && (
+            {hasExternalProfiles && (
               <div className="mt-4 flex flex-wrap gap-2">
-                {profile.sameAs.map((url) => (
+                {verifiedSocials?.map((url) => (
                   <Button key={url} variant="outline" size="sm" asChild>
                     <a href={url} target="_blank" rel="noreferrer">
-                      <ExternalLink className="h-4 w-4 mr-2" />
-                      Profile
+                      <Globe className="h-4 w-4 mr-2" />
+                      {new URL(url).hostname.replace(/^www\./, '')}
                     </a>
                   </Button>
                 ))}

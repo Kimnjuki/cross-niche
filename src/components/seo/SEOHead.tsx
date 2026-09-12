@@ -298,6 +298,29 @@ export function SEOHead({
 
     if (person) schemas.push(generatePersonSchema(person));
 
+    const articleUrl = canonical || (typeof window !== 'undefined' ? window.location.href : '');
+    const articleTitle = type === 'article' && article ? article.title || optimizedTitle : optimizedTitle;
+    if (articleUrl) {
+      schemas.push({
+        '@type': 'WebPage',
+        '@id': `${articleUrl}#webpage`,
+        url: articleUrl,
+        name: articleTitle,
+        potentialAction: [
+          {
+            '@type': 'ShareAction',
+            target: articleUrl,
+            shareMediaSpecification: {
+              '@type': 'MediaManifest',
+              media: [
+                { '@type': 'TextMedia', encodingFormat: 'text/plain', comment: 'Article URL' },
+              ],
+            },
+          },
+        ],
+      });
+    }
+
     // Build one consolidated @graph script — no duplicate Organization/WebSite
     const graphScript = document.createElement('script');
     graphScript.type = 'application/ld+json';

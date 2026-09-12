@@ -144,6 +144,18 @@ const NexusStudio = lazy(() => import("./pages/NexusStudio"));
 const GamingSecurityGuides = lazy(() => import("./pages/GamingSecurityGuides"));
 const GamingSecurityHub = lazy(() => import("./pages/GamingSecurityHub"));
 
+// Pillar Pages
+const ZeroTrustArchitecture = lazy(() => import("./pages/PillarPages/ZeroTrustArchitecture"));
+const GamingSecurityPillar = lazy(() => import("./pages/PillarPages/GamingSecurity"));
+const AIThreatIntelligencePillar = lazy(() => import("./pages/PillarPages/AIThreatIntelligence"));
+
+// Research & Reports
+const Research = lazy(() => import("./pages/Research"));
+
+// Comparison & Gap Analysis
+const Comparisons = lazy(() => import("./pages/Comparisons"));
+const KeywordGapAnalysis = lazy(() => import("./pages/KeywordGapAnalysis"));
+
 // SEO Tools
 const SEOChecklist = lazy(() => import("./pages/SEOChecklist"));
 
@@ -220,8 +232,20 @@ const App = () => (
                     <Route path="/quality-guidelines" element={<QualityGuidelines />} />
                     <Route path="/content-policy" element={<ContentPolicy />} />
                     <Route path="/community-guidelines" element={<CommunityGuidelines />} />
-                    {/* SEO Tools */}
-                    <Route path="/seo-checklist" element={<SEOChecklist />} />
+                     {/* Pillar Pages */}
+                     <Route path="/pillar/zero-trust-architecture" element={<ZeroTrustArchitecture />} />
+                     <Route path="/pillar/gaming-security" element={<GamingSecurityPillar />} />
+                     <Route path="/pillar/ai-threat-intelligence" element={<AIThreatIntelligencePillar />} />
+
+                     {/* Research & Reports */}
+                     <Route path="/research/state-of-gaming-security-2026" element={<Research />} />
+
+                     {/* Comparison & Gap Analysis */}
+                     <Route path="/comparisons" element={<Comparisons />} />
+                     <Route path="/keyword-gap-analysis" element={<KeywordGapAnalysis />} />
+
+                     {/* SEO Tools */}
+                     <Route path="/seo-checklist" element={<SEOChecklist />} />
 
                     {/* Utility pages */}
                     <Route path="/sitemap" element={<Sitemap />} />

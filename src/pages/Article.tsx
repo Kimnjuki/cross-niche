@@ -225,27 +225,6 @@ export default function Article() {
   const tags = Array.isArray(article.tags) ? article.tags : [];
   const isBookmarked = user?.bookmarks?.includes(articleId);
 
-  // 11. EVENT HANDLERS
-  const handleShare = (platform: string) => {
-    const url = window.location.href;
-    const text = article.title ?? '';
-    const shareUrls = {
-      twitter: `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`,
-      facebook: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`,
-      linkedin: `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}`,
-    };
-    window.open(shareUrls[platform as keyof typeof shareUrls], '_blank');
-    trackArticleShare(article);
-    trackSocialShare(platform, articleId, article.title ?? undefined);
-  };
-
-  const handleBookmark = async () => {
-    if (articleId) {
-      await toggleBookmark(articleId);
-      trackArticleBookmark(article);
-    }
-  };
-
   // 12. RENDER (article is guaranteed to exist and have an ID)
   return (
     <Layout>
@@ -381,7 +360,7 @@ export default function Article() {
                 <Button
                   variant={isBookmarked ? 'primary' : 'secondary'}
                   size="lg"
-                  onClick={handleBookmark}
+                  onClick={toggleBookmark.bind(null, articleId)}
                   className="gap-2 w-full lg:w-auto"
                 >
                   <Bookmark className={cn('h-5 w-5', isBookmarked && 'fill-current')} />

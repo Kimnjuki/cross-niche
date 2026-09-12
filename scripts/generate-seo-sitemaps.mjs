@@ -187,6 +187,12 @@ function getStaticPages() {
     { loc: `${BASE_URL}/videos`, lastmod: TODAY, changefreq: 'weekly', priority: 0.6 },
     { loc: `${BASE_URL}/notifications`, lastmod: TODAY, changefreq: 'weekly', priority: 0.5 },
     { loc: `${BASE_URL}/settings`, lastmod: TODAY, changefreq: 'monthly', priority: 0.5 },
+    { loc: `${BASE_URL}/pillar/zero-trust-architecture`, lastmod: TODAY, changefreq: 'weekly', priority: 0.8 },
+    { loc: `${BASE_URL}/pillar/gaming-security`, lastmod: TODAY, changefreq: 'weekly', priority: 0.8 },
+    { loc: `${BASE_URL}/pillar/ai-threat-intelligence`, lastmod: TODAY, changefreq: 'weekly', priority: 0.8 },
+    { loc: `${BASE_URL}/research/state-of-gaming-security-2026`, lastmod: TODAY, changefreq: 'monthly', priority: 0.7 },
+    { loc: `${BASE_URL}/comparisons`, lastmod: TODAY, changefreq: 'weekly', priority: 0.7 },
+    { loc: `${BASE_URL}/keyword-gap-analysis`, lastmod: TODAY, changefreq: 'monthly', priority: 0.6 },
     // Author pages will be added dynamically from authorData
     // Tool pages
     { loc: `${BASE_URL}/tools/security-scanner`, lastmod: TODAY, changefreq: 'weekly', priority: 0.9 },
