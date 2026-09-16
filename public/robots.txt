@@ -27,8 +27,26 @@ Disallow: /test-features
 Disallow: /newsletter/verify
 Disallow: /tools-old
 
-# Search results (duplicate content risk)
+# API responses are not editorial pages.
+Disallow: /api/
+# Also exclude the admin landing page (the /admin/ rule covers descendants).
+Disallow: /admin$
+# Personal security results are account-specific, not public editorial content.
+Disallow: /security-profile
+# Unpublished preview and draft routes must not be crawled.
+Disallow: /preview
+Disallow: /draft
+Disallow: /*/preview
+Disallow: /*/draft
+Disallow: /*?*preview=*
+Disallow: /*?*draft=*
+
+# Search/filter variants duplicate the canonical editorial listings.
 Disallow: /search
+Disallow: /*?search=*
+Disallow: /*?*&search=*
+Disallow: /*?filter=*
+Disallow: /*?*&filter=*
 
 # Legacy / malformed article helpers
 Disallow: /article-detail
