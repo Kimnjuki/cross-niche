@@ -1,12 +1,16 @@
 /**
  * Generate prerender-routes.json for vite-plugin-prerender
- * Reads article slugs from Convex (preferred) or mockData.ts and generates route paths
+ * Reads article slugs from the shared build-time content source
+ * (scripts/lib/content-source.mjs) so the route list matches what the
+ * sitemap and static-HTML generators produce — NOT just the mockData subset.
  */
 import fs from 'fs';
 import path from 'path';
+import { fileURLToPath } from 'url';
+import { loadPublishedContent, fetchGuidesAndTopics } from './lib/content-source.mjs';
 
-const mockDataPath = path.join(process.cwd(), 'src', 'data', 'mockData.ts');
-const outputPath = path.join(process.cwd(), 'prerender-routes.json');
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const outputPath = path.resolve(__dirname, '..', 'prerender-routes.json');
 
 const routes = [
   '/',
@@ -27,69 +31,34 @@ const routes = [
   '/tools',
 ];
 
-async function fetchConvexRoutes() {
-  const convexUrl = process.env.VITE_CONVEX_URL || process.env.CONVEX_URL;
-  if (!convexUrl) return [];
-
-  try {
-    const { ConvexHttpClient } = await import('convex/browser');
-    const client = new ConvexHttpClient(convexUrl);
-
-    const [contentRows, guides, topics] = await Promise.all([
-      client.query('content:getAllPublishedContent', {}).catch(() => []),
-      client.query('guides:list', {}).catch(() => []),
-      client.query('topics:list', {}).catch(() => []),
-    ]);
-
-    const articleSlugs = (contentRows ?? [])
-      .filter((c) => c.slug && c.status === 'published' && c.isDeleted !== true)
-      .map((c) => `/article/${c.slug}`);
-
-    const guideSlugs = (guides ?? [])
-      .filter((g) => g.slug && g.isPublished !== false)
-      .map((g) => `/guides/${g.slug}`);
-
-    const topicSlugs = (topics ?? [])
-      .filter((t) => t.slug)
-      .map((t) => `/topics/${t.slug}`);
-
-    return [...articleSlugs, ...guideSlugs, ...topicSlugs];
-  } catch (error) {
-    console.warn('Failed to fetch Convex routes:', error.message);
-    return [];
-  }
-}
-
 async function main() {
-  const convexRoutes = await fetchConvexRoutes();
+  const { items, source } = await loadPublishedContent();
+  console.log(`📄 Content source: ${source} (${items.length} published articles)`);
 
-  if (convexRoutes.length > 0) {
-    console.log(`Fetched ${convexRoutes.length} routes from Convex`);
-    routes.push(...convexRoutes);
-  } else {
-    console.log('Convex unavailable, falling back to mockData.ts');
-
-    // Read the mockData file
-    const content = fs.readFileSync(mockDataPath, 'utf8');
-
-    // Find article slugs: prefer explicit slug field over id
-    const slugPatterns = [/slug:\s*'([^']+)'/g, /id:\s*'([^']+)'/g];
-    const slugSet = new Set();
-
-    // First pass: collect all explicit slugs
-    let match;
-    while ((match = slugPatterns[0].exec(content)) !== null) {
-      slugSet.add(match[1]);
+  const seen = new Set(routes);
+  for (const item of items) {
+    if (!item.slug || item.slug.length <= 3) continue;
+    const route = `/article/${item.slug}`;
+    if (!seen.has(route)) {
+      seen.add(route);
+      routes.push(route);
     }
-    // Second pass: collect all IDs
-    while ((match = slugPatterns[1].exec(content)) !== null) {
-      slugSet.add(match[1]);
-    }
+  }
 
-    for (const slug of slugSet) {
-      if (slug && slug.length > 5 && !routes.includes(`/article/${slug}`)) {
-        routes.push(`/article/${slug}`);
-      }
+  // Guides/topics only enrich the list when Convex happens to be reachable.
+  const { guides, topics } = await fetchGuidesAndTopics();
+  for (const g of guides) {
+    const route = `/guides/${g.slug}`;
+    if (!seen.has(route)) {
+      seen.add(route);
+      routes.push(route);
+    }
+  }
+  for (const t of topics) {
+    const route = `/topics/${t.slug}`;
+    if (!seen.has(route)) {
+      seen.add(route);
+      routes.push(route);
     }
   }
 

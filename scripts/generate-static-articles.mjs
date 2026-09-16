@@ -17,6 +17,7 @@
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import { loadPublishedContent } from './lib/content-source.mjs';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -25,50 +26,17 @@ const projectRoot = path.resolve(__dirname, '..');
 const BASE_URL = 'https://thegridnexus.com';
 const SITE_NAME = 'The Grid Nexus';
 
-// ── Parse mockData.ts ──────────────────────────────────────────────────────
-function parseMockArticles() {
-  const mockDataPath = path.join(projectRoot, 'src', 'data', 'mockData.ts');
-  const content = fs.readFileSync(mockDataPath, 'utf8');
-  const blocks = content.split(/\n\s*\{\n/).slice(1);
-  const articles = [];
-
-  for (const block of blocks) {
-    const idMatch = block.match(/id:\s*'([^']+)'/);
-    const slugMatch = block.match(/slug:\s*'([^']+)'/);
-    const titleMatch = block.match(/title:\s*'([^']+)'/);
-    const excerptMatch = block.match(/excerpt:\s*'([^']+)'/);
-    const contentMatch = block.match(/content:\s*(?:`([\s\S]*?)`|'([^']*)')/);
-    const publishedMatch = block.match(/publishedAt:\s*'([^']+)'/);
-    const authorMatch = block.match(/author:\s*'([^']+)'/);
-    const nicheMatch = block.match(/niche:\s*'([^']+)'/);
-    const readTimeMatch = block.match(/readTime:\s*(\d+)/);
-    const imageMatch = block.match(/imageUrl:\s*'([^']+)'/);
-    const tagsMatch = block.match(/tags:\s*\[([^\]]*)\]/);
-
-    if (!idMatch) continue;
-    if (!slugMatch) continue;
-
-    const tags = tagsMatch
-      ? tagsMatch[1].split(',').map((t) => t.trim().replace(/^'|'$/g, '')).filter(Boolean)
-      : [];
-
-    articles.push({
-      id: idMatch[1],
-      slug: slugMatch[1],
-      title: titleMatch ? titleMatch[1] : '',
-      excerpt: excerptMatch ? excerptMatch[1] : '',
-      content: contentMatch ? (contentMatch[1] ?? contentMatch[2]) : '',
-      publishedAt: publishedMatch ? publishedMatch[1] : '',
-      author: authorMatch ? authorMatch[1] : 'The Grid Nexus Editorial Team',
-      niche: nicheMatch ? nicheMatch[1] : 'tech',
-      readTime: readTimeMatch ? parseInt(readTimeMatch[1], 10) : 5,
-      imageUrl: imageMatch ? imageMatch[1] : '',
-      tags,
-    });
-  }
-
-  return articles;
+/** Map a Convex contentType to the site's three niche sections. */
+function nicheOf(contentType) {
+  const ct = String(contentType ?? '').toLowerCase();
+  if (ct === 'security' || ct === 'threat_alert' || ct === 'threat_intelligence') return 'security';
+  if (ct === 'gaming' || ct === 'gaming_security_guide') return 'gaming';
+  return 'tech';
 }
+
+// ── mockData.ts parsing lives in scripts/lib/mock-content.mjs ─────────────
+// (extracted so the sitemap, prerender and static-HTML generators share one
+//  escape-aware parser — the per-script copies each had the V-06 bug.)
 
 function escapeHtml(str) {
   if (!str) return '';
@@ -87,10 +55,11 @@ function escapeAttr(str) {
 
 // ── Generate a static HTML page for an article ────────────────────────────
 function generateArticleHtml(article, bundleScript) {
+  const niche = nicheOf(article.contentType);
   const canonical = `${BASE_URL}/article/${article.slug}`;
-  const nicheLabel = article.niche === 'tech' ? 'Technology' : article.niche === 'security' ? 'Cybersecurity' : 'Gaming';
-  const nicheUrl = `/${article.niche}`;
-  const imageUrl = article.imageUrl || `${BASE_URL}/og-image.jpg`;
+  const nicheLabel = niche === 'tech' ? 'Technology' : niche === 'security' ? 'Cybersecurity' : 'Gaming';
+  const nicheUrl = `/${niche}`;
+  const imageUrl = article.featuredImageUrl || `${BASE_URL}/og-image.jpg`;
   const dateStr = article.publishedAt
     ? new Date(article.publishedAt).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })
     : '';
@@ -161,13 +130,13 @@ function generateArticleHtml(article, bundleScript) {
           <article>
             <h1 style="font-size:2.25rem;line-height:1.2;margin-bottom:1rem;color:#f8fafc">${escapeHtml(article.title)}</h1>
             <div style="display:flex;flex-wrap:wrap;gap:1rem;font-size:0.875rem;color:#94a3b8;margin-bottom:1.5rem">
-              <span>By ${escapeHtml(article.author)}</span>
+              <span>By ${escapeHtml(article.authorName || 'The Grid Nexus Editorial Team')}</span>
               ${dateStr ? `<span>${dateStr}</span>` : ''}
               <span>${article.readTime} min read</span>
             </div>
             <p style="font-size:1.125rem;color:#cbd5e1;line-height:1.6;margin-bottom:1.5rem">${escapeHtml(article.excerpt)}</p>
             <div style="color:#cbd5e1;line-height:1.7;font-size:1.0625rem">
-              ${article.content}
+              ${article.body}
             </div>
             ${tagsHtml}
           </article>
@@ -182,7 +151,7 @@ function generateArticleHtml(article, bundleScript) {
 }
 
 // ── Main ──────────────────────────────────────────────────────────────────
-function main() {
+async function main() {
   const distDir = path.join(projectRoot, 'dist');
   const indexHtmlPath = path.join(distDir, 'index.html');
 
@@ -196,9 +165,8 @@ function main() {
   const moduleScriptMatch = indexHtml.match(/<script type="module"[^>]*src="[^"]*"[^>]*><\/script>/);
   const bundleScript = moduleScriptMatch ? moduleScriptMatch[0] : '';
 
-  const articles = parseMockArticles();
-  console.log(`📄 Found ${articles.length} articles with valid slugs`);
-
+  const { items: articles, source } = await loadPublishedContent();
+  console.log(`📄 Loaded ${articles.length} published articles (source: ${source})`);
   let generated = 0;
   for (const article of articles) {
     const articleDir = path.join(distDir, 'article', article.slug);

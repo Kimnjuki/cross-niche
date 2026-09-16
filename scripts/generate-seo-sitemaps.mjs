@@ -9,13 +9,15 @@
  *   - "Discovered/Crawled - currently not indexed" (SPA pages Google can't render)
  *   - "Duplicate, Google chose different canonical" (route/canonical mismatch)
  *
- * Data source: Convex (preferred) or src/data/mockData.ts (fallback).
+ * Data source: shared build-time content source (scripts/lib/content-source.mjs)
+ * — committed content-snapshot.json first, then live Convex, then mockData.ts.
  *
  * Run: node scripts/generate-seo-sitemaps.mjs
  */
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import { loadPublishedContent, priorityFor, canonicalUrlFor, fetchGuidesAndTopics } from './lib/content-source.mjs';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -36,87 +38,8 @@ function isPlaceholderTitle(title) {
   return PLACEHOLDER_TITLE_PATTERNS.some((pattern) => pattern.test(title.trim()));
 }
 
-// ── Parse mockData.ts ────────────────────────────────────────────────────────
-function parseMockArticles() {
-  const mockDataPath = path.join(projectRoot, 'src', 'data', 'mockData.ts');
-  const content = fs.readFileSync(mockDataPath, 'utf8');
-
-  const blocks = content.split(/\n\s*\{\n/).slice(1);
-  const articles = [];
-
-  for (const block of blocks) {
-    const idMatch = block.match(/id:\s*'([^']+)'/);
-    const slugMatch = block.match(/slug:\s*'([^']+)'/);
-    const titleMatch = block.match(/title:\s*'([^']+)'/);
-    const publishedMatch = block.match(/publishedAt:\s*'([^']+)'/);
-    const nicheMatch = block.match(/niche:\s*'([^']+)'/);
-
-    if (!idMatch) continue;
-
-    const article = {
-      id: idMatch[1],
-      slug: slugMatch ? slugMatch[1] : null,
-      title: titleMatch ? titleMatch[1] : '',
-      publishedAt: publishedMatch ? publishedMatch[1] : TODAY,
-      niche: nicheMatch ? nicheMatch[1] : 'tech',
-    };
-
-    if (article.slug && article.slug.length > 3) {
-      articles.push(article);
-    }
-  }
-
-  return articles;
-}
-
-// ── Query Convex for published content ──────────────────────────────────────
-async function fetchConvexContent() {
-  const convexUrl = process.env.VITE_CONVEX_URL || process.env.CONVEX_URL;
-  if (!convexUrl) return null;
-
-  try {
-    const { ConvexHttpClient } = await import('convex/browser');
-    const client = new ConvexHttpClient(convexUrl);
-
-    const [contentRows, guides, topics] = await Promise.all([
-      client.query('content:getAllPublishedContent', {}).catch(() => []),
-      client.query('guides:list', {}).catch(() => []),
-      client.query('topics:list', {}).catch(() => []),
-    ]);
-
-    const articles = (contentRows ?? [])
-      .filter((c) => c.slug && c.slug.length > 3 && c.status === 'published' && c.isDeleted !== true)
-      .map((c) => ({
-        slug: c.slug,
-        title: c.title,
-        publishedAt: c.publishedAt ? new Date(c.publishedAt).toISOString().split('T')[0] : TODAY,
-        niche: c.contentType ?? 'tech',
-      }));
-
-    const guideUrls = (guides ?? [])
-      .filter((g) => g.slug && g.isPublished !== false)
-      .map((g) => ({
-        slug: g.slug,
-        title: g.title,
-        publishedAt: g.publishedAt ? new Date(g.publishedAt).toISOString().split('T')[0] : TODAY,
-        niche: 'guides',
-      }));
-
-    const topicUrls = (topics ?? [])
-      .filter((t) => t.slug)
-      .map((t) => ({
-        slug: t.slug,
-        title: t.name,
-        publishedAt: TODAY,
-        niche: t.category ?? 'topics',
-      }));
-
-    return [...articles, ...guideUrls, ...topicUrls];
-  } catch (error) {
-    console.warn('Failed to fetch Convex content for sitemap:', error.message);
-    return null;
-  }
-}
+// ── Guides & topics come from the shared content-source lib ────────────────
+// (best-effort Convex fetch; all failures degrade to empty arrays)
 
 // ── XML helpers ─────────────────────────────────────────────────────────────
 function escapeXml(str) {
@@ -130,12 +53,16 @@ function escapeXml(str) {
     .replace(/'/g, amp + 'apos;');
 }
 
-function urlEntry(loc, lastmod, changefreq, priority) {
+function urlEntry(loc, lastmod, changefreq, priority, image = '') {
+  // P1-T2: actually USE the declared image namespace for entries that have one.
+  const imageXml = image
+    ? `\n    <image:image>\n      <image:loc>${escapeXml(image)}</image:loc>\n    </image:image>`
+    : '';
   return `  <url>
     <loc>${escapeXml(loc)}</loc>
     <lastmod>${lastmod}</lastmod>
     <changefreq>${changefreq}</changefreq>
-    <priority>${priority}</priority>
+    <priority>${priority}</priority>${imageXml}
   </url>`;
 }
 
@@ -260,17 +187,21 @@ function generateArticlesSitemap(articles) {
   const articleUrls = articles
     .filter((a) => a.niche !== 'guides' && a.niche !== 'topics' && !isPlaceholderTitle(a.title))
     .map((a) => ({
-      loc: `${BASE_URL}/article/${a.slug}`,
-      lastmod: a.publishedAt || TODAY,
+      loc: a.loc,
+      // V-04 fix: real per-item lastmod (lastModifiedAt ?? publishedAt),
+      // NOT a shared build timestamp — Google uses lastmod as a freshness
+      // and recrawl signal, so uniform values defeat its purpose.
+      lastmod: a.lastModified || a.publishedAt || TODAY,
       changefreq: 'weekly',
-      priority: 0.7,
+      priority: a.priority,
+      image: a.featuredImageUrl || '',
     }));
 
   const xml = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
         xmlns:xhtml="http://www.w3.org/1999/xhtml"
         xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
-${articleUrls.map((u) => urlEntry(u.loc, u.lastmod, u.changefreq, u.priority)).join('\n')}
+${articleUrls.map((u) => urlEntry(u.loc, u.lastmod, u.changefreq, u.priority, u.image)).join('\n')}
 </urlset>`;
   return xml;
 }
@@ -285,8 +216,10 @@ function generateNewsSitemap(articles) {
   const entries = articleEntries.map((a) => {
     if (isPlaceholderTitle(a.title)) return null;
     const title = escapeXml(a.title || a.slug);
+    // Use the same canonical-consistent loc as sitemap-articles.xml.
+    const loc = a.loc || `${BASE_URL}/article/${a.slug}`;
     return `  <url>
-    <loc>${BASE_URL}/article/${a.slug}</loc>
+    <loc>${escapeXml(loc)}</loc>
     <news:news>
       <news:publication>
         <news:name>The Grid Nexus</news:name>
@@ -327,14 +260,49 @@ function generateIndexSitemap() {
 
 // ── Main ────────────────────────────────────────────────────────────────────
 async function main() {
-  let articles = await fetchConvexContent();
+  const { items, source } = await loadPublishedContent();
+  console.log(`📄 Content source: ${source} (${items.length} published articles)`);
 
-  if (!articles) {
-    console.log('Convex unavailable, falling back to mockData.ts');
-    articles = parseMockArticles();
+  // Normalize shared items into sitemap rows. Sitemap locs must MATCH the
+  // rendered canonical (www/apex included) or Google reports "duplicate,
+  // Google chose different canonical". Only genuinely off-domain canonicals
+  // are skipped — submitting another site's URLs is pointless.
+  const ALLOWED_HOSTS = new Set(['thegridnexus.com', 'www.thegridnexus.com']);
+  let skippedCrossDomain = 0;
+  const articles = [];
+  for (const item of items) {
+    if (!item.slug || item.slug.length <= 3) continue;
+    const loc = canonicalUrlFor(item);
+    let host = '';
+    try {
+      host = new URL(loc).hostname;
+    } catch {
+      skippedCrossDomain++;
+      continue;
+    }
+    if (!ALLOWED_HOSTS.has(host)) {
+      skippedCrossDomain++;
+      continue;
+    }
+    articles.push({
+      slug: item.slug,
+      title: item.metaTitle || item.title,
+      loc,
+      publishedAt: item.publishedAt || TODAY,
+      lastModified: item.lastModified || item.publishedAt || TODAY,
+      niche: item.contentType ?? 'tech',
+      priority: priorityFor(item),
+      featuredImageUrl: item.featuredImageUrl || '',
+    });
+  }
+  if (skippedCrossDomain) {
+    console.log(`↩︎  Skipped ${skippedCrossDomain} article(s) with cross-domain canonicals`);
   }
 
-  console.log(`📄 Found ${articles.length} indexable URLs`);
+  const { guides, topics } = await fetchGuidesAndTopics();
+  const allUrls = [...articles, ...guides, ...topics];
+
+  console.log(`📄 Found ${allUrls.length} indexable URLs (${articles.length} articles)`);
 
   const publicDir = path.join(projectRoot, 'public');
   // Docker build order: vite build copies public/ → dist/ BEFORE this script
@@ -345,7 +313,7 @@ async function main() {
   const distDir = path.join(projectRoot, 'dist');
 
   const files = {
-    'sitemap.xml': generateMainSitemap(articles),
+    'sitemap.xml': generateMainSitemap(allUrls),
     'sitemap-articles.xml': generateArticlesSitemap(articles),
     'sitemap-news.xml': generateNewsSitemap(articles),
     'sitemap-index.xml': generateIndexSitemap(),
@@ -364,7 +332,7 @@ async function main() {
     }
   }
 
-  console.log(`\n✅ Sitemaps regenerated with ${articles.length} valid URLs.`);
+  console.log(`\n✅ Sitemaps regenerated with ${allUrls.length} valid URLs.`);
 }
 
 main();
