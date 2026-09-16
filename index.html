@@ -8,9 +8,9 @@
     <!-- ── Per-route title/description injection (crawler-friendly before JS) ── -->
     <!-- Fixes: duplicate title tags, duplicate meta descriptions, missing h1    -->
     <script>
-      (function () {
+      document.addEventListener('DOMContentLoaded', function () {
         var routes = {
-          '/': { t: 'Gaming Security Intelligence for Players | The Grid Nexus', d: 'Protect gaming accounts, PCs, and identity with security checkups, threat explainers, and tested guides. Practical gaming-security intelligence from The Grid Nexus.' },
+          '/': { t: 'Gaming Security Intelligence for Players | The Grid Nexus', d: 'Protect gaming accounts, PCs, and identity with security checkups, threat explainers, and tested guides. Gaming-security intelligence from The Grid Nexus.' },
           '/tech': { t: 'Technology News & Analysis 2026 | The Grid Nexus', d: 'Technology news and analysis for 2026. AI breakthroughs, hardware releases, cloud computing, and emerging tech from The Grid Nexus.' },
           '/security': { t: 'Cybersecurity News & Threat Intelligence 2026 | The Grid Nexus', d: 'Stay ahead of cyber threats. Zero-day vulnerabilities, breach analyses, threat intelligence, and security guides from The Grid Nexus.' },
           '/gaming': { t: 'Gaming News, Reviews & Releases 2026 | The Grid Nexus', d: 'Latest gaming news, reviews, and release dates. PS5, PC, Xbox, and esports coverage from The Grid Nexus gaming desk.' },
@@ -73,7 +73,7 @@
         var twD = document.querySelector('meta[name="twitter:description"]');
         if (!twD) { twD = document.createElement('meta'); twD.setAttribute('name', 'twitter:description'); document.head.appendChild(twD); }
         twD.setAttribute('content', m.d);
-      })();
+      });
     </script>
 
     <!-- ── Google tag (gtag.js) ───────────────────────────────────────── -->
@@ -114,12 +114,12 @@
     <meta name="copyright" content="The Grid Nexus" />
     <meta name="language" content="en" />
     <meta http-equiv="Content-Language" content="en-US" />
-    <meta name="geo.region" content="US" />
-    <meta name="geo.placename" content="United States" />
 
     <!-- ── Default title (overwritten by per-route pre-JS script) ── -->
     <title>Gaming Security Intelligence for Players | The Grid Nexus</title>
-    <meta name="keywords" content="gaming security, account protection, PC security, threat intelligence, cybersecurity for gamers, gaming guides" />
+    <!-- Raw-HTML crawlers need these tags before the route script executes. -->
+    <meta name="description" content="Protect gaming accounts, PCs, and identity with security checkups, threat explainers, and tested guides. Gaming-security intelligence from The Grid Nexus." />
+    <link rel="canonical" href="https://thegridnexus.com/" />
     <meta name="author" content="The Grid Nexus" />
 
     <!-- ── hreflang (fixes "Missing hreflang" warning) ────────────────── -->
