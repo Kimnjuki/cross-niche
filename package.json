@@ -28,7 +28,11 @@
     "phase0:seo": "node scripts/run-phase0-seo-hygiene.mjs",
     "seo:rewrite-p1": "tsx scripts/apply-p1-seo-rewrites.ts",
     "generate:og": "powershell -ExecutionPolicy Bypass -File scripts/generate-og.ps1",
-    "prebuild:seo": "npm run generate:feed && npm run generate:placeholders && npm run generate:sitemaps",
+    "generate:static-articles": "node scripts/generate-static-articles.mjs",
+    "generate:authors": "node scripts/generate-static-authors.mjs",
+    "generate:prerender-routes": "node scripts/generate-prerender-routes.mjs",
+    "export-snapshot": "node scripts/export-content-snapshot.mjs",
+    "prebuild:seo": "npm run generate:feed && npm run generate:placeholders && npm run generate:sitemaps && npm run export-snapshot && npm run generate:static-articles && npm run generate:authors && npm run generate:prerender-routes",
     "seo:hub": "node scripts/apply-gaming-hub.mjs"
   },
   "dependencies": {

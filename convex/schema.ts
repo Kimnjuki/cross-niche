@@ -156,6 +156,10 @@ export default defineSchema({
     // CRITICAL: Add default values for undefined prevention
     seoDescription: v.optional(v.string()),
     canonicalUrl: v.optional(v.string()),
+    // Explicit, queryable indexability intent (SEO remediation P0-02).
+    // Published content is indexable unless noindex === true.
+    noindex: v.optional(v.boolean()),
+    noindexReason: v.optional(v.string()),
     schema_org: v.optional(v.any()),
     lastModifiedAt: v.optional(v.number()),
     lastModifiedBy: v.optional(v.string()),
@@ -199,7 +203,9 @@ export default defineSchema({
     .index("by_is_featured", ["isFeatured", "publishedAt"])
     .index("by_is_breaking", ["isBreaking", "publishedAt"])
     .index("by_is_premium", ["isPremium", "publishedAt"])
-    .index("by_target_audience", ["targetAudience", "publishedAt"]),
+    .index("by_target_audience", ["targetAudience", "publishedAt"])
+    .index("by_noindex", ["noindex"])
+    .index("by_canonical_url", ["canonicalUrl"]),
 
   // ─── Editorial & fact-checking (AdSense / trust signals) ───────────────
   factChecks: defineTable({
@@ -668,7 +674,68 @@ export default defineSchema({
     )),
   })
     .index("by_source", ["sourceContentId"])
-    .index("by_target", ["targetContentId"]),
+    .index("by_target", ["targetContentId"])
+    .index("by_target_source", ["targetContentId", "sourceContentId"]),
+
+  // ─── Redirects (P0-04 / P0-06) ────────────────────────────────────────────
+  // Central redirect registry. Redirects must be flat (single hop) — the
+  // validate-redirects script + insertRedirect mutation reject chains/loops.
+  redirects: defineTable({
+    fromPath: v.string(), // e.g. "/articles"
+    toPath: v.string(), // e.g. "/topics" (final destination, never another redirect source)
+    statusCode: v.union(v.literal(301), v.literal(302), v.literal(308)),
+    reason: v.optional(v.string()),
+    hitCount: v.optional(v.number()),
+    lastHitAt: v.optional(v.number()),
+    createdAt: v.number(), // ms
+    createdBy: v.optional(v.string()),
+  })
+    .index("by_from_path", ["fromPath"])
+    .index("by_to_path", ["toPath"]),
+
+  // ─── Duplicate content audit trail (P1-02) ───────────────────────────────
+  contentDuplicates: defineTable({
+    contentIdA: v.id("content"),
+    contentIdB: v.id("content"),
+    slugA: v.optional(v.string()),
+    slugB: v.optional(v.string()),
+    titleA: v.optional(v.string()),
+    titleB: v.optional(v.string()),
+    matchType: v.union(
+      v.literal("title"),
+      v.literal("meta_title"),
+      v.literal("focus_keyword"),
+      v.literal("body_fingerprint")
+    ),
+    similarityScore: v.number(), // 0..1
+    detectedAt: v.number(), // ms
+    resolution: v.optional(v.union(
+      v.literal("canonicalized"),
+      v.literal("merged"),
+      v.literal("rewritten"),
+      v.literal("ignored")
+    )),
+  })
+    .index("by_content_a", ["contentIdA"])
+    .index("by_content_b", ["contentIdB"])
+    .index("by_resolution", ["resolution"])
+    .index("by_detected_at", ["detectedAt"]),
+
+  // ─── Google/Bing index coverage snapshots (P0-08 / P3-03) ────────────────
+  // Persists the GSC "Pages" report so indexed-vs-not-indexed trends are
+  // queryable in-product instead of living only in exported CSVs.
+  indexCoverage: defineTable({
+    date: v.number(), // ms (start of day)
+    url: v.optional(v.string()), // absent for aggregate daily rollups
+    status: v.union(v.literal("indexed"), v.literal("not_indexed")),
+    reason: v.optional(v.string()), // GSC reason, e.g. "Server error (5xx)"
+    source: v.union(v.literal("google"), v.literal("bing")),
+    count: v.optional(v.number()), // set for aggregate rows
+  })
+    .index("by_date", ["date"])
+    .index("by_status", ["status"])
+    .index("by_source_date", ["source", "date"])
+    .index("by_url", ["url"]),
 
   linkOpportunities: defineTable({
     domain: v.string(),
@@ -768,6 +835,20 @@ export default defineSchema({
     decliningContentCount: v.number(),
     issues: v.optional(v.any()),
   }).index("by_date", ["date"]),
+
+  // ─── Route error log (P0-01) ──────────────────────────────────────────────
+  // Used to find the true cause of the 80 Google Search Console 5xx errors.
+  routeErrors: defineTable({
+    path: v.string(),
+    contentId: v.optional(v.string()),
+    slug: v.optional(v.string()),
+    statusCode: v.optional(v.float64()),
+    message: v.string(),
+    stack: v.optional(v.string()),
+    occurredAt: v.float64(),
+  })
+    .index("by_path", ["path"])
+    .index("by_occurredAt", ["occurredAt"]),
 
   // ════════════════════════════════════════════════════════════════════════════
   // NEXUS AI FEATURES SCHEMA (TheGridNexus AI Feature Expansion v2.0)

@@ -31,6 +31,8 @@ interface SEOHeadProps {
   tags?: string[];
   autoGenerate?: boolean;
   noindex?: boolean;
+  /** Explicit canonical override (content.canonicalUrl). Falls back to self-canonical. */
+  canonicalUrl?: string;
   faqs?: Array<{ question: string; answer: string }>;
   howTo?: {
     name: string;
@@ -96,6 +98,7 @@ export function SEOHead({
   tags = [],
   autoGenerate = true,
   noindex = false,
+  canonicalUrl: canonicalOverride,
   faqs,
   howTo,
   person,
@@ -125,6 +128,13 @@ export function SEOHead({
       const parsed = new URL(href.split('?')[0].split('#')[0]);
       // Always use production origin for canonical to avoid www/http variants
       const origin = BASE_URL;
+      // Cross-domain canonical override (syndicated content pointing at the
+      // primary version elsewhere) must be honoured verbatim — rewriting it to
+      // our origin would defeat the canonicalisation (P0-07).
+      const ownHosts = ['thegridnexus.com', 'www.thegridnexus.com'];
+      if (!ownHosts.includes(parsed.hostname.toLowerCase())) {
+        return parsed.href;
+      }
       let path = parsed.pathname;
       // Preserve `/blog` as `/blog/` so `/blog` and `/blog/` don't become duplicates
       if (path === '/blog') {
@@ -141,7 +151,7 @@ export function SEOHead({
       return href.split('?')[0].split('#')[0];
     }
   }
-  const canonical = buildCanonical(url);
+  const canonical = buildCanonical(canonicalOverride || url);
 
   // Ensure canonical is never self-conflicting
   const safeCanonical = canonical && canonical !== `${BASE_URL}/` ? canonical : `${BASE_URL}/`;
@@ -238,22 +248,13 @@ export function SEOHead({
     }
     canonicalLink.href = canonical;
 
-    // ── hreflang (self-referencing + x-default) ────────────────────────
-    // Remove any stale alternate links first to avoid duplicates
+    // ── hreflang: intentionally NOT emitted (SEO remediation P1-06) ─────
+    // This site serves a single language/region and the Convex schema has no
+    // locale field, so hreflang produced only self-referencing/conflicting
+    // annotations (59/180 pages failed the audit), while the static index.html
+    // tags pointed every URL at the homepage. Stale tags are removed so a
+    // cached shell cannot reintroduce the conflict.
     document.querySelectorAll('link[rel="alternate"][hreflang]').forEach(el => el.remove());
-
-    const hreflangPairs: Array<{ lang: string; href: string }> = [
-      { lang: 'en',        href: canonical },
-      { lang: 'en-US',     href: canonical },
-      { lang: 'x-default', href: canonical },
-    ];
-    hreflangPairs.forEach(({ lang, href }) => {
-      const el = document.createElement('link');
-      el.rel = 'alternate';
-      el.setAttribute('hreflang', lang);
-      el.href = href;
-      document.head.appendChild(el);
-    });
 
     // ── Structured Data: single consolidated @graph ────────────────────
     // Remove ALL existing JSON-LD scripts first (prevents duplicates)

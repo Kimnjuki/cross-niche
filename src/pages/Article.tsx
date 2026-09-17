@@ -269,6 +269,8 @@ export default function Article() {
         section={safeNiche}
         tags={tags}
         autoGenerate={true}
+        canonicalUrl={article.canonicalUrl || undefined}
+        noindex={article.noindex === true}
       />
 
       <article className="container mx-auto px-4 py-8 bg-white text-slate-900">

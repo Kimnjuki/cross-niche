@@ -99,6 +99,12 @@ export function mapContentToArticle(content: ContentItem | null | undefined): Ar
     isFeatured: content.is_featured || false,
     securityScore: content.security_score || undefined,
     impactLevel: content.is_breaking ? 'high' : undefined,
+    canonicalUrl:
+      (content as { canonical_url?: string | null; canonicalUrl?: string | null }).canonical_url ||
+      (content as { canonicalUrl?: string | null }).canonicalUrl ||
+      undefined,
+    noindex:
+      (content as { noindex?: boolean | null }).noindex === true ? true : undefined,
   };
 }
 

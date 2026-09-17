@@ -62,4 +62,20 @@ crons.interval(
 // active frontend readers. ingestFromNewsApi (above) already covers the content table.
 // crons.interval("refresh-news-feed-articles", { minutes: 30 }, internal.ingest.runIngestion);
 
+// Daily SEO health audit: indexability (noindex/canonical/dup titles/thin)
+// + duplicate detection + orphan-page report → seoAudits (P3-03).
+crons.daily(
+  "daily-seo-health-audit",
+  { hourUTC: 3, minuteUTC: 30 },
+  internal.seoValidation.runSeoHealthAuditInternal,
+);
+
+// Daily legacy SEO audit (broken links, thin content, cannibalisation,
+// declining traffic → seoAudits).
+crons.daily(
+  "daily-seo-monitoring-audit",
+  { hourUTC: 3, minuteUTC: 45 },
+  internal.seoMonitoring.runDailySEOAuditInternal,
+);
+
 export default crons;

@@ -20,6 +20,10 @@ export interface Article {
   securityScore?: number; // For gaming articles
   impactLevel?: 'high' | 'medium' | 'low'; // For security articles
   viewCount?: number; // Article view count for analytics
+  /** Canonical override (content.canonicalUrl); falls back to self-canonical (P0-07) */
+  canonicalUrl?: string;
+  /** Explicit noindex intent (content.noindex) — suppresses indexing when true (P0-02) */
+  noindex?: boolean;
   /** Article-specific FAQs for FAQPage schema — overrides auto-generated defaults */
   faqs?: Array<{ question: string; answer: string }>;
   reviews?: Array<{

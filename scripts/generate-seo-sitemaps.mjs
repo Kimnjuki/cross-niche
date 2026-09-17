@@ -18,6 +18,7 @@ import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { loadPublishedContent, priorityFor, canonicalUrlFor, fetchGuidesAndTopics } from './lib/content-source.mjs';
+import { authorProfiles } from './lib/author-source.mjs';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -120,7 +121,13 @@ function getStaticPages() {
     { loc: `${BASE_URL}/research/state-of-gaming-security-2026`, lastmod: TODAY, changefreq: 'monthly', priority: 0.7 },
     { loc: `${BASE_URL}/comparisons`, lastmod: TODAY, changefreq: 'weekly', priority: 0.7 },
     { loc: `${BASE_URL}/keyword-gap-analysis`, lastmod: TODAY, changefreq: 'monthly', priority: 0.6 },
-    // Author pages will be added dynamically from authorData
+    // Author pages (read from authorData.ts via scripts/lib/author-source.mjs)
+    ...Object.entries(authorProfiles).map(([slug]) => ({
+      loc: `${BASE_URL}/author/${slug}`,
+      lastmod: TODAY,
+      changefreq: 'monthly',
+      priority: 0.6,
+    })),
     // Tool pages
     { loc: `${BASE_URL}/tools/security-scanner`, lastmod: TODAY, changefreq: 'weekly', priority: 0.9 },
     { loc: `${BASE_URL}/tools/nexusguard`, lastmod: TODAY, changefreq: 'weekly', priority: 0.8 },
@@ -269,9 +276,16 @@ async function main() {
   // are skipped — submitting another site's URLs is pointless.
   const ALLOWED_HOSTS = new Set(['thegridnexus.com', 'www.thegridnexus.com']);
   let skippedCrossDomain = 0;
+  let skippedNoindex = 0;
   const articles = [];
   for (const item of items) {
     if (!item.slug || item.slug.length <= 3) continue;
+    // P0-05: never list a URL that the page itself marks noindex — that is the
+    // "incorrect pages found in sitemap.xml" error class.
+    if (item.noindex === true) {
+      skippedNoindex++;
+      continue;
+    }
     const loc = canonicalUrlFor(item);
     let host = '';
     try {

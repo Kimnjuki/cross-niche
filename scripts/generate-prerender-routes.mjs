@@ -8,6 +8,7 @@ import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { loadPublishedContent, fetchGuidesAndTopics } from './lib/content-source.mjs';
+import { authorProfiles } from './lib/author-source.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const outputPath = path.resolve(__dirname, '..', 'prerender-routes.json');
@@ -56,6 +57,16 @@ async function main() {
   }
   for (const t of topics) {
     const route = `/topics/${t.slug}`;
+    if (!seen.has(route)) {
+      seen.add(route);
+      routes.push(route);
+    }
+  }
+
+  // Author profile pages
+  for (const [slug, profile] of Object.entries(authorProfiles)) {
+    if (slug === 'the-grid-nexus-editorial-team') continue;
+    const route = `/author/${slug}`;
     if (!seen.has(route)) {
       seen.add(route);
       routes.push(route);

@@ -1,6 +1,47 @@
 # The Grid Nexus - robots.txt
 # https://thegridnexus.com
-# Last updated: 2026-09-10
+# Last updated: 2026-09-17
+
+# AI crawlers get the SAME rules as the generic group below. The robots.txt
+# spec allows multiple User-agent lines in one group, which avoids repeating
+# the disallow list per bot while still naming each crawler explicitly
+# (AI/GEO discoverability: GPTBot, ClaudeBot, PerplexityBot, CCBot,
+# Applebot-Extended).
+User-agent: GPTBot
+User-agent: ClaudeBot
+User-agent: PerplexityBot
+User-agent: CCBot
+User-agent: Applebot-Extended
+Allow: /
+
+# Private / member pages (never index)
+Disallow: /admin/
+Disallow: /admin
+Disallow: /profile
+Disallow: /auth
+Disallow: /signin
+Disallow: /signup
+Disallow: /settings
+Disallow: /billing
+Disallow: /subscription/
+Disallow: /bookmarks
+Disallow: /original-index
+Disallow: /notifications
+Disallow: /api/
+Disallow: /security-profile
+Disallow: /preview
+Disallow: /draft
+Disallow: /*/preview
+Disallow: /*/draft
+
+# Search/filter variants duplicate the canonical editorial listings.
+Disallow: /search
+Disallow: /*?*preview=*
+Disallow: /*?*draft=*
+Disallow: /*?search=*
+Disallow: /*?*&search=*
+Disallow: /*?filter=*
+Disallow: /*?*&filter=*
 
 # Default: allow all crawlers (no blocking rules for search or AI bots)
 User-agent: *
@@ -8,6 +49,7 @@ Allow: /
 
 # Private / member pages (never index)
 Disallow: /admin/
+Disallow: /admin
 Disallow: /profile
 Disallow: /auth
 Disallow: /signin
@@ -29,8 +71,6 @@ Disallow: /tools-old
 
 # API responses are not editorial pages.
 Disallow: /api/
-# Also exclude the admin landing page (the /admin/ rule covers descendants).
-Disallow: /admin$
 # Personal security results are account-specific, not public editorial content.
 Disallow: /security-profile
 # Unpublished preview and draft routes must not be crawled.
