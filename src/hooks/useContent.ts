@@ -101,7 +101,7 @@ function toContentItems(rows: unknown[] | undefined): ContentItem[] {
 export function usePublishedContent(limit = 20) {
   const isDisabled = useConvexDisabled();
   const cacheKey = `published-content-${limit}`;
-  const cachedData = contentCache.get(cacheKey);
+  const cachedData = contentCache.get<ContentItem[]>(cacheKey);
   const rows = useQuery(api.content.getPublishedContent, isDisabled ? 'skip' : { limit });
 
   if (cachedData && !isDisabled) {
@@ -124,7 +124,7 @@ export function usePublishedContent(limit = 20) {
 export function useVisibleContent(limit = 24) {
   const isDisabled = useConvexDisabled();
   const cacheKey = `visible-content-${limit}`;
-  const cachedData = contentCache.get(cacheKey);
+  const cachedData = contentCache.get<ContentItem[]>(cacheKey);
   const rows = useQuery(api.content.getVisibleContent, isDisabled ? 'skip' : { limit });
 
   if (cachedData && !isDisabled) {
@@ -170,7 +170,7 @@ export function useContentByFeed(feedSlug: string, limit = 20): { data: ContentI
 export function useContentByNiche(nicheName: string, limit = 20) {
   const isDisabled = useConvexDisabled();
   const cacheKey = `content-by-niche-${nicheName}-${limit}`;
-  const cachedData = contentCache.get(cacheKey);
+  const cachedData = contentCache.get<ContentItem[]>(cacheKey);
   const rows = useQuery(api.content.getPublishedContent, isDisabled ? 'skip' : { limit: limit * 2 });
 
   if (cachedData && !isDisabled) {
@@ -198,7 +198,7 @@ export function useContentByNiche(nicheName: string, limit = 20) {
 export function useContentByNicheId(nicheId: number, limit = 30) {
   const isDisabled = useConvexDisabled();
   const cacheKey = `content-by-niche-id-${nicheId}-${limit}`;
-  const cachedData = contentCache.get(cacheKey);
+  const cachedData = contentCache.get<ContentItem[]>(cacheKey);
   const rows = useQuery(api.content.getContentByNiche, isDisabled ? 'skip' : { niche: nicheId === 2 ? 'security' : nicheId === 3 ? 'gaming' : 'tech', limit });
 
   if (cachedData && !isDisabled) {
@@ -222,7 +222,7 @@ export function useContentByNicheId(nicheId: number, limit = 30) {
 export function useFeaturedContent(limit = 24) {
   const isDisabled = useConvexDisabled();
   const cacheKey = `featured-content-${limit}`;
-  const cachedData = contentCache.get(cacheKey);
+  const cachedData = contentCache.get<ContentItem[]>(cacheKey);
   const rows = useQuery(api.content.getFeaturedContent, isDisabled ? 'skip' : { limit });
 
   if (cachedData && !isDisabled) {
@@ -245,7 +245,7 @@ export function useFeaturedContent(limit = 24) {
 export function useLatestContent(limit = 10) {
   const isDisabled = useConvexDisabled();
   const cacheKey = `latest-content-${limit}`;
-  const cachedData = contentCache.get(cacheKey);
+  const cachedData = contentCache.get<ContentItem[]>(cacheKey);
   const rows = useQuery(api.content.getLatestContent, isDisabled ? 'skip' : { limit });
 
   if (cachedData && !isDisabled) {

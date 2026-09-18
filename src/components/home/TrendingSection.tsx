@@ -34,7 +34,7 @@ export function TrendingSection({ articles }: TrendingSectionProps) {
             ))}
           </div>
           <div className="hidden lg:grid grid-cols-2 gap-4">
-            {articles.slice(4, 6).map((article) => (
+            {articles.slice(4, 6).map((article, index) => (
               <ArticleCard key={(article as Article & { _id?: string })?._id ?? article?.id ?? article?.slug ?? index} article={article} />
             ))}
           </div>

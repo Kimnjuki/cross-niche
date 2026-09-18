@@ -120,7 +120,7 @@ export const seedInitialArticles = mutation({
       await ctx.db.insert("contentNiches", { contentId, nicheId });
 
       const feedInfo = FEED_SLUGS[nicheId];
-      let feed = await ctx.db
+      const feed = await ctx.db
         .query("feeds")
         .withIndex("by_slug", (q) => q.eq("slug", feedInfo.slug))
         .first();
@@ -137,7 +137,7 @@ export const seedInitialArticles = mutation({
       }
 
       // Link to Main Feed / Homepage so articles appear on homepage
-      let homeFeed = await ctx.db
+      const homeFeed = await ctx.db
         .query("feeds")
         .withIndex("by_slug", (q) => q.eq("slug", HOME_FEED.slug))
         .first();

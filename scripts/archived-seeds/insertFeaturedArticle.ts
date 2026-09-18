@@ -93,7 +93,7 @@ export const insertFeaturedArticle = mutation({
     });
 
     // 5. Link to feed "play" so article appears in Gaming section (useContentByFeed('play', 5))
-    let playFeed = await ctx.db
+    const playFeed = await ctx.db
       .query("feeds")
       .withIndex("by_slug", (q) => q.eq("slug", "play"))
       .first();

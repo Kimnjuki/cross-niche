@@ -129,7 +129,7 @@ export function PersonalizedFeed({ userId = 'demo-user', maxArticles = 6 }: Pers
         </Card>
       ) : (
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-          {articles.map((article) => (
+          {articles.map((article, index) => (
             <Card key={(article as Article & { _id?: string })?._id ?? article?.id ?? article?.slug ?? index} className="hover:shadow-lg transition-shadow">
               <CardHeader className="pb-3">
                 <div className="flex items-start justify-between">

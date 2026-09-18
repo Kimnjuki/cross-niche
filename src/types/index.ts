@@ -42,10 +42,21 @@ export interface Article {
   }>;
 }
 
+export interface Notification {
+  id: string;
+  title: string;
+  message: string;
+  category: 'breaking' | 'update' | 'promotion' | 'info' | 'feed' | 'system';
+  read: boolean;
+  createdAt: string;
+  link?: string;
+}
+
 export interface Guide {
   id: string;
   title: string;
-  description: string;
+  slug?: string;
+  excerpt?: string;
   niche: Niche;
   difficulty: 'beginner' | 'intermediate' | 'advanced';
   platform: string[];
@@ -53,6 +64,12 @@ export interface Guide {
   tools?: Tool[];
   publishedAt: string;
   readTime: number;
+  content?: string;
+  author?: string;
+  imageUrl?: string;
+  tags?: string[];
+  isFeatured?: boolean;
+  description?: string;
 }
 
 export interface Tool {

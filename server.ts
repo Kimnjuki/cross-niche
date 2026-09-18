@@ -36,7 +36,7 @@ async function createServer() {
 
     try {
       // 1. Load index.html - the template is in the client folder
-      let template = await vite.transformIndexHtml(
+      const template = await vite.transformIndexHtml(
         url,
         await fs.promises.readFile(path.resolve(__dirname, 'index.html'), 'utf-8')
       );

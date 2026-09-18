@@ -54,7 +54,7 @@ export function TopStoryHero({ article }: TopStoryHeroProps) {
             <div className="flex flex-wrap items-center gap-4 text-sm text-white/80">
               <span className="flex items-center gap-1.5">
                 <User className="h-4 w-4" />
-                <Link to={`/author/${authorSlug(article.author)}`} className="hover:underline">{article.author}</Link>
+                <Link to={`/author/${String(article.author).toLowerCase().replace(/\\s+/g, '-').replace(/[^a-z0-9-]/g, '')}`} className="hover:underline">{article.author}</Link>
               </span>
               <span className="flex items-center gap-1.5">
                 <Clock className="h-4 w-4" />

@@ -6,7 +6,7 @@ import { useQuery } from 'convex/react';
 import { api } from '../../convex/_generated/api';
 import { useConvexDisabled } from '@/components/SafeConvexProvider';
 import { SAMPLE_AI_UPDATES } from '@/data/aiUpdates';
-import type { AIUpdate, AICategory } from '@/data/aiUpdates';
+import type { AIUpdate, AICategory, AIFeature } from '@/data/aiUpdates';
 
 function convexToAIUpdate(row: {
   _id: string;
@@ -40,7 +40,7 @@ function convexToAIUpdate(row: {
     features: row.features?.map(f => ({
       name: f.name,
       description: f.description,
-      sector: f.sector as AIUpdate['features'] extends Array<infer T> ? T['sector'] : never,
+      sector: f.sector as AIFeature['sector'],
       impact: f.impact as 'high' | 'medium' | 'low',
     })),
     competitiveAnalysis: row.competitiveAnalysis?.map(c => ({

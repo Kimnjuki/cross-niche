@@ -119,7 +119,7 @@ export default function RoadmapEnhanced() {
   const [userPredictions, setUserPredictions] = useState<{[key: string]: number}>({});
 
   useEffect(() => {
-    let filtered = roadmapData.filter(milestone => {
+    const filtered = roadmapData.filter(milestone => {
       const matchesCategory = selectedCategory === 'all' || milestone.category === selectedCategory;
       const matchesTimeRange = selectedTimeRange === 'all' || milestone.date === selectedTimeRange;
       const matchesSearch = milestone.title.toLowerCase().includes(searchTerm.toLowerCase()) ||

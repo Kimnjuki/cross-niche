@@ -311,13 +311,13 @@ export default function PCBuilder() {
   const isDisabled = useConvexDisabled();
   const { user } = useAuth();
   const saveBuild = useMutation(api.pcBuilder.saveBuild);
-  const sessionIdRef = useRef<string>(() => {
-    const stored = sessionStorage.getItem('gnx_pc_builder_session');
-    if (stored) return stored;
-    const id = crypto.randomUUID();
-    sessionStorage.setItem('gnx_pc_builder_session', id);
-    return id;
-  });
+  const sessionIdRef = useRef<string>(
+    sessionStorage.getItem('gnx_pc_builder_session') ?? crypto.randomUUID()
+  );
+  if (!sessionIdRef.current) {
+    sessionIdRef.current = crypto.randomUUID();
+    sessionStorage.setItem('gnx_pc_builder_session', sessionIdRef.current);
+  }
 
   const [phase, setPhase] = useState<Phase>('usecase');
   const [useCase, setUseCase] = useState<UseCase>('gaming');
@@ -372,7 +372,7 @@ export default function PCBuilder() {
     if (isDisabled) return;
     try {
       await saveBuild({
-        sessionId: sessionIdRef.current(),
+        sessionId: sessionIdRef.current,
         userId: user?.id,
         buildName,
         components: componentList,

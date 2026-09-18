@@ -4,6 +4,13 @@ import { ArrowRight, ChevronDown, Clock, Eye } from 'lucide-react';
 import { mockArticles } from '@/data/mockData';
 import type { Article } from '@/types';
 
+function getNextArticle(currentSlug: string, niche: string, allArticles: Article[]): Article | null {
+  return allArticles
+    .filter((a) => a.niche === niche && a.slug !== currentSlug && a.publishedAt)
+    .sort((a, b) => (b as any).publishedAt || 0 - (a as any).publishedAt || 0)
+    .slice(0, 1)[0] ?? null;
+}
+
 interface NextArticleProps {
   /** Current article slug to exclude */
   currentSlug: string;
@@ -52,12 +59,12 @@ export function NextArticle({ currentSlug, niche }: NextArticleProps) {
         <div className="flex items-center justify-center gap-3 mt-2 text-xs text-muted-foreground/60">
           <span className="flex items-center gap-1">
             <Clock className="h-3 w-3" />
-            {next.readingTime} min
+            {next.readTime} min
           </span>
-          <span className="text-muted-foreground/30">•</span>
+          <span className="text-muted-foreground/30">¶</span>
           <span className="flex items-center gap-1">
             <Eye className="h-3 w-3" />
-            {next.views || 0} views
+            {next.viewCount || 0} views
           </span>
         </div>
       </div>

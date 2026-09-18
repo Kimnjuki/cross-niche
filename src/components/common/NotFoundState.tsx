@@ -3,19 +3,22 @@ import { Button } from '@/components/ui/button';
 import { SearchX } from 'lucide-react';
 
 interface NotFoundStateProps {
-  query: string;
+  query?: string;
+  /** Alternate callers pass title/message copy instead of the query string. */
+  title?: string;
+  message?: string;
   suggestions?: string[];
   onSelectSuggestion?: (s: string) => void;
   onRequestAdd?: () => void;
 }
 
-export function NotFoundState({ query, suggestions, onSelectSuggestion, onRequestAdd }: NotFoundStateProps) {
+export function NotFoundState({ query, title, message, suggestions, onSelectSuggestion, onRequestAdd }: NotFoundStateProps) {
   return (
     <div className="flex flex-col items-center justify-center py-16 text-center">
       <SearchX className="h-12 w-12 text-muted-foreground/30 mb-4" />
-      <h3 className="text-lg font-semibold mb-2">No data found for "{query}"</h3>
+      <h3 className="text-lg font-semibold mb-2">{title ?? `No data found for "${query ?? ''}"`}</h3>
       <p className="text-sm text-muted-foreground max-w-md mb-4">
-        We couldn't find matching data in our system. You can request it or browse our available options below.
+        {message ?? "We couldn't find matching data in our system. You can request it or browse our available options below."}
       </p>
       {suggestions && suggestions.length > 0 && (
         <div className="mb-4">

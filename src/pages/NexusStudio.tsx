@@ -22,17 +22,13 @@ const STATUS_CONFIG = {
 };
 
 export default function NexusStudio() {
+  // All hooks must run unconditionally (before any early returns) — react-hooks/rules-of-hooks
   const { user, isLoading } = useAuth();
   const [statusFilter, setStatusFilter] = useState<"draft" | "in_review" | "approved" | "cancelled" | undefined>(undefined);
   const [showForm, setShowForm] = useState(false);
   const [keyword, setKeyword] = useState("");
   const [notes, setNotes] = useState("");
   const [submitting, setSubmitting] = useState(false);
-
-  // Guard: only authenticated users (all hooks above, return below)
-  if (!isLoading && !user) {
-    return <Navigate to="/signin" replace />;
-  }
 
   const briefs = useQuery(api.editorialBriefs.list, {
     status: statusFilter,
@@ -41,6 +37,11 @@ export default function NexusStudio() {
 
   const createBrief = useMutation(api.editorialBriefs.create);
   const updateStatus = useMutation(api.editorialBriefs.updateStatus);
+
+  // Guard: only authenticated users (all hooks above, return below)
+  if (!isLoading && !user) {
+    return <Navigate to="/signin" replace />;
+  }
 
   const handleCreate = async () => {
     if (!keyword) return;

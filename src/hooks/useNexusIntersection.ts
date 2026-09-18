@@ -92,7 +92,7 @@ export function useNexusIntersection(keyword?: string): NexusIntersectionResult 
   }, [articles, keyword]);
 
   const isLoading = techQuery.isLoading || securityQuery.isLoading || gamingQuery.isLoading;
-  const error = techQuery.isError || securityQuery.isError || gamingQuery.isError;
+  const error = !techQuery.data?.length || !securityQuery.data?.length || !gamingQuery.data?.length;
 
   return {
     tech: tech ?? null,

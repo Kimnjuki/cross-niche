@@ -16,7 +16,7 @@ import { SEOHead } from '@/components/seo/SEOHead';
 interface SEOProps {
   title: string;
   description: string;
-  canonical: string;
+  canonical?: string;
   ogType?: string;
   ogImage?: string;
 }

@@ -68,7 +68,7 @@ function extractObjectLiteral(source, exportName) {
 }
 
 function evaluateLiteral(literal) {
-  // eslint-disable-next-line no-new-func -- trusted, repo-owned build-time source
+   
   return new Function(`"use strict"; return (${literal});`)();
 }
 

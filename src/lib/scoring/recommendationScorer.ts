@@ -39,7 +39,7 @@ export function scoreGames(input: ScoringInput): ScoredGame[] {
   const { goal, budget, styles } = input;
   const selectedBudgetRank = budgetRank(budget);
 
-  let scored: ScoredGame[] = [];
+  const scored: ScoredGame[] = [];
 
   for (const game of GAME_LIBRARY) {
     let rawScore = 0;

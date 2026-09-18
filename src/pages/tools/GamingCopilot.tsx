@@ -250,7 +250,7 @@ _If you need real-time threat intelligence, check the Security Dashboard._`;
 function renderMarkdown(text: string): React.ReactNode[] {
   const lines = text.split('\n');
   const elements: React.ReactNode[] = [];
-  let inCodeBlock = false;
+  const inCodeBlock = false;
 
   lines.forEach((line, i) => {
     if (line.startsWith('━━━')) {

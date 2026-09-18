@@ -9,9 +9,12 @@ export const buttonVariants = cva(
         secondary: "...",
         ghost: "...",
         danger: "...",
+        // shadcn-style aliases so existing call sites (`variant="destructive"`,
+        // `variant="default"`) typecheck against either naming convention.
+        destructive: "...",
+        default: "...",
         outline: "...",
-        link: "...",
-        default: "..."
+        link: "..."
       },
       size: {
         xs: "h-7 px-3 text-xs",
@@ -19,7 +22,9 @@ export const buttonVariants = cva(
         md: "h-10 px-5 text-sm",
         lg: "h-12 px-6 text-sm",
         xl: "h-14 px-8 text-base",
-        icon: "h-10 w-10"
+        icon: "h-10 w-10",
+        // shadcn-style alias — same metrics as `md`
+        default: "h-10 px-5 text-sm"
       },
     },
     defaultVariants: {

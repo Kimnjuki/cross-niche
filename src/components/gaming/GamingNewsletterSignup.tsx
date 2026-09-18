@@ -24,7 +24,7 @@ export function GamingNewsletterSignup({ source = 'listing' }: GamingNewsletterS
     setIsSubmitting(true);
 
     // GA4 event
-    trackNewsletterSignup(email, 'gaming');
+    trackNewsletterSignup('gaming');
 
     // Store in localStorage
     const existing = JSON.parse(localStorage.getItem('gaming-subscribers') || '[]');

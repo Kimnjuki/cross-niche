@@ -102,7 +102,7 @@ export default function Topics() {
 
   // Filter and sort articles
   const processedArticles = useMemo(() => {
-    let articles = query ? filteredArticles : allArticles;
+    const articles = query ? filteredArticles : allArticles;
     
     // Sort articles
     switch (sortBy) {

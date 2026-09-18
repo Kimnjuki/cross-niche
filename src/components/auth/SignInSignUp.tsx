@@ -7,8 +7,15 @@ import { Link, useLocation, Navigate } from 'react-router-dom';
 import { isClerkEnabled } from '@/lib/clerkConfig';
 
 export const SignInSignUp: React.FC = () => {
+  // All hooks must run unconditionally (before any early returns) — react-hooks/rules-of-hooks
   const { isSignedIn, isLoaded } = useUser();
   const { signOut } = useAuth();
+  const location = useLocation();
+
+  const mode: 'signin' | 'signup' = React.useMemo(() => {
+    const p = location.pathname.toLowerCase();
+    return p.startsWith('/signup') ? 'signup' : 'signin';
+  }, [location.pathname]);
 
   if (!isClerkEnabled) {
     return (
@@ -30,13 +37,6 @@ export const SignInSignUp: React.FC = () => {
       </div>
     );
   }
-
-  const location = useLocation();
-
-  const mode: 'signin' | 'signup' = React.useMemo(() => {
-    const p = location.pathname.toLowerCase();
-    return p.startsWith('/signup') ? 'signup' : 'signin';
-  }, [location.pathname]);
 
   // Show sign-in page while Clerk loads
   if (!isLoaded) {

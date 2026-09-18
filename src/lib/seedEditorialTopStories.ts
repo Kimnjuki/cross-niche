@@ -124,7 +124,7 @@ async function seedEditorialTopStories() {
 
   try {
     for (const article of articles) {
-      await client.mutation("content:upsertIngestedContent", article as any);
+      await client.mutation("content:upsertIngestedContent" as any, article as any);
       console.log(`✅ Upserted: ${article.title}`);
     }
 

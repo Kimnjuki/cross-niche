@@ -401,7 +401,7 @@ export default function NewsPersonalizer() {
               ) : (
                 <EmptyState
                   title="No stories found"
-                  message={
+                  description={
                     searchQuery
                       ? `No stories match "${searchQuery}" in this category.`
                       : 'No stories in this category yet.'

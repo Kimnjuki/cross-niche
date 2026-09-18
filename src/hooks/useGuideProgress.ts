@@ -51,6 +51,7 @@ export function useGuideProgress(guideId: string) {
 }
 
 export function useGuideProgressWithSteps(guideId: string, totalSteps: number) {
+  const isDisabled = useConvexDisabled();
   const { completedSteps, markStepComplete, isLoading } = useGuideProgress(guideId);
   const progressPercent = totalSteps > 0
     ? Math.round((completedSteps.length / totalSteps) * 100)
@@ -62,6 +63,6 @@ export function useGuideProgressWithSteps(guideId: string, totalSteps: number) {
     progressPercent,
     isCompleted,
     markStepComplete,
-    isLoading: !isDisabled && progress === undefined,
+    isLoading: !isDisabled && isLoading,
   };
 }

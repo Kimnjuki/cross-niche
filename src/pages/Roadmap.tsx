@@ -14,7 +14,7 @@ import { RoadmapKanban } from '@/components/roadmap/RoadmapKanban';
 import { RoadmapVoting } from '@/components/roadmap/RoadmapVoting';
 import { cn } from '@/lib/utils';
 
-interface Feature {
+export interface Feature {
   id: string;
   title: string;
   description: string;

@@ -667,7 +667,7 @@ export const GAME_LIBRARY: GameEntry[] = [
       esrbFiledDate: null,
       steamBuildActivity: false,
       marketingHires: true,
-      leakleakScore: 0.2,
+      leakScore: 0.2,
       officialTeases: 0.1,
     },
     baseReleaseConfidence: 45,

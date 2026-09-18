@@ -11,12 +11,12 @@ interface Step {
 interface LoadingStateProps {
   title?: string;
   description?: string;
-  variant: 'spinner' | 'skeleton' | 'progress';
+  variant?: 'spinner' | 'skeleton' | 'progress';
   steps?: Step[];
   className?: string;
 }
 
-export function LoadingState({ title, description, variant, steps, className }: LoadingStateProps) {
+export function LoadingState({ title, description, variant = 'spinner', steps, className }: LoadingStateProps) {
   if (variant === 'spinner') {
     return (
       <div className={cn('flex flex-col items-center justify-center py-16 text-center', className)}>

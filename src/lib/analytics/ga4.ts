@@ -225,7 +225,7 @@ export function trackEvent(eventName: string, parameters?: Record<string, any>) 
 /**
  * Track scroll depth
  */
-let scrollDepthTracked = {
+const scrollDepthTracked = {
   25: false,
   50: false,
   75: false,

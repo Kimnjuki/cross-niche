@@ -3,7 +3,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { TooltipProvider } from '@/components/ui/tooltip';
 import { EnhancedErrorBoundary } from '@/components/error/EnhancedErrorBoundary';
-import { SafeConvexProvider } from '@/components/providers/SafeConvexProvider';
+import { SafeConvexProvider } from '@/components/SafeConvexProvider';
 import { ThemeProvider } from '@/components/theme/ThemeProvider';
 
 const queryClient = new QueryClient();

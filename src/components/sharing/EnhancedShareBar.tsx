@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
@@ -189,7 +189,9 @@ export function EnhancedShareBar({ article, className, variant = 'inline' }: Enh
 
       {/* Primary Share Buttons */}
       <div className="flex flex-wrap gap-2 mb-3">
-        {shareButtons.slice(0, 4).map(({ key, icon: Icon, label, color, isEmoji }) => (
+                {shareButtons.slice(0, 4).map(({ key, icon: Icon, label, color, isEmoji }) => {
+          const IconEl = Icon as React.ElementType;
+          return (
           <Button
             key={key}
             variant="outline"
@@ -198,13 +200,14 @@ export function EnhancedShareBar({ article, className, variant = 'inline' }: Enh
             className={cn('gap-1', color)}
           >
             {isEmoji ? (
-              <span className="text-lg">{Icon}</span>
+              <span className="text-lg">{Icon as string}</span>
             ) : (
-              <Icon className="h-4 w-4" />
+              <IconEl className="h-4 w-4" />
             )}
             <span className="hidden sm:inline">{label}</span>
           </Button>
-        ))}
+          );
+        })}
       </div>
 
       {/* Secondary Actions */}
@@ -270,7 +273,9 @@ export function EnhancedShareBar({ article, className, variant = 'inline' }: Enh
             <DialogTitle>All Sharing Options</DialogTitle>
           </DialogHeader>
           <div className="grid grid-cols-2 gap-3">
-            {shareButtons.map(({ key, icon: Icon, label, color, isEmoji }) => (
+            {shareButtons.map(({ key, icon: Icon, label, color, isEmoji }) => {
+              const IconEl = Icon as React.ElementType;
+              return (
               <Button
                 key={key}
                 variant="outline"
@@ -278,13 +283,14 @@ export function EnhancedShareBar({ article, className, variant = 'inline' }: Enh
                 className={cn('justify-start gap-2 h-auto p-3', color)}
               >
                 {isEmoji ? (
-                  <span className="text-lg">{Icon}</span>
+                  <span className="text-lg">{Icon as string}</span>
                 ) : (
-                  <Icon className="h-4 w-4" />
+                  <IconEl className="h-4 w-4" />
                 )}
                 {label}
               </Button>
-            ))}
+              );
+            })}
           </div>
         </DialogContent>
       </Dialog>

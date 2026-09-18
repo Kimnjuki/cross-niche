@@ -43,7 +43,7 @@ export function LiveTicker() {
               );
             }
 
-            const niche = item.niche ?? '';
+            const niche = (item as Article).niche ?? '';
             const nicheBadge =
               niche === 'security'
                 ? '[SEC]'
@@ -55,8 +55,8 @@ export function LiveTicker() {
 
             return (
               <Link
-                key={item.id ?? item.slug ?? idx}
-                to={`/article/${item.slug ?? item.id ?? ''}`}
+                key={(item as Article).id ?? (item as Article).slug ?? idx}
+                to={`/article/${(item as Article).slug ?? (item as Article).id ?? ''}`}
                 className="inline-flex items-center gap-2 hover:text-foreground transition-colors"
               >
                 {nicheBadge && (
@@ -73,7 +73,7 @@ export function LiveTicker() {
                   </span>
                 )}
                 <span className="max-w-xs truncate">
-                  {item.title}
+                  {(item as Article).title}
                 </span>
               </Link>
             );

@@ -73,7 +73,7 @@ export function NicheSection({ niche, articles }: NicheSectionProps) {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {articles.slice(0, 3).map((article) => (
+          {articles.slice(0, 3).map((article, index) => (
             <ArticleCard key={(article as Article & { _id?: string })?._id ?? article?.id ?? article?.slug ?? index} article={article} />
           ))}
         </div>

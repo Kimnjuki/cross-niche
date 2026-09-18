@@ -22,6 +22,7 @@ import {
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { toast } from 'sonner';
+import type { Article } from '@/types';
 
 export default function Admin() {
   const [isInserting, setIsInserting] = useState(false);
@@ -518,7 +519,7 @@ export default function Admin() {
                 {allArticles.length > 0 && (
                   <div className="mt-4 space-y-2">
                     <div className="text-sm font-semibold">Article Titles:</div>
-                    {allArticles.slice(0, 5).map((article) => (
+                    {allArticles.slice(0, 5).map((article, index) => (
                       <div key={(article as Article & { _id?: string })?._id ?? article?.id ?? article?.slug ?? index} className="text-sm text-muted-foreground">
                         • {article.title}
                       </div>

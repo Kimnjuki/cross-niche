@@ -112,11 +112,11 @@ export default function TutorialDetail() {
                   {tutorial.category}
                 </Badge>
                 {tutorial.os.map(os => {
-                  const Icon = osIcons[os];
+                  const Icon = osIcons[String(os)];
                   return (
                     <Badge key={os} variant="outline" className="gap-1">
                       <Icon className="h-3 w-3" />
-                      {os === 'all' ? 'All Platforms' : os}
+                      {String(os) === 'all' ? 'All Platforms' : os}
                     </Badge>
                   );
                 })}

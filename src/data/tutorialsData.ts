@@ -11,7 +11,7 @@ export type Tutorial = {
   slug: string;
   category: 'tech' | 'security' | 'gaming';
   difficulty: 'beginner' | 'intermediate' | 'advanced' | 'expert';
-  os: ('windows' | 'macos' | 'linux')[];
+    os: ('windows' | 'macos' | 'linux' | 'all')[];
   tags: string[];
   readTime: number;
   steps: string[];

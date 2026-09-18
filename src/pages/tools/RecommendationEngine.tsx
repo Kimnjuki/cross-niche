@@ -122,7 +122,7 @@ export default function RecommendationEngine() {
       return;
     }
 
-    trackTool('recommendation-engine', 'start', { goal: goal.id, budget: budget.id });
+    trackTool('recommendation-engine', 'start', { goal, budget });
     setStatus('loading');
     const startTime = Date.now();
 
@@ -396,7 +396,7 @@ export default function RecommendationEngine() {
             {status === 'success' && results.length === 0 && (
               <EmptyState
                 title="No matches found"
-                message="Try adjusting your budget or style preferences for more results."
+                description="Try adjusting your budget or style preferences for more results."
                 action={{ label: 'Try Again', onClick: reset }}
               />
             )}

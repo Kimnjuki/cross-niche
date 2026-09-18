@@ -87,19 +87,19 @@ export function useAnalyticsTracker() {
       const scrollPercentage = Math.round((scrollPosition / scrollHeight) * 100);
 
       if (scrollPercentage > 25 && scrollDepthTracked.current < 25) {
-        trackEvent('engagement', 'scroll_depth', '25%', 25);
+        trackEvent('scroll_depth', { event_category: 'engagement', event_label: '25%', value: 25 });
         scrollDepthTracked.current = 25;
       }
       if (scrollPercentage > 50 && scrollDepthTracked.current < 50) {
-        trackEvent('engagement', 'scroll_depth', '50%', 50);
+        trackEvent('scroll_depth', { event_category: 'engagement', event_label: '50%', value: 50 });
         scrollDepthTracked.current = 50;
       }
       if (scrollPercentage > 75 && scrollDepthTracked.current < 75) {
-        trackEvent('engagement', 'scroll_depth', '75%', 75);
+        trackEvent('scroll_depth', { event_category: 'engagement', event_label: '75%', value: 75 });
         scrollDepthTracked.current = 75;
       }
       if (scrollPercentage > 90 && scrollDepthTracked.current < 90) {
-        trackEvent('engagement', 'scroll_depth', '90%', 90);
+        trackEvent('scroll_depth', { event_category: 'engagement', event_label: '90%', value: 90 });
         scrollDepthTracked.current = 90;
       }
 
@@ -116,7 +116,7 @@ export function useAnalyticsTracker() {
 
       engagementData.current.clicks++;
 
-      trackEvent('engagement', 'click', `${tagName}:${className || id || text}`);
+      trackEvent('click', { event_category: 'engagement', event_label: `${tagName}:${className || id || text}` });
     };
 
     // Track form submissions
@@ -125,7 +125,7 @@ export function useAnalyticsTracker() {
       const formName = target.name || target.id || 'unknown_form';
       
       engagementData.current.formSubmissions++;
-      trackEvent('conversion', 'form_submit', formName);
+      trackEvent('form_submit', { event_category: 'conversion', event_label: formName });
     };
 
     // Track video plays
@@ -134,7 +134,7 @@ export function useAnalyticsTracker() {
       const videoTitle = target.title || target.src || 'unknown_video';
       
       engagementData.current.videoPlays++;
-      trackEvent('engagement', 'video_play', videoTitle);
+      trackEvent('video_play', { event_category: 'engagement', event_label: videoTitle });
     };
 
     // Track downloads
@@ -144,7 +144,7 @@ export function useAnalyticsTracker() {
       const fileName = href.split('/').pop() || 'unknown_file';
       
       engagementData.current.downloads++;
-      trackEvent('engagement', 'download', fileName);
+      trackEvent('download', { event_category: 'engagement', event_label: fileName });
     };
 
     // Add event listeners
@@ -197,23 +197,26 @@ export function useAnalyticsTracker() {
   };
 
   // Track custom events
-  const trackEvent = (event: AnalyticsEvent) => {
+  const trackEvent = (
+    eventName: string,
+    params?: { event_category?: string; event_label?: string; value?: number; nonInteraction?: boolean }
+  ) => {
     // Google Analytics 4
     if (typeof window !== 'undefined' && window.gtag) {
-      window.gtag('event', event.action, {
-        event_category: event.category,
-        event_label: event.label,
-        value: event.value,
-        non_interaction: event.nonInteraction
+      window.gtag('event', eventName, {
+        event_category: params?.event_category ?? 'engagement',
+        event_label: params?.event_label ?? '',
+        value: params?.value,
+        non_interaction: params?.nonInteraction ?? false
       });
     }
 
     // Hotjar
     if (typeof window !== 'undefined' && window.hj) {
-      window.hj('event', event.action, {
-        category: event.category,
-        label: event.label,
-        value: event.value
+      window.hj('event', eventName, {
+        category: params?.event_category ?? 'engagement',
+        label: params?.event_label ?? '',
+        value: params?.value
       });
     }
 
@@ -221,11 +224,11 @@ export function useAnalyticsTracker() {
     sendToAnalytics({
       type: 'event',
       data: {
-        category: event.category,
-        action: event.action,
-        label: event.label,
-        value: event.value,
-        nonInteraction: event.nonInteraction,
+        category: params?.event_category ?? 'engagement',
+        action: eventName,
+        label: params?.event_label ?? '',
+        value: params?.value,
+        nonInteraction: params?.nonInteraction ?? false,
         timestamp: new Date().toISOString(),
         pageUrl: window.location.href,
         pageTitle: document.title
@@ -235,11 +238,10 @@ export function useAnalyticsTracker() {
 
   // Track guide completion
   const trackGuideCompletion = (guideId: string, guideTitle: string, timeSpent: number) => {
-    trackEvent({
-      category: 'guides',
-      action: 'complete',
-      label: guideTitle,
-      value: Math.round(timeSpent / 1000) // Convert to seconds
+    trackEvent('guide_complete', {
+      event_category: 'guides',
+      event_label: guideTitle,
+      value: Math.round(timeSpent / 1000)
     });
 
     // Track guide-specific metrics
@@ -257,10 +259,9 @@ export function useAnalyticsTracker() {
 
   // Track BAS simulation
   const trackBASSimulation = (platform: string, scenario: string, result: string, timeSpent: number) => {
-    trackEvent({
-      category: 'bas_simulation',
-      action: 'run',
-      label: `${platform}:${scenario}`,
+    trackEvent('bas_simulation_run', {
+      event_category: 'bas_simulation',
+      event_label: `${platform}:${scenario}`,
       value: Math.round(timeSpent / 1000)
     });
 
@@ -279,10 +280,9 @@ export function useAnalyticsTracker() {
 
   // Track convergence interaction
   const trackConvergenceInteraction = (areas: string[], action: string) => {
-    trackEvent({
-      category: 'convergence',
-      action: action,
-      label: areas.join('+'),
+    trackEvent(`convergence_${action}`, {
+      event_category: 'convergence',
+      event_label: areas.join('+'),
       value: areas.length
     });
 
@@ -299,10 +299,9 @@ export function useAnalyticsTracker() {
 
   // Track ad engagement
   const trackAdEngagement = (adPosition: string, adType: string, action: string) => {
-    trackEvent({
-      category: 'ads',
-      action: action,
-      label: `${adPosition}:${adType}`
+    trackEvent(`ad_${action}`, {
+      event_category: 'ads',
+      event_label: `${adPosition}:${adType}`
     });
 
     sendToAnalytics({
@@ -319,10 +318,9 @@ export function useAnalyticsTracker() {
 
   // Track search behavior
   const trackSearch = (query: string, category: string, resultsCount: number) => {
-    trackEvent({
-      category: 'search',
-      action: 'perform',
-      label: category,
+    trackEvent('search_perform', {
+      event_category: 'search',
+      event_label: category,
       value: resultsCount
     });
 
@@ -363,10 +361,9 @@ export function useAnalyticsTracker() {
       const timeOnPage = Date.now() - pageStartTime.current;
       engagementData.current.timeOnPage = timeOnPage;
 
-      trackEvent({
-        category: 'engagement',
-        action: 'time_on_page',
-        value: Math.round(timeOnPage / 1000) // Convert to seconds
+      trackEvent('time_on_page', {
+        event_category: 'engagement',
+        value: Math.round(timeOnPage / 1000)
       });
 
       sendToAnalytics({
@@ -407,9 +404,10 @@ export function useAnalyticsTracker() {
 }
 
 // Global analytics interface
+// NOTE: `Window.gtag` is declared in `src/lib/analytics/ga4.ts` — do not
+// re-declare it here (TS requires identical modifiers across declarations).
 declare global {
   interface Window {
-    gtag?: (...args: any[]) => void;
     hj?: (command: string, ...args: any[]) => void;
   }
 }

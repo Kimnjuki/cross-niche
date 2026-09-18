@@ -276,7 +276,7 @@ export default function GuidesEnhanced() {
 
   useEffect(() => {
     // Filter guides based on search and filters
-    let filtered = comprehensiveGuides.filter(guide => {
+    const filtered = comprehensiveGuides.filter(guide => {
       const matchesSearch = guide.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
                            guide.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
                            guide.tags.some(tag => tag.toLowerCase().includes(searchTerm.toLowerCase()));

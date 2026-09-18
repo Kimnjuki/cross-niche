@@ -30,6 +30,7 @@ function convexToGuide(row: {
   return {
     id: row._id,
     title: row.title,
+    slug: row.slug ?? row._id,
     description: row.description,
     niche: nicheMap[row.nicheId] || 'tech',
     difficulty: row.difficulty as 'beginner' | 'intermediate' | 'advanced',

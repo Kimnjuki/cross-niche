@@ -147,7 +147,7 @@ export async function createOptimizedImageAttributes(
   };
 
   if (options.responsive) {
-    attributes.srcSet = generateSrcSet(src, undefined, format);
+        attributes.srcSet = generateSrcSet(src, undefined, format !== 'original' ? format : undefined);
     attributes.sizes = generateSizes();
   }
 

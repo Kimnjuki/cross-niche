@@ -33,6 +33,8 @@ interface SEOHeadProps {
   noindex?: boolean;
   /** Explicit canonical override (content.canonicalUrl). Falls back to self-canonical. */
   canonicalUrl?: string;
+  /** Alias for canonicalUrl for callers that use the shorter name. */
+  canonical?: string;
   faqs?: Array<{ question: string; answer: string }>;
   howTo?: {
     name: string;
