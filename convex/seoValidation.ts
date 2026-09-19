@@ -8,7 +8,7 @@
  * editorial UI and the data layer agree on what is publishable.
  */
 
-import { mutation, query, internalMutation } from "./_generated/server";
+import { mutation, query, internalMutation, QueryCtx, MutationCtx } from "./_generated/server";
 import { v } from "convex/values";
 import { api } from "./_generated/api";
 
@@ -26,7 +26,7 @@ const LONG_FORM_CONTENT_TYPES = new Set([
   "gaming_security_guide",
 ]);
 
-function titleKey(input) {
+function titleKey(input: unknown) {
   return String(input ?? "")
     .toLowerCase()
     .replace(/\s+/g, " ")
@@ -34,12 +34,12 @@ function titleKey(input) {
     .trim();
 }
 
-function countWords(text) {
+function countWords(text: string | null | undefined) {
   const clean = String(text ?? "").replace(/<[^>]*>/g, " ");
   return clean.split(/\s+/).filter(Boolean).length;
 }
 
-function truncateAtWord(text, max) {
+function truncateAtWord(text: string | null | undefined, max: number) {
   const clean = String(text ?? "").trim();
   if (clean.length <= max) return clean;
   const cut = clean.slice(0, max - 1);
@@ -49,7 +49,7 @@ function truncateAtWord(text, max) {
 
 /* ── Shared loaders ──────────────────────────────────────────────────────── */
 
-async function loadPublished(ctx) {
+async function loadPublished(ctx: QueryCtx | MutationCtx) {
   const docs = await ctx.db
     .query("content")
     .withIndex("by_status", (q) => q.eq("status", "published"))
@@ -171,15 +171,15 @@ export const runIndexabilityAudit = query({
         noindexReason: d.noindexReason ?? null,
       })),
       // P0-07: published pages without canonicalUrl.
-      missingCanonical: [],
+      missingCanonical: [] as { _id: string; slug: string; title: string }[],
       // P1-01: duplicate computed titles.
-      duplicateTitles: [],
+      duplicateTitles: [] as { key: string; pages: { _id: string; slug: string; title: string }[] }[],
       // P1-03: missing/empty meta description.
-      missingDescription: [],
+      missingDescription: [] as { _id: string; slug: string; title: string }[],
       // P1-04: titles over 60 chars.
-      longTitles: [],
+      longTitles: [] as { _id: string; slug: string; length: number }[],
       // P1-05: thin long-form content.
-      thinLongForm: [],
+      thinLongForm: [] as { _id: string; slug: string; words: number; contentType: string }[],
     };
 
     for (const d of published) {
@@ -395,37 +395,48 @@ export const indexCoverageBySource = query({
 
 /* ── P3-03: one-call health rollup → seoAudits ───────────────────────────── */
 
-export const runSeoHealthAudit = mutation({
-  args: {},
-  handler: async (ctx) => {
-    const audit = await ctx.runQuery(api.seoValidation.runIndexabilityAudit, {});
-    const orphans = await ctx.runQuery(api.seoValidation.findOrphanContent, { limit: 500 });
-    const duplicates = await ctx.runMutation(api.seoValidation.detectDuplicateContent, {});
+async function runSeoHealthAuditLogic(ctx: MutationCtx): Promise<{
+  unintentionallyNoindexed: number;
+  missingCanonical: number;
+  duplicateTitleGroups: number;
+  missingDescription: number;
+  longTitles: number;
+  thinLongForm: number;
+  orphanPages: number;
+  newDuplicatePairs: number;
+}> {
+  const audit = await ctx.runQuery(api.seoValidation.runIndexabilityAudit, {});
+  const orphans = await ctx.runQuery(api.seoValidation.findOrphanContent, { limit: 500 });
+  const duplicates = await ctx.runMutation(api.seoValidation.detectDuplicateContent, {});
 
-    await ctx.db.insert("seoAudits", {
-      date: Date.now(),
-      brokenLinksCount: 0,
-      thinContentCount: audit.counts.thinLongForm,
-      cannibalizationCount: audit.counts.duplicateTitleGroups,
-      decliningContentCount: 0,
-      issues: {
-        source: "seoValidation.runSeoHealthAudit",
-        indexability: audit.counts,
-        orphanPages: orphans.length,
-        newDuplicatePairs: duplicates.duplicatePairs,
-      },
-    });
-
-    return {
-      ...audit.counts,
+  await ctx.db.insert("seoAudits", {
+    date: Date.now(),
+    brokenLinksCount: 0,
+    thinContentCount: audit.counts.thinLongForm,
+    cannibalizationCount: audit.counts.duplicateTitleGroups,
+    decliningContentCount: 0,
+    issues: {
+      source: "seoValidation.runSeoHealthAudit",
+      indexability: audit.counts,
       orphanPages: orphans.length,
       newDuplicatePairs: duplicates.duplicatePairs,
-    };
-  },
+    },
+  });
+
+  return {
+    ...audit.counts,
+    orphanPages: orphans.length,
+    newDuplicatePairs: duplicates.duplicatePairs,
+  };
+}
+
+export const runSeoHealthAudit = mutation({
+  args: {},
+  handler: async (ctx) => runSeoHealthAuditLogic(ctx),
 });
 
 export const runSeoHealthAuditInternal = internalMutation({
   args: {},
-  handler: async (ctx) => ctx.runMutation(api.seoValidation.runSeoHealthAudit, {}),
+  handler: async (ctx) => runSeoHealthAuditLogic(ctx),
 });
 
