@@ -38,6 +38,12 @@ Thumbsdb
 *.md
 !README.md
 
+# Coolify / deployment artifacts
+.env.example
+commit-msg.txt
+docker-compose*.yaml
+.dockerignore
+
 # Test files
 coverage
 .nyc_output

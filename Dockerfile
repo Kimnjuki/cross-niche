@@ -4,6 +4,17 @@
 #   Coolify ARG injection no longer can override them with stale values.
 FROM node:22-alpine AS build-stage
 
+# Explicit ARG declarations for Coolify-injected build-time variables.
+# Only safe, non-sensitive vars are declared here. Sensitive API keys must NOT
+# be set in Coolify Build Time Variables — they are exposed in Docker image
+# metadata and `docker history`. Production values are hardcoded in source
+# (see auth0Config.ts pattern) or injected at runtime.
+ARG VITE_GA4_MEASUREMENT_ID=G-XMGRJBSN5Y
+ARG COOLIFY_URL=https://thegridnexus.com
+ARG COOLIFY_FQDN=thegridnexus.com
+ARG COOLIFY_BRANCH=main
+ARG COOLIFY_RESOURCE_UUID=x2njvj4owio2rehys3l97m81
+
 WORKDIR /app
 
 # Copy package files and install dependencies (npm ci uses lockfile; no bun.lockb)
@@ -18,7 +29,14 @@ ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true PUPPETEER_SKIP_DOWNLOAD=true \
     npm_config_progress=false \
     npm_config_legacy_peer_deps=true \
     NODE_OPTIONS=--max-old-space-size=4096
-RUN npm ci --legacy-peer-deps --no-audit --no-fund --prefer-offline || npm install --legacy-peer-deps --no-audit --no-fund --prefer-offline
+
+# Improve npm network resilience for flaky CI/CD networks and add retry logic
+RUN npm config set fetch-retries 5 \
+    && npm config set fetch-retry-factor 2 \
+    && npm config set fetch-retry-maxtimeout 60000 \
+    && npm config set fetch-retry-mintimeout 10000 \
+    && npm ci --legacy-peer-deps --no-audit --no-fund --prefer-offline \
+    || npm install --legacy-peer-deps --no-audit --no-fund --prefer-offline
 
 # Copy the rest of the code and build
 COPY . .
@@ -34,19 +52,14 @@ COPY . .
 #
 # Auth0 env vars are also deliberately omitted — credentials are
 # hardcoded in src/lib/auth0Config.ts as production defaults.
-
-# Explicitly blank VITE_CONVEX_URL to override Coolify's injected ARG.
-# Coolify auto-injects ALL build-time env vars as Docker ARG at the top
-# of the Dockerfile. Even though Docker makes ARG values available during
-# RUN commands, we unset the var at the shell level before running Vite.
-# This prevents Vite from baking the stale Convex deploy key into the
-# bundle, which would cause Convex queries to hang on article pages.
 #
 # PRERENDER=0 disables vite-plugin-prerender. That plugin launches a
 # headless Chromium to statically render routes, but Chromium is never
 # downloaded here (PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true), so the plugin
 # crashes the build with exit code 255 on Linux. Static article HTML is
 # generated separately by scripts/generate-static-articles.mjs below.
+
+# Unset VITE_CONVEX_URL so Vite doesn't bake a stale deploy key into the bundle.
 RUN VITE_CONVEX_URL= PRERENDER=0 npm run build:frontend
 
 # Generate SEO sitemaps (only valid, indexable URLs) and static article HTML
@@ -56,8 +69,6 @@ RUN node scripts/generate-seo-sitemaps.mjs && node scripts/generate-static-artic
 
 # Stage 2: Production (Serve with Nginx)
 FROM nginx:stable-alpine AS production-stage
-# Build cache buster 2026-05-13-2
-RUN echo "build-2026-05-13-2" > /dev/null
 
 # Copy built files from build stage
 COPY --from=build-stage /app/dist /usr/share/nginx/html
