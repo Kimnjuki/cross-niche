@@ -1,6 +1,6 @@
 import { type ReactNode } from 'react';
 import { NexusNavBar } from './NexusNavBar';
-import { Footer } from './Footer';
+import { Footer } from './FooterRedesigned';
 import { GlobalPulseSidebar } from './GlobalPulseSidebar';
 import { NexusScoreWidget } from '@/components/ui/NexusScoreWidget';
 import { CookieConsent } from '@/components/consent/CookieConsent';
@@ -20,8 +20,10 @@ export function Layout({ children, showPulseSidebar = false }: LayoutProps) {
       {showPulseSidebar && <GlobalPulseSidebar />}
       <div className={showPulseSidebar ? 'pl-[64px]' : ''}>
         <NexusNavBar />
-        <main className="flex-1">{children}</main>
-        <Footer />
+        <main id="main-content" className="flex-1" tabIndex={-1}>
+          {children}
+        </main>
+        <FooterRedesigned />
       </div>
       <AIIntelligenceTicker />
       {/* Floating Nexus Score Widget */}

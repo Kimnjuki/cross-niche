@@ -96,6 +96,7 @@ const AdvancedSearch = lazy(() => import("./components/search/AdvancedSearch"));
 const LiveUpdatesFeed = lazy(() => import("./components/live/LiveUpdatesFeed"));
 const SignInSignUp = lazy(() => import("./components/auth/SignInSignUp"));
 const NewsletterVerify = lazy(() => import("./pages/NewsletterVerify"));
+const Newsletter = lazy(() => import("./pages/Newsletter"));
 const About = lazy(() => import("./pages/About"));
 const Contact = lazy(() => import("./pages/Contact"));
 const Privacy = lazy(() => import("./pages/Privacy"));
@@ -217,8 +218,9 @@ const App = () => (
                      <Route path="/ai-pulse" element={<AIPulse />} />
                      <Route path="/signin" element={<SignInSignUp />} />
                      <Route path="/signup" element={<SignInSignUp />} />
-                     <Route path="/newsletter/verify" element={<NewsletterVerify />} />
-                     {/* Company / legal pages */}
+                      <Route path="/newsletter/verify" element={<NewsletterVerify />} />
+                      <Route path="/newsletter" element={<Newsletter />} />
+                      {/* Company / legal pages */}
                     <Route path="/about" element={<About />} />
                     <Route path="/contact" element={<Contact />} />
                     <Route path="/privacy" element={<Privacy />} />

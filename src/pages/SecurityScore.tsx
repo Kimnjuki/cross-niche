@@ -207,16 +207,43 @@ export default function SecurityScore() {
         type="website"
       />
 
-      <div className="container mx-auto px-4 py-12 max-w-2xl">
-        {/* Breadcrumb */}
-        <div className="flex items-center gap-2 text-sm text-muted-foreground mb-8">
-          <Link to="/tools" className="hover:text-foreground flex items-center gap-1 transition-colors">
-            <ArrowLeft className="h-3.5 w-3.5" />
-            Security Tools
-          </Link>
-          <span>/</span>
-          <span className="text-foreground font-medium">Security Score</span>
-        </div>
+       <div className="container mx-auto px-4 py-12 max-w-2xl">
+         {/* Breadcrumb */}
+         <div className="flex items-center gap-2 text-sm text-muted-foreground mb-8">
+           <Link to="/tools" className="hover:text-foreground flex items-center gap-1 transition-colors">
+             <ArrowLeft className="h-3.5 w-3.5" />
+             Security Tools
+           </Link>
+           <span>/</span>
+           <span className="text-foreground font-medium">Security Score</span>
+         </div>
+
+         {/* Tool landing metadata */}
+         <Card className="bg-ink-900 border-white/[0.06] mb-8">
+           <CardContent className="p-5">
+             <div className="flex items-start justify-between gap-4 mb-3">
+               <div>
+                 <h1 className="font-display font-bold text-2xl text-white mb-1">Security Score Checker</h1>
+                 <p className="text-sm text-slate-400">Assess your gaming cyber posture with a free, privacy-first self-assessment.</p>
+               </div>
+               <Badge variant="outline" className="shrink-0 border-white/10 text-slate-400">Updated Jan 2026</Badge>
+             </div>
+             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs">
+               <div className="rounded-lg bg-ink-950 border border-white/[0.06] p-3">
+                 <p className="text-slate-500 mb-1">What we check</p>
+                 <p className="text-slate-300">Account security, patch hygiene, privacy, network, recovery readiness.</p>
+               </div>
+               <div className="rounded-lg bg-ink-950 border border-white/[0.06] p-3">
+                 <p className="text-slate-500 mb-1">Privacy</p>
+                 <p className="text-slate-300">No passwords. No account credentials. All answers stay local until you submit.</p>
+               </div>
+               <div className="rounded-lg bg-ink-950 border border-white/[0.06] p-3">
+                 <p className="text-slate-500 mb-1">Methodology</p>
+                 <p className="text-slate-300">10 weighted questions mapped to common gaming threat vectors. Score out of 100.</p>
+               </div>
+             </div>
+           </CardContent>
+         </Card>
 
         {/* ── INTRO ── */}
         {phase === 'intro' && (
