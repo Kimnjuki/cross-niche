@@ -1,6 +1,7 @@
 # Stage 1: Build — use Node + npm (package-lock.json). Do not use Bun in Docker.
+# Build version: redesign-v2.0.0-footer-nav-newsletter-tools — Coolify cache-buster for 2026-09-19 deploy
 # Build version: auth0-credentials-embedded-v2 - Auth0 creds baked into code, not env vars.
-#   auth0Config.ts has hardcoded fallbacks for the new EU Auth0 tenant.
+#   auth0Config.ts has hardcoded fallbacks for the new Auth0 tenant.
 #   Coolify ARG injection no longer can override them with stale values.
 FROM node:22-alpine AS build-stage
 
