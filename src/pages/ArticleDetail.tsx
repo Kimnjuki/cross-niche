@@ -23,6 +23,10 @@ export function ArticleDetail() {
   if (content === null) {
     return <div>Article not found</div>;
   }
+
+  // Content↔tag links live in the `contentTags` table, so `tags` is not part of the
+  // generated content document type. Read it defensively (same pattern as `media` below).
+  const contentTags = (content as any).tags as any[] | undefined;
   
   return (
     <article className="max-w-4xl mx-auto px-4 py-8">
@@ -55,9 +59,9 @@ export function ArticleDetail() {
           )}
         </div>
         
-        {content.tags && content.tags.length > 0 && (
+        {contentTags && contentTags.length > 0 && (
           <div className="flex flex-wrap gap-2 mt-4">
-            {(content.tags as any[]).map((tag: any) => (
+            {contentTags.map((tag: any) => (
               <span
                 key={tag._id || tag}
                 className="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm"

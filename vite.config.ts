@@ -75,7 +75,7 @@ export default defineConfig(({ mode }: ConfigEnv) => {
         })
       );
     } catch (error) {
-      console.warn("vite-plugin-prerender disabled:", error.message);
+      console.warn("vite-plugin-prerender disabled:", (error as Error).message);
     }
   }
 

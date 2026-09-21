@@ -23,7 +23,7 @@ export function Layout({ children, showPulseSidebar = false }: LayoutProps) {
         <main id="main-content" className="flex-1" tabIndex={-1}>
           {children}
         </main>
-        <FooterRedesigned />
+        <Footer />
       </div>
       <AIIntelligenceTicker />
       {/* Floating Nexus Score Widget */}

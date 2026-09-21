@@ -41,7 +41,9 @@ export const SEOOptimization: React.FC<SEOOptimizationProps> = ({ contentId }) =
     try {
       const result = await generateStructuredData({
         contentId: contentId as any,
-        schemaType,
+        // The <select> stores a plain string, but the mutation expects the
+        // structured-data union defined in convex/seoOptimization.ts.
+        schemaType: schemaType as 'NewsArticle' | 'Article' | 'BlogPosting',
       });
       
       console.log('Structured data generated:', result);
