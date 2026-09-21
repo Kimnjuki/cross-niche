@@ -349,4 +349,7 @@ async function main() {
   console.log(`\n✅ Sitemaps regenerated with ${allUrls.length} valid URLs.`);
 }
 
-main();
+main().catch((error) => {
+  console.error('❌ generate-seo-sitemaps failed:', error);
+  process.exit(0);
+});

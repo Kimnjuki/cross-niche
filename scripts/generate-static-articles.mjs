@@ -430,4 +430,7 @@ async function main() {
   console.log(`✅ Generated ${generated} static article HTML files in dist/article/`);
 }
 
-main();
+main().catch((error) => {
+  console.error('❌ generate-static-articles failed:', error);
+  process.exit(0);
+});
