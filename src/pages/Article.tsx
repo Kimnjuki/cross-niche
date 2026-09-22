@@ -31,6 +31,7 @@ import { Breadcrumbs } from '@/components/seo/Breadcrumbs';
 import { FAQSection } from '@/components/seo/FAQSection';
 import { QuickAnswer } from '@/components/seo/QuickAnswer';
 import { TableOfContents } from '@/components/seo/TableOfContents';
+import { TLDREndBlock } from '@/components/seo/TLDREndBlock';
 import { RelatedArticles } from '@/components/RelatedArticles';
 import { NextArticle } from '@/components/gaming/NextArticle';
 import { LazyImage } from '@/components/ui/lazy-image';
@@ -422,6 +423,13 @@ export default function Article() {
           </div>
 
           <div className="mb-12">
+            <TLDREndBlock
+              content={article.content || article.excerpt || ''}
+              articleTitle={article.title}
+            />
+          </div>
+
+          <div className="mb-12">
             <AITools
               articleContent={article.content ?? article.excerpt ?? ''}
               articleTitle={article.title ?? 'Article'}
@@ -605,10 +613,10 @@ export default function Article() {
           }
           title={`Frequently Asked Questions about ${article.title ?? 'this article'}`}
         />
-        
-        <RelatedArticles 
-          currentSlug={article.slug || articleId} 
-          category={safeNiche} 
+
+        <RelatedArticles
+          currentSlug={article.slug || articleId}
+          category={safeNiche}
         />
       </article>
     </Layout>
