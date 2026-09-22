@@ -35,8 +35,9 @@ import { RelatedArticles } from '@/components/RelatedArticles';
 import { NextArticle } from '@/components/gaming/NextArticle';
 import { LazyImage } from '@/components/ui/lazy-image';
 import { AdPlacement } from '@/components/ads/AdPlacement';
-import { authorProfiles } from '@/data/authorData';
+import { authorProfiles, getAuthorProfile } from '@/data/authorData';
 import { generatePersonSchema } from '@/lib/schemaMarkup';
+import { AuthorCredentialCard } from '@/components/seo/AuthorCredentialCard';
 import { cn, authorSlug } from '@/lib/utils';
 import {
   trackArticleView,
@@ -340,6 +341,11 @@ export default function Article() {
             </span>
           </div>
         </header>
+
+        <AuthorCredentialCard
+          profile={getAuthorProfile(article.author ?? '')}
+          className="max-w-4xl mx-auto"
+        />
 
         <div className="max-w-4xl mb-8">
           <LazyImage
