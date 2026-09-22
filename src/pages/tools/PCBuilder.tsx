@@ -388,7 +388,9 @@ export default function PCBuilder() {
         shareToken,
       });
       setSaved(true);
-    } catch {}
+    } catch (e) {
+      if (import.meta.env.DEV) console.warn('PCBuilder save failed:', e);
+    }
   }, [isDisabled, saveBuild, sessionIdRef, user?.id, buildName, componentList, totalPrice, totalWatts, compatibility, aiAnalysis, useCase, budget, shareToken]);
 
   const handleCopyLink = useCallback(() => {

@@ -23,8 +23,8 @@ export function initGA4() {
   // Ensure dataLayer exists (index.html may have already initialized)
   window.dataLayer = window.dataLayer || [];
   if (typeof window.gtag !== 'function') {
-    window.gtag = function () {
-      window.dataLayer.push(arguments);
+    window.gtag = function (...args) {
+      window.dataLayer.push(args);
     };
   }
 

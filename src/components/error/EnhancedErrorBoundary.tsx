@@ -25,10 +25,7 @@ export class EnhancedErrorBoundary extends Component<Props, State> {
 
   componentDidCatch(error: Error, errorInfo: ErrorInfo) {
     console.error('EnhancedErrorBoundary caught an error:', error, errorInfo);
-    this.setState({
-      error,
-      errorInfo
-    });
+    this.setState({ error, errorInfo });
 
     // Log to analytics in production
     if (import.meta.env.PROD && typeof window !== 'undefined' && 'gtag' in window) {
