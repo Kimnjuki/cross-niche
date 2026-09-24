@@ -6,15 +6,10 @@
 export function markdownToHtml(markdown: string): string {
   if (!markdown || typeof markdown !== 'string') return '';
   
+  let html = markdown;
+
   // Images: ![alt](url) -> <img src="url" alt="alt" />
   html = html.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<img src="$2" alt="$1" class="rounded-lg my-4" />');
-
-  // If content already contains HTML tags, return as-is
-  if (/<[^>]+>/.test(markdown)) {
-    return markdown;
-  }
-
-  let html = markdown;
 
   // Escape HTML entities first (except for already-HTML content)
   html = html
