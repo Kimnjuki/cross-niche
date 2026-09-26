@@ -29,8 +29,21 @@ jobs:
       - name: Type check
         run: npm run type-check
 
+      - name: Article HTML parity check
+        # Locks src/lib/articleHtml.ts (TS) against
+        # scripts/lib/normalize-article-html.mjs (Node) — any drift in the
+        # duplicated normalisation logic fails the build.
+        run: npm run verify:article-html
+
       - name: Build
-        run: npm run build
+        # `npm run build` also runs `convex deploy`, which requires an
+        # authenticated CONVEX_DEPLOY_KEY that CI does not have — it failed
+        # anonymously on every push. CI only needs the frontend bundle; running
+        # the prebuild hooks (copy-assets, prerender routes, sitemaps) keeps the
+        # artifact identical to a local `npm run build` minus the Convex push.
+        run: |
+          npm run prebuild
+          npm run build:frontend
         env:
           VITE_CONVEX_URL: https://intent-akita-728.convex.cloud
           VITE_APP_URL: https://thegridnexus.com
