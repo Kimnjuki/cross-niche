@@ -41,6 +41,12 @@
   force = true
 
 [[redirects]]
+  from = "/article/mobile-gaming-security-guide-ios-android"
+  to = "/article/mobile-gaming-security-guide"
+  status = 301
+  force = true
+
+[[redirects]]
   from = "/article/*/"
   to = "/article/:splat"
   status = 301
