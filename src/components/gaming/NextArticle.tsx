@@ -32,6 +32,8 @@ export function NextArticle({ currentSlug, niche, articles }: NextArticleProps) 
   const next = useMemo(() => {
     const pool = articles && articles.length > 0 ? articles : mockArticles;
     const candidates = pool.filter(
+      // Slugless rows are bundled demo fixtures — never promote one to the
+      // "Keep reading" slot (its link would be a pseudo-id that 404s).
       (a) => a && a.slug && a.slug !== currentSlug && a.niche === niche,
     );
     if (candidates.length === 0) return null;

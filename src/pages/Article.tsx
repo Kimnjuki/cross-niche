@@ -119,6 +119,11 @@ export default function Article() {
     return combined
       .filter((a): a is ArticleType => {
         if (!a) return false;
+        // Rows without a slug are bundled demo fixtures (game-1, tech-1, …).
+        // In production Convex is disabled, so this fallback IS the data source:
+        // surfacing them rendered "GTA VI …" demo cards and pseudo-id links that
+        // resolve to nothing on a live article page. Real rows always carry a slug.
+        if (!a.slug) return false;
         const id = getArticleId(a);
         if (!id || id === articleId || seen.has(id)) return false;
         seen.add(id);
@@ -159,10 +164,15 @@ export default function Article() {
     
     // Only fall back to the bundled demo set when Convex returned nothing.
     const combined = convexArticles.length > 0 ? convexArticles : mockArticles;
-    
+    // Slugless rows are bundled demo fixtures (game-1, tech-1, …). Drop them
+    // from the final selection regardless of branch: with Convex disabled —
+    // which is how production ships — usePublishedContent maps mockArticles
+    // INTO convexArticles, so guarding only the fallback branch is not enough.
+    //
     // Find an article from a DIFFERENT niche (cross-section linking)
     const other = combined.find(
-      (a) => a && getArticleId(a) && a.niche !== article.niche && getArticleId(a) !== articleId
+      (a) =>
+        a && a.slug && getArticleId(a) && a.niche !== article.niche && getArticleId(a) !== articleId
     );
     return other && getArticleId(other) ? other : null;
   }, [article, articleId, publishedForCross]);

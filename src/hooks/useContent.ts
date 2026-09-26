@@ -108,8 +108,10 @@ export function usePublishedContent(limit = 20) {
     return { data: cachedData, isLoading: false };
   }
 
+  // Slugless rows are bundled demo fixtures; drop them before the ContentItem
+  // round trip (articleToContentItem would give them pseudo-slugs like "game-1").
   const data = isDisabled
-    ? articlesToContentItems(mockArticles.slice(0, limit))
+    ? articlesToContentItems(mockArticles.filter((a) => !!a.slug).slice(0, limit))
     : toContentItems(Array.isArray(rows) ? rows : []);
   
   // Cache the result
@@ -155,8 +157,16 @@ export function useContentByFeed(feedSlug: string, limit = 20): { data: ContentI
   }
 
   const feedNiche = feedSlug === 'secured' ? 'security' : feedSlug === 'play' ? 'gaming' : 'tech';
+  // Only slugless rows are bundled demo fixtures (game-1, tech-1, …). They must
+  // be dropped BEFORE articleToContentItem runs: that mapper synthesises
+  // `slug: article.slug ?? article.id`, so demos would otherwise round-trip
+  // back as pseudo-slugs ("game-1") and pass slug checks downstream — which is
+  // how GTA VI demo cards reached the Related Intelligence grid on production
+  // (Convex is disabled in the Docker build, so this branch IS the data source).
   const data: ContentItem[] = isDisabled
-    ? articlesToContentItems(mockArticles.filter((a) => a.niche === feedNiche).slice(0, limit))
+    ? articlesToContentItems(
+        mockArticles.filter((a) => a.niche === feedNiche && !!a.slug).slice(0, limit),
+      )
     : toContentItems(Array.isArray(rows) ? rows : []);
 
   if (data.length > 0 && !isDisabled) {
