@@ -16,6 +16,20 @@ import type { Article } from '@/types';
 
 export const MOBILE_GAMING_SECURITY_SLUG = 'mobile-gaming-security-guide';
 
+/**
+ * Slugs this guide was published under before the canonical one was chosen.
+ *
+ * The first CMS/snapshot release used the long `-ios-android` slug, and an
+ * earlier version of the snapshot sync left that row behind next to the new
+ * one — two indexable pages with the same title, both self-canonical. That URL
+ * now 301s to the canonical article (see vercel.json), and anything that writes
+ * the guide (snapshot sync, CMS upsert) removes these rows so it cannot come
+ * back.
+ */
+export const MOBILE_GAMING_SECURITY_LEGACY_SLUGS = [
+  'mobile-gaming-security-guide-ios-android',
+] as const;
+
 export const MOBILE_GAMING_SECURITY_ID = 'sec-guide-6';
 
 const IMG_BASE = '/images/articles/mobile-gaming-security';

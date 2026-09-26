@@ -3,6 +3,8 @@
  * Handles common markdown syntax without external dependencies.
  */
 
+import { normalizeArticleHtml } from './articleHtml';
+
 /**
  * True when a string is already authored as HTML rather than markdown.
  *
@@ -19,9 +21,10 @@ function looksLikeHtml(input: string): boolean {
 export function markdownToHtml(markdown: string): string {
   if (!markdown || typeof markdown !== 'string') return '';
 
-  // Already HTML — return as-is so markup renders instead of showing as text.
+  // Already HTML — return as-is (after the encoding/list repairs) so markup
+  // renders instead of showing as text.
   if (looksLikeHtml(markdown)) {
-    return markdown;
+    return normalizeArticleHtml(markdown);
   }
 
   let html = markdown;
@@ -43,11 +46,35 @@ export function markdownToHtml(markdown: string): string {
   html = html.replace(/^##\s+(.+)$/gm, '<h2>$1</h2>');
   html = html.replace(/^#\s+(.+)$/gm, '<h1>$1</h1>');
 
+  // Lists are converted before bold/italic: a "* item" bullet line would
+  // otherwise be swallowed by the italic pass and become "<em> item</em>".
+  // Blank lines around the generated list keep it out of the paragraph pass.
+  // Unordered lists: - item / * item  → <ul><li>…</li></ul>
+  html = html.replace(/(?:^|\n)((?:[-*]\s+.+\n?)+)/g, (_match, block) => {
+    const items = String(block)
+      .trim()
+      .split('\n')
+      .map((line) => `<li>${line.replace(/^[-*]\s+/, '')}</li>`)
+      .join('\n');
+    return `\n\n<ul>\n${items}\n</ul>\n\n`;
+  });
+
+  // Ordered lists: 1. item → <ol><li>…</li></ol>
+  html = html.replace(/(?:^|\n)((?:\d+\.\s+.+\n?)+)/g, (_match, block) => {
+    const items = String(block)
+      .trim()
+      .split('\n')
+      .map((line) => `<li>${line.replace(/^\d+\.\s+/, '')}</li>`)
+      .join('\n');
+    return `\n\n<ol>\n${items}\n</ol>\n\n`;
+  });
+
   // Bold: **text** -> <strong>text</strong>
   html = html.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
 
   // Italic: *text* or _text_ -> <em>text</em>
-  html = html.replace(/\*([^*]+)\*/g, '<em>$1</em>');
+  // The guard keeps bullet markers and bold markers out of the match.
+  html = html.replace(/(^|[^*])\*([^*\n]+)\*(?!\*)/g, '$1<em>$2</em>');
   html = html.replace(/_([^_]+)_/g, '<em>$1</em>');
 
   // Links: [text](url) -> <a href="url">text</a>
@@ -61,13 +88,6 @@ export function markdownToHtml(markdown: string): string {
 
   // Horizontal rule: --- or *** -> <hr>
   html = html.replace(/^(---|===|\*\*\*)$/gm, '<hr>');
-
-  // Unordered lists: - item or * item
-  html = html.replace(/^[-*]\s+(.+)$/gm, '<li>$1</li>');
-  html = html.replace(/(<li>.*<\/li>\n?)+/g, '<ul>$&</ul>');
-
-  // Ordered lists: 1. item
-  html = html.replace(/^\d+\.\s+(.+)$/gm, '<li>$1</li>');
 
   // Paragraphs: wrap lines that aren't already wrapped in tags
   const lines = html.split('\n\n');
@@ -85,7 +105,8 @@ export function markdownToHtml(markdown: string): string {
     .filter(Boolean)
     .join('\n');
 
-  return html;
+  // Same encoding/bullet repairs the HTML path receives.
+  return normalizeArticleHtml(html);
 }
 
 /**

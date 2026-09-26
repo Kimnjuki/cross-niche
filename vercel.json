@@ -78,6 +78,11 @@
       "permanent": true
     },
     {
+      "source": "/article/mobile-gaming-security-guide-ios-android",
+      "destination": "/article/mobile-gaming-security-guide",
+      "permanent": true
+    },
+    {
       "source": "/article/:slug/",
       "destination": "/article/:slug",
       "permanent": true

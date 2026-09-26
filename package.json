@@ -22,6 +22,7 @@
     "generate:placeholders": "node scripts/generate-placeholders.mjs",
     "generate:sitemaps": "node scripts/generate-seo-sitemaps.mjs",
     "validate:seo": "node scripts/validate-site.mjs",
+    "verify:article-html": "tsx scripts/verify-article-html.ts",
     "validate:all": "npm run validate:seo && npm run lint && npm run type-check",
     "audit:seo": "node scripts/audit-seo.mjs",
     "audit:placeholder": "tsx scripts/audit-placeholder-content.ts",

@@ -5,6 +5,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Bookmark, Clock, Shield, AlertTriangle, TrendingUp, User } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { cn, authorSlug } from '@/lib/utils';
+import { formatSecurityScore, normalizeSecurityScore } from '@/lib/securityScore';
 import { formatRelativeTime, isFreshContent, isNewContent, isJustPublished } from '@/lib/timeUtils';
 import { getPlaceholderByNiche, secureImageUrl } from '@/lib/placeholderImages';
 
@@ -85,7 +86,11 @@ export function ArticleCard({ article, variant = 'default', onArticleClick }: Ar
   };
   const isBookmarked = user?.bookmarks?.includes(articleId);
   const difficulty = getDifficultyLevel(article);
-  const securityGlow = getSecurityGlow(article.securityScore);
+  // Scores are authored 0–100 but displayed 0–5; normalise once here so the glow
+  // thresholds, colour classes and label all agree.
+  const securityScore = normalizeSecurityScore(article.securityScore);
+  const securityScoreLabel = formatSecurityScore(article.securityScore);
+  const securityGlow = getSecurityGlow(securityScore ?? undefined);
 
   const goToArticle = () => {
     onArticleClick?.();
@@ -172,15 +177,15 @@ export function ArticleCard({ article, variant = 'default', onArticleClick }: Ar
                     {difficulty.charAt(0).toUpperCase() + difficulty.slice(1)}
                   </Badge>
                 )}
-                {article.securityScore !== undefined && (
+                {securityScoreLabel !== null && (
                   <div className={cn(
                     'flex items-center gap-1 bg-background/60 backdrop-blur-sm rounded-full px-3 py-1',
-                    article.securityScore <= 2 && 'text-red-500',
-                    article.securityScore >= 4 && 'text-green-500',
-                    article.securityScore === 3 && 'text-yellow-500'
+                    securityScore <= 2 && 'text-red-500',
+                    securityScore >= 4 && 'text-green-500',
+                    securityScore === 3 && 'text-yellow-500'
                   )}>
                     <Shield className="h-3.5 w-3.5" />
-                    <span className="font-medium font-mono text-xs">{article.securityScore}/5</span>
+                    <span className="font-medium font-mono text-xs">{securityScoreLabel}</span>
                   </div>
                 )}
               </div>
@@ -328,15 +333,15 @@ export function ArticleCard({ article, variant = 'default', onArticleClick }: Ar
               </button>
             )}
           </div>
-          {article.securityScore !== undefined && (
+          {securityScoreLabel !== null && (
             <div className={cn(
               'absolute bottom-3 right-3 flex items-center gap-1 bg-background/90 backdrop-blur-sm rounded-full px-3 py-1',
-              article.securityScore <= 2 && 'text-red-500 shadow-[0_0_10px_rgba(239,68,68,0.5)]',
-              article.securityScore >= 4 && 'text-green-500 shadow-[0_0_10px_rgba(34,197,94,0.5)]',
-              article.securityScore === 3 && 'text-yellow-500 shadow-[0_0_10px_rgba(234,179,8,0.5)]'
+              securityScore <= 2 && 'text-red-500 shadow-[0_0_10px_rgba(239,68,68,0.5)]',
+              securityScore >= 4 && 'text-green-500 shadow-[0_0_10px_rgba(34,197,94,0.5)]',
+              securityScore === 3 && 'text-yellow-500 shadow-[0_0_10px_rgba(234,179,8,0.5)]'
             )}>
               <Shield className="h-4 w-4" />
-              <span className="text-sm font-medium font-mono">{article.securityScore}/5</span>
+              <span className="text-sm font-medium font-mono">{securityScoreLabel}</span>
             </div>
           )}
         </div>

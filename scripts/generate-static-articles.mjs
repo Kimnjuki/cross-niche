@@ -18,6 +18,7 @@ import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { loadPublishedContent } from './lib/content-source.mjs';
+import { normalizeArticleHtml, repairMojibake } from './lib/normalize-article-html.mjs';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -107,8 +108,8 @@ function buildDescription(article) {
     article.description,
     article.excerpt,
     article.summary,
-    article.body ? stripTags(article.body) : '',
-  ];
+    article.body ? stripTags(normalizeArticleHtml(article.body)) : '',
+  ].map((c) => (typeof c === 'string' ? repairMojibake(c) : c));
   const chosen = candidates.find((c) => typeof c === 'string' && c.trim().length >= 50);
   const fallback = candidates.find((c) => typeof c === 'string' && c.trim().length > 0);
   return truncateAtWord(chosen || fallback || fallbackDescription(article), DESCRIPTION_MAX);
@@ -373,19 +374,19 @@ ${jsonLd}
           <nav aria-label="Breadcrumb" style="font-size:0.875rem;color:#94a3b8;margin-bottom:1rem">
             <a href="/" style="color:#60a5fa;text-decoration:none">Home</a> &rsaquo;
             <a href="${nicheUrl}" style="color:#60a5fa;text-decoration:none">${nicheLabel}</a> &rsaquo;
-            <span>${escapeHtml(article.title)}</span>
+            <span>${escapeHtml(repairMojibake(article.title))}</span>
           </nav>
           <article>
-            <h1 style="font-size:2.25rem;line-height:1.2;margin-bottom:1rem;color:#f8fafc">${escapeHtml(article.title)}</h1>
+            <h1 style="font-size:2.25rem;line-height:1.2;margin-bottom:1rem;color:#f8fafc">${escapeHtml(repairMojibake(article.title))}</h1>
             <div style="display:flex;flex-wrap:wrap;gap:1rem;font-size:0.875rem;color:#94a3b8;margin-bottom:1.5rem">
               <span>By ${escapeHtml(article.authorName || 'The Grid Nexus Editorial Team')}</span>
               ${dateStr ? `<span>${dateStr}</span>` : ''}
                             ${modifiedStr ? `<span>Updated: ${modifiedStr}</span>` : ""}
               <span>${article.readTime} min read</span>
             </div>
-            <p style="font-size:1.125rem;color:#cbd5e1;line-height:1.6;margin-bottom:1.5rem">${escapeHtml(article.excerpt)}</p>
+            <p style="font-size:1.125rem;color:#cbd5e1;line-height:1.6;margin-bottom:1.5rem">${escapeHtml(repairMojibake(article.excerpt))}</p>
             <div style="color:#cbd5e1;line-height:1.7;font-size:1.0625rem">
-              ${article.body}
+              ${normalizeArticleHtml(article.body)}
             </div>
             ${securityMetaCard}
             ${tagsHtml}

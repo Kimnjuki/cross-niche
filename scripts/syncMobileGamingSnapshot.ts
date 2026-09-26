@@ -17,6 +17,7 @@ import path from 'path';
 import {
   mobileGamingSecurityArticle,
   MOBILE_GAMING_SECURITY_SLUG,
+  MOBILE_GAMING_SECURITY_LEGACY_SLUGS,
   MOBILE_GAMING_SECURITY_SUMMARY,
   MOBILE_GAMING_SECURITY_SEO_DESCRIPTION,
   MOBILE_GAMING_SECURITY_TAGS,
@@ -74,7 +75,20 @@ const doc: Record<string, unknown> = {
   noindex: false,
 };
 
-const withoutGuide = snapshot.items.filter((item) => item?.slug !== MOBILE_GAMING_SECURITY_SLUG);
+const withoutGuide = snapshot.items.filter((item) => {
+  // Rows this script owns: the canonical slug, any retired slug, and anything
+  // already carrying the guide's id. An earlier version wrote the row under the
+  // old `-ios-android` slug without removing it, which left two indexable pages
+  // with the same title side by side in the snapshot.
+  if (!item) return false;
+  const slug = String((item as { slug?: unknown }).slug ?? '');
+  return (
+    slug !== MOBILE_GAMING_SECURITY_SLUG &&
+    !MOBILE_GAMING_SECURITY_LEGACY_SLUGS.includes(slug as (typeof MOBILE_GAMING_SECURITY_LEGACY_SLUGS)[number]) &&
+    (item as { _id?: unknown })._id !== MOBILE_GAMING_SECURITY_ID
+  );
+});
+const pruned = snapshot.items.length - withoutGuide.length;
 snapshot.items = [doc, ...withoutGuide];
 snapshot.meta = { ...snapshot.meta, count: snapshot.items.length };
 
@@ -82,5 +96,5 @@ fs.writeFileSync(SNAPSHOT_PATH, `${JSON.stringify(snapshot, null, 2)}\n`, 'utf8'
 
 console.log(`[sync-mobile-gaming-snapshot] wrote ${SNAPSHOT_PATH}`);
 console.log(`[sync-mobile-gaming-snapshot] slug: ${MOBILE_GAMING_SECURITY_SLUG}`);
-console.log(`[sync-mobile-gaming-snapshot] items: ${snapshot.items.length} (was ${withoutGuide.length})`);
+console.log(`[sync-mobile-gaming-snapshot] items: ${snapshot.items.length} (replaced ${pruned} existing row(s))`);
 console.log(`[sync-mobile-gaming-snapshot] wordCount: ${wordCount}`);

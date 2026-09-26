@@ -8,6 +8,7 @@
  * Run: node scripts/build-mobile-gaming-module.mjs <body.html>
  */
 import fs from 'fs';
+import { expandInlineBulletRuns, repairMojibake } from './lib/normalize-article-html.mjs';
 
 const bodyFile = process.argv[2];
 if (!bodyFile) {
@@ -45,21 +46,39 @@ function normalise(html) {
   );
 }
 
-const body = normalise(raw)
+/**
+ * Everything the app (src/lib/articleHtml.ts) and the static generators
+ * (scripts/lib/normalize-article-html.mjs) apply at render time, on top of the
+ * source-document clean-ups above. Re-running this script therefore cannot
+ * reintroduce mojibake or bullet characters buried inside a paragraph.
+ */
+function normalizeSource(html) {
+  return expandInlineBulletRuns(repairMojibake(normalise(html)));
+}
+
+const normalized = normalizeSource(raw);
+
+const body = normalized
   .replace(/\\/g, '\\\\')
   .replace(/`/g, '\\`')
   .replace(/\$\{/g, '\\${');
 
 // Guardrails: fail the build rather than publish a shrunken or image-less article
-const plainText = raw.replace(/<[^>]+>/g, ' ').replace(/&[a-z]+;/g, ' ');
+const plainText = normalized.replace(/<[^>]+>/g, ' ').replace(/&[a-z]+;/g, ' ');
 const wordCount = plainText.split(/\s+/).filter(Boolean).length;
-const imageCount = (raw.match(/<img /g) ?? []).length;
+const imageCount = (normalized.match(/<img /g) ?? []).length;
 
 const problems = [];
 if (wordCount < 3000) problems.push(`word count ${wordCount} is below the 3000 minimum`);
 if (imageCount < 5) problems.push(`only ${imageCount} of 5 images embedded`);
-if (!/<h2>/.test(raw) || !/<p>/.test(raw)) {
+if (!/<h2>/.test(normalized) || !/<p>/.test(normalized)) {
   problems.push('no semantic <h2>/<p> markup found — raw HTML may be leaking');
+}
+if (/[\u00c2\u00c3\u00e2][\u0080-\u00bf]/.test(normalized)) {
+  problems.push('mojibake still present after repair — source encoding is wrong');
+}
+if (/<p[^>]*>[^<]*\u2022/.test(normalized)) {
+  problems.push('bullet characters still buried inside a <p> — list conversion failed');
 }
 if (problems.length) {
   console.error(`[build-mobile-gaming-module] REFUSING TO WRITE:\n  - ${problems.join('\n  - ')}`);

@@ -1,5 +1,6 @@
 import type { Config } from "tailwindcss";
 import tailwindcssAnimate from "tailwindcss-animate";
+import tailwindcssTypography from "@tailwindcss/typography";
 
 export default {
   darkMode: ["class"],
@@ -171,5 +172,8 @@ export default {
       },
     },
   },
-  plugins: [tailwindcssAnimate],
+  // The article body relies on `prose prose-lg max-w-none` for its heading,
+  // list, table and figure styling. Without this plugin registered those
+  // classes are dead and the body renders as an unstyled wall of text.
+  plugins: [tailwindcssAnimate, tailwindcssTypography],
 } satisfies Config;

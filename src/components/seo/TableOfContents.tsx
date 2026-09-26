@@ -29,6 +29,31 @@ interface TableOfContentsProps {
   maxLevel?: number;
 }
 
+/**
+ * URL-safe id for a heading.
+ *
+ * The body HTML ships without ids, so the TOC has to mint them itself —
+ * otherwise every `href="#…"` target is missing and no jump link works.
+ */
+export function slugifyHeading(text: string): string {
+  return text
+    .toLowerCase()
+    .replace(/['’`]/g, '')
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/(^-|-$)/g, '')
+    .slice(0, 80);
+}
+
+/**
+ * True when a "heading" is really a sentence of body copy the author left in a
+ * heading style (e.g. "A 10-minute mobile gaming security checklist is a set of
+ * steps that…"). Those must never become TOC entries.
+ */
+function isSentenceLike(text: string): boolean {
+  const trimmed = text.trim();
+  return trimmed.split(/\s+/).length > 14 && /[.!?]$/.test(trimmed);
+}
+
 function extractHeadings(min = 2, max = 3): TOCItem[] {
   if (typeof document === 'undefined') return [];
   const article = document.querySelector('[data-article-content]') ||
@@ -37,17 +62,32 @@ function extractHeadings(min = 2, max = 3): TOCItem[] {
   if (!article) return [];
 
   const headings = article.querySelectorAll('h1, h2, h3, h4, h5, h6');
-  return Array.from(headings)
-    .filter(h => {
-      const level = parseInt(h.tagName[1]);
-      return level >= min && level <= max;
-    })
-    .map(h => ({
-      id: h.id || h.textContent?.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '') || '',
-      text: h.textContent || '',
-      level: parseInt(h.tagName[1]),
-    }))
-    .filter(h => h.id && h.text.length > 0);
+  const usedIds = new Set<string>();
+  const items: TOCItem[] = [];
+
+  for (const heading of Array.from(headings)) {
+    const level = parseInt(heading.tagName[1], 10);
+    if (level < min || level > max) continue;
+
+    const text = (heading.textContent ?? '').replace(/\s+/g, ' ').trim();
+    if (!text || isSentenceLike(text)) continue;
+
+    // Reuse an authored id when present, otherwise mint one and write it back so
+    // the anchor resolves both for clicks and for deep links.
+    let id = heading.id || slugifyHeading(text);
+    if (!id) continue;
+    if (usedIds.has(id)) {
+      let n = 2;
+      while (usedIds.has(`${id}-${n}`)) n += 1;
+      id = `${id}-${n}`;
+    }
+    usedIds.add(id);
+    if (!heading.id) heading.id = id;
+
+    items.push({ id, text, level });
+  }
+
+  return items;
 }
 
 export function TableOfContents({
@@ -102,7 +142,7 @@ export function TableOfContents({
   return (
     <nav
       className={cn(
-        'toc my-8 p-4 rounded-lg border border-white/10 bg-white/[0.03]',
+        'toc my-8 p-4 rounded-lg border border-border bg-muted/30',
         className,
       )}
       aria-label={title}
@@ -110,8 +150,8 @@ export function TableOfContents({
       itemType="https://schema.org/TableOfContents"
     >
       <div className="flex items-center gap-2 mb-3">
-        <List className="w-4 h-4 text-nexus-cyan" />
-        <span className="text-sm font-semibold text-gray-300 uppercase tracking-wider">{title}</span>
+        <List className="w-4 h-4 text-primary" />
+        <span className="text-sm font-semibold text-foreground uppercase tracking-wider">{title}</span>
       </div>
       <ul className="space-y-1">
         {headings.map((h) => {
@@ -121,10 +161,10 @@ export function TableOfContents({
               <a
                 href={`#${h.id}`}
                 className={cn(
-                  'flex items-center gap-1 text-sm transition-colors py-0.5 rounded hover:bg-white/5',
+                  'flex items-center gap-1 text-sm transition-colors py-0.5 rounded hover:bg-muted',
                   activeId === h.id
-                    ? 'text-nexus-cyan'
-                    : 'text-gray-400 hover:text-gray-200',
+                    ? 'text-primary font-medium'
+                    : 'text-muted-foreground hover:text-foreground',
                 )}
                 style={{ paddingLeft: `${12 + indent}px` }}
                 onClick={(e) => {

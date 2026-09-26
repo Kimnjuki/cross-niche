@@ -30,7 +30,9 @@ const ARTICLE_SLUG_MAP: Record<string, string> = {
   'tech-trend-4': 'elon-musk-neuralink-brain-chip-stroke-2026',
   // Security
   // Newest guide (2026-09-24) — mobile gaming security for iOS and Android.
-  'sec-guide-6': 'mobile-gaming-security-guide-ios-android',
+  // Canonical slug: the retired "-ios-android" variant now redirects here.
+  'sec-guide-6': 'mobile-gaming-security-guide',
+  'sec-guide-5': 'mobile-gaming-security-guide-ios-android-basics',
   'sec-1': 'ransomware-groups-targeting-gaming-industry-2026',
   'sec-2': 'critical-nginx-http3-vulnerability-web-servers-2026',
   'sec-3': 'nist-post-quantum-cryptography-standards-2026',

@@ -27,8 +27,8 @@ export function QuickAnswer({ question, answer, keyPoints, className }: QuickAns
   return (
     <section
       className={cn(
-        'quick-answer my-8 p-5 rounded-xl border border-nexus-cyan/20 bg-nexus-cyan/5',
-        'shadow-sm shadow-nexus-cyan/5',
+        'quick-answer my-8 p-5 rounded-xl border border-primary/20 bg-primary/5',
+        'shadow-sm',
         className,
       )}
       aria-label="Quick answer"
@@ -41,19 +41,19 @@ export function QuickAnswer({ question, answer, keyPoints, className }: QuickAns
 
       <div className="flex items-start gap-3">
         <div className="flex-shrink-0 mt-0.5">
-          <Lightbulb className="w-5 h-5 text-amber-400" />
+          <Lightbulb className="w-5 h-5 text-amber-500" />
         </div>
         <div className="flex-1 min-w-0">
-          <p className="text-sm font-semibold text-nexus-cyan mb-1 uppercase tracking-wider">
+          <p className="text-sm font-semibold text-primary mb-1 uppercase tracking-wider">
             {question}
           </p>
-          <p className="text-gray-200 text-base leading-relaxed">{answer}</p>
+          <p className="text-foreground/90 text-base leading-relaxed">{answer}</p>
 
           {keyPoints && keyPoints.length > 0 && (
             <ul className="mt-3 space-y-1.5">
               {keyPoints.map((point, i) => (
-                <li key={i} className="flex items-start gap-2 text-sm text-gray-300">
-                  <span className="text-nexus-cyan mt-1 flex-shrink-0">▸</span>
+                <li key={i} className="flex items-start gap-2 text-sm text-muted-foreground">
+                  <span className="text-primary mt-1 flex-shrink-0">▸</span>
                   <span>{point}</span>
                 </li>
               ))}

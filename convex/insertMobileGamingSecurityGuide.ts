@@ -17,6 +17,7 @@ import { v } from 'convex/values';
 import {
   mobileGamingSecurityArticle,
   MOBILE_GAMING_SECURITY_SLUG,
+  MOBILE_GAMING_SECURITY_LEGACY_SLUGS,
   MOBILE_GAMING_SECURITY_SUMMARY,
   MOBILE_GAMING_SECURITY_SEO_DESCRIPTION,
   MOBILE_GAMING_SECURITY_TAGS,
@@ -58,6 +59,27 @@ export const upsertMobileGamingGuide = mutation({
         await ctx.db.delete(stale._id);
       }
       await ctx.db.delete(existing._id);
+    }
+
+    // Retired aliases of this guide — same title, older revision, self-canonical.
+    // Soft-delete them using the same fields admin/runSoftDeleteContent sets, so
+    // only one version of the article is ever live. The URL itself keeps working
+    // through the 301 in vercel.json.
+    const retiredAliases: string[] = [];
+    for (const slug of MOBILE_GAMING_SECURITY_LEGACY_SLUGS) {
+      const legacy = await ctx.db
+        .query('content')
+        .withIndex('by_slug', (q) => q.eq('slug', slug))
+        .unique();
+      if (!legacy || legacy.isDeleted === true) continue;
+      await ctx.db.patch(legacy._id, {
+        status: 'draft',
+        isDeleted: true,
+        deletedAt: Date.now(),
+        noindex: true,
+        noindexReason: `Retired alias of /article/${MOBILE_GAMING_SECURITY_SLUG}`,
+      });
+      retiredAliases.push(slug);
     }
 
     const contentId = await ctx.db.insert('content', {
@@ -116,6 +138,7 @@ export const upsertMobileGamingGuide = mutation({
       wordCount: MOBILE_GAMING_SECURITY_WORD_COUNT,
       readTime: MOBILE_GAMING_SECURITY_READ_TIME,
       replaced: Boolean(existing),
+      retiredAliases,
     };
   },
 });

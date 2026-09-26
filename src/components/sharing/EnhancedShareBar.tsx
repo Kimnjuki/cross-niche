@@ -26,20 +26,16 @@ interface EnhancedShareBarProps {
   variant?: 'inline' | 'floating' | 'sticky';
 }
 
-const safeArticleId = (a: Article | null | undefined) => a?._id ?? a?.id ?? a?.slug ?? '';
-
 export function EnhancedShareBar({ article, className, variant = 'inline' }: EnhancedShareBarProps) {
   const [isVisible, setIsVisible] = useState(variant !== 'floating');
-  const [shareCount, setShareCount] = useState(0);
-  const [viewCount, setViewCount] = useState(0);
   const [copiedText, setCopiedText] = useState<string | null>(null);
   const { toast } = useToast();
 
-  // Mock social proof data (safe id so we never read .id on undefined)
-  useEffect(() => {
-    setViewCount(Math.floor(Math.random() * 10000) + 1000);
-    setShareCount(Math.floor(Math.random() * 500) + 50);
-  }, [safeArticleId(article)]);
+  // Social proof is never randomised. Two instances of this bar used to show two
+  // different "views/shares" totals because each mount invented its own numbers;
+  // now we render the real counter when the CMS has one and nothing otherwise.
+  const views =
+    typeof article?.viewCount === 'number' && article.viewCount > 0 ? article.viewCount : null;
 
   // Floating share bar logic
   useEffect(() => {
@@ -107,7 +103,6 @@ export function EnhancedShareBar({ article, className, variant = 'inline' }: Enh
     const url = shareUrls[platform as keyof typeof shareUrls];
     if (url) {
       window.open(url, '_blank', 'width=600,height=400');
-      setShareCount(prev => prev + 1);
 
       toast({
         title: `Shared on ${platform.charAt(0).toUpperCase() + platform.slice(1)}`,
@@ -152,23 +147,67 @@ export function EnhancedShareBar({ article, className, variant = 'inline' }: Enh
     { key: 'telegram', icon: Send, label: 'Telegram', color: 'hover:text-blue-400', isEmoji: false },
   ];
 
+  // Sticky rail: icons only. The full card (title, counters, "More sharing
+  // options", tip) is rendered once — inline under the headline. Rendering it
+  // again here duplicated the article header in the page text.
+  if (variant === 'floating') {
+    return (
+      <div
+        className={cn(
+          'fixed right-4 top-1/2 z-40 hidden -translate-y-1/2 flex-col items-center gap-1 rounded-full border border-border bg-card/95 p-1.5 shadow-lg backdrop-blur lg:flex',
+          className,
+        )}
+        aria-label="Share this article"
+        role="group"
+      >
+        {shareButtons.map(({ key, icon: Icon, label, color, isEmoji }) => {
+          const IconEl = Icon as React.ElementType;
+          return (
+            <Button
+              key={key}
+              variant="ghost"
+              size="icon"
+              onClick={() => handleShare(key)}
+              className={cn('h-9 w-9 rounded-full', color)}
+              aria-label={`Share on ${label}`}
+              title={`Share on ${label}`}
+            >
+              {isEmoji ? (
+                <span className="text-lg" aria-hidden="true">{Icon as string}</span>
+              ) : (
+                <IconEl className="h-4 w-4" />
+              )}
+            </Button>
+          );
+        })}
+        <Button
+          variant="ghost"
+          size="icon"
+          onClick={() => copyToClipboard()}
+          className="h-9 w-9 rounded-full"
+          aria-label="Copy article link"
+          title="Copy article link"
+        >
+          <Copy className={cn('h-4 w-4', copiedText === articleUrl && 'text-green-600')} />
+        </Button>
+      </div>
+    );
+  }
+
   return (
     <div className={cn(
       'border border-border rounded-lg p-4 bg-card',
-      variant === 'floating' && 'fixed right-6 top-1/2 -translate-y-1/2 z-50 shadow-lg',
       variant === 'sticky' && 'sticky top-4',
       className
     )}>
-      {/* Social Proof */}
-      <div className="flex items-center gap-4 mb-4 text-sm text-muted-foreground">
-        <div className="flex items-center gap-1">
-          <Eye className="h-4 w-4" />
-          <span>{viewCount.toLocaleString()} views</span>
-        </div>
-        <div className="flex items-center gap-1">
-          <Share2 className="h-4 w-4" />
-          <span>{shareCount} shares</span>
-        </div>
+      {/* Social Proof — real numbers only, never invented */}
+      <div className="flex flex-wrap items-center gap-4 mb-4 text-sm text-muted-foreground">
+        {views !== null && (
+          <div className="flex items-center gap-1">
+            <Eye className="h-4 w-4" />
+            <span>{views.toLocaleString()} views</span>
+          </div>
+        )}
         <div className="flex items-center gap-1">
           <Clock className="h-4 w-4" />
           <span>{article.readTime} min read</span>

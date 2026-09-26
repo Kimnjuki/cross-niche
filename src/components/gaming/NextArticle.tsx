@@ -1,14 +1,15 @@
-import { useMemo, useState, useEffect } from 'react';
+import { useMemo } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowRight, ChevronDown, Clock, Eye } from 'lucide-react';
+import { ArrowRight, Clock, Eye } from 'lucide-react';
 import { mockArticles } from '@/data/mockData';
 import type { Article } from '@/types';
 
-function getNextArticle(currentSlug: string, niche: string, allArticles: Article[]): Article | null {
-  return allArticles
-    .filter((a) => a.niche === niche && a.slug !== currentSlug && a.publishedAt)
-    .sort((a, b) => (b as any).publishedAt || 0 - (a as any).publishedAt || 0)
-    .slice(0, 1)[0] ?? null;
+/** Published timestamp in ms, or 0 when missing/unparseable. */
+function publishedTime(article: Article): number {
+  const raw = article.publishedAt;
+  if (!raw) return 0;
+  const time = new Date(raw).getTime();
+  return Number.isNaN(time) ? 0 : time;
 }
 
 interface NextArticleProps {
@@ -16,20 +17,28 @@ interface NextArticleProps {
   currentSlug: string;
   /** Niche to pull from (gaming, security, tech) */
   niche: string;
+  /**
+   * Real articles to pick from (the page already loads these for the related
+   * grid). The bundled demo rows are only used when nothing real is available.
+   */
+  articles?: Article[];
 }
 
 /**
  * "Next Article" component for the Article page bottom.
- * Shows the next article in the same niche, with an auto-scroll
- * into view on mount to drive session depth.
+ * Shows the next article in the same niche.
  */
-export function NextArticle({ currentSlug, niche }: NextArticleProps) {
+export function NextArticle({ currentSlug, niche, articles }: NextArticleProps) {
   const next = useMemo(() => {
-    const sameNiche = mockArticles
-      .filter(a => a.niche === niche && a.slug !== currentSlug)
-      .slice(0, 1);
-    return sameNiche.length > 0 ? sameNiche[0] : null;
-  }, [currentSlug, niche]);
+    const pool = articles && articles.length > 0 ? articles : mockArticles;
+    const candidates = pool.filter(
+      (a) => a && a.slug && a.slug !== currentSlug && a.niche === niche,
+    );
+    if (candidates.length === 0) return null;
+    // Most recent first — the previous comparator evaluated `publishedAt || 0`
+    // and coerced the subtraction, so ordering was effectively random.
+    return [...candidates].sort((a, b) => publishedTime(b) - publishedTime(a))[0];
+  }, [articles, currentSlug, niche]);
 
   // Get the niche prefix path
   const nichePath = niche === 'security' ? '/security' : niche === 'gaming' ? '/gaming' : '/tech';
@@ -61,13 +70,20 @@ export function NextArticle({ currentSlug, niche }: NextArticleProps) {
             <Clock className="h-3 w-3" />
             {next.readTime} min
           </span>
-          <span className="text-muted-foreground/30">¶</span>
-          <span className="flex items-center gap-1">
-            <Eye className="h-3 w-3" />
-            {next.viewCount || 0} views
-          </span>
+          {/* Views are only shown when the CMS actually has a counter — the
+              previous fallback printed "0 views" on every card. */}
+          {typeof next.viewCount === 'number' && next.viewCount > 0 && (
+            <>
+              <span aria-hidden="true">·</span>
+              <span className="flex items-center gap-1">
+                <Eye className="h-3 w-3" />
+                {next.viewCount.toLocaleString()} views
+              </span>
+            </>
+          )}
         </div>
       </div>
     </section>
   );
 }
+

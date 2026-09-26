@@ -1,26 +1,39 @@
 import { useQuery } from 'convex/react';
 import { api } from '../../convex/_generated/api';
 import { Link } from 'react-router-dom';
+import { mockArticles } from '@/data/mockData';
+
+const NICHE_ID_BY_CATEGORY: Record<string, number> = { tech: 1, security: 2, gaming: 3 };
+
+interface RelatedItem {
+  slug: string;
+  title: string;
+}
 
 export function RelatedArticles({ currentSlug, category }: { currentSlug: string; category: string }) {
-  const related = useQuery(api.content.getByNicheId, { nicheId: category === 'tech' ? 1 : category === 'security' ? 2 : 3, limit: 10 });
-  const filtered = related?.filter(a => a.slug !== currentSlug).slice(0, 3);
+  const related = useQuery(api.content.getByNicheId, {
+    nicheId: NICHE_ID_BY_CATEGORY[category] ?? 3,
+    limit: 10,
+  });
 
-  const fallbackArticles = [
-    { slug: 'mobile-gaming-security-guide-ios-android', title: 'The Ultimate Mobile Gaming Security Guide' },
-    { slug: 'gaming-pc-antivirus-best-2026', title: 'Best Antivirus for Gaming PCs in 2026' },
-    { slug: 'minecraft-server-security-guide', title: 'Minecraft Server Security Guide' },
-    { slug: 'steam-controller-security-risks-gamers', title: 'Steam Controller Security Risks' },
-    { slug: 'router-security-gamers-2026', title: 'Router Security for Gamers' },
-    { slug: 'game-account-security-anti-phishing-2026-gaming-platforms', title: 'Game Account Security Anti-Phishing' },
-  ];
+  // Real CMS rows when they exist. The previous fallback was a hardcoded list of
+  // six slugs — including the retired "mobile-gaming-security-guide-ios-android"
+  // alias — so whenever the query came back empty (which is the norm while the
+  // CMS row is missing) the page rendered links to articles that do not exist.
+  const items = ((): RelatedItem[] => {
+    const fromCms: RelatedItem[] = (related ?? [])
+      .filter((a) => a?.slug && a.slug !== currentSlug)
+      .slice(0, 3)
+      .map((a) => ({ slug: String(a.slug), title: String(a.title ?? a.slug) }));
+    if (fromCms.length > 0) return fromCms;
 
-  const items =
-    filtered && filtered.length > 0
-      ? filtered
-      : fallbackArticles.filter(a => a.slug !== currentSlug).slice(0, 3);
+    return mockArticles
+      .filter((a) => a?.niche === category && a?.slug && a.slug !== currentSlug)
+      .slice(0, 3)
+      .map((a) => ({ slug: String(a.slug), title: String(a.title ?? a.slug) }));
+  })();
 
-  if (!items.length) return null;
+  if (items.length === 0) return null;
 
   return (
     <section className="mt-12">
@@ -35,3 +48,4 @@ export function RelatedArticles({ currentSlug, category }: { currentSlug: string
     </section>
   );
 }
+

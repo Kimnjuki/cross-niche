@@ -10,7 +10,7 @@ const BASE_URL = 'https://thegridnexus.com';
 
 const ARTICLES = [
   {
-    slug: 'mobile-gaming-security-guide-ios-android',
+    slug: 'mobile-gaming-security-guide',
     title: 'The Ultimate Mobile Gaming Security Guide: Protect iOS and Android Accounts',
     excerpt: 'Mobile gaming security guide for iOS and Android: phishing defence, password managers, 2FA, passkeys and the steps to take if a gaming account is hacked.',
     author: 'Kim Anderson',

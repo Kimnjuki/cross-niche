@@ -1,6 +1,7 @@
 import type { ContentItem } from '@/hooks/useContent';
 import type { Article, Niche } from '@/types';
 import { getPlaceholderByNiche } from '@/lib/placeholderImages';
+import { repairMojibake } from '@/lib/articleHtml';
 
 /**
  * Reject HTTP URLs (mixed content) and obviously invalid URLs; use placeholder instead.
@@ -91,11 +92,14 @@ export function mapContentToArticle(content: ContentItem | null | undefined): Ar
     id: docId,
     _id: docId, // Convex schema uses _id; expose for components that want to match Convex
     slug: content.slug || undefined,
-    title: content.title || 'Untitled',
-    excerpt,
-    content: body,
+    // Rows migrated out of Windows-1252 carry mojibake in their text fields
+    // ("â€”" instead of an em dash); repair once here so titles, meta
+    // descriptions and cards are clean everywhere.
+    title: repairMojibake(content.title || 'Untitled'),
+    excerpt: repairMojibake(excerpt),
+    content: repairMojibake(body),
     niche,
-    author,
+    author: repairMojibake(author),
     publishedAt,
     readTime: content.read_time_minutes || 5,
     imageUrl: sanitizeImageUrl(content.featured_image_url, getPlaceholderByNiche(niche, docId)),

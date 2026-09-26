@@ -779,7 +779,9 @@ export const mockArticles: Article[] = [
   },
   {
     id: 'sec-guide-5',
-    slug: 'mobile-gaming-security-guide',
+    // Distinct slug: this older 2026-04-24 article previously claimed the same
+    // slug as the newest guide (sec-guide-6), making one of the two unreachable.
+    slug: 'mobile-gaming-security-guide-ios-android-basics',
     title: 'Mobile Gaming Security Guide — Protect Your Phone, Accounts, and Payments',
     excerpt: 'Mobile gaming is the biggest attack surface in gaming. Here is how to secure your iOS and Android devices, in-app purchases, and linked accounts.',
     content: `<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:1px;background:#e5e7eb;border:1px solid #e5e7eb;border-radius:8px;overflow:hidden;margin:0 0 28px">

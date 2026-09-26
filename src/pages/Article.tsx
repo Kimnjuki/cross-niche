@@ -29,6 +29,7 @@ import { EnhancedShareBar } from '@/components/sharing/EnhancedShareBar';
 import { SEOHead } from '@/components/seo/SEOHead';
 import { Breadcrumbs } from '@/components/seo/Breadcrumbs';
 import { FAQSection } from '@/components/seo/FAQSection';
+import { FAQSchema } from '@/components/seo/FAQSchema';
 import { QuickAnswer } from '@/components/seo/QuickAnswer';
 import { TableOfContents } from '@/components/seo/TableOfContents';
 import { TLDREndBlock } from '@/components/seo/TLDREndBlock';
@@ -48,6 +49,8 @@ import {
 } from '@/lib/analytics/ga4';
 import { getPlaceholderByNiche, secureImageUrl } from '@/lib/placeholderImages';
 import { prepareArticleContent } from '@/lib/markdownToHtml';
+import { extractFaqsFromHtml } from '@/lib/articleFaqs';
+import { formatSecurityScore } from '@/lib/securityScore';
 import { getRelatedClusterContent } from '@/lib/seo/topicClusters';
 import type { Article as ArticleType } from '@/types';
 
@@ -106,7 +109,11 @@ export default function Article() {
   const relatedArticles = useMemo(() => {
     if (!article) return [];
     const convexArticles = relatedContent ? mapContentToArticles(relatedContent as ContentItem[]) : [];
-    const mockFallback = filterMockByNiche(mockArticles, article?.niche ?? '');
+    // Demo articles are a last resort only. Mixing them into a live article page
+    // recommended GTA VI previews with invented "85/5" scores to readers of a
+    // security guide, and those mock rows also polluted the tag-based block.
+    const mockFallback =
+      convexArticles.length === 0 ? filterMockByNiche(mockArticles, article?.niche ?? '') : [];
     const combined: ArticleType[] = [...convexArticles, ...mockFallback];
     const seen = new Set<string>();
     return combined
@@ -150,8 +157,8 @@ export default function Article() {
     // Get Convex articles if available
     const convexArticles = publishedForCross ? mapContentToArticles(publishedForCross as ContentItem[]) : [];
     
-    // Combine with mock articles as fallback
-    const combined = [...convexArticles, ...mockArticles];
+    // Only fall back to the bundled demo set when Convex returned nothing.
+    const combined = convexArticles.length > 0 ? convexArticles : mockArticles;
     
     // Find an article from a DIFFERENT niche (cross-section linking)
     const other = combined.find(
@@ -159,6 +166,17 @@ export default function Article() {
     );
     return other && getArticleId(other) ? other : null;
   }, [article, articleId, publishedForCross]);
+
+  // 5b. FAQS
+  // The published bodies already render their own "Frequently Asked Questions"
+  // section, so the visible FAQ block is only added when the CMS supplies
+  // structured FAQs. Otherwise the pairs are parsed from the body for FAQPage
+  // schema only — never replaced by the boilerplate fallback questions.
+  const faqs = useMemo(() => {
+    if (!article) return [];
+    if (article.faqs && article.faqs.length > 0) return article.faqs;
+    return extractFaqsFromHtml(article.content);
+  }, [article]);
 
   // 6. BEHAVIOR TRACKING HOOKS (must always be called, unconditionally)
   const { trackArticleBookmark, trackArticleShare } = useUserBehavior(user?.id ?? 'demo-user');
@@ -226,6 +244,7 @@ export default function Article() {
   const styles = nicheStyles[safeNiche];
   const tags = Array.isArray(article.tags) ? article.tags : [];
   const isBookmarked = user?.bookmarks?.includes(articleId);
+  const securityScoreLabel = formatSecurityScore(article.securityScore);
 
   // 12. RENDER (article is guaranteed to exist and have an ID)
   return (
@@ -275,7 +294,7 @@ export default function Article() {
         noindex={article.noindex === true}
       />
 
-      <article className="container mx-auto px-4 py-8 bg-white text-slate-900">
+      <article className="container mx-auto px-4 py-8 bg-background text-foreground">
         <Breadcrumbs
           items={[
             { label: 'Home', href: '/' },
@@ -294,7 +313,7 @@ export default function Article() {
         </Link>
 
         <header className="max-w-4xl mb-8">
-          <h1 className="font-display font-bold text-4xl md:text-5xl mb-4 text-slate-900">
+          <h1 className="font-display font-bold text-4xl md:text-5xl mb-4 text-foreground">
             {article.title || 'Untitled Article'}
           </h1>
           <div className="flex flex-wrap gap-2 mb-4">
@@ -306,10 +325,10 @@ export default function Article() {
                 {article.impactLevel.toUpperCase()} IMPACT
               </Badge>
             )}
-            {article.securityScore !== undefined && (
+            {securityScoreLabel !== null && (
               <Badge className="bg-gaming/10 text-gaming border-gaming/20 gap-1">
                 <Shield className="h-3 w-3" />
-                Security Score: {article.securityScore}
+                Security Score: {securityScoreLabel}
               </Badge>
             )}
           </div>
@@ -380,7 +399,7 @@ export default function Article() {
           </div>
         </div>
 
-        <EnhancedShareBar article={article} variant="floating" className="hidden lg:block" />
+        <EnhancedShareBar article={article} variant="floating" />
 
         <NexusScrollBridge
           currentNiche={safeNiche}
@@ -398,9 +417,9 @@ export default function Article() {
             {/* Table of Contents — signals topic depth to Google */}
             <TableOfContents content={article.content} />
 
-            <div className="prose prose-lg max-w-none" data-article-content>
+            <div className="prose prose-lg max-w-none dark:prose-invert" data-article-content>
               <div
-                className="text-lg leading-relaxed text-slate-900 article-content"
+                className="text-lg leading-relaxed text-foreground article-content"
                 dangerouslySetInnerHTML={{
                   __html: prepareArticleContent(article.content) || prepareArticleContent(article.excerpt) || '<p class="text-muted-foreground">No content available for this article.</p>',
                 }}
@@ -590,29 +609,26 @@ export default function Article() {
           )}
         </NexusScrollBridge>
 
-        <NextArticle currentSlug={article.slug || articleId} niche={safeNiche} />
-
-        <FAQSection
-          faqs={
-            article.faqs && article.faqs.length > 0
-              ? article.faqs
-              : [
-                  {
-                    question: `What is ${article.title ?? 'this article'}?`,
-                    answer: article.excerpt || 'Learn more with The Grid Nexus.',
-                  },
-                  {
-                    question: `How does this relate to ${safeNiche === 'tech' ? 'technology' : safeNiche === 'security' ? 'cybersecurity' : 'gaming'}?`,
-                    answer: `This article is part of our ${nicheLabels[safeNiche]} coverage.`,
-                  },
-                  {
-                    question: 'Where can I find more related content?',
-                    answer: `Explore our ${nicheLabels[safeNiche]} section or the full blog series.`,
-                  },
-                ]
-          }
-          title={`Frequently Asked Questions about ${article.title ?? 'this article'}`}
+        <NextArticle
+          currentSlug={article.slug || articleId}
+          niche={safeNiche}
+          articles={relatedIntelligence}
         />
+
+        {/*
+          The article body already ships its own "Frequently Asked Questions"
+          section. A visible FAQ block is therefore only rendered when the CMS
+          supplies structured FAQs; otherwise the parsed pairs are emitted as
+          FAQPage structured data only. The old behaviour appended three
+          auto-generated questions ("How does this relate to gaming?") and the
+          page ended up repeating the phrase several times.
+        */}
+        {faqs.length > 0 &&
+          (article.faqs && article.faqs.length > 0 ? (
+            <FAQSection faqs={faqs} title="Frequently Asked Questions" />
+          ) : (
+            <FAQSchema faqs={faqs} />
+          ))}
 
         <RelatedArticles
           currentSlug={article.slug || articleId}
