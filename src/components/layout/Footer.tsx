@@ -115,6 +115,9 @@ export function Footer() {
                 Patch Risk Tracker
               </Link>
               <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mt-2">Featured Articles</span>
+              <Link to="/article/mobile-gaming-security-guide-ios-android" className="text-muted-foreground hover:text-foreground transition-colors">
+                Mobile Gaming Security Guide (iOS &amp; Android)
+              </Link>
               <Link to="/article/gaming-pc-antivirus-best-2026" className="text-muted-foreground hover:text-foreground transition-colors">
                 Best Gaming PC Antivirus 2026
               </Link>

@@ -35,7 +35,10 @@
     "generate:prerender-routes": "node scripts/generate-prerender-routes.mjs",
     "export-snapshot": "node scripts/export-content-snapshot.mjs",
     "prebuild:seo": "npm run generate:feed && npm run generate:placeholders && npm run generate:sitemaps && npm run export-snapshot && npm run generate:static-articles && npm run generate:authors && npm run generate:prerender-routes",
-    "seo:hub": "node scripts/apply-gaming-hub.mjs"
+    "seo:hub": "node scripts/apply-gaming-hub.mjs",
+    "generate:mobile-gaming": "node scripts/generate-mobile-gaming.mjs",
+    "sync:mobile-gaming": "npx tsx scripts/syncMobileGamingSnapshot.ts",
+    "push:mobile-gaming": "npx convex run insertMobileGamingSecurityGuide:upsertMobileGamingGuide"
   },
   "dependencies": {
     "@auth0/auth0-react": "^2.15.0",

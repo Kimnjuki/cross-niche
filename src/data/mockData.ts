@@ -1,6 +1,10 @@
 import { Article, Guide, Tool } from '@/types';
+import { mobileGamingSecurityArticle } from './mobileGamingSecurityArticle';
 
 export const mockArticles: Article[] = [
+  // ── Newest published guide (homepage lead story) ──────────────────────────
+  // The Ultimate Mobile Gaming Security Guide — updated 2026-09-24.
+  mobileGamingSecurityArticle,
   // Tech Articles
   {
     id: 'tech-1',

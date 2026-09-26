@@ -3,9 +3,27 @@
  * Handles common markdown syntax without external dependencies.
  */
 
+/**
+ * True when a string is already authored as HTML rather than markdown.
+ *
+ * Article bodies in mockData, Convex and the content snapshot are stored as
+ * HTML. Running them through the markdown escape pass turns <p>, <h2> and
+ * <div style="…"> into literal visible text, so HTML input must pass through
+ * untouched. Requiring a complete tag (`<tag …>`) rather than a bare `<` keeps
+ * ordinary prose such as "5 < 10" on the markdown path.
+ */
+function looksLikeHtml(input: string): boolean {
+  return /<(?:[a-z][a-z0-9-]*)(?:\s[^<>]*)?\/?>/i.test(input);
+}
+
 export function markdownToHtml(markdown: string): string {
   if (!markdown || typeof markdown !== 'string') return '';
-  
+
+  // Already HTML — return as-is so markup renders instead of showing as text.
+  if (looksLikeHtml(markdown)) {
+    return markdown;
+  }
+
   let html = markdown;
 
   // Images: ![alt](url) -> <img src="url" alt="alt" />

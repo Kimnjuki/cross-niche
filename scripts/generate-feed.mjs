@@ -10,6 +10,16 @@ const BASE_URL = 'https://thegridnexus.com';
 
 const ARTICLES = [
   {
+    slug: 'mobile-gaming-security-guide-ios-android',
+    title: 'The Ultimate Mobile Gaming Security Guide: Protect iOS and Android Accounts',
+    excerpt: 'Mobile gaming security guide for iOS and Android: phishing defence, password managers, 2FA, passkeys and the steps to take if a gaming account is hacked.',
+    author: 'Kim Anderson',
+    publishedAt: '2026-09-24T08:00:00.000Z',
+    updatedAt: '2026-09-24T08:00:00.000Z',
+    niche: 'gaming',
+    tags: ['mobile gaming security', 'iOS security', 'Android security', '2FA', 'passkeys', 'account protection']
+  },
+  {
     slug: 'ai-security-threats-2026',
     title: 'AI Security Threats 2026: Weaponized AI, Deepfakes, and Quantum Risks Targeting Gamers',
     excerpt: 'Deepfake voice clones, weaponized AI attack pipelines, and quantum-assisted decryption threats are targeting gaming accounts.',

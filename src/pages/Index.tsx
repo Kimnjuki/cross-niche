@@ -41,6 +41,11 @@ import { Button } from '@/components/ui/button';
 
 import { formatRelativeTime } from '@/lib/timeUtils';
 import { mapContentToArticles } from '@/lib/contentMapper';
+import { getPlaceholderByNiche, secureImageUrl } from '@/lib/placeholderImages';
+import {
+  mobileGamingSecurityArticle,
+  MOBILE_GAMING_SECURITY_SLUG,
+} from '@/data/mobileGamingSecurityArticle';
 import { getPageMetadata } from '@/lib/seo/pageMetadata';
 import {
   useAllPublishedContent,
@@ -70,6 +75,87 @@ function articleLink(article: Article | null | undefined): string {
 function safeArticleId(article: Article | null | undefined): string {
   return (article as Article & { _id?: string })?._id ?? article?.id ?? article?.slug ?? '';
 }
+
+/**
+ * Homepage lead story spotlight.
+ * Rendered unconditionally from a local constant so the newest guide is always
+ * on the homepage, even when the live Convex feed is empty or still loading.
+ */
+function LeadStorySection({ article }: { article: Article }) {
+  const href = articleLink(article);
+  const image = secureImageUrl(
+    article.imageUrl,
+    getPlaceholderByNiche(article.niche, article.slug ?? article.id)
+  );
+
+  return (
+    <section className="bg-[#0A0A0B] border-b border-[#27272A]">
+      <div className="container mx-auto px-4 max-w-7xl py-8">
+        <div className="flex items-center justify-between mb-4">
+          <h2 className="text-sm font-bold text-white tracking-wide section-heading-cyan">Lead Story</h2>
+          <Link to="/guides" className="flex items-center gap-1 text-xs font-mono text-[#00F0FF]/70 hover:text-[#00F0FF]">
+            All guides <ChevronRight className="h-3 w-3" />
+          </Link>
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-5 gap-6 items-center">
+          <Link
+            to={href}
+            className="lg:col-span-3 group block overflow-hidden rounded-xl border border-[#27272A] hover:border-[#00F0FF]/40 transition-all"
+          >
+            <img
+              src={image}
+              alt={article.title}
+              width={1323}
+              height={841}
+              loading="eager"
+              className="w-full h-auto object-cover group-hover:scale-[1.02] transition-transform duration-300"
+            />
+          </Link>
+
+          <div className="lg:col-span-2 space-y-3">
+            <div className="flex flex-wrap items-center gap-2">
+              <span className="text-[10px] px-2 py-0.5 rounded-full bg-[#00F0FF]/10 text-[#00F0FF] border border-[#00F0FF]/30 font-mono uppercase tracking-widest">
+                Latest Guide
+              </span>
+              <span className="text-[10px] px-2 py-0.5 rounded-full bg-zinc-800 text-zinc-400 uppercase tracking-wider">
+                {article.niche || 'Article'}
+              </span>
+              {article.readTime ? (
+                <span className="text-[10px] text-zinc-600 font-mono">{article.readTime} min read</span>
+              ) : null}
+            </div>
+
+            <h3 className="font-display font-bold text-2xl md:text-3xl text-white leading-tight">
+              <Link to={href} className="hover:text-[#00F0FF] transition-colors">
+                {article.title}
+              </Link>
+            </h3>
+
+            {article.excerpt && (
+              <p className="text-sm text-zinc-400 leading-relaxed line-clamp-4">{article.excerpt}</p>
+            )}
+
+            {(article.tags ?? []).length > 0 && (
+              <div className="flex flex-wrap gap-2">
+                {(article.tags ?? []).slice(0, 4).map((tag) => (
+                  <span key={tag} className="text-[10px] px-2 py-0.5 rounded-full bg-zinc-800 text-zinc-400">
+                    {tag}
+                  </span>
+                ))}
+              </div>
+            )}
+
+            <Link to={href} className="inline-flex items-center gap-1 text-xs font-mono text-[#00F0FF] hover:text-[#00D4E6]">
+              Read the full guide <ChevronRight className="h-3 w-3" />
+            </Link>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 
 export default function Index() {
   const navigate = useNavigate();
@@ -117,6 +203,19 @@ export default function Index() {
   const isLoading = loadingPublished;
   const homeMeta = getPageMetadata('/');
 
+  // Newest published guide — pinned as the homepage lead story, independent of
+  // feed availability so it is always discoverable from the homepage.
+  const leadStory: Article =
+    sortedArticles.find((a) => a.slug === MOBILE_GAMING_SECURITY_SLUG) ?? mobileGamingSecurityArticle;
+
+  // Featured strip: lead story first, then the newest remaining feed items.
+  const featuredIntel: Article[] = [
+    leadStory,
+    ...sortedArticles.filter(
+      (a) => (a.slug ?? a.id) !== (leadStory.slug ?? leadStory.id)
+    ),
+  ].slice(0, 4);
+
   // Empty state
   if (!isLoading && sortedArticles.length === 0) {
     return (
@@ -128,6 +227,7 @@ export default function Index() {
           type="website"
         />
         <HeroCommandCenter />
+        <LeadStorySection article={leadStory} />
         <CommandDashboard />
         <section className="container mx-auto px-4 py-16 max-w-7xl text-center">
           <p className="text-zinc-500 mb-8 font-mono text-sm">Content loading — check back shortly or explore below.</p>
@@ -156,6 +256,9 @@ export default function Index() {
       {/* P1: Hero Command Center */}
       <HeroCommandCenter />
 
+      {/* Lead story — pinned newest guide (mobile gaming security) */}
+      <LeadStorySection article={leadStory} />
+
       {/* P4: Breaking news ticker */}
       <BreakingNewsTicker articles={breakingArticles.slice(0, 8)} />
 
@@ -175,7 +278,7 @@ export default function Index() {
               </Link>
             </div>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-              {sortedArticles.slice(0, 4).map((article, i) => (
+              {featuredIntel.map((article, i) => (
                 <Link
                   key={safeArticleId(article) || i}
                   to={articleLink(article)}

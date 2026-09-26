@@ -2,10 +2,15 @@ import type { ContentItem } from '@/hooks/useContent';
 import type { Article, Niche } from '@/types';
 import { getPlaceholderByNiche } from '@/lib/placeholderImages';
 
-/** Reject HTTP URLs (mixed content) and obviously invalid URLs; use placeholder instead. */
+/**
+ * Reject HTTP URLs (mixed content) and obviously invalid URLs; use placeholder instead.
+ * Root-relative same-origin paths (e.g. /images/articles/...) are allowed: they cannot
+ * produce mixed-content warnings and are how locally hosted article art is served.
+ */
 function sanitizeImageUrl(url: string | null | undefined, fallback: string): string {
-  if (!url || typeof url !== 'string' || !url.startsWith('http')) return fallback;
-  if (url.startsWith('http://')) return fallback;
+  if (!url || typeof url !== 'string') return fallback;
+  if (url.startsWith('/')) return url;
+  if (!url.startsWith('https://')) return fallback;
   return url;
 }
 

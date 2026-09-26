@@ -7,6 +7,7 @@ export function RelatedArticles({ currentSlug, category }: { currentSlug: string
   const filtered = related?.filter(a => a.slug !== currentSlug).slice(0, 3);
 
   const fallbackArticles = [
+    { slug: 'mobile-gaming-security-guide-ios-android', title: 'The Ultimate Mobile Gaming Security Guide' },
     { slug: 'gaming-pc-antivirus-best-2026', title: 'Best Antivirus for Gaming PCs in 2026' },
     { slug: 'minecraft-server-security-guide', title: 'Minecraft Server Security Guide' },
     { slug: 'steam-controller-security-risks-gamers', title: 'Steam Controller Security Risks' },

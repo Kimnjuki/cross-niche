@@ -2,6 +2,28 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
         xmlns:news="http://www.google.com/schemas/news/sitemap/2.0">
   <url>
+    <loc>https://thegridnexus.com/article/mobile-gaming-security-guide</loc>
+    <news:news>
+      <news:publication>
+        <news:name>The Grid Nexus</news:name>
+        <news:language>en</news:language>
+      </news:publication>
+      <news:publication_date>2026-09-24</news:publication_date>
+      <news:title>The Ultimate Mobile Gaming Security Guide: Protect iOS and Android Accounts</news:title>
+    </news:news>
+  </url>
+  <url>
+    <loc>https://thegridnexus.com/article/mobile-gaming-security-guide-ios-android</loc>
+    <news:news>
+      <news:publication>
+        <news:name>The Grid Nexus</news:name>
+        <news:language>en</news:language>
+      </news:publication>
+      <news:publication_date>2026-09-24</news:publication_date>
+      <news:title>The Ultimate Mobile Gaming Security Guide: Protect iOS and Android Accounts</news:title>
+    </news:news>
+  </url>
+  <url>
     <loc>https://www.thegridnexus.com/guides/ultimate-guide-steam-xbox-playstation-discord-security</loc>
     <news:news>
       <news:publication>
