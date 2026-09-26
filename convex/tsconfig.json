@@ -12,6 +12,16 @@
     "skipLibCheck": true,
     "allowSyntheticDefaultImports": true,
 
+    /* Aliases from the app's root tsconfig.json. Convex functions here reuse the
+     * exact article module the site renders
+     * (convex/insertMobileGamingSecurityGuide.ts -> ../src/data/*), and that
+     * module types itself with the app's `@/*` alias, so it must resolve during
+     * typechecking. Paths are relative to `baseUrl`, which is the repo root. */
+    "baseUrl": "..",
+    "paths": {
+      "@/*": ["./src/*"]
+    },
+
     /* These compiler options are required by Convex */
     "target": "ESNext",
     "lib": ["ES2021", "dom"],
