@@ -7,7 +7,7 @@ Source: thegridnexus.com_pages_20260901.csv + PDF summary
 - [x] **3XX redirect in sitemap — 42 URLs** — FIXED 2026-09-09: article URLs now return 200 directly; sitemap contains only canonical `https://thegridnexus.com/article/<slug>` (no http://, no trailing slash, non-www)
 - [x] **Canonical points to redirect — 38 pages** — FIXED: static article HTML emits `<link rel="canonical" href="https://thegridnexus.com/article/<slug>">` to a URL that now returns 200 with 0 redirects
 - [x] **Duplicate pages without canonical — 104 pages** — RESOLVED for articles (canonical served in static HTML); see "Pages to re-verify" below
-- [ ] Orphan pages (no incoming internal links) — 32 pages
+- [x] **Orphan pages (no incoming internal links) — 32 pages** — FIXED 2026-09-28: static-link graph audit shows **0 indexable orphans** (was 76 articles + 12 author pages + 15 other indexable routes with zero inbound links). Fixes: related-reading coverage pass in `generate-static-articles.mjs` (every article ≥1 inbound link), `/editorial` author hub, `/tools` full tool index, targeted hub links in `route-metadata.mjs`. Remaining 20 orphaned paths are all `noindex` private routes (`/api`, `/settings`, `/signin`…), intentionally excluded from crawlers. Re-verify: `npm run audit:orphans`
 - [ ] Re-crawl after deploy (pending live deploy of the nginx.conf fix)
 
 ## Pages to re-verify after redeploy
@@ -21,10 +21,10 @@ Source: thegridnexus.com_pages_20260901.csv + PDF summary
 2. ~~Sitemap 3XX cleanup~~ ✅ (sitemaps already emit canonical URLs; article pages now 200)
 3. ~~Canonical → redirect fixes~~ ✅
 4. ~~Duplicate pages without canonical~~ ✅ for articles (re-crawl to confirm)
-5. Orphan pages (internal linking strategy — add more article cross-links)
+5. ~~Orphan pages (internal linking strategy — add more article cross-links)~~ ✅ (fixed 2026-09-28 — 0 indexable orphans)
 
 ## Verification
-- [ ] Re-run `npm run validate:seo` after each batch
+- [x] Re-run `npm run validate:seo` after each batch — 124/124 passing (2026-09-28)
 - [ ] Re-crawl in Ahrefs after deploy
 - [ ] Confirm 0 redirect-loop, 0 sitemap 3XX, 0 canonical→redirect
 

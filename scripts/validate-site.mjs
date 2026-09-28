@@ -127,11 +127,21 @@ if (robots) {
 console.log('\n🗺️  3. Sitemaps\n');
 
 const sitemapIndex = readFile('sitemap-index.xml');
+const newsSitemapRaw = readFile('sitemap-news.xml');
+// P1-5: an EMPTY sitemap-news.xml must not be advertised in the index
+// (enforced by test:seo — "sitemap-index.xml advertises the news sitemap
+// only when it has entries"). So the check is conditional on entries.
+const newsHasEntries = Boolean(newsSitemapRaw && newsSitemapRaw.includes('<news:news>'));
 if (sitemapIndex) {
   check('sitemap-index.xml exists', true);
   check('References main sitemap', sitemapIndex.includes('sitemap.xml'));
   check('References articles sitemap', sitemapIndex.includes('sitemap-articles.xml'));
-  check('References news sitemap', sitemapIndex.includes('sitemap-news.xml'));
+  check(
+    newsHasEntries
+      ? 'References news sitemap (entries present → must be advertised)'
+      : 'Omits empty news sitemap (no entries in last 48h)',
+    newsHasEntries ? sitemapIndex.includes('sitemap-news.xml') : !sitemapIndex.includes('sitemap-news.xml'),
+  );
 }
 
 const sitemap = readFile('sitemap.xml');
@@ -146,10 +156,15 @@ if (sitemap) {
   check('Contains priority', sitemap.includes('<priority>'));
 }
 
-const newsSitemap = readFile('sitemap-news.xml');
+const newsSitemap = newsSitemapRaw;
 if (newsSitemap) {
   check('sitemap-news.xml exists', true);
-  check('Contains news entries', newsSitemap.includes('<news:news>'));
+  check(
+    newsHasEntries
+      ? 'Contains news entries'
+      : 'Empty news file is valid (0 articles in last 48h — correctly unadvertised)',
+    newsHasEntries ? newsSitemap.includes('<news:news>') : !newsSitemap.includes('<news:news>'),
+  );
 }
 
 const articlesSitemap = readFile('sitemap-articles.xml');

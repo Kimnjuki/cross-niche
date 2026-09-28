@@ -38,6 +38,7 @@ import { fileURLToPath } from 'url';
 import {
   ROUTE_METADATA,
   NON_INDEXABLE_ROUTES,
+  INDEXABLE_ROUTES,
   SITE_NAME,
   BASE_URL,
   fitDescription,
@@ -202,9 +203,47 @@ function buildMain(route, latestArticles) {
       </section>`
       : '';
 
+  // P1 orphan rescue: /editorial is the natural hub for author profiles —
+  // without it the /author/* pages had zero incoming internal links.
+  const teamBlock =
+    route.path === '/editorial'
+      ? `
+      <section aria-labelledby="editorial-team" style="margin-top:2rem">
+        <h2 id="editorial-team" style="font-size:1.25rem;color:#f8fafc;margin-bottom:0.75rem">Editorial team</h2>
+        <ul style="list-style:none;padding:0;margin:0;display:flex;flex-wrap:wrap;gap:0.75rem">
+          ${Object.entries(authorProfiles)
+            .filter(([slug]) => slug && slug !== 'the-grid-nexus-editorial-team')
+            .map(
+              ([slug, profile]) =>
+                `<li><a href="/author/${encodeURIComponent(slug)}" style="color:#60a5fa;text-decoration:none">${escapeHtml(String(profile?.name ?? humanise(slug)))}</a></li>`
+            )
+            .join('\n          ')}
+        </ul>
+      </section>`
+      : '';
+
+  // P1 orphan rescue: the /tools hub only linked 3 of the 20+ tools via its
+  // hand-written `links` array — 9 tool pages had zero incoming internal
+  // links. List every indexable tool instead.
+  const allToolsBlock =
+    route.path === '/tools'
+      ? `
+      <section aria-labelledby="all-tools" style="margin-top:2rem">
+        <h2 id="all-tools" style="font-size:1.25rem;color:#f8fafc;margin-bottom:0.75rem">All free tools</h2>
+        <ul style="list-style:none;padding:0;margin:0;display:flex;flex-wrap:wrap;gap:0.75rem">
+          ${INDEXABLE_ROUTES.filter((r) => r.path.startsWith('/tools/'))
+            .map(
+              (r) =>
+                `<li><a href="${escapeAttr(r.path)}" style="color:#60a5fa;text-decoration:none">${escapeHtml(String(r.h1 ?? r.path))}</a></li>`
+            )
+            .join('\n          ')}
+        </ul>
+      </section>`
+      : '';
+
   return `<main id="main-content" style="max-width:80rem;margin:0 auto;padding:2rem 1.5rem">${breadcrumb}
     <h1 style="font-size:2rem;line-height:1.2;margin-bottom:0.75rem;color:#f8fafc">${escapeHtml(route.h1)}</h1>
-    <p style="font-size:1.125rem;color:#94a3b8;margin-bottom:1.5rem;max-width:60rem">${escapeHtml(route.intro)}</p>${linksBlock}${latestBlock}
+    <p style="font-size:1.125rem;color:#94a3b8;margin-bottom:1.5rem;max-width:60rem">${escapeHtml(route.intro)}</p>${linksBlock}${latestBlock}${teamBlock}${allToolsBlock}
   </main>`;
 }
 

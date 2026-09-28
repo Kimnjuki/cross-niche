@@ -21,6 +21,7 @@ import { loadPublishedContent, priorityFor, canonicalUrlFor, fetchGuidesAndTopic
 import { authorProfiles } from './lib/author-source.mjs';
 import {
   ROUTE_METADATA,
+  INDEXABLE_ROUTES,
   NON_INDEXABLE_ROUTES,
   isNonIndexable,
 } from './lib/route-metadata.mjs';
@@ -72,91 +73,31 @@ function urlEntry(loc, lastmod, changefreq, priority, image = '') {
   </url>`;
 }
 
-// ── Static pages (only routes that exist in App.tsx and are indexable) ──────
+// ── Static pages: DERIVED from ROUTE_METADATA (single source of truth) ─────
+// INDEXABLE_ROUTES + author profiles (excluding the editorial-team aggregate).
+// The old hand-maintained list drifted: it shipped /security-profile,
+// /api, /sitemap, /seo-checklist, /keyword-gap-analysis (all noindex or
+// robots-blocked → "Submitted URL blocked by robots.txt") plus
+// /notifications and /settings (private). Those are now impossible —
+// generateMainSitemap() also filters via isNonIndexable() as a second net.
 function getStaticPages() {
-  return [
-    { loc: `${BASE_URL}/`, lastmod: TODAY, changefreq: 'daily', priority: 1.0 },
-    { loc: `${BASE_URL}/tech`, lastmod: TODAY, changefreq: 'daily', priority: 0.9 },
-    { loc: `${BASE_URL}/security`, lastmod: TODAY, changefreq: 'daily', priority: 0.9 },
-    { loc: `${BASE_URL}/gaming`, lastmod: TODAY, changefreq: 'daily', priority: 0.9 },
-    { loc: `${BASE_URL}/news`, lastmod: TODAY, changefreq: 'daily', priority: 0.9 },
-    { loc: `${BASE_URL}/blog`, lastmod: TODAY, changefreq: 'daily', priority: 0.8 },
-    { loc: `${BASE_URL}/topics`, lastmod: TODAY, changefreq: 'daily', priority: 0.9 },
-    { loc: `${BASE_URL}/guides`, lastmod: TODAY, changefreq: 'weekly', priority: 0.7 },
-    { loc: `${BASE_URL}/tutorials`, lastmod: TODAY, changefreq: 'weekly', priority: 0.7 },
-    { loc: `${BASE_URL}/reviews`, lastmod: TODAY, changefreq: 'weekly', priority: 0.8 },
-    { loc: `${BASE_URL}/startups`, lastmod: TODAY, changefreq: 'daily', priority: 0.7 },
-    { loc: `${BASE_URL}/tools`, lastmod: TODAY, changefreq: 'daily', priority: 0.9 },
-    { loc: `${BASE_URL}/explore`, lastmod: TODAY, changefreq: 'daily', priority: 0.85 },
-    { loc: `${BASE_URL}/ai-pulse`, lastmod: TODAY, changefreq: 'daily', priority: 0.9 },
-    { loc: `${BASE_URL}/live-updates`, lastmod: TODAY, changefreq: 'daily', priority: 0.8 },
-    { loc: `${BASE_URL}/roadmap`, lastmod: TODAY, changefreq: 'weekly', priority: 0.6 },
-    { loc: `${BASE_URL}/security-profile`, lastmod: TODAY, changefreq: 'weekly', priority: 0.8 },
-    { loc: `${BASE_URL}/community-threats`, lastmod: TODAY, changefreq: 'daily', priority: 0.8 },
-    { loc: `${BASE_URL}/nexus-intersection`, lastmod: TODAY, changefreq: 'weekly', priority: 0.7 },
-    { loc: `${BASE_URL}/about`, lastmod: TODAY, changefreq: 'monthly', priority: 0.5 },
-    { loc: `${BASE_URL}/contact`, lastmod: TODAY, changefreq: 'monthly', priority: 0.4 },
-    { loc: `${BASE_URL}/privacy`, lastmod: TODAY, changefreq: 'monthly', priority: 0.3 },
-    { loc: `${BASE_URL}/terms`, lastmod: TODAY, changefreq: 'monthly', priority: 0.3 },
-    { loc: `${BASE_URL}/editorial`, lastmod: TODAY, changefreq: 'monthly', priority: 0.4 },
-    { loc: `${BASE_URL}/disclosure`, lastmod: TODAY, changefreq: 'monthly', priority: 0.4 },
-    { loc: `${BASE_URL}/media`, lastmod: TODAY, changefreq: 'monthly', priority: 0.4 },
-    { loc: `${BASE_URL}/quality-guidelines`, lastmod: TODAY, changefreq: 'monthly', priority: 0.4 },
-    { loc: `${BASE_URL}/content-policy`, lastmod: TODAY, changefreq: 'monthly', priority: 0.4 },
-    { loc: `${BASE_URL}/community-guidelines`, lastmod: TODAY, changefreq: 'monthly', priority: 0.4 },
-    { loc: `${BASE_URL}/sitemap`, lastmod: TODAY, changefreq: 'monthly', priority: 0.2 },
-    { loc: `${BASE_URL}/security-score`, lastmod: TODAY, changefreq: 'monthly', priority: 0.7 },
-    { loc: `${BASE_URL}/breach-sim`, lastmod: TODAY, changefreq: 'monthly', priority: 0.7 },
-    { loc: `${BASE_URL}/live-threat-dashboard`, lastmod: TODAY, changefreq: 'daily', priority: 0.8 },
-    { loc: `${BASE_URL}/forums`, lastmod: TODAY, changefreq: 'weekly', priority: 0.6 },
-    { loc: `${BASE_URL}/api`, lastmod: TODAY, changefreq: 'monthly', priority: 0.5 },
-    { loc: `${BASE_URL}/mobile`, lastmod: TODAY, changefreq: 'monthly', priority: 0.5 },
-    { loc: `${BASE_URL}/podcasts`, lastmod: TODAY, changefreq: 'weekly', priority: 0.6 },
-    { loc: `${BASE_URL}/learn/nexus-path`, lastmod: TODAY, changefreq: 'weekly', priority: 0.7 },
-    { loc: `${BASE_URL}/pulse/nexus-pulse`, lastmod: TODAY, changefreq: 'daily', priority: 0.8 },
-    { loc: `${BASE_URL}/nexus-studio`, lastmod: TODAY, changefreq: 'weekly', priority: 0.7 },
-    { loc: `${BASE_URL}/gaming/security-guides`, lastmod: TODAY, changefreq: 'weekly', priority: 0.7 },
-    { loc: `${BASE_URL}/gaming/security`, lastmod: TODAY, changefreq: 'weekly', priority: 0.7 },
-    { loc: `${BASE_URL}/newsletter`, lastmod: TODAY, changefreq: 'daily', priority: 0.7 },
-    { loc: `${BASE_URL}/seo-checklist`, lastmod: TODAY, changefreq: 'monthly', priority: 0.4 },
-    { loc: `${BASE_URL}/videos`, lastmod: TODAY, changefreq: 'weekly', priority: 0.6 },
-    { loc: `${BASE_URL}/notifications`, lastmod: TODAY, changefreq: 'weekly', priority: 0.5 },
-    { loc: `${BASE_URL}/settings`, lastmod: TODAY, changefreq: 'monthly', priority: 0.5 },
-    { loc: `${BASE_URL}/pillar/zero-trust-architecture`, lastmod: TODAY, changefreq: 'weekly', priority: 0.8 },
-    { loc: `${BASE_URL}/pillar/gaming-security`, lastmod: TODAY, changefreq: 'weekly', priority: 0.8 },
-    { loc: `${BASE_URL}/pillar/ai-threat-intelligence`, lastmod: TODAY, changefreq: 'weekly', priority: 0.8 },
-    { loc: `${BASE_URL}/research/state-of-gaming-security-2026`, lastmod: TODAY, changefreq: 'monthly', priority: 0.7 },
-    { loc: `${BASE_URL}/comparisons`, lastmod: TODAY, changefreq: 'weekly', priority: 0.7 },
-    { loc: `${BASE_URL}/keyword-gap-analysis`, lastmod: TODAY, changefreq: 'monthly', priority: 0.6 },
-    // Author pages (read from authorData.ts via scripts/lib/author-source.mjs)
-    ...Object.entries(authorProfiles).map(([slug]) => ({
+  const pages = INDEXABLE_ROUTES.map((route) => ({
+    loc: route.path === '/' ? `${BASE_URL}/` : `${BASE_URL}${route.path}`,
+    lastmod: TODAY,
+    changefreq: route.changefreq,
+    priority: route.priority,
+  }));
+  // Author profiles (excluding the editorial-team aggregate page).
+  for (const [slug] of Object.entries(authorProfiles)) {
+    if (slug === 'the-grid-nexus-editorial-team') continue;
+    pages.push({
       loc: `${BASE_URL}/author/${slug}`,
       lastmod: TODAY,
       changefreq: 'monthly',
       priority: 0.6,
-    })),
-    // Tool pages
-    { loc: `${BASE_URL}/tools/security-scanner`, lastmod: TODAY, changefreq: 'weekly', priority: 0.9 },
-    { loc: `${BASE_URL}/tools/nexusguard`, lastmod: TODAY, changefreq: 'weekly', priority: 0.8 },
-    { loc: `${BASE_URL}/tools/security-briefing`, lastmod: TODAY, changefreq: 'weekly', priority: 0.7 },
-    { loc: `${BASE_URL}/tools/vr-cyber-training`, lastmod: TODAY, changefreq: 'weekly', priority: 0.6 },
-    { loc: `${BASE_URL}/tools/steam-scanner`, lastmod: TODAY, changefreq: 'weekly', priority: 0.8 },
-    { loc: `${BASE_URL}/tools/ioc-lookup`, lastmod: TODAY, changefreq: 'daily', priority: 0.8 },
-    { loc: `${BASE_URL}/tools/gaming-security-checkup`, lastmod: TODAY, changefreq: 'weekly', priority: 0.8 },
-    { loc: `${BASE_URL}/tools/breach-explainer`, lastmod: TODAY, changefreq: 'weekly', priority: 0.8 },
-    { loc: `${BASE_URL}/tools/ai-tool-finder`, lastmod: TODAY, changefreq: 'weekly', priority: 0.7 },
-    { loc: `${BASE_URL}/tools/patch-risk-tracker`, lastmod: TODAY, changefreq: 'daily', priority: 0.8 },
-    { loc: `${BASE_URL}/tools/zero-trust-quiz`, lastmod: TODAY, changefreq: 'monthly', priority: 0.7 },
-    { loc: `${BASE_URL}/tools/exploit-risk-meter`, lastmod: TODAY, changefreq: 'daily', priority: 0.8 },
-    { loc: `${BASE_URL}/tools/pc-builder`, lastmod: TODAY, changefreq: 'weekly', priority: 0.8 },
-    { loc: `${BASE_URL}/tools/sentiment-analyzer`, lastmod: TODAY, changefreq: 'weekly', priority: 0.8 },
-    { loc: `${BASE_URL}/tools/news-personalizer`, lastmod: TODAY, changefreq: 'daily', priority: 0.7 },
-    { loc: `${BASE_URL}/tools/recommendation-engine`, lastmod: TODAY, changefreq: 'weekly', priority: 0.8 },
-    { loc: `${BASE_URL}/tools/threat-scanner`, lastmod: TODAY, changefreq: 'daily', priority: 0.9 },
-    { loc: `${BASE_URL}/tools/community-moderator`, lastmod: TODAY, changefreq: 'weekly', priority: 0.7 },
-    { loc: `${BASE_URL}/tools/gaming-copilot`, lastmod: TODAY, changefreq: 'daily', priority: 0.9 },
-    { loc: `${BASE_URL}/tools/release-predictor`, lastmod: TODAY, changefreq: 'daily', priority: 0.8 },
-  ];
+    });
+  }
+  return pages;
 }
 
 // ── Generate sitemap.xml (STATIC pages + guides/topics only) ──────────────

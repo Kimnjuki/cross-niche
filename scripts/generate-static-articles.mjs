@@ -264,7 +264,7 @@ function generateSecurityMetaCard(article) {
  * turn, receives inbound links — the fix for the 64 orphan pages / 122 orphaned
  * sitemap pages reported by Ahrefs and the technical audit (P2-01).
  */
-function buildRelatedHtml(article, allArticles, limit = 5) {
+function scoreRelated(article, allArticles, limit = 5) {
   const tags = new Set((article.tags || []).map((t) => String(t).toLowerCase()));
   const niche = nicheOf(article.contentType);
   const selfSlug = article.slug;
@@ -282,11 +282,80 @@ function buildRelatedHtml(article, allArticles, limit = 5) {
     })
     .slice(0, limit);
 
+  return scored.map((s) => s.article);
+}
+
+/**
+ * Pre-compute the related-reading map for ALL articles with a coverage pass.
+ *
+ * Pure scoring picks popular/recency winners, so ~76/101 articles ended up
+ * with ZERO incoming links from other static pages (Ahrefs orphan finding).
+ * After scoring, any article still at 0 inbound links is swapped into a
+ * same-niche related block — either appended to a donor with a free slot, or
+ * swapped in for a target that other pages already link to heavily. Every
+ * article therefore ships with >=1 crawlable inbound link.
+ *
+ * Returns Map<slug, Article[]>.
+ */
+function buildRelatedLists(articles) {
+  const lists = new Map();
+  const incoming = new Map(articles.map((a) => [a.slug, 0]));
+
+  for (const article of articles) {
+    const rel = scoreRelated(article, articles, 5);
+    lists.set(article.slug, rel);
+    for (const r of rel) incoming.set(r.slug, (incoming.get(r.slug) || 0) + 1);
+  }
+
+  for (const article of articles) {
+    if ((incoming.get(article.slug) || 0) > 0) continue;
+    const ownNiche = nicheOf(article.contentType);
+
+    // Prefer appending to a same-niche donor that has a free slot.
+    let donor = null; // { block, idx } — idx === -1 → append
+    for (const cand of articles) {
+      if (cand.slug === article.slug) continue;
+      if (nicheOf(cand.contentType) !== ownNiche) continue;
+      const block = lists.get(cand.slug);
+      if (!block || block.some((b) => b.slug === article.slug)) continue;
+      if (block.length < 5) { donor = { block, idx: -1 }; break; }
+      // Otherwise: swap out the slot whose target is linked most elsewhere.
+      let worstIdx = -1;
+      let worstCount = -1;
+      block.forEach((b, i) => {
+        const c = incoming.get(b.slug) || 0;
+        if (c > worstCount) { worstCount = c; worstIdx = i; }
+      });
+      if (worstCount > 1 && (!donor || worstCount > donor.count)) {
+        donor = { block, idx: worstIdx, count: worstCount };
+      }
+    }
+    if (!donor) continue;
+
+    if (donor.idx === -1) {
+      donor.block.push(article);
+    } else {
+      const evicted = donor.block[donor.idx];
+      donor.block[donor.idx] = article;
+      incoming.set(evicted.slug, Math.max(0, (incoming.get(evicted.slug) || 0) - 1));
+    }
+    incoming.set(article.slug, (incoming.get(article.slug) || 0) + 1);
+  }
+
+  lists.set('__incoming__', incoming);
+  return lists;
+}
+
+function buildRelatedHtml(article, relatedList) {
+  const scored = (relatedList && relatedList.length)
+    ? relatedList
+    : [];
+
   if (!scored.length) return '';
 
   const items = scored
     .map(
-      ({ article: a }) =>
+      (a) =>
         `<li style="margin-bottom:0.5rem"><a href="/article/${encodeURIComponent(a.slug)}" style="color:#60a5fa;text-decoration:none">${escapeHtml(a.title)}</a></li>`
     )
     .join('');
@@ -299,7 +368,7 @@ function buildRelatedHtml(article, allArticles, limit = 5) {
 }
 
 // ── Generate a static HTML page for an article ────────────────────────────
-function generateArticleHtml(article, bundleScript, allArticles = []) {
+function generateArticleHtml(article, bundleScript, allArticles = [], relatedList = null) {
   const niche = nicheOf(article.contentType);
   const canonical = canonicalUrlFor(article);
   const nicheLabel = niche === 'tech' ? 'Technology' : niche === 'security' ? 'Cybersecurity' : 'Gaming';
@@ -314,7 +383,7 @@ function generateArticleHtml(article, bundleScript, allArticles = []) {
     : '';
 
   const securityMetaCard = generateSecurityMetaCard(article);
-  const relatedHtml = buildRelatedHtml(article, allArticles);
+  const relatedHtml = buildRelatedHtml(article, relatedList);
   const jsonLd = generateArticleJsonLd(article);
   const pageTitle = buildTitle(article);
   const metaDescription = buildDescription(article);
@@ -382,7 +451,16 @@ ${jsonLd}
           <article>
             <h1 style="font-size:2.25rem;line-height:1.2;margin-bottom:1rem;color:#f8fafc">${escapeHtml(repairMojibake(article.title))}</h1>
             <div style="display:flex;flex-wrap:wrap;gap:1rem;font-size:0.875rem;color:#94a3b8;margin-bottom:1.5rem">
-              <span>By ${escapeHtml(article.authorName || 'The Grid Nexus Editorial Team')}</span>
+              <span>By ${(() => {
+                const authorName = article.authorName || 'The Grid Nexus Editorial Team';
+                const slug = authorName.toLowerCase().trim().replace(/[\s_]+/g, '-').replace(/[^a-z0-9-]/g, '');
+                // Link the byline to the static author page (P1 orphan rescue:
+                // gives /author/* profiles crawlable inbound links) — except the
+                // generic editorial-team profile, which has no page of its own.
+                return slug && slug !== 'the-grid-nexus-editorial-team'
+                  ? `<a href="/author/${slug}" style="color:#94a3b8;text-decoration:none">${escapeHtml(authorName)}</a>`
+                  : escapeHtml(authorName);
+              })()}</span>
               ${dateStr ? `<span>${dateStr}</span>` : ''}
                             ${modifiedStr ? `<span>Updated: ${modifiedStr}</span>` : ""}
               <span>${article.readTime} min read</span>
@@ -422,11 +500,12 @@ async function main() {
 
   const { items: articles, source } = await loadPublishedContent();
   console.log(`📄 Loaded ${articles.length} published articles (source: ${source})`);
+  const relatedMap = buildRelatedLists(articles);
   let generated = 0;
   for (const article of articles) {
     const articleDir = path.join(distDir, 'article', article.slug);
     fs.mkdirSync(articleDir, { recursive: true });
-    const html = generateArticleHtml(article, bundleScript, articles);
+    const html = generateArticleHtml(article, bundleScript, articles, relatedMap.get(article.slug) || []);
     fs.writeFileSync(path.join(articleDir, 'index.html'), html, 'utf-8');
     generated++;
   }
