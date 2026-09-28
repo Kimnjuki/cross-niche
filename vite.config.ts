@@ -31,22 +31,31 @@ export default defineConfig(({ mode }: ConfigEnv) => {
   const convexUrl = (import.meta as Record<string, any>).env?.VITE_CONVEX_URL || "";
   
   // Load prerender routes: static + article routes from prerender-routes.json (generated in prebuild)
+  // Fallback mirrors INDEXABLE_ROUTES in scripts/lib/route-metadata.mjs so a
+  // missing file still prerenders real, indexable routes — never /blog-series
+  // (404, no App.tsx route) or /security-profile (noindex + robots-blocked).
   let prerenderRoutes = [
     "/",
     "/tech",
     "/security",
     "/gaming",
     "/news",
+    "/blog",
     "/topics",
     "/guides",
+    "/tutorials",
+    "/reviews",
+    "/startups",
+    "/explore",
+    "/ai-pulse",
+    "/live-updates",
+    "/roadmap",
+    "/community-threats",
+    "/nexus-intersection",
     "/about",
     "/contact",
     "/privacy",
     "/terms",
-    "/roadmap",
-    "/blog-series",
-    "/security-profile",
-    "/community-threats",
     "/tools",
   ];
   try {

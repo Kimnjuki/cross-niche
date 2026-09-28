@@ -168,9 +168,43 @@ export async function loadPublishedContent(options = {}) {
   return { items, source: 'mockData', snapshotMeta: null };
 }
 
-/** The single canonical URL pattern for all articles on this site. */
+/**
+ * The single canonical URL pattern for all articles on this site.
+ *
+ * FIX 2026-09-28: the editorial DB contains hand-set `canonicalUrl` values that
+ * point at ALIASES — three at `https://www.thegridnexus.com/...`, two at
+ * `/gaming/<slug>` and one at `/guides/<slug>`. Every one of those URLs
+ * 301-redirects (nginx collapses www → apex and /<niche>/<slug> → /article/<slug>),
+ * so Google reported "canonical points to redirect" and dropped the pages.
+ *
+ * Rules applied here:
+ *   - off-domain canonical  → returned untouched (intentional attribution)
+ *   - on-domain alias       → collapsed to https://thegridnexus.com/article/<slug>
+ *   - anything unparseable  → the canonical article URL
+ */
+export const SITE_ORIGIN = 'https://thegridnexus.com';
+const SAME_SITE_HOSTS = new Set(['thegridnexus.com', 'www.thegridnexus.com']);
+
 export function canonicalUrlFor(item) {
-  return item.canonicalUrl || `https://thegridnexus.com/article/${item.slug}`;
+  const fallback = `${SITE_ORIGIN}/article/${item.slug}`;
+  const raw = item.canonicalUrl ? String(item.canonicalUrl).trim() : '';
+  if (!raw) return fallback;
+
+  let url;
+  try {
+    url = new URL(raw);
+  } catch {
+    return fallback;
+  }
+
+  // Off-domain canonical (syndication / original publisher) — leave it alone.
+  if (!SAME_SITE_HOSTS.has(url.hostname)) return raw;
+
+  const pathname = url.pathname.replace(/\/+$/, '') || '/';
+  if (/^\/article\/[^/]+$/.test(pathname)) return `${SITE_ORIGIN}${pathname}`;
+
+  // Any other on-domain path is a redirecting alias, never the canonical.
+  return fallback;
 }
 
 /** Sitemap priority derived from editorial flags (plan P1-T1 spec). */

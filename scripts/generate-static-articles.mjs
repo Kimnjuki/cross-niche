@@ -17,7 +17,7 @@
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import { loadPublishedContent } from './lib/content-source.mjs';
+import { loadPublishedContent, canonicalUrlFor } from './lib/content-source.mjs';
 import { normalizeArticleHtml, repairMojibake } from './lib/normalize-article-html.mjs';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -131,7 +131,10 @@ function generateArticleJsonLd(article) {
   const publishedDate = article.publishedAt ? new Date(article.publishedAt).toISOString() : new Date().toISOString();
   const modifiedDate = article.lastModified ? new Date(article.lastModified).toISOString() : publishedDate;
   const articleUrl = `${BASE_URL}/article/${article.slug}`;
-  const canonical = article.canonicalUrl || articleUrl;
+  // Always self-canonicalise: hand-set aliases (www. host, /gaming/<slug>,
+  // /guides/<slug>) 301-redirect, and a canonical pointing at a redirect is
+  // dropped from the index ("canonical points to redirect" in Search Console).
+  const canonical = canonicalUrlFor(article);
 
   const authorName = article.authorName || 'The Grid Nexus Editorial Team';
   const authorSlugValue = authorName.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
@@ -298,7 +301,7 @@ function buildRelatedHtml(article, allArticles, limit = 5) {
 // ── Generate a static HTML page for an article ────────────────────────────
 function generateArticleHtml(article, bundleScript, allArticles = []) {
   const niche = nicheOf(article.contentType);
-  const canonical = article.canonicalUrl || `${BASE_URL}/article/${article.slug}`;
+  const canonical = canonicalUrlFor(article);
   const nicheLabel = niche === 'tech' ? 'Technology' : niche === 'security' ? 'Cybersecurity' : 'Gaming';
   const nicheUrl = `/${niche}`;
   const imageUrl = article.featuredImageUrl || `${BASE_URL}/og-image.jpg`;

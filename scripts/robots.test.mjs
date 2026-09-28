@@ -16,12 +16,12 @@ function allowed(url) {
 }
 
 test('public editorial and tool routes remain crawlable', () => {
-  for (const route of ['/', '/tech', '/security/article', '/gaming/article', '/news', '/guides/example', '/article/example', '/tools/pc-builder', '/security-score', '/breach-sim', '/pillar/gaming-security', '/research/report']) {
+  for (const route of ['/', '/tech', '/security/article', '/gaming/article', '/news', '/guides/example', '/article/example', '/author/jane-doe', '/tools/pc-builder', '/security-score', '/breach-sim', '/pillar/gaming-security', '/research/report', '/topics', '/explore', '/topics?page=2', '/explore?sort=date']) {
     assert.ok(allowed(route), route);
   }
 });
 test('account, unpublished, API and search/filter states are excluded', () => {
-  for (const route of ['/api/content', '/admin', '/admin/editor', '/settings', '/notifications', '/security-profile', '/preview/example', '/draft/example', '/article/example/preview', '/article/example?preview=true', '/topics?search=gaming', '/topics?sort=date&search=gaming', '/explore?filter=tech', '/explore?page=2&filter=gaming']) {
+  for (const route of ['/admin', '/admin/editor', '/api/content', '/api', '/auth', '/auth/callback', '/signin', '/signup', '/settings', '/billing', '/subscription', '/subscription/success', '/bookmarks', '/original-index', '/notifications', '/security-profile', '/preview/example', '/draft/example', '/article/example/preview', '/article/example?preview=true', '/simple', '/enhanced', '/enhanced-simple', '/test-features', '/newsletter/verify', '/tools-old', '/topics?search=gaming', '/topics?sort=date&search=gaming', '/explore?filter=tech', '/explore?page=2&filter=gaming', '/article/example/edit', '/article-detail']) {
     assert.equal(allowed(route), false, route);
   }
 });

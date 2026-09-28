@@ -11,7 +11,7 @@ export const SignInSignUp: React.FC = () => {
   const { isSignedIn, isLoaded } = useUser();
   const { signOut } = useAuth();
   const location = useLocation();
-
+  
   const mode: 'signin' | 'signup' = React.useMemo(() => {
     const p = location.pathname.toLowerCase();
     return p.startsWith('/signup') ? 'signup' : 'signin';

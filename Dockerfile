@@ -66,6 +66,12 @@ RUN VITE_CONVEX_URL= PRERENDER=0 npm run build:frontend
 RUN node scripts/generate-seo-sitemaps.mjs || true
 RUN node scripts/generate-static-articles.mjs || true
 
+# Per-route static HTML shells (title/description/canonical/H1 per URL).
+# NOT wrapped in `|| true`: serving the homepage shell for 60+ content routes is
+# what collapsed the site's index coverage in Sept 2026, so this step must fail
+# loudly rather than silently ship a duplicate-content site.
+RUN node scripts/generate-static-route-shells.mjs
+
 # Stage 2: Production (Serve with Nginx)
 FROM nginx:stable-alpine AS production-stage
 

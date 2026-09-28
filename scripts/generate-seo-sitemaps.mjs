@@ -19,6 +19,11 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import { loadPublishedContent, priorityFor, canonicalUrlFor, fetchGuidesAndTopics } from './lib/content-source.mjs';
 import { authorProfiles } from './lib/author-source.mjs';
+import {
+  ROUTE_METADATA,
+  NON_INDEXABLE_ROUTES,
+  isNonIndexable,
+} from './lib/route-metadata.mjs';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -111,6 +116,8 @@ function getStaticPages() {
     { loc: `${BASE_URL}/pulse/nexus-pulse`, lastmod: TODAY, changefreq: 'daily', priority: 0.8 },
     { loc: `${BASE_URL}/nexus-studio`, lastmod: TODAY, changefreq: 'weekly', priority: 0.7 },
     { loc: `${BASE_URL}/gaming/security-guides`, lastmod: TODAY, changefreq: 'weekly', priority: 0.7 },
+    { loc: `${BASE_URL}/gaming/security`, lastmod: TODAY, changefreq: 'weekly', priority: 0.7 },
+    { loc: `${BASE_URL}/newsletter`, lastmod: TODAY, changefreq: 'daily', priority: 0.7 },
     { loc: `${BASE_URL}/seo-checklist`, lastmod: TODAY, changefreq: 'monthly', priority: 0.4 },
     { loc: `${BASE_URL}/videos`, lastmod: TODAY, changefreq: 'weekly', priority: 0.6 },
     { loc: `${BASE_URL}/notifications`, lastmod: TODAY, changefreq: 'weekly', priority: 0.5 },
@@ -156,29 +163,24 @@ function getStaticPages() {
 // P1-5 fix: article URLs must NOT appear here (they live in
 // sitemap-articles.xml). Listing articles in both sitemaps caused
 // "pages listed in multiple sitemaps" (38 URLs in the audit).
-function generateMainSitemap(articles) {
-  const urls = [...getStaticPages()];
-  const seen = new Set(urls.map((u) => u.loc));
+//
+// 2026-09-28 fix: a sitemap may only list URLs that (a) return 200 with their
+// OWN indexable HTML and (b) are not blocked in robots.txt. The old list shipped
+// /notifications, /settings, /api and /security-profile (all Disallow-ed in
+// robots.txt → "Submitted URL blocked by robots.txt") plus /sitemap,
+// /seo-checklist and /keyword-gap-analysis, which are internal tooling with no
+// search demand. Those are now filtered out via the shared route registry.
+function generateMainSitemap() {
+  const urls = getStaticPages().filter((u) => {
+    const pathname = new URL(u.loc).pathname.replace(/\/+$/, '') || '/';
+    return !isNonIndexable(pathname) && !NON_INDEXABLE_ROUTES.includes(pathname);
+  });
 
-  for (const article of articles) {
-    if (isPlaceholderTitle(article.title)) continue;
-    // Guides and topics are NOT articles — keep them in the main sitemap.
-    // Everything with a real /article/<slug> goes to sitemap-articles.xml only.
-    if (article.niche === 'guides') {
-      const loc = `${BASE_URL}/guides/${article.slug}`;
-      if (!seen.has(loc)) {
-        seen.add(loc);
-        urls.push({ loc, lastmod: article.publishedAt || TODAY, changefreq: 'weekly', priority: 0.8 });
-      }
-    } else if (article.niche === 'topics') {
-      const loc = `${BASE_URL}/topics/${article.slug}`;
-      if (!seen.has(loc)) {
-        seen.add(loc);
-        urls.push({ loc, lastmod: TODAY, changefreq: 'weekly', priority: 0.8 });
-      }
-    }
-    // else: article URLs are intentionally NOT added to sitemap.xml
-  }
+  // NOTE (2026-09-28): /guides/<slug> and /topics/<slug> are intentionally NOT
+  // listed. Both are Convex-backed routes that receive no build-time HTML, so a
+  // crawler would hit them and be handed the homepage shell — the soft-404
+  // pattern this remediation exists to eliminate. They return to the sitemap
+  // once scripts/generate-static-route-shells.mjs can emit HTML for them too.
 
   const xml = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
@@ -213,18 +215,41 @@ ${articleUrls.map((u) => urlEntry(u.loc, u.lastmod, u.changefreq, u.priority, u.
   return xml;
 }
 
-// ── Generate sitemap-news.xml (recent articles, max 1000) ──────────────────
+// ── Generate sitemap-news.xml (Google News, last 48 hours only) ────────────
+//
+// 2026-09-28 fixes:
+//   1. NAMESPACE was `http://www.google.com/schemas/news/sitemap/2.0`, which is
+//      not a namespace Google supports for news sitemaps — the whole file was
+//      rejected. The supported value is
+//      `http://www.google.com/schemas/sitemap-news/0.9`.
+//   2. Google only accepts articles from the LAST 48 HOURS in a news sitemap.
+//      The file shipped 101 entries dated back to July, which invalidates it.
+//   3. Entries must be the canonical /article/<slug> URL. Hand-set aliases
+//      (www. host, /gaming/<slug>) redirect and are rejected as non-canonical.
+//   4. An empty news sitemap is a valid, empty <urlset> — and when it is empty
+//      the index no longer advertises it.
+const NEWS_WINDOW_HOURS = 48;
+
+function isWithinNewsWindow(dateValue) {
+  if (!dateValue) return false;
+  const ms = typeof dateValue === 'number' ? dateValue : Date.parse(String(dateValue));
+  if (Number.isNaN(ms)) return false;
+  return Date.now() - ms <= NEWS_WINDOW_HOURS * 60 * 60 * 1000;
+}
+
 function generateNewsSitemap(articles) {
   const articleEntries = articles
     .filter((a) => a.niche !== 'guides' && a.niche !== 'topics')
-    .sort((a, b) => (b.publishedAt || '').localeCompare(a.publishedAt || ''))
+    .filter((a) => isWithinNewsWindow(a.publishedAt) || isWithinNewsWindow(a.lastModified))
+    .filter((a) => !isPlaceholderTitle(a.title))
+    .sort((a, b) => String(b.publishedAt || '').localeCompare(String(a.publishedAt || '')))
     .slice(0, 1000);
 
   const entries = articleEntries.map((a) => {
-    if (isPlaceholderTitle(a.title)) return null;
     const title = escapeXml(a.title || a.slug);
-    // Use the same canonical-consistent loc as sitemap-articles.xml.
-    const loc = a.loc || `${BASE_URL}/article/${a.slug}`;
+    // Always the canonical article URL — never an alias that redirects.
+    const loc = `${BASE_URL}/article/${a.slug}`;
+    const publicationDate = a.publishedAt || a.lastModified || TODAY;
     return `  <url>
     <loc>${escapeXml(loc)}</loc>
     <news:news>
@@ -232,22 +257,31 @@ function generateNewsSitemap(articles) {
         <news:name>The Grid Nexus</news:name>
         <news:language>en</news:language>
       </news:publication>
-      <news:publication_date>${a.publishedAt || TODAY}</news:publication_date>
+      <news:publication_date>${publicationDate}</news:publication_date>
       <news:title>${title}</news:title>
     </news:news>
   </url>`;
-  }).filter(Boolean).join('\n');
+  }).join('\n');
 
-  const xml = `<?xml version="1.0" encoding="UTF-8"?>
+  return {
+    xml: `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
-        xmlns:news="http://www.google.com/schemas/news/sitemap/2.0">
+        xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
 ${entries}
-</urlset>`;
-  return xml;
+</urlset>`,
+    count: articleEntries.length,
+  };
 }
 
 // ── Generate sitemap-index.xml ──────────────────────────────────────────────
-function generateIndexSitemap() {
+function generateIndexSitemap(includeNews) {
+  const newsEntry = includeNews
+    ? `  <sitemap>
+    <loc>${BASE_URL}/sitemap-news.xml</loc>
+    <lastmod>${TODAY}</lastmod>
+  </sitemap>
+`
+    : '';
   return `<?xml version="1.0" encoding="UTF-8"?>
 <sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <sitemap>
@@ -258,11 +292,7 @@ function generateIndexSitemap() {
     <loc>${BASE_URL}/sitemap-articles.xml</loc>
     <lastmod>${TODAY}</lastmod>
   </sitemap>
-  <sitemap>
-    <loc>${BASE_URL}/sitemap-news.xml</loc>
-    <lastmod>${TODAY}</lastmod>
-  </sitemap>
-</sitemapindex>`;
+${newsEntry}</sitemapindex>`;
 }
 
 // ── Main ────────────────────────────────────────────────────────────────────
@@ -326,12 +356,21 @@ async function main() {
   // the freshly generated, deduped sitemaps.
   const distDir = path.join(projectRoot, 'dist');
 
+  const news = generateNewsSitemap(articles);
+
   const files = {
-    'sitemap.xml': generateMainSitemap(allUrls),
+    'sitemap.xml': generateMainSitemap(),
     'sitemap-articles.xml': generateArticlesSitemap(articles),
-    'sitemap-news.xml': generateNewsSitemap(articles),
-    'sitemap-index.xml': generateIndexSitemap(),
+    'sitemap-news.xml': news.xml,
+    'sitemap-index.xml': generateIndexSitemap(news.count > 0),
   };
+
+  if (news.count === 0) {
+    console.log(
+      'ℹ︎  0 articles published in the last 48h — sitemap-news.xml is empty ' +
+        '(valid) and is no longer advertised in sitemap-index.xml.'
+    );
+  }
 
   for (const [filename, content] of Object.entries(files)) {
     const outPath = path.join(publicDir, filename);
@@ -346,7 +385,7 @@ async function main() {
     }
   }
 
-  console.log(`\n✅ Sitemaps regenerated with ${allUrls.length} valid URLs.`);
+  console.log(`\n✅ Sitemaps regenerated: ${articles.length} article URLs, ${news.count} news URLs.`);
 }
 
 main().catch((error) => {

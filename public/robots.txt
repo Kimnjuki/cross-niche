@@ -15,24 +15,35 @@ User-agent: Applebot-Extended
 Allow: /
 
 # Private / member pages (never index)
+# NOTE (2026-09-28): robots.txt patterns are PREFIX matches, not exact paths.
+# `Disallow: /auth` also blocked every /author/<name> bio page — 12 pages that
+# are submitted in sitemap.xml and are a core E-E-A-T signal ("Submitted URL
+# blocked by robots.txt"). Auth rules are therefore anchored with `$`. The same
+# gotcha applies to /admin, /subscription and /api, which have no trailing slash.
 Disallow: /admin/
-Disallow: /admin
+Disallow: /admin$
 Disallow: /profile
-Disallow: /auth
+Disallow: /auth$
+Disallow: /auth/
 Disallow: /signin
 Disallow: /signup
 Disallow: /settings
 Disallow: /billing
+Disallow: /subscription$
 Disallow: /subscription/
 Disallow: /bookmarks
 Disallow: /original-index
 Disallow: /notifications
+Disallow: /api$
 Disallow: /api/
 Disallow: /security-profile
 Disallow: /preview
 Disallow: /draft
 Disallow: /*/preview
 Disallow: /*/draft
+
+# Author bio pages must stay crawlable — they carry the E-E-A-T bylines.
+Allow: /author/
 
 # Search/filter variants duplicate the canonical editorial listings.
 Disallow: /search
@@ -43,19 +54,37 @@ Disallow: /*?*&search=*
 Disallow: /*?filter=*
 Disallow: /*?*&filter=*
 
+# Dev / test pages (not for indexing)
+Disallow: /simple
+Disallow: /enhanced
+Disallow: /enhanced-simple
+Disallow: /test-features
+Disallow: /newsletter/verify
+Disallow: /tools-old
+
+# Legacy / malformed article helpers
+Disallow: /article-detail
+Disallow: /article/*/edit
+
+# WordPress scanner bait (block probes only; not WordPress)
+Disallow: /wp-admin/
+Disallow: /wp-includes/
+
 # Default: allow all crawlers (no blocking rules for search or AI bots)
 User-agent: *
 Allow: /
 
 # Private / member pages (never index)
 Disallow: /admin/
-Disallow: /admin
+Disallow: /admin$
 Disallow: /profile
-Disallow: /auth
+Disallow: /auth$
+Disallow: /auth/
 Disallow: /signin
 Disallow: /signup
 Disallow: /settings
 Disallow: /billing
+Disallow: /subscription$
 Disallow: /subscription/
 Disallow: /bookmarks
 Disallow: /original-index

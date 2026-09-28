@@ -9,28 +9,17 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import { loadPublishedContent, fetchGuidesAndTopics } from './lib/content-source.mjs';
 import { authorProfiles } from './lib/author-source.mjs';
+import { INDEXABLE_ROUTES } from './lib/route-metadata.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const outputPath = path.resolve(__dirname, '..', 'prerender-routes.json');
 
-const routes = [
-  '/',
-  '/tech',
-  '/security',
-  '/gaming',
-  '/news',
-  '/topics',
-  '/guides',
-  '/about',
-  '/contact',
-  '/privacy',
-  '/terms',
-  '/roadmap',
-  '/blog-series',
-  '/security-profile',
-  '/community-threats',
-  '/tools',
-];
+// Static routes come from the shared registry (single source of truth) so
+// this list can never drift from sitemap.xml / route shells again. The old
+// hand-maintained list contained /blog-series (no App.tsx route → 404) and
+// /security-profile (noindex + robots-blocked → GSC errors) and omitted
+// /blog, /explore and dozens of real routes.
+const routes = INDEXABLE_ROUTES.map((route) => route.path);
 
 async function main() {
   const { items, source } = await loadPublishedContent();
