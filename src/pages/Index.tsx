@@ -46,6 +46,7 @@ import {
   mobileGamingSecurityArticle,
   MOBILE_GAMING_SECURITY_SLUG,
 } from '@/data/mobileGamingSecurityArticle';
+import { gamingPCSecurityHardeningArticle, GAMING_PC_SECURITY_HARDENING_SLUG } from '@/data/gamingPCSecurityHardeningArticle';
 import { getPageMetadata } from '@/lib/seo/pageMetadata';
 import {
   useAllPublishedContent,
@@ -206,7 +207,7 @@ export default function Index() {
   // Newest published guide — pinned as the homepage lead story, independent of
   // feed availability so it is always discoverable from the homepage.
   const leadStory: Article =
-    sortedArticles.find((a) => a.slug === MOBILE_GAMING_SECURITY_SLUG) ?? mobileGamingSecurityArticle;
+    sortedArticles.find((a) => a.slug === GAMING_PC_SECURITY_HARDENING_SLUG) ?? gamingPCSecurityHardeningArticle;
 
   // Featured strip: lead story first, then the newest remaining feed items.
   const featuredIntel: Article[] = [

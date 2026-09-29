@@ -42,6 +42,7 @@ import type * as guides from "../guides.js";
 import type * as import_ from "../import.js";
 import type * as ingest from "../ingest.js";
 import type * as insertApril29_2026Articles from "../insertApril29_2026Articles.js";
+import type * as insertGamingPCSecurityHardeningGuide from "../insertGamingPCSecurityHardeningGuide.js";
 import type * as insertMobileGamingSecurityGuide from "../insertMobileGamingSecurityGuide.js";
 import type * as learningRecommendations from "../learningRecommendations.js";
 import type * as linkIntelligence from "../linkIntelligence.js";
@@ -120,6 +121,7 @@ declare const fullApi: ApiFromModules<{
   import: typeof import_;
   ingest: typeof ingest;
   insertApril29_2026Articles: typeof insertApril29_2026Articles;
+  insertGamingPCSecurityHardeningGuide: typeof insertGamingPCSecurityHardeningGuide;
   insertMobileGamingSecurityGuide: typeof insertMobileGamingSecurityGuide;
   learningRecommendations: typeof learningRecommendations;
   linkIntelligence: typeof linkIntelligence;
