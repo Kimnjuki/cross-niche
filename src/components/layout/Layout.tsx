@@ -5,6 +5,7 @@ import { GlobalPulseSidebar } from './GlobalPulseSidebar';
 import { NexusScoreWidget } from '@/components/ui/NexusScoreWidget';
 import { CookieConsent } from '@/components/consent/CookieConsent';
 import { AdScriptInitializer } from '@/components/ads/AdScriptInitializer';
+import { AdsterraPopunder } from '@/components/ads/AdsterraPopunder';
 import { AIIntelligenceTicker } from './AIIntelligenceTicker';
 
 interface LayoutProps {
@@ -17,6 +18,7 @@ export function Layout({ children, showPulseSidebar = false }: LayoutProps) {
   return (
     <div className="min-h-screen flex flex-col">
       <AdScriptInitializer />
+      <AdsterraPopunder />
       {showPulseSidebar && <GlobalPulseSidebar />}
       <div className={showPulseSidebar ? 'pl-[64px]' : ''}>
         <NexusNavBar />

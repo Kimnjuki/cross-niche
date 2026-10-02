@@ -37,6 +37,7 @@ import { RelatedArticles } from '@/components/RelatedArticles';
 import { NextArticle } from '@/components/gaming/NextArticle';
 import { LazyImage } from '@/components/ui/lazy-image';
 import { AdPlacement } from '@/components/ads/AdPlacement';
+import { AdsterraNative } from '@/components/ads/AdsterraNative';
 import { authorProfiles, getAuthorProfile } from '@/data/authorData';
 import { generatePersonSchema } from '@/lib/schemaMarkup';
 import { AuthorCredentialCard } from '@/components/seo/AuthorCredentialCard';
@@ -442,6 +443,12 @@ export default function Article() {
               hasSubstantialContent={!!article.content && article.content.length > 500}
             />
 
+            {/* Adsterra Native #1 — mid-article, right after body/AdSense.
+                Highest-earning article slot: reader is engaged, dwell peak. */}
+            <div className="my-8">
+              <AdsterraNative slot="inArticle" label="Sponsored — article mid-content" />
+            </div>
+
             {tags.length > 0 && (
               <div className="flex flex-wrap gap-2 mt-8">
                 {tags.map((tag) => (
@@ -538,6 +545,12 @@ export default function Article() {
 
           <div className="mb-16">
             <CommentSection articleId={articleId} />
+          </div>
+
+          {/* Adsterra Native #2 — end-of-article, before Topic Cluster /
+              Related Intelligence. Second-best article slot: intent handoff. */}
+          <div className="mb-12">
+            <AdsterraNative slot="endOfArticle" label="Sponsored — end of article" />
           </div>
 
           {/* Topic Cluster Links - Hub-and-Spoke Internal Linking */}

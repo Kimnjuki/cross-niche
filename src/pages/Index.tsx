@@ -14,6 +14,7 @@ import { Layout } from '@/components/layout/Layout';
 import { SEO } from '@/components/SEO';
 import { SEOHead } from '@/components/seo/SEOHead';
 import { LandingPageTracker } from '@/components/analytics/LandingPageTracker';
+import { AdsterraNative } from '@/components/ads/AdsterraNative';
 
 // New v2 components
 import { HeroCommandCenter } from '@/components/home/HeroCommandCenter';
@@ -265,6 +266,14 @@ export default function Index() {
 
       {/* P2: Command Dashboard */}
       <CommandDashboard />
+
+      {/* Adsterra Native #1 — homepage below-the-fold anchor (below lead story,
+          above Featured strip = highest homepage viewability, zero CLS). */}
+      <div className="bg-[#0A0A0B] border-b border-[#27272A]">
+        <div className="container mx-auto px-4 max-w-7xl py-6">
+          <AdsterraNative slot="homepageTop" label="Sponsored — homepage top" />
+        </div>
+      </div>
 
       {/* P3: Featured Articles Strip — helps users discover articles from homepage */}
       {sortedArticles.length > 0 && (
@@ -639,6 +648,11 @@ export default function Index() {
               {sortedArticles.slice(0, 9).map((article, i) => (
                 <ArticleCard key={safeArticleId(article) || i} article={article} variant="default" />
               ))}
+            </div>
+            {/* Adsterra Native #2 — in-feed after the 9-card grid (native feel,
+                separates feed from the Explore CTA = peak CTR zone). */}
+            <div className="mt-8">
+              <AdsterraNative slot="homepageFeed" label="Sponsored — homepage feed" />
             </div>
             <div className="mt-6 text-center">
               <Link to="/explore" className="font-mono text-xs text-[#00F0FF] hover:text-[#00D4E6]">
