@@ -1,19 +1,21 @@
 /**
  * Adsterra Configuration — central place for all Adsterra keys.
  *
- * You gave ID `6088150`. Paste your REAL codes from
- * Adsterra Dashboard > Websites > (your site) > Ad units into the fields
- * below and everything lights up — no other file needs editing.
+ * Real production codes are wired below (no placeholders).
+ * To disable anything, flip its `enabled`/`configured` flag —
+ * no other file needs editing.
  *
- * Popunder example from Adsterra looks like:
- *   <script src="//pl6088150.highperformanceformat.com/ab/cd/ef/abcdef....js"></script>
- *   — paste the full src URL into `popunder.scriptSrc`.
+ * Popunder:
+ *   <script src="https://pl31630046.profitableratecpmnetwork.com/70/2d/27/702d2739edb6ffc48f229d3c28bf2327.js"></script>
  *
- * Native Banner example from Adsterra looks like:
- *   <script>atOptions = { key:'abc123...', format:'iframe', height:250, width:300, params:{} };</script>
- *   <script src="//www.highperformanceformat.com/abc123.../invoke.js"></script>
- *   — paste `key`, `width`, `height` per placement below.
+ * Native Banner (new container-style format):
+ *   <script async data-cfasync="false" src="https://pl31630047.profitableratecpmnetwork.com/e6830354de6d25dd478d5176091bd278/invoke.js"></script>
+ *   <div id="container-e6830354de6d25dd478d5176091bd278"></div>
  */
+
+const NATIVE_INVOKE_SRC =
+  'https://pl31630047.profitableratecpmnetwork.com/e6830354de6d25dd478d5176091bd278/invoke.js';
+const NATIVE_CONTAINER_ID = 'container-e6830354de6d25dd478d5176091bd278';
 
 export const ADSTERRA_CONFIG = {
   enabled: true,
@@ -21,11 +23,9 @@ export const ADSTERRA_CONFIG = {
   // ── Popunder (site-wide, frequency-capped) ──────────────────────────────
   popunder: {
     enabled: true,
-    // TODO: replace with your real Popunder script URL from Adsterra.
-    // Keep the leading `//` (protocol-relative) exactly as Adsterra gives it.
-    // Example: '//pl6088150.highperformanceformat.com/xx/yy/zz/...js'
-    scriptSrc: '//pl6088150.highperformanceformat.com/placeholder/popunder.js',
-    configured: false, // ← flip to `true` once you paste the real scriptSrc
+    scriptSrc:
+      'https://pl31630046.profitableratecpmnetwork.com/70/2d/27/702d2739edb6ffc48f229d3c28bf2327.js',
+    configured: true,
     // Frequency cap: show at most once per X hours (per browser).
     frequencyCapHours: 24,
     // Delay after page load before the script is injected (ms).
@@ -34,39 +34,35 @@ export const ADSTERRA_CONFIG = {
     requireInteraction: true,
   },
 
-  // ── Native Banners (iframe-isolated, no atOptions collisions) ───────────
+  // ── Native Banners (container + invoke.js, iframe-isolated) ─────────────
+  // NOTE: all four slots share the same Adsterra native unit. Each slot
+  // renders inside its own iframe document, so the shared container ID
+  // never collides (same-document duplicate IDs would break all but the
+  // first placement — the classic React failure mode).
   native: {
     // Homepage — below lead story / above Featured strip (highest viewability)
     homepageTop: {
-      key: '6088150',
-      format: 'iframe' as const,
-      width: 300,
-      height: 250,
-      configured: false,
+      invokeSrc: NATIVE_INVOKE_SRC,
+      containerId: NATIVE_CONTAINER_ID,
+      configured: true,
     },
-    // Homepage — in-feed, injected after Nth card (native feel, high CTR)
+    // Homepage — in-feed, after the 9-card grid (native feel, high CTR)
     homepageFeed: {
-      key: '6088150',
-      format: 'iframe' as const,
-      width: 300,
-      height: 250,
-      configured: false,
+      invokeSrc: NATIVE_INVOKE_SRC,
+      containerId: NATIVE_CONTAINER_ID,
+      configured: true,
     },
     // Article — mid-article, after body content / before tags (best earner)
     inArticle: {
-      key: '6088150',
-      format: 'iframe' as const,
-      width: 300,
-      height: 250,
-      configured: false,
+      invokeSrc: NATIVE_INVOKE_SRC,
+      containerId: NATIVE_CONTAINER_ID,
+      configured: true,
     },
     // Article — end of article, before Related Intelligence (second best)
     endOfArticle: {
-      key: '6088150',
-      format: 'iframe' as const,
-      width: 300,
-      height: 250,
-      configured: false,
+      invokeSrc: NATIVE_INVOKE_SRC,
+      containerId: NATIVE_CONTAINER_ID,
+      configured: true,
     },
   },
 
