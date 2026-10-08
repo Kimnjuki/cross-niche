@@ -122,11 +122,13 @@ async function main() {
     generatedAt: new Date().toISOString(),
     convexUrlHost: new URL(url).host,
     count: items.length,
-    // The underlying query is hard-capped at 100 docs (convex/content.ts
-    // getAllPublishedContent: .slice(0, 100)). Record it so a future reader can
-    // tell whether the snapshot may be truncated.
-    sourceQueryCap: 100,
-    possiblyTruncated: items.length >= 100,
+    // The underlying query was historically hard-capped at 100 docs. The cap
+    // was raised to 1000 (convex/content.ts getAllPublishedContent) after older
+    // published articles were silently dropped from the snapshot whenever a new
+    // article shipped. Record the current cap so a future reader can tell
+    // whether the snapshot may be truncated.
+    sourceQueryCap: 1000,
+    possiblyTruncated: items.length >= 1000,
   };
 
   const payload = { meta, items };
@@ -137,7 +139,7 @@ async function main() {
   console.log(`Wrote ${items.length} items (${(bytes / 1024).toFixed(0)} KB) -> ${args.out}`);
   if (meta.possiblyTruncated) {
     console.warn(
-      'NOTE: item count hit the 100-doc cap of content:getAllPublishedContent. ' +
+      'NOTE: item count hit the 1000-doc cap of content:getAllPublishedContent. ' +
         'Older published articles may exist beyond this snapshot window.',
     );
   }

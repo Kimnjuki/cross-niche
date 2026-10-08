@@ -272,8 +272,13 @@ export const getAllPublishedContent = query({
       .query("content")
       .withIndex("by_status_published_at", (q) => q.eq("status", "published"))
       .order("desc")
-      .take(200);
-    return docs.filter((d) => d.isDeleted !== true).slice(0, 100);
+      .take(1000);
+    // NOTE: previously capped at 100 (.slice(0, 100)). That silently dropped
+    // older published articles from the static snapshot every time a new
+    // article shipped — most recently the lead-story insert pushed
+    // high-on-life-2-release-2026 and nioh-3-release-ps5-2026 out of the
+    // export window, so their static HTML/sitemap entries would have vanished.
+    return docs.filter((d) => d.isDeleted !== true);
   },
 });
 

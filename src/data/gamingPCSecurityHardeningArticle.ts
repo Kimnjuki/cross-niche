@@ -27,7 +27,7 @@ export const GAMING_PC_SECURITY_HARDENING_IMAGES = {
 
 const CONTENT = `
 <p>Most PC tuning guides have security as something you turn off for frames. That trade is about to get a lot harder to do quietly. Microsoft announced on September 1, 2026, that starting in October 2026, Windows quality updates will start enabling Memory Integrity for eligible Windows 11 PCs, so a debate that used to be optional is landing on a lot more gaming rigs.</p>
-<p>This guide distinguishes the hardening steps that cost you nothing in frame time from the ones that can. All the performance figures are quoted from a named test; all the recommendations say what they protect. If you desire. If you want the wider Windows 11 baseline first, start with our <a href="/article/gaming-pc-security-hardening-guide-2026">Gaming PC Security Hardening Guide 2026</a>, then return here for the FPS trade-offs and the account, network, and driver layers.</p>
+<p>This guide distinguishes the hardening steps that cost you nothing in frame time from the ones that can. All the performance figures are quoted from a named test; all the recommendations say what they protect. If you want the wider Windows 11 baseline first, start with our <a href="/pillar/gaming-security">gaming security hub</a>, then return here for the FPS trade-offs and the account, network, and driver layers.</p>
 <h2>Key Takeaways</h2>
 <ul>
 <li>Gaming PC security hardening means making your system safer by reducing the chances of being attacked across Windows, game accounts your home network and your drivers while making sure your frame times stay steady.</li>

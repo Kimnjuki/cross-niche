@@ -83,6 +83,11 @@
       "permanent": true
     },
     {
+      "source": "/article/gaming-pc-security-hardening-guide-2026",
+      "destination": "/article/gaming-pc-security-hardening-guide",
+      "permanent": true
+    },
+    {
       "source": "/article/:slug/",
       "destination": "/article/:slug",
       "permanent": true
