@@ -155,6 +155,15 @@ export default defineSchema({
     ),
     // CRITICAL: Add default values for undefined prevention
     seoDescription: v.optional(v.string()),
+    // Embedded product reviews (Pillar 1 review rich snippets).
+    reviews: v.optional(v.array(v.object({
+      id: v.string(),
+      product: v.string(),
+      rating: v.number(),
+      summary: v.string(),
+      pros: v.array(v.string()),
+      cons: v.array(v.string()),
+    }))),
     canonicalUrl: v.optional(v.string()),
     // Explicit, queryable indexability intent (SEO remediation P0-02).
     // Published content is indexable unless noindex === true.

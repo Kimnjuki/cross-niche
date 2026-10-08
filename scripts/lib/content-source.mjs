@@ -57,6 +57,7 @@ function fromConvexDoc(doc, source = 'convex') {
     noindex: doc.noindex === true,
     wordCount: Number(doc.wordCount ?? 0) || (doc.body ? String(doc.body).split(/\s+/).length : 0),
     tags: Array.isArray(doc.gamingPlatforms) ? doc.gamingPlatforms.map(String) : [],
+    reviews: Array.isArray(doc.reviews) ? doc.reviews : undefined,
     source,
   };
 }

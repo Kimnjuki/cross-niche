@@ -238,9 +238,63 @@ function generateArticleJsonLd(article) {
       dateModified: modifiedDate,
       inLanguage: 'en-US',
     },
+    ...buildReviewSchemas(article, authorName, publishedDate),
   ];
 
   return JSON.stringify({ '@context': 'https://schema.org', '@graph': graph }, null, 2);
+}
+
+/**
+ * Review + Product aggregateRating schemas for articles with embedded reviews.
+ * Mirrors src/lib/schemaMarkup.ts generateReviewSchemas so the SPA and the
+ * static HTML emit the same structured data. AggregateRating is only emitted
+ * when there are 2+ reviews (Google needs a real distribution).
+ */
+function buildReviewSchemas(article, authorName, publishedDate) {
+  const reviews = Array.isArray(article.reviews)
+    ? article.reviews.filter((r) => r && r.product)
+    : [];
+  if (reviews.length === 0) return [];
+
+  const schemas = reviews.map((review) => ({
+    '@type': 'Review',
+    itemReviewed: { '@type': 'Product', name: String(review.product) },
+    reviewRating: {
+      '@type': 'Rating',
+      ratingValue: Number(review.rating) || 0,
+      bestRating: 5,
+      worstRating: 1,
+    },
+    reviewBody: String(review.summary || ''),
+    author: { '@type': 'Person', name: authorName },
+    datePublished: publishedDate,
+    ...(Array.isArray(review.pros) && review.pros.length
+      ? { positiveNotes: { '@type': 'ItemList', itemListElement: review.pros.map((p, i) => ({ '@type': 'ListItem', position: i + 1, name: String(p) })) } }
+      : {}),
+    ...(Array.isArray(review.cons) && review.cons.length
+      ? { negativeNotes: { '@type': 'ItemList', itemListElement: review.cons.map((c, i) => ({ '@type': 'ListItem', position: i + 1, name: String(c) })) } }
+      : {}),
+  }));
+
+  if (reviews.length >= 2) {
+    const ratings = reviews.map((r) => Number(r.rating) || 0).filter((r) => r > 0);
+    if (ratings.length >= 2) {
+      const avg = ratings.reduce((s, r) => s + r, 0) / ratings.length;
+      schemas.push({
+        '@type': 'Product',
+        name: String(article.title || ''),
+        aggregateRating: {
+          '@type': 'AggregateRating',
+          ratingValue: Number(avg.toFixed(1)),
+          reviewCount: ratings.length,
+          bestRating: 5,
+          worstRating: 1,
+        },
+      });
+    }
+  }
+
+  return schemas;
 }
 
 // ── Generate security metadata card HTML (for security articles) ────────────

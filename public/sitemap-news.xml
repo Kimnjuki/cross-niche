@@ -1,5 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
         xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
-
+  <url>
+    <loc>https://thegridnexus.com/article/steam-account-takeover-protection-guide-2026</loc>
+    <news:news>
+      <news:publication>
+        <news:name>The Grid Nexus</news:name>
+        <news:language>en</news:language>
+      </news:publication>
+      <news:publication_date>2025-04-29</news:publication_date>
+      <news:title>Steam Account Takeovers Up 340% in 2026: Protection Guide</news:title>
+    </news:news>
+  </url>
+  <url>
+    <loc>https://thegridnexus.com/article/vpn-gaming-security-latency-test-2026</loc>
+    <news:news>
+      <news:publication>
+        <news:name>The Grid Nexus</news:name>
+        <news:language>en</news:language>
+      </news:publication>
+      <news:publication_date>2025-04-29</news:publication_date>
+      <news:title>VPNs for Gaming 2026: Latency Test &amp; Honest Verdict</news:title>
+    </news:news>
+  </url>
+  <url>
+    <loc>https://thegridnexus.com/article/gaming-pc-antivirus-best-2026</loc>
+    <news:news>
+      <news:publication>
+        <news:name>The Grid Nexus</news:name>
+        <news:language>en</news:language>
+      </news:publication>
+      <news:publication_date>2025-04-29</news:publication_date>
+      <news:title>Best Antivirus for Gaming PCs 2026: Performance Benchmarks</news:title>
+    </news:news>
+  </url>
 </urlset>

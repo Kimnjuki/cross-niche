@@ -61,6 +61,7 @@ const KEEP = [
   'summary',
   'subtitle',
   'body',
+  'reviews',
   'contentType',
   'publishedAt',
   'lastModifiedAt',

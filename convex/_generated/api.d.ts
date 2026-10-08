@@ -78,6 +78,7 @@ import type * as threatIntelIngest from "../threatIntelIngest.js";
 import type * as threatIntelNvdIngest from "../threatIntelNvdIngest.js";
 import type * as toolAnalytics from "../toolAnalytics.js";
 import type * as toolUsageLogs from "../toolUsageLogs.js";
+import type * as upsertRestructuredGuides from "../upsertRestructuredGuides.js";
 import type * as users from "../users.js";
 import type * as verify from "../verify.js";
 
@@ -158,6 +159,7 @@ declare const fullApi: ApiFromModules<{
   threatIntelNvdIngest: typeof threatIntelNvdIngest;
   toolAnalytics: typeof toolAnalytics;
   toolUsageLogs: typeof toolUsageLogs;
+  upsertRestructuredGuides: typeof upsertRestructuredGuides;
   users: typeof users;
   verify: typeof verify;
 }>;

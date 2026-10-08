@@ -115,6 +115,9 @@ export function mapContentToArticle(content: ContentItem | null | undefined): Ar
       undefined,
     noindex:
       (content as { noindex?: boolean | null }).noindex === true ? true : undefined,
+    reviews: Array.isArray((content as { reviews?: unknown }).reviews)
+      ? ((content as { reviews?: unknown }).reviews as Article['reviews'])
+      : undefined,
   };
 }
 
