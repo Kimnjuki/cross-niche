@@ -204,6 +204,7 @@ export const mockArticles: Article[] = [
     {
       id: 'sec-5',
       slug: 'gmail-hack-attacks-surge-gamers-2fa-2026',
+      metaTitle: 'Gmail Hack Attacks Surge: How Gamers Are Being Targeted in 2026',
       title: 'Gmail Hack Attacks Surging — Here\'s Why Every Gamer Needs 2FA Today',
       excerpt: 'A massive wave of Gmail credential-stuffing attacks is targeting gamers. Here’s how to lock down your accounts before you get hit.',
       content: `<p>A surge in credential-stuffing attacks against Gmail accounts has cybersecurity experts on alert. According to recent reports, automated bots are testing billions of stolen credentials against Google’s email service, with gamers as primary targets. Gaming accounts—Steam, Epic, Battle.net, Xbox—are often linked to Gmail addresses, making a compromised email the master key to a gamer’s digital life.</p><h2>Why Gamers Are Targeted</h2><p>Gamers maintain more online accounts than the average user. The attack volume has increased 340% since January 2025.</p><h2>How to Protect Your Accounts</h2><p>Enable two-factor authentication on your Gmail using an authenticator app or hardware security key—not SMS. Audit gaming accounts to ensure unique passwords. Review connected Google apps and revoke unused access.</p><h2>What To Do If Hacked</h2><p>Change your Gmail password, revoke sessions, enable 2FA, then reset passwords for linked accounts starting with the most sensitive: banking, Steam, Xbox, Epic Games.</p>`,
@@ -220,6 +221,7 @@ export const mockArticles: Article[] = [
     {
       id: 'sec-6',
       slug: 'bitwarden-security-incident-gaming-password-manager',
+      metaTitle: 'Bitwarden Security Incident 2026: What Gamers Need to Do Now',
       title: 'Bitwarden Confirms Compromise — What Gamers Should Use Instead',
       excerpt: 'Bitwarden admitted a compromised build. If you’re a gamer relying on Bitwarden, here’s what happened and what to do.',
       content: `<p>Bitwarden confirmed a security incident on April 24, 2026, where a compromised product build was publicly distributed. The official app on authorized stores remains unaffected.</p><h2>What Happened</h2><p>An unauthorized build was distributed through unofficial channels. The compromise targeted a build artifact, not Bitwarden’s core infrastructure or user vaults.</p><h2>Gaming Risks</h2><p>Your password manager holds keys to your entire gaming ecosystem. Rotate passwords for critical gaming accounts if you downloaded Bitwarden from a suspicious source.</p><h2>Alternatives</h2><p>1Password offers gaming account organization with travel mode. iCloud Keychain works in Apple ecosystems. Any manager is better than reusing passwords.</p>`,
@@ -248,6 +250,7 @@ export const mockArticles: Article[] = [
     {
       id: 'sec-8',
       slug: 'steam-account-takeover-protection-guide-2026',
+      metaTitle: 'Steam Account Takeovers Up 340% in 2026: Complete Protection Guide',
       title: 'Steam Account Stolen? Recover It in 10 Minutes + Lock It Down Forever',
       excerpt: 'Losing your Steam account means losing your library, payment methods, and tournament access. This complete guide walks you through recovery step-by-step, then locks it down so it never happens again.',
       content: `<p>In 2026, losing your Steam account is more than just missing a few skins — it can mean losing a full library, linked payment methods, and access to tournaments or anti-cheat-protected games. Recent leaks and social-engineering scams aimed at Steam players mean "steam account hacked 2026" isn't a rare search — it's a daily reality. This guide walks you through recovery step-by-step, then shows you how to harden your account so getting popped again is extremely unlikely.</p><h2>Step 1: Before You Touch Steam, Secure Your PC and Email</h2><p>Most Steam compromises start outside Steam: malware on your PC, a leaked email password, or a fake "Steam Support" chat on Discord or Telegram. If you skip this step, you risk giving the attacker your new credentials the moment you change them.</p><ul><li><strong>Run a full AV / anti-malware scan.</strong> Use a trusted AV plus a second-opinion scanner (e.g., Malwarebytes) to clear out stealers that target browser cookies and game launchers.</li><li><strong>Change your email password from a clean device.</strong> If your Steam email is compromised, attackers can reset your Steam password again. Use a long, unique passphrase stored in a password manager.</li><li><strong>Enable email 2FA if possible.</strong> Most big providers support app-based or hardware key 2FA now. Turn it on before you start Steam recovery so attackers can't simply retake the inbox.</li></ul><h2>Step 2: Use the Official Steam Recovery Flow (Not Random Links)</h2><p>Steam's own recovery path is still the cleanest way back in — even if your password, email, or phone number were changed by the attacker.</p><ol><li><strong>Go to the official Steam Help page.</strong> Open the Steam client or visit the help portal from your browser and choose "Help, I can't sign in." Avoid links from DMs or "support reps" — type the URL manually.</li><li><strong>Choose "My account was stolen and I need help recovering it."</strong> Steam will ask for your account name, email, or phone number. If the attacker changed these, continue anyway — proof of ownership matters more than current contact details.</li><li><strong>Prove the account is yours.</strong> Best evidence: transaction IDs from Steam purchases (PayPal, card statements, wallet codes), CD keys you activated, and old email addresses tied to the account. The older the data, the better.</li><li><strong>Wait for Steam Support.</strong> Response times vary, but with solid proof Support can restore access even without the current email or phone.</li></ol><h2>Step 3: Once You're Back In, Lock the Attacker Out</h2><p>When Steam restores your account or you regain access yourself, assume the attacker still has your old cookies and some device access. Rotate everything immediately.</p><ul><li><strong>Change your Steam password to something unique.</strong> Don't recycle the password you used on any other launcher or site — credential stuffing is still rampant.</li><li><strong>Turn on Steam Guard with an app, not just email.</strong> Use the Steam mobile authenticator or an app-based 2FA method. Avoid relying only on SMS where SIM-swap attacks are common.</li><li><strong>Review and revoke devices.</strong> In Steam security settings, log out of all other devices and sessions immediately.</li><li><strong>Check market and trade history.</strong> Look for stolen skins, unusual gift history, or trades to unknown accounts. If you see fraud, document everything for Support.</li></ul><h2>Step 4: Untangle the Scam That Got You</h2><p>Steam hacks in 2026 fall into a few patterns. Recognizing which one hit you helps you plug the right hole.</p><ul><li><strong>Fake "Steam Support" or "Valve Admin" on Discord.</strong> Attackers DM you pretending to be moderators, asking you to "verify" items or log into a fake Steam page.</li><li><strong>Malware from fake cheats, cracks, and mod installers.</strong> Trojan "game-thief" malware hides inside cheats and pirated games, stealing cookies and credentials silently.</li><li><strong>Email or password reuse from breaches.</strong> Huge credential dumps mean your old reused passwords are constantly tested against Steam and other launchers.</li></ul><h2>Step 5: Harden Your Steam Account Like a Pro</h2><p>Once you're clean and recovered, hardening Steam means reducing attack surface across your entire gaming life, not just the Steam login page.</p><ul><li><strong>Migrate to a password manager.</strong> Generate unique, long passwords for Steam, email, Discord, and every game launcher. One breach doesn't cascade into all your accounts.</li><li><strong>Remove risky third-party "helpers."</strong> Uninstall sketchy inventory viewers, trade bots, or launcher overlays you don't fully trust. Many stealers start life as "just a helper tool."</li><li><strong>Keep OS and drivers updated.</strong> GPU driver installers and device software have had security issues. Make updating part of your game-patch routine.</li><li><strong>Split gaming and "real life."</strong> Use a separate email and minimal personal info for gaming accounts. Never store sensitive documents or banking logins in the same browser profile you use for Steam.</li></ul><h2>Step 6: Subscribe to Security Alerts So You're Never Blindsided Again</h2><p>The threat landscape for gamers is noisy. Staying safe is easier when someone else watches the firehose for you. Subscribe to gaming security alerts to get notified whenever new stealer campaigns or Steam-related leaks appear.</p>`,
@@ -265,6 +268,7 @@ export const mockArticles: Article[] = [
     {
       id: 'sec-9',
       slug: 'discord-malware-gamers-how-to-stay-safe',
+      metaTitle: 'Discord Malware Spreading Through Gaming Servers in 2026: Full Guide',
       title: 'Discord Malware Is Spreading — Here\'s How Gamers Get Infected',
       excerpt: 'Discord has become the #1 malware delivery platform for gamers. Learn the tactics hackers use and how to avoid them.',
       content: `<p>Discord surpassed email as the primary malware delivery vector for gamers. In 2026, Discord-based malware attacks increased 500% year-over-year, targeting gaming credentials and crypto wallets.</p><h2>Common Attacks</h2><p>‘Free Nitro’ scams: compromised friend accounts message links to fake Discord login pages. Advanced attacks use infected cheat files as bait for info-stealers.</p><h2>Warning Signs</h2><p>Unsolicited DMs from friends with only a link; files named ‘cheat.exe’; links promising exclusive beta access. Verify through another channel before clicking.</p><h2>Security Checklist</h2><p>Enable 2FA on Discord. Disable DMs from unknown server members. Never download files from unknown users.</p>`,
@@ -279,6 +283,7 @@ export const mockArticles: Article[] = [
     {
       id: 'sec-10',
       slug: 'nintendo-switch-2-security-guide',
+      metaTitle: 'Nintendo Switch 2 Security Guide: Lock Down Your Account Before Launch',
       title: 'Nintendo Switch 2 Security Guide — Protect Your Account Day One',
       excerpt: 'The Switch 2 launch is a prime target for account thieves. Set up your new console securely with this complete guide.',
       content: `<p>Every major console launch sees a spike in account takeover attempts. Here’s how to configure your Switch 2 for maximum security.</p><h2>Before Connecting</h2><p>Create a strong, unique Nintendo Account password. Enable 2FA with an authenticator app or hardware key. Store backup codes securely. Protect your linked email with its own 2FA.</p><h2>Console Settings</h2><p>Set purchase limits. Disable automatic login if sharing. Enable eShop passcode lock. Restrict purchasing authority to your primary account.</p><h2>Ongoing Protection</h2><p>Use family group instead of sharing credentials. Watch for phishing emails pretending to be Nintendo. Check sign-in history monthly.</p>`,
@@ -294,6 +299,7 @@ export const mockArticles: Article[] = [
     {
       id: 'sec-11',
       slug: 'fake-game-cheats-malware-account-stealer',
+      metaTitle: 'Fake Game Cheats Steal Accounts: How the Malware Works in 2026',
       title: 'Fake Game Cheats Are Stealing Thousands of Accounts — How to Spot Them',
       excerpt: 'Hackers hide info-stealing malware inside fake game cheats. Here’s how to spot the scams.',
       content: `<p>Fake cheat downloads have become a primary channel for information-stealing malware targeting Valorant, Call of Duty, CS2, and Fortnite players.</p><h2>How It Works</h2><p>Attackers create YouTube videos promising free aimbots. Downloaded ‘cheats’ run stealers that capture browser credentials, Discord tokens, and crypto wallets.</p><h2>Red Flags</h2><p>Free ‘undetected’ cheat downloads are almost always malware. Warning signs: requires disabling Windows Defender, demands admin privileges.</p><h2>Safe Alternatives</h2><p>Use legitimate training tools like Aim Lab. Zero security risk, genuine skill improvement, no ban risk.</p>`,
@@ -308,6 +314,7 @@ export const mockArticles: Article[] = [
     {
       id: 'sec-12',
       slug: 'sim-swapping-gaming-accounts-protection',
+      metaTitle: 'SIM Swapping Targets Gamers in 2026: Complete Protection Guide',
       title: 'SIM Swapping Is Targeting Gamers — Protect Your Accounts',
       excerpt: 'SIM swap attacks are on the rise and gamers are prime targets. If SMS secures your accounts, you’re at risk.',
       content: `<p>SIM swapping lets attackers transfer your phone number to their SIM, unlocking email and gaming accounts in minutes.</p><h2>Why Gamers</h2><p>Gamers have valuable digital assets: rare skins, tradable items, crypto wallets. Many platforms use phone numbers as recovery methods.</p><h2>Protection</h2><p>Remove SMS-based 2FA from all accounts supporting authenticator apps. Add a PIN requirement with your mobile carrier. Never post your phone number on gaming forums.</p>`,
@@ -322,6 +329,7 @@ export const mockArticles: Article[] = [
     {
       id: 'game-5',
       slug: 'windows-11-anti-cheat-broken-fix-guide',
+      metaTitle: 'Windows 11 Anti-Cheat Broken on New Hardware: Complete Fix Guide 2026',
       title: 'Windows 11 Update Breaks Popular Anti-Cheat Software — Fix Guide',
       excerpt: 'Microsoft’s latest Windows 11 update causes EasyAntiCheat and BattlEye failures. Here’s the fix.',
       content: `<p>Microsoft’s April 2026 cumulative update for Windows 11 caused widespread issues with kernel-level anti-cheat. Games across Fortnite, Apex Legends, and Escape from Tarkov fail to launch.</p><h2>Root Cause</h2><p>The update tightened restrictions on unsigned kernel drivers, inadvertently blocking legitimate anti-cheat drivers from loading.</p><h2>Fix</h2><p>Check for game updates first. Restart PC. If persists, uninstall the update via Settings > Windows Update > Update History.</p><h2>Prevention</h2><p>Defer feature updates by up to 60 days. Keep GPU drivers updated.</p>`,
@@ -337,6 +345,7 @@ export const mockArticles: Article[] = [
     {
       id: 'game-6',
       slug: 'xbox-rebrand-security-changes-gamers',
+      metaTitle: 'Microsoft Gaming Rebrand 2026: Account Security Changes Explained',
       title: 'Microsoft Rebrands Gaming Division — What Xbox Gamers Should Know',
       excerpt: 'Microsoft eliminated ‘Microsoft Gaming’ in favor of Xbox. Here’s what the rebrand means for account security.',
       content: `<p>Microsoft rebranded under the Xbox banner with a new logo. Account policies are centralizing under Xbox infrastructure with unified 2FA settings.</p><h2>Changes</h2><p>Unified 2FA across console, PC Game Pass, and cloud gaming. Passkey support for passwordless login.</p><h2>Security</h2><p>Token-based authentication expires more aggressively. Defender for Endpoint integrates into Xbox security.</p><h2>Action</h2><p>Review Microsoft Account security. Enable passwordless login. Check active sessions.</p>`,
@@ -352,6 +361,7 @@ export const mockArticles: Article[] = [
     {
       id: 'game-7',
       slug: 'steam-controller-security-risks-gamers',
+      metaTitle: 'Steam Controller and Gaming Peripheral Security: Real Risks Explained',
       title: 'Valve’s New Steam Controller — Security Risks to Know',
       excerpt: 'The Steam Controller returns. Understand the firmware security risks before connecting yours.',
       content: `<p>Valve confirmed the new Steam Controller launch. Any programmable USB device presents an attack surface.</p><h2>Firmware</h2><p>Valve uses signed firmware updates, but ‘BadUSB’ exploits can reprogram firmware. Never download firmware from third-party sites.</p><h2>Drivers</h2><p>Use Valve’s signed drivers. Avoid third-party tools from YouTube links—some bundle adware.</p><h2>Safe Setup</h2><p>Buy from Steam or authorized retailers. Accept official firmware updates. Configure within Steam settings.</p>`,
@@ -366,6 +376,7 @@ export const mockArticles: Article[] = [
     {
       id: 'game-8',
       slug: 'vpn-gaming-security-latency-test-2026',
+      metaTitle: 'VPNs for Gaming 2026: Honest Test — What They Protect, What They Don\'t',
       title: 'VPNs for Gaming — Do They Actually Protect You?',
       excerpt: 'We tested top VPN services for gaming. Here’s what works for security, latency, and DDoS protection.',
       content: `<p>We tested seven VPN services for gaming: DDoS protection, latency impact, and anti-doxxing.</p><h2>Benefits</h2><p>VPNs mask IP preventing DDoS attacks. On public Wi-Fi, they encrypt traffic and prevent hijacking.</p><h2>Latency</h2><p>VPNs add 8-35ms average. WireGuard outperforms OpenVPN. Some services can reduce ping through optimized routing.</p><h2>Top Picks</h2><p>ExpressVPN: best balance. Mullvad: privacy-focused. Mudfish: lowest latency. Avoid free VPNs.</p>`,
@@ -380,6 +391,7 @@ export const mockArticles: Article[] = [
     {
       id: 'game-9',
       slug: 'twitch-streamer-security-guide-doxxing-swatting',
+      metaTitle: 'Twitch Streamer Security Guide 2026: Protect Against Doxxing and Swatting',
       title: 'Twitch Streamer Security Guide — Protect From Doxxing and Swatting',
       excerpt: 'Streamers are prime targets. A comprehensive security guide for every level of streamer.',
       content: `<p>Streamer doxxing up 200% since 2023 with swatting incidents becoming disturbingly common.</p><h2>Software Security</h2><p>Never show desktop on stream. Use scene-specific captures. Cloud alerts instead of local browser sources that leak IP.</p><h2>OpSec</h2><p>Dedicated streaming PC. PO Box for correspondence. Check VODs for accidental information leaks.</p><h2>Account Security</h2><p>2FA on every platform. Hardware security keys. Never log into Twitch through third-party sites.</p>`,
@@ -395,6 +407,7 @@ export const mockArticles: Article[] = [
     {
       id: 'game-10',
       slug: 'razer-synapse-security-vulnerability-fix',
+      metaTitle: 'Razer Synapse Security Flaw: Millions of Gaming PCs Affected — Fix Now',
       title: 'Razer Software Flaw Exposes Millions of Gamers',
       excerpt: 'A vulnerability in Razer Synapse could expose gaming peripherals to attack.',
       content: `<p>A vulnerability in Razer Synapse allows attackers with local access to escalate privileges and install persistent malware.</p><h2>The Issue</h2><p>Synapse’s driver installation runs with elevated privileges, enabling code execution at system level.</p><h2>Affected</h2><p>All Razer peripherals using Synapse 3 and 4. Windows and macOS.</p><h2>Protection</h2><p>Update Synapse. Enable auto-updates. Use on-board memory mode to close Synapse when not configuring.</p>`,
@@ -409,6 +422,7 @@ export const mockArticles: Article[] = [
     {
       id: 'game-11',
       slug: 'game-key-reseller-scams-g2a-cdkeys',
+      metaTitle: 'G2A, CDKeys, and Gray Market Game Keys: How the Scams Work in 2026',
       title: 'G2A, CDKeys, and Gray Market Scams — How Hackers Steal Game Keys',
       excerpt: 'Gray market key resellers are a security concern. How stolen keys work and how to buy safely.',
       content: `<p>Gray market resellers offer tempting discounts, but many keys are purchased with stolen credit cards, funding fraud.</p><h2>Stolen Key Economy</h2><p>Attackers buy keys in bulk with stolen cards and sell at discount. Developers absorb chargeback costs.</p><h2>Buyer Risks</h2><p>Keys can be revoked when fraud detected. Your account flagged for fraud-linked keys.</p><h2>Safe Buying</h2><p>Use authorized retailers: Steam, Epic, Humble Bundle, Fanatical, Green Man Gaming.</p>`,
@@ -423,6 +437,7 @@ export const mockArticles: Article[] = [
     {
       id: 'game-12',
       slug: 'roblox-parents-guide-account-security-safety',
+      metaTitle: 'Roblox Safety 2026: Complete Parent\'s Guide to Account Security',
       title: 'Roblox Hackers Stealing Kids’ Accounts — Parent’s Safety Guide',
       excerpt: 'Roblox account theft is growing. Here’s how to secure your child’s account.',
       content: `<p>Roblox has 200M+ monthly active users, many children. Account thieves target the platform.</p><h2>How Theft Works</h2><p>Phishing through Roblox chat promising free Robux with links to fake login pages. Browser cookie theft through malicious Roblox game exploits.</p><h2>Parental Controls</h2><p>Enable account restrictions. Set a parent PIN. Disable chat or set to ‘Friends Only.’ Use weekly activity summaries.</p><h2>Teaching Safety</h2><p>Explain ‘free Robux’ is always a scam. Show official login URL. Never share passwords.</p>`,
@@ -438,6 +453,7 @@ export const mockArticles: Article[] = [
     {
       id: 'game-13',
       slug: 'minecraft-server-security-guide',
+      metaTitle: 'Minecraft Server Security Guide 2026: Complete Hardening for Java and Bedrock',
       title: 'Minecraft Server Security — Protect Your Server from Hackers',
       excerpt: 'Running a Minecraft server? Secure it against griefers, hackers, and exploits.',
       content: `<p>Running a Minecraft server requires security against DDoS attacks, plugin exploits, and griefing.</p><h2>Attack Vectors</h2><p>DDoS attacks from rival servers. Plugin vulnerabilities giving operator privileges. Log4j exploits on older versions.</p><h2>Essential Setup</h2><p>Use Cloudflare or TCPShield for DDoS protection. Keep server software updated. Use whitelist for private servers. Limit operator privileges.</p><h2>Plugins</h2><p>CoreProtect for block logging. AuthMe for authentication. GrimAC for anti-cheat. Regular cloud backups.</p>`,
@@ -452,6 +468,7 @@ export const mockArticles: Article[] = [
     {
       id: 'tech-5',
       slug: 'twitch-accounts-hacked-breach-guide-2026',
+      metaTitle: 'Twitch Account Breach Wave April 2026: Check Your Exposure and Secure Your Account',
       title: 'Twitch Accounts Targeted in Breach Wave — Streamer Security Guide',
       excerpt: 'Twitch account takeovers are surging. Protect your channel and earnings.',
       content: `<p>Twitch is experiencing a surge in account takeovers via credential stuffing and phishing.</p><h2>The Threat</h2><p>Attackers use breached credentials from gaming forums to access Twitch accounts. Streamers with linked payment accounts are primary targets.</p><h2>Protection</h2><p>Enable 2FA immediately. Use unique passwords. Review connected apps. Check payout settings weekly.</p><h2>If Hacked</h2><p>Contact Twitch Support. Change password via email reset. Revoke stream keys. Check payout history.</p>`,
@@ -466,6 +483,7 @@ export const mockArticles: Article[] = [
     {
       id: 'tech-6',
       slug: 'gaming-headset-malware-privacy-guide',
+      metaTitle: 'Gaming Headset Privacy 2026: What Your Microphone Actually Captures',
       title: 'Can Gaming Headsets Be Hacked? Audio Privacy Guide for Gamers',
       excerpt: 'Gaming headsets with microphones present privacy risks. Here’s how audio malware works and how to protect yourself.',
       content: `<p>Modern gaming headsets are potential surveillance devices. While risks are often overstated, real attack vectors exist.</p><h2>Attack Vectors</h2><p>Compromised software accessing microphones without authorization. Discord and TeamSpeak have had audio-access vulnerabilities.</p><h2>Protection</h2><p>Use hardware mute switches. Check mic usage indicators. Review app permissions. Disconnect headsets when not in use.</p><h2>Pro Setup</h2><p>Pro streamers use separate mics and headphones, enabling physical disconnection when not streaming. XLR mics with physical mute offer most control.</p>`,
@@ -479,6 +497,7 @@ export const mockArticles: Article[] = [
     {
       id: 'tech-7',
       slug: 'gaming-pc-antivirus-best-2026',
+      metaTitle: 'Best Antivirus for Gaming PCs 2026: Performance Benchmarks and Protection',
       title: 'Best Antivirus for Gaming PCs in 2026 — Without Sacrificing Performance',
       excerpt: 'Gaming and antivirus have historically clashed. Here are tools that protect without killing frame rates.',
       content: `<p>We tested six antivirus solutions on a mid-range gaming PC at 1440p measuring FPS impact and detection rates.</p><h2>Results</h2><p>Windows Defender: 0-2% FPS impact, free, excellent detection. ESET: 0-1% impact, best performance. Bitdefender Gaming Mode: 0-3%. Malwarebytes: 1-4%. Norton: 3-8%. McAfee: 8-15% (avoid).</p><h2>Recommendation</h2><p>Windows Defender is sufficient for most when updated. Pair with Malwarebytes Free for manual scans. ESET offers best performance-to-protection ratio.</p>`,
@@ -492,6 +511,7 @@ export const mockArticles: Article[] = [
     {
       id: 'tech-8',
       slug: 'router-security-gamers-network-protection',
+      metaTitle: 'Gaming Router Security Guide 2026: Protect Your Network and Latency',
       title: 'Gaming Router Security Guide — Protect Your Home Network',
       excerpt: 'Your gaming router is the gateway to your online life. Secure it against hackers and DDoS.',
       content: `<p>Your router is the most important security device. A compromised router exposes all network traffic.</p><h2>Essential Settings</h2><p>Change default admin password. Disable WPS. Enable WPA3 encryption. Disable remote admin. Update firmware. Enable firewall.</p><h2>Gaming-Specific</h2><p>Disable UPnP and manually forward ports. Enable QoS for gaming traffic prioritization. Use gaming VPN or router with DDoS mitigation.</p><h2>Advanced</h2><p>Separate guest network for IoT devices. DNS filtering for malicious domains. Pi-hole for ad/tracker blocking.</p>`,

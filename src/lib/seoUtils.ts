@@ -193,31 +193,17 @@ export function generateArticleTitle(article: {
   tags?: string[];
   contentType?: string;
 }): string {
-  const brand = 'The Grid Nexus';
-  const suffix = ` | ${brand}`;
-
-  if (article.metaTitle && article.metaTitle.trim()) {
-    const base = article.metaTitle.trim();
-    if (base.length + suffix.length <= 60) return base + suffix;
-    const headline = truncateAtWord(base, 60 - suffix.length);
-    if (headline.length + suffix.length <= 60) return headline + suffix;
-    return truncateAtWord(base, 60);
-  }
-
-  const { niche, isBreaking, tags } = article;
-  const title = article.title || 'Untitled';
-  const primaryKeyword = tags?.[0] || (niche === 'tech' ? 'Tech' : niche === 'security' ? 'Security' : 'Gaming') || 'Tech News';
-
-  let base: string;
-  if (isBreaking) {
-    base = `Breaking: ${title} | ${brand}`;
-  } else if (title.match(/\d+/)) {
-    base = `${title} | ${brand}`;
-  } else {
-    base = `${primaryKeyword}: ${title} | ${brand}`;
-  }
-
-  return optimizeTitle(appendCTRModifier(base, article), 60);
+  // Single source of truth: editorial metaTitle when present, else the raw
+  // headline, always + brand. Byte-matches `buildTitle` in
+  // scripts/generate-static-articles.mjs (brand-preserving truncation, no
+  // ellipsis) so the prerendered <title> and the hydrated <title> are identical.
+  // CTR optimisation is applied editorially via metaTitle, not at runtime.
+  const base = String(article.metaTitle || article.title || 'Untitled').trim();
+  const suffix = ' | The Grid Nexus';
+  if (base.length + suffix.length <= 60) return base + suffix;
+  const headline = truncateAtWord(base, 60 - suffix.length);
+  if (headline.length + suffix.length <= 60) return headline + suffix;
+  return truncateAtWord(base, 60);
 }
 
 /**
