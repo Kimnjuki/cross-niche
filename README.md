@@ -4,6 +4,12 @@
 
 A comprehensive intelligence platform covering technology, cybersecurity, and gaming with real-time content aggregation, user authentication, and bookmarking features.
 
+## Key links
+
+- **Free tool**: [Gaming Security Checkup](https://thegridnexus.com/tools/gaming-security-checkup) — in-browser security audit, stores nothing
+- **Original research**: [Gaming PC antivirus FPS benchmarks](https://thegridnexus.com/article/gaming-pc-antivirus-best-2026) · [VPN gaming latency test](https://thegridnexus.com/article/vpn-gaming-security-latency-test-2026)
+- **Gaming security hub**: https://thegridnexus.com/pillar/gaming-security
+
 ## Quick Start
 
 ### Prerequisites
