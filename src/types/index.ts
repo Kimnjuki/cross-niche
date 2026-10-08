@@ -6,6 +6,9 @@ export interface Article {
   _id?: string;
   slug?: string; // For SEO-friendly URLs; use in links when available
   title: string;
+  /** Editorial SEO title (content.metaTitle) — the authoritative, CTR-optimized
+   *  headline. Falls back to `title` when absent (mockData). */
+  metaTitle?: string;
   excerpt: string;
   content: string;
   niche: Niche;

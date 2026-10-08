@@ -166,34 +166,58 @@ function appendCTRModifier(base: string, article: {
   return base + modifier;
 }
 
+/** Whole-word truncate with no ellipsis — mirrors truncateAtWord in scripts/generate-static-articles.mjs. */
+function truncateAtWord(str: string, maxLength: number): string {
+  const clean = String(str ?? '').replace(/\s+/g, ' ').trim();
+  if (clean.length <= maxLength) return clean;
+  const cut = clean.substring(0, maxLength);
+  const lastSpace = cut.lastIndexOf(' ');
+  const body = lastSpace > maxLength * 0.6 ? cut.substring(0, lastSpace) : cut;
+  return body.replace(/[,\s]+$/, '');
+}
+
 /**
- * Generate SEO-friendly title for article (with dynamic CTR modifiers)
+ * Generate SEO-friendly title for article.
+ * Editorial `metaTitle` is authoritative and already CTR-optimized — use it
+ * verbatim (do NOT double-apply modifiers). Only when metaTitle is absent
+ * (mockData fallback) derive a CTR title from the raw headline.
+ * The metaTitle branch mirrors `buildTitle` in scripts/generate-static-articles.mjs
+ * byte-for-byte (brand-preserving truncation, no ellipsis) so the prerendered
+ * <title> and the hydrated <title> are the same string.
  */
 export function generateArticleTitle(article: {
   title: string;
+  metaTitle?: string;
   niche?: string;
   isBreaking?: boolean;
   tags?: string[];
   contentType?: string;
 }): string {
-  const { title, niche, isBreaking, tags } = article;
   const brand = 'The Grid Nexus';
+  const suffix = ` | ${brand}`;
+
+  if (article.metaTitle && article.metaTitle.trim()) {
+    const base = article.metaTitle.trim();
+    if (base.length + suffix.length <= 60) return base + suffix;
+    const headline = truncateAtWord(base, 60 - suffix.length);
+    if (headline.length + suffix.length <= 60) return headline + suffix;
+    return truncateAtWord(base, 60);
+  }
+
+  const { niche, isBreaking, tags } = article;
+  const title = article.title || 'Untitled';
   const primaryKeyword = tags?.[0] || (niche === 'tech' ? 'Tech' : niche === 'security' ? 'Security' : 'Gaming') || 'Tech News';
 
   let base: string;
   if (isBreaking) {
     base = `Breaking: ${title} | ${brand}`;
+  } else if (title.match(/\d+/)) {
+    base = `${title} | ${brand}`;
   } else {
-    const numberMatch = title.match(/\d+/);
-    if (numberMatch) {
-      base = `${title} | ${brand}`;
-    } else {
-      base = `${primaryKeyword}: ${title} | ${brand}`;
-    }
+    base = `${primaryKeyword}: ${title} | ${brand}`;
   }
 
-  const withModifier = appendCTRModifier(base, article);
-  return optimizeTitle(withModifier, 60);
+  return optimizeTitle(appendCTRModifier(base, article), 60);
 }
 
 /**

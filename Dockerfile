@@ -65,6 +65,7 @@ COPY . .
 RUN VITE_CONVEX_URL= PRERENDER=0 npm run build:frontend
 RUN node scripts/generate-seo-sitemaps.mjs || true
 RUN node scripts/generate-static-articles.mjs || true
+RUN node scripts/generate-llms-full.mjs || true
 
 # Per-route static HTML shells (title/description/canonical/H1 per URL).
 # NOT wrapped in `|| true`: serving the homepage shell for 60+ content routes is

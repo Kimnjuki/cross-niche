@@ -9,6 +9,7 @@ import { contentCache } from './useContentCache';
 export interface ContentItem {
   id: string;
   title: string;
+  metaTitle?: string;
   slug: string;
   body: string | null;
   excerpt: string | null;
@@ -58,6 +59,7 @@ function toContentItem(row: Record<string, unknown> | null): ContentItem | null 
   return {
     id: String(row.id ?? row._id ?? ''),
     title: String(row.title ?? ''),
+    metaTitle: row.metaTitle != null ? String(row.metaTitle) : undefined,
     slug: String(row.slug ?? ''),
     body: row.body != null ? String(row.body) : null,
     excerpt: row.excerpt != null ? String(row.excerpt) : null,

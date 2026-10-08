@@ -96,6 +96,7 @@ export function mapContentToArticle(content: ContentItem | null | undefined): Ar
     // ("â€”" instead of an em dash); repair once here so titles, meta
     // descriptions and cards are clean everywhere.
     title: repairMojibake(content.title || 'Untitled'),
+    metaTitle: content.metaTitle ? repairMojibake(content.metaTitle) : undefined,
     excerpt: repairMojibake(excerpt),
     content: repairMojibake(body),
     niche,

@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import type { Article } from '@/types';
-import { optimizeTitle, optimizeMetaDescription, generateArticleMetaDescription } from '@/lib/seoUtils';
+import { optimizeTitle, optimizeMetaDescription, generateArticleMetaDescription, generateArticleTitle } from '@/lib/seoUtils';
 import { getPageMetadata } from '@/lib/seo/pageMetadata';
 import { generateAllSchemas, generatePersonSchema } from '@/lib/schemaMarkup';
 
@@ -113,7 +113,7 @@ export function SEOHead({
   // ── Title construction (unique per page, 50-60 chars) ──────────────────
   const rawTitle =
     type === 'article' && article && autoGenerate
-      ? `${article.title || 'Untitled'} | ${SITE_NAME}`
+      ? generateArticleTitle(article)
       : providedTitle || SITE_NAME;
 
   const rawDescription =

@@ -71,10 +71,11 @@ const DESCRIPTION_MAX = 158;
 function truncateAtWord(str, maxLength) {
   const clean = String(str ?? '').replace(/\s+/g, ' ').trim();
   if (clean.length <= maxLength) return clean;
-  const cut = clean.substring(0, maxLength - 1);
+  const cut = clean.substring(0, maxLength);
   const lastSpace = cut.lastIndexOf(' ');
   const body = lastSpace > maxLength * 0.6 ? cut.substring(0, lastSpace) : cut;
-  return body.replace(/[,\s]+$/, '') + '\u2026';
+  // No ellipsis — Google rewrites ellipsis-truncated titles as "incomplete".
+  return body.replace(/[,\s]+$/, '');
 }
 
 /**
@@ -123,6 +124,22 @@ function fallbackDescription(article) {
     : label === 'gaming' ? 'gaming security'
     : 'technology and security';
   return `${article.title || 'The Grid Nexus article'} — in-depth ${section} analysis, context and practical guidance from The Grid Nexus.`;
+}
+
+/**
+ * Machine-readable one-sentence extract for AI/RAG scrapers.
+ * Emitted as <meta property="extract"> in the static <head> so crawlers can
+ * pull the direct answer without rendering JS. Prefers the editorial summary,
+ * then falls back to the body's first sentences.
+ */
+function buildExtract(article) {
+  const candidates = [article.summary, article.description, article.excerpt]
+    .map((c) => (typeof c === 'string' ? repairMojibake(c).replace(/\s+/g, ' ').trim() : ''));
+  const pick = candidates.find((c) => c.length >= 40);
+  if (pick) return pick.slice(0, 300);
+  const text = stripTags(normalizeArticleHtml(article.body || ''));
+  const sentences = text.split(/(?<=[.!?])\s+/);
+  return sentences.slice(0, 2).join(' ').slice(0, 300);
 }
 
 // ── Generate comprehensive JSON-LD structured data for an article ───────────
@@ -367,6 +384,24 @@ function buildRelatedHtml(article, relatedList) {
     </section>`;
 }
 
+// ── Pillar uplink (hub-and-spoke: every article links up to its pillar) ──
+// Topical-authority signal: no article is more than 1 hop from a pillar page.
+const PILLAR_BY_NICHE = {
+  gaming: { title: 'Gaming Security', url: '/pillar/gaming-security' },
+  security: { title: 'Zero Trust Architecture', url: '/pillar/zero-trust-architecture' },
+  tech: { title: 'AI Threat Intelligence', url: '/pillar/ai-threat-intelligence' },
+};
+
+function buildPillarHtml(niche) {
+  const pillar = PILLAR_BY_NICHE[niche];
+  if (!pillar) return '';
+  return `
+    <section aria-labelledby="pillar-heading" style="margin-top:2rem;border-top:1px solid rgba(148,163,184,0.2);padding-top:1.25rem">
+      <h2 id="pillar-heading" style="font-size:1.25rem;font-weight:700;margin-bottom:0.5rem;color:#f8fafc">Explore the ${escapeHtml(pillar.title)} Hub</h2>
+      <p style="color:#cbd5e1"><a href="${pillar.url}" style="color:#60a5fa;text-decoration:none">${escapeHtml(pillar.title)} — complete coverage &rarr;</a></p>
+    </section>`;
+}
+
 // ── Generate a static HTML page for an article ────────────────────────────
 function generateArticleHtml(article, bundleScript, allArticles = [], relatedList = null) {
   const niche = nicheOf(article.contentType);
@@ -384,9 +419,11 @@ function generateArticleHtml(article, bundleScript, allArticles = [], relatedLis
 
   const securityMetaCard = generateSecurityMetaCard(article);
   const relatedHtml = buildRelatedHtml(article, relatedList);
+  const pillarHtml = buildPillarHtml(niche);
   const jsonLd = generateArticleJsonLd(article);
   const pageTitle = buildTitle(article);
   const metaDescription = buildDescription(article);
+  const extract = buildExtract(article);
 
   // Explicit, data-driven indexability (P0-02). Only an explicit content.noindex
   // flag on a published document suppresses indexing — never template guesswork.
@@ -405,6 +442,7 @@ function generateArticleHtml(article, bundleScript, allArticles = [], relatedLis
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>${escapeHtml(pageTitle)}</title>
     <meta name="description" content="${escapeAttr(metaDescription)}" />
+    <meta property="extract" content="${escapeAttr(extract)}" />
     <meta name="robots" content="${robotsDirective}" />
     <meta name="googlebot" content="${robotsDirective}" />
     <meta name="bingbot" content="${robotsDirective}" />
@@ -471,6 +509,7 @@ ${jsonLd}
             </div>
             ${securityMetaCard}
             ${tagsHtml}
+            ${pillarHtml}
             ${relatedHtml}
           </article>
         </main>
