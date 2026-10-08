@@ -252,6 +252,41 @@ function buildResultFromGreyNoise(data: GreyNoiseResponse, ioc: string, type: IO
   };
 }
 
+function buildResultFromVirusTotal(data: Record<string, unknown>, ioc: string, type: IOCType): IOCResult {
+  const classification = (data.classification ?? 'unknown') as string;
+  const severity: Severity = classification === 'malicious' ? 'high' : classification === 'suspicious' ? 'medium' : classification === 'benign' ? 'clean' : 'low';
+  const riskScore = classification === 'malicious' ? 80 : classification === 'suspicious' ? 60 : classification === 'benign' ? 10 : 30;
+  const malicious = Number(data.vtMalicious ?? 0);
+  const suspicious = Number(data.vtSuspicious ?? 0);
+  const harmless = Number(data.vtHarmless ?? 0);
+  const total = Number(data.vtTotal ?? 0) || malicious + suspicious + harmless;
+  return {
+    ioc,
+    type,
+    riskScore,
+    severity,
+    lastSeen: undefined,
+    threatTags: malicious > 0 ? [`${malicious} engines flag this ${type}`] : [],
+    malwareFamilies: [],
+    sources: [{
+      name: 'VirusTotal',
+      detections: malicious + suspicious,
+      total,
+      verdict: classification === 'malicious' ? 'malicious' : classification === 'suspicious' ? 'suspicious' : classification === 'benign' ? 'clean' : 'unknown',
+      lastScan: 'just now',
+    }],
+    nexusVerdict: classification === 'malicious' ? 'Block' : classification === 'suspicious' ? 'Suspicious — Avoid' : classification === 'benign' ? 'No Threat Detected' : 'Unknown — Monitor',
+    nexusVerdictDetail: classification === 'malicious'
+      ? `${malicious} of ${total} antivirus engines flagged this ${type} as malicious.`
+      : classification === 'suspicious'
+        ? `${suspicious} engines flagged this ${type} as suspicious; none marked it fully malicious.`
+        : classification === 'benign'
+          ? `No engines flagged this ${type} as malicious (${harmless} marked it harmless).`
+          : 'No antivirus detections recorded for this indicator.',
+    behaviorSummary: undefined,
+  };
+}
+
 // ── UI helpers ────────────────────────────────────────────────────────────────
 
 const TYPE_CONFIG: Record<IOCType, { label: string; icon: React.ComponentType<{ className?: string }>; color: string }> = {
@@ -341,7 +376,9 @@ export default function IOCLookup() {
     try {
       const res = await lookupIOC({ ioc, type });
       if (res.ok && res.data) {
-        setResult(buildResultFromGreyNoise(res.data, ioc, type));
+        setResult(res.data.source === 'virustotal'
+          ? buildResultFromVirusTotal(res.data, ioc, type)
+          : buildResultFromGreyNoise(res.data, ioc, type));
       } else {
         setError(res.reason || 'Lookup failed.');
       }
@@ -396,7 +433,7 @@ export default function IOCLookup() {
           </div>
           <h1 className="font-display font-bold text-4xl mb-2">IOC Threat-Hunting Lookup</h1>
           <p className="text-muted-foreground text-lg max-w-xl mx-auto">
-            Look up IP reputation against the free GreyNoise Community API. Domain, hash and email lookups require a paid threat-intel key.
+            Look up IPs via GreyNoise and domains, hashes and URLs via VirusTotal — free, server-side, no key exposed.
           </p>
         </div>
 

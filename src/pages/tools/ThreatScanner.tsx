@@ -19,6 +19,8 @@ import {
   Globe, Lock, Terminal, Bug, Zap, Info,
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { useAction } from 'convex/react';
+import { api } from '../../../convex/_generated/api';
 
 // ── Types ──────────────────────────────────────────────────────────────────
 
@@ -175,6 +177,7 @@ export default function ThreatScanner() {
   const [status, setStatus] = useState<StatusType>('idle');
   const [scanProgress, setScanProgress] = useState(0);
   const [validationError, setValidationError] = useState('');
+  const scanUrl = useAction(api.threatScan.scanUrl);
 
   const handleScan = useCallback(async (customTarget?: string) => {
     const scanTarget = (customTarget || target).trim();
@@ -202,94 +205,73 @@ export default function ThreatScanner() {
     const startTime = Date.now();
 
     try {
-      // Simulate progressive scan phases
-      const phases = [
-        { progress: 20, label: 'DNS resolution & port enumeration…' },
-        { progress: 45, label: 'TLS certificate validation…' },
-        { progress: 65, label: 'Security header analysis…' },
-        { progress: 85, label: 'CVE matching & vulnerability assessment…' },
-        { progress: 100, label: 'Compiling report…' },
-      ];
+      setScanProgress(30);
+      const res: any = await scanUrl({ url: scanTarget });
 
-      for (const phase of phases) {
-        setScanProgress(phase.progress);
-        await new Promise((r) => setTimeout(r, 200 + Math.random() * 200));
+      if (res.ok) {
+        setScanProgress(100);
+        const sanitized = validation.sanitized;
+        if (res.pending) {
+          setResult({
+            target: sanitized,
+            targetType: validation.type,
+            scanDate: new Date().toISOString(),
+            duration: 'processing',
+            totalFindings: 0, criticalCount: 0, highCount: 0, mediumCount: 0, lowCount: 0,
+            overallScore: 50,
+            dnsResolves: true, hasTls: true, tlsValid: true,
+            securityHeaders: {},
+            findings: [{
+              id: 'urlscan-pending', severity: 'info', title: 'Scan still processing',
+              description: 'urlscan.io is still scanning this target.',
+              remediation: `Open the live report: ${res.resultUrl}`,
+              category: 'Disclosure',
+            }],
+          });
+        } else {
+          const malicious = res.malicious === true;
+          const score = res.score ?? 0;
+          const findings: ScanFinding[] = malicious
+            ? [{
+                id: 'urlscan-malicious', severity: 'high', title: 'Potentially malicious URL',
+                description: `urlscan.io flagged this target as malicious${res.categories?.length ? ` (${res.categories.join(', ')})` : ''}. Full report: ${res.resultUrl}`,
+                remediation: 'Do not visit this URL. Block it at the DNS/firewall level.',
+                category: 'Disclosure',
+              }]
+            : [{
+                id: 'urlscan-clean', severity: 'info', title: 'No malicious indicators found',
+                description: `urlscan.io found no malicious verdict. Full report: ${res.resultUrl}`,
+                remediation: 'Keep monitoring.',
+                category: 'Disclosure',
+              }];
+          setResult({
+            target: sanitized,
+            targetType: validation.type,
+            scanDate: new Date().toISOString(),
+            duration: '~15s',
+            totalFindings: findings.length,
+            criticalCount: findings.filter((f) => f.severity === 'critical').length,
+            highCount: findings.filter((f) => f.severity === 'high').length,
+            mediumCount: findings.filter((f) => f.severity === 'medium').length,
+            lowCount: findings.filter((f) => f.severity === 'low').length,
+            overallScore: Math.max(0, 100 - score),
+            dnsResolves: true,
+            hasTls: res.tlsValid !== false,
+            tlsValid: res.tlsValid === true,
+            securityHeaders: {},
+            findings,
+          });
+        }
+        setStatus('success');
+      } else {
+        setValidationError(res.reason || 'Scan failed.');
+        setStatus('error');
       }
-
-      // Find mock result or generate a basic one
-      const sanitized = validation.sanitized;
-      const scanResult = MOCK_SCANS[sanitized] || (() => {
-        // Generate a basic result for unknown targets
-        const hasTls = Math.random() > 0.3;
-        const findings: ScanFinding[] = [];
-        let totalScore = 70;
-
-        // Add random findings based on typical web issues
-        if (!hasTls) {
-          findings.push({
-            id: `gen-tls`, severity: 'critical', title: 'No HTTPS Support',
-            description: 'Target does not support HTTPS. All traffic is unencrypted.',
-            remediation: 'Obtain and configure a TLS certificate immediately.',
-            category: 'Configuration',
-          });
-          totalScore -= 25;
-        }
-        if (Math.random() > 0.6) {
-          findings.push({
-            id: `gen-hsts`, severity: 'high', title: 'Missing HSTS Header',
-            description: 'HTTP Strict-Transport-Security header not set.',
-            remediation: 'Add Strict-Transport-Security header.',
-            category: 'Configuration',
-          });
-          totalScore -= 15;
-        }
-        if (Math.random() > 0.7) {
-          findings.push({
-            id: `gen-csp`, severity: 'medium', title: 'No Content Security Policy',
-            description: 'CSP header not present. XSS risk elevated.',
-            remediation: 'Implement a Content-Security-Policy header.',
-            category: 'Configuration',
-          });
-          totalScore -= 10;
-        }
-        findings.push({
-          id: `gen-info`, severity: 'info', title: 'Standard Security Scan',
-          description: `Basic scan completed for ${sanitized}. No specific CVE database match found.`,
-          remediation: 'Run a deeper scan with authenticated credentials for thorough assessment.',
-          category: 'Configuration',
-        });
-
-        const critical = findings.filter((f) => f.severity === 'critical').length;
-        const high = findings.filter((f) => f.severity === 'high').length;
-        const medium = findings.filter((f) => f.severity === 'medium').length;
-        const low = findings.filter((f) => f.severity === 'low').length;
-
-        return {
-          target: sanitized,
-          targetType: validation.type,
-          scanDate: new Date().toISOString(),
-          duration: '~2.1s',
-          totalFindings: findings.length,
-          criticalCount: critical,
-          highCount: high,
-          mediumCount: medium,
-          lowCount: low,
-          overallScore: Math.max(0, Math.min(100, totalScore + Math.floor(Math.random() * 10))),
-          dnsResolves: true,
-          hasTls,
-          tlsValid: hasTls && Math.random() > 0.2,
-          securityHeaders: {},
-          findings,
-        };
-      })();
-
-      setResult(scanResult);
-      setStatus('success');
     } catch (err) {
       console.error('Scan error:', err);
       setStatus('error');
     }
-  }, [target]);
+  }, [target, scanUrl]);
 
   const handleKeyDown = useCallback(
     (e: React.KeyboardEvent) => {

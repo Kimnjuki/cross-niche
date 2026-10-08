@@ -143,9 +143,9 @@ const tools = [
     href: '/tools/ioc-lookup',
     icon: Search,
     name: 'IOC Threat-Hunting Lookup',
-    tagline: 'IP Reputation via GreyNoise',
+    tagline: 'IP · Domain · Hash · URL',
     description:
-      'Look up IP reputation against the free GreyNoise Community API. Domain, hash and email lookups require a paid threat-intel key and are not yet wired.',
+      'Look up IPs via GreyNoise and domains, hashes and URLs via VirusTotal. Server-side and free — no API key exposed to the browser.',
     badge: 'Live',
     badgeVariant: 'default' as const,
     gradient: 'from-security/20 to-security/5',
