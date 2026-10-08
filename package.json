@@ -32,6 +32,8 @@
     "audit:consistency": "node scripts/audit-consistency.mjs",
     "audit:dist-meta": "node scripts/audit-dist-meta.mjs",
     "audit:orphans": "node scripts/audit-orphans.mjs",
+    "audit:cannibalization": "node scripts/audit-cannibalization.mjs",
+    "ctr:report": "node scripts/ctr-report.mjs",
     "validate:all": "npm run validate:seo && npm run test:seo && npm run audit:consistency && npm run lint && npm run type-check",
     "audit:seo": "node scripts/audit-seo.mjs",
     "audit:placeholder": "tsx scripts/audit-placeholder-content.ts",
