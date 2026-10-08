@@ -291,7 +291,7 @@ const NexusGuardPage = memo(function NexusGuardPage() {
     <Layout>
       <SEO
         title="NexusGuard Security Dashboard | The Grid Nexus"
-        description="Monitor gaming security threats in real time with NexusGuard. Get threat alerts, account health scores, and platform-specific security recommendations."
+        description="Answer questions about your stack for a rule-based threat checklist and patch priorities."
         canonical="https://thegridnexus.com/tools/nexusguard"
         ogType="website"
       />

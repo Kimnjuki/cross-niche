@@ -244,7 +244,7 @@ export default function ReleasePredictor() {
       <Layout>
         <SEO
           title="Gaming Release Predictor — The Grid Nexus"
-          description="AI-powered game release predictions. Track confidence scores, signal analysis, and release windows for upcoming games."
+          description="Editorial game release expectations based on public signals and announcements, not a predictive model."
         />
         <div className="min-h-screen bg-[#0B0E14] text-gray-200">
           <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">

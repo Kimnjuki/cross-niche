@@ -210,7 +210,7 @@ const SecurityScanner = memo(function SecurityScanner() {
     <Layout>
       <SEO
         title="Security Scanner: Comprehensive Threat Scan | The Grid Nexus"
-        description="Run a full security scan on domains, servers, and gaming infrastructure. Check for CVEs, open ports, TLS weaknesses, and OWASP Top 10 vulnerabilities."
+        description="Demonstration of a website security score UI. The score is simulated — a real scan requires a server-side check."
         canonical="https://thegridnexus.com/tools/security-scanner"
         ogType="website"
       />

@@ -328,7 +328,7 @@ export default function ThreatScanner() {
       <Layout>
         <SEO
           title="Gaming Threat Scanner — The Grid Nexus"
-          description="Scan domains, servers, and URLs for gaming-related security vulnerabilities. Real-time CVE matching and security header analysis."
+          description="Demonstration of a domain vulnerability scanner. Results are simulated — not a live scan."
         />
         <div className="min-h-screen bg-[#0B0E14] text-gray-200">
           <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">

@@ -227,7 +227,7 @@ export default function SentimentAnalyzer() {
       <Layout>
         <SEO
           title="Game Sentiment Analyzer — The Grid Nexus"
-          description="Real-time sentiment analysis for gaming communities. Track security sentiment, player satisfaction, and trending concerns per game."
+          description="Demonstration of review-sentiment analysis with illustrative data, not a live review feed."
         />
         <div className="min-h-screen bg-[#0B0E14] text-gray-200">
           <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">

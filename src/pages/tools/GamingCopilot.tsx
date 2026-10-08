@@ -429,7 +429,7 @@ I can help you with:
       <Layout>
         <SEO
           title="Gaming Copilot AI — The Grid Nexus"
-          description="AI-powered gaming assistant. Get real-time advice on game security, recommendations, hardware, and threat awareness."
+          description="Rule-based Q&A assistant for common gaming security questions, backed by a curated knowledge base."
         />
         <div className="min-h-screen bg-[#0B0E14] text-gray-200">
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">
