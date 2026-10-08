@@ -14,6 +14,36 @@ declare global {
 // GA4 Measurement ID - must match index.html; env override for flexibility
 const GA4_MEASUREMENT_ID = import.meta.env.VITE_GA4_MEASUREMENT_ID || 'G-XMGRJBSN5Y';
 
+/** Domains that indicate traffic originated from an AI assistant / answer engine. */
+const AI_REFERRER_PATTERN =
+  /(chat\.openai|chatgpt|perplexity|claude\.ai|claude|gemini\.google|copilot\.microsoft|you\.com|bard|phind|poe\.com|meta\.ai|mistral\.ai|deepseek|kimi)/i;
+
+/**
+ * Classify the current traffic source from document.referrer.
+ * Lossy by design: many AI assistants are native apps with NO HTTP referrer, so
+ * this is a lower bound — treat branded GSC query volume as the reliable proxy.
+ */
+export function classifyTrafficSource(): 'ai_referral' | 'search_organic' | 'direct' | 'referral' {
+  if (typeof document === 'undefined') return 'direct';
+  const ref = (document.referrer || '').toLowerCase();
+  if (!ref) return 'direct';
+  if (AI_REFERRER_PATTERN.test(ref)) return 'ai_referral';
+  if (/(google|bing|duckduckgo|yahoo|yandex|baidu|ecosia)/.test(ref)) return 'search_organic';
+  return 'referral';
+}
+
+/** Fire a high-signal event when the session arrives from an AI answer engine. */
+export function trackAIReferral() {
+  if (typeof window === 'undefined' || !window.gtag) return;
+  if (classifyTrafficSource() !== 'ai_referral') return;
+  trackEvent('ai_referral', {
+    source: 'ai_referral',
+    referrer_host: document.referrer,
+    page_path: window.location.pathname,
+    event_category: 'acquisition',
+  });
+}
+
 /**
  * Initialize GA4 - uses existing gtag from index.html when present
  */
@@ -505,6 +535,9 @@ export function initAllTracking() {
 
   // Track initial page view
   trackPageView(window.location.pathname, document.title);
+
+  // Fire a high-signal event when the session arrived from an AI answer engine.
+  trackAIReferral();
 }
 
 

@@ -28,6 +28,15 @@ export function ToolPageSEO(meta: ToolPageMeta) {
       title={meta.title}
       description={meta.description}
       canonical={`https://thegridnexus.com${meta.slug}`}
+      software={{
+        name: meta.title.replace(/\s*\|.*$/, '').trim() || meta.title,
+        description: meta.description,
+        applicationCategory: meta.appCategory,
+        ...(meta.offerPrice
+          ? { offers: { price: meta.offerPrice, priceCurrency: 'USD' } }
+          : {}),
+        url: `https://thegridnexus.com${meta.slug}`,
+      }}
     />
   );
 }

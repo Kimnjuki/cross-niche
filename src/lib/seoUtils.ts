@@ -105,9 +105,11 @@ export const effectiveCTAs = {
  */
 export function optimizeTitle(title: string, maxLength: number = 60): string {
   if (title.length <= maxLength) return title;
-  const cut = title.lastIndexOf(' ', maxLength - 1);
-  const pos = cut > maxLength * 0.6 ? cut : maxLength - 1;
-  return title.substring(0, pos).replace(/[,\s]+$/, '') + '\u2026';
+  // Whole-word truncation with NO ellipsis — Google rewrites ellipsis-truncated
+  // titles as "incomplete". Prefer dropping a trailing modifier over emitting "...".
+  const cut = title.lastIndexOf(' ', maxLength);
+  const pos = cut > maxLength * 0.6 ? cut : maxLength;
+  return title.slice(0, pos).replace(/[,\s]+$/, '');
 }
 
 /**
