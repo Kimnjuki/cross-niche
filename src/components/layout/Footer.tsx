@@ -133,7 +133,7 @@ export function Footer() {
               <Link to="/article/complete-gaming-account-security-guide-2026" className="text-muted-foreground hover:text-foreground transition-colors">
                 Game Account Anti-Phishing Guide
               </Link>
-              <Link to="/article/gaming-pc-security-hardening-guide-2026" className="text-muted-foreground hover:text-foreground transition-colors">
+              <Link to="/article/gaming-pc-security-hardening-guide" className="text-muted-foreground hover:text-foreground transition-colors">
                 Gaming PC Security Hardening Guide
               </Link>
               <Link to="/article/fake-game-cheats-malware-account-stealer" className="text-muted-foreground hover:text-foreground transition-colors">

@@ -189,7 +189,7 @@ export default function GamingSecurityPillar() {
               <p className="text-sm text-muted-foreground">
                 Modern antivirus solutions with gaming mode reduce performance overhead to less than 1-2% FPS loss. Hardware-accelerated security features in Windows 11 further minimize impact.
               </p>
-              <Link to="/article/gaming-pc-security-hardening-guide-2026" className="text-sm text-primary hover:underline flex items-center gap-1 mt-2">
+              <Link to="/article/gaming-pc-security-hardening-guide" className="text-sm text-primary hover:underline flex items-center gap-1 mt-2">
                 Complete Gaming PC Hardening Guide <ArrowRight className="h-3 w-3" />
               </Link>
             </CardContent>
@@ -434,7 +434,7 @@ export default function GamingSecurityPillar() {
               <h3 className="font-semibold mb-1 group-hover:text-gaming">Best Gaming PC Antivirus 2026</h3>
               <p className="text-sm text-muted-foreground">Top antivirus solutions that won't impact your gaming performance.</p>
             </Link>
-            <Link to="/article/gaming-pc-security-hardening-guide-2026" className="group p-4 border border-border rounded-lg hover:border-gaming/50 transition-all">
+            <Link to="/article/gaming-pc-security-hardening-guide" className="group p-4 border border-border rounded-lg hover:border-gaming/50 transition-all">
               <h3 className="font-semibold mb-1 group-hover:text-gaming">Gaming PC Security Hardening Guide</h3>
               <p className="text-sm text-muted-foreground">Step-by-step guide to locking down your gaming PC.</p>
             </Link>

@@ -71,7 +71,7 @@ export const TOPIC_CLUSTERS: Record<string, TopicCluster[]> = {
       spokes: [
         { title: 'Cybersecurity Basics', url: '/article/secure-devops-devsecops-intelligence-cicd-2026', keywords: ['cybersecurity basics'] },
         { title: 'Network Security Guide', url: '/article/complete-guide-to-scanning-gaming-servers-for-vulnerabilities', keywords: ['network security'] },
-        { title: 'Endpoint Protection', url: '/article/gaming-pc-security-hardening-guide-2026', keywords: ['endpoint security'] },
+        { title: 'Endpoint Protection', url: '/article/gaming-pc-security-hardening-guide', keywords: ['endpoint security'] },
         { title: 'Threat Intelligence', url: '/article/ai-security-threats-2026', keywords: ['threat intelligence'] },
       ]
     },

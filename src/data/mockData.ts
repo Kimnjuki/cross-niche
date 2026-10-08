@@ -1,6 +1,5 @@
 import { Article, Guide, Tool } from '@/types';
 import { mobileGamingSecurityArticle } from './mobileGamingSecurityArticle';
-import { gamingPCSecurityHardeningArticle } from './gamingPCSecurityHardeningArticle';
 
 export const mockArticles: Article[] = [
   // ── Newest published guide (homepage lead story) ──────────────────────────

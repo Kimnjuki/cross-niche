@@ -1,4 +1,4 @@
-# Gaming PC Security Hardening Guide: Memory Integrity, VBS, and FPS-safe Windows Settings
+# Gaming PC Security Hardening Guide 2026
 URL: https://thegridnexus.com/article/gaming-pc-security-hardening-guide
 Author: The Grid Nexus Editorial Team
 Published: 2026-09-29
@@ -8,7 +8,7 @@ Most PC tuning guides have security as something you turn off for frames. That t
 
 ---
 
-# The Ultimate Mobile Gaming Security Guide: Protect iOS and Android Accounts
+# Mobile Gaming Security Guide 2026
 URL: https://thegridnexus.com/article/mobile-gaming-security-guide
 Author: The Grid Nexus Editorial Team
 Published: 2026-09-24
@@ -18,7 +18,7 @@ You probably already protect your phone with a passcode or with Face ID or a fin
 
 ---
 
-# The Ultimate Guide to Steam, Xbox, PlayStation, and Discord Security
+# Steam Xbox PlayStation & Discord Security
 URL: https://thegridnexus.com/article/ultimate-guide-steam-xbox-playstation-discord-security
 Author: The Grid Nexus Editorial Team
 Published: 2026-07-31

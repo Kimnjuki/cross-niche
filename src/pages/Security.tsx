@@ -132,7 +132,7 @@ export default function Security() {
             <Link to="/article/ai-security-threats-2026" className="text-sm hover:underline">AI Security Threats 2026</Link>
             <Link to="/article/fake-game-cheats-malware-account-stealer" className="text-sm hover:underline">Fake Cheats and Malware Guide</Link>
             <Link to="/article/game-key-reseller-scams-g2a-cdkeys" className="text-sm hover:underline">Game Key Reseller Scams</Link>
-            <Link to="/article/gaming-pc-security-hardening-guide-2026" className="text-sm hover:underline">Gaming PC Security Hardening Guide</Link>
+            <Link to="/article/gaming-pc-security-hardening-guide" className="text-sm hover:underline">Gaming PC Security Hardening Guide</Link>
             <Link to="/article/nintendo-switch-2-security-guide" className="text-sm hover:underline">Nintendo Switch 2 Security Guide</Link>
             <Link to="/article/roblox-parents-guide-account-security-safety" className="text-sm hover:underline">Roblox Parents Guide</Link>
             <Link to="/article/steam-deck-2-specs-release-date-leaks" className="text-sm hover:underline">Steam Deck 2 Security</Link>

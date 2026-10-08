@@ -40,10 +40,10 @@ export const MOBILE_GAMING_SECURITY_HERO =
 
 export const MOBILE_GAMING_SECURITY_IMAGES = {
   hero: MOBILE_GAMING_SECURITY_HERO,
-  iosListing: `${IMG_BASE}/ios-app-store-listing.png`,
-  playProtect: `${IMG_BASE}/android-play-protect-scan.png`,
-  authenticator: `${IMG_BASE}/authenticator-setup.png`,
-  sessions: `${IMG_BASE}/sessions-and-apps-review.png`,
+  iosListing: `${IMG_BASE}/ios-app-store-listing.webp`,
+  playProtect: `${IMG_BASE}/android-play-protect-scan.webp`,
+  authenticator: `${IMG_BASE}/authenticator-setup.webp`,
+  sessions: `${IMG_BASE}/sessions-and-apps-review.webp`,
 } as const;
 
 const CONTENT = `
@@ -216,6 +216,9 @@ export const MOBILE_GAMING_SECURITY_SUMMARY =
 
 export const MOBILE_GAMING_SECURITY_SEO_DESCRIPTION =
   'Complete mobile gaming security guide for iOS and Android. Protect gaming accounts from phishing, malware, SIM-swap fraud and account takeover with passwords, 2FA, passkeys, Play Protect and Stolen Device Protection.';
+
+export const MOBILE_GAMING_SECURITY_META_TITLE =
+  'Mobile Gaming Security Guide 2026';
 
 export const MOBILE_GAMING_SECURITY_TAGS = [
   'Security Guide',

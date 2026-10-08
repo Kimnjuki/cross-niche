@@ -19,10 +19,10 @@ export const GAMING_PC_SECURITY_HARDENING_HERO =
 
 export const GAMING_PC_SECURITY_HARDENING_IMAGES = {
   hero: GAMING_PC_SECURITY_HARDENING_HERO,
-  memoryIntegrity: `${IMG_BASE}/memory-integrity-toggle-windows-security.png`,
-  msinfo32: `${IMG_BASE}/msinfo32-virtualization-based-security-running.png`,
-  dnsOverHttps: `${IMG_BASE}/windows-11-dns-over-https-settings.png`,
-  router: `${IMG_BASE}/router-upnp-guest-network-settings.png`,
+  memoryIntegrity: `${IMG_BASE}/memory-integrity-toggle-windows-security.webp`,
+  msinfo32: `${IMG_BASE}/msinfo32-virtualization-based-security-running.webp`,
+  dnsOverHttps: `${IMG_BASE}/windows-11-dns-over-https-settings.webp`,
+  router: `${IMG_BASE}/router-upnp-guest-network-settings.webp`,
 } as const;
 
 const CONTENT = `
@@ -182,6 +182,9 @@ export const GAMING_PC_SECURITY_HARDENING_SUMMARY =
 
 export const GAMING_PC_SECURITY_HARDENING_SEO_DESCRIPTION =
   'Gaming PC security hardening guide for Windows 11. Learn how Memory Integrity, VBS, Secure Boot, TPM 2.0, DNS-over-HTTPS and router hardening affect gaming FPS, anti-cheat compatibility and account security for Steam, Discord and Battle.net.';
+
+export const GAMING_PC_SECURITY_HARDENING_META_TITLE =
+  'Gaming PC Security Hardening Guide 2026';
 
 export const GAMING_PC_SECURITY_HARDENING_TAGS = [
   'Security Guide',
