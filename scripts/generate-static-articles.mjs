@@ -19,6 +19,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import { loadPublishedContent, canonicalUrlFor } from './lib/content-source.mjs';
 import { normalizeArticleHtml, repairMojibake } from './lib/normalize-article-html.mjs';
+import { markdownToHtml } from './lib/markdown-to-html.mjs';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -539,6 +540,14 @@ async function main() {
 
   const { items: articles, source } = await loadPublishedContent();
   console.log(`📄 Loaded ${articles.length} published articles (source: ${source})`);
+
+  // Normalise every body to HTML once, up front, so the rendered article, the
+  // <meta name="description"> fallback and the <meta property="extract"> fallback
+  // never leak raw Markdown (`##`, `**`) to crawlers. HTML bodies pass through.
+  for (const article of articles) {
+    article.body = markdownToHtml(article.body);
+  }
+
   const relatedMap = buildRelatedLists(articles);
   let generated = 0;
   for (const article of articles) {
