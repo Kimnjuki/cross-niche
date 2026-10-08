@@ -11,6 +11,7 @@ import {
   Gamepad2, Shield, AlertTriangle, CheckCircle, XCircle,
   ChevronRight, RotateCcw, ExternalLink, Lock, Smartphone,
   Eye, Key, Bell, Globe, ArrowLeft, Activity, Zap, Star,
+  Share2, Download, Check,
 } from 'lucide-react';
 import { useMutation } from 'convex/react';
 import { api } from '../../../convex/_generated/api';
@@ -155,10 +156,10 @@ const PLATFORMS: PlatformConfig[] = [
 // ── Score tier helpers ────────────────────────────────────────────────────────
 
 function getTier(pct: number): { label: string; desc: string; color: string; bg: string } {
-  if (pct >= 90) return { label: 'Fort Knox', desc: 'Near-perfect. Your account is hardened against virtually all common attacks.', color: 'text-green-600 dark:text-green-400', bg: 'bg-green-500' };
-  if (pct >= 70) return { label: 'Secured', desc: 'Strong defences. A few gaps remain — close them to reach Fort Knox tier.', color: 'text-gaming', bg: 'bg-gaming' };
-  if (pct >= 50) return { label: 'Hardened', desc: 'Basic protections in place but significant vulnerabilities exist.', color: 'text-yellow-600 dark:text-yellow-400', bg: 'bg-yellow-500' };
-  return { label: 'Exposed', desc: 'Multiple critical gaps. Your account is at high risk of takeover.', color: 'text-destructive', bg: 'bg-destructive' };
+  if (pct >= 90) return { label: 'Fort Knox', desc: 'Even a stolen password cannot move your skins or drain your wallet.', color: 'text-green-600 dark:text-green-400', bg: 'bg-green-500' };
+  if (pct >= 70) return { label: 'Secured', desc: 'Strong defences. Close the last few gaps to reach Fort Knox tier.', color: 'text-gaming', bg: 'bg-gaming' };
+  if (pct >= 50) return { label: 'Hardened', desc: 'Basic protections in place, but a phished password could still reach your account.', color: 'text-yellow-600 dark:text-yellow-400', bg: 'bg-yellow-500' };
+  return { label: 'Exposed', desc: 'A single phished password can empty your Steam wallet and inventory in minutes.', color: 'text-destructive', bg: 'bg-destructive' };
 }
 
 // ── Score Ring ────────────────────────────────────────────────────────────────
@@ -202,6 +203,7 @@ export default function GamingSecurityCheckup() {
   const [selectedPlatform, setSelectedPlatform] = useState<PlatformConfig | null>(null);
   const [answers, setAnswers] = useState<Record<string, Answer>>({});
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [copied, setCopied] = useState(false);
 
   const platform = selectedPlatform;
   const checks = platform?.checks ?? [];
@@ -261,6 +263,28 @@ export default function GamingSecurityCheckup() {
     setPhase('platform');
   }, []);
 
+  // Copy a plain-text report to the clipboard (client-side; nothing is sent).
+  const handleCopyReport = useCallback(() => {
+    if (!platform) return;
+    const lines = [
+      `Gaming Account Security Checkup — ${platform.name}`,
+      `Score: ${pct}% (${tier.label}) · ${score}/${maxScore} pts · ${failedItems.length} gap${failedItems.length === 1 ? '' : 's'}`,
+      '',
+      'Fix these first:',
+      ...failedItems.map((i) => `• ${i.question}\n  ${i.howToCheck}`),
+      '',
+      'Already passing:',
+      ...checks.filter((c) => answers[c.id] === 'yes').map((c) => `• ${c.question}`),
+      '',
+      'Free in-browser checkup — thegridnexus.com/tools/gaming-security-checkup',
+    ].join('\n');
+    if (navigator.clipboard?.writeText) {
+      navigator.clipboard.writeText(lines)
+        .then(() => { setCopied(true); setTimeout(() => setCopied(false), 2000); })
+        .catch(() => {});
+    }
+  }, [platform, pct, tier.label, score, maxScore, failedItems, checks, answers]);
+
   return (
     <Layout>
       <SEO
@@ -286,15 +310,35 @@ export default function GamingSecurityCheckup() {
           <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gaming/10 border border-gaming/20 mb-4">
             <Gamepad2 className="h-8 w-8 text-gaming" />
           </div>
-          <h1 className="font-display font-bold text-4xl mb-2">Gaming Account Security Checkup</h1>
-          <p className="text-muted-foreground text-lg max-w-xl mx-auto">
-            Platform-specific 7-point security audit for Steam, PSN, Xbox, Riot, Epic & Battle.net. Get your security tier in 3 minutes.
+          <h1 className="font-display font-bold text-4xl mb-3">Gaming Account Security Checkup</h1>
+          <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
+            Find out what a hacker could do to your Steam, PSN, Xbox, Riot, Epic or Battle.net account — in 3 minutes.
+            Gaming account takeovers are up <strong className="text-foreground">340%</strong> in 2026.
           </p>
+          {/* Zero-data trust badge — surfaced upfront, HaveIBeenPwned-style */}
+          <div className="mt-4 inline-flex items-center gap-2 rounded-full border border-green-500/30 bg-green-500/10 px-3 py-1.5 text-xs font-medium text-green-600 dark:text-green-400">
+            <Lock className="h-3.5 w-3.5" />
+            100% in your browser — no account, no sign-up, nothing stored or sent
+          </div>
         </div>
 
         {/* ── PHASE: PLATFORM SELECT ── */}
         {phase === 'platform' && (
           <div className="space-y-6">
+            {/* How it works — 3 steps (Mozilla Monitor pattern) */}
+            <div className="grid grid-cols-3 gap-3">
+              {[
+                { n: '1', t: 'Pick a platform', d: 'Steam, PSN, Xbox, Riot, Epic or Battle.net' },
+                { n: '2', t: 'Answer 7 checks', d: 'MFA, passwords, privacy, logins, payments' },
+                { n: '3', t: 'Get your tier', d: 'Fort Knox → Exposed, with exact fixes' },
+              ].map((s) => (
+                <div key={s.n} className="rounded-lg border bg-muted/20 p-3 text-center">
+                  <div className="text-xs font-bold text-gaming mb-1">STEP {s.n}</div>
+                  <div className="text-sm font-semibold leading-tight">{s.t}</div>
+                  <div className="text-xs text-muted-foreground mt-1 leading-snug">{s.d}</div>
+                </div>
+              ))}
+            </div>
             <Card>
               <CardHeader>
                 <CardTitle>Choose your gaming platform</CardTitle>
@@ -433,8 +477,26 @@ export default function GamingSecurityCheckup() {
                 <p className="text-sm text-muted-foreground">
                   Score: {score}/{maxScore} pts · {failedItems.length} gaps found
                 </p>
+                <p className="text-sm font-semibold">
+                  {failedItems.length === 0
+                    ? 'Your account is protected — no issues found'
+                    : criticalFails.length > 0
+                      ? `You have ${criticalFails.length} critical recommendation${criticalFails.length === 1 ? '' : 's'} to fix`
+                      : `You have ${failedItems.length} security tip${failedItems.length === 1 ? '' : 's'} to apply`}
+                </p>
               </CardContent>
             </Card>
+
+            {/* Report actions — exportable report + share (client-side) */}
+            <div className="flex flex-col sm:flex-row gap-2">
+              <Button variant="outline" className="flex-1" onClick={handleCopyReport}>
+                {copied ? <Check className="mr-1.5 h-4 w-4 text-green-500" /> : <Share2 className="mr-1.5 h-4 w-4" />}
+                {copied ? 'Copied' : 'Copy Report'}
+              </Button>
+              <Button variant="outline" className="flex-1" onClick={() => window.print()}>
+                <Download className="mr-1.5 h-4 w-4" /> Print / Save PDF
+              </Button>
+            </div>
 
             {/* Critical fixes */}
             {criticalFails.length > 0 && (
