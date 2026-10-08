@@ -445,7 +445,7 @@ I can help you with:
                   Gaming Copilot
                 </h1>
                 <p className="text-gray-400 mt-1">
-                  Your AI gaming intelligence assistant — security, recommendations, hardware, and threat awareness.
+                  Rule-based Q&A assistant for common gaming security questions — not a live AI model.
                 </p>
               </div>
               <Button variant="outline" size="sm" onClick={reset} className="border-gray-700 shrink-0">

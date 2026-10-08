@@ -243,7 +243,7 @@ export default function SentimentAnalyzer() {
                   Game Sentiment Analyzer
                 </h1>
                 <p className="text-gray-400 mt-1">
-                  Search any game to see community sentiment, security concerns, and trending themes.
+                  Search any game to see community sentiment, security concerns, and trending themes. (Illustrative demo data.)
                 </p>
               </div>
             </div>

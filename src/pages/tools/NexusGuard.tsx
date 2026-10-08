@@ -319,7 +319,7 @@ const NexusGuardPage = memo(function NexusGuardPage() {
             </div>
           </div>
           <p className="text-muted-foreground max-w-2xl mx-auto">
-            Input your tech stack and get a personalised threat report — CVE alerts, severity breakdown, patch checklist, and compliance notes. Free, no sign-up.
+            Input your tech stack for a rule-based threat checklist and patch priorities. Free, no sign-up.
           </p>
         </div>
 

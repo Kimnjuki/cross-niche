@@ -260,7 +260,7 @@ export default function ReleasePredictor() {
                   Release Predictor
                 </h1>
                 <p className="text-gray-400 mt-1">
-                  Track predicted release windows for upcoming games based on signal analysis. Updated periodically with new intel.
+                  Editorial release expectations based on public signals and announcements — not a predictive model.
                 </p>
               </div>
               <div className="flex items-center gap-3 shrink-0">

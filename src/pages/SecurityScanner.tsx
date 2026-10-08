@@ -238,7 +238,7 @@ const SecurityScanner = memo(function SecurityScanner() {
             </div>
           </div>
           <p className="text-muted-foreground max-w-2xl">
-            Enter any URL and get a security score with a full vulnerability list and actionable fix recommendations.
+            Demonstration — the score is simulated, not a real scan.
           </p>
         </div>
 

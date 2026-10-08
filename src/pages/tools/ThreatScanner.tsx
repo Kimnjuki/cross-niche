@@ -344,7 +344,7 @@ export default function ThreatScanner() {
                   Threat Scanner
                 </h1>
                 <p className="text-gray-400 mt-1">
-                  Scan domains and servers for gaming-related security vulnerabilities. CVE matching, TLS validation, and security header analysis.
+                  Simulated demonstration — results are illustrative, not a live scan.
                 </p>
               </div>
             </div>
