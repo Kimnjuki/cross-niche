@@ -15,6 +15,8 @@ import {
   ExternalLink, Eye, Activity, Zap, RefreshCcw, Info,
   ChevronRight, Database, Cpu, Lock, AlertOctagon,
 } from 'lucide-react';
+import { useAction } from 'convex/react';
+import { api } from '../../../convex/_generated/api';
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 
@@ -205,6 +207,51 @@ function getMockResult(ioc: string, type: IOCType): IOCResult {
   };
 }
 
+// ── GreyNoise mapping (real data via Convex action) ──────────────────────────
+
+interface GreyNoiseResponse {
+  ip: string;
+  noise?: boolean;
+  riot?: boolean;
+  classification?: 'malicious' | 'benign' | 'unknown';
+  name?: string;
+  link?: string;
+  last_seen?: string;
+  message?: string;
+}
+
+function buildResultFromGreyNoise(data: GreyNoiseResponse, ioc: string, type: IOCType): IOCResult {
+  const classification = data.classification ?? 'unknown';
+  const severity: Severity = classification === 'malicious' ? 'high' : classification === 'benign' ? 'clean' : 'low';
+  const riskScore = classification === 'malicious' ? 80 : classification === 'benign' ? 10 : 30;
+  const seen = data.noise === true || data.riot === true || classification !== 'unknown';
+  return {
+    ioc,
+    type,
+    riskScore,
+    severity,
+    lastSeen: data.last_seen,
+    threatTags: data.name ? [data.name] : [],
+    malwareFamilies: [],
+    sources: [{
+      name: 'GreyNoise Community',
+      detections: seen ? 1 : 0,
+      total: 1,
+      verdict: classification === 'malicious' ? 'malicious' : classification === 'benign' ? 'clean' : 'unknown',
+      lastScan: 'just now',
+    }],
+    nexusVerdict: classification === 'malicious' ? 'Block' : classification === 'benign' ? 'No Threat Detected' : 'Unknown — Monitor',
+    nexusVerdictDetail: classification === 'malicious'
+      ? 'This IP is classified malicious by GreyNoise and has been observed performing internet-wide scanning or attacks.'
+      : classification === 'benign'
+        ? 'This IP is classified benign by GreyNoise and is a known legitimate service.'
+        : seen
+          ? 'This IP has been observed by GreyNoise but is not classified as malicious.'
+          : 'GreyNoise has no record of internet-wide scanning from this IP.',
+    behaviorSummary: data.name ? `Classified as "${data.name}" by GreyNoise.` : undefined,
+  };
+}
+
 // ── UI helpers ────────────────────────────────────────────────────────────────
 
 const TYPE_CONFIG: Record<IOCType, { label: string; icon: React.ComponentType<{ className?: string }>; color: string }> = {
@@ -273,6 +320,7 @@ const EXAMPLES = [
 
 export default function IOCLookup() {
   const { trackTool } = useTrackToolUse();
+  const lookupIOC = useAction(api.iocLookup.lookupIOC);
   const [query, setQuery] = useState('');
   const [result, setResult] = useState<IOCResult | null>(null);
   const [loading, setLoading] = useState(false);
@@ -281,7 +329,7 @@ export default function IOCLookup() {
 
   const detectedType = query.trim() ? detectIOCType(query.trim()) : 'unknown';
 
-  const handleLookup = useCallback((value?: string) => {
+  const handleLookup = useCallback(async (value?: string) => {
     const ioc = (value ?? query).trim();
     if (!ioc) { setError('Enter an IP, domain, file hash, or email to analyse.'); return; }
     const type = detectIOCType(ioc);
@@ -290,9 +338,19 @@ export default function IOCLookup() {
     setError('');
     setLoading(true);
     setResult(null);
-    setResult(getMockResult(ioc, type));
-    setLoading(false);
-  }, [query]);
+    try {
+      const res = await lookupIOC({ ioc, type });
+      if (res.ok && res.data) {
+        setResult(buildResultFromGreyNoise(res.data, ioc, type));
+      } else {
+        setError(res.reason || 'Lookup failed.');
+      }
+    } catch (e) {
+      setError(`Lookup failed: ${(e as Error).message}`);
+    } finally {
+      setLoading(false);
+    }
+  }, [query, lookupIOC, trackTool]);
 
   const handleCopy = useCallback(() => {
     if (!result) return;
@@ -338,7 +396,7 @@ export default function IOCLookup() {
           </div>
           <h1 className="font-display font-bold text-4xl mb-2">IOC Threat-Hunting Lookup</h1>
           <p className="text-muted-foreground text-lg max-w-xl mx-auto">
-            Analyse IPs, domains, file hashes, and emails across VirusTotal, AbuseIPDB, Shodan & GreyNoise in one shot.
+            Look up IP reputation against the free GreyNoise Community API. Domain, hash and email lookups require a paid threat-intel key.
           </p>
         </div>
 

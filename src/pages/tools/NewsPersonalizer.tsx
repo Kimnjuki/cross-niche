@@ -17,6 +17,8 @@ import {
   RefreshCw, BookmarkCheck, ChevronLeft,
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { useQuery } from 'convex/react';
+import { api } from '../../../convex/_generated/api';
 
 // ── Types ──────────────────────────────────────────────────────────────────
 
@@ -209,6 +211,28 @@ const NEWS_FEED: NewsItem[] = [
 
 const ITEMS_PER_PAGE = 5;
 
+// Map a published Convex content doc to a NewsItem for the feed.
+function mapContentToNewsItem(doc: Record<string, unknown>): NewsItem {
+  const ct = String(doc.contentType ?? '').toLowerCase();
+  const category = ct === 'gaming' || ct === 'games' ? 'gaming'
+    : ct === 'security' || ct === 'cybersecurity' ? 'security'
+    : 'tech';
+  const source = typeof doc.source === 'string' && doc.source && doc.source !== 'thegridnexus.com'
+    ? doc.source : 'The Grid Nexus';
+  const published = typeof doc.publishedAt === 'number' ? doc.publishedAt : undefined;
+  return {
+    id: String(doc._id ?? doc.slug ?? ''),
+    title: String(doc.title ?? ''),
+    summary: String(doc.summary ?? doc.seoDescription ?? '').slice(0, 180),
+    category,
+    source,
+    date: published ? new Date(published).toISOString().slice(0, 10) : '',
+    priority: doc.isBreaking === true ? 'breaking' : 'normal',
+    tags: Array.isArray(doc.gamingPlatforms) ? doc.gamingPlatforms.map(String).slice(0, 4) : [],
+    relevanceScore: doc.isBreaking === true ? 98 : doc.isFeatured === true ? 85 : 72,
+  };
+}
+
 // ═══════════════════════════════════════════════════════════════════════════
 
 export default function NewsPersonalizer() {
@@ -223,6 +247,10 @@ export default function NewsPersonalizer() {
   });
   const [status, setStatus] = useState<StatusType>('idle');
   const [currentPage, setCurrentPage] = useState(1);
+
+  // Real content: the site's own published articles (Convex), not a mock feed.
+  const contentRows = useQuery(api.content.getPublishedContent, { limit: 100 });
+  const feed = useMemo(() => (contentRows ?? []).map(mapContentToNewsItem), [contentRows]);
 
   // Persist bookmarks to sessionStorage on change
   React.useEffect(() => {
@@ -243,8 +271,8 @@ export default function NewsPersonalizer() {
   // Filter with search + category
   const filtered = useMemo(() => {
     let items = activeCategory === 'all'
-      ? NEWS_FEED
-      : NEWS_FEED.filter((n) => n.category === activeCategory);
+      ? feed
+      : feed.filter((n) => n.category === activeCategory);
 
     if (searchQuery.trim()) {
       const q = searchQuery.toLowerCase();
@@ -257,7 +285,7 @@ export default function NewsPersonalizer() {
     }
 
     return items;
-  }, [activeCategory, searchQuery]);
+  }, [activeCategory, searchQuery, feed]);
 
   // Breaking news (always shown)
   const breaking = useMemo(
