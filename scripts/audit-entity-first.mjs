@@ -12,6 +12,7 @@
  * Usage: node scripts/audit-entity-first.mjs [topN]
  */
 import { loadPublishedContent } from './lib/content-source.mjs';
+import { markdownToHtml } from './lib/markdown-to-html.mjs';
 
 const topN = parseInt(process.argv[2] || '40', 10);
 
@@ -22,7 +23,9 @@ function stripHtml(html) {
 }
 
 const results = items.map((a) => {
-  const body = String(a.body || '');
+  // Bodies are stored as Markdown (99/102); score the RENDERED structure by
+  // converting to HTML first, otherwise Markdown headings/tables are invisible.
+  const body = markdownToHtml(String(a.body || ''));
 
   const questionHeadings = (body.match(/<h[23][^>]*>[^<]*\?[^<]*<\/h[23]>/gi) || []).length;
   const dataTables = (body.match(/<table>/gi) || []).length;
