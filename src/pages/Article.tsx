@@ -303,6 +303,7 @@ export default function Article() {
         autoGenerate={true}
         canonicalUrl={article.canonicalUrl || undefined}
         noindex={article.noindex === true}
+        reviews={article.reviews}
       />
 
       <article className="container mx-auto px-4 py-8 bg-background text-foreground">

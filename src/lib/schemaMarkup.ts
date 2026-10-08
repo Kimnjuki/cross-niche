@@ -352,6 +352,66 @@ export function generateReviewSchema(review: {
 }
 
 // ────────────────────────────────────────────────────────────────────────────
+// Embedded product reviews (Article.reviews) → Review + aggregateRating
+// ────────────────────────────────────────────────────────────────────────────
+/**
+ * Emit Review schemas for a roundup article's embedded product reviews
+ * (the Article.reviews field: product, rating, summary, pros, cons).
+ * 1 review → Review only; 2+ → Review per item + a Product aggregateRating
+ * (star rich result). AggregateRating is computed from the real per-item
+ * ratings — never hardcoded — so it stays within Google's review-snippet policy.
+ */
+export function generateReviewSchemas(
+  reviews: Array<{
+    product: string;
+    rating: number;
+    summary?: string;
+    pros?: string[];
+    cons?: string[];
+  }>,
+  article: { title: string; slug?: string; id?: string; author?: string; publishedAt?: string },
+): object[] {
+  const base = `${BASE_URL}/article/${article.slug ?? article.id ?? ''}`;
+  const author = article.author || 'The Grid Nexus Editorial Team';
+  const datePublished = article.publishedAt
+    ? new Date(article.publishedAt).toISOString()
+    : new Date().toISOString();
+
+  const schemas: object[] = reviews.map((r) =>
+    generateReviewSchema({
+      itemName: r.product,
+      itemType: 'Product',
+      reviewBody: r.summary || '',
+      ratingValue: r.rating,
+      bestRating: 5,
+      worstRating: 1,
+      author,
+      datePublished,
+      pros: r.pros,
+      cons: r.cons,
+      url: base,
+    }),
+  );
+
+  if (reviews.length > 1) {
+    const avg = reviews.reduce((s, r) => s + r.rating, 0) / reviews.length;
+    schemas.push({
+      '@type': 'Product',
+      name: article.title,
+      aggregateRating: {
+        '@type': 'AggregateRating',
+        ratingValue: avg.toFixed(1),
+        reviewCount: reviews.length,
+        bestRating: 5,
+        worstRating: 1,
+      },
+    });
+  }
+
+  return schemas;
+}
+
+// ────────────────────────────────────────────────────────────────────────────
 // SoftwareApplication (tool pages)
 // ────────────────────────────────────────────────────────────────────────────
 export function generateSoftwareSchema(software: {
@@ -511,6 +571,7 @@ export function generateAllSchemas(options: {
     items: Array<{ name: string; url: string; position: number }>;
   };
   review?: Parameters<typeof generateReviewSchema>[0];
+  reviews?: Parameters<typeof generateReviewSchemas>[0];
 }) {
   const schemas: object[] = [];
 
@@ -567,6 +628,11 @@ export function generateAllSchemas(options: {
   // Review
   if (options.review) {
     schemas.push(generateReviewSchema(options.review));
+  }
+
+  // Embedded product reviews (Article.reviews) → Review + aggregateRating
+  if (options.reviews?.length && options.article) {
+    schemas.push(...generateReviewSchemas(options.reviews, options.article));
   }
 
   return schemas;

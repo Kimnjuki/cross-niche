@@ -83,6 +83,14 @@ interface SEOHeadProps {
     url: string;
     imageUrl?: string;
   };
+  /** Embedded product reviews (Article.reviews) → Review + aggregateRating. */
+  reviews?: Array<{
+    product: string;
+    rating: number;
+    summary?: string;
+    pros?: string[];
+    cons?: string[];
+  }>;
 }
 
 export function SEOHead({
@@ -109,6 +117,7 @@ export function SEOHead({
   events,
   itemList,
   review,
+  reviews,
 }: SEOHeadProps) {
   // ── Title construction (unique per page, 50-60 chars) ──────────────────
   const rawTitle =
@@ -297,6 +306,7 @@ export function SEOHead({
       events:   events && events.length > 0 ? events : undefined,
       itemList: itemList?.items?.length ? itemList : undefined,
       review:   review,
+      reviews:  reviews,
     });
 
     if (person) schemas.push(generatePersonSchema(person));
