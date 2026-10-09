@@ -11,6 +11,16 @@
 import { action } from './_generated/server';
 import { v } from 'convex/values';
 
+async function fetchWithTimeout(url: string, options: RequestInit = {}, timeoutMs = 15000): Promise<Response> {
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), timeoutMs);
+  try {
+    return await fetch(url, { ...options, signal: controller.signal });
+  } finally {
+    clearTimeout(timer);
+  }
+}
+
 export const scanUrl = action({
   args: { url: v.string() },
   handler: async (_ctx, args) => {
@@ -21,7 +31,7 @@ export const scanUrl = action({
     if (!/^https?:\/\//i.test(target)) target = `https://${target}`;
 
     try {
-      const submitRes = await fetch('https://urlscan.io/api/v1/scan/', {
+      const submitRes = await fetchWithTimeout('https://urlscan.io/api/v1/scan/', {
         method: 'POST',
         headers: { 'API-Key': key, 'Content-Type': 'application/json' },
         body: JSON.stringify({ url: target, visibility: 'public' }),
@@ -37,7 +47,7 @@ export const scanUrl = action({
       // Poll for the result (bounded ~30s; urlscan scans typically take 10–60s).
       for (let i = 0; i < 10; i += 1) {
         await new Promise((r) => setTimeout(r, 3000));
-        const res = await fetch(api, { headers: { 'API-Key': key } });
+        const res = await fetchWithTimeout(api, { headers: { 'API-Key': key } });
         if (res.status === 200) {
           const data = await res.json();
           const overall = data?.verdicts?.overall ?? {};

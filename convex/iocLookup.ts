@@ -15,6 +15,16 @@ import { v } from 'convex/values';
 const GREYNOISE_COMMUNITY = 'https://api.greynoise.io/v3/community/';
 const VT_BASE = 'https://www.virustotal.com/api/v3/';
 
+async function fetchWithTimeout(url: string, options: RequestInit = {}, timeoutMs = 12000): Promise<Response> {
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), timeoutMs);
+  try {
+    return await fetch(url, { ...options, signal: controller.signal });
+  } finally {
+    clearTimeout(timer);
+  }
+}
+
 function classifyFromVt(stats: Record<string, number>): string {
   if ((stats.malicious ?? 0) > 0) return 'malicious';
   if ((stats.suspicious ?? 0) > 0) return 'suspicious';
@@ -30,7 +40,7 @@ export const lookupIOC = action({
     // ── IP → GreyNoise Community (keyless) ────────────────────────────────
     if (type === 'ip') {
       try {
-        const res = await fetch(`${GREYNOISE_COMMUNITY}${encodeURIComponent(ioc)}`, {
+        const res = await fetchWithTimeout(`${GREYNOISE_COMMUNITY}${encodeURIComponent(ioc)}`, {
           method: 'GET',
           headers: { Accept: 'application/json' },
         });
@@ -64,7 +74,7 @@ export const lookupIOC = action({
     // URL needs a submit-then-fetch flow.
     if (type === 'url') {
       try {
-        const submitRes = await fetch(`${VT_BASE}urls`, {
+        const submitRes = await fetchWithTimeout(`${VT_BASE}urls`, {
           method: 'POST',
           headers: { 'x-apikey': key, 'Content-Type': 'application/x-www-form-urlencoded' },
           body: new URLSearchParams({ url: ioc }).toString(),
@@ -75,7 +85,7 @@ export const lookupIOC = action({
         const submit = await submitRes.json();
         const id = submit?.data?.id;
         if (!id) return { ok: false, ioc, type, reason: 'VirusTotal submit returned no analysis id.' };
-        const getRes = await fetch(`${VT_BASE}urls/${id}`, { headers: { 'x-apikey': key } });
+        const getRes = await fetchWithTimeout(`${VT_BASE}urls/${id}`, { headers: { 'x-apikey': key } });
         if (!getRes.ok) return { ok: false, ioc, type, reason: `VirusTotal URL lookup returned HTTP ${getRes.status}.` };
         const getData = await getRes.json();
         const stats = getData?.data?.attributes?.last_analysis_stats ?? {};
@@ -91,7 +101,7 @@ export const lookupIOC = action({
     // Domain / hash → direct lookup.
     const endpoint = type === 'domain' ? `domains/${encodeURIComponent(ioc)}` : `files/${encodeURIComponent(ioc)}`;
     try {
-      const res = await fetch(`${VT_BASE}${endpoint}`, { headers: { 'x-apikey': key } });
+      const res = await fetchWithTimeout(`${VT_BASE}${endpoint}`, { headers: { 'x-apikey': key } });
       if (res.status === 404) {
         return { ok: true, ioc, type, data: { source: 'virustotal', classification: 'unknown', riskScore: 0 } };
       }

@@ -10,6 +10,16 @@
 import { action } from './_generated/server';
 import { v } from 'convex/values';
 
+async function fetchWithTimeout(url: string, options: RequestInit = {}, timeoutMs = 15000): Promise<Response> {
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), timeoutMs);
+  try {
+    return await fetch(url, { ...options, signal: controller.signal });
+  } finally {
+    clearTimeout(timer);
+  }
+}
+
 export const lookupCVEs = action({
   args: { keyword: v.string() },
   handler: async (_ctx, args) => {
@@ -20,7 +30,7 @@ export const lookupCVEs = action({
     const url = `https://services.nvd.nist.gov/rest/json/cves/2.0?keywordSearch=${encodeURIComponent(args.keyword)}&resultsPerPage=5`;
 
     try {
-      const res = await fetch(url, { headers });
+      const res = await fetchWithTimeout(url, { headers });
       if (res.status === 403) {
         return { ok: false, reason: 'NVD rate limit reached — try again later.' };
       }
