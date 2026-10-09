@@ -42,14 +42,13 @@ RUN npm config set fetch-retries 5 \
 # Copy the rest of the code and build
 COPY . .
 
-# IMPORTANT: VITE_CONVEX_URL must be explicitly emptied at build time.
-# Coolify auto-injects ALL build-time env vars as Docker ARG, which
-# Docker makes available as environment variables during RUN commands.
-# If we don't explicitly blank it, Vite picks up Coolify's injected
-# VITE_CONVEX_URL and bakes the stale key into the bundle, which
-# causes all Convex queries to hang indefinitely on article pages.
-# SafeConvexProvider detects the empty/missing URL and disables all
-# Convex queries, allowing mock data to render immediately.
+# VITE_CONVEX_URL is pinned to the CURRENT production Convex deployment so the
+# SPA can reach live data (tool actions, bookmarks, news). Coolify auto-injects
+# build-time env vars as Docker ARG, which Docker exposes during RUN commands —
+# so we override it here to prevent a stale deployment URL being baked in (the
+# old blank-to-empty approach disabled all Convex queries and broke the tool
+# actions with "Connection lost while action was in flight"). The deployment URL
+# is public, not a secret. Update this if the prod deployment ever changes.
 #
 # Auth0 env vars are also deliberately omitted — credentials are
 # hardcoded in src/lib/auth0Config.ts as production defaults.
@@ -62,7 +61,7 @@ COPY . .
 
 # Build frontend and generate SEO assets; generators are non-fatal so the
 # image still builds even if static generation hits an unexpected error.
-RUN VITE_CONVEX_URL= PRERENDER=0 npm run build:frontend
+RUN VITE_CONVEX_URL=https://canny-mule-83.convex.cloud PRERENDER=0 npm run build:frontend
 RUN node scripts/generate-seo-sitemaps.mjs || true
 RUN node scripts/generate-static-articles.mjs || true
 RUN node scripts/generate-llms-full.mjs || true
