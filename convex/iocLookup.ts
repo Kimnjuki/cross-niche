@@ -85,14 +85,28 @@ export const lookupIOC = action({
         const submit = await submitRes.json();
         const id = submit?.data?.id;
         if (!id) return { ok: false, ioc, type, reason: 'VirusTotal submit returned no analysis id.' };
-        const getRes = await fetchWithTimeout(`${VT_BASE}urls/${id}`, { headers: { 'x-apikey': key } });
-        if (!getRes.ok) return { ok: false, ioc, type, reason: `VirusTotal URL lookup returned HTTP ${getRes.status}.` };
-        const getData = await getRes.json();
-        const stats = getData?.data?.attributes?.last_analysis_stats ?? {};
-        return {
-          ok: true, ioc, type,
-          data: { source: 'virustotal', classification: classifyFromVt(stats), vtMalicious: stats.malicious ?? 0, vtSuspicious: stats.suspicious ?? 0, vtHarmless: stats.harmless ?? 0, vtTotal: (stats.malicious ?? 0) + (stats.suspicious ?? 0) + (stats.harmless ?? 0) + (stats.undetected ?? 0) },
-        };
+
+        // The submit returns an ANALYSIS id (type "analysis"), not a URL id, so
+        // we poll GET /analyses/{id} (not /urls/{id}) until the async scan
+        // completes. The verdict lives in attributes.stats, not last_analysis_stats.
+        for (let attempt = 0; attempt < 3; attempt += 1) {
+          if (attempt > 0) await new Promise((r) => setTimeout(r, 4000));
+          const getRes = await fetchWithTimeout(`${VT_BASE}analyses/${encodeURIComponent(id)}`, { headers: { 'x-apikey': key } });
+          if (!getRes.ok) {
+            return { ok: false, ioc, type, reason: `VirusTotal analysis lookup returned HTTP ${getRes.status}.` };
+          }
+          const getData = await getRes.json();
+          const status = getData?.data?.attributes?.status;
+          const stats = getData?.data?.attributes?.stats ?? {};
+          const total = (stats.malicious ?? 0) + (stats.suspicious ?? 0) + (stats.harmless ?? 0) + (stats.undetected ?? 0);
+          if (status === 'completed' || total > 0) {
+            return {
+              ok: true, ioc, type,
+              data: { source: 'virustotal', classification: classifyFromVt(stats), vtMalicious: stats.malicious ?? 0, vtSuspicious: stats.suspicious ?? 0, vtHarmless: stats.harmless ?? 0, vtTotal: total },
+            };
+          }
+        }
+        return { ok: false, ioc, type, reason: 'VirusTotal is still analysing this URL — try again in a minute.' };
       } catch (err) {
         return { ok: false, ioc, type, reason: `VirusTotal URL lookup failed: ${(err as Error).message}` };
       }
