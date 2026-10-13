@@ -1,0 +1,659 @@
+{
+  "meta": {
+    "generatedAt": "2026-10-13T21:20:09.855Z",
+    "count": 14
+  },
+  "games": [
+    {
+      "_creationTime": 1791926368391.8818,
+      "_id": "q97dvbabzz4rjwkydmavnfy4wd8g6573",
+      "aliases": [
+        "PSN",
+        "PlayStation"
+      ],
+      "approximateCostUSD": 0,
+      "budgetTier": "free",
+      "developer": "Sony Interactive Entertainment",
+      "genres": [
+        "platform"
+      ],
+      "isSupported": true,
+      "minHardwareTier": "low",
+      "name": "PlayStation Network",
+      "negativeThemes": [],
+      "platforms": [
+        "PlayStation"
+      ],
+      "positiveThemes": [],
+      "publisher": "Sony",
+      "recentSecurityComplaints": [],
+      "recommendedForGoals": [
+        "both"
+      ],
+      "releaseYear": 2006,
+      "securityGrade": "A",
+      "securityMentionRate": 0,
+      "securityNotes": "PSN supports 2FA and passkeys. The 2011 breach is historical; current account protection is strong with 2FA enabled.",
+      "sentimentScores": {
+        "balance": 0.5,
+        "community": 0.5,
+        "gameplay": 0.5,
+        "performance": 0.5,
+        "security": 0.5
+      },
+      "sentimentTrendDirection": "stable",
+      "slug": "playstation-network",
+      "stylesMatch": [
+        "console"
+      ],
+      "updatedAt": 1791926368391
+    },
+    {
+      "_creationTime": 1791926368391.8816,
+      "_id": "q970dwm1v8cabadp79cvtm46eh8g6sbx",
+      "aliases": [
+        "Nintendo Account",
+        "Switch Online"
+      ],
+      "approximateCostUSD": 20,
+      "budgetTier": "budget",
+      "developer": "Nintendo",
+      "genres": [
+        "platform"
+      ],
+      "isSupported": true,
+      "minHardwareTier": "low",
+      "name": "Nintendo Switch Online",
+      "negativeThemes": [],
+      "platforms": [
+        "Switch"
+      ],
+      "positiveThemes": [],
+      "publisher": "Nintendo",
+      "recentSecurityComplaints": [],
+      "recommendedForGoals": [
+        "both"
+      ],
+      "releaseYear": 2018,
+      "securityGrade": "B",
+      "securityMentionRate": 0,
+      "securityNotes": "Nintendo accounts support 2FA and passkeys, but have a documented credential-stuffing history (2020 NNID breach). Enable 2FA and unique credentials.",
+      "sentimentScores": {
+        "balance": 0.5,
+        "community": 0.5,
+        "gameplay": 0.5,
+        "performance": 0.5,
+        "security": 0.5
+      },
+      "sentimentTrendDirection": "stable",
+      "slug": "nintendo-switch-online",
+      "stylesMatch": [
+        "console"
+      ],
+      "updatedAt": 1791926368391
+    },
+    {
+      "_creationTime": 1791926368391.8813,
+      "_id": "q97abymacmdvj39tyrc59xc8kx8g70v3",
+      "aliases": [
+        "Apex"
+      ],
+      "approximateCostUSD": 0,
+      "budgetTier": "free",
+      "developer": "Respawn Entertainment",
+      "genres": [
+        "battle-royale",
+        "shooter"
+      ],
+      "isSupported": true,
+      "minHardwareTier": "mid",
+      "name": "Apex Legends",
+      "negativeThemes": [],
+      "platforms": [
+        "PC",
+        "PlayStation",
+        "Xbox",
+        "Switch"
+      ],
+      "positiveThemes": [],
+      "publisher": "Electronic Arts",
+      "recentSecurityComplaints": [],
+      "recommendedForGoals": [
+        "both"
+      ],
+      "releaseYear": 2019,
+      "securityGrade": "B",
+      "securityMentionRate": 0,
+      "securityNotes": "EA account supports 2FA; account-recovery can be slow, so protect the email account behind it.",
+      "sentimentScores": {
+        "balance": 0.5,
+        "community": 0.5,
+        "gameplay": 0.5,
+        "performance": 0.5,
+        "security": 0.5
+      },
+      "sentimentTrendDirection": "stable",
+      "slug": "apex-legends",
+      "stylesMatch": [
+        "shooter",
+        "battle-royale"
+      ],
+      "updatedAt": 1791926368391
+    },
+    {
+      "_creationTime": 1791926368391.881,
+      "_id": "q970w87shceqwesxdtqexh9mz18g6774",
+      "aliases": [
+        "Grand Theft Auto Online",
+        "GTA V"
+      ],
+      "approximateCostUSD": 30,
+      "budgetTier": "budget",
+      "developer": "Rockstar Games",
+      "genres": [
+        "open-world",
+        "action"
+      ],
+      "isSupported": true,
+      "minHardwareTier": "mid",
+      "name": "GTA Online",
+      "negativeThemes": [],
+      "platforms": [
+        "PC",
+        "PlayStation",
+        "Xbox"
+      ],
+      "positiveThemes": [],
+      "publisher": "Rockstar Games",
+      "recentSecurityComplaints": [],
+      "recommendedForGoals": [
+        "both"
+      ],
+      "releaseYear": 2013,
+      "securityGrade": "C",
+      "securityMentionRate": 0,
+      "securityNotes": "Rockstar Social Club supports 2FA but account takeovers and modding-based theft are common, especially on PC. Use 2FA and a unique password.",
+      "sentimentScores": {
+        "balance": 0.5,
+        "community": 0.5,
+        "gameplay": 0.5,
+        "performance": 0.5,
+        "security": 0.5
+      },
+      "sentimentTrendDirection": "stable",
+      "slug": "gta-online",
+      "stylesMatch": [
+        "open-world",
+        "action"
+      ],
+      "updatedAt": 1791926368391
+    },
+    {
+      "_creationTime": 1791926368391.8809,
+      "_id": "q970ygmphswc3k2v21kmbej5ys8g7rnw",
+      "aliases": [
+        "CoD",
+        "Warzone",
+        "Modern Warfare"
+      ],
+      "approximateCostUSD": 70,
+      "budgetTier": "high",
+      "developer": "Activision",
+      "genres": [
+        "shooter"
+      ],
+      "isSupported": true,
+      "minHardwareTier": "mid",
+      "name": "Call of Duty",
+      "negativeThemes": [],
+      "platforms": [
+        "PC",
+        "PlayStation",
+        "Xbox"
+      ],
+      "positiveThemes": [],
+      "publisher": "Activision",
+      "recentSecurityComplaints": [],
+      "recommendedForGoals": [
+        "both"
+      ],
+      "releaseYear": 2003,
+      "securityGrade": "C",
+      "securityMentionRate": 0,
+      "securityNotes": "Activision accounts support 2FA but have seen documented account-takeover waves and account-unlink attacks. Review linked accounts regularly.",
+      "sentimentScores": {
+        "balance": 0.5,
+        "community": 0.5,
+        "gameplay": 0.5,
+        "performance": 0.5,
+        "security": 0.5
+      },
+      "sentimentTrendDirection": "stable",
+      "slug": "call-of-duty",
+      "stylesMatch": [
+        "shooter"
+      ],
+      "updatedAt": 1791926368391
+    },
+    {
+      "_creationTime": 1791926368391.8806,
+      "_id": "q976ngb5s22d8axmv3h7zq9c398g6hr9",
+      "aliases": [
+        "Genshin"
+      ],
+      "approximateCostUSD": 0,
+      "budgetTier": "free",
+      "developer": "HoYoverse",
+      "genres": [
+        "rpg",
+        "gacha"
+      ],
+      "isSupported": true,
+      "minHardwareTier": "mid",
+      "name": "Genshin Impact",
+      "negativeThemes": [],
+      "platforms": [
+        "PC",
+        "PlayStation",
+        "Mobile"
+      ],
+      "positiveThemes": [],
+      "publisher": "HoYoverse",
+      "recentSecurityComplaints": [],
+      "recommendedForGoals": [
+        "find_game"
+      ],
+      "releaseYear": 2020,
+      "securityGrade": "B",
+      "securityMentionRate": 0,
+      "securityNotes": "HoYoverse account supports 2FA and email verification, but spending-linked accounts are heavily phished.",
+      "sentimentScores": {
+        "balance": 0.5,
+        "community": 0.5,
+        "gameplay": 0.5,
+        "performance": 0.5,
+        "security": 0.5
+      },
+      "sentimentTrendDirection": "stable",
+      "slug": "genshin-impact",
+      "stylesMatch": [
+        "rpg",
+        "open-world"
+      ],
+      "updatedAt": 1791926368391
+    },
+    {
+      "_creationTime": 1791926368391.8804,
+      "_id": "q97cvdrgqdb3sd14a3gfe12dad8g7r32",
+      "aliases": [
+        "CS2",
+        "Counter-Strike"
+      ],
+      "approximateCostUSD": 0,
+      "budgetTier": "free",
+      "developer": "Valve",
+      "genres": [
+        "tactical-shooter"
+      ],
+      "isSupported": true,
+      "minHardwareTier": "mid",
+      "name": "Counter-Strike 2",
+      "negativeThemes": [],
+      "platforms": [
+        "PC"
+      ],
+      "positiveThemes": [],
+      "publisher": "Valve",
+      "recentSecurityComplaints": [],
+      "recommendedForGoals": [
+        "gaming_pc",
+        "both"
+      ],
+      "releaseYear": 2023,
+      "securityGrade": "A",
+      "securityMentionRate": 0,
+      "securityNotes": "Runs on Steam, inheriting Steam Guard TOTP 2FA and hardware-key support. High-value inventory makes accounts prime targets.",
+      "sentimentScores": {
+        "balance": 0.5,
+        "community": 0.5,
+        "gameplay": 0.5,
+        "performance": 0.5,
+        "security": 0.5
+      },
+      "sentimentTrendDirection": "stable",
+      "slug": "counter-strike-2",
+      "stylesMatch": [
+        "shooter",
+        "competitive"
+      ],
+      "updatedAt": 1791926368391
+    },
+    {
+      "_creationTime": 1791926368391.8801,
+      "_id": "q97b57jzphey02j0scds9ywrcd8g7dhw",
+      "aliases": [
+        "LoL"
+      ],
+      "approximateCostUSD": 0,
+      "budgetTier": "free",
+      "developer": "Riot Games",
+      "genres": [
+        "moba"
+      ],
+      "isSupported": true,
+      "minHardwareTier": "low",
+      "name": "League of Legends",
+      "negativeThemes": [],
+      "platforms": [
+        "PC"
+      ],
+      "positiveThemes": [],
+      "publisher": "Riot Games",
+      "recentSecurityComplaints": [],
+      "recommendedForGoals": [
+        "gaming_pc",
+        "both"
+      ],
+      "releaseYear": 2009,
+      "securityGrade": "A",
+      "securityMentionRate": 0,
+      "securityNotes": "Riot account supports TOTP 2FA and active account-recovery.",
+      "sentimentScores": {
+        "balance": 0.5,
+        "community": 0.5,
+        "gameplay": 0.5,
+        "performance": 0.5,
+        "security": 0.5
+      },
+      "sentimentTrendDirection": "stable",
+      "slug": "league-of-legends",
+      "stylesMatch": [
+        "moba",
+        "competitive"
+      ],
+      "updatedAt": 1791926368391
+    },
+    {
+      "_creationTime": 1791926368391.88,
+      "_id": "q974fte85n2dgpr6wc061z5bch8g6k4f",
+      "aliases": [
+        "VALORANT"
+      ],
+      "approximateCostUSD": 0,
+      "budgetTier": "free",
+      "developer": "Riot Games",
+      "genres": [
+        "tactical-shooter"
+      ],
+      "isSupported": true,
+      "minHardwareTier": "mid",
+      "name": "Valorant",
+      "negativeThemes": [],
+      "platforms": [
+        "PC"
+      ],
+      "positiveThemes": [],
+      "publisher": "Riot Games",
+      "recentSecurityComplaints": [],
+      "recommendedForGoals": [
+        "gaming_pc",
+        "both"
+      ],
+      "releaseYear": 2020,
+      "securityGrade": "A",
+      "securityMentionRate": 0,
+      "securityNotes": "Riot account supports TOTP 2FA; Vanguard anti-cheat and active account-recovery. High-value accounts are frequent targets, so 2FA is essential.",
+      "sentimentScores": {
+        "balance": 0.5,
+        "community": 0.5,
+        "gameplay": 0.5,
+        "performance": 0.5,
+        "security": 0.5
+      },
+      "sentimentTrendDirection": "stable",
+      "slug": "valorant",
+      "stylesMatch": [
+        "shooter",
+        "competitive"
+      ],
+      "updatedAt": 1791926368391
+    },
+    {
+      "_creationTime": 1791926368391.8796,
+      "_id": "q97dhdxfkwqr4dpkh0dxveypd58g6vbv",
+      "aliases": [
+        "Roblox Platform"
+      ],
+      "approximateCostUSD": 0,
+      "budgetTier": "free",
+      "developer": "Roblox Corporation",
+      "genres": [
+        "sandbox",
+        "social"
+      ],
+      "isSupported": true,
+      "minHardwareTier": "low",
+      "name": "Roblox",
+      "negativeThemes": [],
+      "platforms": [
+        "PC",
+        "Xbox",
+        "Mobile"
+      ],
+      "positiveThemes": [],
+      "publisher": "Roblox Corporation",
+      "recentSecurityComplaints": [],
+      "recommendedForGoals": [
+        "find_game"
+      ],
+      "releaseYear": 2006,
+      "securityGrade": "B",
+      "securityMentionRate": 0,
+      "securityNotes": "Supports TOTP 2FA and account PINs. Very young audience is heavily targeted by fake \"free Robux\" scams and cookie-theft phishing.",
+      "sentimentScores": {
+        "balance": 0.5,
+        "community": 0.5,
+        "gameplay": 0.5,
+        "performance": 0.5,
+        "security": 0.5
+      },
+      "sentimentTrendDirection": "stable",
+      "slug": "roblox",
+      "stylesMatch": [
+        "sandbox",
+        "social"
+      ],
+      "updatedAt": 1791926368391
+    },
+    {
+      "_creationTime": 1791926368391.8794,
+      "_id": "q97dmhsjby7bdyh9a9d4zvcjax8g6hnw",
+      "aliases": [
+        "Minecraft Java",
+        "Minecraft Bedrock"
+      ],
+      "approximateCostUSD": 30,
+      "budgetTier": "budget",
+      "developer": "Mojang Studios",
+      "genres": [
+        "sandbox",
+        "survival"
+      ],
+      "isSupported": true,
+      "minHardwareTier": "low",
+      "name": "Minecraft",
+      "negativeThemes": [],
+      "platforms": [
+        "PC",
+        "PlayStation",
+        "Xbox",
+        "Switch",
+        "Mobile"
+      ],
+      "positiveThemes": [],
+      "publisher": "Microsoft",
+      "recentSecurityComplaints": [],
+      "recommendedForGoals": [
+        "both"
+      ],
+      "releaseYear": 2011,
+      "securityGrade": "B",
+      "securityMentionRate": 0,
+      "securityNotes": "Migrated to Microsoft accounts with 2FA. Younger player base is a heavy phishing target; account-migration confusion is a common entry point for attackers.",
+      "sentimentScores": {
+        "balance": 0.5,
+        "community": 0.5,
+        "gameplay": 0.5,
+        "performance": 0.5,
+        "security": 0.5
+      },
+      "sentimentTrendDirection": "stable",
+      "slug": "minecraft",
+      "stylesMatch": [
+        "sandbox",
+        "creative"
+      ],
+      "updatedAt": 1791926368391
+    },
+    {
+      "_creationTime": 1791926368391.8792,
+      "_id": "q97akj1cmc91ggjg3emvmzej1d8g6c6f",
+      "aliases": [
+        "Fortnite Battle Royale"
+      ],
+      "approximateCostUSD": 0,
+      "budgetTier": "free",
+      "developer": "Epic Games",
+      "genres": [
+        "battle-royale",
+        "shooter"
+      ],
+      "isSupported": true,
+      "minHardwareTier": "mid",
+      "name": "Fortnite",
+      "negativeThemes": [],
+      "platforms": [
+        "PC",
+        "PlayStation",
+        "Xbox",
+        "Switch",
+        "Mobile"
+      ],
+      "positiveThemes": [],
+      "publisher": "Epic Games",
+      "recentSecurityComplaints": [],
+      "recommendedForGoals": [
+        "both"
+      ],
+      "releaseYear": 2017,
+      "securityGrade": "A",
+      "securityMentionRate": 0,
+      "securityNotes": "Epic account supports TOTP 2FA and email/app verification. Strong anti-cheat and active account-recovery support.",
+      "sentimentScores": {
+        "balance": 0.5,
+        "community": 0.5,
+        "gameplay": 0.5,
+        "performance": 0.5,
+        "security": 0.5
+      },
+      "sentimentTrendDirection": "stable",
+      "slug": "fortnite",
+      "stylesMatch": [
+        "shooter",
+        "battle-royale"
+      ],
+      "updatedAt": 1791926368391
+    },
+    {
+      "_creationTime": 1791926368391.879,
+      "_id": "q979e2vvr7v10k14s3jvy4xz4x8g65e4",
+      "aliases": [
+        "Discord App"
+      ],
+      "approximateCostUSD": 0,
+      "budgetTier": "free",
+      "developer": "Discord Inc.",
+      "genres": [
+        "communication"
+      ],
+      "isSupported": true,
+      "minHardwareTier": "low",
+      "name": "Discord",
+      "negativeThemes": [],
+      "platforms": [
+        "PC",
+        "Mobile"
+      ],
+      "positiveThemes": [],
+      "publisher": "Discord Inc.",
+      "recentSecurityComplaints": [],
+      "recommendedForGoals": [
+        "both"
+      ],
+      "releaseYear": 2015,
+      "securityGrade": "B",
+      "securityMentionRate": 0,
+      "securityNotes": "Supports TOTP 2FA and hardware keys, but account-token-stealing malware and phishing are rampant on the platform. Enable 2FA and never run unverified scripts.",
+      "sentimentScores": {
+        "balance": 0.5,
+        "community": 0.5,
+        "gameplay": 0.5,
+        "performance": 0.5,
+        "security": 0.5
+      },
+      "sentimentTrendDirection": "stable",
+      "slug": "discord",
+      "stylesMatch": [
+        "communication",
+        "voice"
+      ],
+      "updatedAt": 1791926368391
+    },
+    {
+      "_creationTime": 1791926368391.8787,
+      "_id": "q97ce3fcb7g172t86q0wmv8z458g7a3s",
+      "aliases": [
+        "Steam Client",
+        "Steam Platform"
+      ],
+      "approximateCostUSD": 0,
+      "budgetTier": "free",
+      "developer": "Valve",
+      "genres": [
+        "storefront"
+      ],
+      "isSupported": true,
+      "minHardwareTier": "low",
+      "name": "Steam",
+      "negativeThemes": [],
+      "platforms": [
+        "PC"
+      ],
+      "positiveThemes": [],
+      "publisher": "Valve",
+      "recentSecurityComplaints": [],
+      "recommendedForGoals": [
+        "gaming_pc",
+        "both"
+      ],
+      "releaseYear": 2003,
+      "securityGrade": "A",
+      "securityMentionRate": 0,
+      "securityNotes": "Steam Guard mobile authenticator (TOTP) plus hardware security-key support. One of the strongest account protections in gaming.",
+      "sentimentScores": {
+        "balance": 0.5,
+        "community": 0.5,
+        "gameplay": 0.5,
+        "performance": 0.5,
+        "security": 0.5
+      },
+      "sentimentTrendDirection": "stable",
+      "slug": "steam",
+      "stylesMatch": [
+        "pc",
+        "storefront"
+      ],
+      "updatedAt": 1791926368391
+    }
+  ]
+}

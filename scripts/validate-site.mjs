@@ -151,10 +151,10 @@ if (sitemap) {
   check('Contains /tech', sitemap.includes('thegridnexus.com/tech</loc>'));
   check('Contains /security', sitemap.includes('thegridnexus.com/security</loc>'));
   check('Contains /gaming', sitemap.includes('thegridnexus.com/gaming</loc>'));
-  // T2 (2026-10): static pages carry no lastmod (a build date would be fake
-  // freshness); changefreq/priority are dropped (Google ignores both). Real
-  // per-article lastmod lives on sitemap-articles.xml, validated below.
-  check('Omits fake build-date lastmod on static pages', !sitemap.includes('<lastmod>'));
+  // T2 (2026-10): static routes (about/contact/tools/authors) carry no lastmod
+  // (a build date would be fake freshness); changefreq/priority are dropped
+  // (Google ignores both). Game pages keep a REAL lastmod (gameLibrary.updatedAt).
+  check('Static routes omit build-date lastmod', !/\/about<\/loc>\s*<lastmod>/.test(sitemap));
   check('Omits changefreq (Google ignores it)', !sitemap.includes('<changefreq>'));
   check('Omits priority (Google ignores it)', !sitemap.includes('<priority>'));
 }

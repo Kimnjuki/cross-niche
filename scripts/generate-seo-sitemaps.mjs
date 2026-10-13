@@ -91,6 +91,27 @@ function getStaticPages() {
   return pages;
 }
 
+// ── Nexus Security Grade pages (from src/data/game-library.json) ───────────
+function getGamePages() {
+  const libPath = path.join(projectRoot, 'src', 'data', 'game-library.json');
+  if (!fs.existsSync(libPath)) return [];
+  try {
+    const lib = JSON.parse(fs.readFileSync(libPath, 'utf8'));
+    const games = Array.isArray(lib.games) ? lib.games : [];
+    const pages = [{ loc: `${BASE_URL}/games`, lastmod: '' }];
+    for (const g of games) {
+      if (!g.slug) continue;
+      pages.push({
+        loc: `${BASE_URL}/games/${g.slug}`,
+        lastmod: g.updatedAt ? new Date(g.updatedAt).toISOString().slice(0, 10) : '',
+      });
+    }
+    return pages;
+  } catch {
+    return [];
+  }
+}
+
 // ── Generate sitemap.xml (STATIC pages + guides/topics only) ──────────────
 // P1-5 fix: article URLs must NOT appear here (they live in
 // sitemap-articles.xml). Listing articles in both sitemaps caused
@@ -103,7 +124,7 @@ function getStaticPages() {
 // /seo-checklist and /keyword-gap-analysis, which are internal tooling with no
 // search demand. Those are now filtered out via the shared route registry.
 function generateMainSitemap() {
-  const urls = getStaticPages().filter((u) => {
+  const urls = [...getStaticPages(), ...getGamePages()].filter((u) => {
     const pathname = new URL(u.loc).pathname.replace(/\/+$/, '') || '/';
     return !isNonIndexable(pathname) && !NON_INDEXABLE_ROUTES.includes(pathname);
   });
