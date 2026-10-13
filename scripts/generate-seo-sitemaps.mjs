@@ -98,7 +98,10 @@ function getGamePages() {
   try {
     const lib = JSON.parse(fs.readFileSync(libPath, 'utf8'));
     const games = Array.isArray(lib.games) ? lib.games : [];
-    const pages = [{ loc: `${BASE_URL}/games`, lastmod: '' }];
+    const pages = [
+      { loc: `${BASE_URL}/games`, lastmod: '' },
+      { loc: `${BASE_URL}/threats`, lastmod: '' },
+    ];
     for (const g of games) {
       if (!g.slug) continue;
       pages.push({

@@ -132,6 +132,22 @@ export const listFeed = query({
   },
 });
 
+// Gamer-relevant threats only (affectsGamers === true), ranked by impact score.
+// Backs the public "Weekly Gamer Threat Report" / live-threat-dashboard triage.
+export const listGamerThreats = query({
+  args: {
+    limit: v.optional(v.number()),
+  },
+  handler: async (ctx, args) => {
+    const limit = Math.min(Math.max(args.limit ?? 50, 1), 200);
+    const rows = await ctx.db.query("threatIntel").take(2000);
+    return rows
+      .filter((r) => r.affectsGamers === true)
+      .sort((a, b) => (b.gamerImpactScore ?? 0) - (a.gamerImpactScore ?? 0))
+      .slice(0, limit);
+  },
+});
+
 // Get latest threats (alias for listLatest to match expected API)
 export const getLatestThreats = query({
   args: {

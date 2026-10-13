@@ -1,0 +1,2853 @@
+{
+  "meta": {
+    "generatedAt": "2026-10-13T21:42:26.483Z",
+    "count": 200
+  },
+  "threats": [
+    {
+      "title": "Apple — Multiple Products — Apple Multiple Products Out-of-Bounds Write Vulnerability",
+      "description": "Apple iOS, macOS, and iPadOS contain an out-of-bounds write vulnerability in CoreGraphics that may lead to arbitrary code execution.",
+      "severity": "critical",
+      "gamerImpactScore": 100,
+      "gamingPlatforms": [
+        "PC",
+        "Mobile"
+      ],
+      "publishedAt": 1790640000000,
+      "url": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "cveIds": [
+        "CVE-2026-86950"
+      ]
+    },
+    {
+      "title": "Apple — Multiple Products — Apple Multiple Products Classic Buffer Overflow Vulnerability",
+      "description": "Apple watchOS, iOS, iPadOS, macOS, visionOS, and tvOS contain a classic buffer overflow vulnerability which could allow a malicious application to cause unexpected system termination or write kernel memory.",
+      "severity": "critical",
+      "gamerImpactScore": 100,
+      "gamingPlatforms": [
+        "PC",
+        "Mobile"
+      ],
+      "publishedAt": 1773964800000,
+      "url": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "cveIds": [
+        "CVE-2025-43520"
+      ]
+    },
+    {
+      "title": "Google — Skia — Google Skia Out-of-Bounds Write Vulnerability",
+      "description": "Google Skia contains an out-of-bounds write vulnerability that could allow a remote attacker to perform out of bounds memory access via a crafted HTML page. This vulnerability affects Google Chrome and ChromeOS, Android, Flutter, and possibly other products.",
+      "severity": "critical",
+      "gamerImpactScore": 100,
+      "gamingPlatforms": [
+        "PC",
+        "Mobile"
+      ],
+      "publishedAt": 1773360000000,
+      "url": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "cveIds": [
+        "CVE-2026-3909"
+      ]
+    },
+    {
+      "title": "Apple — iOS and iPadOS — Apple iOS and iPadOS Use-After-Free Vulnerability",
+      "description": "Apple iOS and iPadOS contain a use-after-free vulnerability. An app may be able to execute arbitrary code with kernel privileges.",
+      "severity": "critical",
+      "gamerImpactScore": 100,
+      "gamingPlatforms": [
+        "PC",
+        "Mobile"
+      ],
+      "publishedAt": 1772668800000,
+      "url": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "cveIds": [
+        "CVE-2023-41974"
+      ]
+    },
+    {
+      "title": "WatchGuard — Firebox — WatchGuard Firebox Out of Bounds Write Vulnerability",
+      "description": "WatchGuard Fireware OS iked process contains an out of bounds write vulnerability in the OS iked process. This vulnerability may allow a remote unauthenticated attacker to execute arbitrary code and affects both the mobile user VPN with IKEv2 and the branch office VPN using IKEv2 when configured with a dynamic gateway peer.",
+      "severity": "critical",
+      "gamerImpactScore": 100,
+      "gamingPlatforms": [
+        "PC",
+        "Mobile"
+      ],
+      "publishedAt": 1766102400000,
+      "url": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "cveIds": [
+        "CVE-2025-14733"
+      ]
+    },
+    {
+      "title": "Android — Runtime — Android Runtime Use-After-Free Vulnerability",
+      "description": "Android Runtime contains a use-after-free vulnerability potentially allowing a chrome sandbox escape leading to local privilege escalation.",
+      "severity": "critical",
+      "gamerImpactScore": 100,
+      "gamingPlatforms": [
+        "PC",
+        "Mobile"
+      ],
+      "publishedAt": 1756944000000,
+      "url": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "cveIds": [
+        "CVE-2025-48543"
+      ]
+    },
+    {
+      "title": "Android — Kernel — Android Kernel Remote Code Execution Vulnerability",
+      "description": "Android contains an unspecified vulnerability in the kernel that allows for remote code execution. This vulnerability resides in Linux Kernel and could impact other products, including but not limited to Android OS.",
+      "severity": "critical",
+      "gamerImpactScore": 100,
+      "gamingPlatforms": [
+        "PC",
+        "Mobile"
+      ],
+      "publishedAt": 1722988800000,
+      "url": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "cveIds": [
+        "CVE-2024-36971"
+      ]
+    },
+    {
+      "title": "Apple — Multiple Products — Apple Multiple Products Memory Corruption Vulnerability",
+      "description": "Apple iOS, iPadOS, macOS, tvOS, watchOS, and visionOS kernel contain a memory corruption vulnerability that allows an attacker with arbitrary kernel read and write capability to bypass kernel memory protections.",
+      "severity": "critical",
+      "gamerImpactScore": 100,
+      "gamingPlatforms": [
+        "PC",
+        "Mobile"
+      ],
+      "publishedAt": 1709683200000,
+      "url": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "cveIds": [
+        "CVE-2024-23225"
+      ]
+    },
+    {
+      "title": "Apple — Multiple Products — Apple Multiple Products Memory Corruption Vulnerability",
+      "description": "Apple iOS, iPadOS, macOS, tvOS, and watchOS RTKit contain a memory corruption vulnerability that allows an attacker with arbitrary kernel read and write capability to bypass kernel memory protections.",
+      "severity": "critical",
+      "gamerImpactScore": 100,
+      "gamingPlatforms": [
+        "PC",
+        "Mobile"
+      ],
+      "publishedAt": 1709683200000,
+      "url": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "cveIds": [
+        "CVE-2024-23296"
+      ]
+    },
+    {
+      "title": "Google — Chromium Skia — Google Skia Integer Overflow Vulnerability",
+      "description": "Google Chromium Skia contains an integer overflow vulnerability that allows a remote attacker, who has compromised the renderer process, to potentially perform a sandbox escape via a malicious file. This vulnerability affects Google Chrome and ChromeOS, Android, Flutter, and possibly other products.",
+      "severity": "critical",
+      "gamerImpactScore": 100,
+      "gamingPlatforms": [
+        "PC",
+        "Mobile"
+      ],
+      "publishedAt": 1701302400000,
+      "url": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "cveIds": [
+        "CVE-2023-6345"
+      ]
+    },
+    {
+      "title": "Apple — iOS and iPadOS — Apple iOS and iPadOS Kernel Privilege Escalation Vulnerability",
+      "description": "Apple iOS and iPadOS contain an unspecified vulnerability that allows for local privilege escalation.",
+      "severity": "critical",
+      "gamerImpactScore": 100,
+      "gamingPlatforms": [
+        "PC",
+        "Mobile"
+      ],
+      "publishedAt": 1696464000000,
+      "url": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "cveIds": [
+        "CVE-2023-42824"
+      ]
+    },
+    {
+      "title": "Apple — Multiple Products — Apple Multiple Products Kernel Privilege Escalation Vulnerability",
+      "description": "Apple iOS, iPadOS, macOS, and watchOS contain an unspecified vulnerability that allows for local privilege escalation.",
+      "severity": "critical",
+      "gamerImpactScore": 100,
+      "gamingPlatforms": [
+        "PC",
+        "Mobile"
+      ],
+      "publishedAt": 1695600000000,
+      "url": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "cveIds": [
+        "CVE-2023-41992"
+      ]
+    },
+    {
+      "title": "Apple — Multiple Products — Apple Multiple Products Kernel Unspecified Vulnerability",
+      "description": "Apple iOS, iPadOS, macOS, tvOS, and watchOS contain an unspecified vulnerability allowing an app to modify a sensitive kernel state.",
+      "severity": "critical",
+      "gamerImpactScore": 100,
+      "gamingPlatforms": [
+        "PC",
+        "Mobile"
+      ],
+      "publishedAt": 1690329600000,
+      "url": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "cveIds": [
+        "CVE-2023-38606"
+      ]
+    },
+    {
+      "title": "Samsung — Mobile Devices — Samsung Mobile Devices Improper Input Validation Vulnerability",
+      "description": "Samsung mobile devices contain an improper input validation vulnerability within the modem interface driver that results in a format string bug leading to kernel panic.",
+      "severity": "critical",
+      "gamerImpactScore": 100,
+      "gamingPlatforms": [
+        "PC",
+        "Mobile"
+      ],
+      "publishedAt": 1687996800000,
+      "url": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "cveIds": [
+        "CVE-2021-25489"
+      ]
+    },
+    {
+      "title": "Apple — Multiple Products — Apple Multiple Products Integer Overflow Vulnerability",
+      "description": "Apple iOS. iPadOS, macOS, and watchOS contain an integer overflow vulnerability that could allow an application to execute code with kernel privileges.",
+      "severity": "critical",
+      "gamerImpactScore": 100,
+      "gamingPlatforms": [
+        "PC",
+        "Mobile"
+      ],
+      "publishedAt": 1687478400000,
+      "url": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "cveIds": [
+        "CVE-2023-32434"
+      ]
+    },
+    {
+      "title": "Google — Chromium Skia — Google Chrome Skia Integer Overflow Vulnerability",
+      "description": "Google Chromium Skia contains an integer overflow vulnerability that allows a remote attacker, who has compromised the renderer process, to potentially perform a sandbox escape via a crafted HTML page. This vulnerability affects Google Chrome and ChromeOS, Android, Flutter, and possibly other products.",
+      "severity": "critical",
+      "gamerImpactScore": 100,
+      "gamingPlatforms": [
+        "PC",
+        "Mobile"
+      ],
+      "publishedAt": 1682035200000,
+      "url": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "cveIds": [
+        "CVE-2023-2136"
+      ]
+    },
+    {
+      "title": "Apple — iOS, iPadOS, and macOS — Apple iOS, iPadOS, and macOS IOSurfaceAccelerator Out-of-Bounds Write Vulnerability",
+      "description": "Apple iOS, iPadOS, and macOS IOSurfaceAccelerator contain an out-of-bounds write vulnerability that allows an app to execute code with kernel privileges.",
+      "severity": "critical",
+      "gamerImpactScore": 100,
+      "gamingPlatforms": [
+        "PC",
+        "Mobile"
+      ],
+      "publishedAt": 1681084800000,
+      "url": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "cveIds": [
+        "CVE-2023-28206"
+      ]
+    },
+    {
+      "title": "Apple — iOS, iPadOS, and macOS — Apple iOS, iPadOS, and macOS Out-of-Bounds Write Vulnerability",
+      "description": "Apple GPU drivers, included in iOS, iPadOS, and macOS, contain an out-of-bounds write vulnerability that may allow a malicious application to execute code with kernel privileges.",
+      "severity": "critical",
+      "gamerImpactScore": 100,
+      "gamingPlatforms": [
+        "PC",
+        "Mobile"
+      ],
+      "publishedAt": 1680134400000,
+      "url": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "cveIds": [
+        "CVE-2021-30900"
+      ]
+    },
+    {
+      "title": "Samsung — Mobile Devices — Samsung Mobile Devices Improper Access Control Vulnerability",
+      "description": "Samsung mobile devices using Mali GPU contains an improper access control vulnerability in sec_log file. Exploitation of the vulnerability exposes sensitive kernel information to the userspace. This vulnerability was chained with CVE-2021-25337 and CVE-2021-25370.",
+      "severity": "critical",
+      "gamerImpactScore": 100,
+      "gamingPlatforms": [
+        "PC",
+        "Mobile"
+      ],
+      "publishedAt": 1667865600000,
+      "url": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "cveIds": [
+        "CVE-2021-25369"
+      ]
+    },
+    {
+      "title": "Samsung — Mobile Devices — Samsung Mobile Devices Memory Corruption Vulnerability",
+      "description": "Samsung mobile devices using Mali GPU contain an incorrect implementation handling file descriptor in dpu driver. This incorrect implementation results in memory corruption, leading to kernel panic. This vulnerability was chained with CVE-2021-25337 and CVE-2021-25369.",
+      "severity": "critical",
+      "gamerImpactScore": 100,
+      "gamingPlatforms": [
+        "PC",
+        "Mobile"
+      ],
+      "publishedAt": 1667865600000,
+      "url": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "cveIds": [
+        "CVE-2021-25370"
+      ]
+    },
+    {
+      "title": "Apple — iOS and iPadOS — Apple iOS and iPadOS Out-of-Bounds Write Vulnerability",
+      "description": "Apple iOS and iPadOS kernel contain an out-of-bounds write vulnerability which can allow an application to perform code execution with kernel privileges.",
+      "severity": "critical",
+      "gamerImpactScore": 100,
+      "gamingPlatforms": [
+        "PC",
+        "Mobile"
+      ],
+      "publishedAt": 1666656000000,
+      "url": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "cveIds": [
+        "CVE-2022-42827"
+      ]
+    },
+    {
+      "title": "Apple — iOS, iPadOS, and macOS — Apple iOS, iPadOS, and macOS Remote Code Execution Vulnerability",
+      "description": "Apple kernel, which is included in iOS, iPadOS, and macOS, contains an unspecified vulnerability where an application may be able to execute code with kernel privileges.",
+      "severity": "critical",
+      "gamerImpactScore": 100,
+      "gamingPlatforms": [
+        "PC",
+        "Mobile"
+      ],
+      "publishedAt": 1663113600000,
+      "url": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "cveIds": [
+        "CVE-2022-32917"
+      ]
+    },
+    {
+      "title": "Android — Android OS — Android OS Privilege Escalation Vulnerability",
+      "description": "The vold volume manager daemon in Android kernel trusts messages from a PF_NETLINK socket, which allows an attacker to execute code and gain root privileges. This vulnerability is associated with GingerBreak and Exploit.AndroidOS.Lotoor.",
+      "severity": "critical",
+      "gamerImpactScore": 100,
+      "gamingPlatforms": [
+        "PC",
+        "Mobile"
+      ],
+      "publishedAt": 1662595200000,
+      "url": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "cveIds": [
+        "CVE-2011-1823"
+      ]
+    },
+    {
+      "title": "Apple — iOS and macOS — Apple iOS and macOS Out-of-Bounds Write Vulnerability",
+      "description": "Apple iOS and macOS contain an out-of-bounds write vulnerability that could allow an application to execute code with kernel privileges.",
+      "severity": "critical",
+      "gamerImpactScore": 100,
+      "gamingPlatforms": [
+        "PC",
+        "Mobile"
+      ],
+      "publishedAt": 1660780800000,
+      "url": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "cveIds": [
+        "CVE-2022-32894"
+      ]
+    },
+    {
+      "title": "Apple — iOS and iPadOS — Apple iOS and iPadOS Buffer Overflow Vulnerability",
+      "description": "Apple iOS and iPadOS contain a buffer overflow vulnerability that could allow an application to execute code with kernel privileges.",
+      "severity": "critical",
+      "gamerImpactScore": 100,
+      "gamingPlatforms": [
+        "PC",
+        "Mobile"
+      ],
+      "publishedAt": 1656288000000,
+      "url": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "cveIds": [
+        "CVE-2021-30983"
+      ]
+    },
+    {
+      "title": "Apple — Multiple Products — Apple Multiple Products Memory Corruption Vulnerability",
+      "description": "Apple iOS, iPadOS, macOS, tvOS, and watchOS contain a memory corruption vulnerability that could allow an application to execute code with kernel privileges.",
+      "severity": "critical",
+      "gamerImpactScore": 100,
+      "gamingPlatforms": [
+        "PC",
+        "Mobile"
+      ],
+      "publishedAt": 1656288000000,
+      "url": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "cveIds": [
+        "CVE-2020-3837"
+      ]
+    },
+    {
+      "title": "Apple — Multiple Products — Apple Multiple Products Memory Corruption Vulnerability",
+      "description": "Apple iOS, iPadOS, and tvOS contain a memory corruption vulnerability that could allow an application to execute code with kernel privileges.",
+      "severity": "critical",
+      "gamerImpactScore": 100,
+      "gamingPlatforms": [
+        "PC",
+        "Mobile"
+      ],
+      "publishedAt": 1656288000000,
+      "url": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "cveIds": [
+        "CVE-2020-9907"
+      ]
+    },
+    {
+      "title": "Apple — iOS — Apple iOS Information Disclosure Vulnerability",
+      "description": "The Apple iOS kernel allows attackers to obtain sensitive information from memory via a crafted application.",
+      "severity": "critical",
+      "gamerImpactScore": 100,
+      "gamingPlatforms": [
+        "PC",
+        "Mobile"
+      ],
+      "publishedAt": 1653350400000,
+      "url": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "cveIds": [
+        "CVE-2016-4655"
+      ]
+    },
+    {
+      "title": "Apple — iOS — Apple iOS Memory Corruption Vulnerability",
+      "description": "A memory corruption vulnerability in Apple iOS kernel allows attackers to execute code in a privileged context or cause a denial-of-service (DoS) via a crafted application.",
+      "severity": "critical",
+      "gamerImpactScore": 100,
+      "gamingPlatforms": [
+        "PC",
+        "Mobile"
+      ],
+      "publishedAt": 1653350400000,
+      "url": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "cveIds": [
+        "CVE-2016-4656"
+      ]
+    },
+    {
+      "title": "Android — Kernel — Android Kernel Use-After-Free Vulnerability",
+      "description": "Android kernel contains a use-after-free vulnerability that allows for privilege escalation.",
+      "severity": "critical",
+      "gamerImpactScore": 100,
+      "gamingPlatforms": [
+        "PC",
+        "Mobile"
+      ],
+      "publishedAt": 1653264000000,
+      "url": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "cveIds": [
+        "CVE-2021-1048"
+      ]
+    },
+    {
+      "title": "Android — Kernel — Android Kernel Race Condition Vulnerability",
+      "description": "Android kernel contains a race condition, which allows for a use-after-free vulnerability. Exploitation can allow for privilege escalation.",
+      "severity": "critical",
+      "gamerImpactScore": 100,
+      "gamingPlatforms": [
+        "PC",
+        "Mobile"
+      ],
+      "publishedAt": 1653264000000,
+      "url": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "cveIds": [
+        "CVE-2021-0920"
+      ]
+    },
+    {
+      "title": "Apple — macOS — Apple macOS Out-of-Bounds Write Vulnerability",
+      "description": "macOS Monterey contains an out-of-bounds write vulnerability that could allow an application to execute arbitrary code with kernel privileges.",
+      "severity": "critical",
+      "gamerImpactScore": 100,
+      "gamingPlatforms": [
+        "PC",
+        "Mobile"
+      ],
+      "publishedAt": 1649030400000,
+      "url": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "cveIds": [
+        "CVE-2022-22675"
+      ]
+    },
+    {
+      "title": "Apple — macOS — Apple macOS Out-of-Bounds Read Vulnerability",
+      "description": "macOS Monterey contains an out-of-bounds read vulnerability that could allow an application to read kernel memory.",
+      "severity": "critical",
+      "gamerImpactScore": 100,
+      "gamingPlatforms": [
+        "PC",
+        "Mobile"
+      ],
+      "publishedAt": 1649030400000,
+      "url": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "cveIds": [
+        "CVE-2022-22674"
+      ]
+    },
+    {
+      "title": "Microsoft — Windows — Microsoft Windows Kernel Exception Handler Vulnerability",
+      "description": "The kernel in Microsoft Windows, when access to 16-bit applications is enabled on a 32-bit x86 platform, does not properly validate certain BIOS calls, which allows local users to gain privileges.",
+      "severity": "critical",
+      "gamerImpactScore": 100,
+      "gamingPlatforms": [
+        "PC",
+        "Mobile"
+      ],
+      "publishedAt": 1646265600000,
+      "url": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "cveIds": [
+        "CVE-2010-0232"
+      ]
+    },
+    {
+      "title": "Apple — iOS and macOS — Apple Memory Corruption Vulnerability",
+      "description": "Apple IOMobileFrameBuffer contains a memory corruption vulnerability which can allow a malicious application to execute arbitrary code with kernel privileges.",
+      "severity": "critical",
+      "gamerImpactScore": 100,
+      "gamingPlatforms": [
+        "PC",
+        "Mobile"
+      ],
+      "publishedAt": 1643328000000,
+      "url": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "cveIds": [
+        "CVE-2022-22587"
+      ]
+    },
+    {
+      "title": "Android — Android Kernel — Android Kernel Use-After-Free Vulnerability",
+      "description": "Android Kernel contains a use-after-free vulnerability in binder.c that allows for privilege escalation from an application to the Linux Kernel. This vulnerability was observed chained with CVE-2020-0041 and CVE-2020-0069 under exploit chain \"AbstractEmu.\"",
+      "severity": "critical",
+      "gamerImpactScore": 100,
+      "gamingPlatforms": [
+        "PC",
+        "Mobile"
+      ],
+      "publishedAt": 1635897600000,
+      "url": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "cveIds": [
+        "CVE-2019-2215"
+      ]
+    },
+    {
+      "title": "Android — Android Kernel — Android Kernel Out-of-Bounds Write Vulnerability",
+      "description": "Android Kernel binder_transaction of binder.c contains an out-of-bounds write vulnerability due to an incorrect bounds check that could allow for local privilege escalation. This vulnerability was observed chained with CVE-2019-2215 and CVE-2020-0069 under exploit chain \"AbstractEmu.\"",
+      "severity": "critical",
+      "gamerImpactScore": 100,
+      "gamingPlatforms": [
+        "PC",
+        "Mobile"
+      ],
+      "publishedAt": 1635897600000,
+      "url": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "cveIds": [
+        "CVE-2020-0041"
+      ]
+    },
+    {
+      "title": "Apple — Multiple Products — Apple Multiple Products Integer Overflow Vulnerability",
+      "description": "Apple iOS, iPadOS, macOS, and watchOS CoreGraphics contain an integer overflow vulnerability which may allow code execution when processing a maliciously crafted PDF. The vulnerability is also known under the moniker of FORCEDENTRY.",
+      "severity": "critical",
+      "gamerImpactScore": 100,
+      "gamingPlatforms": [
+        "PC",
+        "Mobile"
+      ],
+      "publishedAt": 1635897600000,
+      "url": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "cveIds": [
+        "CVE-2021-30860"
+      ]
+    },
+    {
+      "title": "Apple — Multiple Products — Apple Multiple Products Memory Corruption Vulnerability",
+      "description": "Apple iOS, iPadOS, macOS, and watchOS IOMobileFrameBuffer contain a memory corruption vulnerability which may allow an application to execute code with kernel privileges.",
+      "severity": "critical",
+      "gamerImpactScore": 100,
+      "gamingPlatforms": [
+        "PC",
+        "Mobile"
+      ],
+      "publishedAt": 1635897600000,
+      "url": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "cveIds": [
+        "CVE-2021-30807"
+      ]
+    },
+    {
+      "title": "Apple — Multiple Products — Apple Multiple Products Memory Initialization Vulnerability",
+      "description": "Apple iOS, iPadOS, macOS, and watchOS contain a memory initialization vulnerability that may allow a malicious application to disclose kernel memory.",
+      "severity": "critical",
+      "gamerImpactScore": 100,
+      "gamingPlatforms": [
+        "PC",
+        "Mobile"
+      ],
+      "publishedAt": 1635897600000,
+      "url": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "cveIds": [
+        "CVE-2020-27950"
+      ]
+    },
+    {
+      "title": "Apple — Multiple Products — Apple Multiple Products Type Confusion Vulnerability",
+      "description": "Apple iOS, iPadOS, macOS, and watchOS contain a type confusion vulnerability that may allow a malicious application to execute code with kernel privileges.",
+      "severity": "critical",
+      "gamerImpactScore": 100,
+      "gamingPlatforms": [
+        "PC",
+        "Mobile"
+      ],
+      "publishedAt": 1635897600000,
+      "url": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "cveIds": [
+        "CVE-2020-27932"
+      ]
+    },
+    {
+      "title": "Apple — iOS, iPadOS, and macOS — Apple iOS, iPadOS, and macOS Type Confusion Vulnerability",
+      "description": "Apple iOS, iPadOS, and macOS contain a type confusion vulnerability in the XNU which may allow a malicious application to execute code with kernel privileges.",
+      "severity": "critical",
+      "gamerImpactScore": 100,
+      "gamingPlatforms": [
+        "PC",
+        "Mobile"
+      ],
+      "publishedAt": 1635897600000,
+      "url": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "cveIds": [
+        "CVE-2021-30869"
+      ]
+    },
+    {
+      "title": "Apple — Multiple Products — Apple Multiple Products Code Execution Vulnerability",
+      "description": "Apple iOS, iPadOS, macOS, watchOS, and tvOS contain an unspecified vulnerability that may allow an application to execute code with kernel privileges.",
+      "severity": "critical",
+      "gamerImpactScore": 100,
+      "gamingPlatforms": [
+        "PC",
+        "Mobile"
+      ],
+      "publishedAt": 1635897600000,
+      "url": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "cveIds": [
+        "CVE-2020-9859"
+      ]
+    },
+    {
+      "title": "Google — Chrome for Android UI — Google Chrome for Android UI Heap Buffer Overflow Vulnerability",
+      "description": "Google Chrome for Android UI contains a heap buffer overflow vulnerability that allows a remote attacker, who has compromised the renderer process, to potentially perform a sandbox escape via a crafted HTML page.",
+      "severity": "critical",
+      "gamerImpactScore": 100,
+      "gamingPlatforms": [
+        "PC",
+        "Mobile"
+      ],
+      "publishedAt": 1635897600000,
+      "url": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "cveIds": [
+        "CVE-2020-16010"
+      ]
+    },
+    {
+      "title": "Google — Chrome FreeType — Google Chrome FreeType Heap Buffer Overflow Vulnerability",
+      "description": "Google Chrome uses FreeType, an open-source software library to render fonts, which contains a heap buffer overflow vulnerability in the function Load_SBit_Png when processing PNG images embedded into fonts. This vulnerability is part of an exploit chain with CVE-2020-17087 on Windows and CVE-2020-16010 on Android.",
+      "severity": "critical",
+      "gamerImpactScore": 100,
+      "gamingPlatforms": [
+        "PC",
+        "Mobile"
+      ],
+      "publishedAt": 1635897600000,
+      "url": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "cveIds": [
+        "CVE-2020-15999"
+      ]
+    },
+    {
+      "title": "Microsoft — Windows — Microsoft Windows Command Injection Vulnerability",
+      "description": "Microsoft Windows Shell contains a command injection vulnerability that allows an unauthorized attacker to bypass a security feature over a network.",
+      "severity": "critical",
+      "gamerImpactScore": 95,
+      "gamingPlatforms": [
+        "PC"
+      ],
+      "publishedAt": 1791849600000,
+      "url": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "cveIds": [
+        "CVE-2026-96951"
+      ]
+    },
+    {
+      "title": "ONLYOFFICE — Docs — ONLYOFFICE Docs Server Path Traversal Vulnerability",
+      "description": "ONLYOFFICE Docs contains a path traversal vulnerability that can occur when JWT is used, via a /.. sequence in an image upload parameter and could allow for remote code execution.",
+      "severity": "critical",
+      "gamerImpactScore": 95,
+      "gamingPlatforms": [
+        "PC"
+      ],
+      "publishedAt": 1791417600000,
+      "url": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "cveIds": [
+        "CVE-2021-3199"
+      ]
+    },
+    {
+      "title": "Linux — Kernel — Linux Kernel Race Condition Vulnerability",
+      "description": "Linux Kernel contains a race condition vulnerability which allows concurrent writes to the same AF_ALG socket causing data to be unpredictably interleaved and creating inconsistencies in the socket's internal state.",
+      "severity": "critical",
+      "gamerImpactScore": 95,
+      "gamingPlatforms": [
+        "PC"
+      ],
+      "publishedAt": 1789689600000,
+      "url": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "cveIds": [
+        "CVE-2025-39964"
+      ]
+    },
+    {
+      "title": "Linux — Kernel — Linux Kernel Out-of-Bounds Write Vulnerability",
+      "description": "Linux Kernel contains an out-of-bounds write vulnerability in the ebtables SNAT target which allows an ARP sender hardware address rewrite to write directly into a nonlinear socket-buffer fragment backed by a splice-imported file page. The impacted product(s) could be end-of-life (EoL) and/or end-of-service (EoS). Users are advised to discontinue use and/or transition to a supported version.",
+      "severity": "critical",
+      "gamerImpactScore": 95,
+      "gamingPlatforms": [
+        "PC"
+      ],
+      "publishedAt": 1789689600000,
+      "url": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "cveIds": [
+        "CVE-2026-53266"
+      ]
+    },
+    {
+      "title": "Linux — Kernel — Linux Kernel Improper Check for Unusual or Exceptional Conditions Vulnerability",
+      "description": "Linux Kernel contains an improper check for unusual or exceptional conditions vulnerability in the TLS receive path which allows a zero-length record retrieved from the rx_list to bypass the intended recvmsg() record-type handling, potentially causing subsequent TLS records to be processed using incorrect zero-copy and queuing assumptions. The impacted product(s) could be end-of-life (EoL) and/or end-of-service (EoS). Users are advised to discontinue use and/or transition to a supported version.",
+      "severity": "critical",
+      "gamerImpactScore": 95,
+      "gamingPlatforms": [
+        "PC"
+      ],
+      "publishedAt": 1789689600000,
+      "url": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "cveIds": [
+        "CVE-2025-39682"
+      ]
+    },
+    {
+      "title": "MikroTik — RouterOS — MikroTik RouterOS Missing Authentication for Critical Function Vulnerability",
+      "description": "MikroTik RouterOS contains a missing authentication for critical function vulnerability which allows kernel memory disclosure and denial of service in the btest service.",
+      "severity": "critical",
+      "gamerImpactScore": 95,
+      "gamingPlatforms": [
+        "PC"
+      ],
+      "publishedAt": 1788998400000,
+      "url": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "cveIds": [
+        "CVE-2026-67277"
+      ]
+    },
+    {
+      "title": "Google — Chromium V8 — Google Chromium V8 Out of Bounds Write Vulnerability",
+      "description": "Google Chromium V8 contains an out of bounds write vulnerability that allows a remote attacker to execute arbitrary code inside the sandbox via a crafted HTML page. This vulnerability could affect multiple web browsers that utilize Chromium, including, but not limited to, Google Chrome, Microsoft Edge, and Opera.",
+      "severity": "critical",
+      "gamerImpactScore": 95,
+      "gamingPlatforms": [
+        "PC"
+      ],
+      "publishedAt": 1788912000000,
+      "url": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "cveIds": [
+        "CVE-2026-87491"
+      ]
+    },
+    {
+      "title": "Microsoft — Windows — Microsoft Windows Link Following Vulnerability",
+      "description": "Microsoft Windows Update Stack contains a link following vulnerability that allows a local attacker to escalate privileges locally up to SYSTEM.",
+      "severity": "critical",
+      "gamerImpactScore": 95,
+      "gamingPlatforms": [
+        "PC"
+      ],
+      "publishedAt": 1788825600000,
+      "url": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "cveIds": [
+        "CVE-2026-81963"
+      ]
+    },
+    {
+      "title": "Microsoft — Windows — Microsoft Windows Heap-Based Buffer Overflow Vulnerability",
+      "description": "Microsoft Windows Advanced Local Procedure Call contains a heap-based buffer overflow vulnerability that allows an attacker to elevate privileges locally.",
+      "severity": "critical",
+      "gamerImpactScore": 95,
+      "gamingPlatforms": [
+        "PC"
+      ],
+      "publishedAt": 1788825600000,
+      "url": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "cveIds": [
+        "CVE-2026-85880"
+      ]
+    },
+    {
+      "title": "Google — Chromium V8 — Google Chromium V8 Type Confusion Vulnerability",
+      "description": "Google Chromium V8 contains a type confusion vulnerability that allows a remote attacker to execute arbitrary code inside the sandbox via a crafted HTML page. This vulnerability could affect multiple web browsers that utilize Chromium, including, but not limited to, Google Chrome, Microsoft Edge, and Opera.",
+      "severity": "critical",
+      "gamerImpactScore": 95,
+      "gamingPlatforms": [
+        "PC"
+      ],
+      "publishedAt": 1788480000000,
+      "url": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "cveIds": [
+        "CVE-2026-85046"
+      ]
+    },
+    {
+      "title": "Sangoma — Switchvox — Sangoma Switchvox SQL Injection Vulnerability",
+      "description": "Sangoma Switchvox contains a SQL injection vulnerability which allows an unauthenticated remote attacker to execute arbitrary SQL statements against the backend PostgreSQL database using a single crafted request, including database operations and remote code execution.",
+      "severity": "critical",
+      "gamerImpactScore": 95,
+      "gamingPlatforms": [
+        "Nintendo Switch"
+      ],
+      "publishedAt": 1788307200000,
+      "url": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "cveIds": [
+        "CVE-2026-9586"
+      ]
+    },
+    {
+      "title": "Linux — Kernel — Linux Kernel Unspecified Vulnerability",
+      "description": "Linux Kernel contains an unspecified vulnerability that can allow for privilege escalation via IPv6 networking subsystem. This vulnerability can impact multiple products, including but not limited to Suse, Red Hat, and other products using Linux. ",
+      "severity": "critical",
+      "gamerImpactScore": 95,
+      "gamingPlatforms": [
+        "PC"
+      ],
+      "publishedAt": 1787788800000,
+      "url": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "cveIds": [
+        "CVE-2026-53362"
+      ]
+    },
+    {
+      "title": "Ajax.NET Professional — Ajax.NET Professional — Ajax.NET Professional Deserialization of Untrusted Data Vulnerability",
+      "description": "Ajax.NET Professional (AjaxPro) contains a deserialization of untrusted data vulnerability that could allow for remote code execution via arbitrary .NET classes. The impacted product(s) could be end-of-life (EoL) and/or end-of-service (EoS). Users are advised to discontinue use and/or transition to a supported version.",
+      "severity": "critical",
+      "gamerImpactScore": 95,
+      "gamingPlatforms": [
+        "PC"
+      ],
+      "publishedAt": 1787702400000,
+      "url": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "cveIds": [
+        "CVE-2021-23758"
+      ]
+    },
+    {
+      "title": "Linux — Kernel — Linux Kernel Out-of-Bounds Write Vulnerability",
+      "description": "Linux Kernel contains an out-of-bounds memory write vulnerability which could allow a local user to gain privileged access or cause a denial of service on the system.",
+      "severity": "critical",
+      "gamerImpactScore": 95,
+      "gamingPlatforms": [
+        "PC"
+      ],
+      "publishedAt": 1787702400000,
+      "url": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "cveIds": [
+        "CVE-2022-0995"
+      ]
+    },
+    {
+      "title": "Microsoft — SQL Server — Microsoft SQL Server Remote Code Execution Vulnerability",
+      "description": "Microsoft SQL Server contains a remote code execution vulnerability that could allow an attacker to execute code in the context of the SQL Server Database Engine service account.",
+      "severity": "critical",
+      "gamerImpactScore": 95,
+      "gamingPlatforms": [
+        "PC"
+      ],
+      "publishedAt": 1787702400000,
+      "url": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "cveIds": [
+        "CVE-2019-1068"
+      ]
+    },
+    {
+      "title": "Apple — macOS — Apple macOS Improper Authentication Vulnerability",
+      "description": "Apple macOS contains an improper authentication vulnerability that could allow an attacker on the network to authenticate to Screen Sharing without valid credentials.",
+      "severity": "critical",
+      "gamerImpactScore": 95,
+      "gamingPlatforms": [
+        "Mobile"
+      ],
+      "publishedAt": 1787011200000,
+      "url": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "cveIds": [
+        "CVE-2026-65400"
+      ]
+    },
+    {
+      "title": "Ray-Project — Ray — Ray-Project Ray Code Injection Vulnerability",
+      "description": "Ray-Project Ray contains a code injection vulnerability that could allow remote code execution. Developers using Ray as a development tool may be exposed to this vulnerability exploitable through Firefox and Safari.",
+      "severity": "critical",
+      "gamerImpactScore": 95,
+      "gamingPlatforms": [
+        "Mobile"
+      ],
+      "publishedAt": 1786924800000,
+      "url": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "cveIds": [
+        "CVE-2025-62593"
+      ]
+    },
+    {
+      "title": "Microsoft — Windows Ancillary Function Driver for WinSock  — Microsoft Windows Ancillary Function Driver for WinSock Use-After-Free Vulnerability",
+      "description": "Microsoft Windows Ancillary Function Driver for WinSock contains a use-after-free vulnerability that allows an authorized attacker to elevate privileges locally.",
+      "severity": "critical",
+      "gamerImpactScore": 95,
+      "gamingPlatforms": [
+        "PC"
+      ],
+      "publishedAt": 1786406400000,
+      "url": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "cveIds": [
+        "CVE-2026-68820"
+      ]
+    },
+    {
+      "title": "Microsoft — Active Directory Federation Services — Microsoft Active Directory Federation Services Insufficient Granularity of Access Control Vulnerability ",
+      "description": "Microsoft Active Directory Federation Services contains an insufficient granularity of access control vulnerability that allows an authorized attacker to elevate privileges locally.",
+      "severity": "critical",
+      "gamerImpactScore": 95,
+      "gamingPlatforms": [
+        "PC"
+      ],
+      "publishedAt": 1783987200000,
+      "url": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "cveIds": [
+        "CVE-2026-56155"
+      ]
+    },
+    {
+      "title": "Google — Chromium V8 — Google Chromium V8 Out-of-Bounds Read and Write Vulnerability",
+      "description": "Google Chromium V8 out-of-bounds read and write vulnerability that could allow a remote attacker to execute arbitrary code inside a sandbox via a crafted HTML page. This vulnerability could affect multiple web browsers that utilize Chromium, including, but not limited to, Google Chrome, Microsoft Edge, and Opera.",
+      "severity": "critical",
+      "gamerImpactScore": 95,
+      "gamingPlatforms": [
+        "PC"
+      ],
+      "publishedAt": 1780963200000,
+      "url": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "cveIds": [
+        "CVE-2026-11645"
+      ]
+    },
+    {
+      "title": "Arista — Extensible Operating System — Arista Extensible Operating System Incomplete Comparison with Missing Factors Vulnerability",
+      "description": "Arista Extensible Operating System (EOS) contains an incomplete comparison with missing factors vulnerability when the switch incorrectly decapsulate and forwards other unexpected tunneled packet with a destination IP matching its configured decapsulation IP.",
+      "severity": "critical",
+      "gamerImpactScore": 95,
+      "gamingPlatforms": [
+        "Nintendo Switch"
+      ],
+      "publishedAt": 1780963200000,
+      "url": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "cveIds": [
+        "CVE-2026-7473"
+      ]
+    },
+    {
+      "title": "Linux — Kernel — Linux Kernel Improper Authentication Vulnerability",
+      "description": "Linux Kernel contains an improper authentication vulnerability which could allow for privilege escalation via the cgroups v1 release_agent feature.",
+      "severity": "critical",
+      "gamerImpactScore": 95,
+      "gamingPlatforms": [
+        "PC"
+      ],
+      "publishedAt": 1780358400000,
+      "url": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "cveIds": [
+        "CVE-2022-0492"
+      ]
+    },
+    {
+      "title": "Android — Framework — Android Framework Integer Overflow Vulnerability",
+      "description": "Android Framework contains an integer overflow vulnerability that allows for code execution that could allow for local privilege escalation.",
+      "severity": "critical",
+      "gamerImpactScore": 95,
+      "gamingPlatforms": [
+        "Mobile"
+      ],
+      "publishedAt": 1780358400000,
+      "url": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "cveIds": [
+        "CVE-2025-48595"
+      ]
+    },
+    {
+      "title": "Microsoft — Windows — Microsoft Windows Buffer Overflow Vulnerability",
+      "description": "Microsoft Windows contains a buffer overflow vulnerability in the Windows Server Service that allows remote attackers to execute arbitrary code via a crafted RPC request that triggers an overflow during path canonicalization.",
+      "severity": "critical",
+      "gamerImpactScore": 95,
+      "gamingPlatforms": [
+        "PC"
+      ],
+      "publishedAt": 1779235200000,
+      "url": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "cveIds": [
+        "CVE-2008-4250"
+      ]
+    },
+    {
+      "title": "Microsoft — DirectX — Microsoft DirectX NULL Byte Overwrite Vulnerability",
+      "description": "Microsoft DirectX contains a NULL byte overwrite vulnerability in the QuickTime Movie Parser Filter in quartz.dll in DirectShow which could allow remote attackers to execute arbitrary code via a crafted QuickTime media file.",
+      "severity": "critical",
+      "gamerImpactScore": 95,
+      "gamingPlatforms": [
+        "PC"
+      ],
+      "publishedAt": 1779235200000,
+      "url": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "cveIds": [
+        "CVE-2009-1537"
+      ]
+    },
+    {
+      "title": "Microsoft — Internet Explorer — Microsoft Internet Explorer Use-After-Free Vulnerability",
+      "description": "Microsoft Internet Explorer contains an use-after-free vulnerability that could allow remote attackers to execute arbitrary code by accessing a pointer associated with a deleted object. The impacted product could be end-of-life (EoL) and/or end-of-service (EoS). Users should discontinue product utilization.",
+      "severity": "critical",
+      "gamerImpactScore": 95,
+      "gamingPlatforms": [
+        "PC"
+      ],
+      "publishedAt": 1779235200000,
+      "url": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "cveIds": [
+        "CVE-2010-0249"
+      ]
+    },
+    {
+      "title": "Microsoft — Internet Explorer — Microsoft Internet Explorer Use-After-Free Vulnerability",
+      "description": "Microsoft Internet Explorer contains an use-after-free vulnerability that could allow remote attackers to execute arbitrary code via vectors involving access to an invalid pointer after the deletion of an object. The impacted product could be end-of-life (EoL) and/or end-of-service (EoS). Users should discontinue product utilization.",
+      "severity": "critical",
+      "gamerImpactScore": 95,
+      "gamingPlatforms": [
+        "PC"
+      ],
+      "publishedAt": 1779235200000,
+      "url": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "cveIds": [
+        "CVE-2010-0806"
+      ]
+    },
+    {
+      "title": "Microsoft — Defender — Microsoft Defender Link Following Vulnerability",
+      "description": "Microsoft Defender contains a link following vulnerability that allows an authorized attacker to elevate privileges locally.",
+      "severity": "critical",
+      "gamerImpactScore": 95,
+      "gamingPlatforms": [
+        "PC"
+      ],
+      "publishedAt": 1779235200000,
+      "url": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "cveIds": [
+        "CVE-2026-41091"
+      ]
+    },
+    {
+      "title": "Microsoft — Defender — Microsoft Defender Denial of Service Vulnerability",
+      "description": "Microsoft Defender contains an unspecified vulnerability that allows for denial of service.",
+      "severity": "critical",
+      "gamerImpactScore": 95,
+      "gamingPlatforms": [
+        "PC"
+      ],
+      "publishedAt": 1779235200000,
+      "url": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "cveIds": [
+        "CVE-2026-45498"
+      ]
+    },
+    {
+      "title": "Linux — Kernel — Linux Kernel Incorrect Resource Transfer Between Spheres Vulnerability",
+      "description": "Linux Kernel contains an incorrect resource transfer between spheres vulnerability that could allow for privilege escalation.",
+      "severity": "critical",
+      "gamerImpactScore": 95,
+      "gamingPlatforms": [
+        "PC"
+      ],
+      "publishedAt": 1777593600000,
+      "url": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "cveIds": [
+        "CVE-2026-31431"
+      ]
+    },
+    {
+      "title": "Microsoft — Windows — Microsoft Windows Protection Mechanism Failure Vulnerability",
+      "description": "Microsoft Windows Shell contains a protection mechanism failure vulnerability that allows an unauthorized attacker to perform spoofing over a network.",
+      "severity": "critical",
+      "gamerImpactScore": 95,
+      "gamingPlatforms": [
+        "PC"
+      ],
+      "publishedAt": 1777334400000,
+      "url": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "cveIds": [
+        "CVE-2026-32202"
+      ]
+    },
+    {
+      "title": "Microsoft — Defender — Microsoft Defender Insufficient Granularity of Access Control Vulnerability",
+      "description": "Microsoft Defender contains an insufficient granularity of access control vulnerability that could allow an authorized attacker to escalate privileges locally.",
+      "severity": "critical",
+      "gamerImpactScore": 95,
+      "gamingPlatforms": [
+        "PC"
+      ],
+      "publishedAt": 1776816000000,
+      "url": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "cveIds": [
+        "CVE-2026-33825"
+      ]
+    },
+    {
+      "title": "Microsoft — Office — Microsoft Office Remote Code Execution",
+      "description": "Microsoft Office Excel contains a remote code execution vulnerability that could allow an attacker to take complete control of an affected system if a user opens a specially crafted Excel file that includes a malformed object.",
+      "severity": "critical",
+      "gamerImpactScore": 95,
+      "gamingPlatforms": [
+        "PC"
+      ],
+      "publishedAt": 1776124800000,
+      "url": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "cveIds": [
+        "CVE-2009-0238"
+      ]
+    },
+    {
+      "title": "Microsoft — Visual Basic for Applications (VBA) — Microsoft Visual Basic for Applications Insecure Library Loading Vulnerability",
+      "description": "Microsoft Visual Basic for Applications (VBA) contains an insecure library loading vulnerability that could allow for remote code execution.",
+      "severity": "critical",
+      "gamerImpactScore": 95,
+      "gamingPlatforms": [
+        "PC"
+      ],
+      "publishedAt": 1776038400000,
+      "url": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "cveIds": [
+        "CVE-2012-1854"
+      ]
+    },
+    {
+      "title": "Microsoft — Windows — Microsoft Windows Link Following Vulnerability",
+      "description": "Microsoft Windows contains a link following vulnerability that allows for privilege escalation",
+      "severity": "critical",
+      "gamerImpactScore": 95,
+      "gamingPlatforms": [
+        "PC"
+      ],
+      "publishedAt": 1776038400000,
+      "url": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "cveIds": [
+        "CVE-2025-60710"
+      ]
+    },
+    {
+      "title": "Microsoft — Windows — Microsoft Windows Out-of-Bounds Read Vulnerability",
+      "description": "Microsoft Windows Common Log File System Driver contains an out-of-bounds read vulnerability that could allow a threat actor for privileges escalation",
+      "severity": "critical",
+      "gamerImpactScore": 95,
+      "gamingPlatforms": [
+        "PC"
+      ],
+      "publishedAt": 1776038400000,
+      "url": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "cveIds": [
+        "CVE-2023-36424"
+      ]
+    },
+    {
+      "title": "Google — Dawn — Google Dawn Use-After-Free Vulnerability",
+      "description": "Google Dawn contains an use-after-free vulnerability that could allow a remote attacker who had compromised the renderer process to execute arbitrary code via a crafted HTML page. This vulnerability could affect multiple Chromium-based products including, but not limited to, Google Chrome, Microsoft Edge, and Opera.",
+      "severity": "critical",
+      "gamerImpactScore": 95,
+      "gamingPlatforms": [
+        "PC"
+      ],
+      "publishedAt": 1775001600000,
+      "url": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "cveIds": [
+        "CVE-2026-5281"
+      ]
+    },
+    {
+      "title": "Laravel — Livewire — Laravel Livewire Code Injection Vulnerability",
+      "description": "Laravel Livewire contain a code injection vulnerability that could allow unauthenticated attackers to achieve remote command execution in specific scenarios.",
+      "severity": "critical",
+      "gamerImpactScore": 95,
+      "gamingPlatforms": [
+        "Mobile"
+      ],
+      "publishedAt": 1773964800000,
+      "url": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "cveIds": [
+        "CVE-2025-54068"
+      ]
+    },
+    {
+      "title": "Apple — Multiple Products — Apple Multiple Products Improper Locking Vulnerability",
+      "description": "Apple watchOS, iOS, iPadOS, macOS, visionOS, and tvOS contain an improper locking vulnerability that could allow a malicious application to cause unexpected changes in memory shared between processes.",
+      "severity": "critical",
+      "gamerImpactScore": 95,
+      "gamingPlatforms": [
+        "Mobile"
+      ],
+      "publishedAt": 1773964800000,
+      "url": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "cveIds": [
+        "CVE-2025-43510"
+      ]
+    },
+    {
+      "title": "Apple — Multiple Products — Apple Multiple Products Buffer Overflow Vulnerability",
+      "description": "Apple Safari, iOS, watchOS, visionOS, iPadOS, macOS, and tvOS contain a buffer overflow vulnerability that could allow the processing of maliciously crafted web content which may lead to memory corruption.",
+      "severity": "critical",
+      "gamerImpactScore": 95,
+      "gamingPlatforms": [
+        "Mobile"
+      ],
+      "publishedAt": 1773964800000,
+      "url": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "cveIds": [
+        "CVE-2025-31277"
+      ]
+    },
+    {
+      "title": "Google — Chromium V8 — Google Chromium V8 Improper Restriction of Operations Within the Bounds of a Memory Buffer Vulnerability",
+      "description": "Google Chromium V8 contains an improper restriction of operations within the bounds of a memory buffer vulnerability that could allow a remote attacker to execute arbitrary code inside a sandbox via a crafted HTML page. This vulnerability could affect multiple web browsers that utilize Chromium, including, but not limited to, Google Chrome, Microsoft Edge, and Opera.",
+      "severity": "critical",
+      "gamerImpactScore": 95,
+      "gamingPlatforms": [
+        "PC"
+      ],
+      "publishedAt": 1773360000000,
+      "url": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "cveIds": [
+        "CVE-2026-3910"
+      ]
+    },
+    {
+      "title": "Apple — Multiple Products — Apple Multiple products Use-After-Free Vulnerability",
+      "description": "Apple macOS, iOS, iPadOS, and Safari 16.6 contain a use-after-free vulnerability due to the processing of maliciously crafted web content that may lead to memory corruption.",
+      "severity": "critical",
+      "gamerImpactScore": 95,
+      "gamingPlatforms": [
+        "Mobile"
+      ],
+      "publishedAt": 1772668800000,
+      "url": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "cveIds": [
+        "CVE-2023-43000"
+      ]
+    },
+    {
+      "title": "Apple — Multiple Products — Apple Multiple Products Integer Overflow or Wraparound Vulnerability",
+      "description": "Apple tvOS, macOS, Safari, iPadOS and watchOS contain an integer overflow or wraparound vulnerability due to the processing of maliciously crafted web content that may lead to arbitrary code execution.",
+      "severity": "critical",
+      "gamerImpactScore": 95,
+      "gamingPlatforms": [
+        "Mobile"
+      ],
+      "publishedAt": 1772668800000,
+      "url": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "cveIds": [
+        "CVE-2021-30952"
+      ]
+    },
+    {
+      "title": "Microsoft — Windows —  Microsoft Windows Video ActiveX Control Remote Code Execution Vulnerability",
+      "description": "Microsoft Windows Video ActiveX Control contains a remote code execution vulnerability. An attacker could exploit the vulnerability by constructing a specially crafted Web page. When a user views the Web page, the vulnerability could allow remote code execution. An attacker who successfully exploited this vulnerability could gain the same user rights as the logged-on user.",
+      "severity": "critical",
+      "gamerImpactScore": 95,
+      "gamingPlatforms": [
+        "PC"
+      ],
+      "publishedAt": 1771286400000,
+      "url": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "cveIds": [
+        "CVE-2008-0015"
+      ]
+    },
+    {
+      "title": "Google — Chromium — Google Chromium CSS Use-After-Free Vulnerability",
+      "description": "Google Chromium CSS contains a use-after-free vulnerability that could allow a remote attacker to potentially exploit heap corruption via a crafted HTML page. This vulnerability could affect multiple web browsers that utilize Chromium, including, but not limited to, Google Chrome, Microsoft Edge, and Opera.",
+      "severity": "critical",
+      "gamerImpactScore": 95,
+      "gamingPlatforms": [
+        "PC"
+      ],
+      "publishedAt": 1771286400000,
+      "url": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "cveIds": [
+        "CVE-2026-2441"
+      ]
+    },
+    {
+      "title": "Apple — Multiple Products — Apple Multiple Buffer Overflow Vulnerability",
+      "description": "Apple iOS, macOS, tvOS, watchOS, and visionOS contain an improper restriction of operations within the bounds of a memory buffer vulnerability that could allow an attacker with memory write the capability to execute arbitrary code.",
+      "severity": "critical",
+      "gamerImpactScore": 95,
+      "gamingPlatforms": [
+        "Mobile"
+      ],
+      "publishedAt": 1770854400000,
+      "url": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "cveIds": [
+        "CVE-2026-20700"
+      ]
+    },
+    {
+      "title": "Microsoft — Configuration Manager — Microsoft Configuration Manager SQL Injection Vulnerability",
+      "description": "Microsoft Configuration Manager contains an SQL injection vulnerability. An unauthenticated attacker could exploit this vulnerability by sending specially crafted requests to the target environment which are processed in an unsafe manner enabling the attacker to execute commands on the server and/or underlying database.",
+      "severity": "critical",
+      "gamerImpactScore": 95,
+      "gamingPlatforms": [
+        "PC"
+      ],
+      "publishedAt": 1770854400000,
+      "url": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "cveIds": [
+        "CVE-2024-43468"
+      ]
+    },
+    {
+      "title": "Microsoft — Windows — Microsoft MSHTML Framework Protection Mechanism Failure Vulnerability",
+      "description": "Microsoft MSHTML Framework contains a protection mechanism failure vulnerability that could allow an unauthorized attacker to bypass a security feature over a network.",
+      "severity": "critical",
+      "gamerImpactScore": 95,
+      "gamingPlatforms": [
+        "PC"
+      ],
+      "publishedAt": 1770681600000,
+      "url": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "cveIds": [
+        "CVE-2026-21513"
+      ]
+    },
+    {
+      "title": "Microsoft — Windows — Microsoft Windows NULL Pointer Dereference Vulnerability",
+      "description": "Microsoft Windows Remote Access Connection Manager contains a NULL pointer dereference that could allow an unauthorized attacker to deny service locally.",
+      "severity": "critical",
+      "gamerImpactScore": 95,
+      "gamingPlatforms": [
+        "PC"
+      ],
+      "publishedAt": 1770681600000,
+      "url": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "cveIds": [
+        "CVE-2026-21525"
+      ]
+    },
+    {
+      "title": "Microsoft — Windows — Microsoft Windows Shell Protection Mechanism Failure Vulnerability",
+      "description": "Microsoft Windows Shell contains a protection mechanism failure vulnerability that could allow an unauthorized attacker to bypass a security feature over a network. ",
+      "severity": "critical",
+      "gamerImpactScore": 95,
+      "gamingPlatforms": [
+        "PC"
+      ],
+      "publishedAt": 1770681600000,
+      "url": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "cveIds": [
+        "CVE-2026-21510"
+      ]
+    },
+    {
+      "title": "Microsoft — Windows — Microsoft Windows Improper Privilege Management Vulnerability",
+      "description": "Microsoft Windows Remote Desktop Services contains an improper privilege management vulnerability that could allow an authorized attacker to elevate privileges locally.",
+      "severity": "critical",
+      "gamerImpactScore": 95,
+      "gamingPlatforms": [
+        "PC"
+      ],
+      "publishedAt": 1770681600000,
+      "url": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "cveIds": [
+        "CVE-2026-21533"
+      ]
+    },
+    {
+      "title": "Microsoft — Windows — Microsoft Windows Type Confusion Vulnerability",
+      "description": "Microsoft Desktop Windows Manager contains a type confusion vulnerability that could allow an authorized attacker to elevate privileges locally.",
+      "severity": "critical",
+      "gamerImpactScore": 95,
+      "gamingPlatforms": [
+        "PC"
+      ],
+      "publishedAt": 1770681600000,
+      "url": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "cveIds": [
+        "CVE-2026-21519"
+      ]
+    },
+    {
+      "title": "Microsoft — Office — Microsoft Office Word Reliance on Untrusted Inputs in a Security Decision Vulnerability",
+      "description": "Microsoft Office Word contains a reliance on untrusted inputs in a security decision vulnerability that could allow an authorized attacker to elevate privileges locally.",
+      "severity": "critical",
+      "gamerImpactScore": 95,
+      "gamingPlatforms": [
+        "PC"
+      ],
+      "publishedAt": 1770681600000,
+      "url": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "cveIds": [
+        "CVE-2026-21514"
+      ]
+    },
+    {
+      "title": "React Native Community — CLI — React Native Community CLI OS Command Injection Vulnerability",
+      "description": "React Native Community CLI contains an OS command injection vulnerability which could allow unauthenticated network attackers to send POST requests to the Metro Development Server and run arbitrary executables via a vulnerable endpoint exposed by the server. On Windows, attackers can also execute arbitrary shell commands with fully controlled arguments.",
+      "severity": "critical",
+      "gamerImpactScore": 95,
+      "gamingPlatforms": [
+        "PC"
+      ],
+      "publishedAt": 1770249600000,
+      "url": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "cveIds": [
+        "CVE-2025-11953"
+      ]
+    },
+    {
+      "title": "Linux — Kernel — Linux Kernel Integer Overflow Vulnerability",
+      "description": "Linux Kernel contains an integer overflow vulnerability in the create_elf_tables() function which could allow an unprivileged local user with access to SUID (or otherwise privileged) binary to escalate their privileges on the system.",
+      "severity": "critical",
+      "gamerImpactScore": 95,
+      "gamingPlatforms": [
+        "PC"
+      ],
+      "publishedAt": 1769385600000,
+      "url": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "cveIds": [
+        "CVE-2018-14634"
+      ]
+    },
+    {
+      "title": "Microsoft — Office — Microsoft Office Security Feature Bypass Vulnerability",
+      "description": "Microsoft Office contains a security feature bypass vulnerability in which reliance on untrusted inputs in a security decision in Microsoft Office could allow an unauthorized attacker to bypass a security feature locally. Some of the impacted product(s) could be end-of-life (EoL) and/or end-of-service (EoS). Users are advised to discontinue use and/or transition to a supported version.",
+      "severity": "critical",
+      "gamerImpactScore": 95,
+      "gamingPlatforms": [
+        "PC"
+      ],
+      "publishedAt": 1769385600000,
+      "url": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "cveIds": [
+        "CVE-2026-21509"
+      ]
+    },
+    {
+      "title": "Prettier — eslint-config-prettier — Prettier eslint-config-prettier Embedded Malicious Code Vulnerability",
+      "description": "Prettier eslint-config-prettier contains an embedded malicious code vulnerability. Installing an affected package executes an install.js file that launches the node-gyp.dll malware on Windows.",
+      "severity": "critical",
+      "gamerImpactScore": 95,
+      "gamingPlatforms": [
+        "PC"
+      ],
+      "publishedAt": 1769040000000,
+      "url": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "cveIds": [
+        "CVE-2025-54313"
+      ]
+    },
+    {
+      "title": "Microsoft — Windows — Microsoft Windows Information Disclosure Vulnerability",
+      "description": "Microsoft Windows Desktop Windows Manager contains an information disclosure vulnerability that allows an authorized attacker to disclose information locally.",
+      "severity": "critical",
+      "gamerImpactScore": 95,
+      "gamingPlatforms": [
+        "PC"
+      ],
+      "publishedAt": 1768262400000,
+      "url": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "cveIds": [
+        "CVE-2026-20805"
+      ]
+    },
+    {
+      "title": "Microsoft — Office — Microsoft Office PowerPoint Code Injection Vulnerability",
+      "description": "Microsoft Office PowerPoint contains a code injection vulnerability that allows remote attackers to execute arbitrary code via a PowerPoint file with an OutlineTextRefAtom containing an invalid index value that triggers memory corruption.",
+      "severity": "critical",
+      "gamerImpactScore": 95,
+      "gamingPlatforms": [
+        "PC"
+      ],
+      "publishedAt": 1767744000000,
+      "url": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "cveIds": [
+        "CVE-2009-0556"
+      ]
+    },
+    {
+      "title": "Apple — Multiple Products — Apple Multiple Products Use-After-Free WebKit Vulnerability",
+      "description": "Apple iOS, iPadOS, macOS, and other Apple products contain a use-after-free vulnerability in WebKit. Processing maliciously crafted web content may lead to memory corruption. This vulnerability could impact HTML parsers that use WebKit, including but not limited to Apple Safari and non-Apple products which rely on WebKit for HTML processing.",
+      "severity": "critical",
+      "gamerImpactScore": 95,
+      "gamingPlatforms": [
+        "Mobile"
+      ],
+      "publishedAt": 1765756800000,
+      "url": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "cveIds": [
+        "CVE-2025-43529"
+      ]
+    },
+    {
+      "title": "Google — Chromium — Google Chromium Out of Bounds Memory Access Vulnerability",
+      "description": "Google Chromium contains an out of bounds memory access vulnerability in ANGLE that could allow a remote attacker to perform out of bounds memory access via a crafted HTML page. This vulnerability could affect multiple web browsers that utilize Chromium, including, but not limited to, Google Chrome, Microsoft Edge, and Opera.",
+      "severity": "critical",
+      "gamerImpactScore": 95,
+      "gamingPlatforms": [
+        "PC"
+      ],
+      "publishedAt": 1765497600000,
+      "url": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "cveIds": [
+        "CVE-2025-14174"
+      ]
+    },
+    {
+      "title": "Microsoft — Windows — Microsoft Windows Use After Free Vulnerability",
+      "description": "Microsoft Windows Cloud Files Mini Filter Driver contains a use after free vulnerability that can allow an authorized attacker to elevate privileges locally.",
+      "severity": "critical",
+      "gamerImpactScore": 95,
+      "gamingPlatforms": [
+        "PC"
+      ],
+      "publishedAt": 1765238400000,
+      "url": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "cveIds": [
+        "CVE-2025-62221"
+      ]
+    },
+    {
+      "title": "Android — Framework — Android Framework Information Disclosure Vulnerability",
+      "description": "Android Framework contains an unspecified vulnerability that allows for information disclosure.",
+      "severity": "critical",
+      "gamerImpactScore": 95,
+      "gamingPlatforms": [
+        "Mobile"
+      ],
+      "publishedAt": 1764633600000,
+      "url": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "cveIds": [
+        "CVE-2025-48633"
+      ]
+    },
+    {
+      "title": "Android — Framework — Android Framework Privilege Escalation Vulnerability",
+      "description": "Android Framework contains an unspecified vulnerability that allows for privilege escalation.",
+      "severity": "critical",
+      "gamerImpactScore": 95,
+      "gamingPlatforms": [
+        "Mobile"
+      ],
+      "publishedAt": 1764633600000,
+      "url": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "cveIds": [
+        "CVE-2025-48572"
+      ]
+    },
+    {
+      "title": "Google — Chromium V8 — Google Chromium V8 Type Confusion Vulnerability",
+      "description": "Google Chromium V8 contains a type confusion vulnerability that allows for heap corruption.",
+      "severity": "critical",
+      "gamerImpactScore": 95,
+      "gamingPlatforms": [
+        "PC"
+      ],
+      "publishedAt": 1763510400000,
+      "url": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "cveIds": [
+        "CVE-2025-13223"
+      ]
+    },
+    {
+      "title": "Microsoft — Windows — Microsoft Windows Race Condition Vulnerability",
+      "description": "Microsoft Windows Kernel contains a race condition vulnerability that allows a local attacker with low-level privileges to escalate privileges. Successful exploitation of this vulnerability could enable the attacker to gain SYSTEM-level access.",
+      "severity": "critical",
+      "gamerImpactScore": 95,
+      "gamingPlatforms": [
+        "PC"
+      ],
+      "publishedAt": 1762905600000,
+      "url": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "cveIds": [
+        "CVE-2025-62215"
+      ]
+    },
+    {
+      "title": "Samsung — Mobile Devices — Samsung Mobile Devices Out-of-Bounds Write Vulnerability",
+      "description": "Samsung mobile devices contain an out-of-bounds write vulnerability in libimagecodec.quram.so. This vulnerability could allow remote attackers to execute arbitrary code.",
+      "severity": "critical",
+      "gamerImpactScore": 95,
+      "gamingPlatforms": [
+        "Mobile"
+      ],
+      "publishedAt": 1762732800000,
+      "url": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "cveIds": [
+        "CVE-2025-21042"
+      ]
+    },
+    {
+      "title": "Microsoft — Windows — Microsoft Windows Server Update Service (WSUS) Deserialization of Untrusted Data Vulnerability",
+      "description": "Microsoft Windows Server Update Service (WSUS) contains a deserialization of untrusted data vulnerability that allows for remote code execution.",
+      "severity": "critical",
+      "gamerImpactScore": 95,
+      "gamingPlatforms": [
+        "PC"
+      ],
+      "publishedAt": 1761264000000,
+      "url": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "cveIds": [
+        "CVE-2025-59287"
+      ]
+    },
+    {
+      "title": "Apple — Multiple Products — Apple Multiple Products Unspecified Vulnerability",
+      "description": "Apple macOS, iOS, tvOS, Safari, and watchOS contain an unspecified vulnerability in JavaScriptCore that when processing web content may lead to arbitrary code execution. The impacted product could be end-of-life (EoL) and/or end-of-service (EoS). Users should discontinue product utilization.",
+      "severity": "critical",
+      "gamerImpactScore": 95,
+      "gamingPlatforms": [
+        "Mobile"
+      ],
+      "publishedAt": 1760918400000,
+      "url": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "cveIds": [
+        "CVE-2022-48503"
+      ]
+    },
+    {
+      "title": "Microsoft — Windows — Microsoft Windows SMB Client Improper Access Control Vulnerability",
+      "description": "Microsoft Windows SMB Client contains an improper access control vulnerability that could allow for privilege escalation. An attacker could execute a specially crafted malicious script to coerce the victim machine to connect back to the attack system using SMB and authenticate.",
+      "severity": "critical",
+      "gamerImpactScore": 95,
+      "gamingPlatforms": [
+        "PC"
+      ],
+      "publishedAt": 1760918400000,
+      "url": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "cveIds": [
+        "CVE-2025-33073"
+      ]
+    },
+    {
+      "title": "Microsoft — Windows — Microsoft Windows Untrusted Pointer Dereference Vulnerability",
+      "description": "Microsoft Windows Agere Modem Driver contains an untrusted pointer dereference vulnerability that allows for privilege escalation. An attacker who successfully exploited this vulnerability could gain administrator privileges.",
+      "severity": "critical",
+      "gamerImpactScore": 95,
+      "gamingPlatforms": [
+        "PC"
+      ],
+      "publishedAt": 1760400000000,
+      "url": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "cveIds": [
+        "CVE-2025-24990"
+      ]
+    },
+    {
+      "title": "Microsoft — Windows — Microsoft Windows Improper Access Control Vulnerability",
+      "description": "Microsoft Windows contains an improper access control vulnerability in Windows Remote Access Connection Manager which could allow an authorized attacker to elevate privileges locally.",
+      "severity": "critical",
+      "gamerImpactScore": 95,
+      "gamingPlatforms": [
+        "PC"
+      ],
+      "publishedAt": 1760400000000,
+      "url": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "cveIds": [
+        "CVE-2025-59230"
+      ]
+    },
+    {
+      "title": "Linux — Kernel — Linux Kernel Heap Out-of-Bounds Write Vulnerability",
+      "description": "Linux Kernel contains a heap out-of-bounds write vulnerability that could allow an attacker to gain privileges or cause a DoS (via heap memory corruption) through user name space.",
+      "severity": "critical",
+      "gamerImpactScore": 95,
+      "gamingPlatforms": [
+        "PC"
+      ],
+      "publishedAt": 1759708800000,
+      "url": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "cveIds": [
+        "CVE-2021-22555"
+      ]
+    },
+    {
+      "title": "Microsoft — Internet Explorer — Microsoft Internet Explorer Uninitialized Memory Corruption Vulnerability",
+      "description": "Microsoft Internet Explorer contains an uninitialized memory corruption vulnerability that could allow for remote code execution. The impacted product could be end-of-life (EoL) and/or end-of-service (EoS). Users should discontinue product utilization.",
+      "severity": "critical",
+      "gamerImpactScore": 95,
+      "gamingPlatforms": [
+        "PC"
+      ],
+      "publishedAt": 1759708800000,
+      "url": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "cveIds": [
+        "CVE-2010-3962"
+      ]
+    },
+    {
+      "title": "Microsoft — Windows — Microsoft Windows Privilege Escalation Vulnerability",
+      "description": "Microsoft Windows Common Log File System Driver contains a privilege escalation vulnerability that could allow a local, privileged attacker to bypass certain security mechanisms.",
+      "severity": "critical",
+      "gamerImpactScore": 95,
+      "gamingPlatforms": [
+        "PC"
+      ],
+      "publishedAt": 1759708800000,
+      "url": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "cveIds": [
+        "CVE-2021-43226"
+      ]
+    },
+    {
+      "title": "Microsoft — Windows — Microsoft Windows Out-of-Bounds Write Vulnerability",
+      "description": "Microsoft Windows contains an out-of-bounds write vulnerability in the InformationCardSigninHelper Class ActiveX control, icardie.dll. An attacker could exploit the vulnerability by constructing a specially crafted webpage. When a user views the webpage, the vulnerability could allow remote code execution. An attacker who successfully exploited this vulnerability could gain the same user rights as the current user. The impacted product could be end-of-life (EoL) and/or end-of-service (EoS). Users should discontinue product utilization.",
+      "severity": "critical",
+      "gamerImpactScore": 95,
+      "gamingPlatforms": [
+        "PC"
+      ],
+      "publishedAt": 1759708800000,
+      "url": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "cveIds": [
+        "CVE-2013-3918"
+      ]
+    },
+    {
+      "title": "Microsoft — Windows — Microsoft Windows Remote Code Execution Vulnerability",
+      "description": "Microsoft Windows Kernel contains an unspecified vulnerability in the TrueType font parsing engine in win32k.sys in the kernel-mode drivers that allows remote attackers to execute arbitrary code via crafted font data in a Word document or web page.",
+      "severity": "critical",
+      "gamerImpactScore": 95,
+      "gamingPlatforms": [
+        "PC"
+      ],
+      "publishedAt": 1759708800000,
+      "url": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "cveIds": [
+        "CVE-2011-3402"
+      ]
+    },
+    {
+      "title": "Samsung — Mobile Devices — Samsung Mobile Devices Out-of-Bounds Write Vulnerability",
+      "description": "Samsung mobile devices contain an out-of-bounds write vulnerability in libimagecodec.quram.so which allows remote attackers to execute arbitrary code.",
+      "severity": "critical",
+      "gamerImpactScore": 95,
+      "gamingPlatforms": [
+        "Mobile"
+      ],
+      "publishedAt": 1759363200000,
+      "url": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "cveIds": [
+        "CVE-2025-21043"
+      ]
+    },
+    {
+      "title": "Google — Chromium V8 — Google Chromium V8 Type Confusion Vulnerability",
+      "description": "Google Chromium contains a type confusion vulnerability in the V8 JavaScript and WebAssembly engine.",
+      "severity": "critical",
+      "gamerImpactScore": 95,
+      "gamingPlatforms": [
+        "PC"
+      ],
+      "publishedAt": 1758585600000,
+      "url": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "cveIds": [
+        "CVE-2025-10585"
+      ]
+    },
+    {
+      "title": "Linux — Kernel — Linux Kernel Time-of-Check Time-of-Use (TOCTOU) Race Condition Vulnerability",
+      "description": "Linux kernel contains a time-of-check time-of-use (TOCTOU) race condition vulnerability that has a high impact on confidentiality, integrity, and availability.",
+      "severity": "critical",
+      "gamerImpactScore": 95,
+      "gamingPlatforms": [
+        "PC"
+      ],
+      "publishedAt": 1756944000000,
+      "url": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "cveIds": [
+        "CVE-2025-38352"
+      ]
+    },
+    {
+      "title": "Sitecore — Multiple Products — Sitecore Multiple Products Deserialization of Untrusted Data Vulnerability",
+      "description": "Sitecore Experience Manager (XM), Experience Platform (XP), Experience Commerce (XC), and Managed Cloud contain a deserialization of untrusted data vulnerability involving the use of default machine keys. This flaw allows attackers to exploit exposed ASP.NET machine keys to achieve remote code execution. ",
+      "severity": "critical",
+      "gamerImpactScore": 95,
+      "gamingPlatforms": [
+        "PC"
+      ],
+      "publishedAt": 1756944000000,
+      "url": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "cveIds": [
+        "CVE-2025-53690"
+      ]
+    },
+    {
+      "title": "Apple — iOS, iPadOS, and macOS — Apple iOS, iPadOS, and macOS Out-of-Bounds Write Vulnerability",
+      "description": "Apple iOS, iPadOS, and macOS contain an out-of-bounds write vulnerability in the Image I/O framework.",
+      "severity": "critical",
+      "gamerImpactScore": 95,
+      "gamingPlatforms": [
+        "Mobile"
+      ],
+      "publishedAt": 1755734400000,
+      "url": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "cveIds": [
+        "CVE-2025-43300"
+      ]
+    },
+    {
+      "title": "RARLAB — WinRAR — RARLAB WinRAR Path Traversal Vulnerability",
+      "description": "RARLAB WinRAR contains a path traversal vulnerability affecting the Windows version of WinRAR. This vulnerability could allow an attacker to execute arbitrary code by crafting malicious archive files.",
+      "severity": "critical",
+      "gamerImpactScore": 95,
+      "gamingPlatforms": [
+        "PC"
+      ],
+      "publishedAt": 1754956800000,
+      "url": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "cveIds": [
+        "CVE-2025-8088"
+      ]
+    },
+    {
+      "title": "Microsoft — Office — Microsoft Office Excel Remote Code Execution Vulnerability",
+      "description": "Microsoft Office Excel contains a remote code execution vulnerability that can be exploited when a specially crafted Excel file is opened. This malicious file could be delivered as an email attachment or hosted on a malicious website. An attacker could leverage this vulnerability by creating a specially crafted Excel file, which, when opened, allowing an attacker to execute remote code on the affected system.",
+      "severity": "critical",
+      "gamerImpactScore": 95,
+      "gamingPlatforms": [
+        "PC"
+      ],
+      "publishedAt": 1754956800000,
+      "url": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "cveIds": [
+        "CVE-2007-0671"
+      ]
+    },
+    {
+      "title": "Microsoft — Internet Explorer — Microsoft Internet Explorer Resource Management Errors Vulnerability",
+      "description": "Microsoft Internet Explorer contains a memory corruption vulnerability that allows for remote code execution. The impacted products could be end-of-life (EoL) and/or end-of-service (EoS). Users should discontinue product utilization.",
+      "severity": "critical",
+      "gamerImpactScore": 95,
+      "gamingPlatforms": [
+        "PC"
+      ],
+      "publishedAt": 1754956800000,
+      "url": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "cveIds": [
+        "CVE-2013-3893"
+      ]
+    },
+    {
+      "title": "Google — Chromium — Google Chromium ANGLE and GPU Improper Input Validation Vulnerability",
+      "description": "Google Chromium contains an improper input validation vulnerability in ANGLE and GPU. This vulnerability could allow a remote attacker to potentially perform a sandbox escape via a crafted HTML page. This vulnerability could affect multiple web browsers that utilize Chromium, including, but not limited to, Google Chrome, Microsoft Edge, and Opera.",
+      "severity": "critical",
+      "gamerImpactScore": 95,
+      "gamingPlatforms": [
+        "PC"
+      ],
+      "publishedAt": 1753142400000,
+      "url": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "cveIds": [
+        "CVE-2025-6558"
+      ]
+    },
+    {
+      "title": "Google — Chromium V8 — Google Chromium V8 Type Confusion Vulnerability",
+      "description": "Google Chromium V8 contains a type confusion vulnerability that could allow a remote attacker to perform arbitrary read/write via a crafted HTML page. This vulnerability could affect multiple web browsers that utilize Chromium, including, but not limited to, Google Chrome, Microsoft Edge, and Opera.",
+      "severity": "critical",
+      "gamerImpactScore": 95,
+      "gamingPlatforms": [
+        "PC"
+      ],
+      "publishedAt": 1751414400000,
+      "url": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "cveIds": [
+        "CVE-2025-6554"
+      ]
+    },
+    {
+      "title": "Linux — Kernel — Linux Kernel Improper Ownership Management Vulnerability",
+      "description": "Linux Kernel contains an improper ownership management vulnerability, where unauthorized access to the execution of the setuid file with capabilities was found in the Linux kernel’s OverlayFS subsystem in how a user copies a capable file from a nosuid mount into another mount. This uid mapping bug allows a local user to escalate their privileges on the system.",
+      "severity": "critical",
+      "gamerImpactScore": 95,
+      "gamingPlatforms": [
+        "PC"
+      ],
+      "publishedAt": 1750118400000,
+      "url": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "cveIds": [
+        "CVE-2023-0386"
+      ]
+    },
+    {
+      "title": "Apple — Multiple Products — Apple Multiple Products Unspecified Vulnerability",
+      "description": "Apple iOS, iPadOS, macOS, watchOS, and visionOS, contain an unspecified vulnerability when processing a maliciously crafted photo or video shared via an iCloud Link.",
+      "severity": "critical",
+      "gamerImpactScore": 95,
+      "gamingPlatforms": [
+        "Mobile"
+      ],
+      "publishedAt": 1750032000000,
+      "url": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "cveIds": [
+        "CVE-2025-43200"
+      ]
+    },
+    {
+      "title": "Microsoft — Windows —  Microsoft Windows External Control of File Name or Path Vulnerability",
+      "description": "Microsoft Windows contains an external control of file name or path vulnerability that could allow an attacker to execute code from a remote WebDAV location specified by the WorkingDirectory attribute of Internet Shortcut files.",
+      "severity": "critical",
+      "gamerImpactScore": 95,
+      "gamingPlatforms": [
+        "PC"
+      ],
+      "publishedAt": 1749513600000,
+      "url": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "cveIds": [
+        "CVE-2025-33053"
+      ]
+    },
+    {
+      "title": "Google — Chromium V8 — Google Chromium V8 Out-of-Bounds Read and Write Vulnerability",
+      "description": "Google Chromium V8 contains an out-of-bounds read and write vulnerability that could allow a remote attacker to potentially exploit heap corruption via a crafted HTML page. This vulnerability could affect multiple web browsers that utilize Chromium, including, but not limited to, Google Chrome, Microsoft Edge, and Opera.",
+      "severity": "critical",
+      "gamerImpactScore": 95,
+      "gamingPlatforms": [
+        "PC"
+      ],
+      "publishedAt": 1749081600000,
+      "url": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "cveIds": [
+        "CVE-2025-5419"
+      ]
+    },
+    {
+      "title": "Qualcomm — Multiple Chipsets — Qualcomm Multiple Chipsets Incorrect Authorization Vulnerability",
+      "description": "Multiple Qualcomm chipsets contain an incorrect authorization vulnerability. This vulnerability allows for memory corruption due to unauthorized command execution in GPU micronode while executing specific sequence of commands.",
+      "severity": "critical",
+      "gamerImpactScore": 95,
+      "gamingPlatforms": [
+        "PC"
+      ],
+      "publishedAt": 1748908800000,
+      "url": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "cveIds": [
+        "CVE-2025-21479"
+      ]
+    },
+    {
+      "title": "Qualcomm — Multiple Chipsets — Qualcomm Multiple Chipsets Incorrect Authorization Vulnerability",
+      "description": "Multiple Qualcomm chipsets contain an incorrect authorization vulnerability. This vulnerability allows for memory corruption due to unauthorized command execution in GPU micronode while executing specific sequence of commands.",
+      "severity": "critical",
+      "gamerImpactScore": 95,
+      "gamingPlatforms": [
+        "PC"
+      ],
+      "publishedAt": 1748908800000,
+      "url": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "cveIds": [
+        "CVE-2025-21480"
+      ]
+    },
+    {
+      "title": "Qualcomm — Multiple Chipsets — Qualcomm Multiple Chipsets Use-After-Free Vulnerability",
+      "description": "Multiple Qualcomm chipsets contain a use-after-free vulnerability. This vulnerability allows for memory corruption while rendering graphics using Adreno GPU drivers in Chrome.",
+      "severity": "critical",
+      "gamerImpactScore": 95,
+      "gamingPlatforms": [
+        "PC"
+      ],
+      "publishedAt": 1748908800000,
+      "url": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "cveIds": [
+        "CVE-2025-27038"
+      ]
+    },
+    {
+      "title": "Microsoft — Windows — Microsoft Windows Ancillary Function Driver for WinSock Use-After-Free Vulnerability",
+      "description": "Microsoft Windows Ancillary Function Driver for WinSock contains a use-after-free vulnerability that allows an authorized attacker to escalate privileges to administrator.",
+      "severity": "critical",
+      "gamerImpactScore": 95,
+      "gamingPlatforms": [
+        "PC"
+      ],
+      "publishedAt": 1747094400000,
+      "url": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "cveIds": [
+        "CVE-2025-32709"
+      ]
+    },
+    {
+      "title": "Microsoft — Windows — Microsoft Windows Scripting Engine Type Confusion Vulnerability",
+      "description": "Microsoft Windows Scripting Engine contains a type confusion vulnerability that allows an unauthorized attacker to execute code over a network via a specially crafted URL.",
+      "severity": "critical",
+      "gamerImpactScore": 95,
+      "gamingPlatforms": [
+        "PC"
+      ],
+      "publishedAt": 1747094400000,
+      "url": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "cveIds": [
+        "CVE-2025-30397"
+      ]
+    },
+    {
+      "title": "Microsoft — Windows — Microsoft Windows Common Log File System (CLFS) Driver Heap-Based Buffer Overflow Vulnerability",
+      "description": "Microsoft Windows Common Log File System (CLFS) Driver contains a heap-based buffer overflow vulnerability that allows an authorized attacker to elevate privileges locally.",
+      "severity": "critical",
+      "gamerImpactScore": 95,
+      "gamingPlatforms": [
+        "PC"
+      ],
+      "publishedAt": 1747094400000,
+      "url": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "cveIds": [
+        "CVE-2025-32706"
+      ]
+    },
+    {
+      "title": "Microsoft — Windows — Microsoft Windows Common Log File System (CLFS) Driver Use-After-Free Vulnerability",
+      "description": "Microsoft Windows Common Log File System (CLFS) Driver contains a use-after-free vulnerability that allows an authorized attacker to elevate privileges locally.",
+      "severity": "critical",
+      "gamerImpactScore": 95,
+      "gamingPlatforms": [
+        "PC"
+      ],
+      "publishedAt": 1747094400000,
+      "url": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "cveIds": [
+        "CVE-2025-32701"
+      ]
+    },
+    {
+      "title": "Microsoft — Windows — Microsoft Windows DWM Core Library Use-After-Free Vulnerability",
+      "description": "Microsoft Windows DWM Core Library contains a use-after-free vulnerability that allows an authorized attacker to elevate privileges locally.",
+      "severity": "critical",
+      "gamerImpactScore": 95,
+      "gamingPlatforms": [
+        "PC"
+      ],
+      "publishedAt": 1747094400000,
+      "url": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "cveIds": [
+        "CVE-2025-30400"
+      ]
+    },
+    {
+      "title": "Microsoft — Windows — Microsoft Windows NTLM Hash Disclosure Spoofing Vulnerability",
+      "description": "Microsoft Windows NTLM contains an external control of file name or path vulnerability that allows an unauthorized attacker to perform spoofing over a network.",
+      "severity": "critical",
+      "gamerImpactScore": 95,
+      "gamingPlatforms": [
+        "PC"
+      ],
+      "publishedAt": 1744848000000,
+      "url": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "cveIds": [
+        "CVE-2025-24054"
+      ]
+    },
+    {
+      "title": "Apple — Multiple Products — Apple Multiple Products Arbitrary Read and Write Vulnerability",
+      "description": "Apple iOS, iPadOS, macOS, and other Apple products contain an arbitrary read and write vulnerability that allows an attacker to bypass Pointer Authentication.",
+      "severity": "critical",
+      "gamerImpactScore": 95,
+      "gamingPlatforms": [
+        "Mobile"
+      ],
+      "publishedAt": 1744848000000,
+      "url": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "cveIds": [
+        "CVE-2025-31201"
+      ]
+    },
+    {
+      "title": "Apple — Multiple Products — Apple Multiple Products Memory Corruption Vulnerability",
+      "description": "Apple iOS, iPadOS, macOS, and other Apple products contain a memory corruption vulnerability that allows for code execution when processing an audio stream in a maliciously crafted media file.",
+      "severity": "critical",
+      "gamerImpactScore": 95,
+      "gamingPlatforms": [
+        "Mobile"
+      ],
+      "publishedAt": 1744848000000,
+      "url": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "cveIds": [
+        "CVE-2025-31200"
+      ]
+    },
+    {
+      "title": "Linux — Kernel — Linux Kernel Out-of-Bounds Read Vulnerability",
+      "description": "Linux Kernel contains an out-of-bounds read vulnerability in the USB-audio driver that allows a local, privileged attacker to obtain potentially sensitive information.",
+      "severity": "critical",
+      "gamerImpactScore": 95,
+      "gamingPlatforms": [
+        "PC"
+      ],
+      "publishedAt": 1744156800000,
+      "url": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "cveIds": [
+        "CVE-2024-53150"
+      ]
+    },
+    {
+      "title": "Linux — Kernel — Linux Kernel Out-of-Bounds Access Vulnerability",
+      "description": "Linux Kernel contains an out-of-bounds access vulnerability in the USB-audio driver that allows an attacker with physical access to the system to use a malicious USB device to potentially manipulate system memory, escalate privileges, or execute arbitrary code.",
+      "severity": "critical",
+      "gamerImpactScore": 95,
+      "gamingPlatforms": [
+        "PC"
+      ],
+      "publishedAt": 1744156800000,
+      "url": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "cveIds": [
+        "CVE-2024-53197"
+      ]
+    },
+    {
+      "title": "Microsoft — Windows — Microsoft Windows Common Log File System (CLFS) Driver Use-After-Free Vulnerability",
+      "description": "Microsoft Windows Common Log File System (CLFS) Driver contains a use-after-free vulnerability that allows an authorized attacker to elevate privileges locally.",
+      "severity": "critical",
+      "gamerImpactScore": 95,
+      "gamingPlatforms": [
+        "PC"
+      ],
+      "publishedAt": 1744070400000,
+      "url": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "cveIds": [
+        "CVE-2025-29824"
+      ]
+    },
+    {
+      "title": "Google — Chromium Mojo — Google Chromium Mojo Sandbox Escape Vulnerability",
+      "description": "Google Chromium Mojo on Windows contains a sandbox escape vulnerability caused by a logic error, which results from an incorrect handle being provided in unspecified circumstances. This vulnerability could affect multiple web browsers that utilize Chromium, including, but not limited to, Google Chrome, Microsoft Edge, and Opera.",
+      "severity": "critical",
+      "gamerImpactScore": 95,
+      "gamingPlatforms": [
+        "PC"
+      ],
+      "publishedAt": 1743033600000,
+      "url": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "cveIds": [
+        "CVE-2025-2783"
+      ]
+    },
+    {
+      "title": "Sitecore — CMS and Experience Platform (XP) — Sitecore CMS and Experience Platform (XP) Deserialization Vulnerability",
+      "description": "Sitecore CMS and Experience Platform (XP) contain a deserialization vulnerability in the Sitecore.Security.AntiCSRF module that allows an authenticated attacker to execute arbitrary code by sending a serialized .NET object in the HTTP POST parameter __CSRFTOKEN.",
+      "severity": "critical",
+      "gamerImpactScore": 95,
+      "gamingPlatforms": [
+        "PC"
+      ],
+      "publishedAt": 1742947200000,
+      "url": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "cveIds": [
+        "CVE-2019-9875"
+      ]
+    },
+    {
+      "title": "Sitecore — CMS and Experience Platform (XP) — Sitecore CMS and Experience Platform (XP) Deserialization Vulnerability",
+      "description": "Sitecore CMS and Experience Platform (XP) contain a deserialization vulnerability in the Sitecore.Security.AntiCSRF module that allows an unauthenticated attacker to execute arbitrary code by sending a serialized .NET object in the HTTP POST parameter __CSRFTOKEN.",
+      "severity": "critical",
+      "gamerImpactScore": 95,
+      "gamingPlatforms": [
+        "PC"
+      ],
+      "publishedAt": 1742947200000,
+      "url": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "cveIds": [
+        "CVE-2019-9874"
+      ]
+    },
+    {
+      "title": "Apple — Multiple Products — Apple Multiple Products WebKit Out-of-Bounds Write Vulnerability",
+      "description": "Apple iOS, iPadOS, macOS, and other Apple products contain an out-of-bounds write vulnerability in WebKit that may allow maliciously crafted web content to break out of Web Content sandbox. This vulnerability could impact HTML parsers that use WebKit, including but not limited to Apple Safari and non-Apple products which rely on WebKit for HTML processing.",
+      "severity": "critical",
+      "gamerImpactScore": 95,
+      "gamingPlatforms": [
+        "Mobile"
+      ],
+      "publishedAt": 1741824000000,
+      "url": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "cveIds": [
+        "CVE-2025-24201"
+      ]
+    },
+    {
+      "title": "Microsoft — Windows — Microsoft Windows NTFS Heap-Based Buffer Overflow Vulnerability",
+      "description": "Microsoft Windows New Technology File System (NTFS) contains a heap-based buffer overflow vulnerability that allows an unauthorized attacker to execute code locally.",
+      "severity": "critical",
+      "gamerImpactScore": 95,
+      "gamingPlatforms": [
+        "PC"
+      ],
+      "publishedAt": 1741651200000,
+      "url": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "cveIds": [
+        "CVE-2025-24993"
+      ]
+    },
+    {
+      "title": "Microsoft — Windows — Microsoft Windows NTFS Out-Of-Bounds Read Vulnerability",
+      "description": "Microsoft Windows New Technology File System (NTFS) contains an out-of-bounds read vulnerability that allows an authorized attacker to disclose information locally.",
+      "severity": "critical",
+      "gamerImpactScore": 95,
+      "gamingPlatforms": [
+        "PC"
+      ],
+      "publishedAt": 1741651200000,
+      "url": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "cveIds": [
+        "CVE-2025-24991"
+      ]
+    },
+    {
+      "title": "Microsoft — Windows — Microsoft Windows Fast FAT File System Driver Integer Overflow Vulnerability",
+      "description": "Microsoft Windows Fast FAT File System Driver contains an integer overflow or wraparound vulnerability that allows an unauthorized attacker to execute code locally.",
+      "severity": "critical",
+      "gamerImpactScore": 95,
+      "gamingPlatforms": [
+        "PC"
+      ],
+      "publishedAt": 1741651200000,
+      "url": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "cveIds": [
+        "CVE-2025-24985"
+      ]
+    },
+    {
+      "title": "Microsoft — Windows — Microsoft Windows NTFS Information Disclosure Vulnerability",
+      "description": "Microsoft Windows New Technology File System (NTFS) contains an insertion of sensitive Information into log file vulnerability that allows an unauthorized attacker to disclose information with a physical attack. An attacker who successfully exploited this vulnerability could potentially read portions of heap memory.",
+      "severity": "critical",
+      "gamerImpactScore": 95,
+      "gamingPlatforms": [
+        "PC"
+      ],
+      "publishedAt": 1741651200000,
+      "url": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "cveIds": [
+        "CVE-2025-24984"
+      ]
+    },
+    {
+      "title": "Microsoft — Windows — Microsoft Windows Win32k Use-After-Free Vulnerability",
+      "description": "Microsoft Windows Win32 Kernel Subsystem contains a use-after-free vulnerability that allows an authorized attacker to elevate privileges locally.",
+      "severity": "critical",
+      "gamerImpactScore": 95,
+      "gamingPlatforms": [
+        "PC"
+      ],
+      "publishedAt": 1741651200000,
+      "url": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "cveIds": [
+        "CVE-2025-24983"
+      ]
+    },
+    {
+      "title": "Microsoft — Windows — Microsoft Windows Management Console (MMC) Improper Neutralization Vulnerability",
+      "description": "Microsoft Windows Management Console (MMC) contains an improper neutralization vulnerability that allows an unauthorized attacker to bypass a security feature locally.",
+      "severity": "critical",
+      "gamerImpactScore": 95,
+      "gamingPlatforms": [
+        "PC"
+      ],
+      "publishedAt": 1741651200000,
+      "url": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "cveIds": [
+        "CVE-2025-26633"
+      ]
+    },
+    {
+      "title": "Linux — Kernel — Linux Kernel Use of Uninitialized Resource Vulnerability",
+      "description": "The Linux kernel contains a use of uninitialized resource vulnerability that allows an attacker to leak kernel memory via a specially crafted HID report.",
+      "severity": "critical",
+      "gamerImpactScore": 95,
+      "gamingPlatforms": [
+        "PC"
+      ],
+      "publishedAt": 1741046400000,
+      "url": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "cveIds": [
+        "CVE-2024-50302"
+      ]
+    },
+    {
+      "title": "Microsoft — Windows — Microsoft Windows Win32k Improper Resource Shutdown or Release Vulnerability",
+      "description": "Microsoft Windows Win32k contains an improper resource shutdown or release vulnerability that allows for local, authenticated privilege escalation. An attacker who successfully exploited this vulnerability could run arbitrary code in kernel mode.",
+      "severity": "critical",
+      "gamerImpactScore": 95,
+      "gamingPlatforms": [
+        "PC"
+      ],
+      "publishedAt": 1740960000000,
+      "url": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "cveIds": [
+        "CVE-2018-8639"
+      ]
+    },
+    {
+      "title": "Microsoft — Partner Center — Microsoft Partner Center Improper Access Control Vulnerability",
+      "description": "Microsoft Partner Center contains an improper access control vulnerability that allows an attacker to escalate privileges.",
+      "severity": "critical",
+      "gamerImpactScore": 95,
+      "gamingPlatforms": [
+        "PC"
+      ],
+      "publishedAt": 1740441600000,
+      "url": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "cveIds": [
+        "CVE-2024-49035"
+      ]
+    },
+    {
+      "title": "Microsoft — Power Pages — Microsoft Power Pages Improper Access Control Vulnerability",
+      "description": "Microsoft Power Pages contains an improper access control vulnerability that allows an unauthorized attacker to elevate privileges over a network potentially bypassing the user registration control.",
+      "severity": "critical",
+      "gamerImpactScore": 95,
+      "gamingPlatforms": [
+        "PC"
+      ],
+      "publishedAt": 1740096000000,
+      "url": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "cveIds": [
+        "CVE-2025-24989"
+      ]
+    },
+    {
+      "title": "Apple — iOS and iPadOS — Apple iOS and iPadOS Incorrect Authorization Vulnerability",
+      "description": "Apple iOS and iPadOS contains an incorrect authorization vulnerability that allows a physical attacker to disable USB Restricted Mode on a locked device.",
+      "severity": "critical",
+      "gamerImpactScore": 95,
+      "gamingPlatforms": [
+        "Mobile"
+      ],
+      "publishedAt": 1739318400000,
+      "url": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "cveIds": [
+        "CVE-2025-24200"
+      ]
+    },
+    {
+      "title": "Microsoft — Windows — Microsoft Windows Ancillary Function Driver for WinSock Heap-Based Buffer Overflow Vulnerability",
+      "description": "Microsoft Windows Ancillary Function Driver for WinSock contains a heap-based buffer overflow vulnerability that allows for privilege escalation, enabling a local attacker to gain SYSTEM privileges.",
+      "severity": "critical",
+      "gamerImpactScore": 95,
+      "gamingPlatforms": [
+        "PC"
+      ],
+      "publishedAt": 1739232000000,
+      "url": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "cveIds": [
+        "CVE-2025-21418"
+      ]
+    },
+    {
+      "title": "Microsoft — Windows — Microsoft Windows Storage Link Following Vulnerability",
+      "description": "Microsoft Windows Storage contains a link following vulnerability that could allow for privilege escalation. This vulnerability could allow an attacker to delete data including data that results in the service being unavailable.",
+      "severity": "critical",
+      "gamerImpactScore": 95,
+      "gamingPlatforms": [
+        "PC"
+      ],
+      "publishedAt": 1739232000000,
+      "url": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "cveIds": [
+        "CVE-2025-21391"
+      ]
+    },
+    {
+      "title": "Trimble — Cityworks — Trimble Cityworks Deserialization Vulnerability",
+      "description": "Trimble Cityworks contains a deserialization vulnerability. This could allow an authenticated user to perform a remote code execution attack against a customer's Microsoft Internet Information Services (IIS) web server.",
+      "severity": "critical",
+      "gamerImpactScore": 95,
+      "gamingPlatforms": [
+        "PC"
+      ],
+      "publishedAt": 1738886400000,
+      "url": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "cveIds": [
+        "CVE-2025-0994"
+      ]
+    },
+    {
+      "title": "Microsoft — Office Outlook — Microsoft Outlook Improper Input Validation Vulnerability",
+      "description": "Microsoft Outlook contains an improper input validation vulnerability that allows for remote code execution. Successful exploitation of this vulnerability would allow an attacker to bypass the Office Protected View and open in editing mode rather than protected mode.",
+      "severity": "critical",
+      "gamerImpactScore": 95,
+      "gamingPlatforms": [
+        "PC"
+      ],
+      "publishedAt": 1738800000000,
+      "url": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "cveIds": [
+        "CVE-2024-21413"
+      ]
+    },
+    {
+      "title": "Linux — Kernel — Linux Kernel Out-of-Bounds Write Vulnerability",
+      "description": "Linux kernel contains an out-of-bounds write vulnerability in the uvc_parse_streaming component of the USB Video Class (UVC) driver that could allow for physical escalation of privilege.",
+      "severity": "critical",
+      "gamerImpactScore": 95,
+      "gamingPlatforms": [
+        "PC"
+      ],
+      "publishedAt": 1738713600000,
+      "url": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "cveIds": [
+        "CVE-2024-53104"
+      ]
+    },
+    {
+      "title": "Microsoft — .NET Framework — Microsoft .NET Framework Information Disclosure Vulnerability",
+      "description": "Microsoft .NET Framework contains an information disclosure vulnerability that exposes the ObjRef URI to an attacker, ultimately enabling remote code execution.",
+      "severity": "critical",
+      "gamerImpactScore": 95,
+      "gamingPlatforms": [
+        "PC"
+      ],
+      "publishedAt": 1738627200000,
+      "url": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "cveIds": [
+        "CVE-2024-29059"
+      ]
+    },
+    {
+      "title": "Apple — Multiple Products — Apple Multiple Products Use-After-Free Vulnerability",
+      "description": "Apple iOS, macOS, and other Apple products contain a user-after-free vulnerability that could allow a malicious application to elevate privileges.",
+      "severity": "critical",
+      "gamerImpactScore": 95,
+      "gamingPlatforms": [
+        "Mobile"
+      ],
+      "publishedAt": 1738108800000,
+      "url": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "cveIds": [
+        "CVE-2025-24085"
+      ]
+    },
+    {
+      "title": "Microsoft — Windows — Microsoft Windows Hyper-V NT Kernel Integration VSP Use-After-Free Vulnerability",
+      "description": "Microsoft Windows Hyper-V NT Kernel Integration VSP contains a use-after-free vulnerability that allows a local attacker to gain SYSTEM privileges.",
+      "severity": "critical",
+      "gamerImpactScore": 95,
+      "gamingPlatforms": [
+        "PC"
+      ],
+      "publishedAt": 1736812800000,
+      "url": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "cveIds": [
+        "CVE-2025-21335"
+      ]
+    },
+    {
+      "title": "Microsoft — Windows — Microsoft Windows Hyper-V NT Kernel Integration VSP Use-After-Free Vulnerability",
+      "description": "Microsoft Windows Hyper-V NT Kernel Integration VSP contains a use-after-free vulnerability that allows a local attacker to gain SYSTEM privileges.",
+      "severity": "critical",
+      "gamerImpactScore": 95,
+      "gamingPlatforms": [
+        "PC"
+      ],
+      "publishedAt": 1736812800000,
+      "url": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "cveIds": [
+        "CVE-2025-21334"
+      ]
+    },
+    {
+      "title": "Microsoft — Windows — Microsoft Windows Hyper-V NT Kernel Integration VSP Heap-based Buffer Overflow Vulnerability",
+      "description": "Microsoft Windows Hyper-V NT Kernel Integration VSP contains a heap-based buffer overflow vulnerability that allows a local attacker to gain SYSTEM privileges.",
+      "severity": "critical",
+      "gamerImpactScore": 95,
+      "gamingPlatforms": [
+        "PC"
+      ],
+      "publishedAt": 1736812800000,
+      "url": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "cveIds": [
+        "CVE-2025-21333"
+      ]
+    },
+    {
+      "title": "Microsoft — Windows — Microsoft Windows Kernel-Mode Driver Untrusted Pointer Dereference Vulnerability ",
+      "description": "Microsoft Windows Kernel-Mode Driver contains an untrusted pointer dereference vulnerability that allows a local attacker to escalate privileges.",
+      "severity": "critical",
+      "gamerImpactScore": 95,
+      "gamingPlatforms": [
+        "PC"
+      ],
+      "publishedAt": 1734307200000,
+      "url": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "cveIds": [
+        "CVE-2024-35250"
+      ]
+    },
+    {
+      "title": "Microsoft — Windows — Microsoft Windows Common Log File System (CLFS) Driver Heap-Based Buffer Overflow Vulnerability",
+      "description": "Microsoft Windows Common Log File System (CLFS) driver contains a heap-based buffer overflow vulnerability that allows a local attacker to escalate privileges.",
+      "severity": "critical",
+      "gamerImpactScore": 95,
+      "gamingPlatforms": [
+        "PC"
+      ],
+      "publishedAt": 1733788800000,
+      "url": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "cveIds": [
+        "CVE-2024-49138"
+      ]
+    },
+    {
+      "title": "Apple — Multiple Products — Apple Multiple Products Cross-Site Scripting (XSS) Vulnerability",
+      "description": "Apple iOS, macOS, and other Apple products contain an unspecified vulnerability when processing maliciously crafted web content that may lead to a cross-site scripting (XSS) attack.",
+      "severity": "critical",
+      "gamerImpactScore": 95,
+      "gamingPlatforms": [
+        "Mobile"
+      ],
+      "publishedAt": 1732147200000,
+      "url": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "cveIds": [
+        "CVE-2024-44309"
+      ]
+    },
+    {
+      "title": "Apple — Multiple Products — Apple Multiple Products Code Execution Vulnerability",
+      "description": "Apple iOS, macOS, and other Apple products contain an unspecified vulnerability when processing maliciously crafted web content that may lead to arbitrary code execution.",
+      "severity": "critical",
+      "gamerImpactScore": 95,
+      "gamingPlatforms": [
+        "Mobile"
+      ],
+      "publishedAt": 1732147200000,
+      "url": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "cveIds": [
+        "CVE-2024-44308"
+      ]
+    },
+    {
+      "title": "Microsoft — Windows — Microsoft Windows NTLMv2 Hash Disclosure Spoofing Vulnerability",
+      "description": "Microsoft Windows contains an NTLMv2 hash spoofing vulnerability that could result in disclosing a user's NTLMv2 hash to an attacker via a file open operation. The attacker could then leverage this hash to impersonate that user.",
+      "severity": "critical",
+      "gamerImpactScore": 95,
+      "gamingPlatforms": [
+        "PC"
+      ],
+      "publishedAt": 1731369600000,
+      "url": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "cveIds": [
+        "CVE-2024-43451"
+      ]
+    },
+    {
+      "title": "Microsoft — Windows — Microsoft Windows Task Scheduler Privilege Escalation Vulnerability",
+      "description": "Microsoft Windows Task Scheduler contains a privilege escalation vulnerability that can allow an attacker-provided, local application to escalate privileges outside of its AppContainer, and access privileged RPC functions.",
+      "severity": "critical",
+      "gamerImpactScore": 95,
+      "gamingPlatforms": [
+        "PC"
+      ],
+      "publishedAt": 1731369600000,
+      "url": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "cveIds": [
+        "CVE-2024-49039"
+      ]
+    },
+    {
+      "title": "Android — Framework — Android Framework Privilege Escalation Vulnerability",
+      "description": "Android Framework contains an unspecified vulnerability that allows for privilege escalation.",
+      "severity": "critical",
+      "gamerImpactScore": 95,
+      "gamingPlatforms": [
+        "Mobile"
+      ],
+      "publishedAt": 1730937600000,
+      "url": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "cveIds": [
+        "CVE-2024-43093"
+      ]
+    },
+    {
+      "title": "Microsoft — Windows  — Microsoft Windows Kernel TOCTOU Race Condition Vulnerability",
+      "description": "Microsoft Windows Kernel contains a time-of-check to time-of-use (TOCTOU) race condition vulnerability that could allow for privilege escalation. ",
+      "severity": "critical",
+      "gamerImpactScore": 95,
+      "gamingPlatforms": [
+        "PC"
+      ],
+      "publishedAt": 1728950400000,
+      "url": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "cveIds": [
+        "CVE-2024-30088"
+      ]
+    },
+    {
+      "title": "Microsoft — Windows — Microsoft Windows MSHTML Platform Spoofing Vulnerability",
+      "description": "Microsoft Windows MSHTML Platform contains an unspecified spoofing vulnerability which can lead to a loss of confidentiality.",
+      "severity": "critical",
+      "gamerImpactScore": 95,
+      "gamingPlatforms": [
+        "PC"
+      ],
+      "publishedAt": 1728345600000,
+      "url": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "cveIds": [
+        "CVE-2024-43573"
+      ]
+    },
+    {
+      "title": "Microsoft — Windows — Microsoft Windows Management Console Remote Code Execution Vulnerability",
+      "description": "Microsoft Windows Management Console contains unspecified vulnerability that allows for remote code execution.",
+      "severity": "critical",
+      "gamerImpactScore": 95,
+      "gamingPlatforms": [
+        "PC"
+      ],
+      "publishedAt": 1728345600000,
+      "url": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "cveIds": [
+        "CVE-2024-43572"
+      ]
+    },
+    {
+      "title": "Microsoft — SQL Server — Microsoft SQL Server Reporting Services Remote Code Execution Vulnerability",
+      "description": "Microsoft SQL Server Reporting Services contains a deserialization vulnerability when handling page requests incorrectly. An authenticated attacker can exploit this vulnerability to execute code in the context of the Report Server service account.",
+      "severity": "critical",
+      "gamerImpactScore": 95,
+      "gamingPlatforms": [
+        "PC"
+      ],
+      "publishedAt": 1726617600000,
+      "url": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "cveIds": [
+        "CVE-2020-0618"
+      ]
+    },
+    {
+      "title": "Microsoft — Windows — Microsoft Windows MSHTML Platform Spoofing Vulnerability",
+      "description": "Microsoft Windows MSHTML Platform contains a user interface (UI) misrepresentation of critical information vulnerability that allows an attacker to spoof a web page. This vulnerability was exploited in conjunction with CVE-2024-38112.",
+      "severity": "critical",
+      "gamerImpactScore": 95,
+      "gamingPlatforms": [
+        "PC"
+      ],
+      "publishedAt": 1726444800000,
+      "url": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "cveIds": [
+        "CVE-2024-43461"
+      ]
+    },
+    {
+      "title": "Microsoft — Windows — Microsoft Windows Mark of the Web (MOTW) Protection Mechanism Failure Vulnerability",
+      "description": "Microsoft Windows Mark of the Web (MOTW) contains a protection mechanism failure vulnerability that allows an attacker to bypass MOTW-based defenses. This can result in a limited loss of integrity and availability of security features such as Protected View in Microsoft Office, which rely on MOTW tagging.",
+      "severity": "critical",
+      "gamerImpactScore": 95,
+      "gamingPlatforms": [
+        "PC"
+      ],
+      "publishedAt": 1725926400000,
+      "url": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "cveIds": [
+        "CVE-2024-38217"
+      ]
+    },
+    {
+      "title": "Microsoft — Windows — Microsoft Windows Installer Improper Privilege Management Vulnerability",
+      "description": "Microsoft Windows Installer contains an improper privilege management vulnerability that could allow an attacker to gain SYSTEM privileges.",
+      "severity": "critical",
+      "gamerImpactScore": 95,
+      "gamingPlatforms": [
+        "PC"
+      ],
+      "publishedAt": 1725926400000,
+      "url": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "cveIds": [
+        "CVE-2024-38014"
+      ]
+    },
+    {
+      "title": "Microsoft — Publisher — Microsoft Publisher Protection Mechanism Failure Vulnerability",
+      "description": "Microsoft Publisher contains a protection mechanism failure vulnerability that allows attacker to bypass Office macro policies used to block untrusted or malicious files.",
+      "severity": "critical",
+      "gamerImpactScore": 95,
+      "gamingPlatforms": [
+        "PC"
+      ],
+      "publishedAt": 1725926400000,
+      "url": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "cveIds": [
+        "CVE-2024-38226"
+      ]
+    },
+    {
+      "title": "Linux — Kernel — Linux Kernel PIE Stack Buffer Corruption Vulnerability ",
+      "description": "Linux kernel contains a position-independent executable (PIE) stack buffer corruption vulnerability in load_elf_ binary() that allows a local attacker to escalate privileges. ",
+      "severity": "critical",
+      "gamerImpactScore": 95,
+      "gamingPlatforms": [
+        "PC"
+      ],
+      "publishedAt": 1725840000000,
+      "url": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "cveIds": [
+        "CVE-2017-1000253"
+      ]
+    },
+    {
+      "title": "Kingsoft — WPS Office — Kingsoft WPS Office Path Traversal Vulnerability",
+      "description": "Kingsoft WPS Office contains a path traversal vulnerability in promecefpluginhost.exe on Windows that allows an attacker to load an arbitrary Windows library.",
+      "severity": "critical",
+      "gamerImpactScore": 95,
+      "gamingPlatforms": [
+        "PC"
+      ],
+      "publishedAt": 1725321600000,
+      "url": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "cveIds": [
+        "CVE-2024-7262"
+      ]
+    },
+    {
+      "title": "Google — Chromium V8 — Google Chromium V8 Inappropriate Implementation Vulnerability",
+      "description": "Google Chromium V8 contains an inappropriate implementation vulnerability that allows a remote attacker to potentially exploit heap corruption via a crafted HTML page. This vulnerability could affect multiple web browsers that utilize Chromium, including, but not limited to, Google Chrome, Microsoft Edge, and Opera.",
+      "severity": "critical",
+      "gamerImpactScore": 95,
+      "gamingPlatforms": [
+        "PC"
+      ],
+      "publishedAt": 1724803200000,
+      "url": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "cveIds": [
+        "CVE-2024-7965"
+      ]
+    },
+    {
+      "title": "Google — Chromium V8 — Google Chromium V8 Type Confusion Vulnerability",
+      "description": "Google Chromium V8 contains a type confusion vulnerability that allows a remote attacker to exploit heap corruption via a crafted HTML page. This vulnerability could affect multiple web browsers that utilize Chromium, including, but not limited to, Google Chrome, Microsoft Edge, and Opera.",
+      "severity": "critical",
+      "gamerImpactScore": 95,
+      "gamingPlatforms": [
+        "PC"
+      ],
+      "publishedAt": 1724630400000,
+      "url": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "cveIds": [
+        "CVE-2024-7971"
+      ]
+    },
+    {
+      "title": "Linux — Kernel — Linux Kernel Heap-Based Buffer Overflow Vulnerability",
+      "description": "Linux kernel contains a heap-based buffer overflow vulnerability in the legacy_parse_param function in the Filesystem Context functionality. This allows an attacker to open a filesystem that does not support the Filesystem Context API and ultimately escalate privileges.",
+      "severity": "critical",
+      "gamerImpactScore": 95,
+      "gamingPlatforms": [
+        "PC"
+      ],
+      "publishedAt": 1724198400000,
+      "url": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "cveIds": [
+        "CVE-2022-0185"
+      ]
+    },
+    {
+      "title": "Microsoft — Windows — Microsoft Windows Power Dependency Coordinator Privilege Escalation Vulnerability",
+      "description": "Microsoft Windows Power Dependency Coordinator contains an unspecified vulnerability that allows for privilege escalation, enabling a local attacker to obtain SYSTEM privileges.",
+      "severity": "critical",
+      "gamerImpactScore": 95,
+      "gamingPlatforms": [
+        "PC"
+      ],
+      "publishedAt": 1723507200000,
+      "url": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "cveIds": [
+        "CVE-2024-38107"
+      ]
+    },
+    {
+      "title": "Microsoft — Windows — Microsoft Windows Kernel Privilege Escalation Vulnerability",
+      "description": "Microsoft Windows Kernel contains an unspecified vulnerability that allows for privilege escalation, enabling a local attacker to gain SYSTEM privileges. Successful exploitation of this vulnerability requires an attacker to win a race condition.",
+      "severity": "critical",
+      "gamerImpactScore": 95,
+      "gamingPlatforms": [
+        "PC"
+      ],
+      "publishedAt": 1723507200000,
+      "url": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "cveIds": [
+        "CVE-2024-38106"
+      ]
+    },
+    {
+      "title": "Microsoft — Windows — Microsoft Windows Ancillary Function Driver for WinSock Privilege Escalation Vulnerability",
+      "description": "Microsoft Windows Ancillary Function Driver for WinSock contains an unspecified vulnerability that allows for privilege escalation, enabling a local attacker to gain SYSTEM privileges.",
+      "severity": "critical",
+      "gamerImpactScore": 95,
+      "gamingPlatforms": [
+        "PC"
+      ],
+      "publishedAt": 1723507200000,
+      "url": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "cveIds": [
+        "CVE-2024-38193"
+      ]
+    },
+    {
+      "title": "Microsoft — Windows — Microsoft Windows SmartScreen Security Feature Bypass Vulnerability",
+      "description": "Microsoft Windows SmartScreen contains a security feature bypass vulnerability that allows an attacker to bypass the SmartScreen user experience via a malicious file.",
+      "severity": "critical",
+      "gamerImpactScore": 95,
+      "gamingPlatforms": [
+        "PC"
+      ],
+      "publishedAt": 1723507200000,
+      "url": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "cveIds": [
+        "CVE-2024-38213"
+      ]
+    },
+    {
+      "title": "Microsoft — Windows — Microsoft Windows Scripting Engine Memory Corruption Vulnerability",
+      "description": "Microsoft Windows Scripting Engine contains a memory corruption vulnerability that allows unauthenticated attacker to initiate remote code execution via a specially crafted URL.",
+      "severity": "critical",
+      "gamerImpactScore": 95,
+      "gamingPlatforms": [
+        "PC"
+      ],
+      "publishedAt": 1723507200000,
+      "url": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+      "cveIds": [
+        "CVE-2024-38178"
+      ]
+    }
+  ]
+}

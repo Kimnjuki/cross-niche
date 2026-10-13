@@ -34,6 +34,7 @@ import type * as crons from "../crons.js";
 import type * as cveLookup from "../cveLookup.js";
 import type * as diversifyFeaturedImages from "../diversifyFeaturedImages.js";
 import type * as editorialBriefs from "../editorialBriefs.js";
+import type * as enrichThreatIntel from "../enrichThreatIntel.js";
 import type * as expandNewsArticles from "../expandNewsArticles.js";
 import type * as feedQueries from "../feedQueries.js";
 import type * as feeds from "../feeds.js";
@@ -121,6 +122,7 @@ declare const fullApi: ApiFromModules<{
   cveLookup: typeof cveLookup;
   diversifyFeaturedImages: typeof diversifyFeaturedImages;
   editorialBriefs: typeof editorialBriefs;
+  enrichThreatIntel: typeof enrichThreatIntel;
   expandNewsArticles: typeof expandNewsArticles;
   feedQueries: typeof feedQueries;
   feeds: typeof feeds;
