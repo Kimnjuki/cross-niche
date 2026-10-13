@@ -433,6 +433,26 @@ const TOOL_ROUTES = [
   ['/tools/release-predictor', 'Release Predictor', 'Release predictor', 'forecast launch dates from historical patterns', 'daily', 0.8],
 ];
 
+/**
+ * Off-niche / low-demand tools demoted out of the index (growth-audit
+ * "noindex_or_move_to_labs"). These stay functional (the app still renders
+ * them, and they're emitted with `noindex, follow` + dropped from every
+ * sitemap), but they no longer dilute crawl budget or topical authority while
+ * the core gaming-security pages win. Reversible: remove a path here to
+ * re-index it.
+ */
+const NOINDEX_TOOLS = new Set([
+  '/tools/sentiment-analyzer',
+  '/tools/news-personalizer',
+  '/tools/recommendation-engine',
+  '/tools/release-predictor',
+  '/tools/community-moderator',
+  '/tools/ai-tool-finder',
+  '/tools/vr-cyber-training',
+  '/tools/zero-trust-quiz',
+  '/tools/patch-risk-tracker',
+]);
+
 /** Framing shared by every derived tool description (length-checked by tests). */
 const TOOL_DESC_PREFIX = (name) => `Free ${name} from The Grid Nexus. `;
 const TOOL_DESC_TAIL = 'No account required and nothing you enter is stored.';
@@ -478,6 +498,7 @@ for (const [path, name, h1, benefit, changefreq, priority] of TOOL_ROUTES) {
     links: [TOOL_HUB, { href: '/guides', label: 'Guides' }, { href: '/security', label: 'Cybersecurity desk' }],
     changefreq,
     priority,
+    indexable: !NOINDEX_TOOLS.has(path),
   });
 }
 

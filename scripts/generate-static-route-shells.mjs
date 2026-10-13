@@ -457,7 +457,12 @@ async function main() {
     .slice(0, 8);
 
   const groups = [
-    { label: 'indexable content routes', routes: ROUTE_METADATA, directive: INDEX_DIRECTIVE },
+    { label: 'indexable content routes', routes: INDEXABLE_ROUTES, directive: INDEX_DIRECTIVE },
+    {
+      label: 'demoted tools (noindex, follow)',
+      routes: ROUTE_METADATA.filter((r) => r.indexable === false),
+      directive: NOINDEX_DIRECTIVE,
+    },
     { label: 'author profile routes', routes: buildAuthorRoutes(), directive: INDEX_DIRECTIVE },
     {
       label: 'private / non-indexable routes',
