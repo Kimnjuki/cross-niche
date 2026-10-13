@@ -200,9 +200,6 @@ export function SEOHead({
     upsertMeta('name', 'author',        author || SITE_NAME);
     upsertMeta('name', 'language',      'en');
     upsertMeta('name', 'copyright',     SITE_NAME);
-    upsertMeta('name', 'distribution',  'global');
-    upsertMeta('name', 'rating',        'general');
-    upsertMeta('name', 'revisit-after', '1 days');
 
     // ── Robots ─────────────────────────────────────────────────────────
     const robotsValue = noindex

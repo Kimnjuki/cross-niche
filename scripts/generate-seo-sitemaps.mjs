@@ -17,7 +17,7 @@
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import { loadPublishedContent, priorityFor, canonicalUrlFor, fetchGuidesAndTopics } from './lib/content-source.mjs';
+import { loadPublishedContent, canonicalUrlFor, fetchGuidesAndTopics } from './lib/content-source.mjs';
 import { authorProfiles } from './lib/author-source.mjs';
 import {
   ROUTE_METADATA,
@@ -60,17 +60,12 @@ function escapeXml(str) {
     .replace(/'/g, amp + 'apos;');
 }
 
-function urlEntry(loc, lastmod, changefreq, priority, image = '') {
+function urlEntry(loc, lastmod, image = '') {
   // P1-T2: actually USE the declared image namespace for entries that have one.
   const imageXml = image
     ? `\n    <image:image>\n      <image:loc>${escapeXml(image)}</image:loc>\n    </image:image>`
     : '';
-  return `  <url>
-    <loc>${escapeXml(loc)}</loc>
-    <lastmod>${lastmod}</lastmod>
-    <changefreq>${changefreq}</changefreq>
-    <priority>${priority}</priority>${imageXml}
-  </url>`;
+  return `  <url>\n    <loc>${escapeXml(loc)}</loc>${lastmod ? `\n    <lastmod>${lastmod}</lastmod>` : ''}${imageXml}\n  </url>`;
 }
 
 // ── Static pages: DERIVED from ROUTE_METADATA (single source of truth) ─────
@@ -83,18 +78,14 @@ function urlEntry(loc, lastmod, changefreq, priority, image = '') {
 function getStaticPages() {
   const pages = INDEXABLE_ROUTES.map((route) => ({
     loc: route.path === '/' ? `${BASE_URL}/` : `${BASE_URL}${route.path}`,
-    lastmod: TODAY,
-    changefreq: route.changefreq,
-    priority: route.priority,
+    lastmod: '',
   }));
   // Author profiles (excluding the editorial-team aggregate page).
   for (const [slug] of Object.entries(authorProfiles)) {
     if (slug === 'the-grid-nexus-editorial-team') continue;
     pages.push({
       loc: `${BASE_URL}/author/${slug}`,
-      lastmod: TODAY,
-      changefreq: 'monthly',
-      priority: 0.6,
+      lastmod: '',
     });
   }
   return pages;
@@ -127,7 +118,7 @@ function generateMainSitemap() {
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
         xmlns:xhtml="http://www.w3.org/1999/xhtml"
         xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
-${urls.map((u) => urlEntry(u.loc, u.lastmod, u.changefreq, u.priority)).join('\n')}
+${urls.map((u) => urlEntry(u.loc, u.lastmod)).join('\n')}
 </urlset>`;
   return xml;
 }
@@ -142,8 +133,6 @@ function generateArticlesSitemap(articles) {
       // NOT a shared build timestamp — Google uses lastmod as a freshness
       // and recrawl signal, so uniform values defeat its purpose.
       lastmod: a.lastModified || a.publishedAt || TODAY,
-      changefreq: 'weekly',
-      priority: a.priority,
       image: a.featuredImageUrl || '',
     }));
 
@@ -151,7 +140,7 @@ function generateArticlesSitemap(articles) {
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
         xmlns:xhtml="http://www.w3.org/1999/xhtml"
         xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
-${articleUrls.map((u) => urlEntry(u.loc, u.lastmod, u.changefreq, u.priority, u.image)).join('\n')}
+${articleUrls.map((u) => urlEntry(u.loc, u.lastmod, u.image)).join('\n')}
 </urlset>`;
   return xml;
 }
@@ -276,7 +265,6 @@ async function main() {
       publishedAt: item.publishedAt || TODAY,
       lastModified: item.lastModified || item.publishedAt || TODAY,
       niche: item.contentType ?? 'tech',
-      priority: priorityFor(item),
       featuredImageUrl: item.featuredImageUrl || '',
     });
   }

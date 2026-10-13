@@ -114,6 +114,14 @@ function buildDescription(article) {
   ].map((c) => (typeof c === 'string' ? repairMojibake(c) : c));
   const chosen = candidates.find((c) => typeof c === 'string' && c.trim().length >= 50);
   const fallback = candidates.find((c) => typeof c === 'string' && c.trim().length > 0);
+  // T4 fix: serve the editorial seoDescription verbatim. Programmatic truncation
+  // here was cutting mid-sentence (e.g. '...account takeover with'), which reads as
+  // broken. Google truncates over-long descriptions cleanly with '…' in the SERP.
+  // Only the summary/body fallback is truncated (as a safety net).
+  // NOTE: content-source maps seoDescription -> article.description (the field is
+  // renamed in fromConvexDoc), so we read `article.description` here.
+  const description = typeof article.description === 'string' ? repairMojibake(article.description) : '';
+  if (description.trim().length >= 50) return description;
   return truncateAtWord(chosen || fallback || fallbackDescription(article), DESCRIPTION_MAX);
 }
 
@@ -463,7 +471,10 @@ function generateArticleHtml(article, bundleScript, allArticles = [], relatedLis
   const canonical = canonicalUrlFor(article);
   const nicheLabel = niche === 'tech' ? 'Technology' : niche === 'security' ? 'Cybersecurity' : 'Gaming';
   const nicheUrl = `/${niche}`;
-  const imageUrl = article.featuredImageUrl || `${BASE_URL}/og-image.jpg`;
+  const rawImage = article.featuredImageUrl || '/og-image.jpg';
+  const imageUrl = rawImage.startsWith('http')
+    ? rawImage
+    : `${BASE_URL}${rawImage.startsWith('/') ? rawImage : `/${rawImage}`}`;
   const dateStr = article.publishedAt
     ? new Date(article.publishedAt).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })
     : '';
@@ -489,6 +500,9 @@ function generateArticleHtml(article, bundleScript, allArticles = [], relatedLis
   const modifiedStr = article.lastModified
     ? new Date(article.lastModified).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })
     : '';
+  const publishedIso = article.publishedAt ? new Date(article.publishedAt).toISOString() : '';
+  const modifiedIso = article.lastModified ? new Date(article.lastModified).toISOString() : '';
+  const authorName = article.author || 'The Grid Nexus Editorial Team';
 
   return `<!doctype html>
 <html lang="en" dir="ltr">
@@ -507,6 +521,11 @@ function generateArticleHtml(article, bundleScript, allArticles = [], relatedLis
     <meta property="og:title" content="${escapeAttr(pageTitle)}" />
     <meta property="og:description" content="${escapeAttr(metaDescription)}" />
     <meta property="og:image" content="${imageUrl}" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="article:published_time" content="${publishedIso}" />
+    <meta property="article:modified_time" content="${modifiedIso}" />
+    <meta property="article:author" content="${escapeAttr(authorName)}" />
     <meta property="og:site_name" content="${SITE_NAME}" />
     <meta property="og:locale" content="en_US" />
     <meta name="twitter:card" content="summary_large_image" />

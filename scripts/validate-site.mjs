@@ -151,9 +151,12 @@ if (sitemap) {
   check('Contains /tech', sitemap.includes('thegridnexus.com/tech</loc>'));
   check('Contains /security', sitemap.includes('thegridnexus.com/security</loc>'));
   check('Contains /gaming', sitemap.includes('thegridnexus.com/gaming</loc>'));
-  check('Contains lastmod dates', sitemap.includes('<lastmod>'));
-  check('Contains changefreq', sitemap.includes('<changefreq>'));
-  check('Contains priority', sitemap.includes('<priority>'));
+  // T2 (2026-10): static pages carry no lastmod (a build date would be fake
+  // freshness); changefreq/priority are dropped (Google ignores both). Real
+  // per-article lastmod lives on sitemap-articles.xml, validated below.
+  check('Omits fake build-date lastmod on static pages', !sitemap.includes('<lastmod>'));
+  check('Omits changefreq (Google ignores it)', !sitemap.includes('<changefreq>'));
+  check('Omits priority (Google ignores it)', !sitemap.includes('<priority>'));
 }
 
 const newsSitemap = newsSitemapRaw;
