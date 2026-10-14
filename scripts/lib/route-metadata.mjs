@@ -46,11 +46,11 @@ export const BASE_URL = 'https://thegridnexus.com';
 
 /** Hub links reused by many routes so internal linking is never route-local. */
 const CORE_HUBS = [
-  { href: '/tech', label: 'Technology' },
-  { href: '/security', label: 'Cybersecurity' },
-  { href: '/gaming', label: 'Gaming' },
-  { href: '/ai-pulse', label: 'AI Pulse' },
-  { href: '/tools', label: 'Free tools' },
+  { href: '/gaming', label: 'Gaming Security' },
+  { href: '/games', label: 'Security Grades' },
+  { href: '/threats', label: 'Gamer Threat Report' },
+  { href: '/tools/gaming-security-checkup', label: 'Security Checkup' },
+  { href: '/guides', label: 'Guides' },
 ];
 
 /** @type {RouteMeta[]} */
@@ -58,12 +58,19 @@ export const ROUTE_METADATA = [
   // ── Homepage ─────────────────────────────────────────────────────────────
   {
     path: '/',
-    title: 'Tech, Security & Gaming Intelligence | The Grid Nexus',
+    title: 'Gaming Security for Players | The Grid Nexus',
     description:
-      'Independent intelligence on technology, cybersecurity and gaming: zero-day analysis, AI developments, hardware reviews and practical security guides.',
-    h1: 'Technology, security and gaming intelligence, in one place',
+      'Per-game security grades, a weekly gamer threat report, account-recovery guides and free tools to protect Steam, console and mobile accounts.',
+    h1: 'Gaming security for players — protect your accounts, games and devices',
     intro:
-      'The Grid Nexus reports across three desks — technology, cybersecurity and gaming — with primary sources cited and dates kept honest. Start with a desk below, or open the free security tools if you need an answer in the next five minutes.',
+      'The Grid Nexus is the plain-language place where players check “is this safe, and what do I do right now?” — per-game security grades, a weekly gamer threat report, account-recovery guides and free tools. Start with the security checkup or browse the grades.',
+    links: [
+      { href: '/games', label: 'Security grades' },
+      { href: '/threats', label: 'Gamer threat report' },
+      { href: '/tools/gaming-security-checkup', label: 'Security checkup' },
+      { href: '/gaming/security-guides', label: 'Gaming security guides' },
+      { href: '/research/state-of-gaming-security-2026', label: 'State of Gaming Security 2026' },
+    ],
     links: CORE_HUBS,
     changefreq: 'daily',
     priority: 1.0,
@@ -89,12 +96,12 @@ export const ROUTE_METADATA = [
   },
   {
     path: '/security',
-    title: 'Cybersecurity News & Threat Intelligence | The Grid Nexus',
+    title: 'Gamer Threat Intelligence | The Grid Nexus',
     description:
-      'Zero-day CVEs, breach post-mortems, ransomware and threat actor intelligence, explained in plain language by the security desk at The Grid Nexus.',
-    h1: 'Cybersecurity and threat intelligence',
+      'The threats that affect players: exploited CVEs in Windows, Chrome, GPU drivers and game platforms, triaged by gamer impact with plain-language fixes.',
+    h1: 'Gamer threat intelligence',
     intro:
-      'From exploited zero-days to supply-chain compromises, we track what actually happened, who is affected and what defenders should do next. Advisories are dated, scored by real-world exploitability and linked to the vendor notice.',
+      'Which actively-exploited vulnerabilities affect players, and what to do about them — triaged by gamer impact instead of raw CVSS score. See the weekly report, the live dashboard, and the account-recovery guides that stop the most common takeovers.',
     links: [
       { href: '/pillar/zero-trust-architecture', label: 'Zero trust architecture' },
       { href: '/pillar/ai-threat-intelligence', label: 'AI threat intelligence' },
@@ -106,12 +113,12 @@ export const ROUTE_METADATA = [
   },
   {
     path: '/gaming',
-    title: 'Gaming News, Reviews & Release Dates | The Grid Nexus',
+    title: 'Gaming Security: Grades, Threats & Guides | The Grid Nexus',
     description:
-      'Gaming news, reviews and release dates for PS5, PC, Xbox and Switch, plus esports, hardware and account security guides from The Grid Nexus.',
-    h1: 'Gaming news, reviews and releases',
+      'Per-game security grades, the weekly gamer threat report, account-recovery and 2FA guides, and free tools for Steam, PlayStation, Xbox, Switch and mobile.',
+    h1: 'Gaming security for players',
     intro:
-      'Reviews you can trust, release dates you can plan around, and the account-security advice that keeps your library yours. Console, PC and handheld coverage from a team that plays what it reviews before scoring it.',
+      'Everything that threatens a games library — account takeover, cheat malware, phishing, SIM swap and console hijacking — with per-game grades, a weekly threat report and step-by-step guides. Start with the checkup, then harden platform by platform.',
     links: [
       { href: '/gaming/security-guides', label: 'Gaming security guides' },
       { href: '/pillar/gaming-security', label: 'Gaming security hub' },
@@ -919,6 +926,27 @@ export const NON_INDEXABLE_ROUTES = [
 // are hand-written for CTR and are enforced by scripts/route-shells.test.mjs.
 for (const route of ROUTE_METADATA) {
   route.description = fitDescription(route.description);
+}
+
+/**
+ * Off-niche / low-value routes demoted out of the index under the
+ * "gaming security for players" positioning (growth-audit stop_doing list):
+ * generic startup funding, AI news, cross-desk and listing pages dilute
+ * topical authority and compete on unwinnable head terms. Still rendered,
+ * just emitted `noindex, follow` and excluded from every sitemap.
+ */
+const DEMOTE_PATHS = new Set([
+  '/startups',
+  '/ai-pulse',
+  '/nexus-intersection',
+  '/comparisons',
+  '/topics',
+  '/explore',
+  '/news',
+  '/live-updates',
+]);
+for (const route of ROUTE_METADATA) {
+  if (DEMOTE_PATHS.has(route.path)) route.indexable = false;
 }
 
 /** Every route that must be emitted with `index, follow`. */
