@@ -67,22 +67,21 @@ function NotificationsDropdown() {
 
 /** Primary navigation — reconciles live IA with spec's pillar model. */
 const navLinks = [
-  { href: '/tech', label: 'Tech', color: 'text-cyan' },
-  { href: '/security', label: 'Security', color: 'text-violet' },
-  { href: '/gaming', label: 'Gaming', color: 'text-amber' },
-  { href: '/ai-pulse', label: 'AI Pulse', color: 'text-primary' },
+  { href: '/gaming', label: 'Gaming Security', color: 'text-amber' },
+  { href: '/games', label: 'Security Grades', color: 'text-cyan' },
+  { href: '/threats', label: 'Threat Report', color: 'text-violet' },
+  { href: '/tools/gaming-security-checkup', label: 'Checkup', color: 'text-primary' },
   { href: '/tools', label: 'Tools', color: 'text-primary' },
   { href: '/guides', label: 'Guides', color: 'text-primary' },
-  { href: '/explore', label: 'Explore', color: 'text-primary' },
 ];
 
-/** Primary CTAs for mobile: Tech, Security, Gaming, AI Pulse, Tools per spec. */
+/** Primary CTAs for mobile: gaming-security-first. */
 const mobilePrimaryLinks = [
-  { href: '/tech', label: 'Tech', color: 'text-cyan' },
-  { href: '/security', label: 'Security', color: 'text-violet' },
-  { href: '/gaming', label: 'Gaming', color: 'text-amber' },
-  { href: '/ai-pulse', label: 'AI Pulse', color: 'text-primary' },
-  { href: '/tools', label: 'Tools', color: 'text-primary' },
+  { href: '/gaming', label: 'Gaming Security', color: 'text-amber' },
+  { href: '/games', label: 'Grades', color: 'text-cyan' },
+  { href: '/threats', label: 'Threat Report', color: 'text-violet' },
+  { href: '/tools/gaming-security-checkup', label: 'Checkup', color: 'text-primary' },
+  { href: '/guides', label: 'Guides', color: 'text-primary' },
 ];
 
 const roleFilters = [
@@ -127,7 +126,7 @@ export function Navbar() {
           <div className="flex items-center justify-between h-16">
             <div className="w-8 h-8 rounded-lg bg-muted animate-pulse"></div>
             <div className="hidden md:flex items-center gap-8">
-              {['Tech','Security','Gaming','AI Pulse','Tools','Guides','Explore'].map((_, i) => (
+              {['Gaming Security','Grades','Threat Report','Checkup','Tools','Guides'].map((_, i) => (
                 <div key={i} className="h-6 w-16 bg-muted rounded animate-pulse"></div>
               ))}
             </div>
@@ -165,7 +164,7 @@ export function Navbar() {
               <span className="font-display font-bold text-xl text-foreground">The Grid Nexus</span>
             </Link>
 
-            {/* Desktop Navigation per spec: Tech, Security, Gaming, AI Pulse, Tools, Guides, Explore */}
+            {/* Desktop Navigation: gaming-security-first */}
             <div className="hidden md:flex items-center gap-6">
               {navLinks.map((link) => (
                 <Link

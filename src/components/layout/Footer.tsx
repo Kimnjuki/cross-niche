@@ -37,7 +37,13 @@ export function Footer() {
                 Cybersecurity & Threats
               </Link>
               <Link to="/gaming" className="text-muted-foreground hover:text-gaming transition-colors">
-                Gaming & Esports
+                Gaming Security
+              </Link>
+              <Link to="/games" className="text-muted-foreground hover:text-foreground transition-colors">
+                Security Grades
+              </Link>
+              <Link to="/threats" className="text-muted-foreground hover:text-foreground transition-colors">
+                Gamer Threat Report
               </Link>
               <Link to="/news" className="text-muted-foreground hover:text-foreground transition-colors">
                 Breaking News
