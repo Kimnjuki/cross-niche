@@ -216,8 +216,8 @@ const App = () => (
                     <Route path="/search" element={<AdvancedSearch />} />
                     <Route path="/live-updates" element={<LiveUpdatesFeed />} />
                      <Route path="/ai-pulse" element={<AIPulse />} />
-                     <Route path="/signin" element={<SignInSignUp />} />
-                     <Route path="/signup" element={<SignInSignUp />} />
+                     <Route path="/signin/*" element={<SignInSignUp />} />
+                     <Route path="/signup/*" element={<SignInSignUp />} />
                       <Route path="/newsletter/verify" element={<NewsletterVerify />} />
                       <Route path="/newsletter" element={<Newsletter />} />
                       {/* Company / legal pages */}
