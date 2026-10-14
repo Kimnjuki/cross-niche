@@ -1,4 +1,4 @@
-import { query } from "./_generated/server";
+import { query, mutation } from "./_generated/server";
 import type { QueryCtx, MutationCtx } from "./_generated/server";
 
 /**
@@ -75,5 +75,53 @@ export const whoami = query({
       email: identity.email,
       boundToUser: user ? { userId: user.userId } : null,
     };
+  },
+});
+
+/**
+ * Provisions (or looks up) the local users row for the signed-in identity.
+ * Idempotent — call it once after sign-in. Returns the Convex users._id.
+ * The real identity binding lives in authIdentities; supabaseUserId is only
+ * populated because the legacy users table still requires it.
+ */
+export const ensureUser = mutation({
+  handler: async (ctx): Promise<{ userId: string; created: boolean }> => {
+    const identity = await ctx.auth.getUserIdentity();
+    if (!identity) throw new Error("Authentication required.");
+
+    const existing = await ctx.db
+      .query("authIdentities")
+      .withIndex("by_issuer_subject", (q) =>
+        q.eq("issuer", identity.issuer).eq("subject", identity.subject)
+      )
+      .first();
+    if (existing) {
+      return { userId: existing.userId, created: false };
+    }
+
+    const email = identity.email ?? "";
+    const baseName =
+      identity.nickname ??
+      identity.preferredUsername ??
+      (email ? email.split("@")[0] : `player_${identity.subject.slice(-6)}`);
+
+    const userId = await ctx.db.insert("users", {
+      supabaseUserId: identity.subject,
+      username: baseName,
+      email,
+      role: "reader",
+      createdAt: Date.now(),
+      lastLoginAt: Date.now(),
+      isActive: true,
+    });
+
+    await ctx.db.insert("authIdentities", {
+      userId,
+      issuer: identity.issuer,
+      subject: identity.subject,
+      createdAt: Date.now(),
+    });
+
+    return { userId, created: true };
   },
 });
