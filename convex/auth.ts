@@ -1,5 +1,6 @@
 import { query, mutation } from "./_generated/server";
 import type { QueryCtx, MutationCtx } from "./_generated/server";
+import type { Id } from "./_generated/dataModel";
 
 /**
  * Server-side identity resolution (T02 foundation).
@@ -12,7 +13,7 @@ import type { QueryCtx, MutationCtx } from "./_generated/server";
 
 export interface AuthedUser {
   /** Convex users._id */
-  userId: string;
+  userId: Id<"users">;
   /** Clerk subject (user id) */
   identitySubject: string;
   /** JWT issuer, e.g. https://innocent-mammoth-9790.clerk.accounts.dev */
@@ -85,7 +86,7 @@ export const whoami = query({
  * populated because the legacy users table still requires it.
  */
 export const ensureUser = mutation({
-  handler: async (ctx): Promise<{ userId: string; created: boolean }> => {
+  handler: async (ctx): Promise<{ userId: Id<"users">; created: boolean }> => {
     const identity = await ctx.auth.getUserIdentity();
     if (!identity) throw new Error("Authentication required.");
 

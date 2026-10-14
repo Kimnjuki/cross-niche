@@ -282,6 +282,7 @@ export default defineSchema({
   comments: defineTable({
     contentId: v.id("content"),
     userId: v.string(), // Supabase auth user id (or Convex users._id)
+    ownerUserId: v.optional(v.id("users")), // verified identity owner
     parentCommentId: v.optional(v.id("comments")),
     body: v.string(),
     isFlagged: v.optional(v.boolean()),
@@ -302,6 +303,7 @@ export default defineSchema({
   // ─── User bookmarks (content ids) ───────────────────────────────────────
   userBookmarks: defineTable({
     userId: v.string(), // Supabase auth user id
+    ownerUserId: v.optional(v.id("users")), // verified identity owner
     contentId: v.id("content"),
   })
     .index("by_user", ["userId"])
@@ -481,7 +483,8 @@ export default defineSchema({
 
   // ─── User Preferences ──────────────────────────────────────────────────
   userPreferences: defineTable({
-    userId: v.string(),
+    userId: v.string(), // legacy client-supplied key
+    ownerUserId: v.optional(v.id("users")), // verified identity owner
     theme: v.optional(v.union(v.literal("light"), v.literal("dark"), v.literal("system"))),
     emailNotifications: v.optional(v.boolean()),
     pushNotifications: v.optional(v.boolean()),
@@ -489,7 +492,8 @@ export default defineSchema({
     preferredTopics: v.optional(v.array(v.string())), // Array of topic IDs
     savedSearches: v.optional(v.array(v.string())), // Array of search queries
   })
-    .index("by_user", ["userId"]),
+    .index("by_user", ["userId"])
+    .index("by_owner", ["ownerUserId"]),
 
   // ─── Threat Intelligence (external feeds) ───────────────────────────────
   // Ingested from sources like CISA KEV. Used by Live Threat Dashboard.
@@ -530,6 +534,7 @@ export default defineSchema({
   // ─── Threat alert subscriptions & notifications ─────────────────────────
   threatSubscriptions: defineTable({
     userId: v.string(),
+    ownerUserId: v.optional(v.id("users")), // verified identity owner
     type: v.union(v.literal("cve"), v.literal("tag")),
     value: v.string(),
     createdAt: v.number(),
@@ -1041,6 +1046,7 @@ export default defineSchema({
   gamingSecurityScores: defineTable({
     sessionId: v.string(),
     userId: v.optional(v.string()),
+    ownerUserId: v.optional(v.id("users")), // verified identity owner
     answers: v.array(v.object({
       questionId: v.number(),
       answer: v.union(v.literal("yes"), v.literal("partial"), v.literal("no")),
@@ -1327,6 +1333,7 @@ export default defineSchema({
   // ─── Nexus Security Profile & Risk Graph ────────────────────────────────
   userRiskProfiles: defineTable({
     userId: v.string(),
+    ownerUserId: v.optional(v.id("users")), // verified identity owner
     overallRiskScore: v.float64(),
     riskBand: v.union(
       v.literal("low"),
@@ -1789,6 +1796,7 @@ export default defineSchema({
   // ─── News Bookmarks — server-side bookmark persistence for Tool 04 ────────
   newsBookmarks: defineTable({
     userId: v.string(),
+    ownerUserId: v.optional(v.id("users")), // verified identity owner
     articleId: v.string(),
     source: v.optional(v.string()),
     bookmarkedAt: v.float64(),
@@ -1838,6 +1846,7 @@ export default defineSchema({
   copilotSessions: defineTable({
     sessionId: v.string(),
     userId: v.optional(v.string()),
+    ownerUserId: v.optional(v.id("users")), // verified identity owner
     messages: v.array(
       v.object({
         role: v.union(v.literal("user"), v.literal("assistant")),
