@@ -16,6 +16,7 @@
     "indexnow": "node scripts/indexnow-submit.mjs",
     "test:seo": "node --test scripts/route-shells.test.mjs scripts/robots.test.mjs scripts/homepage-metadata.test.mjs",
     "test:checkup": "tsx --test src/lib/checkup/evaluator.test.ts",
+    "test:triage": "tsx --test src/lib/triage/domainTriage.test.ts",
     "lint": "eslint .",
     "type-check": "tsc -p tsconfig.app.json --noEmit && tsc -p tsconfig.node.json --noEmit",
     "preview": "vite preview",
