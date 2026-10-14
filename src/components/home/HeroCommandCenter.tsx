@@ -1,29 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Zap, Shield, Activity, Users, Globe } from 'lucide-react';
-
-interface StatusBadgeProps {
-  label: string;
-  value: string;
-  color: 'cyan' | 'green' | 'amber' | 'red';
-}
-
-function StatusBadge({ label, value, color }: StatusBadgeProps) {
-  const colorMap = {
-    cyan:  { dot: 'bg-[#00F0FF]', text: 'text-[#00F0FF]', bg: 'bg-[rgba(0,240,255,0.08)]', border: 'border-[rgba(0,240,255,0.2)]' },
-    green: { dot: 'bg-[#39FF14]', text: 'text-[#39FF14]', bg: 'bg-[rgba(57,255,20,0.08)]',  border: 'border-[rgba(57,255,20,0.2)]'  },
-    amber: { dot: 'bg-[#FFB800]', text: 'text-[#FFB800]', bg: 'bg-[rgba(255,184,0,0.08)]', border: 'border-[rgba(255,184,0,0.2)]'  },
-    red:   { dot: 'bg-[#EF4444]', text: 'text-[#EF4444]', bg: 'bg-[rgba(239,68,68,0.08)]', border: 'border-[rgba(239,68,68,0.2)]'  },
-  };
-  const c = colorMap[color];
-  return (
-    <div className={`flex items-center gap-2 px-3 py-1.5 rounded-none border ${c.bg} ${c.border}`}>
-      <span className={`w-1.5 h-1.5 rounded-full ${c.dot} animate-pulse`} />
-      <span className="font-mono text-[10px] uppercase tracking-widest text-zinc-400">{label}</span>
-      <span className={`font-mono text-[10px] font-bold uppercase ${c.text}`}>{value}</span>
-    </div>
-  );
-}
+import { Zap, Shield, Users, Globe, Gamepad2 } from 'lucide-react';
 
 export function HeroCommandCenter() {
   return (
@@ -34,43 +11,43 @@ export function HeroCommandCenter() {
           {/* LEFT: positioning block */}
           <div className="space-y-6">
             <span className="font-mono text-xs tracking-widest text-[#00F0FF] uppercase">
-              Security Command Center
+              Gaming Security for Players
             </span>
 
             <h1 className="font-display font-extrabold text-4xl md:text-5xl leading-[1.1] tracking-tight text-white">
-              Daily intelligence for{' '}
+              Play safer.{' '}
               <span className="gradient-nexus-intelligence">
-                tech, security &amp; gaming
+                Protect your accounts
               </span>{' '}
-              professionals.
+              and digital items.
             </h1>
 
             <p className="text-zinc-400 text-lg leading-relaxed max-w-xl">
-              Track live threats, simulate breaches, and stay ahead with expert coverage —
-              all from one command center.
+              Check your protection, understand the threats that actually target players, and find
+              verified recovery steps for Steam, Discord, PlayStation, Xbox, Epic and Riot.
             </p>
 
             <div className="flex flex-wrap gap-3">
               <Link
-                to="/security"
+                to="/tools/gaming-security-checkup"
                 className="inline-flex items-center gap-2 bg-[#00F0FF] hover:bg-[#00D4E6] text-black font-semibold px-6 py-3 transition-all"
               >
                 <Zap className="h-4 w-4" />
-                View Latest Intel
+                Check my protection
               </Link>
               <Link
-                to="/tools"
+                to="/threats"
                 className="inline-flex items-center gap-2 border border-[#3F3F46] hover:border-[#00F0FF] text-zinc-300 hover:text-[#00F0FF] px-6 py-3 transition-all"
               >
                 <Shield className="h-4 w-4" />
-                Explore Security Tools
+                Gamer Threat Report
               </Link>
             </div>
 
             <div className="flex flex-wrap gap-6 pt-2">
               {[
-                { icon: Activity, label: 'Live threat monitoring' },
-                { icon: Users,    label: 'Built for security pros' },
+                { icon: Gamepad2, label: 'Documented security grades' },
+                { icon: Users,    label: 'Built for players' },
                 { icon: Globe,    label: 'Africa-first perspective' },
               ].map(({ icon: Icon, label }) => (
                 <div key={label} className="flex items-center gap-2 text-zinc-500 text-sm">
@@ -81,53 +58,34 @@ export function HeroCommandCenter() {
             </div>
           </div>
 
-          {/* RIGHT: status dashboard */}
+          {/* RIGHT: real data links — no unverifiable live counters */}
           <div className="bg-[#16161A] border border-[#27272A] p-6 space-y-5">
-            <div className="flex items-center justify-between mb-4">
-              <span className="font-mono text-[10px] tracking-widest text-zinc-600 uppercase">
-                System Status
-              </span>
-              <span className="font-mono text-[10px] tracking-widest text-zinc-600 uppercase border border-[#27272A] px-2 py-0.5">
-                NEXUS COMMAND v2.0
-              </span>
-            </div>
+            <span className="font-mono text-[10px] tracking-widest text-zinc-600 uppercase">
+              What&apos;s here
+            </span>
 
-            <div className="space-y-2">
-              <StatusBadge label="Security Status" value="Active"    color="green" />
-              <StatusBadge label="Threat Level"    value="Elevated"  color="amber" />
-              <StatusBadge label="System Health"   value="Online"    color="cyan"  />
-            </div>
-
-            <div className="pt-4 border-t border-[#27272A] space-y-3">
-              <div className="flex justify-between items-center text-xs font-mono">
-                <span className="text-zinc-500">RSS Sources</span>
-                <span className="text-[#00F0FF]">Active</span>
-              </div>
-              <div className="flex justify-between items-center text-xs font-mono">
-                <span className="text-zinc-500">Threat Feed</span>
-                <span className="text-[#39FF14]">Live</span>
-              </div>
-              <div className="flex justify-between items-center text-xs font-mono">
-                <span className="text-zinc-500">AI Analysis</span>
-                <span className="text-[#B026FF]">Running</span>
-              </div>
-              <div className="flex justify-between items-center text-xs font-mono">
-                <span className="text-zinc-500">Last Sync</span>
-                <span className="text-zinc-400">Just now</span>
-              </div>
-            </div>
-
-            <div className="grid grid-cols-3 gap-2 pt-4 border-t border-[#27272A]">
-              {[
-                { label: 'Articles', value: '2.4K+' },
-                { label: 'Alerts',   value: '847'   },
-                { label: 'Sources',  value: '120+'  },
-              ].map(({ label, value }) => (
-                <div key={label} className="text-center">
-                  <div className="font-mono font-bold text-lg text-white">{value}</div>
-                  <div className="font-mono text-[10px] text-zinc-600 uppercase tracking-wider">{label}</div>
+            <div className="space-y-3">
+              <Link to="/games" className="block border border-[#27272A] p-4 hover:border-[#00F0FF] transition-colors">
+                <div className="flex justify-between items-center">
+                  <span className="text-zinc-200 text-sm font-medium">Security grades</span>
+                  <span className="font-mono text-[#39FF14] text-sm">14 games &amp; platforms</span>
                 </div>
-              ))}
+                <p className="text-zinc-500 text-xs mt-1">Document-based guidance on account controls and breach history.</p>
+              </Link>
+              <Link to="/threats" className="block border border-[#27272A] p-4 hover:border-[#00F0FF] transition-colors">
+                <div className="flex justify-between items-center">
+                  <span className="text-zinc-200 text-sm font-medium">Gamer threat report</span>
+                  <span className="font-mono text-[#39FF14] text-sm">1,741 CVEs triaged</span>
+                </div>
+                <p className="text-zinc-500 text-xs mt-1">Actively-exploited vulnerabilities mapped to what matters for players.</p>
+              </Link>
+              <Link to="/tools/gaming-security-checkup" className="block border border-[#27272A] p-4 hover:border-[#00F0FF] transition-colors">
+                <div className="flex justify-between items-center">
+                  <span className="text-zinc-200 text-sm font-medium">Protection checkup</span>
+                  <span className="font-mono text-[#39FF14] text-sm">3 min</span>
+                </div>
+                <p className="text-zinc-500 text-xs mt-1">Self-reported checklist — three prioritized actions.</p>
+              </Link>
             </div>
           </div>
         </div>
