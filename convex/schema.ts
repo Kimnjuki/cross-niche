@@ -117,6 +117,50 @@ export default defineSchema({
     .index("by_issuer_subject", ["issuer", "subject"])
     .index("by_user", ["userId"]),
 
+  // ─── Security entities (canonical target for platforms/games) ────────────
+  // Blueprint P0. One row per platform/game/publisher/tool; capabilities,
+  // advisories, playbooks and official links all reference an entity.
+  securityEntities: defineTable({
+    kind: v.union(v.literal("platform"), v.literal("game"), v.literal("publisher"), v.literal("tool")),
+    slug: v.string(),
+    name: v.string(),
+    gameId: v.optional(v.id("gameLibrary")),
+    status: v.union(v.literal("active"), v.literal("archived")),
+    createdAt: v.number(),
+    updatedAt: v.number(),
+  })
+    .index("by_slug", ["slug"])
+    .index("by_kind_status_name", ["kind", "status", "name"]),
+
+  // ─── Official links (strict allowlist, human-verified) ───────────────────
+  // Never invent a replacement support URL; stale/broken links degrade, not guess.
+  officialLinks: defineTable({
+    entityId: v.id("securityEntities"),
+    purpose: v.union(v.literal("login"), v.literal("recovery"), v.literal("security"), v.literal("status"), v.literal("appeal"), v.literal("privacy")),
+    url: v.string(),
+    locale: v.string(),
+    verifiedAt: v.number(),
+    verifiedBy: v.optional(v.id("users")),
+    state: v.union(v.literal("active"), v.literal("stale"), v.literal("broken")),
+  })
+    .index("by_entity_purpose_locale", ["entityId", "purpose", "locale"])
+    .index("by_state_verified", ["state", "verifiedAt"]),
+
+  // ─── Recovery playbooks (versioned, human-reviewed) ──────────────────────
+  // stepsJson is a validated, bounded JSON structure (schemaVersion + steps).
+  recoveryPlaybooks: defineTable({
+    entityId: v.id("securityEntities"),
+    scenario: v.string(),
+    version: v.string(),
+    locale: v.string(),
+    stepsJson: v.string(),
+    status: v.union(v.literal("draft"), v.literal("published"), v.literal("retired")),
+    reviewedAt: v.optional(v.number()),
+    reviewedBy: v.optional(v.id("users")),
+  })
+    .index("by_entity_scenario_locale", ["entityId", "scenario", "locale"])
+    .index("by_status_review", ["status", "reviewedAt"]),
+
   // ─── Content (core) ─────────────────────────────────────────────────────
   // For listPublished/listTrending: set publishedAt (ms) on published items so by_status_published_at ordering is correct.
   // News Agency Ingestion: externalId, source, isAutomated, originalUrl for NewsAPI/Reuters ingested content.
