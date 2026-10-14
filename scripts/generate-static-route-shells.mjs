@@ -412,7 +412,7 @@ function writeRoute(routePath, html) {
  */
 function buildAuthorRoutes() {
   return Object.entries(authorProfiles)
-    .filter(([slug]) => slug && slug !== 'the-grid-nexus-editorial-team')
+    .filter(([slug]) => slug)
     .map(([slug, profile]) => {
       const name = String(profile?.name ?? humanise(slug));
       const jobTitle = String(profile?.jobTitle ?? 'Contributor');
@@ -463,7 +463,11 @@ async function main() {
       routes: ROUTE_METADATA.filter((r) => r.indexable === false),
       directive: NOINDEX_DIRECTIVE,
     },
-    { label: 'author profile routes', routes: buildAuthorRoutes(), directive: INDEX_DIRECTIVE },
+    {
+      label: 'persona author pages (noindex, follow)',
+      routes: buildAuthorRoutes(),
+      directive: NOINDEX_DIRECTIVE,
+    },
     {
       label: 'private / non-indexable routes',
       routes: NON_INDEXABLE_ROUTES.map((routePath) => ({

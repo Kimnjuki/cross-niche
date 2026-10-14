@@ -80,14 +80,10 @@ function getStaticPages() {
     loc: route.path === '/' ? `${BASE_URL}/` : `${BASE_URL}${route.path}`,
     lastmod: '',
   }));
-  // Author profiles (excluding the editorial-team aggregate page).
-  for (const [slug] of Object.entries(authorProfiles)) {
-    if (slug === 'the-grid-nexus-editorial-team') continue;
-    pages.push({
-      loc: `${BASE_URL}/author/${slug}`,
-      lastmod: '',
-    });
-  }
+  // Q3 trust fix: no persona author pages are indexed. The 12 named profiles
+  // don't back any content (articles carry the "The Grid Nexus Editorial Team"
+  // byline), so they're excluded from the sitemap until their authors are
+  // verified as real, credentialed people. The /about page covers the team.
   return pages;
 }
 
