@@ -1,3 +1,4 @@
+import { query } from "./_generated/server";
 import type { QueryCtx, MutationCtx } from "./_generated/server";
 
 /**
@@ -54,3 +55,25 @@ export async function requireUser(
   if (!user) throw new Error("Authentication required.");
   return user;
 }
+
+/**
+ * Test probe: returns the verified identity (or null) for the caller.
+ * Used to confirm the Clerk JWT → ctx.auth → authIdentities chain end-to-end.
+ */
+export const whoami = query({
+  handler: async (ctx) => {
+    const identity = await ctx.auth.getUserIdentity();
+    if (!identity) {
+      return { authenticated: false, reason: "no identity token" };
+    }
+    const user = await getCurrentUser(ctx);
+    return {
+      authenticated: true,
+      subject: identity.subject,
+      issuer: identity.issuer,
+      name: identity.name,
+      email: identity.email,
+      boundToUser: user ? { userId: user.userId } : null,
+    };
+  },
+});
