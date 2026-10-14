@@ -1,0 +1,56 @@
+import type { QueryCtx, MutationCtx } from "./_generated/server";
+
+/**
+ * Server-side identity resolution (T02 foundation).
+ *
+ * The signed-in user is resolved from `ctx.auth` (the verified Clerk JWT),
+ * then bound to a `users` row via the `authIdentities` join table. Never
+ * trust a client-supplied userId/email — every owner-scoped function must
+ * resolve identity here and derive ownership from it.
+ */
+
+export interface AuthedUser {
+  /** Convex users._id */
+  userId: string;
+  /** Clerk subject (user id) */
+  identitySubject: string;
+  /** JWT issuer, e.g. https://innocent-mammoth-9790.clerk.accounts.dev */
+  issuer: string;
+  email?: string;
+  name?: string;
+}
+
+export async function getCurrentUser(
+  ctx: QueryCtx | MutationCtx
+): Promise<AuthedUser | null> {
+  const identity = await ctx.auth.getUserIdentity();
+  if (!identity) return null;
+
+  const binding = await ctx.db
+    .query("authIdentities")
+    .withIndex("by_issuer_subject", (q) =>
+      q.eq("issuer", identity.issuer).eq("subject", identity.subject)
+    )
+    .first();
+
+  if (!binding) return null;
+
+  const user = await ctx.db.get(binding.userId);
+  if (!user) return null;
+
+  return {
+    userId: binding.userId,
+    identitySubject: identity.subject,
+    issuer: identity.issuer,
+    email: identity.email ?? user.email,
+    name: identity.name ?? user.displayName ?? user.username,
+  };
+}
+
+export async function requireUser(
+  ctx: QueryCtx | MutationCtx
+): Promise<AuthedUser> {
+  const user = await getCurrentUser(ctx);
+  if (!user) throw new Error("Authentication required.");
+  return user;
+}

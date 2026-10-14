@@ -105,6 +105,18 @@ export default defineSchema({
     .index("by_lifecycle_stage", ["lifecycleStage"])
     .index("by_enterprise", ["enterpriseId"]),
 
+  // ─── Auth Identity Binding (T02 / blueprint C01) ─────────────────────────
+  // Binds a verified external JWT identity (issuer + subject) to a local user.
+  // Resolve the signed-in user via ctx.auth, never a client-supplied userId.
+  authIdentities: defineTable({
+    userId: v.id("users"),
+    issuer: v.string(),   // e.g. "https://innocent-mammoth-9790.clerk.accounts.dev"
+    subject: v.string(),  // Clerk user id
+    createdAt: v.number(),
+  })
+    .index("by_issuer_subject", ["issuer", "subject"])
+    .index("by_user", ["userId"]),
+
   // ─── Content (core) ─────────────────────────────────────────────────────
   // For listPublished/listTrending: set publishedAt (ms) on published items so by_status_published_at ordering is correct.
   // News Agency Ingestion: externalId, source, isAutomated, originalUrl for NewsAPI/Reuters ingested content.

@@ -61,17 +61,19 @@ if (!rootEl) {
 const app = (
   <ErrorBoundary>
     <ConvexErrorBoundary>
-      <SafeConvexProvider>
-        <HelmetProvider>
+      <HelmetProvider>
         {isClerkEnabled && clerkPublishableKey ? (
           <ClerkProvider publishableKey={clerkPublishableKey}>
-            <App />
+            <SafeConvexProvider>
+              <App />
+            </SafeConvexProvider>
           </ClerkProvider>
         ) : (
-          <App />
+          <SafeConvexProvider>
+            <App />
+          </SafeConvexProvider>
         )}
-        </HelmetProvider>
-      </SafeConvexProvider>
+      </HelmetProvider>
     </ConvexErrorBoundary>
   </ErrorBoundary>
 );

@@ -6,7 +6,7 @@
 // ─────────────────────────────────────────────────────────────────────────────
 
 export const CLERK_PUBLISHABLE_KEY =
-  "pk_test_c2V0dGxpbmctb3lzdGVyLTg2LmNsZXJrLmFjY291bnRzLmRldiQ";
+  "pk_test_aW5ub2NlbnQtbWFtbW90aC05NzkwLmNsZXJrLmFjY291bnRzLmRldiQ";
 
 export const clerkPublishableKey = CLERK_PUBLISHABLE_KEY;
 export const isClerkEnabled = true;

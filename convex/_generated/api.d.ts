@@ -22,6 +22,7 @@ import type * as admin_updateSEOBySlug from "../admin/updateSEOBySlug.js";
 import type * as aiAutomation from "../aiAutomation.js";
 import type * as aiUpdates from "../aiUpdates.js";
 import type * as articles from "../articles.js";
+import type * as auth from "../auth.js";
 import type * as backfillMetaTitle from "../backfillMetaTitle.js";
 import type * as backfillWordCount from "../backfillWordCount.js";
 import type * as bookmarks from "../bookmarks.js";
@@ -111,6 +112,7 @@ declare const fullApi: ApiFromModules<{
   aiAutomation: typeof aiAutomation;
   aiUpdates: typeof aiUpdates;
   articles: typeof articles;
+  auth: typeof auth;
   backfillMetaTitle: typeof backfillMetaTitle;
   backfillWordCount: typeof backfillWordCount;
   bookmarks: typeof bookmarks;

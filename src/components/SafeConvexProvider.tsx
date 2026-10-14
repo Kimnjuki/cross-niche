@@ -6,6 +6,9 @@
 
 import { useMemo, createContext, useContext, type ReactNode } from "react";
 import { ConvexProvider, ConvexReactClient } from "convex/react";
+import { ConvexProviderWithClerk } from "convex/react-clerk";
+import { useAuth } from "@clerk/clerk-react";
+import { isClerkEnabled } from "@/lib/clerkConfig";
 
 // Convex URL resolution: only connect when VITE_CONVEX_URL is explicitly set.
 // Not set in Dockerfile at build time — avoids stale deploy keys hanging queries.
@@ -68,9 +71,19 @@ export function SafeConvexProvider({ children }: SafeConvexProviderProps) {
   const forceFallback = useMemo(() => getConvexFallback(), []);
   const isConvexDisabled = disabled || forceFallback;
 
+  // When Clerk is enabled this component is rendered inside <ClerkProvider>,
+  // so useAuth() is available and the JWT is attached to every Convex request.
+  const provider = isClerkEnabled ? (
+    <ConvexProviderWithClerk client={client} useAuth={useAuth}>
+      {children}
+    </ConvexProviderWithClerk>
+  ) : (
+    <ConvexProvider client={client}>{children}</ConvexProvider>
+  );
+
   return (
     <ConvexDisabledContext.Provider value={isConvexDisabled}>
-      <ConvexProvider client={client}>{children}</ConvexProvider>
+      {provider}
     </ConvexDisabledContext.Provider>
   );
 }
