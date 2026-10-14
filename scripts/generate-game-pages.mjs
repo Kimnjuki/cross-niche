@@ -35,11 +35,11 @@ function esc(s) {
 
 function gradeMeta(grade) {
   const map = {
-    A: { label: 'A', color: '#22c55e', verdict: 'Strong protection' },
-    B: { label: 'B', color: '#a3e635', verdict: 'Good protection' },
-    C: { label: 'C', color: '#facc15', verdict: 'Needs attention' },
-    D: { label: 'D', color: '#fb923c', verdict: 'Weak protection' },
-    F: { label: 'F', color: '#f87171', verdict: 'High risk' },
+    A: { label: 'A', color: '#22c55e', verdict: 'Strong documented protections' },
+    B: { label: 'B', color: '#a3e635', verdict: 'Good documented protections' },
+    C: { label: 'C', color: '#facc15', verdict: 'Documented gaps to address' },
+    D: { label: 'D', color: '#fb923c', verdict: 'Documented weaknesses' },
+    F: { label: 'F', color: '#f87171', verdict: 'Documented high-risk pattern' },
   };
   return map[grade] || { label: grade, color: '#94a3b8', verdict: 'Unknown' };
 }
@@ -58,7 +58,8 @@ function videoGameJsonLd(game, url) {
     datePublished: game.releaseYear ? String(game.releaseYear) : undefined,
     additionalProperty: [
       { '@type': 'PropertyValue', name: 'Nexus Security Grade', value: meta.label },
-      { '@type': 'PropertyValue', name: 'Security verdict', value: meta.verdict },
+      { '@type': 'PropertyValue', name: 'Assessment basis', value: 'Documented security controls and breach history — not a safety certification' },
+      { '@type': 'PropertyValue', name: 'Methodology', value: `${BASE_URL}/methodology` },
     ],
   };
 }
@@ -91,7 +92,7 @@ function pageShell(title, description, canonical, body, jsonLd) {
     </header>
     ${body}
     <footer style="margin-top:3rem;padding-top:1rem;border-top:1px solid rgba(148,163,184,0.2);font-size:0.8rem;color:#64748b">
-      <p>Grades are initial assessments based on documented 2FA support and breach history — not lab tests. Sentiment metrics are not yet measured. See our <a href="/editorial" style="color:#60a5fa">editorial standards</a>.</p>
+      <p>Grades are document-based guidance, not a safety certification and not a live scan of any account. They are initial assessments of documented two-factor-authentication support and breach history. Sentiment is not measured. See our <a href="/methodology" style="color:#60a5fa">methodology</a>.</p>
     </footer>
   </body>
 </html>`;
@@ -113,12 +114,13 @@ function generateDetail(game) {
 
   const body = `
     <article>
-      <p style="color:#60a5fa;font-size:0.9rem;margin:0 0 0.5rem">Nexus Security Grade</p>
+      <p style="color:#60a5fa;font-size:0.9rem;margin:0 0 0.5rem">Nexus Security Grade — document-based guidance</p>
       <h1 style="font-size:2rem;margin:0 0 0.75rem">${esc(game.name)}</h1>
       <div style="display:flex;align-items:center;gap:1rem;margin-bottom:1.5rem">
         ${gradeBadge(game)}
         <span style="color:#94a3b8">${esc(meta.verdict)}</span>
       </div>
+      <p style="color:#94a3b8;font-size:0.85rem;margin-bottom:1rem">Not a safety certification or a live scan. Grade reflects documented security controls and breach history — see the <a href="/methodology" style="color:#60a5fa">methodology</a>.</p>
       <p style="font-size:1.1rem;color:#e2e8f0">${esc(game.securityNotes || '')}</p>
       <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:1rem;margin:1.5rem 0">
         <div style="background:rgba(148,163,184,0.08);padding:1rem;border-radius:0.5rem"><strong style="color:#60a5fa">Platforms</strong><br>${esc(platforms)}</div>
@@ -134,8 +136,8 @@ function generateDetail(game) {
 
 function generateIndex(games) {
   const url = `${BASE_URL}/games`;
-  const title = `Game Security Grades — Is Your Game Safe? | ${SITE_NAME}`;
-  const description = 'Nexus Security Grades for popular games and platforms: Steam, Discord, Fortnite, Minecraft, Roblox, Valorant and more. See which are safe and what to enable.';
+  const title = `Game Security Grades — Documented Protections | ${SITE_NAME}`;
+  const description = 'Nexus Security Grades for popular games and platforms: Steam, Discord, Fortnite, Minecraft, Roblox, Valorant and more. Document-based guidance on documented security controls and breach history — not a safety certification.';
 
   const rows = games
     .map((g) => {

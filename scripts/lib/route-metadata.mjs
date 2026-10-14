@@ -775,6 +775,22 @@ ROUTE_METADATA.push(
     priority: 0.4,
   },
   {
+    path: '/methodology',
+    title: 'Methodology: How We Grade & Verify | The Grid Nexus',
+    description:
+      'How The Grid Nexus produces security grades, checkup scores, threat advisories and scam verdicts — sources, confidence and what we do not claim.',
+    h1: 'Methodology and evidence standards',
+    intro:
+      'Every score, grade and verdict on The Grid Nexus is document-based guidance, not a safety certification and not a live scan of your device or account. This page explains exactly what each output means and how it is produced, reviewed and corrected.',
+    links: [
+      { href: '/games', label: 'Security grades' },
+      { href: '/threats', label: 'Gamer threat report' },
+      { href: '/editorial', label: 'Editorial policy' },
+    ],
+    changefreq: 'monthly',
+    priority: 0.4,
+  },
+  {
     path: '/media',
     title: 'Media Kit & Press Resources | The Grid Nexus',
     description:
