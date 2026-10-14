@@ -1,11 +1,16 @@
 /**
- * IOC reputation lookup — real threat-intel data.
+ * IOC reputation lookup — real threat-intel data (INTERNAL / NON-COMMERCIAL).
  *
  * Wires the IOC Lookup tool to the free GreyNoise Community API (no key, IP-only,
- * ~50 lookups/day per IP) via a server-side action, so the browser never needs
- * an API key and never hits CORS. Non-IP indicator types (domain/hash/email/URL)
- * require a paid VirusTotal or AbuseIPDB key and return an honest "not wired"
- * result rather than fabricated data.
+ * ~50 lookups/day per IP) and the VirusTotal PUBLIC API via a server-side action,
+ * so the browser never needs an API key and never hits CORS.
+ *
+ * ⚠️ LICENSING: VirusTotal's PUBLIC API is prohibited for use in commercial
+ * products/services (https://docs.virustotal.com/reference/public-vs-premium-api).
+ * This tool is therefore an internal/non-commercial research capability, NOT a
+ * marketed product feature. Absence of detections is "no known indicators" —
+ * never proof a resource is safe. A commercial VT license is required before
+ * this becomes a product feature.
  *
  * Run from the client with useAction(api.iocLookup.lookupIOC).
  */
@@ -28,8 +33,8 @@ async function fetchWithTimeout(url: string, options: RequestInit = {}, timeoutM
 function classifyFromVt(stats: Record<string, number>): string {
   if ((stats.malicious ?? 0) > 0) return 'malicious';
   if ((stats.suspicious ?? 0) > 0) return 'suspicious';
-  if ((stats.harmless ?? 0) > 0) return 'benign';
-  return 'unknown';
+  // Never label "safe"/"benign" from absent detections (blueprint scoring policy).
+  return 'no_known_indicators';
 }
 
 export const lookupIOC = action({

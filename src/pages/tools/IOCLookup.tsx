@@ -253,9 +253,9 @@ function buildResultFromGreyNoise(data: GreyNoiseResponse, ioc: string, type: IO
 }
 
 function buildResultFromVirusTotal(data: Record<string, unknown>, ioc: string, type: IOCType): IOCResult {
-  const classification = (data.classification ?? 'unknown') as string;
-  const severity: Severity = classification === 'malicious' ? 'high' : classification === 'suspicious' ? 'medium' : classification === 'benign' ? 'clean' : 'low';
-  const riskScore = classification === 'malicious' ? 80 : classification === 'suspicious' ? 60 : classification === 'benign' ? 10 : 30;
+  const classification = (data.classification ?? 'no_known_indicators') as string;
+  const severity: Severity = classification === 'malicious' ? 'high' : classification === 'suspicious' ? 'medium' : 'low';
+  const riskScore = classification === 'malicious' ? 80 : classification === 'suspicious' ? 60 : 30;
   const malicious = Number(data.vtMalicious ?? 0);
   const suspicious = Number(data.vtSuspicious ?? 0);
   const harmless = Number(data.vtHarmless ?? 0);
@@ -269,20 +269,18 @@ function buildResultFromVirusTotal(data: Record<string, unknown>, ioc: string, t
     threatTags: malicious > 0 ? [`${malicious} engines flag this ${type}`] : [],
     malwareFamilies: [],
     sources: [{
-      name: 'VirusTotal',
+      name: 'VirusTotal (public API)',
       detections: malicious + suspicious,
       total,
-      verdict: classification === 'malicious' ? 'malicious' : classification === 'suspicious' ? 'suspicious' : classification === 'benign' ? 'clean' : 'unknown',
+      verdict: classification === 'malicious' ? 'malicious' : classification === 'suspicious' ? 'suspicious' : 'unknown',
       lastScan: 'just now',
     }],
-    nexusVerdict: classification === 'malicious' ? 'Block' : classification === 'suspicious' ? 'Suspicious — Avoid' : classification === 'benign' ? 'No Threat Detected' : 'Unknown — Monitor',
+    nexusVerdict: classification === 'malicious' ? 'Block' : classification === 'suspicious' ? 'Suspicious — Avoid' : 'No known indicators',
     nexusVerdictDetail: classification === 'malicious'
       ? `${malicious} of ${total} antivirus engines flagged this ${type} as malicious.`
       : classification === 'suspicious'
         ? `${suspicious} engines flagged this ${type} as suspicious; none marked it fully malicious.`
-        : classification === 'benign'
-          ? `No engines flagged this ${type} as malicious (${harmless} marked it harmless).`
-          : 'No antivirus detections recorded for this indicator.',
+        : `No engines flagged this ${type} as malicious. This is NOT proof it is safe — it only means no known indicators were found in VirusTotal's public dataset.`,
     behaviorSummary: undefined,
   };
 }
@@ -433,8 +431,15 @@ export default function IOCLookup() {
           </div>
           <h1 className="font-display font-bold text-4xl mb-2">IOC Threat-Hunting Lookup</h1>
           <p className="text-muted-foreground text-lg max-w-xl mx-auto">
-            Look up IPs via GreyNoise and domains, hashes and URLs via VirusTotal — free, server-side, no key exposed.
+            Internal research tool. IPs via GreyNoise Community; domains, hashes and URLs via the VirusTotal public API — non-commercial only, no key exposed to the browser.
           </p>
+        </div>
+
+        {/* Non-commercial / ToS caveat */}
+        <div className="mb-6 rounded-lg border border-amber-500/30 bg-amber-500/10 p-3 text-xs text-muted-foreground leading-relaxed">
+          <strong>Internal, non-commercial use only.</strong> VirusTotal's public API is not licensed for
+          commercial products or services. Results are informational: <em>"no known indicators"</em> means no
+          detection in the public dataset — it is <em>not</em> proof that a resource is safe or legitimate.
         </div>
 
         {/* Search */}

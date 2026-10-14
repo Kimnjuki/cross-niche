@@ -145,8 +145,8 @@ const tools = [
     name: 'IOC Threat-Hunting Lookup',
     tagline: 'IP · Domain · Hash · URL',
     description:
-      'Look up IPs via GreyNoise and domains, hashes and URLs via VirusTotal. Server-side and free — no API key exposed to the browser.',
-    badge: 'Live',
+      'Internal research tool. IPs via GreyNoise Community; domains, hashes and URLs via the VirusTotal public API (non-commercial only).',
+    badge: 'Internal',
     badgeVariant: 'default' as const,
     gradient: 'from-security/20 to-security/5',
     iconColor: 'text-security',
