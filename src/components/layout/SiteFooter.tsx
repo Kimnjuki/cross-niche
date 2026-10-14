@@ -21,10 +21,10 @@ export function SiteFooter() {
               THE GRID NEXUS
             </Link>
             <p className="text-[var(--text-secondary)] mb-3">
-              Exclusive tech, security & gaming intelligence.
+              Gaming security intelligence for players.
             </p>
             <p className="text-[var(--text-tertiary)] text-sm">
-              Curated signal over noise. For analysts, operators, and power users.
+              Curated signal over noise. For players, guardians, and esports teams.
             </p>
           </div>
 

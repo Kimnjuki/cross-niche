@@ -163,7 +163,7 @@ export function Footer() {
               Intel Briefing
             </h4>
             <p className="text-sm text-muted-foreground">
-              Get a concise briefing on the most important stories in tech, security, and gaming — straight
+              Get a concise briefing on the most important stories in gaming security — straight
               to your inbox.
             </p>
             <NewsletterForm />

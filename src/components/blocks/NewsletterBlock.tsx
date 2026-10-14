@@ -101,7 +101,7 @@ export function NewsletterBlock({
           {heading || 'Stay in the Grid'}
         </h3>
         <p className="text-[var(--text-secondary)] mb-6">
-          {subheading || 'Weekly intel briefs: top signals in tech, security, and gaming.'}
+          {subheading || 'Weekly intel briefs: top signals in gaming security and player protection.'}
         </p>
         <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
           <Input

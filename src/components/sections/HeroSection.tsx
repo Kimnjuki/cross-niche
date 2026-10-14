@@ -76,7 +76,7 @@ export function HeroSection({
           </h1>
 
           <p className="text-[var(--text-secondary)] text-lg max-w-2xl mx-auto mb-8" style={{ animationDelay: '240ms' }}>
-            {subtitle || 'Exclusive tech, security & gaming intelligence for analysts and power users.'}
+            {subtitle || 'Gaming security intelligence for players — grades, threats, and protection guidance.'}
           </p>
 
           {ctas && ctas.length > 0 && (
