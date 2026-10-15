@@ -158,7 +158,57 @@ const RIOT: Platform = {
   ],
 };
 
-const PLATFORMS: Platform[] = [STEAM, DISCORD, EPIC, EA, RIOT];
+const PLAYSTATION: Platform = {
+  slug: "playstation",
+  name: "PlayStation",
+  links: [
+    { purpose: "recovery", url: "https://www.playstation.com/support/account/recover-account/" },
+    { purpose: "security", url: "https://www.playstation.com/support/account/2sv/" },
+    { purpose: "login", url: "https://www.playstation.com/sign-in/" },
+  ],
+  playbooks: [
+    {
+      schemaVersion: 1,
+      platformSlug: "playstation",
+      scenarioSlug: "account-stolen",
+      disclaimer: DISCLAIMER,
+      steps: [
+        { key: "isolate-device", title: "Use a clean device", body: "If malware is suspected, avoid signing in from the infected device until it is cleaned.", urgency: "critical", requiresCleanDevice: true, selfReportedOnly: true },
+        { key: "secure-email", title: "Secure the email on your account", body: "Confirm you still control the email address and enable its own two-factor authentication.", urgency: "critical", selfReportedOnly: true },
+        { key: "official-recovery", title: "Use PlayStation's official account-recovery process", body: "Follow PlayStation Support's recovery steps; do not trust third-party 'recovery agents'.", urgency: "critical", officialLinkPurpose: "recovery", selfReportedOnly: true },
+        { key: "enable-2fa", title: "Turn on 2-step verification", body: "Enable PlayStation 2SV so a stolen password alone cannot re-take the account.", urgency: "critical", officialLinkPurpose: "security", selfReportedOnly: true },
+        { key: "revoke-devices", title: "Sign out of unfamiliar consoles and devices", body: "After regaining access, deactivate unfamiliar consoles and sign out of other sessions.", urgency: "important", selfReportedOnly: true },
+      ],
+    },
+  ],
+};
+
+const XBOX: Platform = {
+  slug: "xbox",
+  name: "Xbox",
+  links: [
+    { purpose: "recovery", url: "https://account.live.com/acsr" },
+    { purpose: "security", url: "https://account.microsoft.com/security" },
+    { purpose: "login", url: "https://login.live.com/" },
+  ],
+  playbooks: [
+    {
+      schemaVersion: 1,
+      platformSlug: "xbox",
+      scenarioSlug: "account-stolen",
+      disclaimer: DISCLAIMER,
+      steps: [
+        { key: "isolate-device", title: "Use a clean device", body: "If malware is suspected, avoid signing in from the infected device until it is cleaned.", urgency: "critical", requiresCleanDevice: true, selfReportedOnly: true },
+        { key: "secure-email", title: "Secure the Microsoft account email", body: "Confirm you still control the email address and enable its own two-factor authentication.", urgency: "critical", selfReportedOnly: true },
+        { key: "official-recovery", title: "Use Microsoft's official account-recovery form", body: "Submit Microsoft's account recovery form; do not trust third-party 'recovery agents'.", urgency: "critical", officialLinkPurpose: "recovery", selfReportedOnly: true },
+        { key: "enable-2fa", title: "Turn on two-step verification or passwordless sign-in", body: "Enable Microsoft two-step verification (or go passwordless) so a stolen password alone cannot re-take the account.", urgency: "critical", officialLinkPurpose: "security", selfReportedOnly: true },
+        { key: "review-devices", title: "Review devices and recent sign-ins", body: "Remove unfamiliar devices from your Microsoft account after regaining access.", urgency: "important", selfReportedOnly: true },
+      ],
+    },
+  ],
+};
+
+const PLATFORMS: Platform[] = [STEAM, DISCORD, EPIC, EA, RIOT, PLAYSTATION, XBOX];
 
 export const seedRecoveryNavigator = mutation({
   handler: async (ctx) => {

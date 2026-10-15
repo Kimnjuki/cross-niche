@@ -1,7 +1,7 @@
 {
   "meta": {
-    "generatedAt": "2026-10-15T00:33:37.203Z",
-    "count": 5
+    "generatedAt": "2026-10-15T18:46:52.326Z",
+    "count": 7
   },
   "pages": [
     {
@@ -230,6 +230,80 @@
       "officialLinks": [
         {
           "purpose": "login",
+          "url": "https://www.playstation.com/sign-in/",
+          "verifiedAt": 1792089998019
+        },
+        {
+          "purpose": "recovery",
+          "url": "https://www.playstation.com/support/account/recover-account/",
+          "verifiedAt": 1792089998019
+        },
+        {
+          "purpose": "security",
+          "url": "https://www.playstation.com/support/account/2sv/",
+          "verifiedAt": 1792089998019
+        }
+      ],
+      "platform": {
+        "name": "PlayStation",
+        "slug": "playstation"
+      },
+      "playbook": {
+        "reviewedAt": 1792089998019,
+        "scenario": "account-stolen",
+        "steps": {
+          "disclaimer": "The Grid Nexus does not recover accounts or request account credentials. Follow the official process.",
+          "platformSlug": "playstation",
+          "scenarioSlug": "account-stolen",
+          "schemaVersion": 1,
+          "steps": [
+            {
+              "body": "If malware is suspected, avoid signing in from the infected device until it is cleaned.",
+              "key": "isolate-device",
+              "requiresCleanDevice": true,
+              "selfReportedOnly": true,
+              "title": "Use a clean device",
+              "urgency": "critical"
+            },
+            {
+              "body": "Confirm you still control the email address and enable its own two-factor authentication.",
+              "key": "secure-email",
+              "selfReportedOnly": true,
+              "title": "Secure the email on your account",
+              "urgency": "critical"
+            },
+            {
+              "body": "Follow PlayStation Support's recovery steps; do not trust third-party 'recovery agents'.",
+              "key": "official-recovery",
+              "officialLinkPurpose": "recovery",
+              "selfReportedOnly": true,
+              "title": "Use PlayStation's official account-recovery process",
+              "urgency": "critical"
+            },
+            {
+              "body": "Enable PlayStation 2SV so a stolen password alone cannot re-take the account.",
+              "key": "enable-2fa",
+              "officialLinkPurpose": "security",
+              "selfReportedOnly": true,
+              "title": "Turn on 2-step verification",
+              "urgency": "critical"
+            },
+            {
+              "body": "After regaining access, deactivate unfamiliar consoles and sign out of other sessions.",
+              "key": "revoke-devices",
+              "selfReportedOnly": true,
+              "title": "Sign out of unfamiliar consoles and devices",
+              "urgency": "important"
+            }
+          ]
+        },
+        "version": "1"
+      }
+    },
+    {
+      "officialLinks": [
+        {
+          "purpose": "login",
           "url": "https://auth.riotgames.com/login",
           "verifiedAt": 1792024407636
         },
@@ -368,6 +442,80 @@
               "officialLinkPurpose": "security",
               "selfReportedOnly": true,
               "title": "Review Steam Web API key access",
+              "urgency": "important"
+            }
+          ]
+        },
+        "version": "1"
+      }
+    },
+    {
+      "officialLinks": [
+        {
+          "purpose": "login",
+          "url": "https://login.live.com/",
+          "verifiedAt": 1792089998019
+        },
+        {
+          "purpose": "recovery",
+          "url": "https://account.live.com/acsr",
+          "verifiedAt": 1792089998019
+        },
+        {
+          "purpose": "security",
+          "url": "https://account.microsoft.com/security",
+          "verifiedAt": 1792089998019
+        }
+      ],
+      "platform": {
+        "name": "Xbox",
+        "slug": "xbox"
+      },
+      "playbook": {
+        "reviewedAt": 1792089998019,
+        "scenario": "account-stolen",
+        "steps": {
+          "disclaimer": "The Grid Nexus does not recover accounts or request account credentials. Follow the official process.",
+          "platformSlug": "xbox",
+          "scenarioSlug": "account-stolen",
+          "schemaVersion": 1,
+          "steps": [
+            {
+              "body": "If malware is suspected, avoid signing in from the infected device until it is cleaned.",
+              "key": "isolate-device",
+              "requiresCleanDevice": true,
+              "selfReportedOnly": true,
+              "title": "Use a clean device",
+              "urgency": "critical"
+            },
+            {
+              "body": "Confirm you still control the email address and enable its own two-factor authentication.",
+              "key": "secure-email",
+              "selfReportedOnly": true,
+              "title": "Secure the Microsoft account email",
+              "urgency": "critical"
+            },
+            {
+              "body": "Submit Microsoft's account recovery form; do not trust third-party 'recovery agents'.",
+              "key": "official-recovery",
+              "officialLinkPurpose": "recovery",
+              "selfReportedOnly": true,
+              "title": "Use Microsoft's official account-recovery form",
+              "urgency": "critical"
+            },
+            {
+              "body": "Enable Microsoft two-step verification (or go passwordless) so a stolen password alone cannot re-take the account.",
+              "key": "enable-2fa",
+              "officialLinkPurpose": "security",
+              "selfReportedOnly": true,
+              "title": "Turn on two-step verification or passwordless sign-in",
+              "urgency": "critical"
+            },
+            {
+              "body": "Remove unfamiliar devices from your Microsoft account after regaining access.",
+              "key": "review-devices",
+              "selfReportedOnly": true,
+              "title": "Review devices and recent sign-ins",
               "urgency": "important"
             }
           ]

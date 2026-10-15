@@ -125,7 +125,7 @@ function generateIndex(pages) {
   const url = `${BASE_URL}/recover`;
   const title = `Account Recovery Navigator | ${SITE_NAME}`;
   const description =
-    'Verified, step-by-step account recovery guidance for Steam, Discord, Epic, EA and Riot Games. We route you to the official process — we do not recover accounts for you.';
+    'Verified, step-by-step account recovery guidance for Steam, Discord, Epic, EA, Riot Games, PlayStation and Xbox. We route you to the official process — we do not recover accounts for you.';
 
   const items = pages
     .map((page) => {
