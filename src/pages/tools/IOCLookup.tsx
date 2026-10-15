@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useMemo } from 'react';
 import { Layout } from '@/components/layout/Layout';
 import { SEO } from '@/components/SEO';
 import { useTrackToolUse } from '@/hooks/useTrackToolUse';
@@ -17,6 +17,7 @@ import {
 } from 'lucide-react';
 import { useAction } from 'convex/react';
 import { api } from '../../../convex/_generated/api';
+import { triageDomain, type OfficialDomain, type KnownBadIndicator } from '@/lib/triage/domainTriage';
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 
@@ -349,6 +350,21 @@ const EXAMPLES = [
   { label: 'Spam email', value: 'free-skins@gift-steam.biz' },
 ];
 
+// ── Official-domain triage (client-side, no fetch) ──────────────────────────
+// Exact-host / dot-boundary matching from src/lib/triage/domainTriage.ts.
+const OFFICIAL_DOMAINS: OfficialDomain[] = [
+  { host: 'steamcommunity.com', label: 'Steam' },
+  { host: 'steampowered.com', label: 'Steam' },
+  { host: 'discord.com', label: 'Discord' },
+  { host: 'epicgames.com', label: 'Epic Games' },
+  { host: 'ea.com', label: 'EA' },
+  { host: 'riotgames.com', label: 'Riot Games' },
+];
+
+const KNOWN_BAD: KnownBadIndicator[] = [
+  { host: 'steamcommunit-login.ru', label: 'Steam phishing kit' },
+];
+
 // ── Component ─────────────────────────────────────────────────────────────────
 
 export default function IOCLookup() {
@@ -361,6 +377,13 @@ export default function IOCLookup() {
   const [error, setError] = useState('');
 
   const detectedType = query.trim() ? detectIOCType(query.trim()) : 'unknown';
+
+  const triageResult = useMemo(() => {
+    if ((detectedType === 'domain' || detectedType === 'url') && query.trim()) {
+      return triageDomain(query.trim(), OFFICIAL_DOMAINS, KNOWN_BAD);
+    }
+    return null;
+  }, [query, detectedType]);
 
   const handleLookup = useCallback(async (value?: string) => {
     const ioc = (value ?? query).trim();
@@ -500,6 +523,23 @@ export default function IOCLookup() {
             </div>
           </CardContent>
         </Card>
+
+        {/* Official-domain triage (client-side, no fetch) */}
+        {triageResult && (
+          <div className={cn('mb-4 rounded-lg border p-3 text-sm', triageResult.verdict === 'known_malicious' ? 'border-red-500/40 bg-red-500/10' : triageResult.matchedOfficial ? 'border-green-500/40 bg-green-500/10' : triageResult.hasSecretToken ? 'border-amber-500/40 bg-amber-500/10' : 'border-muted/30 bg-muted/10')}>
+            <p className="font-medium flex items-center gap-2">
+              <Shield className="h-4 w-4 shrink-0" />
+              {triageResult.matchedOfficial
+                ? `Official ${triageResult.matchedOfficial} domain`
+                : triageResult.verdict === 'known_malicious'
+                  ? 'Known malicious — do not proceed'
+                  : triageResult.hasSecretToken
+                    ? 'This link carries a private token'
+                    : 'Unrecognized domain — no trust signal'}
+            </p>
+            {triageResult.reasons[0] && <p className="text-muted-foreground text-xs mt-1">{triageResult.reasons[0]}</p>}
+          </div>
+        )}
 
         {/* Loading skeleton */}
         {loading && (
