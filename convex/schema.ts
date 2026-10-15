@@ -352,7 +352,9 @@ export default defineSchema({
   })
     .index("by_user", ["userId"])
     .index("by_content", ["contentId"])
-    .index("by_user_content", ["userId", "contentId"]),
+    .index("by_user_content", ["userId", "contentId"])
+    .index("by_owner", ["ownerUserId"])
+    .index("by_owner_content", ["ownerUserId", "contentId"]),
 
   // ─── Media (images etc. per content) ─────────────────────────────────────
   media: defineTable({

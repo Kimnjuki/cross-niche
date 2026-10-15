@@ -1,6 +1,7 @@
 import { mutation, query } from "./_generated/server";
 import { v } from "convex/values";
 import { internal } from "./_generated/api";
+import { getCurrentUser, requireUser } from "./auth";
 
 export const getFeatureBookmarks = query({
   args: { userId: v.string() },
@@ -141,5 +142,43 @@ export const isBookmarked = query({
       .unique();
     
     return !!bookmark;
+  },
+});
+
+// ─── Verified-identity variants (ownerUserId) ──────────────────────────────
+// Resolve the owner from ctx.auth, never a client-supplied userId.
+
+export const getMyBookmarks = query({
+  handler: async (ctx) => {
+    const user = await getCurrentUser(ctx);
+    if (!user) return [];
+    const rows = await ctx.db
+      .query("userBookmarks")
+      .withIndex("by_owner", (q) => q.eq("ownerUserId", user.userId))
+      .collect();
+    return rows.map((r) => r.contentId);
+  },
+});
+
+export const toggleMyBookmark = mutation({
+  args: { contentId: v.id("content") },
+  handler: async (ctx, args) => {
+    const user = await requireUser(ctx);
+    const existing = await ctx.db
+      .query("userBookmarks")
+      .withIndex("by_owner_content", (q) =>
+        q.eq("ownerUserId", user.userId).eq("contentId", args.contentId)
+      )
+      .first();
+    if (existing) {
+      await ctx.db.delete(existing._id);
+      return { action: "removed" };
+    }
+    await ctx.db.insert("userBookmarks", {
+      userId: user.userId, // legacy required field
+      ownerUserId: user.userId,
+      contentId: args.contentId,
+    });
+    return { action: "added" };
   },
 });
