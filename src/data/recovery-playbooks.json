@@ -1,7 +1,7 @@
 {
   "meta": {
-    "generatedAt": "2026-10-15T00:14:06.220Z",
-    "count": 3
+    "generatedAt": "2026-10-15T00:33:37.203Z",
+    "count": 5
   },
   "pages": [
     {
@@ -82,6 +82,80 @@
       "officialLinks": [
         {
           "purpose": "login",
+          "url": "https://signin.ea.com/p/web2/login",
+          "verifiedAt": 1792024407636
+        },
+        {
+          "purpose": "recovery",
+          "url": "https://help.ea.com/en/help/account/i-think-someone-hacked-my-ea-account/",
+          "verifiedAt": 1792024407636
+        },
+        {
+          "purpose": "security",
+          "url": "https://help.ea.com/en/help/account/ea-login-verification/",
+          "verifiedAt": 1792024407636
+        }
+      ],
+      "platform": {
+        "name": "EA",
+        "slug": "ea"
+      },
+      "playbook": {
+        "reviewedAt": 1792024407636,
+        "scenario": "account-stolen",
+        "steps": {
+          "disclaimer": "The Grid Nexus does not recover accounts or request account credentials. Follow the official process.",
+          "platformSlug": "ea",
+          "scenarioSlug": "account-stolen",
+          "schemaVersion": 1,
+          "steps": [
+            {
+              "body": "If malware is suspected, avoid signing in from the infected device until it is cleaned.",
+              "key": "isolate-device",
+              "requiresCleanDevice": true,
+              "selfReportedOnly": true,
+              "title": "Use a clean device",
+              "urgency": "critical"
+            },
+            {
+              "body": "Confirm you still control the email address and enable its own two-factor authentication.",
+              "key": "secure-email",
+              "selfReportedOnly": true,
+              "title": "Secure the email on your EA account",
+              "urgency": "critical"
+            },
+            {
+              "body": "Follow EA Help's 'I think someone hacked my EA account' steps — never a third-party recovery service.",
+              "key": "official-recovery",
+              "officialLinkPurpose": "recovery",
+              "selfReportedOnly": true,
+              "title": "Use EA's official hacked-account process",
+              "urgency": "critical"
+            },
+            {
+              "body": "EA's two-factor login verification prevents a password alone from re-taking the account.",
+              "key": "enable-2fa",
+              "officialLinkPurpose": "security",
+              "selfReportedOnly": true,
+              "title": "Turn on EA Login Verification",
+              "urgency": "critical"
+            },
+            {
+              "body": "Unlink any unfamiliar console or platform accounts that could be used to sign in.",
+              "key": "review-linked",
+              "selfReportedOnly": true,
+              "title": "Review linked accounts",
+              "urgency": "important"
+            }
+          ]
+        },
+        "version": "1"
+      }
+    },
+    {
+      "officialLinks": [
+        {
+          "purpose": "login",
           "url": "https://www.epicgames.com/id/login",
           "verifiedAt": 1792023172443
         },
@@ -145,6 +219,80 @@
               "key": "review-linked",
               "selfReportedOnly": true,
               "title": "Review linked external accounts",
+              "urgency": "important"
+            }
+          ]
+        },
+        "version": "1"
+      }
+    },
+    {
+      "officialLinks": [
+        {
+          "purpose": "login",
+          "url": "https://auth.riotgames.com/login",
+          "verifiedAt": 1792024407636
+        },
+        {
+          "purpose": "recovery",
+          "url": "https://support.riotgames.com/hc/en-us/articles/201751944-Recovering-Your-Account",
+          "verifiedAt": 1792024407636
+        },
+        {
+          "purpose": "security",
+          "url": "https://account.riotgames.com/",
+          "verifiedAt": 1792024407636
+        }
+      ],
+      "platform": {
+        "name": "Riot Games",
+        "slug": "riot-games"
+      },
+      "playbook": {
+        "reviewedAt": 1792024407636,
+        "scenario": "account-stolen",
+        "steps": {
+          "disclaimer": "The Grid Nexus does not recover accounts or request account credentials. Follow the official process.",
+          "platformSlug": "riot-games",
+          "scenarioSlug": "account-stolen",
+          "schemaVersion": 1,
+          "steps": [
+            {
+              "body": "If malware is suspected, avoid signing in from the infected device until it is cleaned.",
+              "key": "isolate-device",
+              "requiresCleanDevice": true,
+              "selfReportedOnly": true,
+              "title": "Use a clean device",
+              "urgency": "critical"
+            },
+            {
+              "body": "Confirm you still control the email address and enable its own two-factor authentication.",
+              "key": "secure-email",
+              "selfReportedOnly": true,
+              "title": "Secure the email on your Riot account",
+              "urgency": "critical"
+            },
+            {
+              "body": "Submit Riot's account-recovery request; do not trust third-party 'recovery agents'.",
+              "key": "official-recovery",
+              "officialLinkPurpose": "recovery",
+              "selfReportedOnly": true,
+              "title": "Start Riot's official account recovery",
+              "urgency": "critical"
+            },
+            {
+              "body": "Turn on 2FA on your Riot account so a stolen password alone cannot take it back over.",
+              "key": "enable-2fa",
+              "officialLinkPurpose": "security",
+              "selfReportedOnly": true,
+              "title": "Enable two-factor authentication",
+              "urgency": "critical"
+            },
+            {
+              "body": "Sign out of unfamiliar sessions after regaining access.",
+              "key": "review-sessions",
+              "selfReportedOnly": true,
+              "title": "Review active sign-in sessions",
               "urgency": "important"
             }
           ]

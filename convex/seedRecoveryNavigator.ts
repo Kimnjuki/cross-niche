@@ -108,7 +108,57 @@ const EPIC: Platform = {
   ],
 };
 
-const PLATFORMS: Platform[] = [STEAM, DISCORD, EPIC];
+const EA: Platform = {
+  slug: "ea",
+  name: "EA",
+  links: [
+    { purpose: "recovery", url: "https://help.ea.com/en/help/account/i-think-someone-hacked-my-ea-account/" },
+    { purpose: "security", url: "https://help.ea.com/en/help/account/ea-login-verification/" },
+    { purpose: "login", url: "https://signin.ea.com/p/web2/login" },
+  ],
+  playbooks: [
+    {
+      schemaVersion: 1,
+      platformSlug: "ea",
+      scenarioSlug: "account-stolen",
+      disclaimer: DISCLAIMER,
+      steps: [
+        { key: "isolate-device", title: "Use a clean device", body: "If malware is suspected, avoid signing in from the infected device until it is cleaned.", urgency: "critical", requiresCleanDevice: true, selfReportedOnly: true },
+        { key: "secure-email", title: "Secure the email on your EA account", body: "Confirm you still control the email address and enable its own two-factor authentication.", urgency: "critical", selfReportedOnly: true },
+        { key: "official-recovery", title: "Use EA's official hacked-account process", body: "Follow EA Help's 'I think someone hacked my EA account' steps — never a third-party recovery service.", urgency: "critical", officialLinkPurpose: "recovery", selfReportedOnly: true },
+        { key: "enable-2fa", title: "Turn on EA Login Verification", body: "EA's two-factor login verification prevents a password alone from re-taking the account.", urgency: "critical", officialLinkPurpose: "security", selfReportedOnly: true },
+        { key: "review-linked", title: "Review linked accounts", body: "Unlink any unfamiliar console or platform accounts that could be used to sign in.", urgency: "important", selfReportedOnly: true },
+      ],
+    },
+  ],
+};
+
+const RIOT: Platform = {
+  slug: "riot-games",
+  name: "Riot Games",
+  links: [
+    { purpose: "recovery", url: "https://support.riotgames.com/hc/en-us/articles/201751944-Recovering-Your-Account" },
+    { purpose: "security", url: "https://account.riotgames.com/" },
+    { purpose: "login", url: "https://auth.riotgames.com/login" },
+  ],
+  playbooks: [
+    {
+      schemaVersion: 1,
+      platformSlug: "riot-games",
+      scenarioSlug: "account-stolen",
+      disclaimer: DISCLAIMER,
+      steps: [
+        { key: "isolate-device", title: "Use a clean device", body: "If malware is suspected, avoid signing in from the infected device until it is cleaned.", urgency: "critical", requiresCleanDevice: true, selfReportedOnly: true },
+        { key: "secure-email", title: "Secure the email on your Riot account", body: "Confirm you still control the email address and enable its own two-factor authentication.", urgency: "critical", selfReportedOnly: true },
+        { key: "official-recovery", title: "Start Riot's official account recovery", body: "Submit Riot's account-recovery request; do not trust third-party 'recovery agents'.", urgency: "critical", officialLinkPurpose: "recovery", selfReportedOnly: true },
+        { key: "enable-2fa", title: "Enable two-factor authentication", body: "Turn on 2FA on your Riot account so a stolen password alone cannot take it back over.", urgency: "critical", officialLinkPurpose: "security", selfReportedOnly: true },
+        { key: "review-sessions", title: "Review active sign-in sessions", body: "Sign out of unfamiliar sessions after regaining access.", urgency: "important", selfReportedOnly: true },
+      ],
+    },
+  ],
+};
+
+const PLATFORMS: Platform[] = [STEAM, DISCORD, EPIC, EA, RIOT];
 
 export const seedRecoveryNavigator = mutation({
   handler: async (ctx) => {
