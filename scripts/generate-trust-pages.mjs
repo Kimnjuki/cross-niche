@@ -1,0 +1,156 @@
+/**
+ * Generate static, crawlable trust-center pages:
+ *   /privacy/tools, /editorial-standards, /corrections, /security-disclosure
+ *
+ * These establish the privacy/tool boundary the pivot requires (what tools
+ * collect vs. inspect, evidence standards, corrections, disclosure).
+ */
+import fs from 'node:fs';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const projectRoot = path.resolve(__dirname, '..');
+const BASE_URL = 'https://thegridnexus.com';
+const SITE_NAME = 'The Grid Nexus';
+
+function esc(s) {
+  return String(s ?? '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+
+function pageShell(title, description, canonical, body, jsonLd) {
+  return `<!doctype html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>${esc(title)}</title>
+    <meta name="description" content="${esc(description)}" />
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1" />
+    <link rel="canonical" href="${canonical}" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="${canonical}" />
+    <meta property="og:title" content="${esc(title)}" />
+    <meta property="og:description" content="${esc(description)}" />
+    <meta property="og:site_name" content="${SITE_NAME}" />
+    <script type="application/ld+json">${JSON.stringify(jsonLd)}</script>
+  </head>
+  <body style="max-width:80rem;margin:0 auto;padding:2rem 1.5rem;font-family:system-ui,sans-serif;background:#0f172a;color:#f8fafc;line-height:1.6">
+    <header style="margin-bottom:2rem">
+      <a href="/" style="color:#60a5fa;text-decoration:none;font-weight:700">${SITE_NAME}</a>
+      <nav style="margin-top:0.5rem;display:flex;flex-wrap:wrap;gap:1rem;font-size:0.9rem">
+        <a href="/" style="color:#94a3b8;text-decoration:none">Home</a>
+        <a href="/methodology" style="color:#94a3b8;text-decoration:none">Methodology</a>
+        <a href="/platforms" style="color:#94a3b8;text-decoration:none">Platform Security</a>
+        <a href="/recover" style="color:#94a3b8;text-decoration:none">Recovery</a>
+      </nav>
+    </header>
+    ${body}
+    <footer style="margin-top:3rem;padding-top:1rem;border-top:1px solid rgba(148,163,184,0.2);font-size:0.8rem;color:#64748b">
+      <p><a href="/privacy/tools" style="color:#60a5fa">Tool privacy</a> · <a href="/editorial-standards" style="color:#60a5fa">Editorial standards</a> · <a href="/corrections" style="color:#60a5fa">Corrections</a> · <a href="/security-disclosure" style="color:#60a5fa">Security disclosure</a></p>
+    </footer>
+  </body>
+</html>`;
+}
+
+function webPage(title, description, url) {
+  return { '@context': 'https://schema.org', '@type': 'WebPage', name: title, description, url };
+}
+
+const PAGES = [
+  {
+    route: '/privacy/tools',
+    title: `Tool Privacy — what our security tools collect | ${SITE_NAME}`,
+    description:
+      'Plain-language disclosure of what the checkup, scam check, and IOC lookup collect, inspect, store, and never collect.',
+    body: `
+    <article>
+      <h1 style="font-size:2rem;margin:0 0 0.75rem">Tool privacy: what our tools collect</h1>
+      <p style="color:#cbd5e1;max-width:65ch">This page describes, in plain language, exactly what each security tool does and does not collect, inspect, store, or guarantee.</p>
+
+      <h2 style="font-size:1.2rem;margin:1.5rem 0 0.5rem">Gaming Security Checkup</h2>
+      <p style="color:#cbd5e1;max-width:65ch">The checkup processes <strong>self-reported answers only</strong> (your answers to yes/partial/no questions about your own habits). It does <strong>not</strong> scan your device, connect to your game accounts, or inspect your files. A score is a measure of your self-reported readiness — <strong>not</strong> a device or account audit.</p>
+
+      <h2 style="font-size:1.2rem;margin:1.5rem 0 0.5rem">Scam check / domain triage</h2>
+      <p style="color:#cbd5e1;max-width:65ch">The scam check processes the domain, URL, or message <strong>you paste</strong>. Parsing happens in your browser; raw messages and full URLs are <strong>not persisted</strong> to analytics or logs. Secrets you paste are not sent to any external service.</p>
+
+      <h2 style="font-size:1.2rem;margin:1.5rem 0 0.5rem">IOC lookup</h2>
+      <p style="color:#cbd5e1;max-width:65ch">The IOC lookup sends the indicator you submit to VirusTotal's public API, which is licensed for <strong>internal, non-commercial use</strong>. Review their terms before relying on results.</p>
+
+      <h2 style="font-size:1.2rem;margin:1.5rem 0 0.5rem">What we never collect</h2>
+      <ul style="color:#cbd5e1;max-width:65ch">
+        <li>Game account passwords</li>
+        <li>Multi-factor or recovery codes</li>
+        <li>Session cookies or tokens</li>
+        <li>Crypto wallet seed phrases</li>
+      </ul>
+
+      <h2 style="font-size:1.2rem;margin:1.5rem 0 0.5rem">Storage and retention</h2>
+      <p style="color:#cbd5e1;max-width:65ch">Signed-in checkup answers are stored against your account so you can re-check your progress. Anonymous sessions expire. AI is not used to process tool inputs. To delete your data, delete your account or contact us.</p>
+    </article>`,
+  },
+  {
+    route: '/editorial-standards',
+    title: `Editorial Standards | ${SITE_NAME}`,
+    description:
+      'How The Grid Nexus sources, labels, reviews, and corrects security guidance — evidence labels, confidence, official links only, no sentiment-derived grades.',
+    body: `
+    <article>
+      <h1 style="font-size:2rem;margin:0 0 0.75rem">Editorial standards</h1>
+      <ul style="color:#cbd5e1;max-width:65ch;padding-left:1.25rem">
+        <li style="margin-bottom:0.5rem"><strong>Official links only.</strong> We link to a platform's official support/security pages; we never invent a support URL.</li>
+        <li style="margin-bottom:0.5rem"><strong>Evidence labels.</strong> Claims carry a source type (official support, vendor advisory, security research, secondary) and a confidence level (high / medium / low).</li>
+        <li style="margin-bottom:0.5rem"><strong>Review dates.</strong> Official links and capability claims carry a verification date and recheck date. Stale items are marked or removed, never guessed.</li>
+        <li style="margin-bottom:0.5rem"><strong>No sentiment-derived grades.</strong> Game security grades are document-based guidance, not a safety certification, and are never derived from review sentiment or community complaints.</li>
+        <li style="margin-bottom:0.5rem"><strong>Unverified is labeled.</strong> Speculation, unverified reports, and watchlist items are labeled as such, never published as confirmed.</li>
+        <li style="margin-bottom:0.5rem"><strong>Corrections are public.</strong> Corrections are dated and linked from affected pages.</li>
+      </ul>
+    </article>`,
+  },
+  {
+    route: '/corrections',
+    title: `Corrections | ${SITE_NAME}`,
+    description: 'Dated corrections and updates to published guidance on The Grid Nexus.',
+    body: `
+    <article>
+      <h1 style="font-size:2rem;margin:0 0 0.75rem">Corrections</h1>
+      <p style="color:#cbd5e1;max-width:65ch">When we correct or update published guidance, the change is recorded here with its date. No corrections have been recorded yet — this page is updated as corrections are made.</p>
+    </article>`,
+  },
+  {
+    route: '/security-disclosure',
+    title: `Security Disclosure | ${SITE_NAME}`,
+    description: 'How to responsibly report a security vulnerability in The Grid Nexus.',
+    body: `
+    <article>
+      <h1 style="font-size:2rem;margin:0 0 0.75rem">Security disclosure</h1>
+      <p style="color:#cbd5e1;max-width:65ch">If you find a security issue in The Grid Nexus, report it responsibly. We investigate good-faith reports and do not pursue legal action against researchers who act in good faith and avoid harm to users.</p>
+      <h2 style="font-size:1.2rem;margin:1.5rem 0 0.5rem">Scope</h2>
+      <p style="color:#cbd5e1;max-width:65ch">Issues affecting the confidentiality, integrity, or availability of the site or its users' data.</p>
+      <h2 style="font-size:1.2rem;margin:1.5rem 0 0.5rem">Out of scope</h2>
+      <p style="color:#cbd5e1;max-width:65ch">We do not provide anti-cheat bypass, exploit, or cheat-evasion guidance — requests for these are outside this disclosure program.</p>
+    </article>`,
+  },
+];
+
+function main() {
+  const outDir = path.join(projectRoot, 'dist');
+  const urls = [];
+  for (const p of PAGES) {
+    const dir = path.join(outDir, ...p.route.split('/').filter(Boolean));
+    fs.mkdirSync(dir, { recursive: true });
+    const url = `${BASE_URL}${p.route}`;
+    fs.writeFileSync(path.join(dir, 'index.html'), pageShell(p.title, p.description, url, p.body, webPage(p.title, p.description, url)), 'utf-8');
+    urls.push(url);
+  }
+
+  fs.writeFileSync(path.join(outDir, 'trust-pages.json'), JSON.stringify(urls, null, 2), 'utf-8');
+  console.log(`Generated ${PAGES.length} trust-center pages.`);
+  console.log(urls.join('\n'));
+}
+
+main();
