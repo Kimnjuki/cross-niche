@@ -6,34 +6,7 @@
     <loc>https://thegridnexus.com/</loc>
   </url>
   <url>
-    <loc>https://thegridnexus.com/tech</loc>
-  </url>
-  <url>
-    <loc>https://thegridnexus.com/security</loc>
-  </url>
-  <url>
     <loc>https://thegridnexus.com/gaming</loc>
-  </url>
-  <url>
-    <loc>https://thegridnexus.com/blog</loc>
-  </url>
-  <url>
-    <loc>https://thegridnexus.com/guides</loc>
-  </url>
-  <url>
-    <loc>https://thegridnexus.com/tutorials</loc>
-  </url>
-  <url>
-    <loc>https://thegridnexus.com/reviews</loc>
-  </url>
-  <url>
-    <loc>https://thegridnexus.com/pillar/ai-threat-intelligence</loc>
-  </url>
-  <url>
-    <loc>https://thegridnexus.com/pillar/zero-trust-architecture</loc>
-  </url>
-  <url>
-    <loc>https://thegridnexus.com/pillar/gaming-security</loc>
   </url>
   <url>
     <loc>https://thegridnexus.com/research/state-of-gaming-security-2026</loc>
@@ -48,15 +21,6 @@
     <loc>https://thegridnexus.com/tools</loc>
   </url>
   <url>
-    <loc>https://thegridnexus.com/tools/security-scanner</loc>
-  </url>
-  <url>
-    <loc>https://thegridnexus.com/tools/nexusguard</loc>
-  </url>
-  <url>
-    <loc>https://thegridnexus.com/tools/security-briefing</loc>
-  </url>
-  <url>
     <loc>https://thegridnexus.com/tools/steam-scanner</loc>
   </url>
   <url>
@@ -66,52 +30,7 @@
     <loc>https://thegridnexus.com/tools/gaming-security-checkup</loc>
   </url>
   <url>
-    <loc>https://thegridnexus.com/tools/breach-explainer</loc>
-  </url>
-  <url>
-    <loc>https://thegridnexus.com/tools/exploit-risk-meter</loc>
-  </url>
-  <url>
-    <loc>https://thegridnexus.com/tools/pc-builder</loc>
-  </url>
-  <url>
-    <loc>https://thegridnexus.com/tools/threat-scanner</loc>
-  </url>
-  <url>
     <loc>https://thegridnexus.com/tools/gaming-copilot</loc>
-  </url>
-  <url>
-    <loc>https://thegridnexus.com/security-score</loc>
-  </url>
-  <url>
-    <loc>https://thegridnexus.com/breach-sim</loc>
-  </url>
-  <url>
-    <loc>https://thegridnexus.com/live-threat-dashboard</loc>
-  </url>
-  <url>
-    <loc>https://thegridnexus.com/learn/nexus-path</loc>
-  </url>
-  <url>
-    <loc>https://thegridnexus.com/pulse/nexus-pulse</loc>
-  </url>
-  <url>
-    <loc>https://thegridnexus.com/nexus-studio</loc>
-  </url>
-  <url>
-    <loc>https://thegridnexus.com/community-threats</loc>
-  </url>
-  <url>
-    <loc>https://thegridnexus.com/forums</loc>
-  </url>
-  <url>
-    <loc>https://thegridnexus.com/podcasts</loc>
-  </url>
-  <url>
-    <loc>https://thegridnexus.com/videos</loc>
-  </url>
-  <url>
-    <loc>https://thegridnexus.com/mobile</loc>
   </url>
   <url>
     <loc>https://thegridnexus.com/roadmap</loc>
@@ -130,9 +49,6 @@
   </url>
   <url>
     <loc>https://thegridnexus.com/methodology</loc>
-  </url>
-  <url>
-    <loc>https://thegridnexus.com/media</loc>
   </url>
   <url>
     <loc>https://thegridnexus.com/disclosure</loc>

@@ -49,8 +49,9 @@ const CORE_HUBS = [
   { href: '/gaming', label: 'Gaming Security' },
   { href: '/games', label: 'Security Grades' },
   { href: '/threats', label: 'Gamer Threat Report' },
+  { href: '/recover', label: 'Recovery' },
+  { href: '/platforms', label: 'Platform Security' },
   { href: '/tools/gaming-security-checkup', label: 'Security Checkup' },
-  { href: '/guides', label: 'Guides' },
 ];
 
 /** @type {RouteMeta[]} */
@@ -391,17 +392,17 @@ export const ROUTE_METADATA = [
   },
   {
     path: '/tools',
-    title: 'Free Security & Gaming Tools | The Grid Nexus',
+    title: 'Free Gaming Security Tools | The Grid Nexus',
     description:
-      'Free browser-based tools: security score checker, breach simulator, IOC lookup, patch risk tracker and more. No account required, nothing stored.',
-    h1: 'Free tools',
+      'Free browser-based gaming security tools: account checkup, Steam scanner, IOC lookup and scam triage. No account required, nothing stored.',
+    h1: 'Free gaming security tools',
     intro:
-      'Interactive utilities that run in your browser: audit a password policy, explain a breach, score a hardware build, or check whether a patch should be delayed. No sign-up and no data retention.',
+      'Interactive utilities that run in your browser: score your account hygiene, audit a Steam profile, triage a suspicious link, or look up an indicator. No sign-up and no data retention.',
     links: [
-      { href: '/tools/security-scanner', label: 'Security scanner' },
-      { href: '/tools/breach-explainer', label: 'Breach explainer' },
-      { href: '/tools/pc-builder', label: 'PC builder' },
-      { href: '/security-score', label: 'Security score checker' },
+      { href: '/tools/gaming-security-checkup', label: 'Gaming security checkup' },
+      { href: '/tools/steam-scanner', label: 'Steam security scanner' },
+      { href: '/tools/ioc-lookup', label: 'IOC lookup' },
+      { href: '/tools/gaming-copilot', label: 'Gaming copilot' },
     ],
     changefreq: 'daily',
     priority: 0.9,
@@ -458,6 +459,14 @@ const NOINDEX_TOOLS = new Set([
   '/tools/vr-cyber-training',
   '/tools/zero-trust-quiz',
   '/tools/patch-risk-tracker',
+  // legacy general-tech tools (pivot: gaming security only)
+  '/tools/security-scanner',
+  '/tools/nexusguard',
+  '/tools/security-briefing',
+  '/tools/breach-explainer',
+  '/tools/exploit-risk-meter',
+  '/tools/pc-builder',
+  '/tools/threat-scanner',
 ]);
 
 /** Framing shared by every derived tool description (length-checked by tests). */
@@ -952,6 +961,7 @@ for (const route of ROUTE_METADATA) {
  * just emitted `noindex, follow` and excluded from every sitemap.
  */
 const DEMOTE_PATHS = new Set([
+  // legacy general-tech / cross-desk sections
   '/startups',
   '/ai-pulse',
   '/nexus-intersection',
@@ -960,6 +970,29 @@ const DEMOTE_PATHS = new Set([
   '/explore',
   '/news',
   '/live-updates',
+  '/tech',
+  '/security',
+  '/blog',
+  '/tutorials',
+  '/reviews',
+  '/guides',
+  '/media',
+  '/mobile',
+  '/forums',
+  '/podcasts',
+  '/videos',
+  '/community-threats',
+  '/learn/nexus-path',
+  '/pulse/nexus-pulse',
+  '/nexus-studio',
+  // off-niche pillars (gaming-security pillar is redundant with /gaming)
+  '/pillar/ai-threat-intelligence',
+  '/pillar/zero-trust-architecture',
+  '/pillar/gaming-security',
+  // legacy tool destinations (redundant with /threats, /games, checkup)
+  '/security-score',
+  '/breach-sim',
+  '/live-threat-dashboard',
 ]);
 for (const route of ROUTE_METADATA) {
   if (DEMOTE_PATHS.has(route.path)) route.indexable = false;

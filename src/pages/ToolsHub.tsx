@@ -1,143 +1,33 @@
 import { Link } from 'react-router-dom';
-import { useQuery } from 'convex/react';
-import { api } from '../../convex/_generated/api';
 import { Layout } from '@/components/layout/Layout';
 import { SEOHead } from '@/components/seo/SEOHead';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import {
-  Shield,
-  Zap,
-  Activity,
-  ScanLine,
-  Target,
-  Gamepad2,
-  ArrowRight,
-  Search,
-  AlertTriangle,
-  Star,
-  AlertOctagon,
-  BookOpen,
-  Users,
-  ChevronRight,
-  Cpu,
-  MessageSquare,
-  Newspaper,
-  Sparkles,
-  Bot,
-  Calendar,
-  TrendingUp,
-} from 'lucide-react';
+import { Shield, Gamepad2, Search, Bot, ArrowRight, LifeBuoy, Lock, BarChart3 } from 'lucide-react';
 
 const tools = [
   {
-    href: '/tools/pc-builder',
-    icon: Cpu,
-    name: 'AI PC Builder',
-    tagline: 'Security-Scored Build Configurator',
+    href: '/tools/gaming-security-checkup',
+    icon: Gamepad2,
+    name: 'Gaming Security Checkup',
+    tagline: 'Self-reported account readiness',
     description:
-      'Configure your gaming rig component by component. Get a live AI security score, firmware vulnerability analysis, PSU sizing, and hardening tips for every part.',
-    badge: 'New',
-    badgeVariant: 'default' as const,
-    gradient: 'from-[#00F0FF]/20 to-[#B026FF]/5',
-    iconColor: 'text-[#00F0FF]',
+      'Answer a short questionnaire across email/recovery, account auth, device hygiene, downloads and payments. Get a self-reported readiness band — a measure of your habits, not a device or account audit.',
+    badge: 'Free',
+    badgeVariant: 'outline' as const,
+    iconColor: 'text-gaming',
   },
   {
-    href: '/tools/gaming-copilot',
-    icon: Bot,
-    name: 'Gaming Copilot',
-    tagline: 'Gaming Security Q&A Assistant',
-    description:
-      'Rule-based Q&A assistant for common gaming security questions. Answers come from a curated knowledge base, not a live AI model.',
-    badge: 'FAQ',
-    badgeVariant: 'default' as const,
-    gradient: 'from-[#B026FF]/20 to-[#B026FF]/5',
-    iconColor: 'text-[#B026FF]',
-  },
-  {
-    href: '/tools/sentiment-analyzer',
-    icon: MessageSquare,
-    name: 'Game Sentiment Analyzer',
-    tagline: 'Review Sentiment Demo',
-    description:
-      'Demonstrates review-sentiment analysis with illustrative data. A live version would require a real review feed and sentiment model.',
-    badge: 'Demo',
-    badgeVariant: 'secondary' as const,
-    gradient: 'from-[#B026FF]/20 to-[#B026FF]/5',
-    iconColor: 'text-[#B026FF]',
-  },
-  {
-    href: '/tools/recommendation-engine',
-    icon: Sparkles,
-    name: 'AI Recommendation Engine',
-    tagline: 'Personalized Game & Hardware Picks',
-    description:
-      'Answer 3 questions about your goals, budget, and play style. Get AI-matched game and PC hardware recommendations, each security-scored and explained.',
-    badge: 'New',
-    badgeVariant: 'default' as const,
-    gradient: 'from-[#39FF14]/20 to-[#39FF14]/5',
-    iconColor: 'text-[#39FF14]',
-  },
-  {
-    href: '/tools/news-personalizer',
-    icon: Newspaper,
-    name: 'News Personalizer',
-    tagline: 'Curated from The Grid Nexus',
-    description:
-      'Browse The Grid Nexus security, gaming, tech and AI coverage, ranked by relevance. Filter by category and bookmark stories.',
-    badge: 'New',
-    badgeVariant: 'default' as const,
-    gradient: 'from-[#00F0FF]/20 to-[#00F0FF]/5',
-    iconColor: 'text-[#00F0FF]',
-  },
-  {
-    href: '/tools/threat-scanner',
-    icon: ScanLine,
-    name: 'Threat Scanner (Demo)',
-    tagline: 'Simulated Vulnerability Scan UI',
-    description:
-      'Demonstration of a domain vulnerability scanner. Results are simulated — not a live scan. A real scanner would call a service like urlscan.io or ssllabs.',
-    badge: 'Simulated',
-    badgeVariant: 'secondary' as const,
-    gradient: 'from-destructive/20 to-destructive/5',
-    iconColor: 'text-destructive',
-  },
-  {
-    href: '/tools/community-moderator',
-    icon: Users,
-    name: 'Community AI Moderator',
-    tagline: 'Pre-Check Posts Against Guidelines',
-    description:
-      'Test any post against Nexus community policies before submitting. Get instant toxicity scores, harassment detection, PII alerts, and edit suggestions.',
-    badge: 'New',
-    badgeVariant: 'default' as const,
-    gradient: 'from-[#FF007A]/20 to-[#FF007A]/5',
-    iconColor: 'text-[#FF007A]',
-  },
-  {
-    href: '/tools/release-predictor',
-    icon: Calendar,
-    name: 'Game Release Tracker',
-    tagline: 'Editorial Release Expectations',
-    description:
-      'Editorial release expectations based on public signals and announcements. Not a predictive model — curated from ESRB filings and studio news.',
-    badge: 'Editorial',
-    badgeVariant: 'secondary' as const,
-    gradient: 'from-[#FFB800]/20 to-[#FFB800]/5',
-    iconColor: 'text-[#FFB800]',
-  },
-  {
-    href: '/tools/nexusguard',
+    href: '/tools/steam-scanner',
     icon: Shield,
-    name: 'NexusGuard',
-    tagline: 'Threat Checklist Assessment',
+    name: 'Steam Security Scanner',
+    tagline: 'Steam account health check',
     description:
-      'Answer 5 questions about your stack for a rule-based threat checklist and patch priorities.',
-    badge: 'Checklist',
-    badgeVariant: 'default' as const,
-    gradient: 'from-security/20 to-security/5',
-    iconColor: 'text-security',
+      '10 checks in 2 minutes: Steam Guard, API key exposure, trade confirmation, privacy settings and more, with exact fix steps.',
+    badge: 'Free',
+    badgeVariant: 'outline' as const,
+    iconColor: 'text-gaming',
   },
   {
     href: '/tools/ioc-lookup',
@@ -145,161 +35,55 @@ const tools = [
     name: 'IOC Threat-Hunting Lookup',
     tagline: 'IP · Domain · Hash · URL',
     description:
-      'Internal research tool. IPs via GreyNoise Community; domains, hashes and URLs via the VirusTotal public API (non-commercial only).',
+      'Internal research tool. Domains and URLs get a client-side official-domain triage; indicators are checked against the VirusTotal public API (non-commercial only).',
     badge: 'Internal',
     badgeVariant: 'default' as const,
-    gradient: 'from-security/20 to-security/5',
     iconColor: 'text-security',
   },
   {
-    href: '/tools/gaming-security-checkup',
-    icon: Gamepad2,
-    name: 'Gaming Security Checkup',
-    tagline: 'Multi-Platform Account Security Audit',
+    href: '/tools/gaming-copilot',
+    icon: Bot,
+    name: 'Gaming Copilot',
+    tagline: 'Gaming security Q&A',
     description:
-      'Platform-specific 7-point security audit for Steam, PSN, Xbox, Riot Games, Epic & Battle.net. Get your Fort Knox → Exposed tier in 3 minutes.',
-    badge: 'New',
+      'Rule-based Q&A assistant for common gaming security questions. Answers come from a curated knowledge base, not a live AI model.',
+    badge: 'FAQ',
     badgeVariant: 'default' as const,
-    gradient: 'from-gaming/20 to-gaming/5',
-    iconColor: 'text-gaming',
-  },
-  {
-    href: '/tools/breach-explainer',
-    icon: AlertTriangle,
-    name: 'Breach Explainer',
-    tagline: 'Plain-Language Incident Breakdowns',
-    description:
-      'Understand Change Healthcare, AT&T 73M, Salt Typhoon, PowerSchool & Snowflake breaches — what was stolen, who\'s affected, and exactly what to do next.',
-    badge: 'New',
-    badgeVariant: 'default' as const,
-    gradient: 'from-destructive/20 to-destructive/5',
-    iconColor: 'text-destructive',
-  },
-  {
-    href: '/tools/ai-tool-finder',
-    icon: Star,
-    name: 'AI Security Tool Finder',
-    tagline: 'Curated AI Tool Directory',
-    description:
-      '12+ curated AI security tools with Nexus verdicts, pros/cons, and recommendations. Filter by use case (SOC, gaming, code security), price tier, and skill level.',
-    badge: 'New',
-    badgeVariant: 'default' as const,
-    gradient: 'from-tech/20 to-tech/5',
-    iconColor: 'text-tech',
-  },
-  {
-    href: '/tools/patch-risk-tracker',
-    icon: Gamepad2,
-    name: 'Game Patch Risk Tracker',
-    tagline: 'Security Risks Across 8 Games',
-    description:
-      'Curated vulnerability entries and CVE IDs for Fortnite, Valorant, CS2, Minecraft, GTA Online, Apex Legends, WoW, and LoL. Updated periodically.',
-    badge: 'Curated',
-    badgeVariant: 'secondary' as const,
-    gradient: 'from-gaming/20 to-gaming/5',
-    iconColor: 'text-gaming',
-  },
-  {
-    href: '/tools/zero-trust-quiz',
-    icon: Shield,
-    name: 'Zero-Trust Readiness Quiz',
-    tagline: '7-Domain Org Security Assessment',
-    description:
-      '15 questions across identity, device management, network, patching, backups, IR, and monitoring. Get a scored tier from "Exposed" to "Zero-Trust Architect" with a fix plan.',
-    badge: 'New',
-    badgeVariant: 'default' as const,
-    gradient: 'from-security/20 to-security/5',
-    iconColor: 'text-security',
-  },
-  {
-    href: '/tools/exploit-risk-meter',
-    icon: AlertOctagon,
-    name: 'Exploit Risk Meter',
-    tagline: 'CVE Severity for Software You Use',
-    description:
-      'Curated CVE risk levels for Windows 11, Chrome, Fortnite, Valorant, Steam, Discord, OBS, and VS Code — with patch status and exploitation state.',
-    badge: 'Curated',
-    badgeVariant: 'secondary' as const,
-    gradient: 'from-destructive/20 to-destructive/5',
-    iconColor: 'text-destructive',
-  },
-  {
-    href: '/tools/steam-scanner',
-    icon: Gamepad2,
-    name: 'Steam Security Scanner',
-    tagline: 'Steam Account Health Check',
-    description:
-      '10 checks in 2 minutes: Steam Guard, API key exposure, trade confirmation, privacy settings, and more. Get a scored report with exact fix steps.',
-    badge: 'Free',
-    badgeVariant: 'outline' as const,
-    gradient: 'from-gaming/20 to-gaming/5',
-    iconColor: 'text-gaming',
-  },
-  {
-    href: '/breach-sim',
-    icon: Target,
-    name: 'Breach Simulator',
-    tagline: 'Live Attack Decision Trees',
-    description:
-      'Step through phishing, ransomware, and data-breach scenarios. Every choice updates your real-time risk and cost exposure.',
-    badge: 'Interactive',
-    badgeVariant: 'secondary' as const,
-    gradient: 'from-gaming/20 to-gaming/5',
-    iconColor: 'text-gaming',
-  },
-  {
-    href: '/security-score',
-    icon: Zap,
-    name: 'Security Score',
-    tagline: 'Personal Security Self-Assessment',
-    description:
-      'Ten questions about your gaming account hygiene. Get a scored report with prioritised recommendations in under two minutes.',
-    badge: 'Free',
-    badgeVariant: 'outline' as const,
-    gradient: 'from-tech/20 to-tech/5',
-    iconColor: 'text-tech',
-  },
-  {
-    href: '/tools/security-scanner',
-    icon: ScanLine,
-    name: 'Security Scanner (Demo)',
-    tagline: 'Website Score UI Demonstration',
-    description:
-      'Demonstration of a website security score UI. The score is simulated — a real scan requires a server-side TLS/header check.',
-    badge: 'Demo',
-    badgeVariant: 'secondary' as const,
-    gradient: 'from-primary/20 to-primary/5',
-    iconColor: 'text-primary',
-  },
-  {
-    href: '/live-threat-dashboard',
-    icon: Activity,
-    name: 'Live Threat Dashboard',
-    tagline: 'Real-Time Gaming Threat Intel',
-    description:
-      'Subscribe to CVE tags and gaming platform alerts. Get notified the moment a breach or exploit hits your stack.',
-    badge: 'Live',
-    badgeVariant: 'destructive' as const,
-    gradient: 'from-destructive/20 to-destructive/5',
-    iconColor: 'text-destructive',
+    iconColor: 'text-[#B026FF]',
   },
 ];
 
-function toolIdFromHref(href: string): string {
-  const parts = href.split('/').filter(Boolean);
-  return parts[parts.length - 1] ?? href;
-}
+const resources = [
+  {
+    href: '/recover',
+    icon: LifeBuoy,
+    name: 'Account Recovery',
+    description:
+      'Verified step-by-step recovery for Steam, Discord, Epic, EA, Riot, PlayStation and Xbox — no credentials ever requested.',
+  },
+  {
+    href: '/platforms',
+    icon: Lock,
+    name: 'Platform Security Hubs',
+    description:
+      'Official domains, two-factor authentication, recovery workflows and the scam patterns that target each platform.',
+  },
+  {
+    href: '/games',
+    icon: BarChart3,
+    name: 'Security Grades',
+    description:
+      'Document-based per-game security grades with platform scope, evidence sources, review dates and explicit unknowns.',
+  },
+];
 
 export default function ToolsHub() {
-  const trendingTools = useQuery(api.toolAnalytics.getTrendingTools) ?? [];
-  const trendingSet = new Set(trendingTools);
-
   return (
     <Layout>
       <SEOHead
-        title="Security Tools — The Grid Nexus"
-        description="Free interactive security tools for gamers: threat assessments, breach simulations, security score checker, website scanner, and live threat dashboard."
-        keywords={['gaming security tools', 'breach simulator', 'security score', 'threat assessment', 'vulnerability scanner']}
+        title="Free Gaming Security Tools | The Grid Nexus"
+        description="Free browser-based gaming security tools: account checkup, Steam scanner, IOC lookup and gaming copilot. No account required, nothing stored."
+        keywords={['gaming security tools', 'account checkup', 'steam scanner', 'ioc lookup', 'gaming copilot']}
         url={typeof window !== 'undefined' ? window.location.href : ''}
         type="website"
       />
@@ -312,90 +96,43 @@ export default function ToolsHub() {
               <Shield className="h-8 w-8 text-security" />
             </div>
             <div>
-              <h1 className="font-display font-bold text-4xl">Security Tools</h1>
-              <p className="text-muted-foreground text-sm mt-1">Free tools to protect your gaming life</p>
+              <h1 className="font-display font-bold text-4xl">Free gaming security tools</h1>
+              <p className="text-muted-foreground text-sm mt-1">
+                Check your accounts, triage a suspicious link, and get plain-language answers
+              </p>
             </div>
           </div>
           <p className="text-lg text-muted-foreground">
-            Hands-on security tools built for gamers. No sign-up required for most — just open and use.
+            These tools run in your browser and process only what you enter. No account required, and
+            nothing you enter is stored. Read exactly what each tool collects in our{' '}
+            <Link to="/privacy/tools" className="text-foreground underline underline-offset-2">
+              tool privacy disclosure
+            </Link>
+            .
           </p>
         </div>
 
-        {/* Nexus Security Suite unified CTA */}
-        <div className="mb-10 p-6 rounded-2xl border border-[#00F0FF]/30 bg-gradient-to-r from-[#00F0FF]/5 via-[#B026FF]/5 to-black/40 backdrop-blur">
-          <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
-            <div>
-              <div className="flex items-center gap-2 mb-1">
-                <div className="w-2 h-2 rounded-full bg-[#00F0FF] animate-pulse" />
-                <span className="text-xs text-[#00F0FF] uppercase tracking-wider font-semibold">
-                  Nexus Security Suite — New
-                </span>
-              </div>
-              <h2 className="text-lg font-bold text-white mb-1">
-                Start with your Nexus Security Profile
-              </h2>
-              <p className="text-sm text-gray-400 max-w-lg">
-                Get a unified view of your security posture across accounts, devices, and games. The Suite routes you to the right tool — Detection, Simulation, Intel, or Audit — based on your risk profile.
-              </p>
-            </div>
-            <div className="flex flex-col gap-2 shrink-0">
-              <Button asChild className="bg-[#00F0FF] text-black font-bold hover:bg-[#00F0FF]/80">
-                <Link to="/security-profile" className="flex items-center gap-2">
-                  <Shield className="h-4 w-4" /> My Security Profile
-                  <ChevronRight className="h-4 w-4" />
-                </Link>
-              </Button>
-              <Button asChild variant="outline" size="sm" className="border-[#FF007A]/40 text-[#FF007A] hover:bg-[#FF007A]/10">
-                <Link to="/community-threats" className="flex items-center gap-2">
-                  <Users className="h-4 w-4" /> Community Threat Hub
-                </Link>
-              </Button>
-            </div>
-          </div>
-          <div className="mt-4 flex flex-wrap gap-2 text-xs text-gray-500">
-            <span>Suite modules:</span>
-            {["Detection → NexusGuard", "Simulation → Breach Sim", "Intel → Threat Dashboard", "Audit → Security Scanner", "Learning → NexusPath"].map((m) => (
-              <span key={m} className="px-2 py-0.5 rounded-full bg-white/5 border border-white/10">
-                {m}
-              </span>
-            ))}
-          </div>
-        </div>
-
         {/* Tool grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-16">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-16">
           {tools.map((tool) => {
             const Icon = tool.icon;
-            const isTrending = trendingSet.has(toolIdFromHref(tool.href));
             return (
-              <Card
-                key={tool.href}
-                className={`group relative overflow-hidden border hover:border-primary/50 transition-colors bg-gradient-to-br ${tool.gradient}`}
-              >
+              <Card key={tool.href} className="group relative overflow-hidden border hover:border-primary/50 transition-colors bg-gradient-to-br from-primary/5 to-transparent">
                 <CardHeader className="pb-3">
                   <div className="flex items-start justify-between gap-2 mb-2">
                     <Icon className={`h-7 w-7 ${tool.iconColor}`} />
-                    <div className="flex items-center gap-1.5 shrink-0">
-                      {isTrending && (
-                        <Badge className="text-xs bg-[#FFB800]/15 text-[#FFB800] border border-[#FFB800]/40 flex items-center gap-1">
-                          <TrendingUp className="h-3 w-3" /> Trending
-                        </Badge>
-                      )}
-                      <Badge variant={tool.badgeVariant} className="text-xs">
-                        {tool.badge}
-                      </Badge>
-                    </div>
+                    <Badge variant={tool.badgeVariant} className="text-xs">
+                      {tool.badge}
+                    </Badge>
                   </div>
                   <CardTitle className="text-xl">{tool.name}</CardTitle>
                   <p className="text-sm font-medium text-muted-foreground">{tool.tagline}</p>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-sm text-muted-foreground mb-5 leading-relaxed">
-                    {tool.description}
-                  </p>
+                  <p className="text-sm text-muted-foreground mb-5 leading-relaxed">{tool.description}</p>
                   <Button asChild className="w-full group-hover:gap-3 transition-all">
                     <Link to={tool.href} className="flex items-center gap-2">
-                      Launch Tool <ArrowRight className="h-4 w-4" />
+                      Open tool <ArrowRight className="h-4 w-4" />
                     </Link>
                   </Button>
                 </CardContent>
@@ -404,24 +141,28 @@ export default function ToolsHub() {
           })}
         </div>
 
-        {/* Bottom CTA */}
-        <div className="border border-border rounded-xl p-8 bg-muted/30 text-center max-w-2xl mx-auto">
-          <h2 className="font-display font-semibold text-xl mb-2">Stay ahead of threats</h2>
-          <p className="text-muted-foreground text-sm mb-5">
-            Subscribe to the Live Threat Dashboard, or join the Community Threat Hub to crowd-source intelligence with other gamers.
-          </p>
-          <div className="flex flex-wrap gap-3 justify-center">
-            <Button asChild variant="default">
-              <Link to="/live-threat-dashboard" className="flex items-center gap-2">
-                <Activity className="h-4 w-4" /> Open Threat Dashboard
-              </Link>
-            </Button>
-            <Button asChild variant="outline">
-              <Link to="/community-threats" className="flex items-center gap-2">
-                <Users className="h-4 w-4" /> Community Threats
-              </Link>
-            </Button>
-          </div>
+        {/* Guides & hubs */}
+        <h2 className="font-display font-semibold text-2xl mb-6">More player-security resources</h2>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {resources.map((r) => {
+            const Icon = r.icon;
+            return (
+              <Card key={r.href} className="border hover:border-primary/50 transition-colors">
+                <CardHeader className="pb-2">
+                  <Icon className="h-6 w-6 text-gaming mb-2" />
+                  <CardTitle className="text-lg">{r.name}</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-sm text-muted-foreground mb-4 leading-relaxed">{r.description}</p>
+                  <Button asChild variant="outline" className="w-full">
+                    <Link to={r.href} className="flex items-center gap-2">
+                      Explore <ArrowRight className="h-4 w-4" />
+                    </Link>
+                  </Button>
+                </CardContent>
+              </Card>
+            );
+          })}
         </div>
       </div>
     </Layout>

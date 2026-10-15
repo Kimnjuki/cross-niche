@@ -19,8 +19,8 @@ export function Footer() {
               </span>
             </Link>
             <p className="text-sm text-muted-foreground">
-              Daily intelligence across technology, cybersecurity, and gaming. Expert coverage designed
-              for professionals who need to stay ahead.
+              Gaming security for players — protect your accounts, spot scams, and recover safely with
+              verified, plain-language guidance for the games and platforms you use.
             </p>
           </div>
 
@@ -30,14 +30,8 @@ export function Footer() {
               Coverage
             </h4>
             <div className="flex flex-col gap-2 text-sm">
-              <Link to="/tech" className="text-muted-foreground hover:text-tech transition-colors">
-                Tech News & Innovation
-              </Link>
-              <Link to="/security" className="text-muted-foreground hover:text-security transition-colors">
-                Cybersecurity & Threats
-              </Link>
               <Link to="/gaming" className="text-muted-foreground hover:text-gaming transition-colors">
-                Gaming Security
+                Gaming Security Hub
               </Link>
               <Link to="/games" className="text-muted-foreground hover:text-foreground transition-colors">
                 Security Grades
@@ -45,29 +39,17 @@ export function Footer() {
               <Link to="/threats" className="text-muted-foreground hover:text-foreground transition-colors">
                 Gamer Threat Report
               </Link>
-              <Link to="/news" className="text-muted-foreground hover:text-foreground transition-colors">
-                Breaking News
+              <Link to="/recover" className="text-muted-foreground hover:text-foreground transition-colors">
+                Account Recovery
               </Link>
-              <Link to="/startups" className="text-muted-foreground hover:text-foreground transition-colors">
-                Startup News & Funding
+              <Link to="/platforms" className="text-muted-foreground hover:text-foreground transition-colors">
+                Platform Security
               </Link>
-              <Link to="/reviews" className="text-muted-foreground hover:text-foreground transition-colors">
-                Hardware & Game Reviews
+              <Link to="/gaming/security-guides" className="text-muted-foreground hover:text-foreground transition-colors">
+                Security Guides
               </Link>
-              <Link to="/tutorials" className="text-muted-foreground hover:text-foreground transition-colors">
-                Tutorials
-              </Link>
-              <Link to="/guides" className="text-muted-foreground hover:text-foreground transition-colors">
-                Guides & Playbooks
-              </Link>
-              <Link to="/blog" className="text-muted-foreground hover:text-foreground transition-colors">
-                Blog Series
-              </Link>
-              <Link to="/topics" className="text-muted-foreground hover:text-foreground transition-colors">
-                Topics & Analysis
-              </Link>
-              <Link to="/explore" className="text-muted-foreground hover:text-foreground transition-colors">
-                Explore all coverage
+              <Link to="/research/state-of-gaming-security-2026" className="text-muted-foreground hover:text-foreground transition-colors">
+                State of Gaming Security 2026
               </Link>
             </div>
           </div>
@@ -78,47 +60,32 @@ export function Footer() {
               Tools & Resources
             </h4>
             <div className="flex flex-col gap-2 text-sm">
-              <Link to="/security-score" className="text-muted-foreground hover:text-foreground transition-colors">
-                Security Score
+              <Link to="/games" className="text-muted-foreground hover:text-foreground transition-colors">
+                Security Grades
               </Link>
-              <Link to="/breach-sim" className="text-muted-foreground hover:text-foreground transition-colors">
-                Breach Sim
+              <Link to="/threats" className="text-muted-foreground hover:text-foreground transition-colors">
+                Gamer Threat Report
               </Link>
-              <Link to="/nexus-intersection" className="text-muted-foreground hover:text-foreground transition-colors">
-                Nexus Intersection
+              <Link to="/recover" className="text-muted-foreground hover:text-foreground transition-colors">
+                Account Recovery
               </Link>
-              <Link to="/ai-pulse" className="text-muted-foreground hover:text-foreground transition-colors">
-                AI Pulse
+              <Link to="/platforms" className="text-muted-foreground hover:text-foreground transition-colors">
+                Platform Security
               </Link>
-              <Link to="/roadmap" className="text-muted-foreground hover:text-foreground transition-colors">
-                Roadmap
+              <Link to="/tools/gaming-security-checkup" className="text-muted-foreground hover:text-foreground transition-colors">
+                Security Checkup
               </Link>
-              <Link to="/live-threat-dashboard" className="text-muted-foreground hover:text-foreground transition-colors">
-                Live Threat Dashboard
-              </Link>
-              <Link to="/topics" className="text-muted-foreground hover:text-foreground transition-colors">
-                Topics & Tags
-              </Link>
-              <Link to="/media" className="text-muted-foreground hover:text-foreground transition-colors">
-                Media & Podcast
-              </Link>
-              <Link to="/tools/security-scanner" className="text-muted-foreground hover:text-foreground transition-colors">
-                Security Scanner
+              <Link to="/tools/steam-scanner" className="text-muted-foreground hover:text-foreground transition-colors">
+                Steam Scanner
               </Link>
               <Link to="/tools/gaming-copilot" className="text-muted-foreground hover:text-foreground transition-colors">
                 Gaming Copilot
               </Link>
-              <Link to="/tools/threat-scanner" className="text-muted-foreground hover:text-foreground transition-colors">
-                Threat Scanner
-              </Link>
               <Link to="/tools/ioc-lookup" className="text-muted-foreground hover:text-foreground transition-colors">
                 IOC Lookup
               </Link>
-              <Link to="/tools/pc-builder" className="text-muted-foreground hover:text-foreground transition-colors">
-                AI PC Builder
-              </Link>
-              <Link to="/tools/patch-risk-tracker" className="text-muted-foreground hover:text-foreground transition-colors">
-                Patch Risk Tracker
+              <Link to="/roadmap" className="text-muted-foreground hover:text-foreground transition-colors">
+                Roadmap
               </Link>
               <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mt-2">Featured Articles</span>
               <Link to="/article/mobile-gaming-security-guide" className="text-muted-foreground hover:text-foreground transition-colors">
@@ -133,10 +100,10 @@ export function Footer() {
               <Link to="/article/steam-controller-security-risks-gamers" className="text-muted-foreground hover:text-foreground transition-colors">
                 Steam Controller Security Risks
               </Link>
-              <Link to="/article/router-security-gamers-2026" className="text-muted-foreground hover:text-foreground transition-colors">
-                Router Security for Gamers 2026
+              <Link to="/article/router-security-gamers-network-protection" className="text-muted-foreground hover:text-foreground transition-colors">
+                Router Security for Gamers
               </Link>
-              <Link to="/article/complete-gaming-account-security-guide-2026" className="text-muted-foreground hover:text-foreground transition-colors">
+              <Link to="/article/game-account-security-anti-phishing-2026-gaming-platforms" className="text-muted-foreground hover:text-foreground transition-colors">
                 Game Account Anti-Phishing Guide
               </Link>
               <Link to="/article/gaming-pc-security-hardening-guide" className="text-muted-foreground hover:text-foreground transition-colors">
@@ -144,15 +111,6 @@ export function Footer() {
               </Link>
               <Link to="/article/fake-game-cheats-malware-account-stealer" className="text-muted-foreground hover:text-foreground transition-colors">
                 Fake Cheats and Malware Guide
-              </Link>
-              <Link to="/article/ai-security-threats-2026" className="text-muted-foreground hover:text-foreground transition-colors">
-                AI Security Threats 2026
-              </Link>
-              <Link to="/sitemap" className="text-muted-foreground hover:text-foreground transition-colors">
-                HTML Sitemap
-              </Link>
-              <Link to="/seo-checklist" className="text-muted-foreground hover:text-foreground transition-colors">
-                SEO Audit Checklist
               </Link>
             </div>
           </div>

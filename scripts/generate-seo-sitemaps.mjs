@@ -19,6 +19,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import { loadPublishedContent, canonicalUrlFor, fetchGuidesAndTopics } from './lib/content-source.mjs';
 import { authorProfiles } from './lib/author-source.mjs';
+import { isOnNicheArticle } from './lib/off-niche-articles.mjs';
 import {
   ROUTE_METADATA,
   INDEXABLE_ROUTES,
@@ -196,6 +197,7 @@ ${urls.map((u) => urlEntry(u.loc, u.lastmod)).join('\n')}
 function generateArticlesSitemap(articles) {
   const articleUrls = articles
     .filter((a) => a.niche !== 'guides' && a.niche !== 'topics' && !isPlaceholderTitle(a.title))
+    .filter(isOnNicheArticle)
     .map((a) => ({
       loc: a.loc,
       // V-04 fix: real per-item lastmod (lastModifiedAt ?? publishedAt),
@@ -239,6 +241,7 @@ function isWithinNewsWindow(dateValue) {
 function generateNewsSitemap(articles) {
   const articleEntries = articles
     .filter((a) => a.niche !== 'guides' && a.niche !== 'topics')
+    .filter(isOnNicheArticle)
     .filter((a) => isWithinNewsWindow(a.publishedAt) || isWithinNewsWindow(a.lastModified))
     .filter((a) => !isPlaceholderTitle(a.title))
     .sort((a, b) => String(b.publishedAt || '').localeCompare(String(a.publishedAt || '')))
