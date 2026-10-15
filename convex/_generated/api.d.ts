@@ -74,7 +74,7 @@ import type * as roadmapInternal from "../roadmapInternal.js";
 import type * as roadmapVotes from "../roadmapVotes.js";
 import type * as securityRatings from "../securityRatings.js";
 import type * as seedGameLibrary from "../seedGameLibrary.js";
-import type * as seedRecovery from "../seedRecovery.js";
+import type * as seedRecoveryNavigator from "../seedRecoveryNavigator.js";
 import type * as semanticSearch from "../semanticSearch.js";
 import type * as seoMonitoring from "../seoMonitoring.js";
 import type * as seoOptimization from "../seoOptimization.js";
@@ -166,7 +166,7 @@ declare const fullApi: ApiFromModules<{
   roadmapVotes: typeof roadmapVotes;
   securityRatings: typeof securityRatings;
   seedGameLibrary: typeof seedGameLibrary;
-  seedRecovery: typeof seedRecovery;
+  seedRecoveryNavigator: typeof seedRecoveryNavigator;
   semanticSearch: typeof semanticSearch;
   seoMonitoring: typeof seoMonitoring;
   seoOptimization: typeof seoOptimization;

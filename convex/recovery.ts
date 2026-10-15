@@ -57,3 +57,33 @@ export const getPublishedPlaybook = query({
     };
   },
 });
+
+/** List active platforms with their published playbooks (for the static export). */
+export const listPublishedPlaybooks = query({
+  handler: async (ctx) => {
+    const platforms = await ctx.db
+      .query("securityEntities")
+      .withIndex("by_kind_status_name", (q) => q.eq("kind", "platform").eq("status", "active"))
+      .collect();
+
+    const out: { slug: string; name: string; scenarios: { scenario: string; version: string; reviewedAt?: number }[] }[] = [];
+    for (const p of platforms) {
+      const playbooks = await ctx.db
+        .query("recoveryPlaybooks")
+        .withIndex("by_entity_scenario_locale", (q) => q.eq("entityId", p._id))
+        .collect();
+      const published = playbooks.filter((pb) => pb.status === "published" && pb.locale === "en");
+      if (published.length === 0) continue;
+      out.push({
+        slug: p.slug,
+        name: p.name,
+        scenarios: published.map((pb) => ({
+          scenario: pb.scenario,
+          version: pb.version,
+          reviewedAt: pb.reviewedAt,
+        })),
+      });
+    }
+    return out;
+  },
+});
