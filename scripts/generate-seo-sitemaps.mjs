@@ -132,6 +132,24 @@ function getRecoveryPages() {
   }
 }
 
+// ── Platform security hub pages (from src/data/platform-security.json) ─────
+function getPlatformHubPages() {
+  const libPath = path.join(projectRoot, 'src', 'data', 'platform-security.json');
+  if (!fs.existsSync(libPath)) return [];
+  try {
+    const lib = JSON.parse(fs.readFileSync(libPath, 'utf8'));
+    const platforms = Array.isArray(lib.platforms) ? lib.platforms : [];
+    const out = [{ loc: `${BASE_URL}/platforms`, lastmod: '' }];
+    for (const p of platforms) {
+      if (!p.slug) continue;
+      out.push({ loc: `${BASE_URL}/platforms/${p.slug}/security`, lastmod: '' });
+    }
+    return out;
+  } catch {
+    return [];
+  }
+}
+
 // ── Generate sitemap.xml (STATIC pages + guides/topics only) ──────────────
 // P1-5 fix: article URLs must NOT appear here (they live in
 // sitemap-articles.xml). Listing articles in both sitemaps caused
@@ -144,7 +162,7 @@ function getRecoveryPages() {
 // /seo-checklist and /keyword-gap-analysis, which are internal tooling with no
 // search demand. Those are now filtered out via the shared route registry.
 function generateMainSitemap() {
-  const urls = [...getStaticPages(), ...getGamePages(), ...getRecoveryPages()].filter((u) => {
+  const urls = [...getStaticPages(), ...getGamePages(), ...getRecoveryPages(), ...getPlatformHubPages()].filter((u) => {
     const pathname = new URL(u.loc).pathname.replace(/\/+$/, '') || '/';
     return !isNonIndexable(pathname) && !NON_INDEXABLE_ROUTES.includes(pathname);
   });

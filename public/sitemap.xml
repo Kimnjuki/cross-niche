@@ -245,4 +245,28 @@
     <loc>https://thegridnexus.com/recover/xbox/account-stolen</loc>
     <lastmod>2026-10-15</lastmod>
   </url>
+  <url>
+    <loc>https://thegridnexus.com/platforms</loc>
+  </url>
+  <url>
+    <loc>https://thegridnexus.com/platforms/steam/security</loc>
+  </url>
+  <url>
+    <loc>https://thegridnexus.com/platforms/discord/security</loc>
+  </url>
+  <url>
+    <loc>https://thegridnexus.com/platforms/epic-games/security</loc>
+  </url>
+  <url>
+    <loc>https://thegridnexus.com/platforms/ea/security</loc>
+  </url>
+  <url>
+    <loc>https://thegridnexus.com/platforms/riot-games/security</loc>
+  </url>
+  <url>
+    <loc>https://thegridnexus.com/platforms/playstation/security</loc>
+  </url>
+  <url>
+    <loc>https://thegridnexus.com/platforms/xbox/security</loc>
+  </url>
 </urlset>

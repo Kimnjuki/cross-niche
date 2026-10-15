@@ -1,0 +1,132 @@
+{
+  "platforms": [
+    {
+      "slug": "steam",
+      "name": "Steam",
+      "officialDomains": ["steampowered.com", "steamcommunity.com"],
+      "mfa": "supported",
+      "mfaNote": "Steam Guard Mobile Authenticator provides time-based codes for login protection.",
+      "recoveryPath": "/recover/steam/account-stolen",
+      "links": [
+        { "label": "Account recovery", "url": "https://help.steampowered.com/" },
+        { "label": "Steam Guard (2FA)", "url": "https://store.steampowered.com/twofactor/manage" },
+        { "label": "Sign in", "url": "https://store.steampowered.com/login/" }
+      ],
+      "scamPatterns": [
+        "Fake item or trade offers that redirect to a login page",
+        "\"Free gift card\" or \"free game\" direct messages",
+        "Fake Steam Support messages asking for your password or Steam Guard code",
+        "Third-party trade sites that ask for your API key"
+      ]
+    },
+    {
+      "slug": "discord",
+      "name": "Discord",
+      "officialDomains": ["discord.com"],
+      "mfa": "supported",
+      "mfaNote": "Discord supports two-factor authentication via an authenticator app.",
+      "recoveryPath": "/recover/discord/account-stolen",
+      "links": [
+        { "label": "Account recovery", "url": "https://support.discord.com/hc/en-us/articles/216679607" },
+        { "label": "Two-factor authentication", "url": "https://support.discord.com/hc/en-us/articles/219576828-Setting-up-Two-Factor-Authentication" },
+        { "label": "Sign in", "url": "https://discord.com/login" }
+      ],
+      "scamPatterns": [
+        "Links that steal your Discord token or session",
+        "Fake Nitro giveaways and \"free boosts\"",
+        "\"Verify your account\" QR codes that hand over your session",
+        "Fake Discord staff or support direct messages"
+      ]
+    },
+    {
+      "slug": "epic-games",
+      "name": "Epic Games",
+      "officialDomains": ["epicgames.com"],
+      "mfa": "supported",
+      "mfaNote": "Epic supports two-factor authentication via authenticator app, email, or SMS.",
+      "recoveryPath": "/recover/epic-games/account-stolen",
+      "links": [
+        { "label": "Account security", "url": "https://www.epicgames.com/help/en-US/c-Category_EpicAccount/c-AccountSecurity" },
+        { "label": "Account recovery", "url": "https://www.epicgames.com/help/en-US/c-Category_EpicAccount/c-EpicAccountSecurity" },
+        { "label": "Sign in", "url": "https://www.epicgames.com/id/login" }
+      ],
+      "scamPatterns": [
+        "Free V-Bucks or cosmetic scams",
+        "Fake Epic login pages",
+        "Account-trade and account-selling scams"
+      ]
+    },
+    {
+      "slug": "ea",
+      "name": "EA",
+      "officialDomains": ["ea.com"],
+      "mfa": "supported",
+      "mfaNote": "EA supports login verification via authenticator app or email.",
+      "recoveryPath": "/recover/ea/account-stolen",
+      "links": [
+        { "label": "Hacked account help", "url": "https://help.ea.com/en/help/account/i-think-someone-hacked-my-ea-account/" },
+        { "label": "Login verification (2FA)", "url": "https://help.ea.com/en/help/account/ea-login-verification/" },
+        { "label": "Sign in", "url": "https://signin.ea.com/p/web2/login" }
+      ],
+      "scamPatterns": [
+        "FUT coins or in-game currency scams",
+        "Fake EA Help phishing pages",
+        "Account-selling and account-takeover scams"
+      ]
+    },
+    {
+      "slug": "riot-games",
+      "name": "Riot Games",
+      "officialDomains": ["riotgames.com"],
+      "mfa": "supported",
+      "mfaNote": "Riot supports two-factor authentication via email and authenticator app.",
+      "recoveryPath": "/recover/riot-games/account-stolen",
+      "links": [
+        { "label": "Account recovery", "url": "https://support.riotgames.com/hc/en-us/articles/201751944-Recovering-Your-Account" },
+        { "label": "Account management", "url": "https://account.riotgames.com/" },
+        { "label": "Sign in", "url": "https://auth.riotgames.com/login" }
+      ],
+      "scamPatterns": [
+        "Skin and account giveaway scams",
+        "Fake tournament invitations",
+        "\"Free Riot Points\" or free currency scams"
+      ]
+    },
+    {
+      "slug": "playstation",
+      "name": "PlayStation",
+      "officialDomains": ["playstation.com"],
+      "mfa": "supported",
+      "mfaNote": "PlayStation supports 2-step verification via authenticator app or text message.",
+      "recoveryPath": "/recover/playstation/account-stolen",
+      "links": [
+        { "label": "Account recovery", "url": "https://www.playstation.com/support/account/recover-account/" },
+        { "label": "2-step verification", "url": "https://www.playstation.com/support/account/2sv/" },
+        { "label": "Sign in", "url": "https://www.playstation.com/sign-in/" }
+      ],
+      "scamPatterns": [
+        "\"Free PSN codes\" scams",
+        "Fake Sony or PlayStation support calls",
+        "Account-deactivation phishing links"
+      ]
+    },
+    {
+      "slug": "xbox",
+      "name": "Xbox",
+      "officialDomains": ["xbox.com", "microsoft.com", "live.com"],
+      "mfa": "supported",
+      "mfaNote": "Xbox accounts use Microsoft two-step verification (authenticator app or passwordless).",
+      "recoveryPath": "/recover/xbox/account-stolen",
+      "links": [
+        { "label": "Account recovery", "url": "https://account.live.com/acsr" },
+        { "label": "Microsoft security", "url": "https://account.microsoft.com/security" },
+        { "label": "Sign in", "url": "https://login.live.com/" }
+      ],
+      "scamPatterns": [
+        "\"Free Game Pass\" or free subscription scams",
+        "Fake Microsoft support calls",
+        "Gift-card refund and account-takeover scams"
+      ]
+    }
+  ]
+}
