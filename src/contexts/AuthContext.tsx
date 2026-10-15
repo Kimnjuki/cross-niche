@@ -1,5 +1,7 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { useUser, useAuth as useClerkAuth } from '@clerk/clerk-react';
+import { useMutation } from 'convex/react';
+import { api } from '../../convex/_generated/api';
 import { User } from '@/types';
 
 interface AuthContextType {
@@ -30,10 +32,20 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     isSignedIn,
   } = useUser();
   const { signOut: clerkSignOut } = useClerkAuth();
+  const ensureUser = useMutation(api.auth.ensureUser);
 
   useEffect(() => {
     setIsClient(true);
   }, []);
+
+  // Provision the Convex users row + authIdentities binding once signed in
+  // (idempotent). Failure is non-fatal — provisioning can be retried later.
+  useEffect(() => {
+    if (!isClient || !clerkLoaded || !isSignedIn || !clerkUser) return;
+    void ensureUser().catch(() => {
+      // ignore — e.g. Convex disabled or a transient failure
+    });
+  }, [isClient, clerkLoaded, isSignedIn, clerkUser, ensureUser]);
 
   useEffect(() => {
     if (!isClient || !clerkLoaded) {
