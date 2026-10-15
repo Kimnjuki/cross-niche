@@ -1,0 +1,231 @@
+{
+  "meta": {
+    "generatedAt": "2026-10-15T00:14:06.220Z",
+    "count": 3
+  },
+  "pages": [
+    {
+      "officialLinks": [
+        {
+          "purpose": "login",
+          "url": "https://discord.com/login",
+          "verifiedAt": 1792023172443
+        },
+        {
+          "purpose": "recovery",
+          "url": "https://support.discord.com/hc/en-us/articles/216679607",
+          "verifiedAt": 1792023172443
+        },
+        {
+          "purpose": "security",
+          "url": "https://support.discord.com/hc/en-us/articles/219576828-Setting-up-Two-Factor-Authentication",
+          "verifiedAt": 1792023172443
+        }
+      ],
+      "platform": {
+        "name": "Discord",
+        "slug": "discord"
+      },
+      "playbook": {
+        "reviewedAt": 1792023172443,
+        "scenario": "account-stolen",
+        "steps": {
+          "disclaimer": "The Grid Nexus does not recover accounts or request account credentials. Follow the official process.",
+          "platformSlug": "discord",
+          "scenarioSlug": "account-stolen",
+          "schemaVersion": 1,
+          "steps": [
+            {
+              "body": "Discord account theft often comes with a token stealer. Sign out on the infected device and do not reuse it until cleaned.",
+              "key": "isolate-device",
+              "requiresCleanDevice": true,
+              "selfReportedOnly": true,
+              "title": "Isolate a possibly infected device first",
+              "urgency": "critical"
+            },
+            {
+              "body": "Changing your Discord password logs out all other sessions, revoking a stolen token.",
+              "key": "change-password",
+              "selfReportedOnly": true,
+              "title": "Change your password from a clean device",
+              "urgency": "critical"
+            },
+            {
+              "body": "Turn on 2FA so a stolen password or token alone cannot take the account back over.",
+              "key": "enable-2fa",
+              "officialLinkPurpose": "security",
+              "selfReportedOnly": true,
+              "title": "Enable two-factor authentication",
+              "urgency": "critical"
+            },
+            {
+              "body": "Use Discord's official support flow to report the compromise and recover access if you are locked out.",
+              "key": "official-report",
+              "officialLinkPurpose": "recovery",
+              "selfReportedOnly": true,
+              "title": "Report the compromised account to Discord",
+              "urgency": "critical"
+            },
+            {
+              "body": "Check which third-party apps and bots have access and revoke anything you do not recognize.",
+              "key": "review-bots",
+              "selfReportedOnly": true,
+              "title": "Review authorized apps and bots",
+              "urgency": "important"
+            }
+          ]
+        },
+        "version": "1"
+      }
+    },
+    {
+      "officialLinks": [
+        {
+          "purpose": "login",
+          "url": "https://www.epicgames.com/id/login",
+          "verifiedAt": 1792023172443
+        },
+        {
+          "purpose": "recovery",
+          "url": "https://www.epicgames.com/help/en-US/c-Category_EpicAccount/c-AccountSecurity",
+          "verifiedAt": 1792023172443
+        },
+        {
+          "purpose": "security",
+          "url": "https://www.epicgames.com/help/en-US/c-Category_EpicAccount/c-EpicAccountSecurity",
+          "verifiedAt": 1792023172443
+        }
+      ],
+      "platform": {
+        "name": "Epic Games",
+        "slug": "epic-games"
+      },
+      "playbook": {
+        "reviewedAt": 1792023172443,
+        "scenario": "account-stolen",
+        "steps": {
+          "disclaimer": "The Grid Nexus does not recover accounts or request account credentials. Follow the official process.",
+          "platformSlug": "epic-games",
+          "scenarioSlug": "account-stolen",
+          "schemaVersion": 1,
+          "steps": [
+            {
+              "body": "If malware is suspected, avoid signing in from the infected device until it is cleaned.",
+              "key": "isolate-device",
+              "requiresCleanDevice": true,
+              "selfReportedOnly": true,
+              "title": "Use a clean device",
+              "urgency": "critical"
+            },
+            {
+              "body": "Confirm you still control the email address and enable its own two-factor authentication.",
+              "key": "secure-email",
+              "selfReportedOnly": true,
+              "title": "Secure the email on the Epic account",
+              "urgency": "critical"
+            },
+            {
+              "body": "Use Epic's official recovery form; do not trust third-party 'recovery agents'.",
+              "key": "official-recovery",
+              "officialLinkPurpose": "recovery",
+              "selfReportedOnly": true,
+              "title": "Submit Epic's official account-recovery request",
+              "urgency": "critical"
+            },
+            {
+              "body": "Turn on Epic's 2FA after regaining access so the account cannot be re-taken with a password alone.",
+              "key": "enable-2fa",
+              "officialLinkPurpose": "security",
+              "selfReportedOnly": true,
+              "title": "Enable two-factor authentication",
+              "urgency": "critical"
+            },
+            {
+              "body": "Unlink any unfamiliar console or social accounts that could be used to sign in.",
+              "key": "review-linked",
+              "selfReportedOnly": true,
+              "title": "Review linked external accounts",
+              "urgency": "important"
+            }
+          ]
+        },
+        "version": "1"
+      }
+    },
+    {
+      "officialLinks": [
+        {
+          "purpose": "login",
+          "url": "https://store.steampowered.com/login/",
+          "verifiedAt": 1792022291794
+        },
+        {
+          "purpose": "recovery",
+          "url": "https://help.steampowered.com/",
+          "verifiedAt": 1792022291794
+        },
+        {
+          "purpose": "security",
+          "url": "https://store.steampowered.com/twofactor/manage",
+          "verifiedAt": 1792022291794
+        }
+      ],
+      "platform": {
+        "name": "Steam",
+        "slug": "steam"
+      },
+      "playbook": {
+        "reviewedAt": 1792022291794,
+        "scenario": "account-stolen",
+        "steps": {
+          "disclaimer": "The Grid Nexus does not recover accounts or request account credentials. Follow the official Steam Support process.",
+          "platformSlug": "steam",
+          "scenarioSlug": "account-stolen",
+          "schemaVersion": 1,
+          "steps": [
+            {
+              "body": "If you suspect malware, avoid signing in from the possibly infected device until it has been cleaned.",
+              "key": "isolate-device",
+              "requiresCleanDevice": true,
+              "selfReportedOnly": true,
+              "title": "Use a different trusted device if possible",
+              "urgency": "critical"
+            },
+            {
+              "body": "Confirm you still control the email address, change its password if needed, and enable its own two-factor authentication.",
+              "key": "secure-email",
+              "selfReportedOnly": true,
+              "title": "Secure the email connected to Steam",
+              "urgency": "critical"
+            },
+            {
+              "body": "Use Steam Support directly rather than a search-result link or a third-party recovery service.",
+              "key": "official-recovery",
+              "officialLinkPurpose": "recovery",
+              "selfReportedOnly": true,
+              "title": "Start Steam's official account-recovery process",
+              "urgency": "critical"
+            },
+            {
+              "body": "After regaining access, deauthorize unfamiliar devices and review Steam Guard settings.",
+              "key": "revoke-sessions",
+              "officialLinkPurpose": "security",
+              "selfReportedOnly": true,
+              "title": "Review authorized devices and Steam Guard",
+              "urgency": "important"
+            },
+            {
+              "body": "If you did not intentionally create an API key, revoke it through Steam's official API key page.",
+              "key": "review-api-key",
+              "officialLinkPurpose": "security",
+              "selfReportedOnly": true,
+              "title": "Review Steam Web API key access",
+              "urgency": "important"
+            }
+          ]
+        },
+        "version": "1"
+      }
+    }
+  ]
+}

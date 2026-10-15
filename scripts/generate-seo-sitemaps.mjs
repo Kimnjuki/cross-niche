@@ -111,6 +111,24 @@ function getGamePages() {
   }
 }
 
+// ── Recovery navigator pages (from src/data/recovery-playbooks.json) ──────
+function getRecoveryPages() {
+  const libPath = path.join(projectRoot, 'src', 'data', 'recovery-playbooks.json');
+  if (!fs.existsSync(libPath)) return [];
+  try {
+    const lib = JSON.parse(fs.readFileSync(libPath, 'utf8'));
+    const pages = Array.isArray(lib.pages) ? lib.pages : [];
+    return pages
+      .filter((p) => p.platform?.slug && p.playbook?.scenario)
+      .map((p) => ({
+        loc: `${BASE_URL}/recover/${p.platform.slug}/${p.playbook.scenario}`,
+        lastmod: p.playbook.reviewedAt ? new Date(p.playbook.reviewedAt).toISOString().slice(0, 10) : '',
+      }));
+  } catch {
+    return [];
+  }
+}
+
 // ── Generate sitemap.xml (STATIC pages + guides/topics only) ──────────────
 // P1-5 fix: article URLs must NOT appear here (they live in
 // sitemap-articles.xml). Listing articles in both sitemaps caused
@@ -123,7 +141,7 @@ function getGamePages() {
 // /seo-checklist and /keyword-gap-analysis, which are internal tooling with no
 // search demand. Those are now filtered out via the shared route registry.
 function generateMainSitemap() {
-  const urls = [...getStaticPages(), ...getGamePages()].filter((u) => {
+  const urls = [...getStaticPages(), ...getGamePages(), ...getRecoveryPages()].filter((u) => {
     const pathname = new URL(u.loc).pathname.replace(/\/+$/, '') || '/';
     return !isNonIndexable(pathname) && !NON_INDEXABLE_ROUTES.includes(pathname);
   });
