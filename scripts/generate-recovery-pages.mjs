@@ -121,12 +121,53 @@ function generatePage(page) {
   return pageShell(title, description, url, body, jsonLd);
 }
 
+function generateIndex(pages) {
+  const url = `${BASE_URL}/recover`;
+  const title = `Account Recovery Navigator | ${SITE_NAME}`;
+  const description =
+    'Verified, step-by-step account recovery guidance for Steam, Discord, Epic, EA and Riot Games. We route you to the official process — we do not recover accounts for you.';
+
+  const items = pages
+    .map((page) => {
+      const scenarioLabel = titleCase(page.playbook.scenario);
+      return `<li style="margin-bottom:0.6rem">
+        <a href="/recover/${esc(page.platform.slug)}/${esc(page.playbook.scenario)}" style="color:#60a5fa;text-decoration:none">${esc(page.platform.name)} — ${esc(scenarioLabel)}</a>
+      </li>`;
+    })
+    .join('');
+
+  const body = `
+    <article>
+      <p style="color:#60a5fa;font-size:0.9rem;margin:0 0 0.5rem">Recovery navigator</p>
+      <h1 style="font-size:2rem;margin:0 0 0.75rem">Account recovery navigator</h1>
+      <p style="color:#e2e8f0;max-width:60ch">Guided, verified recovery steps for the platforms you play on. We route you to each platform's official process — we never recover accounts on your behalf or ask for credentials.</p>
+      <ul style="margin-top:1.5rem;list-style:none;padding:0">${items}</ul>
+    </article>`;
+
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'ItemList',
+    name: 'Account Recovery Navigator',
+    itemListElement: pages.map((p, i) => ({
+      '@type': 'ListItem',
+      position: i + 1,
+      name: `${p.platform.name} — ${titleCase(p.playbook.scenario)}`,
+      url: `${BASE_URL}/recover/${p.platform.slug}/${p.playbook.scenario}`,
+    })),
+  };
+
+  return pageShell(title, description, url, body, jsonLd);
+}
+
 function main() {
   const pages = DATA.pages ?? [];
   const outDir = path.join(projectRoot, 'dist', 'recover');
   fs.mkdirSync(outDir, { recursive: true });
 
-  const urls = [];
+  // index hub
+  fs.writeFileSync(path.join(outDir, 'index.html'), generateIndex(pages), 'utf-8');
+
+  const urls = [`${BASE_URL}/recover`];
   for (const page of pages) {
     const dir = path.join(outDir, page.platform.slug, page.playbook.scenario);
     fs.mkdirSync(dir, { recursive: true });
@@ -135,7 +176,7 @@ function main() {
   }
 
   fs.writeFileSync(path.join(outDir, 'urls.json'), JSON.stringify(urls, null, 2), 'utf-8');
-  console.log(`Generated ${pages.length} recovery pages.`);
+  console.log(`Generated ${pages.length + 1} recovery pages (index + ${pages.length} details).`);
   console.log(urls.join('\n'));
 }
 

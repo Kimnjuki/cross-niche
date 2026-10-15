@@ -170,6 +170,7 @@ function isKnownRoute(loc) {
   if (/^\/games(\/[a-z0-9-]+)?$/i.test(clean)) return true;
   if (/^\/threats$/i.test(clean)) return true;
   if (/^\/recover\/[a-z0-9-]+\/[a-z0-9-]+$/i.test(clean)) return true;
+  if (/^\/recover$/i.test(clean)) return true;
   return authorSlugs.has(clean.replace('/author/', ''));
 }
 

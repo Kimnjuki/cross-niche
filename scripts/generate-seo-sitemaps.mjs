@@ -118,12 +118,15 @@ function getRecoveryPages() {
   try {
     const lib = JSON.parse(fs.readFileSync(libPath, 'utf8'));
     const pages = Array.isArray(lib.pages) ? lib.pages : [];
-    return pages
-      .filter((p) => p.platform?.slug && p.playbook?.scenario)
-      .map((p) => ({
+    const out = [{ loc: `${BASE_URL}/recover`, lastmod: '' }];
+    for (const p of pages) {
+      if (!p.platform?.slug || !p.playbook?.scenario) continue;
+      out.push({
         loc: `${BASE_URL}/recover/${p.platform.slug}/${p.playbook.scenario}`,
         lastmod: p.playbook.reviewedAt ? new Date(p.playbook.reviewedAt).toISOString().slice(0, 10) : '',
-      }));
+      });
+    }
+    return out;
   } catch {
     return [];
   }

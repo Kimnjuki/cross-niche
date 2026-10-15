@@ -70,6 +70,7 @@ const navLinks = [
   { href: '/gaming', label: 'Gaming Security', color: 'text-amber' },
   { href: '/games', label: 'Security Grades', color: 'text-cyan' },
   { href: '/threats', label: 'Threat Report', color: 'text-violet' },
+  { href: '/recover', label: 'Recovery', color: 'text-primary' },
   { href: '/tools/gaming-security-checkup', label: 'Checkup', color: 'text-primary' },
   { href: '/tools', label: 'Tools', color: 'text-primary' },
   { href: '/guides', label: 'Guides', color: 'text-primary' },
@@ -80,6 +81,7 @@ const mobilePrimaryLinks = [
   { href: '/gaming', label: 'Gaming Security', color: 'text-amber' },
   { href: '/games', label: 'Grades', color: 'text-cyan' },
   { href: '/threats', label: 'Threat Report', color: 'text-violet' },
+  { href: '/recover', label: 'Recovery', color: 'text-primary' },
   { href: '/tools/gaming-security-checkup', label: 'Checkup', color: 'text-primary' },
   { href: '/guides', label: 'Guides', color: 'text-primary' },
 ];
