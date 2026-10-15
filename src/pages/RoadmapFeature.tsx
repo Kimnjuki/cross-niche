@@ -62,8 +62,8 @@ export default function RoadmapFeature() {
 
   const gamification = useQuery(api.gamification.getByUser, { userId });
 
-  const preferences = useQuery(api.users.getUserPreferences, { userId });
-  const updateNotificationPreference = useMutation(api.users.updateNotificationPreference);
+  const preferences = useQuery(api.users.getMyPreferences);
+  const updateNotificationPreference = useMutation(api.users.updateMyPreference);
 
   const isBookmarked = !!contentId && (bookmarks ?? []).some((id: any) => id === contentId);
   const isFollowing = (preferences?.savedSearches ?? []).includes(slug);
@@ -110,7 +110,6 @@ export default function RoadmapFeature() {
 
     try {
       await updateNotificationPreference({
-        userId,
         featureId: slug,
         action: isFollowing ? "unfollow" : "follow",
       });
