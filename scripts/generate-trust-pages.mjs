@@ -135,6 +135,49 @@ const PAGES = [
       <p style="color:#cbd5e1;max-width:65ch">We do not provide anti-cheat bypass, exploit, or cheat-evasion guidance — requests for these are outside this disclosure program.</p>
     </article>`,
   },
+  {
+    route: '/tools/scam-check',
+    title: `Scam Check — is this link or message a scam? | ${SITE_NAME}`,
+    description:
+      'How we triage a suspicious link or message: official-domain matching, lookalike and secret-token detection, and honest verdicts that never call an unknown "safe".',
+    body: `
+    <article>
+      <h1 style="font-size:2rem;margin:0 0 0.75rem">Scam check — is this link or message a scam?</h1>
+      <p style="color:#cbd5e1;max-width:65ch">How we triage a suspicious link or message, and what each verdict means. We never label an unknown domain "safe".</p>
+
+      <h2 style="font-size:1.2rem;margin:1.5rem 0 0.5rem">What the check does</h2>
+      <ul style="color:#cbd5e1;max-width:65ch;padding-left:1.25rem">
+        <li>Exact official-domain matching against Steam, Discord, Epic, EA, Riot, PlayStation and Xbox.</li>
+        <li>Lookalike and homograph detection (e.g. steamcommunlty.com).</li>
+        <li>Secret-token detection (private invite links and signed URLs that should never be shared).</li>
+        <li>Known-bad indicator matching.</li>
+      </ul>
+
+      <h2 style="font-size:1.2rem;margin:1.5rem 0 0.5rem">What the verdicts mean</h2>
+      <ul style="color:#cbd5e1;max-width:65ch;padding-left:1.25rem">
+        <li style="margin-bottom:0.5rem"><strong>Known malicious</strong> — matches a reviewed bad indicator. Do not proceed.</li>
+        <li style="margin-bottom:0.5rem"><strong>Suspicious</strong> — matches a scam pattern (lookalike domain, secret token). Treat with caution.</li>
+        <li style="margin-bottom:0.5rem"><strong>No known indicators</strong> — nothing in our lists matched. This is not a guarantee of safety.</li>
+        <li style="margin-bottom:0.5rem"><strong>Insufficient evidence</strong> — we cannot assess it. Assume it is untrusted until you can verify it independently.</li>
+      </ul>
+
+      <h2 style="font-size:1.2rem;margin:1.5rem 0 0.5rem">Common gaming scam patterns</h2>
+      <ul style="color:#cbd5e1;max-width:65ch;padding-left:1.25rem">
+        <li>Fake giveaways and "free Nitro / skins / V-Bucks / codes".</li>
+        <li>Trade offers that redirect to a login page.</li>
+        <li>Fake support impersonation in chat or email.</li>
+        <li>Top-up, gift-card or crypto requests.</li>
+        <li>Links that steal a Discord token or session.</li>
+        <li>Requests to download remote-access tools.</li>
+      </ul>
+
+      <h2 style="font-size:1.2rem;margin:1.5rem 0 0.5rem">Check a link now</h2>
+      <p style="color:#cbd5e1;max-width:65ch">The <a href="/tools/ioc-lookup" style="color:#60a5fa">IOC Lookup</a> runs this same official-domain triage client-side for domains and URLs — nothing you paste is stored or sent.</p>
+
+      <h2 style="font-size:1.2rem;margin:1.5rem 0 0.5rem">What we never ask for</h2>
+      <p style="color:#cbd5e1;max-width:65ch">We never ask for passwords, MFA codes, recovery codes, session cookies, or seed phrases — and neither does any legitimate recovery process.</p>
+    </article>`,
+  },
 ];
 
 function main() {

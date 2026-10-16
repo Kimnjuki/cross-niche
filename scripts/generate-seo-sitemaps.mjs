@@ -158,6 +158,7 @@ function getTrustPages() {
     { loc: `${BASE_URL}/editorial-standards`, lastmod: '' },
     { loc: `${BASE_URL}/corrections`, lastmod: '' },
     { loc: `${BASE_URL}/security-disclosure`, lastmod: '' },
+    { loc: `${BASE_URL}/tools/scam-check`, lastmod: '' },
   ];
 }
 

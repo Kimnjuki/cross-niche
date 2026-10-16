@@ -4,7 +4,7 @@ import { SEOHead } from '@/components/seo/SEOHead';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Shield, Gamepad2, Search, Bot, ArrowRight, LifeBuoy, Lock, BarChart3 } from 'lucide-react';
+import { Shield, Gamepad2, Search, Bot, ArrowRight, LifeBuoy, Lock, BarChart3, AlertTriangle } from 'lucide-react';
 
 const tools = [
   {
@@ -39,6 +39,17 @@ const tools = [
     badge: 'Internal',
     badgeVariant: 'default' as const,
     iconColor: 'text-security',
+  },
+  {
+    href: '/tools/scam-check',
+    icon: AlertTriangle,
+    name: 'Scam Check',
+    tagline: 'Link & message triage',
+    description:
+      'How we triage a suspicious link or message: official-domain matching, lookalike and secret-token detection, and honest verdicts that never call an unknown "safe".',
+    badge: 'Free',
+    badgeVariant: 'outline' as const,
+    iconColor: 'text-gaming',
   },
   {
     href: '/tools/gaming-copilot',
