@@ -178,6 +178,45 @@ const PAGES = [
       <p style="color:#cbd5e1;max-width:65ch">We never ask for passwords, MFA codes, recovery codes, session cookies, or seed phrases — and neither does any legitimate recovery process.</p>
     </article>`,
   },
+  {
+    route: '/anti-cheat',
+    title: `Anti-Cheat Transparency | ${SITE_NAME}`,
+    description:
+      'What the major anti-cheat systems (Vanguard, EAC, BattlEye, Ricochet) do on your PC, the Windows security features they require, and where to get official help.',
+    body: `
+    <article>
+      <h1 style="font-size:2rem;margin:0 0 0.75rem">Anti-cheat transparency</h1>
+      <p style="color:#cbd5e1;max-width:68ch">Anti-cheat runs with deep system access to keep games fair. This page explains what the major systems do, what Windows security features they require, and where to get official help — without the alarm.</p>
+
+      <h2 style="font-size:1.2rem;margin:1.5rem 0 0.5rem">The major anti-cheat systems</h2>
+      <ul style="color:#cbd5e1;max-width:68ch;padding-left:1.25rem">
+        <li style="margin-bottom:0.75rem"><strong>Riot Vanguard</strong> (Riot Games — VALORANT, League of Legends): a kernel-level driver that loads at boot. Vanguard On-Demand is available only on devices meeting specific requirements — Windows 11 25H2, Secure Boot, TPM 2.0, VBS, HVCI and IOMMU. <a href="https://support.riotgames.com/en-us/riot/performance/vanguard-security-requirements/" style="color:#60a5fa">Official requirements ↗</a></li>
+        <li style="margin-bottom:0.75rem"><strong>Easy Anti-Cheat (EAC)</strong> (Epic Games — Fortnite, Apex Legends, and many others): a kernel-level anti-cheat used across a wide range of titles. <a href="https://www.easy.ac/" style="color:#60a5fa">Official site ↗</a></li>
+        <li style="margin-bottom:0.75rem"><strong>BattlEye</strong> (Rainbow Six Siege, PUBG, Escape from Tarkov, and others): a kernel-level anti-cheat. <a href="https://www.battleye.com/" style="color:#60a5fa">Official site ↗</a></li>
+        <li style="margin-bottom:0.75rem"><strong>Ricochet</strong> (Activision — Call of Duty): a kernel-level driver deployed with Call of Duty titles. <a href="https://support.activision.com/" style="color:#60a5fa">Official support ↗</a></li>
+      </ul>
+
+      <h2 style="font-size:1.2rem;margin:1.5rem 0 0.5rem">Windows security features, explained</h2>
+      <ul style="color:#cbd5e1;max-width:68ch;padding-left:1.25rem">
+        <li><strong>Secure Boot</strong> — verifies that boot files are signed before they run.</li>
+        <li><strong>TPM 2.0</strong> — a hardware module that stores keys and measurements.</li>
+        <li><strong>VBS</strong> (Virtualization-Based Security) — isolates sensitive processes from the rest of the OS.</li>
+        <li><strong>HVCI</strong> (Hypervisor-protected Code Integrity) — blocks unsigned or vulnerable drivers from loading.</li>
+        <li><strong>IOMMU</strong> — isolates device memory access.</li>
+      </ul>
+
+      <h2 style="font-size:1.2rem;margin:1.5rem 0 0.5rem">Common issues</h2>
+      <ul style="color:#cbd5e1;max-width:68ch;padding-left:1.25rem">
+        <li>"Vanguard not initialized" — reboot, or reinstall Vanguard from the Riot client.</li>
+        <li>EAC or BattlEye launch errors — verify game files, update Windows, then reinstall the anti-cheat.</li>
+        <li>Kernel-driver conflicts — check for other anti-cheat or security software loaded at the same time.</li>
+      </ul>
+      <p style="color:#94a3b8;max-width:68ch">Always follow the vendor's official troubleshooting and appeal process — links above.</p>
+
+      <h2 style="font-size:1.2rem;margin:1.5rem 0 0.5rem">We do not help bypass anti-cheat</h2>
+      <p style="color:#cbd5e1;max-width:68ch">The Grid Nexus publishes no bypass, exploit, or cheat-evasion guidance, and we do not recommend disabling core Windows security controls to make a game run.</p>
+    </article>`,
+  },
 ];
 
 function main() {
