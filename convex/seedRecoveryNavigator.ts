@@ -210,6 +210,59 @@ const XBOX: Platform = {
 
 const PLATFORMS: Platform[] = [STEAM, DISCORD, EPIC, EA, RIOT, PLAYSTATION, XBOX];
 
+/**
+ * Shared high-value scenarios applied to every platform. `account-stolen` is
+ * hand-written per platform above; these four cover the other top player jobs:
+ * unauthorized purchase, lost authenticator, suspicious session, and a
+ * suspected stealer/malware infection (the malware-first branch).
+ */
+function standardScenarios(platform: { slug: string; name: string }): Playbook[] {
+  const base = { schemaVersion: 1 as const, platformSlug: platform.slug, disclaimer: DISCLAIMER };
+  const name = platform.name;
+  return [
+    {
+      ...base,
+      scenarioSlug: 'unauthorized-purchase',
+      steps: [
+        { key: 'review-purchases', title: 'Review recent purchases', body: `Check your ${name} purchase history for charges you did not make, and do not click links in unexpected receipt emails.`, urgency: 'critical', selfReportedOnly: true },
+        { key: 'secure-account', title: 'Secure the account first', body: 'Change your password and enable two-factor authentication so a thief cannot keep spending.', urgency: 'critical', officialLinkPurpose: 'security', selfReportedOnly: true },
+        { key: 'report-charge', title: 'Report the unauthorized charge', body: `Dispute the charge through ${name}'s official support — never a third-party refund service.`, urgency: 'critical', officialLinkPurpose: 'recovery', selfReportedOnly: true },
+        { key: 'review-payment', title: 'Review saved payment methods', body: 'Remove or replace any card or payment method you do not recognize.', urgency: 'important', selfReportedOnly: true },
+      ],
+    },
+    {
+      ...base,
+      scenarioSlug: 'lost-authenticator',
+      steps: [
+        { key: 'backup-codes', title: 'Use your saved backup codes', body: 'If you saved recovery codes when you set up two-factor authentication, use one now to sign in.', urgency: 'critical', selfReportedOnly: true },
+        { key: 'official-recovery', title: 'Recover through official support', body: `If you have no backup codes, use ${name}'s official account-recovery process — never a paid third-party service.`, urgency: 'critical', officialLinkPurpose: 'recovery', selfReportedOnly: true },
+        { key: 're-enable-2fa', title: 'Re-enable two-factor authentication', body: 'Once you are back in, set up two-factor authentication again so the account is protected.', urgency: 'critical', officialLinkPurpose: 'security', selfReportedOnly: true },
+        { key: 'save-codes', title: 'Store new backup codes offline', body: 'Save the new recovery codes somewhere safe and offline.', urgency: 'important', selfReportedOnly: true },
+      ],
+    },
+    {
+      ...base,
+      scenarioSlug: 'suspicious-session',
+      steps: [
+        { key: 'change-password', title: 'Change your password', body: 'Change your password from a device you trust, in case someone else is already signed in.', urgency: 'critical', selfReportedOnly: true },
+        { key: 'revoke-sessions', title: 'Sign out of other sessions', body: `Revoke unfamiliar sessions and devices through ${name}'s account settings.`, urgency: 'critical', officialLinkPurpose: 'security', selfReportedOnly: true },
+        { key: 'enable-2fa', title: 'Enable two-factor authentication', body: 'Turn on two-factor authentication so a stolen password alone cannot take the account back.', urgency: 'critical', officialLinkPurpose: 'security', selfReportedOnly: true },
+        { key: 'review-activity', title: 'Review recent activity', body: 'Check for changed email, phone number, linked accounts, or messages you did not write.', urgency: 'important', selfReportedOnly: true },
+      ],
+    },
+    {
+      ...base,
+      scenarioSlug: 'suspected-malware',
+      steps: [
+        { key: 'isolate-device', title: 'Stop using the possibly infected device', body: 'Sign out and stop using the device until it has been scanned and cleaned. Use a different trusted device for the next steps.', urgency: 'critical', requiresCleanDevice: true, selfReportedOnly: true },
+        { key: 'scan-device', title: 'Scan the device', body: 'Run a reputable antivirus or anti-malware scan and remove anything it flags before signing in again.', urgency: 'critical', selfReportedOnly: true },
+        { key: 'change-passwords', title: 'Change passwords from a clean device', body: 'After cleaning, change your password from a device you trust — not the infected one.', urgency: 'critical', selfReportedOnly: true },
+        { key: 'official-recovery', title: 'Recover the account if it was taken', body: `If the account was already stolen, follow ${name}'s official account-recovery process.`, urgency: 'critical', officialLinkPurpose: 'recovery', selfReportedOnly: true },
+      ],
+    },
+  ];
+}
+
 export const seedRecoveryNavigator = mutation({
   handler: async (ctx) => {
     const now = Date.now();
@@ -252,7 +305,7 @@ export const seedRecoveryNavigator = mutation({
         }
       }
 
-      for (const pb of platform.playbooks) {
+      for (const pb of [...platform.playbooks, ...standardScenarios(platform)]) {
         const existingPlaybook = await ctx.db
           .query("recoveryPlaybooks")
           .withIndex("by_entity_scenario_locale", (q) =>
