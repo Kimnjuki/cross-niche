@@ -66,6 +66,17 @@ RUN node scripts/generate-seo-sitemaps.mjs || true
 RUN node scripts/generate-static-articles.mjs || true
 RUN node scripts/generate-llms-full.mjs || true
 
+# Static gaming-security pages. These read COMMITTED data files (no Convex
+# access at build time) and MUST run, otherwise the sitemap advertises URLs
+# (/games/*, /platforms/*, /recover/*, /anti-cheat, /tools/scam-check, ...)
+# that 404 because their dist/ files were never generated.
+RUN node scripts/generate-game-pages.mjs || true
+RUN node scripts/generate-threat-page.mjs || true
+RUN node scripts/generate-research-report.mjs || true
+RUN node scripts/generate-recovery-pages.mjs || true
+RUN node scripts/generate-platform-hubs.mjs || true
+RUN node scripts/generate-trust-pages.mjs || true
+
 # Per-route static HTML shells (title/description/canonical/H1 per URL).
 # NOT wrapped in `|| true`: serving the homepage shell for 60+ content routes is
 # what collapsed the site's index coverage in Sept 2026, so this step must fail
