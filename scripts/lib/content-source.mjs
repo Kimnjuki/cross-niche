@@ -45,7 +45,7 @@ function fromConvexDoc(doc, source = 'convex') {
     publishedAt: toIsoDate(doc.publishedAt ?? doc._creationTime),
     // Real per-item freshness signal — falls back to publish date only.
     lastModified: toIsoDate(doc.lastModifiedAt ?? doc.publishedAt ?? doc._creationTime),
-    authorName: 'The Grid Nexus Editorial Team',
+    authorName: 'Kim Njuki',
     readTime: Number(doc.estimatedReadingTimeMinutes ?? 0) || 5,
     featuredImageUrl: String(doc.featuredImageUrl ?? ''),
     isFeatured: doc.isFeatured === true,

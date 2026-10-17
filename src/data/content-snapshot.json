@@ -1,6 +1,6 @@
 {
   "meta": {
-    "generatedAt": "2026-10-17T19:56:41.471Z",
+    "generatedAt": "2026-10-17T20:00:57.599Z",
     "convexUrlHost": "canny-mule-83.convex.cloud",
     "count": 118,
     "sourceQueryCap": 1000,
@@ -486,7 +486,9 @@
       "lastModifiedAt": 1792266876489,
       "estimatedReadingTimeMinutes": 5,
       "wordCount": 850,
-      "status": "published"
+      "status": "published",
+      "noindex": true,
+      "noindexReason": "Fabricated/unverifiable claims — demoted for accuracy and trust"
     },
     {
       "_id": "jd70mx7hcxzrzystb3wws0nwch8d5pxs",
@@ -582,7 +584,9 @@
       "lastModifiedAt": 1792266876489,
       "estimatedReadingTimeMinutes": 5,
       "wordCount": 863,
-      "status": "published"
+      "status": "published",
+      "noindex": true,
+      "noindexReason": "Fabricated/unverifiable claims — demoted for accuracy and trust"
     },
     {
       "_id": "jd79rndb2aj18nd5vxf2zw6wcx8d40ms",
@@ -646,7 +650,9 @@
       "lastModifiedAt": 1792266876489,
       "estimatedReadingTimeMinutes": 5,
       "wordCount": 870,
-      "status": "published"
+      "status": "published",
+      "noindex": true,
+      "noindexReason": "Fabricated/unverifiable claims — demoted for accuracy and trust"
     },
     {
       "_id": "jd77z604j6md0zvzd9vavtgx7x8d5y7v",
@@ -726,7 +732,9 @@
       "lastModifiedAt": 1792266876489,
       "estimatedReadingTimeMinutes": 5,
       "wordCount": 865,
-      "status": "published"
+      "status": "published",
+      "noindex": true,
+      "noindexReason": "Fabricated/unverifiable claims — demoted for accuracy and trust"
     },
     {
       "_id": "jd7cvagg2fzsgmf3vc7vg5f6qn8d5gqx",
@@ -945,7 +953,9 @@
       "featuredImageUrl": "https://images.unsplash.com/photo-1563013544-824ae1b704d3?w=1200&h=630&fit=crop",
       "estimatedReadingTimeMinutes": 3,
       "wordCount": 573,
-      "status": "published"
+      "status": "published",
+      "noindex": true,
+      "noindexReason": "Fabricated/unverifiable claims — demoted for accuracy and trust"
     },
     {
       "_id": "jd7atc675khf2xvpxvqn19tb2s8d5j7x",
@@ -962,7 +972,9 @@
       "featuredImageUrl": "https://images.unsplash.com/photo-1510511459019-5dda7724fd87?w=1200&h=630&fit=crop",
       "estimatedReadingTimeMinutes": 3,
       "wordCount": 519,
-      "status": "published"
+      "status": "published",
+      "noindex": true,
+      "noindexReason": "Fabricated/unverifiable claims — demoted for accuracy and trust"
     },
     {
       "_id": "jd72ftj4jez48kqwx2w35fqtad8d450j",
@@ -980,7 +992,9 @@
       "featuredImageUrl": "https://images.unsplash.com/photo-1569025591-a3c16d4c5f5f?w=1200&h=630&fit=crop",
       "estimatedReadingTimeMinutes": 3,
       "wordCount": 582,
-      "status": "published"
+      "status": "published",
+      "noindex": true,
+      "noindexReason": "Fabricated/unverifiable claims — demoted for accuracy and trust"
     },
     {
       "_id": "jd727gf8dhhr68txt8k2kwqex58d52t6",
@@ -997,7 +1011,9 @@
       "featuredImageUrl": "https://images.unsplash.com/photo-1614064641938-3bbee52942c7?w=1200&h=630&fit=crop",
       "estimatedReadingTimeMinutes": 4,
       "wordCount": 639,
-      "status": "published"
+      "status": "published",
+      "noindex": true,
+      "noindexReason": "Fabricated/unverifiable claims — demoted for accuracy and trust"
     },
     {
       "_id": "jd703qhnn4a3mt7emg9e0kt6bh8d5tzm",
@@ -1014,7 +1030,9 @@
       "featuredImageUrl": "https://images.unsplash.com/photo-1591488320449-011701bb6704?w=1200&h=630&fit=crop",
       "estimatedReadingTimeMinutes": 3,
       "wordCount": 586,
-      "status": "published"
+      "status": "published",
+      "noindex": true,
+      "noindexReason": "Fabricated/unverifiable claims — demoted for accuracy and trust"
     },
     {
       "_id": "jd75fp4pz8k0e6892tgqx9fsnx8d54w9",
@@ -1031,7 +1049,9 @@
       "featuredImageUrl": "https://images.unsplash.com/photo-1591488320449-011701bb6704?w=1200&h=630&fit=crop",
       "estimatedReadingTimeMinutes": 4,
       "wordCount": 619,
-      "status": "published"
+      "status": "published",
+      "noindex": true,
+      "noindexReason": "Fabricated/unverifiable claims — demoted for accuracy and trust"
     },
     {
       "_id": "jd79bb4g2z0gnp7n2x5ezxcdch8d5ebd",
@@ -1048,7 +1068,9 @@
       "featuredImageUrl": "https://images.unsplash.com/photo-1510511459019-5dda7724fd87?w=1200&h=630&fit=crop",
       "estimatedReadingTimeMinutes": 4,
       "wordCount": 619,
-      "status": "published"
+      "status": "published",
+      "noindex": true,
+      "noindexReason": "Fabricated/unverifiable claims — demoted for accuracy and trust"
     },
     {
       "_id": "jd7akbd4b780fksc0s9xp7beb18d4fxx",
@@ -1065,7 +1087,9 @@
       "featuredImageUrl": "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=1200&h=630&fit=crop",
       "estimatedReadingTimeMinutes": 3,
       "wordCount": 506,
-      "status": "published"
+      "status": "published",
+      "noindex": true,
+      "noindexReason": "Fabricated/unverifiable claims — demoted for accuracy and trust"
     },
     {
       "_id": "jd7asd213mgcp7b8h563a606018d4pbp",
@@ -1082,7 +1106,9 @@
       "featuredImageUrl": "https://images.unsplash.com/photo-1620712943543-bcc4688e7485?w=1200&h=630&fit=crop",
       "estimatedReadingTimeMinutes": 3,
       "wordCount": 527,
-      "status": "published"
+      "status": "published",
+      "noindex": true,
+      "noindexReason": "Fabricated/unverifiable claims — demoted for accuracy and trust"
     },
     {
       "_id": "jd711yf9edj17t3m76hbn5teg98d4dra",
@@ -1099,7 +1125,9 @@
       "featuredImageUrl": "https://images.unsplash.com/photo-1591488320449-011701bb6704?w=1200&h=630&fit=crop",
       "estimatedReadingTimeMinutes": 3,
       "wordCount": 569,
-      "status": "published"
+      "status": "published",
+      "noindex": true,
+      "noindexReason": "Fabricated/unverifiable claims — demoted for accuracy and trust"
     },
     {
       "_id": "jd747kx31bhnm8qw7vwjma6af58d5tbv",
@@ -1117,7 +1145,9 @@
       "featuredImageUrl": "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=1200&h=630&fit=crop",
       "estimatedReadingTimeMinutes": 3,
       "wordCount": 507,
-      "status": "published"
+      "status": "published",
+      "noindex": true,
+      "noindexReason": "Fabricated/unverifiable claims — demoted for accuracy and trust"
     },
     {
       "_id": "jd7d18kysz2hnqdcz6a267msah8d5sbz",
@@ -1134,7 +1164,9 @@
       "featuredImageUrl": "https://images.unsplash.com/photo-1614064641938-3bbee52942c7?w=1200&h=630&fit=crop",
       "estimatedReadingTimeMinutes": 4,
       "wordCount": 634,
-      "status": "published"
+      "status": "published",
+      "noindex": true,
+      "noindexReason": "Fabricated/unverifiable claims — demoted for accuracy and trust"
     },
     {
       "_id": "jd77nk5c2danjdgn2vht0mw8fx8d5x3j",
@@ -1151,7 +1183,9 @@
       "featuredImageUrl": "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=1200&h=630&fit=crop",
       "estimatedReadingTimeMinutes": 3,
       "wordCount": 542,
-      "status": "published"
+      "status": "published",
+      "noindex": true,
+      "noindexReason": "Fabricated/unverifiable claims — demoted for accuracy and trust"
     },
     {
       "_id": "jd7fstqs3k2zcs6enn64t2ybmx8d5bgc",
@@ -1168,7 +1202,9 @@
       "featuredImageUrl": "https://images.unsplash.com/photo-1620712943543-bcc4688e7485?w=1200&h=630&fit=crop",
       "estimatedReadingTimeMinutes": 4,
       "wordCount": 613,
-      "status": "published"
+      "status": "published",
+      "noindex": true,
+      "noindexReason": "Fabricated/unverifiable claims — demoted for accuracy and trust"
     },
     {
       "_id": "jd7cpqs60zwfx2jj7qzrsn28ax8d4sz8",
@@ -1185,7 +1221,9 @@
       "featuredImageUrl": "https://images.unsplash.com/photo-1542751371-adc38448a05e?w=1200&h=630&fit=crop",
       "estimatedReadingTimeMinutes": 4,
       "wordCount": 628,
-      "status": "published"
+      "status": "published",
+      "noindex": true,
+      "noindexReason": "Fabricated/unverifiable claims — demoted for accuracy and trust"
     },
     {
       "_id": "jd7dv3043swn1d2442k8fvj2gx8d4msq",
@@ -1202,7 +1240,9 @@
       "featuredImageUrl": "https://images.unsplash.com/photo-1580327344181-c1163234e5a0?w=1200&h=630&fit=crop",
       "estimatedReadingTimeMinutes": 4,
       "wordCount": 610,
-      "status": "published"
+      "status": "published",
+      "noindex": true,
+      "noindexReason": "Fabricated/unverifiable claims — demoted for accuracy and trust"
     },
     {
       "_id": "jd74pxg2jwjpat4thwedbrcse18d4msq",
@@ -1219,7 +1259,9 @@
       "featuredImageUrl": "https://images.unsplash.com/photo-1569025591-a3c16d4c5f5f?w=1200&h=630&fit=crop",
       "estimatedReadingTimeMinutes": 3,
       "wordCount": 543,
-      "status": "published"
+      "status": "published",
+      "noindex": true,
+      "noindexReason": "Fabricated/unverifiable claims — demoted for accuracy and trust"
     },
     {
       "_id": "jd74wz5ya5pf0fkxh0vbs9z5858d4em8",
@@ -1236,7 +1278,9 @@
       "featuredImageUrl": "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=1200&h=630&fit=crop",
       "estimatedReadingTimeMinutes": 3,
       "wordCount": 589,
-      "status": "published"
+      "status": "published",
+      "noindex": true,
+      "noindexReason": "Fabricated/unverifiable claims — demoted for accuracy and trust"
     },
     {
       "_id": "jd73we0z805pgrp06pnren55qd8d5248",
@@ -1307,7 +1351,9 @@
       "featuredImageUrl": "https://images.unsplash.com/photo-1552820728-8b83bb6b773f?w=1200&h=630&fit=crop",
       "estimatedReadingTimeMinutes": 4,
       "wordCount": 673,
-      "status": "published"
+      "status": "published",
+      "noindex": true,
+      "noindexReason": "Fabricated/unverifiable claims — demoted for accuracy and trust"
     },
     {
       "_id": "jd72ne076nqvef9dpxhc5cq2058d48bg",
@@ -1426,7 +1472,9 @@
       "featuredImageUrl": "https://images.unsplash.com/photo-1580327344181-c1163234e5a0?w=1200&h=630&fit=crop",
       "estimatedReadingTimeMinutes": 5,
       "wordCount": 932,
-      "status": "published"
+      "status": "published",
+      "noindex": true,
+      "noindexReason": "Fabricated/unverifiable claims — demoted for accuracy and trust"
     },
     {
       "_id": "jd7c58y506essx6n31ersaxcx18d4w6x",

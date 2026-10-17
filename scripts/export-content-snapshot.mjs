@@ -76,6 +76,8 @@ const KEEP = [
   'status',
   'isDeleted',
   'gamingPlatforms',
+  'noindex',
+  'noindexReason',
 ];
 
 function project(doc) {

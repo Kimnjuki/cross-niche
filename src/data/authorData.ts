@@ -27,9 +27,9 @@ export const authorProfiles: Record<string, AuthorProfile> = {
 
 /** Default profile for articles without an individual byline. */
 export const defaultAuthorProfile: AuthorProfile = {
-  name: 'The Grid Nexus',
-  jobTitle: 'Gaming Security for Players',
-  bio: 'The Grid Nexus is a single-editor publication covering gaming security for players — account protection, scam awareness, and platform-specific guidance, with claims cited to primary sources.',
+  name: 'Kim Njuki',
+  jobTitle: 'Founder & Editor',
+  bio: 'Kim Njuki founded The Grid Nexus to give players plain-language answers to one question: "is this safe, and what do I do right now?" Coverage focuses on gaming account protection, scam awareness, and platform-specific security guidance, with claims cited to primary sources.',
   expertise: ['Gaming Security', 'Account Protection', 'Online Safety'],
 };
 

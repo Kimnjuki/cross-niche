@@ -162,7 +162,7 @@ function generateArticleJsonLd(article) {
   // dropped from the index ("canonical points to redirect" in Search Console).
   const canonical = canonicalUrlFor(article);
 
-  const authorName = article.authorName || 'The Grid Nexus Editorial Team';
+  const authorName = article.authorName || 'Kim Njuki';
   const authorSlugValue = authorName.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
   const authorUrl = `${BASE_URL}/author/${authorSlugValue}`;
 
@@ -502,7 +502,7 @@ function generateArticleHtml(article, bundleScript, allArticles = [], relatedLis
     : '';
   const publishedIso = article.publishedAt ? new Date(article.publishedAt).toISOString() : '';
   const modifiedIso = article.lastModified ? new Date(article.lastModified).toISOString() : '';
-  const authorName = article.author || 'The Grid Nexus Editorial Team';
+  const authorName = article.author || 'Kim Njuki';
 
   return `<!doctype html>
 <html lang="en" dir="ltr">
@@ -564,7 +564,7 @@ ${jsonLd}
             <h1 style="font-size:2.25rem;line-height:1.2;margin-bottom:1rem;color:#f8fafc">${escapeHtml(repairMojibake(article.title))}</h1>
             <div style="display:flex;flex-wrap:wrap;gap:1rem;font-size:0.875rem;color:#94a3b8;margin-bottom:1.5rem">
               <span>By ${(() => {
-                const authorName = article.authorName || 'The Grid Nexus Editorial Team';
+                const authorName = article.authorName || 'Kim Njuki';
                 const slug = authorName.toLowerCase().trim().replace(/[\s_]+/g, '-').replace(/[^a-z0-9-]/g, '');
                 // Link the byline to the static author page (P1 orphan rescue:
                 // gives /author/* profiles crawlable inbound links) — except the
