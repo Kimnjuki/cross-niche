@@ -328,12 +328,12 @@ export const ROUTE_METADATA = [
   },
   {
     path: '/research/state-of-gaming-security-2026',
-    title: 'State of Gaming Security 2026 | The Grid Nexus',
+    title: 'State of Gaming Security 2026 Report | The Grid Nexus',
     description:
-      'Our 2026 research report on gaming security: survey data on account theft, cheat malware, two-factor adoption and the gaps players still leave open.',
+      'Our 2026 report: security grades for 14 games and platforms, plus a gamer-impact triage of actively-exploited vulnerabilities from the CISA KEV catalog.',
     h1: 'State of gaming security 2026',
     intro:
-      'Original survey and telemetry data on how players actually secure their accounts, where the habits break down, and which protections measurably reduce account loss. Methodology notes, sample sizes and the full question set are published alongside the findings.',
+      'Two datasets: a security-grade assessment of 14 major games and platforms (based on documented two-factor-authentication support and breach history), and a gamer-impact triage of actively-exploited vulnerabilities from the CISA Known Exploited Vulnerabilities catalog. Methodology notes and a CSV download are included.',
     links: [
       { href: '/pillar/gaming-security', label: 'Gaming security hub' },
       { href: '/gaming/security-guides', label: 'Gaming security guides' },

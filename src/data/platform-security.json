@@ -5,7 +5,7 @@
       "name": "Steam",
       "officialDomains": ["steampowered.com", "steamcommunity.com"],
       "mfa": "supported",
-      "mfaNote": "Steam Guard Mobile Authenticator provides time-based codes for login protection.",
+      "mfaNote": "Steam Guard Mobile Authenticator (time-based codes), Steam Guard email codes, and optional hardware security keys / passkeys (FIDO2).",
       "recoveryPath": "/recover/steam/account-stolen",
       "links": [
         { "label": "Account recovery", "url": "https://help.steampowered.com/" },

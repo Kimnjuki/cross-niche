@@ -13,6 +13,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { isGamerRelevant } from './lib/gamer-threat-filter.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const projectRoot = path.resolve(__dirname, '..');
@@ -27,12 +28,13 @@ const gradeCounts = {};
 for (const g of games) gradeCounts[g.securityGrade] = (gradeCounts[g.securityGrade] || 0) + 1;
 
 const sevCounts = {};
-for (const t of threats) sevCounts[t.severity] = (sevCounts[t.severity] || 0) + 1;
+const gamerThreats = threats.filter(isGamerRelevant);
+for (const t of gamerThreats) sevCounts[t.severity] = (sevCounts[t.severity] || 0) + 1;
 
 const platformCounts = {};
-for (const t of threats) for (const p of t.gamingPlatforms || []) platformCounts[p] = (platformCounts[p] || 0) + 1;
+for (const t of gamerThreats) for (const p of t.gamingPlatforms || []) platformCounts[p] = (platformCounts[p] || 0) + 1;
 
-const gamerRelevant = threats.length; // exported set is already affectsGamers=true
+const gamerRelevant = gamerThreats.length; // narrowed to consumer products a player patches
 
 function esc(s) {
   return String(s ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
