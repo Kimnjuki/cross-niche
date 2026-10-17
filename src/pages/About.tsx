@@ -8,14 +8,7 @@ import { SEOHead } from '@/components/seo/SEOHead';
 import { authorProfiles } from '@/data/authorData';
 
 const FEATURED_AUTHORS = [
-  'diana-wong',
-  'james-morrison',
-  'dr-emily-watson',
-  'sarah-chen',
-  'marcus-johnson',
-  'lisa-park',
-  'dr-robert-kim',
-  'kevin-nakamura',
+  'kim-njuki',
 ];
 
 export default function About() {
@@ -24,10 +17,10 @@ export default function About() {
   return (
     <Layout>
       <SEOHead
-        title="About The Grid Nexus | Our Mission, Team & Editorial Standards"
-        description="The Grid Nexus is a premier digital publication covering technology, cybersecurity, and gaming. Meet our expert editorial team and learn about our commitment to accurate, in-depth reporting."
+        title="About The Grid Nexus | Gaming Security for Players"
+        description="The Grid Nexus is a publication covering gaming security for players — account protection, scam awareness, and platform-specific guidance with claims cited to primary sources."
         url={typeof window !== 'undefined' ? `${window.location.origin}/about` : '/about'}
-        keywords={['about the grid nexus', 'tech journalism', 'cybersecurity news', 'gaming coverage', 'editorial team']}
+        keywords={['about the grid nexus', 'gaming security', 'account protection', 'scam awareness']}
       />
       <div className="container mx-auto px-4 py-16">
         <div className="max-w-5xl mx-auto">
@@ -36,7 +29,7 @@ export default function About() {
           <div className="text-center mb-14">
             <h1 className="text-4xl md:text-5xl font-bold mb-5">About The Grid Nexus</h1>
             <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-              Independent intelligence across technology, cybersecurity, and gaming — written by specialists, for professionals.
+              Gaming security for players — plain-language answers to &ldquo;is this safe, and what do I do right now?&rdquo;
             </p>
           </div>
 
@@ -61,12 +54,11 @@ export default function About() {
                 a game developer can stay current on the threat landscape targeting their platform.
               </p>
               <p className="text-lg leading-relaxed">
-                Our editorial team spans three continents and brings together journalists, researchers, and
-                practitioners with deep domain expertise. Every article published on The Grid Nexus goes through
-                our multi-stage editorial process: research, drafting, fact-checking, and final review by a
-                senior editor or subject-matter expert. We do not publish press releases as news. We do not
-                accept payment for editorial coverage. We clearly label sponsored content and affiliate
-                relationships in accordance with FTC guidelines.
+                Our coverage is written and edited by the founder, <strong>Kim Njuki</strong>. Every article is held to a
+                simple standard: factual security claims must cite an official vendor source or published security
+                research, and carry the date they were verified. We do not publish press releases as news, we do not
+                accept payment for editorial coverage, and we do not fabricate surveys, telemetry, or testing that was
+                not actually performed. Where we do not know something, we say so rather than inventing a number.
               </p>
               <p className="text-lg leading-relaxed">
                 Since launch, The Grid Nexus has published in-depth analysis of major data breaches, exclusive
@@ -160,11 +152,10 @@ export default function About() {
 
           {/* ── Team ─────────────────────────────────────────────────────── */}
           <section className="mb-14">
-            <h2 className="text-3xl font-bold mb-2">Our Editorial Team</h2>
+            <h2 className="text-3xl font-bold mb-2">The Editor</h2>
             <p className="text-muted-foreground mb-8 text-lg">
-              The Grid Nexus is written and edited by specialists with real-world experience in their fields —
-              not generalist bloggers. Our contributors hold advanced degrees, professional certifications,
-              and years of hands-on industry experience.
+              The Grid Nexus is a single-editor publication. Articles are written, fact-checked, and edited by its
+              founder — no invented bylines, no stock-photo experts.
             </p>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {team.map((author) => (

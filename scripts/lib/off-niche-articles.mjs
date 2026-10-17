@@ -13,14 +13,12 @@
 const DEMOTED_CONTENT_TYPES = new Set(['technology', 'news', 'feature']);
 
 const KEEP_SLUGS = new Set([
-  // gaming-security articles mislabeled with a demoted contentType
-  'windows-11-anti-cheat-broken-fix-guide',
-  'vpn-gaming-security-latency-test-2026',
-  'gaming-headset-malware-privacy-guide',
-  'ai-enhanced-game-security-anti-cheat-machine-learning-2026',
-  'game-account-security-anti-phishing-2026-gaming-platforms',
-  'game-cheating-exploit-detection-analytics-cheat-intelligence-2026',
-  'game-monetization-anti-fraud-intelligence-2026-in-app-purchases',
+  // Empty by design. The "gaming-security" articles that were previously
+  // force-kept here under a demoted contentType (windows-11 anti-cheat, vpn
+  // test, gaming-headset, and the four game-* "feature" pieces) were AI-
+  // generated with fabricated claims and are now demoted with the rest of the
+  // batch. Keep nothing by exception — on-niche now means the contentType is
+  // on-niche AND the article is honest, which is enforced by DEMOTE_SLUGS.
 ]);
 
 const DEMOTE_SLUGS = new Set([
@@ -59,6 +57,27 @@ const DEMOTE_SLUGS = new Set([
   'ys-x-proud-nordics-launch-2026',
   'high-on-life-2-release-2026',
   'nioh-3-release-ps5-2026',
+  // AI-generated "high editorial" batch (April 2026) with fabricated claims:
+  // unverifiable stats ("340% surge"), fake CVEs/incidents (CVE-2026-2904,
+  // "Bitwarden April 2026", "Razer Synapse April 2026"), and "we tested"
+  // claims that never happened. Demoted for accuracy and trust.
+  'gmail-hack-attacks-surge-gamers-2fa-2026',
+  'bitwarden-security-incident-gaming-password-manager',
+  'steam-account-takeover-protection-guide-2026',
+  'discord-malware-gamers-how-to-stay-safe',
+  'nintendo-switch-2-security-guide',
+  'fake-game-cheats-malware-account-stealer',
+  'sim-swapping-gaming-accounts-protection',
+  'xbox-rebrand-security-changes-gamers',
+  'steam-controller-security-risks-gamers',
+  'twitch-streamer-security-guide-doxxing-swatting',
+  'razer-synapse-security-vulnerability-fix',
+  'game-key-reseller-scams-g2a-cdkeys',
+  'roblox-parents-guide-account-security-safety',
+  'minecraft-server-security-guide',
+  'twitch-accounts-hacked-breach-guide-2026',
+  'gaming-pc-antivirus-best-2026',
+  'fortnite-valorant-updates-2026-security-patches',
 ]);
 
 /** True when an article belongs in the gaming-security sitemap. */

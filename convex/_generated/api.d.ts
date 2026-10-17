@@ -62,6 +62,7 @@ import type * as newsIngestor from "../newsIngestor.js";
 import type * as newsletter from "../newsletter.js";
 import type * as newsletterAutomation from "../newsletterAutomation.js";
 import type * as nexusAI from "../nexusAI.js";
+import type * as noindexFabricatedArticles from "../noindexFabricatedArticles.js";
 import type * as pageSpeed from "../pageSpeed.js";
 import type * as pcBuilder from "../pcBuilder.js";
 import type * as personalizedFeeds from "../personalizedFeeds.js";
@@ -155,6 +156,7 @@ declare const fullApi: ApiFromModules<{
   newsletter: typeof newsletter;
   newsletterAutomation: typeof newsletterAutomation;
   nexusAI: typeof nexusAI;
+  noindexFabricatedArticles: typeof noindexFabricatedArticles;
   pageSpeed: typeof pageSpeed;
   pcBuilder: typeof pcBuilder;
   personalizedFeeds: typeof personalizedFeeds;
