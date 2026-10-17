@@ -1,12 +1,12 @@
 import { useState } from "react";
-import { useQuery, useMutation } from "convex/react";
+import { useQuery } from "convex/react";
 import { api } from "../../../convex/_generated/api";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Shield, Search, AlertTriangle, CheckCircle2, Info, Gamepad2, ChevronRight } from "lucide-react";
+import { Shield, Search, AlertTriangle, CheckCircle2, Info, Gamepad2 } from "lucide-react";
 
 const PLATFORMS = ["PC", "PlayStation", "Xbox", "Steam", "Mobile", "Nintendo"];
 
@@ -58,10 +58,9 @@ export function GameSecurityCopilot() {
     api.gameAdvisories.getByGame,
     queried && gameSlug ? { gameSlug, platform } : "skip"
   );
-  const createDemo = useMutation(api.gameAdvisories.createDemo);
   const [loading, setLoading] = useState(false);
 
-  const handleSearch = async () => {
+  const handleSearch = () => {
     const slug = inputValue.trim().toLowerCase().replace(/\s+/g, "-");
     if (!slug) return;
     setGameSlug(slug);
@@ -69,12 +68,7 @@ export function GameSecurityCopilot() {
     setLoading(true);
 
     // Brief delay for the query to resolve
-    setTimeout(async () => {
-      if (!advisories || advisories.length === 0) {
-        await createDemo({ gameSlug: slug, platform });
-      }
-      setLoading(false);
-    }, 800);
+    setTimeout(() => setLoading(false), 500);
   };
 
   const latestAdvisory = advisories?.[0];
@@ -208,14 +202,10 @@ export function GameSecurityCopilot() {
       {!loading && queried && advisories?.length === 0 && (
         <div className="text-center py-12 text-gray-400">
           <Shield className="w-12 h-12 mx-auto mb-3 text-gray-600" />
-          <p>No advisory found. Try again in a moment while we generate an analysis.</p>
-          <Button
-            className="mt-4"
-            variant="outline"
-            onClick={handleSearch}
-          >
-            Retry Analysis <ChevronRight className="ml-1 w-4 h-4" />
-          </Button>
+          <p>No reviewed advisory is available for this game and platform yet.</p>
+          <p className="text-xs mt-2">
+            We only show human-reviewed advisories — we do not generate a placeholder to fill the gap.
+          </p>
         </div>
       )}
     </div>
