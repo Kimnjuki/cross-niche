@@ -25,6 +25,24 @@ const LIB = JSON.parse(
   fs.readFileSync(path.join(projectRoot, 'src', 'data', 'game-library.json'), 'utf8')
 );
 
+// Platform security data (official domains, 2FA, recovery, scam patterns) for
+// the scorecard. Games whose account security is the platform's map to a hub.
+const PLATFORM_SECURITY = JSON.parse(
+  fs.readFileSync(path.join(projectRoot, 'src', 'data', 'platform-security.json'), 'utf8')
+).platforms || [];
+const PLATFORM_BY_SLUG = Object.fromEntries(PLATFORM_SECURITY.map((p) => [p.slug, p]));
+
+const GAME_TO_PLATFORM = {
+  steam: 'steam',
+  discord: 'discord',
+  'playstation-network': 'playstation',
+  valorant: 'riot-games',
+  'league-of-legends': 'riot-games',
+  'apex-legends': 'ea',
+  fortnite: 'epic-games',
+  'counter-strike-2': 'steam',
+};
+
 function esc(s) {
   return String(s ?? '')
     .replace(/&/g, '&amp;')
@@ -103,6 +121,46 @@ function gradeBadge(game) {
   return `<span style="display:inline-block;background:${meta.color};color:#0f172a;font-weight:800;padding:0.25rem 0.75rem;border-radius:9999px;font-size:1.4rem">${meta.label}</span>`;
 }
 
+function scorecardHtml(game) {
+  const platformSlug = GAME_TO_PLATFORM[game.slug];
+  const platform = platformSlug ? PLATFORM_BY_SLUG[platformSlug] : null;
+  const reviewed = game.updatedAt ? new Date(game.updatedAt).toISOString().slice(0, 10) : '—';
+
+  if (platform) {
+    const domains = (platform.officialDomains || []).map((d) => `<code style="color:#e2e8f0;background:rgba(148,163,184,0.1);padding:0.1rem 0.4rem;border-radius:0.25rem;margin-right:0.4rem">${esc(d)}</code>`).join('');
+    const scams = (platform.scamPatterns || []).slice(0, 3).map((s) => `<li style="margin-bottom:0.3rem;color:#cbd5e1">${esc(s)}</li>`).join('');
+    return `
+      <h2 style="font-size:1.2rem;margin:2rem 0 0.75rem">Account security scorecard</h2>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1rem">
+        <div style="background:rgba(148,163,184,0.08);padding:1rem;border-radius:0.5rem">
+          <strong style="color:#60a5fa">Two-factor authentication</strong>
+          <p style="color:#cbd5e1;font-size:0.9rem;margin:0.4rem 0 0">${esc(platform.mfaNote)}</p>
+        </div>
+        <div style="background:rgba(148,163,184,0.08);padding:1rem;border-radius:0.5rem">
+          <strong style="color:#60a5fa">Account recovery</strong>
+          <p style="color:#cbd5e1;font-size:0.9rem;margin:0.4rem 0 0">If this account is stolen, follow the <a href="${esc(platform.recoveryPath)}" style="color:#60a5fa">${esc(platform.name)} recovery guide</a>.</p>
+        </div>
+        <div style="background:rgba(148,163,184,0.08);padding:1rem;border-radius:0.5rem">
+          <strong style="color:#60a5fa">Official domains</strong>
+          <p style="margin:0.4rem 0 0">${domains}</p>
+          <p style="color:#94a3b8;font-size:0.8rem;margin:0.5rem 0 0">Only trust these for sign-in and support.</p>
+        </div>
+        <div style="background:rgba(148,163,184,0.08);padding:1rem;border-radius:0.5rem">
+          <strong style="color:#60a5fa">Known scam patterns</strong>
+          <ul style="margin:0.4rem 0 0;padding-left:1.2rem">${scams}</ul>
+        </div>
+      </div>
+      <p style="color:#94a3b8;font-size:0.85rem;margin-top:0.75rem">See the full <a href="/platforms/${esc(platformSlug)}/security" style="color:#60a5fa">${esc(platform.name)} security hub</a> · Reviewed ${esc(reviewed)}.</p>
+    `;
+  }
+
+  return `
+    <h2 style="font-size:1.2rem;margin:2rem 0 0.75rem">Account security</h2>
+    <p style="color:#cbd5e1;max-width:65ch">${esc(game.securityNotes || '')}</p>
+    <p style="color:#94a3b8;font-size:0.85rem">This game uses its own account system. Enable the developer's two-factor authentication and follow its official recovery process. Reviewed ${esc(reviewed)}.</p>
+  `;
+}
+
 function generateDetail(game) {
   const url = `${BASE_URL}/games/${game.slug}`;
   const title = `${game.name} Security Grade ${game.securityGrade} | ${SITE_NAME}`;
@@ -128,6 +186,7 @@ function generateDetail(game) {
         <div style="background:rgba(148,163,184,0.08);padding:1rem;border-radius:0.5rem"><strong style="color:#60a5fa">Publisher</strong><br>${esc(game.publisher || '—')}</div>
         <div style="background:rgba(148,163,184,0.08);padding:1rem;border-radius:0.5rem"><strong style="color:#60a5fa">Released</strong><br>${esc(String(game.releaseYear || '—'))}</div>
       </div>
+      ${scorecardHtml(game)}
       <p style="margin-top:1.5rem"><a href="/tools/gaming-security-checkup" style="color:#60a5fa">Check your own gaming security →</a></p>
     </article>`;
 
