@@ -289,6 +289,47 @@ const PAGES = [
       <p style="color:#cbd5e1;max-width:68ch">Never send passwords, MFA codes, recovery codes, session cookies, or seed phrases — to us or to anyone.</p>
     </article>`,
   },
+  {
+    route: '/parents',
+    title: `Parents' Guide to Gaming Safety | ${SITE_NAME}`,
+    description:
+      'Platform-by-platform parental controls for Roblox, Minecraft, Fortnite, PlayStation, Xbox, Nintendo and Discord, plus what to lock down and how to talk to your kids about scams.',
+    body: `
+    <article>
+      <h1 style="font-size:2rem;margin:0 0 0.75rem">Parents' guide to gaming safety</h1>
+      <p style="color:#cbd5e1;max-width:68ch">How to set up parental controls on the games and platforms kids actually use, and what to lock down first.</p>
+
+      <h2 style="font-size:1.2rem;margin:1.5rem 0 0.5rem">Set up parental controls</h2>
+      <ul style="color:#cbd5e1;max-width:68ch;padding-left:1.25rem">
+        <li style="margin-bottom:0.5rem"><strong>Roblox</strong> — account restrictions, parent PIN and spending limits. <a href="https://en.help.roblox.com/hc/en-us/articles/203313120" style="color:#60a5fa">Official parental controls ↗</a></li>
+        <li style="margin-bottom:0.5rem"><strong>Minecraft</strong> — multiplayer and chat controls via the Microsoft family account. <a href="https://www.minecraft.net/en-us/article/parents-guide" style="color:#60a5fa">Official parents' guide ↗</a></li>
+        <li style="margin-bottom:0.5rem"><strong>Fortnite (Epic Games)</strong> — Epic account parental controls for purchases and communication. <a href="https://www.epicgames.com/site/en-US/parental-controls" style="color:#60a5fa">Official parental controls ↗</a></li>
+        <li style="margin-bottom:0.5rem"><strong>PlayStation</strong> — family management, spending limits and age ratings. <a href="https://www.playstation.com/support/account/parental-controls/" style="color:#60a5fa">Official parental controls ↗</a></li>
+        <li style="margin-bottom:0.5rem"><strong>Xbox</strong> — Microsoft family settings for screen time, purchases and content. <a href="https://www.xbox.com/family-hub" style="color:#60a5fa">Official family hub ↗</a></li>
+        <li style="margin-bottom:0.5rem"><strong>Nintendo Switch</strong> — the Nintendo Switch Parental Controls app. <a href="https://www.nintendo.com/us/switch/parental-controls/" style="color:#60a5fa">Official parental controls ↗</a></li>
+        <li style="margin-bottom:0.5rem"><strong>Discord</strong> — Family Center and privacy settings. <a href="https://discord.com/safety" style="color:#60a5fa">Official safety center ↗</a></li>
+      </ul>
+
+      <h2 style="font-size:1.2rem;margin:1.5rem 0 0.5rem">What to lock down first</h2>
+      <ul style="color:#cbd5e1;max-width:68ch;padding-left:1.25rem">
+        <li>Purchase limits and payment PINs — stop surprise charges.</li>
+        <li>Chat and friend-request restrictions — most scams arrive as a message.</li>
+        <li>Screen-time limits.</li>
+        <li>Two-factor authentication on your own parent account, not just the child's.</li>
+      </ul>
+
+      <h2 style="font-size:1.2rem;margin:1.5rem 0 0.5rem">What to teach your kids</h2>
+      <ul style="color:#cbd5e1;max-width:68ch;padding-left:1.25rem">
+        <li>"Free V-Bucks, Robux or skins" is always a scam.</li>
+        <li>Never share passwords — not even with online friends.</li>
+        <li>Don't click links in chat or Discord messages.</li>
+        <li>If something feels wrong, tell a parent — no account is worth hiding.</li>
+      </ul>
+
+      <h2 style="font-size:1.2rem;margin:1.5rem 0 0.5rem">If an account is already compromised</h2>
+      <p style="color:#cbd5e1;max-width:68ch">Start with the <a href="/recover" style="color:#60a5fa">account recovery navigator</a> — it routes you to each platform's official recovery process, and never asks for credentials.</p>
+    </article>`,
+  },
 ];
 
 function main() {
