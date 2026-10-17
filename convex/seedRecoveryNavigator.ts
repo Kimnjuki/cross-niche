@@ -260,6 +260,36 @@ function standardScenarios(platform: { slug: string; name: string }): Playbook[]
         { key: 'official-recovery', title: 'Recover the account if it was taken', body: `If the account was already stolen, follow ${name}'s official account-recovery process.`, urgency: 'critical', officialLinkPurpose: 'recovery', selfReportedOnly: true },
       ],
     },
+    {
+      ...base,
+      scenarioSlug: 'email-changed',
+      steps: [
+        { key: 'act-fast', title: 'Act immediately on the change notice', body: `If you received an "email changed" notice you did not make, act now — an attacker is taking over the account.`, urgency: 'critical', selfReportedOnly: true },
+        { key: 'clean-device', title: 'Use a clean device', body: 'If malware is suspected, do not sign in from the possibly infected device until it is cleaned.', urgency: 'critical', requiresCleanDevice: true, selfReportedOnly: true },
+        { key: 'official-recovery', title: 'Recover through official support', body: `Use ${name}'s official account-recovery process to prove you own the account — never a third-party service.`, urgency: 'critical', officialLinkPurpose: 'recovery', selfReportedOnly: true },
+        { key: 'restore-email', title: 'Restore your email and enable 2FA', body: 'After regaining access, restore your email address and turn on two-factor authentication.', urgency: 'critical', officialLinkPurpose: 'security', selfReportedOnly: true },
+      ],
+    },
+    {
+      ...base,
+      scenarioSlug: 'lost-linked-email',
+      steps: [
+        { key: 'recover-email', title: 'Recover the linked email account', body: 'First recover access to the email address through its own provider — most account controls rely on it.', urgency: 'critical', selfReportedOnly: true },
+        { key: 'official-recovery', title: 'Recover through official support', body: `If you cannot recover the email, use ${name}'s official account-recovery process to prove ownership another way.`, urgency: 'critical', officialLinkPurpose: 'recovery', selfReportedOnly: true },
+        { key: 'update-email', title: 'Update the linked email', body: 'Once back in, change the linked email to one you control.', urgency: 'important', selfReportedOnly: true },
+        { key: 'enable-2fa', title: 'Enable two-factor authentication', body: 'Turn on two-factor authentication so the account is not tied to a single email.', urgency: 'critical', officialLinkPurpose: 'security', selfReportedOnly: true },
+      ],
+    },
+    {
+      ...base,
+      scenarioSlug: 'scam-recovery-contact',
+      steps: [
+        { key: 'stop-contact', title: 'Stop communicating and do not pay', body: 'Stop responding to the "recovery service" and do not send more money — a scammer who has already defrauded you is unlikely to return the account even if paid.', urgency: 'critical', selfReportedOnly: true },
+        { key: 'change-passwords', title: 'Change passwords from a clean device', body: 'Change your password and any passwords you reused, from a device you trust.', urgency: 'critical', selfReportedOnly: true },
+        { key: 'report-scam', title: 'Report the scam', body: `Report the scammer to ${name} and to your payment provider if you paid.`, urgency: 'important', selfReportedOnly: true },
+        { key: 'official-recovery', title: 'Recover through the official process', body: `Recover the account through ${name}'s official process — never a paid third party.`, urgency: 'critical', officialLinkPurpose: 'recovery', selfReportedOnly: true },
+      ],
+    },
   ];
 }
 
