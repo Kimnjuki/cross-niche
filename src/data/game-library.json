@@ -312,7 +312,7 @@
       "releaseYear": 2023,
       "securityGrade": "A",
       "securityMentionRate": 0,
-      "securityNotes": "Runs on Steam, inheriting Steam Guard TOTP 2FA and hardware-key support. High-value inventory makes accounts prime targets.",
+      "securityNotes": "Runs on Steam, inheriting Steam Guard TOTP 2FA. High-value inventory makes accounts prime targets.",
       "sentimentScores": {
         "balance": 0.5,
         "community": 0.5,
@@ -593,7 +593,7 @@
       "releaseYear": 2015,
       "securityGrade": "B",
       "securityMentionRate": 0,
-      "securityNotes": "Supports TOTP 2FA and hardware keys, but account-token-stealing malware and phishing are rampant on the platform. Enable 2FA and never run unverified scripts.",
+      "securityNotes": "Supports TOTP 2FA, passkeys, and hardware security keys, but account-token-stealing malware and phishing are rampant on the platform. Enable 2FA and never run unverified scripts.",
       "sentimentScores": {
         "balance": 0.5,
         "community": 0.5,
@@ -639,7 +639,7 @@
       "releaseYear": 2003,
       "securityGrade": "A",
       "securityMentionRate": 0,
-      "securityNotes": "Steam Guard mobile authenticator (TOTP) plus hardware security-key support. One of the strongest account protections in gaming.",
+      "securityNotes": "Steam Guard Mobile Authenticator (TOTP) and Steam Guard email codes. No passkey or hardware-key support yet — the mobile authenticator is the strongest option.",
       "sentimentScores": {
         "balance": 0.5,
         "community": 0.5,

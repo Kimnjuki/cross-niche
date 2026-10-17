@@ -90,6 +90,7 @@ import type * as toolAnalytics from "../toolAnalytics.js";
 import type * as toolUsageLogs from "../toolUsageLogs.js";
 import type * as upsertEastAfricaGuide from "../upsertEastAfricaGuide.js";
 import type * as upsertRestructuredGuides from "../upsertRestructuredGuides.js";
+import type * as upsertThreatGuides from "../upsertThreatGuides.js";
 import type * as users from "../users.js";
 import type * as verify from "../verify.js";
 
@@ -182,6 +183,7 @@ declare const fullApi: ApiFromModules<{
   toolUsageLogs: typeof toolUsageLogs;
   upsertEastAfricaGuide: typeof upsertEastAfricaGuide;
   upsertRestructuredGuides: typeof upsertRestructuredGuides;
+  upsertThreatGuides: typeof upsertThreatGuides;
   users: typeof users;
   verify: typeof verify;
 }>;

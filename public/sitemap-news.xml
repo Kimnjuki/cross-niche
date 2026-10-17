@@ -1,5 +1,59 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
         xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
-
+  <url>
+    <loc>https://thegridnexus.com/article/passkeys-for-gamers-platform-support</loc>
+    <news:news>
+      <news:publication>
+        <news:name>The Grid Nexus</news:name>
+        <news:language>en</news:language>
+      </news:publication>
+      <news:publication_date>2026-10-17</news:publication_date>
+      <news:title>Passkeys for Gamers: Steam, Discord, PlayStation, Xbox Support in 2026</news:title>
+    </news:news>
+  </url>
+  <url>
+    <loc>https://thegridnexus.com/article/sim-swap-attack-defense-gaming-accounts</loc>
+    <news:news>
+      <news:publication>
+        <news:name>The Grid Nexus</news:name>
+        <news:language>en</news:language>
+      </news:publication>
+      <news:publication_date>2026-10-17</news:publication_date>
+      <news:title>SIM Swap Attack Defense: Protect Your Phone Number &amp; Gaming Accounts</news:title>
+    </news:news>
+  </url>
+  <url>
+    <loc>https://thegridnexus.com/article/steam-api-trade-scam-cs2-skins</loc>
+    <news:news>
+      <news:publication>
+        <news:name>The Grid Nexus</news:name>
+        <news:language>en</news:language>
+      </news:publication>
+      <news:publication_date>2026-10-17</news:publication_date>
+      <news:title>Steam API Trade Scam: How CS2 Skins Get Stolen &amp; How to Stop It</news:title>
+    </news:news>
+  </url>
+  <url>
+    <loc>https://thegridnexus.com/article/fake-game-cheats-infostealer-malware</loc>
+    <news:news>
+      <news:publication>
+        <news:name>The Grid Nexus</news:name>
+        <news:language>en</news:language>
+      </news:publication>
+      <news:publication_date>2026-10-17</news:publication_date>
+      <news:title>Infostealer Malware in Fake Game Cheats: How It Works &amp; How to Stay Safe</news:title>
+    </news:news>
+  </url>
+  <url>
+    <loc>https://thegridnexus.com/article/discord-token-theft-qr-login-scams</loc>
+    <news:news>
+      <news:publication>
+        <news:name>The Grid Nexus</news:name>
+        <news:language>en</news:language>
+      </news:publication>
+      <news:publication_date>2026-10-17</news:publication_date>
+      <news:title>Discord Token Theft &amp; QR-Login Scams: How Accounts Get Stolen</news:title>
+    </news:news>
+  </url>
 </urlset>

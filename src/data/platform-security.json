@@ -5,7 +5,7 @@
       "name": "Steam",
       "officialDomains": ["steampowered.com", "steamcommunity.com"],
       "mfa": "supported",
-      "mfaNote": "Steam Guard Mobile Authenticator (time-based codes), Steam Guard email codes, and optional hardware security keys / passkeys (FIDO2).",
+      "mfaNote": "Steam Guard Mobile Authenticator (time-based codes) and Steam Guard email codes. Steam does not support passkeys or FIDO2 hardware keys — the mobile authenticator is the strongest option.",
       "recoveryPath": "/recover/steam/account-stolen",
       "links": [
         { "label": "Account recovery", "url": "https://help.steampowered.com/" },
@@ -24,7 +24,7 @@
       "name": "Discord",
       "officialDomains": ["discord.com"],
       "mfa": "supported",
-      "mfaNote": "Discord supports two-factor authentication via an authenticator app.",
+      "mfaNote": "Discord supports two-factor authentication via an authenticator app, plus passkeys (passwordless login) and hardware security keys (FIDO2).",
       "recoveryPath": "/recover/discord/account-stolen",
       "links": [
         { "label": "Account recovery", "url": "https://support.discord.com/hc/en-us/articles/216679607" },
@@ -97,7 +97,7 @@
       "name": "PlayStation",
       "officialDomains": ["playstation.com"],
       "mfa": "supported",
-      "mfaNote": "PlayStation supports 2-step verification via authenticator app or text message.",
+      "mfaNote": "PlayStation supports 2-step verification via authenticator app or text message, plus passkey sign-in.",
       "recoveryPath": "/recover/playstation/account-stolen",
       "links": [
         { "label": "Account recovery", "url": "https://www.playstation.com/support/account/recover-account/" },
