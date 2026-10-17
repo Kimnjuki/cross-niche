@@ -217,6 +217,44 @@ const PAGES = [
       <p style="color:#cbd5e1;max-width:68ch">The Grid Nexus publishes no bypass, exploit, or cheat-evasion guidance, and we do not recommend disabling core Windows security controls to make a game run.</p>
     </article>`,
   },
+  {
+    route: '/tools/download-check',
+    title: `Download Check — verify a file before you run it | ${SITE_NAME}`,
+    description:
+      'How to verify a downloaded file before running it: official distributor, SHA-256 hash, code signature and update channel. Unknown hashes are never called clean.',
+    body: `
+    <article>
+      <h1 style="font-size:2rem;margin:0 0 0.75rem">Download check — verify a file before you run it</h1>
+      <p style="color:#cbd5e1;max-width:68ch">Fake launchers, "cheats", mods and "free currency" tools are the most common way player accounts get stolen. Verify a download before you run it.</p>
+
+      <h2 style="font-size:1.2rem;margin:1.5rem 0 0.5rem">What to check</h2>
+      <ul style="color:#cbd5e1;max-width:68ch;padding-left:1.25rem">
+        <li><strong>Official distributor / publisher</strong> — download only from the official site or store.</li>
+        <li><strong>SHA-256 file hash</strong> — compare against the publisher's published checksum or a reviewed indicator list.</li>
+        <li><strong>Code signature</strong> — verify the file is signed by the vendor you expect.</li>
+        <li><strong>Update channel</strong> — update only through the official launcher, never a third-party "mirror".</li>
+      </ul>
+
+      <h2 style="font-size:1.2rem;margin:1.5rem 0 0.5rem">What a result means</h2>
+      <ul style="color:#cbd5e1;max-width:68ch;padding-left:1.25rem">
+        <li style="margin-bottom:0.5rem"><strong>Known bad</strong> — matches a reviewed bad hash. Do not run it.</li>
+        <li style="margin-bottom:0.5rem"><strong>No known indicators</strong> — nothing in our lists matched. This is not a guarantee of safety.</li>
+        <li style="margin-bottom:0.5rem"><strong>Insufficient evidence</strong> — we cannot verify it. Assume it is untrusted until you can verify it independently.</li>
+      </ul>
+      <p style="color:#cbd5e1;max-width:68ch">We never label an unknown file "clean".</p>
+
+      <h2 style="font-size:1.2rem;margin:1.5rem 0 0.5rem">How to verify a download</h2>
+      <ol style="color:#cbd5e1;max-width:68ch;padding-left:1.5rem">
+        <li style="margin-bottom:0.5rem">Download only from the official site or store.</li>
+        <li style="margin-bottom:0.5rem">Compute the file's SHA-256 hash (your operating system has built-in tools, or use a reputable hash utility).</li>
+        <li style="margin-bottom:0.5rem">Check the hash against the publisher's published checksum, or look it up in the <a href="/tools/ioc-lookup" style="color:#60a5fa">IOC Lookup</a> (VirusTotal public API, non-commercial).</li>
+        <li style="margin-bottom:0.5rem">Check the signature — on Windows, right-click the file, Properties, then Digital Signatures.</li>
+      </ol>
+
+      <h2 style="font-size:1.2rem;margin:1.5rem 0 0.5rem">Official update channels</h2>
+      <p style="color:#cbd5e1;max-width:68ch">Update games only through the official launcher (Steam, Epic Games, Riot, Battle.net, etc.) or the vendor's own site. Avoid third-party "mirrors", "repack" sites and "free" download portals.</p>
+    </article>`,
+  },
 ];
 
 function main() {

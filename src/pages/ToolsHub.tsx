@@ -4,7 +4,7 @@ import { SEOHead } from '@/components/seo/SEOHead';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Shield, Gamepad2, Search, Bot, ArrowRight, LifeBuoy, Lock, BarChart3, AlertTriangle } from 'lucide-react';
+import { Shield, Gamepad2, Search, Bot, ArrowRight, LifeBuoy, Lock, BarChart3, AlertTriangle, Download } from 'lucide-react';
 
 const tools = [
   {
@@ -61,6 +61,17 @@ const tools = [
     badge: 'FAQ',
     badgeVariant: 'default' as const,
     iconColor: 'text-[#B026FF]',
+  },
+  {
+    href: '/tools/download-check',
+    icon: Download,
+    name: 'Download Check',
+    tagline: 'Verify a file before you run it',
+    description:
+      'How to verify a downloaded file: official distributor, SHA-256 hash, code signature and update channel. Unknown hashes are never called clean.',
+    badge: 'Guide',
+    badgeVariant: 'outline' as const,
+    iconColor: 'text-gaming',
   },
 ];
 
