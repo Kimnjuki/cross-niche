@@ -9,6 +9,7 @@
 import { mutation } from './_generated/server';
 import { v } from 'convex/values';
 import { THREAT_GUIDES } from '../src/data/threatGuides';
+import { THREAT_GUIDES_2 } from '../src/data/threatGuides2';
 
 export const upsertThreatGuides = mutation({
   args: { trigger: v.optional(v.boolean()) },
@@ -17,7 +18,7 @@ export const upsertThreatGuides = mutation({
 
     const results: Array<{ slug: string; action: string; wordCount: number }> = [];
 
-    for (const guide of THREAT_GUIDES) {
+    for (const guide of [...THREAT_GUIDES, ...THREAT_GUIDES_2]) {
       const wordCount = guide.body.split(/\s+/).filter(Boolean).length;
       const now = Date.now();
       const canonical = `https://thegridnexus.com/article/${guide.slug}`;
