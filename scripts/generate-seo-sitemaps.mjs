@@ -161,6 +161,7 @@ function getTrustPages() {
     { loc: `${BASE_URL}/tools/scam-check`, lastmod: '' },
     { loc: `${BASE_URL}/anti-cheat`, lastmod: '' },
     { loc: `${BASE_URL}/tools/download-check`, lastmod: '' },
+    { loc: `${BASE_URL}/report`, lastmod: '' },
   ];
 }
 

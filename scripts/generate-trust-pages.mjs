@@ -255,6 +255,40 @@ const PAGES = [
       <p style="color:#cbd5e1;max-width:68ch">Update games only through the official launcher (Steam, Epic Games, Riot, Battle.net, etc.) or the vendor's own site. Avoid third-party "mirrors", "repack" sites and "free" download portals.</p>
     </article>`,
   },
+  {
+    route: '/report',
+    title: `Report a Scam or Threat | ${SITE_NAME}`,
+    description:
+      'How to report a gaming scam or threat, what to include, and what happens to your report — private until reviewed, only redacted findings published.',
+    body: `
+    <article>
+      <h1 style="font-size:2rem;margin:0 0 0.75rem">Report a scam or threat</h1>
+      <p style="color:#cbd5e1;max-width:68ch">How to report a gaming scam or threat, and what happens to your report.</p>
+
+      <h2 style="font-size:1.2rem;margin:1.5rem 0 0.5rem">What to include</h2>
+      <ul style="color:#cbd5e1;max-width:68ch;padding-left:1.25rem">
+        <li>A text description of what happened.</li>
+        <li>The platform or game involved.</li>
+        <li>Any domains or links (paste them — do not click them).</li>
+        <li>When it happened.</li>
+      </ul>
+      <p style="color:#cbd5e1;max-width:68ch">Do not include attachments, screenshots containing personal data, or any credentials, tokens or codes.</p>
+
+      <h2 style="font-size:1.2rem;margin:1.5rem 0 0.5rem">What happens to your report</h2>
+      <ul style="color:#cbd5e1;max-width:68ch;padding-left:1.25rem">
+        <li>Reports are private until a human reviewer checks them.</li>
+        <li>Only redacted, reviewed findings are published.</li>
+        <li>Community votes never confirm a threat — a reviewer does.</li>
+        <li>Corrections are public and dated.</li>
+      </ul>
+
+      <h2 style="font-size:1.2rem;margin:1.5rem 0 0.5rem">Report now</h2>
+      <p style="color:#cbd5e1;max-width:68ch">Report via our <a href="/contact" style="color:#60a5fa">contact page</a>. If your account was taken over, start with the <a href="/recover" style="color:#60a5fa">recovery navigator</a> — reporting does not recover your account.</p>
+
+      <h2 style="font-size:1.2rem;margin:1.5rem 0 0.5rem">Never send</h2>
+      <p style="color:#cbd5e1;max-width:68ch">Never send passwords, MFA codes, recovery codes, session cookies, or seed phrases — to us or to anyone.</p>
+    </article>`,
+  },
 ];
 
 function main() {
