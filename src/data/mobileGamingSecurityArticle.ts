@@ -121,7 +121,7 @@ const CONTENT = `
 <li><strong>Device security:</strong> Face ID, Touch ID, Android biometrics, strong PINs, encryption, Find My on iPhone, and Find Hub on Android (formerly Find My Device). On a gaming PC, add one of the <a href="/article/gaming-pc-antivirus-best-2026">best antivirus options for gaming PCs</a>.</li>
 <li><strong>Account tools:</strong> passkeys, security keys, backup codes, session management, and recovery-email protection.</li>
 <li><strong>Purchase controls:</strong> platform purchase limits and parental settings; see how <a href="/article/game-monetization-anti-fraud-intelligence-2026-in-app-purchases">in-app purchase fraud is detected and prevented</a>.</li>
-<li><strong>Network habits:</strong> trusted networks only, and never entering credentials through an unexpected public Wi-Fi redirect. At home, follow our <a href="/article/router-security-gamers-2026">router security guide for gamers</a>.</li>
+<li><strong>Network habits:</strong> trusted networks only, and never entering credentials through an unexpected public Wi-Fi redirect. At home, follow our <a href="/article/router-security-gamers-network-protection">router security guide for gamers</a>.</li>
 </ul>
 <figure><img src="/images/articles/mobile-gaming-security/authenticator-setup.webp" alt="Set up an authenticator app to enable two-factor authentication for gaming accounts." width="1024" height="1536" loading="lazy" decoding="async" /></figure><h2>What Should You Do If Your Mobile Gaming Account Is Hacked?</h2>
 <p>If a mobile gaming account is hacked, the first thing to do is make sure the email account that is connected to the game is secure. Then change passwords, remove any sessions that're not familiar, and get in touch with the official support team from the publisher. Do not talk to the person who stole the account or click on any links they send. Follow these steps in the order they are listed:</p>
@@ -190,7 +190,7 @@ const CONTENT = `
 <li><a href="/article/ultimate-guide-improve-security-online-gaming">The Ultimate Guide to How to Improve Security for Online Gaming</a></li>
 <li><a href="/article/gaming-security-in-2026-how-to-actually-keep-your-accounts-safe">Gaming Security in 2026: How to Actually Keep Your Accounts Safe</a></li>
 <li><a href="/article/fake-game-cheats-malware-account-stealer">Fake Game Cheats Are Stealing Accounts at Scale</a></li>
-<li><a href="/article/router-security-gamers-2026">Router Security for Gamers 2026</a></li>
+<li><a href="/article/router-security-gamers-network-protection">Router Security for Gamers 2026</a></li>
 </ul>
 `;
 

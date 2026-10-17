@@ -74,7 +74,7 @@ function generatePage(page) {
   const title = `${platform.name} Account Recovery — ${scenarioLabel} | ${SITE_NAME}`;
   const description = `Step-by-step ${platform.name} account recovery: secure your device and email, then use the official ${platform.name} process. Verified guidance, not account recovery on your behalf.`;
 
-  const steps = Array.isArray(playbook.steps) ? playbook.steps : [];
+  const steps = Array.isArray(playbook.steps?.steps) ? playbook.steps.steps : [];
   const stepsHtml = steps
     .map((s, i) => {
       const link = s.officialLinkPurpose

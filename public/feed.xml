@@ -1,196 +1,187 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
-  <title>The Grid Nexus – Tech, Security &amp; Gaming News</title>
-  <subtitle>Breaking technology news, cybersecurity analysis, and gaming guides.</subtitle>
+  <title>The Grid Nexus — Gaming Security for Players</title>
+  <subtitle>Account protection, scam awareness, and platform-specific security guidance for players.</subtitle>
   <link href="https://thegridnexus.com/feed.xml" rel="self"/>
   <link href="https://thegridnexus.com"/>
-  <updated>2026-09-26T14:18:51.170Z</updated>
-  <author>
-    <name>The Grid Nexus</name>
-    <email>contact@thegridnexus.com</email>
-  </author>
+  <updated>2026-10-17T20:40:29.049Z</updated>
+  <author><name>Kim Njuki</name></author>
   <id>https://thegridnexus.com/</id>
-  <generator>The Grid Nexus Feed Generator</generator>
-  <rights>Copyright 2026 The Grid Nexus. All rights reserved.</rights>
   
+  <entry>
+    <title>DDoS and IP Leaks: What Streamers Actually Need to Do</title>
+    <link href="https://thegridnexus.com/article/ddos-attack-streamer-ip-protection"/>
+    <updated>2026-10-17T00:00:00.000Z</updated>
+    <author><name>Kim Njuki</name></author>
+    <id>https://thegridnexus.com/article/ddos-attack-streamer-ip-protection</id>
+    <summary>A DDoS attack floods your connection using your real IP, and that IP leaks through P2P games, Discord direct calls, and stream metadata. Here is what genuinely protects you and the Cloudflare misconception to avoid.</summary>
+  </entry>
+  <entry>
+    <title>Account Boosting and Trading: The Fastest Way to Get Banned</title>
+    <link href="https://thegridnexus.com/article/account-boosting-trading-bans"/>
+    <updated>2026-10-17T00:00:00.000Z</updated>
+    <author><name>Kim Njuki</name></author>
+    <id>https://thegridnexus.com/article/account-boosting-trading-bans</id>
+    <summary>Account boosting, account sharing, and account selling all violate platform terms and carry bans — and the &quot;booster&quot; often steals the account outright. Here is what Riot and Valve actually prohibit and why it is not worth it.</summary>
+  </entry>
+  <entry>
+    <title>Gaming on Public Wi-Fi: What’s Actually Risky</title>
+    <link href="https://thegridnexus.com/article/public-wifi-gaming-security-lan-events"/>
+    <updated>2026-10-17T00:00:00.000Z</updated>
+    <author><name>Kim Njuki</name></author>
+    <id>https://thegridnexus.com/article/public-wifi-gaming-security-lan-events</id>
+    <summary>Public Wi-Fi exposes you to evil-twin hotspots, packet sniffing, and session hijacking — and HTTPS alone does not hide which sites you visit. Here is the realistic risk picture and the steps that close it.</summary>
+  </entry>
+  <entry>
+    <title>In-App Purchase Fraud and the Chargeback That Backfires</title>
+    <link href="https://thegridnexus.com/article/in-app-purchase-chargeback-fraud-gaming"/>
+    <updated>2026-10-17T00:00:00.000Z</updated>
+    <author><name>Kim Njuki</name></author>
+    <id>https://thegridnexus.com/article/in-app-purchase-chargeback-fraud-gaming</id>
+    <summary>In-app purchase fraud cuts both ways: platforms have been fined for dark-pattern billing, but disputing a charge can also get your account locked. Here is what the FTC found and how to handle an unwanted charge safely.</summary>
+  </entry>
+  <entry>
+    <title>Pirated Games and Emulators: The Malware You Download With Them</title>
+    <link href="https://thegridnexus.com/article/pirated-games-emulators-malware-risk"/>
+    <updated>2026-10-17T00:00:00.000Z</updated>
+    <author><name>Kim Njuki</name></author>
+    <id>https://thegridnexus.com/article/pirated-games-emulators-malware-risk</id>
+    <summary>Pirated games are one of the most reliable malware delivery channels there is — one campaign alone hit 400,000+ devices. Emulators themselves are usually safe; fake emulator sites are not. Here is what to watch for.</summary>
+  </entry>
+  <entry>
+    <title>Buying a Used Console? Check for a Ban First</title>
+    <link href="https://thegridnexus.com/article/used-console-banned-risk-nintendo"/>
+    <updated>2026-10-17T00:00:00.000Z</updated>
+    <author><name>Kim Njuki</name></author>
+    <id>https://thegridnexus.com/article/used-console-banned-risk-nintendo</id>
+    <summary>Used consoles now carry a risk older hardware never did: the device itself can be banned from online services, and a factory reset will not fix it. Here is what caused it, how to check, and how to protect yourself as a buyer.</summary>
+  </entry>
+  <entry>
+    <title>Kernel Anti-Cheat: What It Can See and Why It Worries People</title>
+    <link href="https://thegridnexus.com/article/kernel-anti-cheat-privacy-vanguard-eac"/>
+    <updated>2026-10-17T00:00:00.000Z</updated>
+    <author><name>Kim Njuki</name></author>
+    <id>https://thegridnexus.com/article/kernel-anti-cheat-privacy-vanguard-eac</id>
+    <summary>Kernel-level anti-cheat drivers run with the deepest access Windows allows. Academic research found Vanguard and FACEIT behave in rootkit-like ways, while BattlEye and EAC do not. Here is the actual trade-off, in plain language.</summary>
+  </entry>
+  <entry>
+    <title>Roblox for Parents: Locking Down Your Child’s Account</title>
+    <link href="https://thegridnexus.com/article/roblox-account-security-parental-controls"/>
+    <updated>2026-10-17T00:00:00.000Z</updated>
+    <author><name>Kim Njuki</name></author>
+    <id>https://thegridnexus.com/article/roblox-account-security-parental-controls</id>
+    <summary>Roblox’s parental controls live behind a linked parent account with verified age. This walks through linking it, securing the parent login, and setting content maturity, chat, screen time, and spending limits.</summary>
+  </entry>
+  <entry>
+    <title>Minecraft Mods and the Malware That Hid Inside Them</title>
+    <link href="https://thegridnexus.com/article/minecraft-mod-malware-fracturiser-bleedingpipe"/>
+    <updated>2026-10-17T00:00:00.000Z</updated>
+    <author><name>Kim Njuki</name></author>
+    <id>https://thegridnexus.com/article/minecraft-mod-malware-fracturiser-bleedingpipe</id>
+    <summary>Two major incidents showed that Minecraft mods are a real malware vector: Fracturiser hid in popular CurseForge mods, and BleedingPipe exploited a deserialization bug to run code on servers and players. Here is what both were and how to download mods safely.</summary>
+  </entry>
+  <entry>
+    <title>Doxxing and Swatting: What Actually Protects You</title>
+    <link href="https://thegridnexus.com/article/doxxing-swatting-protection-streamers"/>
+    <updated>2026-10-17T00:00:00.000Z</updated>
+    <author><name>Kim Njuki</name></author>
+    <id>https://thegridnexus.com/article/doxxing-swatting-protection-streamers</id>
+    <summary>Swatting is a hoax emergency call meant to draw armed police to your home, and doxxing is how attackers find your address in the first place. This covers the FBI’s protective steps, the 911 address flag, and what to do if it happens.</summary>
+  </entry>
+  <entry>
+    <title>Passkeys for Gamers: Which Platforms Actually Support Them</title>
+    <link href="https://thegridnexus.com/article/passkeys-for-gamers-platform-support"/>
+    <updated>2026-10-17T00:00:00.000Z</updated>
+    <author><name>Kim Njuki</name></author>
+    <id>https://thegridnexus.com/article/passkeys-for-gamers-platform-support</id>
+    <summary>Passkeys are the most phishing-resistant login available, but gaming platform support is uneven. This is the accurate, current picture: Discord, PlayStation, and Xbox support them; Steam and Epic do not. Plus how to set one up where you can.</summary>
+  </entry>
+  <entry>
+    <title>SIM Swapping: The Phone-Number Attack That Beats Your Password</title>
+    <link href="https://thegridnexus.com/article/sim-swap-attack-defense-gaming-accounts"/>
+    <updated>2026-10-17T00:00:00.000Z</updated>
+    <author><name>Kim Njuki</name></author>
+    <id>https://thegridnexus.com/article/sim-swap-attack-defense-gaming-accounts</id>
+    <summary>SIM swapping defeats any account that uses SMS for recovery or two-factor. Here is how the attack works, what the 2024 FCC rules require carriers to do, and the concrete steps that stop it from reaching your gaming accounts.</summary>
+  </entry>
+  <entry>
+    <title>The Steam Trade That Looks Fine Until Your Skins Are Gone</title>
+    <link href="https://thegridnexus.com/article/steam-api-trade-scam-cs2-skins"/>
+    <updated>2026-10-17T00:00:00.000Z</updated>
+    <author><name>Kim Njuki</name></author>
+    <id>https://thegridnexus.com/article/steam-api-trade-scam-cs2-skins</id>
+    <summary>The Steam API scam is the most common way CS2 skins get stolen. A phished login creates an API key that watches your trades, cancels the real one, and substitutes a fake. Here is the full mechanism and the checklist that stops it.</summary>
+  </entry>
+  <entry>
+    <title>The Fake Cheat That Drains Every Account You Own</title>
+    <link href="https://thegridnexus.com/article/fake-game-cheats-infostealer-malware"/>
+    <updated>2026-10-17T00:00:00.000Z</updated>
+    <author><name>Kim Njuki</name></author>
+    <id>https://thegridnexus.com/article/fake-game-cheats-infostealer-malware</id>
+    <summary>Free cheats and mods are the most reliable way infostealer malware reaches gaming PCs. This explains the RedLine, Vidar, and PirateFi campaigns, what the malware takes, and how to spot a fake before you run it.</summary>
+  </entry>
+  <entry>
+    <title>How Your Discord Account Actually Gets Stolen</title>
+    <link href="https://thegridnexus.com/article/discord-token-theft-qr-login-scams"/>
+    <updated>2026-10-17T00:00:00.000Z</updated>
+    <author><name>Kim Njuki</name></author>
+    <id>https://thegridnexus.com/article/discord-token-theft-qr-login-scams</id>
+    <summary>Discord accounts get stolen through malware that harvests your login token and through QR-login phishing that tricks you into approving an attacker’s session. Here is how both work and what actually stops them.</summary>
+  </entry>
+  <entry>
+    <title>Mobile Gaming Security in East Africa: M-Pesa, APK &amp; SIM-Swap Risks</title>
+    <link href="https://thegridnexus.com/article/east-africa-mobile-gaming-security-guide"/>
+    <updated>2026-10-14T00:00:00.000Z</updated>
+    <author><name>Kim Njuki</name></author>
+    <id>https://thegridnexus.com/article/east-africa-mobile-gaming-security-guide</id>
+    <summary>How mobile-money scams, SIM-swap attacks and sideloaded APKs put East African gaming accounts at risk — and the concrete steps that stop them.</summary>
+  </entry>
+  <entry>
+    <title>Gaming PC Security Hardening Guide: Memory Integrity, VBS, and FPS-safe Windows Settings</title>
+    <link href="https://thegridnexus.com/article/gaming-pc-security-hardening-guide"/>
+    <updated>2026-09-29T00:00:00.000Z</updated>
+    <author><name>Kim Njuki</name></author>
+    <id>https://thegridnexus.com/article/gaming-pc-security-hardening-guide</id>
+    <summary>Gaming PC security hardening protects your Windows machine, game accounts, network and drivers without costing you frames. Learn how Memory Integrity affects FPS, which anti-cheat tools require Secure Boot and TPM, and how to lock down Steam, Discord, Battle.net and your router in a 30-minute sprint.</summary>
+  </entry>
   <entry>
     <title>The Ultimate Mobile Gaming Security Guide: Protect iOS and Android Accounts</title>
     <link href="https://thegridnexus.com/article/mobile-gaming-security-guide"/>
-    <updated>2026-09-24T08:00:00.000Z</updated>
-    <published>2026-09-24T08:00:00.000Z</published>
-    <author>
-      <name>Kim Anderson</name>
-    </author>
+    <updated>2026-09-24T00:00:00.000Z</updated>
+    <author><name>Kim Njuki</name></author>
     <id>https://thegridnexus.com/article/mobile-gaming-security-guide</id>
-    <summary>Mobile gaming security guide for iOS and Android: phishing defence, password managers, 2FA, passkeys and the steps to take if a gaming account is hacked.</summary>
-    <category term="gaming"/>
-    <category term="mobile gaming security"/>
-    <category term="iOS security"/>
-    <category term="Android security"/>
-    <category term="2FA"/>
-    <category term="passkeys"/>
-    <category term="account protection"/>
+    <summary>Mobile gaming security is a stack of layers, not a single setting. Learn how to lock down iOS and Android gaming accounts with unique passwords, a password manager, two-factor authentication and passkeys, official app stores, permission reviews, and a monthly session audit — plus the exact steps to take in the first hour if an account is taken over.</summary>
   </entry>
   <entry>
-    <title>AI Security Threats 2026: Weaponized AI, Deepfakes, and Quantum Risks Targeting Gamers</title>
-    <link href="https://thegridnexus.com/article/ai-security-threats-2026"/>
-    <updated>2026-01-20T10:00:00.000Z</updated>
-    <published>2026-01-15T08:00:00.000Z</published>
-    <author>
-      <name>The Grid Nexus Editorial Team</name>
-    </author>
-    <id>https://thegridnexus.com/article/ai-security-threats-2026</id>
-    <summary>Deepfake voice clones, weaponized AI attack pipelines, and quantum-assisted decryption threats are targeting gaming accounts.</summary>
-    <category term="security"/>
-    <category term="AI security"/>
-    <category term="deepfakes"/>
-    <category term="quantum computing"/>
-    <category term="gaming security"/>
+    <title>The Ultimate Guide to Steam, Xbox, PlayStation, and Discord Security</title>
+    <link href="https://thegridnexus.com/article/ultimate-guide-steam-xbox-playstation-discord-security"/>
+    <updated>2026-07-31T00:00:00.000Z</updated>
+    <author><name>Kim Njuki</name></author>
+    <id>https://thegridnexus.com/article/ultimate-guide-steam-xbox-playstation-discord-security</id>
+    <summary>A practical guide to protecting Steam, Xbox, PlayStation, and Discord accounts, covering 2FA, Steam Guard, password hygiene, platform-specific scams, console privacy settings, and Discord server hardening.</summary>
   </entry>
   <entry>
-    <title>Gaming PC Security Hardening Guide 2026: Lock Down Your Rig Without Losing FPS</title>
-    <link href="https://thegridnexus.com/article/gaming-pc-security-hardening-guide-2026"/>
-    <updated>2026-01-18T14:00:00.000Z</updated>
-    <published>2026-01-10T08:00:00.000Z</published>
-    <author>
-      <name>Security Team</name>
-    </author>
-    <id>https://thegridnexus.com/article/gaming-pc-security-hardening-guide-2026</id>
-    <summary>Hardened gaming rigs from Windows 11 security features to YubiKey BIOS integration and VLAN segmentation.</summary>
-    <category term="security"/>
-    <category term="gaming PC"/>
-    <category term="security hardening"/>
-    <category term="Windows 11"/>
-    <category term="YubiKey"/>
+    <title>The Ultimate Guide to How to Improve Security for Online Gaming</title>
+    <link href="https://thegridnexus.com/article/ultimate-guide-improve-security-online-gaming"/>
+    <updated>2026-07-31T00:00:00.000Z</updated>
+    <author><name>Kim Njuki</name></author>
+    <id>https://thegridnexus.com/article/ultimate-guide-improve-security-online-gaming</id>
+    <summary>A practical guide to online gaming security covering account protection, device hygiene, network safety, and privacy so gamers can play without getting hacked.</summary>
   </entry>
   <entry>
-    <title>Steam Deck 2 Specs, Release Date Leaks, and Deck vs. OLED Comparison</title>
-    <link href="https://thegridnexus.com/article/steam-deck-2-specs-release-date-leaks"/>
-    <updated>2026-01-08T08:00:00.000Z</updated>
-    <published>2026-01-08T08:00:00.000Z</published>
-    <author>
-      <name>Gaming Team</name>
-    </author>
-    <id>https://thegridnexus.com/article/steam-deck-2-specs-release-date-leaks</id>
-    <summary>Leaked Steam Deck 2 specs: Zen 5 CPU, RDNA 3.5 GPU at 3.5 TFLOPS, 32GB LPDDR6X.</summary>
-    <category term="gaming"/>
-    <category term="Steam Deck"/>
-    <category term="Valve"/>
-    <category term="handheld gaming"/>
-    <category term="PC gaming"/>
+    <title>Gaming Security in 2026: How to Actually Keep Your Accounts Safe</title>
+    <link href="https://thegridnexus.com/article/gaming-security-in-2026-how-to-actually-keep-your-accounts-safe"/>
+    <updated>2026-07-27T00:00:00.000Z</updated>
+    <author><name>Kim Njuki</name></author>
+    <id>https://thegridnexus.com/article/gaming-security-in-2026-how-to-actually-keep-your-accounts-safe</id>
+    <summary>A practical, no-fluff breakdown of the real threats facing gamer accounts in 2026 - credential stuffing, SIM-swap fraud, and malware disguised as mods or skins - plus the concrete steps players, streamers, and platforms should take to lock things down.</summary>
   </entry>
   <entry>
-    <title>Router Security for Gamers 2026: CVE-2025-7850, KadNap Exploits, and Zero-Trust Networking</title>
-    <link href="https://thegridnexus.com/article/router-security-gamers-2026"/>
-    <updated>2026-01-12T09:00:00.000Z</updated>
-    <published>2026-01-05T08:00:00.000Z</published>
-    <author>
-      <name>Security Team</name>
-    </author>
-    <id>https://thegridnexus.com/article/router-security-gamers-2026</id>
-    <summary>CVE-2025-7850 TP-Link exploit, KadNap Asus backdoor campaign, and the complete router hardening checklist for gamers.</summary>
-    <category term="security"/>
-    <category term="router security"/>
-    <category term="CVE"/>
-    <category term="gaming network"/>
-    <category term="zero-trust"/>
-  </entry>
-  <entry>
-    <title>Microsoft Patch Tuesday: 6 Zero-Days Patched in February 2026</title>
-    <link href="https://thegridnexus.com/article/microsoft-patch-tuesday-6-zero-days-february-2026"/>
-    <updated>2026-02-10T08:00:00.000Z</updated>
-    <published>2026-02-10T08:00:00.000Z</published>
-    <author>
-      <name>Security Team</name>
-    </author>
-    <id>https://thegridnexus.com/article/microsoft-patch-tuesday-6-zero-days-february-2026</id>
-    <summary>Microsoft patches six actively exploited zero-day vulnerabilities in February 2026 Patch Tuesday release.</summary>
-    <category term="security"/>
-    <category term="Microsoft"/>
-    <category term="Patch Tuesday"/>
-    <category term="zero-day"/>
-    <category term="CVEs"/>
-  </entry>
-  <entry>
-    <title>Crimson Desert Review: Launching March 2026 on PS5, Xbox, and PC</title>
-    <link href="https://thegridnexus.com/article/crimson-desert-review-launch-march-2026"/>
-    <updated>2026-02-28T08:00:00.000Z</updated>
-    <published>2026-02-28T08:00:00.000Z</published>
-    <author>
-      <name>Gaming Team</name>
-    </author>
-    <id>https://thegridnexus.com/article/crimson-desert-review-launch-march-2026</id>
-    <summary>Pearl Abyss open-world RPG Crimson Desert launches March 2026. Full review and analysis.</summary>
-    <category term="gaming"/>
-    <category term="Crimson Desert"/>
-    <category term="Pearl Abyss"/>
-    <category term="RPG"/>
-    <category term="PS5"/>
-    <category term="Xbox"/>
-  </entry>
-  <entry>
-    <title>xAI Gains Pentagon Access Amid Security Concerns</title>
-    <link href="https://thegridnexus.com/article/xai-gains-pentagon-access-amid-security-concerns"/>
-    <updated>2026-03-01T08:00:00.000Z</updated>
-    <published>2026-03-01T08:00:00.000Z</published>
-    <author>
-      <name>Tech Team</name>
-    </author>
-    <id>https://thegridnexus.com/article/xai-gains-pentagon-access-amid-security-concerns</id>
-    <summary>Elon Musk&apos;s xAI secures Pentagon access raising security concerns over classified network integration.</summary>
-    <category term="tech"/>
-    <category term="xAI"/>
-    <category term="Grok"/>
-    <category term="Pentagon"/>
-    <category term="military AI"/>
-    <category term="security"/>
-  </entry>
-  <entry>
-    <title>Apple Acquires MotionVFX: Final Cut Pro&apos;s AI-Powered Creative Leap</title>
-    <link href="https://thegridnexus.com/article/apple-acquires-motionvfx-final-cut-pros-ai-powered-creative-leap"/>
-    <updated>2026-02-25T08:00:00.000Z</updated>
-    <published>2026-02-25T08:00:00.000Z</published>
-    <author>
-      <name>Tech Team</name>
-    </author>
-    <id>https://thegridnexus.com/article/apple-acquires-motionvfx-final-cut-pros-ai-powered-creative-leap</id>
-    <summary>Apple acquires MotionVFX to bring AI-powered creative tools to Final Cut Pro.</summary>
-    <category term="tech"/>
-    <category term="Apple"/>
-    <category term="MotionVFX"/>
-    <category term="Final Cut Pro"/>
-    <category term="AI"/>
-    <category term="video editing"/>
-  </entry>
-  <entry>
-    <title>Nintendo Switch 2 Security Guide: Protect Your Console and Accounts</title>
-    <link href="https://thegridnexus.com/article/nintendo-switch-2-security-guide"/>
-    <updated>2026-01-25T11:00:00.000Z</updated>
-    <published>2026-01-20T08:00:00.000Z</published>
-    <author>
-      <name>Security Team</name>
-    </author>
-    <id>https://thegridnexus.com/article/nintendo-switch-2-security-guide</id>
-    <summary>Complete security guide for Nintendo Switch 2. Protect your console, accounts, and digital purchases.</summary>
-    <category term="gaming"/>
-    <category term="Nintendo Switch 2"/>
-    <category term="console security"/>
-    <category term="account protection"/>
-  </entry>
-  <entry>
-    <title>Best Gaming PC Under $1000 in 2026: Top Budget Builds</title>
-    <link href="https://thegridnexus.com/article/best-gaming-pc-under-1000-2026"/>
-    <updated>2026-01-12T08:00:00.000Z</updated>
-    <published>2026-01-12T08:00:00.000Z</published>
-    <author>
-      <name>Gaming Team</name>
-    </author>
-    <id>https://thegridnexus.com/article/best-gaming-pc-under-1000-2026</id>
-    <summary>Top budget gaming PC builds under $1000 for 2026. Best value components and pre-built options.</summary>
-    <category term="gaming"/>
-    <category term="gaming PC"/>
-    <category term="budget gaming"/>
-    <category term="PC builds"/>
-    <category term="under $1000"/>
+    <title>Gaming Router Security Guide: Protect Your Home Network and Your Latency</title>
+    <link href="https://thegridnexus.com/article/router-security-gamers-network-protection"/>
+    <updated>2025-04-29T00:00:00.000Z</updated>
+    <author><name>Kim Njuki</name></author>
+    <id>https://thegridnexus.com/article/router-security-gamers-network-protection</id>
+    <summary>Gaming routers have more attack surface than general home routers due to additional management features. This guide covers firmware hygiene, network segmentation, QoS configuration, and common router attack vectors specific to gaming setups.</summary>
   </entry>
 </feed>
