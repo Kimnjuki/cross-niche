@@ -85,6 +85,15 @@ function generateHub(platform) {
     <article>
       <p style="color:#60a5fa;font-size:0.9rem;margin:0 0 0.5rem">Platform security hub</p>
       <h1 style="font-size:2rem;margin:0 0 0.75rem">${esc(platform.name)} account security</h1>
+      <p style="color:#e2e8f0;max-width:65ch;margin:0 0 0.5rem">${esc(platform.name)} accounts are targeted because they hold games, payment methods, and — for many players — years of progress. This page lists the official domains, the two-factor options, the recovery path, and the scams that most often cost ${esc(platform.name)} players their accounts.</p>
+
+      <h2 style="font-size:1.2rem;margin:1.5rem 0 0.5rem">Quick security checklist</h2>
+      <ol style="margin:0.5rem 0 0;padding-left:1.4rem;color:#cbd5e1">
+        <li style="margin-bottom:0.5rem"><strong style="color:#e2e8f0">Enable two-factor authentication.</strong> ${esc(platform.mfaNote)}</li>
+        <li style="margin-bottom:0.5rem"><strong style="color:#e2e8f0">Only trust the official domains below</strong> for sign-in and support.</li>
+        <li style="margin-bottom:0.5rem"><strong style="color:#e2e8f0">Save the recovery path</strong> before you need it — recovery is fastest when you already know the official process.</li>
+        <li style="margin-bottom:0.5rem"><strong style="color:#e2e8f0">Learn the common scams</strong> listed below so you recognise them before they cost you the account.</li>
+      </ol>
 
       <h2 style="font-size:1.2rem;margin:1.5rem 0 0.5rem">Official domains</h2>
       <p style="color:#94a3b8;margin:0 0 0.5rem">Only trust these domains for ${esc(platform.name)} sign-in and support. Lookalike domains are a common phishing trick.</p>

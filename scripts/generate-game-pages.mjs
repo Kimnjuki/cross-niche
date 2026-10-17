@@ -161,6 +161,27 @@ function scorecardHtml(game) {
   `;
 }
 
+function protectChecklistHtml(game) {
+  const platformSlug = GAME_TO_PLATFORM[game.slug];
+  const platform = platformSlug ? PLATFORM_BY_SLUG[platformSlug] : null;
+  if (!platform) return '';
+
+  const domains = (platform.officialDomains || []).map((d) => `<code style="color:#e2e8f0;background:rgba(148,163,184,0.1);padding:0.1rem 0.4rem;border-radius:0.25rem;margin-right:0.3rem">${esc(d)}</code>`).join('');
+  const topScams = (platform.scamPatterns || []).slice(0, 2).map((s) => `<li style="margin-bottom:0.3rem;color:#cbd5e1">${esc(s)}</li>`).join('');
+
+  return `
+    <h2 style="font-size:1.2rem;margin:2rem 0 0.75rem">Protect this account — quick checklist</h2>
+    <ol style="margin:0.5rem 0 0;padding-left:1.4rem;color:#cbd5e1">
+      <li style="margin-bottom:0.6rem"><strong style="color:#e2e8f0">Turn on two-factor authentication.</strong> ${esc(platform.mfaNote)}</li>
+      <li style="margin-bottom:0.6rem"><strong style="color:#e2e8f0">Only sign in on official domains.</strong> ${domains}</li>
+      <li style="margin-bottom:0.6rem"><strong style="color:#e2e8f0">Save the recovery path before you need it.</strong> If the account is ever stolen, use the <a href="${esc(platform.recoveryPath)}" style="color:#60a5fa">official ${esc(platform.name)} recovery guide</a>.</li>
+      <li style="margin-bottom:0.6rem"><strong style="color:#e2e8f0">Know the two most common scams targeting ${esc(platform.name)} players:</strong>
+        <ul style="margin:0.4rem 0 0;padding-left:1.2rem">${topScams}</ul>
+      </li>
+      <li style="margin-bottom:0.6rem"><strong style="color:#e2e8f0">Run a quick self-check.</strong> Our <a href="/tools/gaming-security-checkup" style="color:#60a5fa">gaming security checkup</a> walks through the basics in a few minutes.</li>
+    </ol>`;
+}
+
 function generateDetail(game) {
   const url = `${BASE_URL}/games/${game.slug}`;
   const title = `${game.name} Security Grade ${game.securityGrade} | ${SITE_NAME}`;
@@ -187,6 +208,7 @@ function generateDetail(game) {
         <div style="background:rgba(148,163,184,0.08);padding:1rem;border-radius:0.5rem"><strong style="color:#60a5fa">Released</strong><br>${esc(String(game.releaseYear || '—'))}</div>
       </div>
       ${scorecardHtml(game)}
+      ${protectChecklistHtml(game)}
       <p style="margin-top:1.5rem"><a href="/tools/gaming-security-checkup" style="color:#60a5fa">Check your own gaming security →</a></p>
     </article>`;
 

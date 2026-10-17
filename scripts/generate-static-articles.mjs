@@ -494,7 +494,7 @@ function generateArticleHtml(article, bundleScript, allArticles = [], relatedLis
   // Explicit, data-driven indexability (P0-02). Only an explicit content.noindex
   // flag on a published document suppresses indexing — never template guesswork.
   const robotsDirective = article.noindex === true
-    ? 'noindex, nofollow'
+    ? 'noindex, follow'
     : 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1';
 
   const modifiedStr = article.lastModified
