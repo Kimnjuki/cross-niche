@@ -127,9 +127,9 @@ export default function ToolsHub() {
           <p className="text-lg text-muted-foreground">
             These tools run in your browser and process only what you enter. No account required, and
             nothing you enter is stored. Read exactly what each tool collects in our{' '}
-            <Link to="/privacy/tools" className="text-foreground underline underline-offset-2">
+            <a href="/privacy/tools" className="text-foreground underline underline-offset-2">
               tool privacy disclosure
-            </Link>
+            </a>
             .
           </p>
         </div>

@@ -68,9 +68,9 @@ function NotificationsDropdown() {
 /** Primary navigation — reconciles live IA with spec's pillar model. */
 const navLinks = [
   { href: '/gaming', label: 'Gaming Security', color: 'text-amber' },
-  { href: '/games', label: 'Security Grades', color: 'text-cyan' },
-  { href: '/threats', label: 'Threat Report', color: 'text-violet' },
-  { href: '/recover', label: 'Recovery', color: 'text-primary' },
+  { href: '/games', label: 'Security Grades', color: 'text-cyan', external: true },
+  { href: '/threats', label: 'Threat Report', color: 'text-violet', external: true },
+  { href: '/recover', label: 'Recovery', color: 'text-primary', external: true },
   { href: '/tools/gaming-security-checkup', label: 'Checkup', color: 'text-primary' },
   { href: '/tools', label: 'Tools', color: 'text-primary' },
   { href: '/guides', label: 'Guides', color: 'text-primary' },
@@ -79,9 +79,9 @@ const navLinks = [
 /** Primary CTAs for mobile: gaming-security-first. */
 const mobilePrimaryLinks = [
   { href: '/gaming', label: 'Gaming Security', color: 'text-amber' },
-  { href: '/games', label: 'Grades', color: 'text-cyan' },
-  { href: '/threats', label: 'Threat Report', color: 'text-violet' },
-  { href: '/recover', label: 'Recovery', color: 'text-primary' },
+  { href: '/games', label: 'Grades', color: 'text-cyan', external: true },
+  { href: '/threats', label: 'Threat Report', color: 'text-violet', external: true },
+  { href: '/recover', label: 'Recovery', color: 'text-primary', external: true },
   { href: '/tools/gaming-security-checkup', label: 'Checkup', color: 'text-primary' },
   { href: '/guides', label: 'Guides', color: 'text-primary' },
 ];
@@ -168,22 +168,33 @@ export function Navbar() {
 
             {/* Desktop Navigation: gaming-security-first */}
             <div className="hidden md:flex items-center gap-6">
-              {navLinks.map((link) => (
-                <Link
-                  key={link.href}
-                  to={link.href}
-                  aria-current={location.pathname === link.href ? 'page' : undefined}
-                  className={cn(
-                    'font-medium transition-colors hover:text-foreground relative py-1',
-                    location.pathname === link.href ? 'text-foreground' : 'text-muted-foreground'
-                  )}
-                >
-                  {link.label}
-                  {location.pathname === link.href && (
-                    <span className="absolute -bottom-1 left-0 right-0 h-0.5 bg-cyan" aria-hidden="true" />
-                  )}
-                </Link>
-              ))}
+              {navLinks.map((link) => {
+                const active = location.pathname === link.href;
+                const className = cn(
+                  'font-medium transition-colors hover:text-foreground relative py-1',
+                  active ? 'text-foreground' : 'text-muted-foreground'
+                );
+                const inner = (
+                  <>
+                    {link.label}
+                    {active && (
+                      <span className="absolute -bottom-1 left-0 right-0 h-0.5 bg-cyan" aria-hidden="true" />
+                    )}
+                  </>
+                );
+                if (link.external) {
+                  return (
+                    <a key={link.href} href={link.href} aria-current={active ? 'page' : undefined} className={className}>
+                      {inner}
+                    </a>
+                  );
+                }
+                return (
+                  <Link key={link.href} to={link.href} aria-current={active ? 'page' : undefined} className={className}>
+                    {inner}
+                  </Link>
+                );
+              })}
             </div>
 
             {/* Desktop Actions: search + subscribe */}
@@ -279,20 +290,37 @@ export function Navbar() {
           {isOpen && (
             <div className="md:hidden py-4 border-t border-border animate-fade-in">
               <div className="flex flex-col gap-1">
-                {navLinks.map((link) => (
-                  <Link
-                    key={link.href}
-                    to={link.href}
-                    onClick={() => setIsOpen(false)}
-                    className={cn(
-                      'min-h-[44px] flex items-center font-medium text-base px-3 rounded-md active:bg-muted',
-                      location.pathname === link.href ? 'text-foreground' : 'text-muted-foreground'
-                    )}
-                    aria-current={location.pathname === link.href ? 'page' : undefined}
-                  >
-                    {link.label}
-                  </Link>
-                ))}
+                {navLinks.map((link) => {
+                  const active = location.pathname === link.href;
+                  const className = cn(
+                    'min-h-[44px] flex items-center font-medium text-base px-3 rounded-md active:bg-muted',
+                    active ? 'text-foreground' : 'text-muted-foreground'
+                  );
+                  if (link.external) {
+                    return (
+                      <a
+                        key={link.href}
+                        href={link.href}
+                        onClick={() => setIsOpen(false)}
+                        className={className}
+                        aria-current={active ? 'page' : undefined}
+                      >
+                        {link.label}
+                      </a>
+                    );
+                  }
+                  return (
+                    <Link
+                      key={link.href}
+                      to={link.href}
+                      onClick={() => setIsOpen(false)}
+                      className={className}
+                      aria-current={active ? 'page' : undefined}
+                    >
+                      {link.label}
+                    </Link>
+                  );
+                })}
                 <Link to="/newsletter" onClick={() => setIsOpen(false)} className="min-h-[44px] flex items-center mt-2 px-3">
                   <Button className="w-full min-h-[44px] text-base bg-cyan text-ink-950 hover:bg-cyan/90 font-semibold">Subscribe to Nexus Brief</Button>
                 </Link>

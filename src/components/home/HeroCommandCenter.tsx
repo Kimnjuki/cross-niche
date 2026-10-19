@@ -35,13 +35,13 @@ export function HeroCommandCenter() {
                 <Zap className="h-4 w-4" />
                 Check my protection
               </Link>
-              <Link
-                to="/threats"
+              <a
+                href="/threats"
                 className="inline-flex items-center gap-2 border border-[#3F3F46] hover:border-[#00F0FF] text-zinc-300 hover:text-[#00F0FF] px-6 py-3 transition-all"
               >
                 <Shield className="h-4 w-4" />
                 Gamer Threat Report
-              </Link>
+              </a>
             </div>
 
             <div className="flex flex-wrap gap-6 pt-2">
@@ -65,20 +65,20 @@ export function HeroCommandCenter() {
             </span>
 
             <div className="space-y-3">
-              <Link to="/games" className="block border border-[#27272A] p-4 hover:border-[#00F0FF] transition-colors">
+              <a href="/games" className="block border border-[#27272A] p-4 hover:border-[#00F0FF] transition-colors">
                 <div className="flex justify-between items-center">
                   <span className="text-zinc-200 text-sm font-medium">Security grades</span>
                   <span className="font-mono text-[#39FF14] text-sm">14 games &amp; platforms</span>
                 </div>
                 <p className="text-zinc-500 text-xs mt-1">Document-based guidance on account controls and breach history.</p>
-              </Link>
-              <Link to="/threats" className="block border border-[#27272A] p-4 hover:border-[#00F0FF] transition-colors">
+              </a>
+              <a href="/threats" className="block border border-[#27272A] p-4 hover:border-[#00F0FF] transition-colors">
                 <div className="flex justify-between items-center">
                   <span className="text-zinc-200 text-sm font-medium">Gamer threat report</span>
                   <span className="font-mono text-[#39FF14] text-sm">1,741 CVEs triaged</span>
                 </div>
                 <p className="text-zinc-500 text-xs mt-1">Actively-exploited vulnerabilities mapped to what matters for players.</p>
-              </Link>
+              </a>
               <Link to="/tools/gaming-security-checkup" className="block border border-[#27272A] p-4 hover:border-[#00F0FF] transition-colors">
                 <div className="flex justify-between items-center">
                   <span className="text-zinc-200 text-sm font-medium">Protection checkup</span>

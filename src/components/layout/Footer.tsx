@@ -33,18 +33,18 @@ export function Footer() {
               <Link to="/gaming" className="text-muted-foreground hover:text-gaming transition-colors">
                 Gaming Security Hub
               </Link>
-              <Link to="/games" className="text-muted-foreground hover:text-foreground transition-colors">
+              <a href="/games" className="text-muted-foreground hover:text-foreground transition-colors">
                 Security Grades
-              </Link>
-              <Link to="/threats" className="text-muted-foreground hover:text-foreground transition-colors">
+              </a>
+              <a href="/threats" className="text-muted-foreground hover:text-foreground transition-colors">
                 Gamer Threat Report
-              </Link>
-              <Link to="/recover" className="text-muted-foreground hover:text-foreground transition-colors">
+              </a>
+              <a href="/recover" className="text-muted-foreground hover:text-foreground transition-colors">
                 Account Recovery
-              </Link>
-              <Link to="/platforms" className="text-muted-foreground hover:text-foreground transition-colors">
+              </a>
+              <a href="/platforms" className="text-muted-foreground hover:text-foreground transition-colors">
                 Platform Security
-              </Link>
+              </a>
               <Link to="/gaming/security-guides" className="text-muted-foreground hover:text-foreground transition-colors">
                 Security Guides
               </Link>
@@ -60,18 +60,18 @@ export function Footer() {
               Tools & Resources
             </h4>
             <div className="flex flex-col gap-2 text-sm">
-              <Link to="/games" className="text-muted-foreground hover:text-foreground transition-colors">
+              <a href="/games" className="text-muted-foreground hover:text-foreground transition-colors">
                 Security Grades
-              </Link>
-              <Link to="/threats" className="text-muted-foreground hover:text-foreground transition-colors">
+              </a>
+              <a href="/threats" className="text-muted-foreground hover:text-foreground transition-colors">
                 Gamer Threat Report
-              </Link>
-              <Link to="/recover" className="text-muted-foreground hover:text-foreground transition-colors">
+              </a>
+              <a href="/recover" className="text-muted-foreground hover:text-foreground transition-colors">
                 Account Recovery
-              </Link>
-              <Link to="/platforms" className="text-muted-foreground hover:text-foreground transition-colors">
+              </a>
+              <a href="/platforms" className="text-muted-foreground hover:text-foreground transition-colors">
                 Platform Security
-              </Link>
+              </a>
               <Link to="/tools/gaming-security-checkup" className="text-muted-foreground hover:text-foreground transition-colors">
                 Security Checkup
               </Link>
