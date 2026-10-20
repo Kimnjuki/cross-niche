@@ -170,6 +170,7 @@ function isKnownRoute(loc) {
   if (/^\/games(\/[a-z0-9-]+)?$/i.test(clean)) return true;
   if (/^\/threats$/i.test(clean)) return true;
   if (/^\/recover\/[a-z0-9-]+\/[a-z0-9-]+$/i.test(clean)) return true;
+  if (/^\/recover\/[a-z0-9-]+$/i.test(clean)) return true;
   if (/^\/recover$/i.test(clean)) return true;
   if (/^\/platforms(\/[a-z0-9-]+\/security)?$/i.test(clean)) return true;
   if (/^\/(privacy\/tools|editorial-standards|corrections|security-disclosure|tools\/scam-check|tools\/download-check|anti-cheat|report|parents)$/i.test(clean)) return true;

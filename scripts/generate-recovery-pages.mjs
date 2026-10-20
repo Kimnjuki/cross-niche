@@ -1,12 +1,14 @@
 /**
  * Generate static, crawlable recovery pages from src/data/recovery-playbooks.json:
- *   dist/recover/{platform}/{scenario}/index.html  +  dist/recover/index.html hub
+ *   dist/recover/index.html                       (Recovery Navigator hub)
+ *   dist/recover/{platform}/index.html            (platform hub)
+ *   dist/recover/{platform}/{scenario}/index.html (guide)
  *
  * The hub is a "Recovery Navigator" console: hero + trust bar, first-5-minutes
  * urgency strip, symptom-first triage (grouped by urgency), platform-first
- * browse, "how we verify", and an FAQ. Server-rendered, no-JS-safe (native
- * <details>), URLs unchanged. Guide pages carry HowTo + FAQ JSON-LD and a
- * "never pay a third party" trust module.
+ * browse, an FAQ, and a progressive-enhancement search/filter island (vanilla
+ * JS, no-JS fallback = all content still visible). URLs unchanged, no credential
+ * inputs, server-rendered.
  */
 import fs from 'node:fs';
 import path from 'node:path';
@@ -52,6 +54,28 @@ const GROUPS = [
   { id: 'scam', label: 'Scam aftermath', color: '#7C5CFF', desc: 'You were targeted by a scam. Here\'s what to do.' },
 ];
 
+// Search synonyms (spec C-SEARCH map): plain words → scenario.
+const SYNONYMS = {
+  'account-stolen': 'hacked taken over compromised someone logged in stole',
+  'lost-authenticator': '2fa mfa new phone authenticator app codes',
+  'unauthorized-purchase': 'charge refund chargeback bought payment',
+  'scam-recovery-contact': 'recovery scam dm paid recover hire hacker',
+  'suspected-malware': 'virus stealer infostealer rat cheat download malware',
+  'suspicious-session': 'unknown device unknown location login alert',
+  'email-changed': 'email swapped changed email',
+  'lost-linked-email': 'lost email old email no access email',
+};
+
+const PLATFORM_OVERVIEW = {
+  steam: 'The largest PC storefront — accounts hold games, items and wallet funds, making them prime theft targets.',
+  discord: 'Your voice, communities and linked accounts. A stolen Discord session is the gateway to your friends and games.',
+  'epic-games': 'Epic accounts hold Fortnite cosmetics, V-Bucks and purchased games.',
+  ea: 'EA accounts carry games, FIFA/EA FC items and coins.',
+  'riot-games': 'Riot accounts hold Valorant and League skins, ranks and payment methods.',
+  playstation: 'PSN accounts hold purchases, trophies and saved payment cards.',
+  xbox: 'Xbox/Microsoft accounts span purchases, Game Pass and linked services.',
+};
+
 const CONSOLE_CSS = `
   .rec-group { margin: 1.5rem 0 0.5rem; }
   .rec-details { background: rgba(18, 28, 48, 0.55); border: 1px solid rgba(120, 160, 255, 0.16); border-radius: 0.85rem; margin-bottom: 0.55rem; overflow: hidden; }
@@ -69,7 +93,40 @@ const CONSOLE_CSS = `
   .urgent-strip { background: rgba(255, 92, 122, 0.08); border: 1px solid rgba(255, 92, 122, 0.35); border-left: 3px solid #FF5C7A; border-radius: 0.85rem; padding: 1rem 1.1rem; }
   .urgent-strip ol { margin: 0.5rem 0 0; padding-left: 1.3rem; }
   .urgent-strip li { margin-bottom: 0.35rem; }
+  .rec-search { width: 100%; background: rgba(18, 28, 48, 0.6); border: 1px solid rgba(120, 160, 255, 0.25); border-radius: 0.85rem; color: #EAF1FF; padding: 0.7rem 0.9rem; font-size: 1rem; font-family: 'Inter', system-ui, sans-serif; }
+  .rec-search:focus { outline: 2px solid #4DE3FF; outline-offset: 2px; }
+  .rec-search::placeholder { color: #6F82A6; }
+  .filter-chip { cursor: pointer; font-size: 0.8rem; color: #9FB0D0; background: rgba(18, 28, 48, 0.5); border: 1px solid rgba(120, 160, 255, 0.2); padding: 0.32rem 0.7rem; border-radius: 999px; }
+  .filter-chip.active { color: #0B1630; background: #4DE3FF; border-color: #4DE3FF; font-weight: 600; }
   @media (prefers-reduced-motion: reduce) { .rec-details summary .chev { transition: none; } }
+`;
+
+// Progressive-enhancement search/filter (vanilla JS, ~1.5KB, no deps).
+const SEARCH_JS = `
+(function () {
+  var input = document.getElementById('rec-search');
+  var chips = document.querySelectorAll('.filter-chip[data-group]');
+  if (!input && !chips.length) return;
+  var group = 'all';
+  var all = document.querySelectorAll('.rec-details[data-search]');
+  function apply() {
+    var q = (input ? input.value : '').trim().toLowerCase();
+    all.forEach(function (d) {
+      var hay = (d.getAttribute('data-search') || '') + ' ' + d.textContent.toLowerCase();
+      var matchesGroup = group === 'all' || d.getAttribute('data-group') === group;
+      var matchesQ = !q || hay.indexOf(q) !== -1;
+      d.style.display = matchesGroup && matchesQ ? '' : 'none';
+    });
+  }
+  if (input) input.addEventListener('input', apply);
+  chips.forEach(function (c) {
+    c.addEventListener('click', function () {
+      group = c.getAttribute('data-group');
+      chips.forEach(function (x) { x.classList.toggle('active', x === c); });
+      apply();
+    });
+  });
+})();
 `;
 
 function pageShell(title, description, canonical, body, jsonLd) {
@@ -128,19 +185,71 @@ function generatePage(page) {
       '@context': 'https://schema.org',
       '@type': 'FAQPage',
       mainEntity: [
-        {
-          '@type': 'Question',
-          name: `Should I pay someone to recover my ${platform.name} account?`,
-          acceptedAnswer: { '@type': 'Answer', text: `No. Account recovery is always done through ${platform.name}'s official support, free of charge. Anyone offering paid recovery is scamming you.` },
-        },
-        {
-          '@type': 'Question',
-          name: `Will ${platform.name} ever ask for my password or 2FA code?`,
-          acceptedAnswer: { '@type': 'Answer', text: 'No. No legitimate support process asks for your password, 2FA codes, or recovery codes. If someone asks, it is a scam.' },
-        },
+        { '@type': 'Question', name: `Should I pay someone to recover my ${platform.name} account?`, acceptedAnswer: { '@type': 'Answer', text: `No. Account recovery is always done through ${platform.name}'s official support, free of charge. Anyone offering paid recovery is scamming you.` } },
+        { '@type': 'Question', name: `Will ${platform.name} ever ask for my password or 2FA code?`, acceptedAnswer: { '@type': 'Answer', text: 'No. No legitimate support process asks for your password, 2FA codes, or recovery codes. If someone asks, it is a scam.' } },
       ],
     },
   ];
+
+  return pageShell(title, description, url, body, jsonLd);
+}
+
+function generatePlatformHub(platform, platformPages) {
+  const url = `${BASE_URL}/recover/${platform.slug}`;
+  const title = `${platform.name} Account Recovery — Official Guides | ${SITE_NAME}`;
+  const description = `${PLATFORM_OVERVIEW[platform.slug] ?? ''} Official ${platform.name} recovery steps for every situation — hacked, locked out, scammed, or lost 2FA.`;
+
+  // Official links (from the first guide's officialLinks, deduped).
+  const seen = new Set();
+  const officialLinks = [];
+  for (const p of platformPages) {
+    for (const l of p.officialLinks ?? []) {
+      if (!seen.has(l.url)) { seen.add(l.url); officialLinks.push(l); }
+    }
+  }
+  const linksHtml = officialLinks
+    .map((l) => `<a href="${esc(l.url)}" rel="noopener noreferrer" style="display:inline-block;margin:0.25rem 0.5rem 0.25rem 0;color:#4DE3FF;font-size:0.9rem">${esc(l.purpose)} ↗</a>`)
+    .join('');
+
+  // Scenarios grouped by urgency.
+  const scenarioDetails = GROUPS.map((g) => {
+    const scenarios = Object.keys(SCENARIO_META).filter((s) => SCENARIO_META[s].group === g.id);
+    const links = platformPages
+      .filter((p) => scenarios.includes(p.playbook.scenario))
+      .map((p) => `<a href="/recover/${esc(platform.slug)}/${esc(p.playbook.scenario)}">${esc(SCENARIO_META[p.playbook.scenario].label)}</a>`)
+      .join('');
+    return `<h3 style="font-size:1rem;margin:1.2rem 0 0.4rem;color:${g.color}">${esc(g.label)}</h3><div class="rec-links">${links}</div>`;
+  }).join('');
+
+  const body = `
+    <article>
+      <p style="color:#4DE3FF;font-size:0.85rem;margin:0 0 0.4rem;font-family:'JetBrains Mono',monospace;letter-spacing:0.06em;text-transform:uppercase">Recovery navigator</p>
+      <h1 style="font-size:clamp(1.8rem,3vw,2.4rem);margin:0 0 0.5rem">${esc(platform.name)} account recovery</h1>
+      <p style="color:#9FB0D0;max-width:65ch;margin:0">${esc(PLATFORM_OVERVIEW[platform.slug] ?? '')} Pick what happened below — every path routes to ${esc(platform.name)}'s official, free recovery process.</p>
+
+      <div style="margin-top:1.5rem">
+        <strong style="color:#EAF1FF">Official ${esc(platform.name)} links</strong>
+        <div style="margin-top:0.5rem">${linksHtml}</div>
+      </div>
+
+      <h2 style="font-size:1.3rem;margin:2rem 0 0.5rem">What happened?</h2>
+      ${scenarioDetails}
+
+      <div style="margin-top:1.5rem;padding:1rem;border:1px solid rgba(255,92,122,0.4);border-radius:0.85rem;background:rgba(255,92,122,0.08)">
+        <strong style="color:#FF5C7A">Never pay a third party to recover your account.</strong>
+        <p style="color:#9FB0D0;margin:0.5rem 0 0">Recovery is always free through ${esc(platform.name)}'s official support. Anyone asking for a fee — or for your password or codes — is a scammer.</p>
+      </div>
+
+      <p style="margin-top:1.5rem"><a href="/recover">← Back to all platforms</a></p>
+    </article>`;
+
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'CollectionPage',
+    name: `${platform.name} account recovery guides`,
+    description,
+    url,
+  };
 
   return pageShell(title, description, url, body, jsonLd);
 }
@@ -151,7 +260,6 @@ function generateIndex(pages) {
   const description =
     'Take back your account. Symptom-first recovery triage for Steam, Discord, Epic, EA, Riot Games, PlayStation and Xbox — routing you to each platform\'s official process, free. We never recover accounts for you or ask for credentials.';
 
-  // Build scenario -> pages and platform -> pages maps.
   const byScenario = {};
   const byPlatform = {};
   for (const p of pages) {
@@ -168,8 +276,9 @@ function generateIndex(pages) {
       const links = (byScenario[s] ?? []).map((p) =>
         `<a href="/recover/${esc(p.platform.slug)}/${esc(s)}">${esc(p.platform.name)}</a>`
       ).join('');
+      const searchable = `${meta.label} ${SYNONYMS[s] ?? ''}`.toLowerCase();
       return `
-      <details class="rec-details">
+      <details class="rec-details" data-group="${g.id}" data-search="${esc(searchable)}">
         <summary><span class="urgency-dot" style="background:${g.color}"></span>${esc(meta.label)}<span class="chev">›</span></summary>
         <div class="body"><p style="color:#6F82A6;font-size:0.85rem;margin:0 0 0.55rem">${esc(meta.desc)}</p><div class="rec-links">${links}</div></div>
       </details>`;
@@ -178,28 +287,28 @@ function generateIndex(pages) {
   }).join('');
 
   const platformCards = Object.keys(byPlatform).map((slug) => {
-    const pl = (byPlatform[slug][0]).platform;
+    const pl = byPlatform[slug][0].platform;
     const links = byPlatform[slug].map((p) => {
       const s = p.playbook.scenario;
       const meta = SCENARIO_META[s];
       return `<a href="/recover/${esc(slug)}/${esc(s)}">${esc(meta?.label ?? titleCase(s))}</a>`;
     }).join('');
     return `
-    <details class="rec-details">
+    <details class="rec-details" data-group="all" data-search="${esc(pl.name.toLowerCase())} ${esc(slug)}">
       <summary>${esc(pl.name)}<span style="color:#6F82A6;font-weight:400;font-size:0.8rem;margin-left:0.35rem">· ${byPlatform[slug].length} guides</span><span class="chev">›</span></summary>
-      <div class="body"><div class="rec-links">${links}</div></div>
+      <div class="body"><div class="rec-links">${links}</div><p style="margin:0.6rem 0 0"><a href="/recover/${esc(slug)}">${esc(pl.name)} hub →</a></p></div>
     </details>`;
   }).join('');
 
   const faqItems = [
     ['Can The Grid Nexus recover my account for me?', 'No. We are an independent guide, not a recovery service. We route you to each platform\'s official recovery process, which is always free. We never recover accounts on your behalf and never ask for credentials.'],
-    ['How do I know a recovery site is official?', 'Check the address bar: it must be the platform\'s verified domain (for example steamcommunity.com or support.discord.com), never a look-alike. We link only to official domains and show the verified hostname on each guide.'],
-    ['How long does recovery usually take?', 'The immediate steps (secure email, change password, enable 2FA) take about 10 minutes. Full account restoration through official support can take longer — hours to days depending on the platform.'],
-    ['What if I lost access to my email and authenticator?', 'Use the platform\'s official account-recovery form, which may ask identity questions to verify you. Start from the "Lost authenticator" or "Lost linked email" guide for your platform.'],
+    ['How do I know a recovery site is official?', 'Check the address bar: it must be the platform\'s verified domain (for example steamcommunity.com or support.discord.com), never a look-alike. We link only to official domains.'],
+    ['How long does recovery usually take?', 'The immediate steps (secure email, change password, enable 2FA) take about 10 minutes. Full restoration through official support can take hours to days.'],
+    ['What if I lost access to my email and authenticator?', 'Use the platform\'s official account-recovery form, which may ask identity questions to verify you. Start from the "Lost authenticator" or "Lost linked email" guide.'],
     ['Someone contacted me offering to recover my account. Is it legit?', 'No. Anyone who contacts you offering paid recovery, or who asks for your password or 2FA codes, is a scammer. Block them and follow the official process only.'],
   ];
   const faqHtml = faqItems.map(([q, a]) => `
-    <details class="rec-details">
+    <details class="rec-details" data-group="all" data-search="${esc(q.toLowerCase())}">
       <summary>${esc(q)}<span class="chev">›</span></summary>
       <div class="body"><p style="color:#9FB0D0;font-size:0.9rem;margin:0">${esc(a)}</p></div>
     </details>`).join('');
@@ -227,7 +336,18 @@ function generateIndex(pages) {
     </ol>
   </div>
 
-  <h2 style="font-size:1.4rem;margin:2rem 0 0.5rem">What happened?</h2>
+  <div style="margin:1.6rem 0 0.8rem">
+    <label for="rec-search" class="sr-only" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)">Search recovery guides</label>
+    <input id="rec-search" class="rec-search" type="search" placeholder="Search: hacked, 2FA, refund, scam…" autocomplete="off" />
+    <div style="display:flex;flex-wrap:wrap;gap:0.45rem;margin-top:0.6rem">
+      <button type="button" class="filter-chip active" data-group="all">All</button>
+      <button type="button" class="filter-chip" data-group="urgent">Act now</button>
+      <button type="button" class="filter-chip" data-group="locked-out">Locked out</button>
+      <button type="button" class="filter-chip" data-group="scam">Scam</button>
+    </div>
+  </div>
+
+  <h2 style="font-size:1.4rem;margin:1.8rem 0 0.5rem">What happened?</h2>
   ${scenarioDetails}
 
   <h2 style="font-size:1.4rem;margin:2rem 0 0.5rem">Browse by platform</h2>
@@ -238,7 +358,8 @@ function generateIndex(pages) {
 
   <h2 style="font-size:1.4rem;margin:2rem 0 0.5rem">Frequently asked</h2>
   ${faqHtml}
-</article>`;
+</article>
+<script>${SEARCH_JS}</script>`;
 
   const jsonLd = [
     {
@@ -272,6 +393,18 @@ function main() {
   fs.writeFileSync(path.join(outDir, 'index.html'), generateIndex(pages), 'utf-8');
 
   const urls = [`${BASE_URL}/recover`];
+
+  // Platform hubs.
+  const byPlatform = {};
+  for (const p of pages) (byPlatform[p.platform.slug] ??= []).push(p);
+  for (const [slug, platformPages] of Object.entries(byPlatform)) {
+    const hubDir = path.join(outDir, slug);
+    fs.mkdirSync(hubDir, { recursive: true });
+    fs.writeFileSync(path.join(hubDir, 'index.html'), generatePlatformHub(platformPages[0].platform, platformPages), 'utf-8');
+    urls.push(`${BASE_URL}/recover/${slug}`);
+  }
+
+  // Guides.
   for (const page of pages) {
     const dir = path.join(outDir, page.platform.slug, page.playbook.scenario);
     fs.mkdirSync(dir, { recursive: true });
@@ -280,7 +413,7 @@ function main() {
   }
 
   fs.writeFileSync(path.join(outDir, 'urls.json'), JSON.stringify(urls, null, 2), 'utf-8');
-  console.log(`Generated ${pages.length + 1} recovery pages (index + ${pages.length} details).`);
+  console.log(`Generated ${urls.length} recovery pages (index + ${Object.keys(byPlatform).length} hubs + ${pages.length} guides).`);
   console.log(urls.join('\n'));
 }
 

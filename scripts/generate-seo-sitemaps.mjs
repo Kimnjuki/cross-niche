@@ -120,8 +120,14 @@ function getRecoveryPages() {
     const lib = JSON.parse(fs.readFileSync(libPath, 'utf8'));
     const pages = Array.isArray(lib.pages) ? lib.pages : [];
     const out = [{ loc: `${BASE_URL}/recover`, lastmod: '' }];
+    // Platform hub pages (dist/recover/{platform}/index.html)
+    const hubSlugs = new Set();
     for (const p of pages) {
       if (!p.platform?.slug || !p.playbook?.scenario) continue;
+      if (!hubSlugs.has(p.platform.slug)) {
+        hubSlugs.add(p.platform.slug);
+        out.push({ loc: `${BASE_URL}/recover/${p.platform.slug}`, lastmod: '' });
+      }
       out.push({
         loc: `${BASE_URL}/recover/${p.platform.slug}/${p.playbook.scenario}`,
         lastmod: p.playbook.reviewedAt ? new Date(p.playbook.reviewedAt).toISOString().slice(0, 10) : '',
