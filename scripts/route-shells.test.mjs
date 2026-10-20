@@ -169,6 +169,7 @@ function isKnownRoute(loc) {
   // generate-threat-page.mjs and generate-research-report.mjs (not route-metadata).
   if (/^\/games(\/[a-z0-9-]+)?$/i.test(clean)) return true;
   if (/^\/threats$/i.test(clean)) return true;
+  if (/^\/safety(\/[a-z0-9-]+)?$/i.test(clean)) return true;
   if (/^\/recover\/[a-z0-9-]+\/[a-z0-9-]+$/i.test(clean)) return true;
   if (/^\/recover\/[a-z0-9-]+$/i.test(clean)) return true;
   if (/^\/recover$/i.test(clean)) return true;
