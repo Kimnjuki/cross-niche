@@ -9,6 +9,13 @@ import { ShieldAlert, ShieldCheck, ShieldQuestion, ExternalLink, RotateCcw } fro
 import { triageDomain, type TriageResult } from '@/lib/triage/domainTriage';
 import { triageMessage, extractUrl, type MessageTriageResult } from '@/lib/triage/messageTriage';
 import platformData from '@/data/platform-security.json';
+import safetyData from '@/data/safety-verdicts.json';
+
+// Category slug → safety-database verdict, so a matched "avoid" category shows a
+// definitive Avoid (not just Caution) when the message maps to a known scam type.
+const CATEGORY_VERDICT: Record<string, string> = Object.fromEntries(
+  (safetyData.verdicts as Array<{ slug: string; verdict: string }>).map((v) => [v.slug, v.verdict])
+);
 
 // ── Official domains (from platform-security.json) + established mod sites ────
 const OFFICIAL = [
@@ -61,6 +68,16 @@ function mapDomain(d: TriageResult): Result {
 
 function mapMessage(m: MessageTriageResult): Result {
   if (m.verdict === 'suspicious') {
+    const categoryVerdict = m.matchedCategory ? CATEGORY_VERDICT[m.matchedCategory] : null;
+    if (categoryVerdict === 'avoid') {
+      return {
+        verdict: 'avoid',
+        headline: 'This matches a known scam category.',
+        flags: m.redFlags,
+        actions: m.recommendedActions,
+        matchedCategory: m.matchedCategory,
+      };
+    }
     return { verdict: 'caution', headline: 'Scam patterns detected in this message.', flags: m.redFlags, actions: m.recommendedActions, matchedCategory: m.matchedCategory };
   }
   return { verdict: 'unknown', headline: 'No obvious scam patterns detected.', flags: [], actions: m.recommendedActions, matchedCategory: null };
