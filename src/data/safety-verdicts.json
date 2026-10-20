@@ -1,0 +1,401 @@
+{
+  "meta": {
+    "generatedAt": "2026-10-20",
+    "count": 16,
+    "note": "Category-level safety verdicts. Verdicts are evidence-based assessments of a category or well-known asset, NOT an audit of any specific device, account, or file. 'safe' means established/official with no known indicators; 'cautious' means legitimate but with real, documented risks; 'avoid' means a documented scam or malware category. Never treat an unknown file as clean."
+  },
+  "verdicts": [
+    {
+      "slug": "nexus-mods",
+      "assetType": "mod-site",
+      "assetName": "Nexus Mods",
+      "verdict": "safe",
+      "riskLevel": 1,
+      "summary": "An established, official PC mod repository. The site itself is legitimate, but any downloaded mod file still needs basic caution.",
+      "whatItIs": "A long-running mod-hosting site for PC games, with an official domain and moderation. It is a primary source for mods rather than a random file host.",
+      "officialSource": "nexusmods.com",
+      "scamPatterns": [
+        "Look-alike domains that copy the Nexus Mods name to serve malware",
+        "Links to 'Nexus Mods' downloads shared in Discord DMs that point elsewhere"
+      ],
+      "protectionsRequired": [
+        "Download only from the real nexusmods.com domain",
+        "Scan downloaded files before running them",
+        "Check a mod's comments and file size for anything unexpected"
+      ],
+      "whatToDoIfCompromised": "If a mod you installed turned out to be malicious, disconnect the affected device from the network, change passwords for any account you signed into afterward from a clean device, and run a reputable malware scan.",
+      "lastVerified": "2026-10-20",
+      "sources": [
+        { "label": "Nexus Mods (official)", "url": "https://www.nexusmods.com/" },
+        { "label": "Safe game and mod downloads guide", "url": "/article/minecraft-mod-malware-fracturiser-bleedingpipe" }
+      ]
+    },
+    {
+      "slug": "curseforge",
+      "assetType": "mod-site",
+      "assetName": "CurseForge",
+      "verdict": "safe",
+      "riskLevel": 1,
+      "summary": "An established, official mod platform. The platform is legitimate, but a 2023 malware incident showed that even major mod platforms can be abused.",
+      "whatItIs": "A widely-used mod and addon platform owned by a major publisher, used for Minecraft, World of Warcraft, and other games.",
+      "officialSource": "curseforge.com",
+      "scamPatterns": [
+        "Fake 'CurseForge' sites or download buttons on unrelated pages",
+        "Mods distributed outside CurseForge that claim to be 'the same mod'"
+      ],
+      "protectionsRequired": [
+        "Download only from curseforge.com",
+        "Prefer mods with many downloads and recent, consistent updates",
+        "Be wary of mods that ask for login credentials or install extra software"
+      ],
+      "whatToDoIfCompromised": "If a mod was malicious, remove it, scan the device, and rotate passwords for accounts used on that device. The Fracturiser/BleedingPipe incident showed infection can spread to other mod files.",
+      "lastVerified": "2026-10-20",
+      "sources": [
+        { "label": "CurseForge (official)", "url": "https://www.curseforge.com/" },
+        { "label": "Minecraft mod malware guide", "url": "/article/minecraft-mod-malware-fracturiser-bleedingpipe" }
+      ]
+    },
+    {
+      "slug": "g2a-key-resellers",
+      "assetType": "marketplace",
+      "assetName": "Grey-market game key resellers (G2A and similar)",
+      "verdict": "cautious",
+      "riskLevel": 2,
+      "summary": "Real marketplaces that sell game keys, but keys can be sourced from fraud or regional pricing and may later be revoked.",
+      "whatItIs": "Third-party marketplaces where sellers resell game keys, often cheaper than official stores. The marketplace is a real business, but the supply chain is not always legitimate.",
+      "officialSource": null,
+      "scamPatterns": [
+        "Sellers demanding payment outside the platform",
+        "Keys that are revoked later because they were purchased with stolen cards",
+        "Fake 'key generator' or 'key reseller' sites that only collect payment"
+      ],
+      "protectionsRequired": [
+        "Prefer official stores and authorized resellers",
+        "If using a marketplace, buy from high-reputation sellers and use the platform's payment protection",
+        "Understand the key may be revoked or regional-locked"
+      ],
+      "whatToDoIfCompromised": "If a key is revoked or the purchase was fraudulent, dispute the charge through the marketplace or your payment provider, and avoid buying more keys from that seller.",
+      "lastVerified": "2026-10-20",
+      "sources": [
+        { "label": "Game key reseller scams guide", "url": "/article/steam-api-trade-scam-cs2-skins" },
+        { "label": "Pirated games & emulator malware guide", "url": "/article/pirated-games-emulators-malware-risk" }
+      ]
+    },
+    {
+      "slug": "skin-trading-sites",
+      "assetType": "marketplace",
+      "assetName": "Third-party skin trading and marketplace sites",
+      "verdict": "cautious",
+      "riskLevel": 2,
+      "summary": "Legitimate sites exist, but the category is dense with phishing pages and API-key scams that drain inventories.",
+      "whatItIs": "Sites that let players trade or sell in-game cosmetics (CS2 skins and similar) outside the official game ecosystem. Some are legitimate businesses; many are fronts.",
+      "officialSource": null,
+      "scamPatterns": [
+        "Fake login pages that steal your Steam credentials",
+        "Requests for your Steam API key, used to hijack trades",
+        "Middleman scams and fake trade offers"
+      ],
+      "protectionsRequired": [
+        "Never share your Steam API key or login session",
+        "Verify you are on the real site, not a look-alike",
+        "Prefer official in-game marketplaces where available"
+      ],
+      "whatToDoIfCompromised": "If your inventory was drained or your account compromised, revoke your Steam API key, deauthorize all other devices, change your password, and enable Steam Guard if not already on.",
+      "lastVerified": "2026-10-20",
+      "sources": [
+        { "label": "Steam trade scam guide", "url": "/article/steam-api-trade-scam-cs2-skins" },
+        { "label": "Steam Guard (official)", "url": "https://store.steampowered.com/twofactor/manage" }
+      ]
+    },
+    {
+      "slug": "gaming-vpns",
+      "assetType": "vpn",
+      "assetName": "Consumer gaming VPNs",
+      "verdict": "cautious",
+      "riskLevel": 2,
+      "summary": "Legitimate VPNs can protect your network, but the category includes aggressive marketing, latency trade-offs, and occasional fake or malware-laden 'VPN' apps.",
+      "whatItIs": "VPN services marketed to gamers for privacy, region access, or DDoS protection. Quality and honesty vary widely.",
+      "officialSource": null,
+      "scamPatterns": [
+        "Free 'gaming VPN' apps that bundle malware or sell your traffic",
+        "Fake VPN sites that look like well-known brands"
+      ],
+      "protectionsRequired": [
+        "Use a well-known, independently audited VPN provider",
+        "Read the privacy policy — a VPN should not log your traffic",
+        "Test latency honestly; a VPN usually adds ping, not removes it"
+      ],
+      "whatToDoIfCompromised": "If a VPN app turned out to be malicious, uninstall it, scan the device, and change passwords for accounts used while it was installed.",
+      "lastVerified": "2026-10-20",
+      "sources": [
+        { "label": "Public Wi-Fi & LAN event security guide", "url": "/article/public-wifi-gaming-security-lan-events" },
+        { "label": "DDoS & IP protection guide", "url": "/article/ddos-attack-streamer-ip-protection" }
+      ]
+    },
+    {
+      "slug": "game-boosting-services",
+      "assetType": "service",
+      "assetName": "Account boosting and piloting services",
+      "verdict": "cautious",
+      "riskLevel": 3,
+      "summary": "Paying someone to play on your account violates most games' terms and means handing your login to a stranger.",
+      "whatItIs": "Services where a third party logs into your account to raise your rank or complete content for a fee. It breaks platform rules and gives a stranger full access to your account.",
+      "officialSource": null,
+      "scamPatterns": [
+        "Boosters who keep the account or drain its items and payment methods",
+        "Fake 'boosting' sites that only steal credentials"
+      ],
+      "protectionsRequired": [
+        "Never share your password, session, or 2FA codes with anyone",
+        "Understand that boosting can get your account banned",
+        "Remove any authorized devices or sessions afterward if you did use one"
+      ],
+      "whatToDoIfCompromised": "If a booster stole your account, follow the platform's recovery flow immediately, revoke all sessions, change your password from a clean device, and enable 2FA.",
+      "lastVerified": "2026-10-20",
+      "sources": [
+        { "label": "Account boosting & trading bans guide", "url": "/article/account-boosting-trading-bans" }
+      ]
+    },
+    {
+      "slug": "free-game-cheats-aimbot",
+      "assetType": "download",
+      "assetName": "\"Free aimbot\" and game cheat downloads",
+      "verdict": "avoid",
+      "riskLevel": 4,
+      "summary": "Cheat downloads are one of the most common ways players get infected with info-stealing malware.",
+      "whatItIs": "Downloads advertised as free cheats, aimbots, or trainers. They are frequently bundled with credential stealers, and using cheats also violates game terms and can get you banned.",
+      "officialSource": null,
+      "scamPatterns": [
+        "Installers that require you to disable antivirus",
+        "Cheats that ask for your account login 'to activate'",
+        "Discord or YouTube links to 'undetected' cheats"
+      ],
+      "protectionsRequired": [
+        "Do not download or run cheat tools",
+        "If you already did, assume the device is compromised and act accordingly"
+      ],
+      "whatToDoIfCompromised": "If you ran a cheat tool, disconnect the device, run a malware scan, change passwords for every account used on that device from a clean device, and enable 2FA.",
+      "lastVerified": "2026-10-20",
+      "sources": [
+        { "label": "Fake cheats & infostealer guide", "url": "/article/fake-game-cheats-infostealer-malware" }
+      ]
+    },
+    {
+      "slug": "free-skin-generators",
+      "assetType": "scam",
+      "assetName": "\"Free skin / Nitro / V-Bucks / Riot Points\" generators",
+      "verdict": "avoid",
+      "riskLevel": 4,
+      "summary": "There is no such thing as a free-currency generator — these are phishing and credential-theft fronts.",
+      "whatItIs": "Sites, bots, or messages promising free in-game currency, skins, or subscriptions. They collect logins or install stealers and deliver nothing.",
+      "officialSource": null,
+      "scamPatterns": [
+        "A 'generator' that asks for your username and password",
+        "Urgency and limited-time framing to make you act fast",
+        "A request to complete 'verification' by logging in through a fake page"
+      ],
+      "protectionsRequired": [
+        "Only get currency, skins, and subscriptions through official stores and promotions",
+        "Never enter your login on a third-party 'generator' page"
+      ],
+      "whatToDoIfCompromised": "If you entered your credentials on a generator, change your password immediately from a clean device, enable 2FA, and revoke all sessions.",
+      "lastVerified": "2026-10-20",
+      "sources": [
+        { "label": "Discord token theft & QR scam guide", "url": "/article/discord-token-theft-qr-login-scams" },
+        { "label": "Fake cheats & infostealer guide", "url": "/article/fake-game-cheats-infostealer-malware" }
+      ]
+    },
+    {
+      "slug": "account-sellers",
+      "assetType": "scam",
+      "assetName": "Bought and sold game accounts",
+      "verdict": "avoid",
+      "riskLevel": 4,
+      "summary": "Buying an account usually means buying one that was stolen or will be recovered by the original owner — and the sale violates platform rules.",
+      "whatItIs": "Marketplaces and sellers offering accounts with games, skins, or ranks already unlocked. Most are stolen, and sellers often reclaim them after payment.",
+      "officialSource": null,
+      "scamPatterns": [
+        "Sellers who take the account back after the sale using recovery",
+        "Accounts that get banned because they were stolen or breached",
+        "Payment outside a protected channel"
+      ],
+      "protectionsRequired": [
+        "Do not buy or sell accounts — it violates terms and funds theft",
+        "Build your own account with 2FA enabled from day one"
+      ],
+      "whatToDoIfCompromised": "If you bought an account that was reclaimed or banned, you have little recourse — platform support will not help recover an account you did not originally own.",
+      "lastVerified": "2026-10-20",
+      "sources": [
+        { "label": "Account boosting & trading bans guide", "url": "/article/account-boosting-trading-bans" },
+        { "label": "Used console ban guide", "url": "/article/used-console-banned-risk-nintendo" }
+      ]
+    },
+    {
+      "slug": "free-gift-card-sites",
+      "assetType": "scam",
+      "assetName": "\"Free Steam / PSN / Xbox gift card\" sites",
+      "verdict": "avoid",
+      "riskLevel": 4,
+      "summary": "Sites promising free gift cards are survey-and-credential-collection scams, not giveaways.",
+      "whatItIs": "Pages that claim to reward you with gift cards after completing surveys or 'verification'. They harvest data, sign you up for paid services, or steal logins, and the card never arrives.",
+      "officialSource": null,
+      "scamPatterns": [
+        "A gift card requiring a survey or 'human verification' first",
+        "A reward that requires your login or card details to claim"
+      ],
+      "protectionsRequired": [
+        "Treat unsolicited gift-card offers as scams by default",
+        "Never enter login or payment details to 'claim' a reward"
+      ],
+      "whatToDoIfCompromised": "If you entered details, watch for unauthorized charges, change passwords on any accounts you exposed, and report the page.",
+      "lastVerified": "2026-10-20",
+      "sources": [
+        { "label": "Discord token theft & QR scam guide", "url": "/article/discord-token-theft-qr-login-scams" }
+      ]
+    },
+    {
+      "slug": "discord-verify-qr-scams",
+      "assetType": "discord",
+      "assetName": "\"Verify your account\" Discord QR-code and login scams",
+      "verdict": "avoid",
+      "riskLevel": 4,
+      "summary": "Scanning a QR code to 'verify' in a Discord server can hand your entire session to an attacker.",
+      "whatItIs": "A scam where a server asks you to scan a QR code or log in to 'verify' you are human. The QR is a legitimate Discord login QR, so scanning it logs the attacker's device into your account.",
+      "officialSource": null,
+      "scamPatterns": [
+        "Servers that require a QR 'verification' to access channels",
+        "Messages from 'Discord staff' asking you to confirm your login"
+      ],
+      "protectionsRequired": [
+        "Never scan a Discord login QR from an untrusted server or DM",
+        "Discord will never ask for your password, token, or login QR"
+      ],
+      "whatToDoIfCompromised": "If your account was taken, change your password from a clean device, enable 2FA, and use Discord's official support flow to recover access and revoke sessions.",
+      "lastVerified": "2026-10-20",
+      "sources": [
+        { "label": "Discord token theft & QR scam guide", "url": "/article/discord-token-theft-qr-login-scams" },
+        { "label": "Discord QR login FAQ (official)", "url": "https://support.discord.com/hc/en-us/articles/360039213771" }
+      ]
+    },
+    {
+      "slug": "fake-support-recovery",
+      "assetType": "scam",
+      "assetName": "Third-party \"account recovery agents\"",
+      "verdict": "avoid",
+      "riskLevel": 4,
+      "summary": "Anyone offering to recover your account for a fee is a scammer — recovery is always done through the official platform, free of charge.",
+      "whatItIs": "Individuals or services claiming they can 'hack back' or recover a stolen account for a fee. They take your money and either do nothing or steal the account outright.",
+      "officialSource": null,
+      "scamPatterns": [
+        "A request for payment or your login 'to recover' the account",
+        "Impersonation of platform support on Discord, Twitter, or email"
+      ],
+      "protectionsRequired": [
+        "Never pay a third party to recover an account",
+        "Recovery is always done through the platform's official support, free"
+      ],
+      "whatToDoIfCompromised": "Use the official recovery flow for your platform. Do not engage, pay, or share credentials with anyone offering recovery for a fee.",
+      "lastVerified": "2026-10-20",
+      "sources": [
+        { "label": "Account recovery navigator", "url": "/recover" }
+      ]
+    },
+    {
+      "slug": "cracked-game-downloads",
+      "assetType": "download",
+      "assetName": "Cracked and pirated game downloads",
+      "verdict": "avoid",
+      "riskLevel": 4,
+      "summary": "Pirated game downloads are a leading vector for malware bundled into the installer.",
+      "whatItIs": "Downloaded copies of games that bypass payment. The installers and 'cracks' are routinely used to bundle stealers, and the source cannot be trusted.",
+      "officialSource": null,
+      "scamPatterns": [
+        "Installers that demand antivirus be disabled",
+        "Torrents or links from unknown sites rather than official stores"
+      ],
+      "protectionsRequired": [
+        "Buy games from official stores and authorized resellers",
+        "Never run a 'crack' that requires disabling security software"
+      ],
+      "whatToDoIfCompromised": "If a pirated download was malicious, disconnect the device, scan it, and rotate passwords for all accounts used on it from a clean device.",
+      "lastVerified": "2026-10-20",
+      "sources": [
+        { "label": "Pirated games & emulator malware guide", "url": "/article/pirated-games-emulators-malware-risk" },
+        { "label": "Fake cheats & infostealer guide", "url": "/article/fake-game-cheats-infostealer-malware" }
+      ]
+    },
+    {
+      "slug": "mod-apk-sites",
+      "assetType": "download",
+      "assetName": "Third-party mod APK sites",
+      "verdict": "avoid",
+      "riskLevel": 4,
+      "summary": "Modded APK files from outside official app stores are a common way to install mobile malware.",
+      "whatItIs": "Modified Android app files offering 'unlimited coins' or 'premium unlocked' versions of games. They are not signed by the developer and are frequently repackaged with malware.",
+      "officialSource": null,
+      "scamPatterns": [
+        "APK downloads that request excessive permissions",
+        "'Mod' versions of games that ask for SMS, contacts, or overlay access"
+      ],
+      "protectionsRequired": [
+        "Install apps only from official app stores",
+        "Keep 'install from unknown sources' disabled",
+        "Be especially cautious where mobile money (e.g. M-Pesa) is linked to the device"
+      ],
+      "whatToDoIfCompromised": "If a mod APK was malicious, uninstall it, scan the device, revoke its permissions, and change passwords for accounts used on the device — especially any linked to payments.",
+      "lastVerified": "2026-10-20",
+      "sources": [
+        { "label": "M-Pesa & mobile gaming security guide", "url": "/article/sim-swap-attack-defense-gaming-accounts" }
+      ]
+    },
+    {
+      "slug": "minecraft-private-servers",
+      "assetType": "service",
+      "assetName": "Third-party Minecraft servers and launchers",
+      "verdict": "cautious",
+      "riskLevel": 2,
+      "summary": "Private servers and custom launchers are common and mostly fine, but they bypass official moderation and some bundle malware.",
+      "whatItIs": "Community-run Minecraft servers and launchers that are not operated by the game's developer. Many are legitimate communities; a minority distribute modified clients that steal credentials.",
+      "officialSource": null,
+      "scamPatterns": [
+        "Launchers that require your Microsoft/Minecraft login",
+        "Modified clients that ask for extra permissions or 'verify' with your account"
+      ],
+      "protectionsRequired": [
+        "Use well-known servers and launchers with an active community",
+        "Never enter your main account login in a third-party launcher",
+        "Keep your Microsoft account 2FA enabled"
+      ],
+      "whatToDoIfCompromised": "If a launcher or mod was malicious, remove it, scan the device, and rotate your Microsoft/Minecraft account password from a clean device.",
+      "lastVerified": "2026-10-20",
+      "sources": [
+        { "label": "Minecraft mod malware guide", "url": "/article/minecraft-mod-malware-fracturiser-bleedingpipe" }
+      ]
+    },
+    {
+      "slug": "steam-account-phishing",
+      "assetType": "scam",
+      "assetName": "Fake Steam login pages and trade offers",
+      "verdict": "avoid",
+      "riskLevel": 4,
+      "summary": "Phishing pages that imitate Steam's login to steal your credentials and Steam Guard codes.",
+      "whatItIs": "Pages that copy Steam's design and ask you to log in — often reached through a 'trade offer' or 'item giveaway' link. They capture your password and sometimes your Steam Guard code in real time.",
+      "officialSource": "steampowered.com / steamcommunity.com",
+      "scamPatterns": [
+        "A 'trade offer' or 'gift' link that opens a Steam-looking login",
+        "A login page that asks for your Steam Guard code more than once"
+      ],
+      "protectionsRequired": [
+        "Only log in on steampowered.com or steamcommunity.com",
+        "Check the address bar before entering credentials",
+        "Never enter your Steam Guard code on a page reached via a chat link"
+      ],
+      "whatToDoIfCompromised": "Change your password immediately from a clean device, enable Steam Guard, deauthorize all other devices, and revoke your Steam API key if one was set.",
+      "lastVerified": "2026-10-20",
+      "sources": [
+        { "label": "Steam trade scam guide", "url": "/article/steam-api-trade-scam-cs2-skins" },
+        { "label": "Steam recovery guide", "url": "/recover/steam/account-stolen" }
+      ]
+    }
+  ]
+}

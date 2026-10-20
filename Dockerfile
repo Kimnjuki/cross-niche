@@ -76,6 +76,7 @@ RUN node scripts/generate-research-report.mjs || true
 RUN node scripts/generate-recovery-pages.mjs || true
 RUN node scripts/generate-platform-hubs.mjs || true
 RUN node scripts/generate-trust-pages.mjs || true
+RUN node scripts/generate-safety-pages.mjs || true
 
 # Per-route static HTML shells (title/description/canonical/H1 per URL).
 # NOT wrapped in `|| true`: serving the homepage shell for 60+ content routes is

@@ -124,6 +124,7 @@ const NexusPulse = lazy(() => import("./pages/pulse/NexusPulse"));
 // Security Tools Suite
 const IOCLookup = lazy(() => import("./pages/tools/IOCLookup"));
 const GamingSecurityCheckup = lazy(() => import("./pages/tools/GamingSecurityCheckup"));
+const ScamChecker = lazy(() => import("./pages/ScamChecker"));
 const BreachExplainer = lazy(() => import("./pages/tools/BreachExplainer"));
 const AIToolFinder = lazy(() => import("./pages/tools/AIToolFinder"));
 const PatchRiskTracker = lazy(() => import("./pages/tools/PatchRiskTracker"));
@@ -267,6 +268,7 @@ const App = () => (
                      <Route path="/pulse/nexus-pulse" element={<NexusPulse />} />
                     {/* Security Tools Suite */}
                     <Route path="/tools/ioc-lookup" element={<IOCLookup />} />
+                    <Route path="/tools/scam-check" element={<ScamChecker />} />
                     <Route path="/tools/gaming-security-checkup" element={<GamingSecurityCheckup />} />
                     <Route path="/tools/breach-explainer" element={<BreachExplainer />} />
                     <Route path="/tools/ai-tool-finder" element={<AIToolFinder />} />

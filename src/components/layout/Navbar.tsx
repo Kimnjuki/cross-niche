@@ -69,6 +69,7 @@ function NotificationsDropdown() {
 const navLinks = [
   { href: '/gaming', label: 'Gaming Security', color: 'text-amber' },
   { href: '/games', label: 'Security Grades', color: 'text-cyan', external: true },
+  { href: '/safety', label: 'Is it safe?', color: 'text-emerald', external: true },
   { href: '/threats', label: 'Threat Report', color: 'text-violet', external: true },
   { href: '/recover', label: 'Recovery', color: 'text-primary', external: true },
   { href: '/tools/gaming-security-checkup', label: 'Checkup', color: 'text-primary' },
@@ -80,6 +81,7 @@ const navLinks = [
 const mobilePrimaryLinks = [
   { href: '/gaming', label: 'Gaming Security', color: 'text-amber' },
   { href: '/games', label: 'Grades', color: 'text-cyan', external: true },
+  { href: '/safety', label: 'Is it safe?', color: 'text-emerald', external: true },
   { href: '/threats', label: 'Threat Report', color: 'text-violet', external: true },
   { href: '/recover', label: 'Recovery', color: 'text-primary', external: true },
   { href: '/tools/gaming-security-checkup', label: 'Checkup', color: 'text-primary' },

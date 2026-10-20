@@ -36,6 +36,9 @@ export function Footer() {
               <a href="/games" className="text-muted-foreground hover:text-foreground transition-colors">
                 Security Grades
               </a>
+              <a href="/safety" className="text-muted-foreground hover:text-foreground transition-colors">
+                Is it safe?
+              </a>
               <a href="/threats" className="text-muted-foreground hover:text-foreground transition-colors">
                 Gamer Threat Report
               </a>

@@ -34,6 +34,10 @@ function titleCase(s) {
 }
 
 function pageShell(title, description, canonical, body, jsonLd) {
+  const scripts = (Array.isArray(jsonLd) ? jsonLd : [jsonLd])
+    .filter(Boolean)
+    .map((ld) => `<script type="application/ld+json">${JSON.stringify(ld)}</script>`)
+    .join('\n    ');
   return `<!doctype html>
 <html lang="en" dir="ltr">
   <head>
@@ -48,7 +52,7 @@ function pageShell(title, description, canonical, body, jsonLd) {
     <meta property="og:title" content="${esc(title)}" />
     <meta property="og:description" content="${esc(description)}" />
     <meta property="og:site_name" content="${SITE_NAME}" />
-    <script type="application/ld+json">${JSON.stringify(jsonLd)}</script>
+    <script type="application/ld+json">${scripts}</script>
   </head>
   <body style="max-width:80rem;margin:0 auto;padding:2rem 1.5rem;font-family:system-ui,sans-serif;background:#0f172a;color:#f8fafc;line-height:1.6">
     <header style="margin-bottom:2rem">
@@ -98,6 +102,10 @@ function generatePage(page) {
       <h1 style="font-size:2rem;margin:0 0 0.5rem">${esc(platform.name)} account recovery</h1>
       <p style="color:#e2e8f0">${esc(playbook.steps?.disclaimer || 'Guidance only — follow the official process.')}</p>
       <ol style="margin:1.5rem 0;padding-left:1.5rem">${stepsHtml}</ol>
+      <div style="margin-top:1.5rem;padding:1rem;border:1px solid rgba(239,68,68,0.4);border-radius:0.5rem;background:rgba(239,68,68,0.08)">
+        <strong style="color:#ef4444">Never pay a third party to recover your account.</strong>
+        <p style="color:#cbd5e1;margin:0.5rem 0 0">Account recovery is always done through ${esc(platform.name)}'s official support, free of charge. Anyone offering to "hack back" or recover your account for a fee is scamming you — and no legitimate process will ever ask for your password, 2FA codes, or recovery codes.</p>
+      </div>
       <div style="margin-top:1.5rem">
         <strong style="color:#e2e8f0">Verified official links</strong>
         <div style="margin-top:0.5rem">${linksHtml}</div>
@@ -105,18 +113,42 @@ function generatePage(page) {
       <p style="margin-top:1.5rem;color:#94a3b8;font-size:0.85rem">Reviewed ${new Date(playbook.reviewedAt ?? Date.now()).toISOString().slice(0, 10)} · Playbook v${esc(playbook.version)}</p>
     </article>`;
 
-  const jsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'HowTo',
-    name: `${platform.name} account recovery`,
-    description,
-    step: steps.map((s, i) => ({
-      '@type': 'HowToStep',
-      position: i + 1,
-      name: s.title,
-      text: s.body,
-    })),
-  };
+  const jsonLd = [
+    {
+      '@context': 'https://schema.org',
+      '@type': 'HowTo',
+      name: `${platform.name} account recovery`,
+      description,
+      step: steps.map((s, i) => ({
+        '@type': 'HowToStep',
+        position: i + 1,
+        name: s.title,
+        text: s.body,
+      })),
+    },
+    {
+      '@context': 'https://schema.org',
+      '@type': 'FAQPage',
+      mainEntity: [
+        {
+          '@type': 'Question',
+          name: `Should I pay someone to recover my ${platform.name} account?`,
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: `No. Account recovery is always done through ${platform.name}'s official support, free of charge. Anyone offering paid recovery is scamming you.`,
+          },
+        },
+        {
+          '@type': 'Question',
+          name: `Will ${platform.name} ever ask for my password or 2FA code?`,
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: 'No. No legitimate support process asks for your password, 2FA codes, or recovery codes. If someone asks, it is a scam.',
+          },
+        },
+      ],
+    },
+  ];
 
   return pageShell(title, description, url, body, jsonLd);
 }
