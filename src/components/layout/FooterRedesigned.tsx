@@ -6,40 +6,37 @@ import { Input } from '@/components/ui/input';
 import { NewsletterForm } from '@/components/newsletter/NewsletterForm';
 import { cn } from '@/lib/utils';
 
+// Static-shell routes (served by nginx, no SPA route) must use a full-page
+// <a href>, not a client-side <Link>, or they 404 on the * catch-all.
 const coverageLinks = [
-  { label: 'Tech', href: '/tech' },
-  { label: 'Security', href: '/security' },
-  { label: 'Gaming', href: '/gaming' },
-  { label: 'News', href: '/news' },
-  { label: 'AI Pulse', href: '/ai-pulse' },
-  { label: 'Reviews', href: '/reviews' },
-  { label: 'Tutorials', href: '/tutorials' },
+  { label: 'Gaming Security', href: '/gaming', external: false },
+  { label: 'Security Grades', href: '/games', external: true },
+  { label: 'Is it safe?', href: '/safety', external: true },
+  { label: 'Gamer Threat Report', href: '/threats', external: true },
+  { label: 'Account Recovery', href: '/recover', external: true },
+  { label: 'Platform Security', href: '/platforms', external: true },
 ];
 
 const toolsLinks = [
-  { label: 'Security Score Checker', href: '/security-score', badge: null },
-  { label: 'Breach Simulator', href: '/breach-sim', badge: null },
-  { label: 'Live Threat Dashboard', href: '/live-threat-dashboard', badge: null },
-  { label: 'AI Pulse Tracker', href: '/ai-pulse', badge: null },
+  { label: 'Scam Checker', href: '/tools/scam-check', badge: null },
+  { label: 'Security Checkup', href: '/tools/gaming-security-checkup', badge: null },
+  { label: 'Steam Scanner', href: '/tools/steam-scanner', badge: null },
+  { label: 'IOC Lookup', href: '/tools/ioc-lookup', badge: null },
 ];
 
 const companyLinks = [
-  { label: 'About', href: '/about' },
-  { label: 'Editorial policy', href: '/editorial' },
-  { label: 'Quality guidelines', href: '/quality-guidelines' },
-  { label: 'Content policy', href: '/content-policy' },
-  { label: 'Contact', href: '/contact' },
-  { label: 'Media & press kit', href: '/media' },
+  { label: 'About', href: '/about', external: false },
+  { label: 'Methodology', href: '/methodology', external: true },
+  { label: 'Editorial policy', href: '/editorial', external: false },
+  { label: 'Contact', href: '/contact', external: false },
+  { label: 'Media & press kit', href: '/media', external: false },
 ];
 
 const resourcesLinks = [
-  { label: 'Newsletter', href: '/newsletter' },
-  { label: 'RSS feed', href: '/feed.xml' },
-  { label: 'Sitemap', href: '/sitemap' },
-  { label: 'Guides', href: '/guides' },
-  { label: 'Topics', href: '/topics' },
-  { label: 'Roadmap', href: '/roadmap' },
-  { label: 'Nexus Intersection', href: '/nexus-intersection' },
+  { label: 'Newsletter', href: '/newsletter', external: false },
+  { label: 'RSS feed', href: '/feed.xml', external: true },
+  { label: 'Sitemap', href: '/sitemap', external: false },
+  { label: 'Guides', href: '/guides', external: false },
 ];
 
 const socialLinks = [
@@ -56,7 +53,7 @@ const trustLabels = [
   'Security-conscious design',
 ];
 
-function FooterColumn({ title, links, className }: { title: string; links: Array<{ label: string; href: string; badge?: string | null }>; className?: string }) {
+function FooterColumn({ title, links, className }: { title: string; links: Array<{ label: string; href: string; external?: boolean; badge?: string | null }>; className?: string }) {
   return (
     <div className={cn('space-y-3', className)}>
       <h4 className="font-display text-xs font-semibold uppercase tracking-[0.18em] text-muted-foreground">
@@ -65,17 +62,28 @@ function FooterColumn({ title, links, className }: { title: string; links: Array
       <ul className="space-y-2">
         {links.map((link) => (
           <li key={link.href + link.label}>
-            <Link
-              to={link.href}
-              className="text-sm text-muted-foreground hover:text-foreground transition-colors inline-flex items-center gap-2"
-            >
-              {link.label}
-              {link.badge && (
-                <span className="text-[10px] font-medium uppercase tracking-wider text-cyan bg-cyan/10 px-1.5 py-0.5 rounded">
-                  {link.badge}
-                </span>
-              )}
-            </Link>
+            {link.external ? (
+              <a
+                href={link.href}
+                className="group inline-flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-cyan"
+              >
+                <span className="h-px w-0 bg-cyan transition-all duration-300 group-hover:w-3" />
+                {link.label}
+              </a>
+            ) : (
+              <Link
+                to={link.href}
+                className="group inline-flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-cyan"
+              >
+                <span className="h-px w-0 bg-cyan transition-all duration-300 group-hover:w-3" />
+                {link.label}
+                {link.badge && (
+                  <span className="text-[10px] font-medium uppercase tracking-wider text-cyan bg-cyan/10 px-1.5 py-0.5 rounded">
+                    {link.badge}
+                  </span>
+                )}
+              </Link>
+            )}
           </li>
         ))}
       </ul>
@@ -95,7 +103,10 @@ export function Footer() {
   };
 
   return (
-    <footer className="bg-ink-900 border-t border-white/[0.06] text-slate-300" role="contentinfo">
+    <footer className="relative border-t border-white/[0.06] bg-gradient-to-b from-ink-950 to-black text-slate-300" role="contentinfo">
+      {/* Futuristic top accent line */}
+      <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-cyan to-transparent opacity-60" />
+
       {/* Pre-footer CTA banner */}
       <div className="bg-gradient-to-br from-ink-800 to-ink-900 border-b border-white/[0.06]">
         <div className="container-tokens py-12 md:py-16">
@@ -143,7 +154,7 @@ export function Footer() {
               </span>
             </Link>
             <p className="text-sm text-slate-400 leading-relaxed max-w-xs">
-              Technology, security and gaming intelligence for the real world.
+              The trust layer for gamers — check what's safe, recover fast, and stay ahead of the next threat.
             </p>
             <div className="flex items-center gap-3 pt-1">
               {socialLinks.map((social) => (
