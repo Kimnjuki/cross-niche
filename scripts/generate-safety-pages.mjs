@@ -10,6 +10,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { staticShell } from './lib/static-chrome.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const projectRoot = path.resolve(__dirname, '..');
@@ -54,62 +55,8 @@ const TRIAGE_SCENARIOS = [
 ];
 
 function pageShell(title, description, canonical, body, jsonLd) {
-  const scripts = (Array.isArray(jsonLd) ? jsonLd : [jsonLd])
-    .filter(Boolean)
-    .map((ld) => `<script type="application/ld+json">${JSON.stringify(ld)}</script>`)
-    .join('\n    ');
-  return `<!doctype html>
-<html lang="en" dir="ltr">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>${esc(title)}</title>
-    <meta name="description" content="${esc(description)}" />
-    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1" />
-    <link rel="canonical" href="${canonical}" />
-    <meta property="og:type" content="website" />
-    <meta property="og:url" content="${canonical}" />
-    <meta property="og:title" content="${esc(title)}" />
-    <meta property="og:description" content="${esc(description)}" />
-    <meta property="og:site_name" content="${SITE_NAME}" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
-    <style>
-      :root { color-scheme: dark; }
-      body { margin: 0; font-family: 'Inter', 'Manrope', system-ui, sans-serif; background: #0A0A0B; color: #e2e8f0; line-height: 1.6; }
-      h1, h2, h3, h4 { font-family: 'Space Grotesk', 'Inter Tight', system-ui, sans-serif; letter-spacing: -0.02em; }
-      code { font-family: 'JetBrains Mono', monospace; }
-      a { color: #00F0FF; text-decoration: none; }
-      a:hover { text-decoration: underline; }
-      .grid { display: grid; gap: 0.75rem; grid-template-columns: repeat(auto-fill, minmax(min(100%, 240px), 1fr)); }
-      .card { background: rgba(22, 22, 26, 0.7); border: 1px solid rgba(63, 63, 70, 0.5); border-radius: 0.75rem; padding: 1rem; transition: border-color 0.15s ease, transform 0.15s ease; }
-      .card:hover { border-color: rgba(0, 240, 255, 0.4); transform: translateY(-2px); }
-      .card a { color: inherit; text-decoration: none; display: block; }
-      .verdict-badge { display: inline-block; padding: 0.1rem 0.55rem; border-radius: 0.35rem; font-size: 0.75rem; font-weight: 700; }
-      @media (prefers-reduced-motion: reduce) { .card { transition: none; } }
-    </style>
-    ${scripts}
-  </head>
-  <body style="max-width:80rem;margin:0 auto;padding:2rem 1.5rem;background-image:radial-gradient(ellipse 80% 50% at 50% -20%, rgba(0,240,255,0.06), transparent)">
-    <header style="margin-bottom:2rem">
-      <a href="/" style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:1.1rem">${SITE_NAME}</a>
-      <nav style="margin-top:0.5rem;display:flex;flex-wrap:wrap;gap:1rem;font-size:0.9rem">
-        <a href="/" style="color:#94a3b8">Home</a>
-        <a href="/safety" style="color:#00F0FF">Is it safe?</a>
-        <a href="/games" style="color:#94a3b8">Security Grades</a>
-        <a href="/tools/scam-check" style="color:#94a3b8">Scam Checker</a>
-        <a href="/recover" style="color:#94a3b8">Recovery</a>
-      </nav>
-    </header>
-    ${body}
-    <footer style="margin-top:3rem;padding-top:1rem;border-top:1px solid rgba(148,163,184,0.2);font-size:0.8rem;color:#64748b">
-      <p>A verdict is a category-level assessment based on documented sources — not an audit of your device, account, or a specific file. We never ask for passwords, 2FA codes, recovery codes, or payment details. See our <a href="/methodology">methodology</a>.</p>
-    </footer>
-  </body>
-</html>`;
+  return staticShell(title, description, canonical, body, jsonLd);
 }
-
 function generateVerdict(v) {
   const style = VERDICT_STYLE[v.verdict] || VERDICT_STYLE.cautious;
   const url = `${BASE_URL}/safety/${v.slug}`;

@@ -15,6 +15,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { staticShell } from './lib/static-chrome.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const projectRoot = path.resolve(__dirname, '..');
@@ -83,39 +84,8 @@ function videoGameJsonLd(game, url) {
 }
 
 function pageShell(title, description, canonical, body, jsonLd) {
-  return `<!doctype html>
-<html lang="en" dir="ltr">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>${esc(title)}</title>
-    <meta name="description" content="${esc(description)}" />
-    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1" />
-    <link rel="canonical" href="${canonical}" />
-    <meta property="og:type" content="website" />
-    <meta property="og:url" content="${canonical}" />
-    <meta property="og:title" content="${esc(title)}" />
-    <meta property="og:description" content="${esc(description)}" />
-    <meta property="og:site_name" content="${SITE_NAME}" />
-    <script type="application/ld+json">${JSON.stringify(jsonLd)}</script>
-  </head>
-  <body style="max-width:80rem;margin:0 auto;padding:2rem 1.5rem;font-family:system-ui,sans-serif;background:#0f172a;color:#f8fafc;line-height:1.6">
-    <header style="margin-bottom:2rem">
-      <a href="/" style="color:#60a5fa;text-decoration:none;font-weight:700">${SITE_NAME}</a>
-      <nav style="margin-top:0.5rem;display:flex;flex-wrap:wrap;gap:1rem;font-size:0.9rem">
-        <a href="/" style="color:#94a3b8;text-decoration:none">Home</a>
-        <a href="/games" style="color:#94a3b8;text-decoration:none">Security Grades</a>
-        <a href="/tools/gaming-security-checkup" style="color:#94a3b8;text-decoration:none">Checkup</a>
-      </nav>
-    </header>
-    ${body}
-    <footer style="margin-top:3rem;padding-top:1rem;border-top:1px solid rgba(148,163,184,0.2);font-size:0.8rem;color:#64748b">
-      <p>Grades are document-based guidance, not a safety certification and not a live scan of any account. They are initial assessments of documented two-factor-authentication support and breach history. Sentiment is not measured. See our <a href="/methodology" style="color:#60a5fa">methodology</a>.</p>
-    </footer>
-  </body>
-</html>`;
+  return staticShell(title, description, canonical, body, jsonLd);
 }
-
 function gradeBadge(game) {
   const meta = gradeMeta(game.securityGrade);
   return `<span style="display:inline-block;background:${meta.color};color:#0f172a;font-weight:800;padding:0.25rem 0.75rem;border-radius:9999px;font-size:1.4rem">${meta.label}</span>`;

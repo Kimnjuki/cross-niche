@@ -19,6 +19,7 @@ import { loadPublishedContent } from './lib/content-source.mjs';
 // authorData.ts is TypeScript; plain node cannot import it directly.
 // scripts/lib/author-source.mjs parses the exported literals instead.
 import { authorProfiles, defaultAuthorProfile, authorSlug } from './lib/author-source.mjs';
+import { navHtml, footerHtml, chromeCss } from './lib/static-chrome.mjs';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -159,23 +160,23 @@ async function main() {
               <h3 style="font-size:1.05rem;font-weight:600;margin-bottom:0.5rem;color:#f8fafc;line-height:1.4">${escapeHtml(item.title.substring(0, 120))}</h3>
             </a>
             <p style="font-size:0.85rem;color:#94a3b8;margin-bottom:0.75rem">${escapeHtml(item.excerpt ? item.excerpt.substring(0, 120) : '')}</p>
-            ${articleDate ? `<time style="font-size:0.8rem;color:#60a5fa">${articleDate}</time>` : ''}
+            ${articleDate ? `<time style="font-size:0.8rem;color:#00F0FF">${articleDate}</time>` : ''}
           </article>`;
         }).join('')}
       </div>
-      <p style="margin-top:1.5rem"><a href="/topics" style="color:#60a5fa;text-decoration:none">Browse all topics &rarr;</a></p>`
+      <p style="margin-top:1.5rem"><a href="/topics" style="color:#00F0FF;text-decoration:none">Browse all topics &rarr;</a></p>`
       : `
       <p style="margin-top:2rem;color:#94a3b8">More articles from this author are coming soon.</p>`;
 
     const socialLinks = profile.sameAs && profile.sameAs.length
       ? `<div style="display:flex;gap:1rem;margin-top:1rem"><p style="color:#94a3b8">Follow:</p> ${profile.sameAs.map((url) => {
           const label = url.includes('twitter') || url.includes('x.com') ? 'Twitter' : url.includes('github') ? 'GitHub' : url.includes('linkedin') ? 'LinkedIn' : url.includes('youtube') ? 'YouTube' : 'Profile';
-          return `<a href="${url}" rel="noopener noreferrer" style="color:#60a5fa;text-decoration:none">${label}</a>`;
+          return `<a href="${url}" rel="noopener noreferrer" style="color:#00F0FF;text-decoration:none">${label}</a>`;
         }).join(' ')}</div>`
                   : '';
 
     const expertiseHtml = profile.expertise && profile.expertise.length
-      ? `<p style="margin-top:1rem"><strong style="color:#f8fafc">Expertise:</strong> ${profile.expertise.map((e) => `<span style="background:rgba(96,165,250,0.15);border:1px solid rgba(96,165,250,0.3);border-radius:9999px;padding:0.15rem 0.6rem;font-size:0.8rem;color:#60a5fa;margin-right:0.4rem">${escapeHtml(e)}</span>`).join('')}</p>`
+      ? `<p style="margin-top:1rem"><strong style="color:#f8fafc">Expertise:</strong> ${profile.expertise.map((e) => `<span style="background:rgba(96,165,250,0.15);border:1px solid rgba(96,165,250,0.3);border-radius:9999px;padding:0.15rem 0.6rem;font-size:0.8rem;color:#00F0FF;margin-right:0.4rem">${escapeHtml(e)}</span>`).join('')}</p>`
       : '';
 
     const authorNameEsc = escapeHtml(authorName);
@@ -208,32 +209,25 @@ async function main() {
     <script type="application/ld+json">
 ${jsonLd}
     </script>
+      <style>${chromeCss}</style>
   </head>
-  <body>
+<body>
+    ${navHtml('/about')}
+    <div class="site-wrap">
     <div id="root">
-      <div id="static-shell" style="min-height:100vh;font-family:system-ui,sans-serif;background:#0f172a;color:#f8fafc">
-        <header style="border-bottom:1px solid rgba(148,163,184,0.2);padding:1rem 1.5rem">
-          <nav aria-label="Main navigation" style="max-width:80rem;margin:0 auto;display:flex;flex-wrap:wrap;gap:1rem;align-items:center">
-            <a href="/" aria-label="${SITE_NAME} home" style="font-weight:700;font-size:1.25rem;color:#f8fafc;text-decoration:none">${SITE_NAME}</a>
-            <a href="/tech" style="color:#94a3b8;text-decoration:none">Tech</a>
-            <a href="/security" style="color:#94a3b8;text-decoration:none">Security</a>
-            <a href="/gaming" style="color:#94a3b8;text-decoration:none">Gaming</a>
-            <a href="/news" style="color:#94a3b8;text-decoration:none">News</a>
-            <a href="/topics" style="color:#94a3b8;text-decoration:none">Topics</a>
-            <a href="/about" style="color:#94a3b8;text-decoration:none">About</a>
-          </nav>
-        </header>
+      <div id="static-shell" style="min-height:100vh;color:#f8fafc">
+        
         <main id="main-content" style="max-width:80rem;margin:0 auto;padding:2rem 1.5rem">
         <nav aria-label="Breadcrumb" style="font-size:0.875rem;color:#94a3b8;margin-bottom:1.5rem">
-            <a href="/" style="color:#60a5fa;text-decoration:none">Home</a> &rsaquo;
-            <a href="/authors" style="color:#60a5fa;text-decoration:none">Authors</a> &rsaquo;
+            <a href="/" style="color:#00F0FF;text-decoration:none">Home</a> &rsaquo;
+            <a href="/authors" style="color:#00F0FF;text-decoration:none">Authors</a> &rsaquo;
             <span>${authorNameEsc}</span>
           </nav>
           <div style="display:flex;align-items:flex-start;gap:2rem;flex-wrap:wrap">
             ${profile.imageUrl ? `<img src="${profile.imageUrl}" alt="${escapeAttr(authorName)}" width="120" height="120" style="width:120px;height:120px;border-radius:50%;object-fit:cover;border:2px solid rgba(96,165,250,0.3)" loading="eager" />` : ''}
             <div>
               <h1 style="font-size:2.5rem;line-height:1.2;margin-bottom:0.5rem;color:#f8fafc">${authorNameEsc}</h1>
-              ${profile.jobTitle ? `<p style="font-size:1.1rem;color:#60a5fa;margin-bottom:1rem">${profileJobTitleEsc}</p>` : ''}
+              ${profile.jobTitle ? `<p style="font-size:1.1rem;color:#00F0FF;margin-bottom:1rem">${profileJobTitleEsc}</p>` : ''}
               ${articlesByAuthor.length ? `<p style="color:#94a3b8">${articlesByAuthor.length} published ${articlesByAuthor.length === 1 ? 'article' : 'articles'}</p>` : ''}
               ${socialLinks}
             </div>
@@ -246,10 +240,12 @@ ${jsonLd}
           ${articlesHtml}
         </main>
         <footer style="border-top:1px solid rgba(148,163,184,0.2);padding:1.5rem;text-align:center;color:#64748b;font-size:0.875rem">
-          <p>&copy; 2026 ${SITE_NAME}. All rights reserved. <a href="/privacy" style="color:#60a5fa">Privacy</a> &middot; <a href="/terms" style="color:#60a5fa">Terms</a> &middot; <a href="/sitemap.xml" style="color:#64748b">Sitemap</a></p>
+          <p>&copy; 2026 ${SITE_NAME}. All rights reserved. <a href="/privacy" style="color:#00F0FF">Privacy</a> &middot; <a href="/terms" style="color:#00F0FF">Terms</a> &middot; <a href="/sitemap.xml" style="color:#64748b">Sitemap</a></p>
         </footer>
       </div>
     </div>
+      </div>
+    ${footerHtml()}
   </body>
 </html>`;
 

@@ -20,6 +20,7 @@ import { fileURLToPath } from 'url';
 import { loadPublishedContent, canonicalUrlFor } from './lib/content-source.mjs';
 import { normalizeArticleHtml, repairMojibake } from './lib/normalize-article-html.mjs';
 import { markdownToHtml } from './lib/markdown-to-html.mjs';
+import { navHtml, footerHtml, chromeCss } from './lib/static-chrome.mjs';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -436,7 +437,7 @@ function buildRelatedHtml(article, relatedList) {
   const items = scored
     .map(
       (a) =>
-        `<li style="margin-bottom:0.5rem"><a href="/article/${encodeURIComponent(a.slug)}" style="color:#60a5fa;text-decoration:none">${escapeHtml(a.title)}</a></li>`
+        `<li style="margin-bottom:0.5rem"><a href="/article/${encodeURIComponent(a.slug)}" style="color:#00F0FF;text-decoration:none">${escapeHtml(a.title)}</a></li>`
     )
     .join('');
 
@@ -461,7 +462,7 @@ function buildPillarHtml(niche) {
   return `
     <section aria-labelledby="pillar-heading" style="margin-top:2rem;border-top:1px solid rgba(148,163,184,0.2);padding-top:1.25rem">
       <h2 id="pillar-heading" style="font-size:1.25rem;font-weight:700;margin-bottom:0.5rem;color:#f8fafc">Explore the ${escapeHtml(pillar.title)} Hub</h2>
-      <p style="color:#cbd5e1"><a href="${pillar.url}" style="color:#60a5fa;text-decoration:none">${escapeHtml(pillar.title)} — complete coverage &rarr;</a></p>
+      <p style="color:#cbd5e1"><a href="${pillar.url}" style="color:#00F0FF;text-decoration:none">${escapeHtml(pillar.title)} — complete coverage &rarr;</a></p>
     </section>`;
 }
 
@@ -480,7 +481,7 @@ function generateArticleHtml(article, bundleScript, allArticles = [], relatedLis
     : '';
 
   const tagsHtml = (article.tags && article.tags.length)
-    ? `<div style="margin-top:2rem"><div style="display:flex;flex-wrap:wrap;gap:0.5rem">${article.tags.map((t) => `<span class="tag" style="background:rgba(96,165,250,0.15);border:1px solid rgba(96,165,250,0.3);border-radius:9999px;padding:0.25rem 0.75rem;font-size:0.8rem;color:#60a5fa">${escapeHtml(t)}</span>`).join('')}</div></div>`
+    ? `<div style="margin-top:2rem"><div style="display:flex;flex-wrap:wrap;gap:0.5rem">${article.tags.map((t) => `<span class="tag" style="background:rgba(96,165,250,0.15);border:1px solid rgba(96,165,250,0.3);border-radius:9999px;padding:0.25rem 0.75rem;font-size:0.8rem;color:#00F0FF">${escapeHtml(t)}</span>`).join('')}</div></div>`
     : '';
 
   const securityMetaCard = generateSecurityMetaCard(article);
@@ -539,25 +540,18 @@ function generateArticleHtml(article, bundleScript, allArticles = [], relatedLis
 ${jsonLd}
     </script>
     ${bundleScript}
+      <style>${chromeCss}</style>
   </head>
-  <body>
+<body>
+    ${navHtml('/article')}
+    <div class="site-wrap">
     <div id="root">
-      <div id="static-shell" style="min-height:100vh;font-family:system-ui,sans-serif;background:#0f172a;color:#f8fafc">
-        <header style="border-bottom:1px solid rgba(148,163,184,0.2);padding:1rem 1.5rem">
-          <nav aria-label="Main navigation" style="max-width:80rem;margin:0 auto;display:flex;flex-wrap:wrap;gap:1rem;align-items:center">
-            <a href="/" aria-label="${SITE_NAME} home" style="font-weight:700;font-size:1.25rem;color:#f8fafc;text-decoration:none">${SITE_NAME}</a>
-            <a href="/tech" style="color:#94a3b8;text-decoration:none">Tech</a>
-            <a href="/security" style="color:#94a3b8;text-decoration:none">Security</a>
-            <a href="/gaming" style="color:#94a3b8;text-decoration:none">Gaming</a>
-            <a href="/news" style="color:#94a3b8;text-decoration:none">News</a>
-            <a href="/topics" style="color:#94a3b8;text-decoration:none">Topics</a>
-            <a href="/about" style="color:#94a3b8;text-decoration:none">About</a>
-          </nav>
-        </header>
+      <div id="static-shell" style="min-height:100vh;color:#f8fafc">
+        
         <main id="main-content" style="max-width:80rem;margin:0 auto;padding:2rem 1.5rem">
           <nav aria-label="Breadcrumb" style="font-size:0.875rem;color:#94a3b8;margin-bottom:1rem">
-            <a href="/" style="color:#60a5fa;text-decoration:none">Home</a> &rsaquo;
-            <a href="${nicheUrl}" style="color:#60a5fa;text-decoration:none">${nicheLabel}</a> &rsaquo;
+            <a href="/" style="color:#00F0FF;text-decoration:none">Home</a> &rsaquo;
+            <a href="${nicheUrl}" style="color:#00F0FF;text-decoration:none">${nicheLabel}</a> &rsaquo;
             <span>${escapeHtml(repairMojibake(article.title))}</span>
           </nav>
           <article>
@@ -588,10 +582,12 @@ ${jsonLd}
           </article>
         </main>
         <footer style="border-top:1px solid rgba(148,163,184,0.2);padding:1.5rem;text-align:center;color:#64748b;font-size:0.875rem">
-          <p>&copy; 2026 ${SITE_NAME}. All rights reserved. <a href="/privacy" style="color:#60a5fa">Privacy</a> &middot; <a href="/terms" style="color:#60a5fa">Terms</a> &middot; <a href="/sitemap.xml" style="color:#64748b">Sitemap</a></p>
+          <p>&copy; 2026 ${SITE_NAME}. All rights reserved. <a href="/privacy" style="color:#00F0FF">Privacy</a> &middot; <a href="/terms" style="color:#00F0FF">Terms</a> &middot; <a href="/sitemap.xml" style="color:#64748b">Sitemap</a></p>
         </footer>
       </div>
     </div>
+      </div>
+    ${footerHtml()}
   </body>
 </html>`;
 }

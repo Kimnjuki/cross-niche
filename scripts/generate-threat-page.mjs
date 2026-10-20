@@ -13,6 +13,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { isGamerRelevant, gamerImpact, actionFor } from './lib/gamer-threat-filter.mjs';
+import { navHtml, footerHtml, chromeCss } from './lib/static-chrome.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const projectRoot = path.resolve(__dirname, '..');
@@ -100,16 +101,12 @@ const html = `<!doctype html>
         url: (t.cveIds && t.cveIds[0]) ? `https://nvd.nist.gov/vuln/detail/${t.cveIds[0]}` : (t.url || canonical),
       })),
     })}</script>
+      <style>${chromeCss}</style>
   </head>
-  <body style="max-width:80rem;margin:0 auto;padding:2rem 1.5rem;font-family:system-ui,sans-serif;background:#0f172a;color:#f8fafc;line-height:1.6">
-    <header style="margin-bottom:2rem">
-      <a href="/" style="color:#60a5fa;text-decoration:none;font-weight:700">${SITE_NAME}</a>
-      <nav style="margin-top:0.5rem;display:flex;flex-wrap:wrap;gap:1rem;font-size:0.9rem">
-        <a href="/" style="color:#94a3b8;text-decoration:none">Home</a>
-        <a href="/games" style="color:#94a3b8;text-decoration:none">Security Grades</a>
-        <a href="/recover" style="color:#94a3b8;text-decoration:none">Recovery</a>
-      </nav>
-    </header>
+  <body>
+    ${navHtml('/threats')}
+    <div class="site-wrap">
+    
     <article>
       <h1 style="font-size:2rem;margin:0 0 0.5rem">Gamer Threat Report</h1>
       <p style="color:#e2e8f0;max-width:70ch">Actively-exploited vulnerabilities that affect players — Windows, Chrome, iOS/macOS, Android, GPU drivers and game platforms. Sourced from the CISA Known Exploited Vulnerabilities catalog and narrowed to consumer products a player actually patches. Newest first.</p>
@@ -125,6 +122,8 @@ const html = `<!doctype html>
       </table>
       <p style="margin-top:1.5rem;font-size:0.85rem;color:#64748b">Showing ${shown} of ${threats.length} gamer-relevant entries. Impact = severity base (critical 70 / high 55 / medium 40 / low 25) + platform exposure (console +20, mobile +15, PC +5), capped at 100. Sourced from CISA KEV; verify the vendor advisory before acting.</p>
     </article>
+      </div>
+    ${footerHtml()}
   </body>
 </html>`;
 

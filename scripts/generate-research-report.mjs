@@ -14,6 +14,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { isGamerRelevant } from './lib/gamer-threat-filter.mjs';
+import { navHtml, footerHtml, chromeCss } from './lib/static-chrome.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const projectRoot = path.resolve(__dirname, '..');
@@ -80,16 +81,12 @@ const html = `<!doctype html>
       distribution: { '@type': 'DataDownload', contentUrl: `${canonical}/data.csv`, encodingFormat: 'text/csv' },
       variableMeasured: ['security grade', 'platform', 'gamer impact score'],
     })}</script>
+      <style>${chromeCss}</style>
   </head>
-  <body style="max-width:80rem;margin:0 auto;padding:2rem 1.5rem;font-family:system-ui,sans-serif;background:#0f172a;color:#f8fafc;line-height:1.6">
-    <header style="margin-bottom:2rem">
-      <a href="/" style="color:#60a5fa;text-decoration:none;font-weight:700">${SITE_NAME}</a>
-      <nav style="margin-top:0.5rem;display:flex;flex-wrap:wrap;gap:1rem;font-size:0.9rem">
-        <a href="/" style="color:#94a3b8;text-decoration:none">Home</a>
-        <a href="/games" style="color:#94a3b8;text-decoration:none">Security Grades</a>
-        <a href="/threats" style="color:#94a3b8;text-decoration:none">Threat Report</a>
-      </nav>
-    </header>
+  <body>
+    ${navHtml('/research/state-of-gaming-security-2026')}
+    <div class="site-wrap">
+    
     <article>
       <h1 style="font-size:2rem;margin:0 0 0.5rem">State of Gaming Security 2026</h1>
       <p style="color:#e2e8f0;max-width:70ch">Original data on how well the games and platforms players use actually protect their accounts. Two datasets below: a security-grade assessment of 14 major games/platforms, and a gamer-impact triage of actively-exploited vulnerabilities from the CISA KEV catalog. <a href="${canonical}/data.csv" style="color:#60a5fa">Download the CSV</a>.</p>
@@ -129,6 +126,8 @@ const html = `<!doctype html>
         <li><strong>Caveat:</strong> initial assessment, not a penetration test. Verify before acting; corrections are published with a date note.</li>
       </ul>
     </article>
+      </div>
+    ${footerHtml()}
   </body>
 </html>`;
 
