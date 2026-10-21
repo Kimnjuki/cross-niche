@@ -91,6 +91,7 @@ export function footerHtml() {
       <div class="site-footer-links">
         <a href="/about">About</a>
         <a href="/methodology">Methodology</a>
+        <a href="/data">Data</a>
         <a href="/privacy">Privacy</a>
         <a href="/terms">Terms</a>
         <a href="/recover">Recovery</a>
