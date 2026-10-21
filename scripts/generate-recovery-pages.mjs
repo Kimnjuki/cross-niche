@@ -133,6 +133,26 @@ function pageShell(title, description, canonical, body, jsonLd) {
   return staticShell(title, description, canonical, body, jsonLd);
 }
 
+// Keyword-targeted substantive content added to every guide to lift thin pages
+// (sub-200-word "Crawled — currently not indexed" risk) to 300+ words.
+function recoveryExtras(platformName) {
+  return `
+  <h2 style="font-size:1.15rem;margin:1.8rem 0 0.5rem">Before you start</h2>
+  <ol style="margin:0;padding-left:1.5rem;color:#9FB0D0">
+    <li style="margin-bottom:0.5rem"><strong style="color:#EAF1FF">Secure your email first.</strong> Your email is the master key — if it's compromised, the attacker can reset every linked account. Change its password and enable 2FA before you recover anything else.</li>
+    <li style="margin-bottom:0.5rem"><strong style="color:#EAF1FF">Use a clean, trusted device.</strong> If your PC or phone has an info-stealer, recovering on it hands the new password straight back to the attacker. Run a scan or use a second device.</li>
+    <li style="margin-bottom:0.5rem"><strong style="color:#EAF1FF">Gather proof of ownership.</strong> Purchase receipts, original email addresses and an approximate sign-up date all help ${platformName} support verify you're the real owner.</li>
+  </ol>
+  <h2 style="font-size:1.15rem;margin:1.8rem 0 0.5rem">What to expect</h2>
+  <p style="color:#9FB0D0;margin:0">Recovery through ${platformName}'s official support is always free. Self-serve steps above usually take minutes; a human identity review can take hours to days. ${platformName} will never ask for your password, 2FA codes or recovery codes — any "support" contact that does is a scam.</p>
+  <h2 style="font-size:1.15rem;margin:1.8rem 0 0.5rem">After you're back in</h2>
+  <ul style="margin:0;padding-left:1.5rem;color:#9FB0D0">
+    <li style="margin-bottom:0.4rem">Enable or reset two-factor authentication immediately.</li>
+    <li style="margin-bottom:0.4rem">Sign out all other sessions and remove unknown devices.</li>
+    <li style="margin-bottom:0.4rem">Remove saved payment methods until you're sure the account is secure.</li>
+  </ul>`;
+}
+
 function generatePage(page) {
   const { platform, playbook, officialLinks } = page;
   const scenarioLabel = titleCase(playbook.scenario);
@@ -162,6 +182,7 @@ function generatePage(page) {
       <h1 style="font-size:clamp(1.6rem,3vw,2.2rem);margin:0 0 0.5rem">${esc(platform.name)} account recovery</h1>
       <p style="color:#9FB0D0">${esc(playbook.steps?.disclaimer || 'Guidance only — follow the official process.')}</p>
       <ol style="margin:1.5rem 0;padding-left:1.5rem">${stepsHtml}</ol>
+      ${recoveryExtras(platform.name)}
       <div style="margin-top:1.5rem;padding:1rem;border:1px solid rgba(255,92,122,0.4);border-radius:0.85rem;background:rgba(255,92,122,0.08)">
         <strong style="color:#FF5C7A">Never pay a third party to recover your account.</strong>
         <p style="color:#9FB0D0;margin:0.5rem 0 0">Account recovery is always done through ${esc(platform.name)}'s official support, free of charge. Anyone offering to "hack back" or recover your account for a fee is scamming you — and no legitimate process will ever ask for your password, 2FA codes, or recovery codes.</p>

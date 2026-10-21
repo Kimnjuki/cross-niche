@@ -81,6 +81,7 @@ function generateVerdict(v) {
       </div>
       <p style="color:#94a3b8;margin:0 0 0.5rem">${esc(style.blurb)}</p>
       <p style="color:#e2e8f0;font-size:1.1rem;max-width:65ch">${esc(v.summary)}</p>
+      <p style="color:#cbd5e1;max-width:68ch;margin:0.75rem 0 0">In short: <strong style="color:#e2e8f0">${esc(v.assetName)}</strong> is <strong style="color:${style.color}">${style.label.toLowerCase()}</strong> to use. This is a document-based verdict built from recorded scam patterns and known exploitation — not a live scan of a specific page or download. Always verify the source yourself before downloading or entering an account.</p>
 
       <h2 style="font-size:1.2rem;margin:1.75rem 0 0.5rem">What this is</h2>
       <p style="color:#cbd5e1;margin:0;max-width:65ch">${esc(v.whatItIs)}</p>
@@ -94,6 +95,10 @@ function generateVerdict(v) {
 
       <h2 style="font-size:1.2rem;margin:1.75rem 0 0.5rem">What to do if you are already affected</h2>
       <p style="color:#cbd5e1;margin:0;max-width:65ch">${esc(v.whatToDoIfCompromised)}</p>
+
+      <h2 style="font-size:1.2rem;margin:1.75rem 0 0.5rem">How we judge</h2>
+      <p style="color:#cbd5e1;margin:0 0 0.75rem;max-width:65ch">Verdicts come from documented scam patterns, official sources and public incident reporting — never from review sentiment or affiliate relationships. A verdict can change as new information emerges, and is re-dated whenever it does.</p>
+      <p style="color:#cbd5e1;margin:0;max-width:65ch">Not sure about a specific link or message? <a href="/tools/scam-check" style="color:#00F0FF">Run it through the Scam Checker</a> or <a href="/safety" style="color:#00F0FF">browse every safety verdict</a>.</p>
 
       <h2 style="font-size:1.2rem;margin:1.75rem 0 0.5rem">Sources & last verified</h2>
       <div style="margin-bottom:0.5rem">${sources}</div>

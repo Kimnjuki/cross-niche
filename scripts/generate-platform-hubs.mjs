@@ -33,6 +33,24 @@ function esc(s) {
 function pageShell(title, description, canonical, body, jsonLd) {
   return staticShell(title, description, canonical, body, jsonLd);
 }
+function platformFaqHtml(platform) {
+  const name = esc(platform.name);
+  return `
+      <h2 style="font-size:1.2rem;margin:1.5rem 0 0.5rem">Frequently asked</h2>
+      <details style="background:rgba(148,163,184,0.06);border:1px solid rgba(148,163,184,0.15);border-radius:0.5rem;margin-bottom:0.5rem;overflow:hidden">
+        <summary style="cursor:pointer;padding:0.7rem 1rem;color:#e2e8f0;font-weight:600">How do I avoid ${name} phishing scams?</summary>
+        <div style="padding:0 1rem 0.8rem;color:#cbd5e1">Only sign in on the official domains listed above. ${name} will never ask for your password or two-factor codes over chat, email or DM. Any message claiming your account is "limited" or "deactivated" with a login link is phishing.</div>
+      </details>
+      <details style="background:rgba(148,163,184,0.06);border:1px solid rgba(148,163,184,0.15);border-radius:0.5rem;margin-bottom:0.5rem;overflow:hidden">
+        <summary style="cursor:pointer;padding:0.7rem 1rem;color:#e2e8f0;font-weight:600">Is my ${name} account at risk?</summary>
+        <div style="padding:0 1rem 0.8rem;color:#cbd5e1">Account-takeover risk is highest when two-factor authentication is off, when you reuse a password, or when you click a fake login link. The single highest-impact fix is enabling 2FA and using a unique password.</div>
+      </details>
+      <details style="background:rgba(148,163,184,0.06);border:1px solid rgba(148,163,184,0.15);border-radius:0.5rem;margin-bottom:0.5rem;overflow:hidden">
+        <summary style="cursor:pointer;padding:0.7rem 1rem;color:#e2e8f0;font-weight:600">What do I do if my ${name} account is hacked?</summary>
+        <div style="padding:0 1rem 0.8rem;color:#cbd5e1">Secure your email first, then follow the <a href="${esc(platform.recoveryPath)}" style="color:#60a5fa">official ${name} recovery guide</a>. Never pay a third party to recover it — recovery is always free through ${name} support.</div>
+      </details>`;
+}
+
 function generateHub(platform) {
   const url = `${BASE_URL}/platforms/${platform.slug}/security`;
   const title = `${platform.name} account security — official domains, 2FA & recovery | ${SITE_NAME}`;
@@ -80,6 +98,8 @@ function generateHub(platform) {
 
       <h2 style="font-size:1.2rem;margin:1.5rem 0 0.5rem">Known scam patterns</h2>
       <ul style="margin:0;padding-left:1.25rem">${scamsHtml}</ul>
+
+      ${platformFaqHtml(platform)}
 
       <p style="margin-top:2rem;color:#94a3b8;font-size:0.85rem">Reviewed for accuracy; always confirm on the official ${esc(platform.name)} site. Capabilities not listed are not asserted here.</p>
     </article>`;
