@@ -13,7 +13,7 @@ export interface SEOConfig {
   type?: 'website' | 'article';
 }
 
-const DEFAULT_OG = '/og-image.jpg';
+const DEFAULT_OG = 'https://thegridnexus.com/og-image.jpg';
 
 /** Resolve full URL for og:image (origin + path if relative). */
 function resolveOgImage(ogImage: string | undefined, fallback: string): string {
