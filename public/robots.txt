@@ -1,80 +1,33 @@
 # The Grid Nexus - robots.txt
 # https://thegridnexus.com
-# Last updated: 2026-09-17
+# Last updated: 2026-10-22
 
-# AI crawlers get the SAME rules as the generic group below. The robots.txt
-# spec allows multiple User-agent lines in one group, which avoids repeating
-# the disallow list per bot while still naming each crawler explicitly
-# (AI/GEO discoverability: GPTBot, ClaudeBot, PerplexityBot, CCBot,
-# Applebot-Extended).
-User-agent: GPTBot
-User-agent: ClaudeBot
-User-agent: PerplexityBot
-User-agent: CCBot
-User-agent: Applebot-Extended
-Allow: /
+# ── AI & search policy ────────────────────────────────────────────────────────
+# We WANT to be found by both search engines AND AI assistants (Google AI
+# Overviews, ChatGPT search, Perplexity, Claude). AI answer citations are a
+# primary referral channel, so all crawlers are allowed by default — search
+# engines, AI search/retrieval (ai-input), and AI training (ai-train). This is
+# why we publish llms.txt and llms-full.txt: so AI systems can read our content.
 
-# Private / member pages (never index)
-# NOTE (2026-09-28): robots.txt patterns are PREFIX matches, not exact paths.
-# `Disallow: /auth` also blocked every /author/<name> bio page — 12 pages that
-# are submitted in sitemap.xml and are a core E-E-A-T signal ("Submitted URL
-# blocked by robots.txt"). Auth rules are therefore anchored with `$`. The same
-# gotcha applies to /admin, /subscription and /api, which have no trailing slash.
-Disallow: /admin/
-Disallow: /admin$
-Disallow: /profile
-Disallow: /auth$
-Disallow: /auth/
-Disallow: /signin
-Disallow: /signup
-Disallow: /settings
-Disallow: /billing
-Disallow: /subscription$
-Disallow: /subscription/
-Disallow: /bookmarks
-Disallow: /original-index
-Disallow: /notifications
-Disallow: /api$
-Disallow: /api/
-Disallow: /security-profile
-Disallow: /preview
-Disallow: /draft
-Disallow: /*/preview
-Disallow: /*/draft
+Content-Signal: search=yes, ai-input=yes, ai-train=yes, use=full
 
-# Author bio pages must stay crawlable — they carry the E-E-A-T bylines.
-Allow: /author/
-
-# Search/filter variants duplicate the canonical editorial listings.
-Disallow: /search
-Disallow: /*?*preview=*
-Disallow: /*?*draft=*
-Disallow: /*?search=*
-Disallow: /*?*&search=*
-Disallow: /*?filter=*
-Disallow: /*?*&filter=*
-
-# Dev / test pages (not for indexing)
-Disallow: /simple
-Disallow: /enhanced
-Disallow: /enhanced-simple
-Disallow: /test-features
-Disallow: /newsletter/verify
-Disallow: /tools-old
-
-# Legacy / malformed article helpers
-Disallow: /article-detail
-Disallow: /article/*/edit
-
-# WordPress scanner bait (block probes only; not WordPress)
-Disallow: /wp-admin/
-Disallow: /wp-includes/
-
-# Default: allow all crawlers (no blocking rules for search or AI bots)
+# All crawlers are allowed by default, including the AI crawlers:
+#   Googlebot / Bingbot          — search indexing
+#   OAI-SearchBot / ChatGPT-User — ChatGPT search
+#   ClaudeBot / Claude-Web       — Claude
+#   PerplexityBot                — Perplexity
+#   GPTBot                       — OpenAI training
+#   Google-Extended              — Gemini
+#   CCBot                        — Common Crawl (training corpus)
+#   Applebot / Applebot-Extended — Apple Search / Apple Intelligence
 User-agent: *
 Allow: /
 
-# Private / member pages (never index)
+# ── Private / member pages (never index) ─────────────────────────────────────
+# NOTE: robots.txt patterns are PREFIX matches, not exact paths. A bare
+# `Disallow: /auth` would also block every /author/<name> bio page (a core
+# E-E-A-T signal submitted in the sitemap), so auth/admin/subscription/api
+# rules are anchored with `$` where they have no trailing slash.
 Disallow: /admin/
 Disallow: /admin$
 Disallow: /profile
@@ -90,19 +43,12 @@ Disallow: /bookmarks
 Disallow: /original-index
 Disallow: /notifications
 
-# Dev / test pages (not for indexing)
-Disallow: /simple
-Disallow: /enhanced
-Disallow: /enhanced-simple
-Disallow: /test-features
-Disallow: /newsletter/verify
-Disallow: /tools-old
-
-# API responses are not editorial pages.
+# ── API responses + personal results (not editorial content) ─────────────────
+Disallow: /api$
 Disallow: /api/
-# Personal security results are account-specific, not public editorial content.
 Disallow: /security-profile
-# Unpublished preview and draft routes must not be crawled.
+
+# ── Unpublished preview / draft routes ───────────────────────────────────────
 Disallow: /preview
 Disallow: /draft
 Disallow: /*/preview
@@ -110,18 +56,29 @@ Disallow: /*/draft
 Disallow: /*?*preview=*
 Disallow: /*?*draft=*
 
-# Search/filter variants duplicate the canonical editorial listings.
+# ── Author bio pages stay crawlable (E-E-A-T bylines) ────────────────────────
+Allow: /author/
+
+# ── Search/filter variants duplicate the canonical listings ──────────────────
 Disallow: /search
 Disallow: /*?search=*
 Disallow: /*?*&search=*
 Disallow: /*?filter=*
 Disallow: /*?*&filter=*
 
-# Legacy / malformed article helpers
+# ── Dev / test pages (not for indexing) ──────────────────────────────────────
+Disallow: /simple
+Disallow: /enhanced
+Disallow: /enhanced-simple
+Disallow: /test-features
+Disallow: /newsletter/verify
+Disallow: /tools-old
+
+# ── Legacy / malformed article helpers ───────────────────────────────────────
 Disallow: /article-detail
 Disallow: /article/*/edit
 
-# WordPress scanner bait (block probes only; not WordPress)
+# ── WordPress scanner bait (block probes only; not WordPress) ─────────────────
 Disallow: /wp-admin/
 Disallow: /wp-includes/
 
