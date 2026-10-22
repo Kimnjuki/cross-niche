@@ -229,6 +229,36 @@ function main() {
   }
 
   console.log(`Generated /data asset: ${games.length} games, ${platforms.length} platforms, ${verdicts.length} verdicts, ${recovery.length} recovery guides.`);
+
+  // ── Agent-discovery api-catalog (RFC 9727 §3) ──────────────────────────────
+  // Served at /.well-known/api-catalog and linked from the homepage via a
+  // `Link: </.well-known/api-catalog>; rel="api-catalog"` header so AI agents
+  // and API clients can discover the machine-readable data resources.
+  const catalog = JSON.stringify(
+    {
+      '@context': 'https://www.w3.org/ns/json-ld',
+      '@type': 'APIReference',
+      name: 'The Grid Nexus — Gaming Security Data',
+      description: 'Machine-readable gaming-security data: game grades, platform security, safety verdicts, and recovery playbooks.',
+      url: `${BASE_URL}/data`,
+      license: 'https://creativecommons.org/licenses/by/4.0/',
+      apis: [
+        { name: 'Game Security Grades', url: `${BASE_URL}/data/games.json`, format: 'application/json' },
+        { name: 'Platform Security', url: `${BASE_URL}/data/platforms.json`, format: 'application/json' },
+        { name: 'Safety Verdicts', url: `${BASE_URL}/data/safety-verdicts.json`, format: 'application/json' },
+        { name: 'Recovery Playbooks', url: `${BASE_URL}/data/recovery-playbooks.json`, format: 'application/json' },
+        { name: 'Full Text Corpus', url: `${BASE_URL}/llms-full.txt`, format: 'text/plain' },
+      ],
+    },
+    null,
+    2,
+  );
+  for (const dir of ['public', 'dist']) {
+    const wellKnownDir = path.join(projectRoot, dir, '.well-known');
+    fs.mkdirSync(wellKnownDir, { recursive: true });
+    writeData(wellKnownDir, 'api-catalog', catalog);
+  }
+  console.log('Generated /.well-known/api-catalog (agent-discovery catalog).');
 }
 
 main();
