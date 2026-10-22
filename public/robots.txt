@@ -3,23 +3,31 @@
 # Last updated: 2026-10-22
 
 # ── AI & search policy ────────────────────────────────────────────────────────
-# We WANT to be found by both search engines AND AI assistants (Google AI
-# Overviews, ChatGPT search, Perplexity, Claude). AI answer citations are a
-# primary referral channel, so all crawlers are allowed by default — search
-# engines, AI search/retrieval (ai-input), and AI training (ai-train). This is
-# why we publish llms.txt and llms-full.txt: so AI systems can read our content.
+# We WANT to be found by search engines AND every AI assistant (Google AI
+# Overviews, Gemini, ChatGPT, Claude, Perplexity, Copilot, Apple Intelligence).
+# AI answer citations are a primary referral channel, so all crawlers — search,
+# AI search/retrieval (ai-input), and AI training (ai-train) — are allowed.
+# We publish llms.txt and llms-full.txt precisely so AI systems can read us.
 
 Content-Signal: search=yes, ai-input=yes, ai-train=yes, use=full
 
-# All crawlers are allowed by default, including the AI crawlers:
-#   Googlebot / Bingbot          — search indexing
-#   OAI-SearchBot / ChatGPT-User — ChatGPT search
-#   ClaudeBot / Claude-Web       — Claude
-#   PerplexityBot                — Perplexity
-#   GPTBot                       — OpenAI training
-#   Google-Extended              — Gemini
-#   CCBot                        — Common Crawl (training corpus)
-#   Applebot / Applebot-Extended — Apple Search / Apple Intelligence
+# One group covering every crawler that matters, plus the default wildcard.
+# Listing each AI crawler explicitly makes the intent unambiguous to AI
+# providers; `*` still covers any crawler we did not name.
+User-agent: Googlebot
+User-agent: Bingbot
+User-agent: DuckDuckBot
+User-agent: Google-Extended
+User-agent: GoogleOther
+User-agent: GPTBot
+User-agent: OAI-SearchBot
+User-agent: ChatGPT-User
+User-agent: ClaudeBot
+User-agent: Claude-Web
+User-agent: PerplexityBot
+User-agent: CCBot
+User-agent: Applebot
+User-agent: Applebot-Extended
 User-agent: *
 Allow: /
 
