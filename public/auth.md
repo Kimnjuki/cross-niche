@@ -1,5 +1,11 @@
 # Auth.md
 
+## Agent registration
+
+The Grid Nexus does **not** support agent registration or delegated API access. There is no agent registration flow, no OAuth authorization server, and no credential issuance. Agents and clients can read all public content and data without registering or authenticating.
+
+## Authentication
+
 The Grid Nexus public content and data require **no authentication**.
 
 - Public data (game grades, safety verdicts, recovery playbooks) is served without a key: <https://thegridnexus.com/data>
