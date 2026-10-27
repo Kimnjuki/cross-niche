@@ -228,7 +228,7 @@ const PAGES = [
       <h2 style="font-size:1.2rem;margin:1.5rem 0 0.5rem">Set up parental controls</h2>
       <ul style="color:#cbd5e1;max-width:68ch;padding-left:1.25rem">
         <li style="margin-bottom:0.5rem"><strong>Roblox</strong> — account restrictions, parent PIN and spending limits. <a href="https://en.help.roblox.com/hc/en-us/articles/203313120" style="color:#60a5fa">Official parental controls ↗</a></li>
-        <li style="margin-bottom:0.5rem"><strong>Minecraft</strong> — multiplayer and chat controls via the Microsoft family account. <a href="https://www.minecraft.net/en-us/article/parents-guide" style="color:#60a5fa">Official parents' guide ↗</a></li>
+        <li style="margin-bottom:0.5rem"><strong>Minecraft</strong> — multiplayer and chat controls via the Microsoft family account. <a href="https://www.minecraft.net/en-us/article/parents--guide-minecraft" style="color:#60a5fa">Official parents' guide ↗</a></li>
         <li style="margin-bottom:0.5rem"><strong>Fortnite (Epic Games)</strong> — Epic account parental controls for purchases and communication. <a href="https://www.epicgames.com/site/en-US/parental-controls" style="color:#60a5fa">Official parental controls ↗</a></li>
         <li style="margin-bottom:0.5rem"><strong>PlayStation</strong> — family management, spending limits and age ratings. <a href="https://www.playstation.com/support/account/parental-controls/" style="color:#60a5fa">Official parental controls ↗</a></li>
         <li style="margin-bottom:0.5rem"><strong>Xbox</strong> — Microsoft family settings for screen time, purchases and content. <a href="https://www.xbox.com/family-hub" style="color:#60a5fa">Official family hub ↗</a></li>

@@ -249,6 +249,17 @@ function main() {
         { name: 'Recovery Playbooks', url: `${BASE_URL}/data/recovery-playbooks.json`, format: 'application/json' },
         { name: 'Full Text Corpus', url: `${BASE_URL}/llms-full.txt`, format: 'text/plain' },
       ],
+      // RFC 9264 linkset — required by the agent-discovery `api-catalog` check.
+      linkset: [
+        { anchor: `${BASE_URL}/`, rel: 'service-doc', href: `${BASE_URL}/data`, type: 'text/html' },
+        { anchor: `${BASE_URL}/`, rel: 'service-desc', href: `${BASE_URL}/data/games.json`, type: 'application/json' },
+        { anchor: `${BASE_URL}/`, rel: 'describedby', href: `${BASE_URL}/llms.txt`, type: 'text/plain' },
+        { anchor: `${BASE_URL}/data`, rel: 'item', href: `${BASE_URL}/data/games.json`, type: 'application/json' },
+        { anchor: `${BASE_URL}/data`, rel: 'item', href: `${BASE_URL}/data/platforms.json`, type: 'application/json' },
+        { anchor: `${BASE_URL}/data`, rel: 'item', href: `${BASE_URL}/data/safety-verdicts.json`, type: 'application/json' },
+        { anchor: `${BASE_URL}/data`, rel: 'item', href: `${BASE_URL}/data/recovery-playbooks.json`, type: 'application/json' },
+        { anchor: `${BASE_URL}/data`, rel: 'item', href: `${BASE_URL}/llms-full.txt`, type: 'text/plain' },
+      ],
     },
     null,
     2,
