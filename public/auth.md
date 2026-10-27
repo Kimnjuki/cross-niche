@@ -1,4 +1,4 @@
-# Authentication
+# Auth.md
 
 The Grid Nexus public content and data require **no authentication**.
 
