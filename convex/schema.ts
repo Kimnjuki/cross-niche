@@ -63,7 +63,6 @@ export default defineSchema({
     socialLinks: v.optional(v.any()), // JSON
     // CRITICAL: Add missing user fields for complete auth
     emailVerified: v.optional(v.boolean()),
-    phoneNumber: v.optional(v.string()),
     location: v.optional(v.string()),
     websiteUrl: v.optional(v.string()),
     twitterHandle: v.optional(v.string()),
@@ -605,6 +604,7 @@ export default defineSchema({
     verifiedAt: v.optional(v.number()),
     verificationToken: v.optional(v.string()),
     confirmationToken: v.optional(v.string()),
+    tokenExpiresAt: v.optional(v.number()),
     confirmedAt: v.optional(v.number()),
     unsubscribedAt: v.optional(v.number()),
     lastSentAt: v.optional(v.number()),
@@ -618,6 +618,7 @@ export default defineSchema({
     .index("by_active", ["isActive"])
     .index("by_verification_token", ["verificationToken"])
     .index("by_confirmation_token", ["confirmationToken"])
+    .index("by_token_expires_at", ["tokenExpiresAt"])
     .index("by_frequency_status", ["frequency", "status"]),
 
   // ─── Newsletter Send History ────────────────────────────────────────────
@@ -963,6 +964,7 @@ export default defineSchema({
   copilotInteractions: defineTable({
     sessionId: v.string(),
     userId: v.optional(v.string()),
+    consentId: v.optional(v.id("consents")),
     contentId: v.id("content"),
     question: v.string(),
     response: v.string(),
@@ -978,11 +980,13 @@ export default defineSchema({
     )),
     responseTimeMs: v.float64(),
     createdAt: v.float64(),
+    expiresAt: v.optional(v.number()),
   })
     .index("by_content", ["contentId"])
     .index("by_user", ["userId"])
     .index("by_session", ["sessionId"])
-    .index("by_created_at", ["createdAt"]),
+    .index("by_created_at", ["createdAt"])
+    .index("by_expiresAt", ["expiresAt"]),
 
   // ─── FEAT-003: Nexus Path Learning Paths ───────────────────────────────────
   learningPaths: defineTable({
@@ -1093,6 +1097,9 @@ export default defineSchema({
     sessionId: v.string(),
     userId: v.optional(v.string()),
     ownerUserId: v.optional(v.id("users")), // verified identity owner
+    templateSlug: v.optional(v.string()),
+    templateVersion: v.optional(v.number()),
+    consentId: v.optional(v.id("consents")),
     answers: v.array(v.object({
       questionId: v.number(),
       answer: v.union(v.literal("yes"), v.literal("partial"), v.literal("no")),
@@ -1108,6 +1115,7 @@ export default defineSchema({
     ),
     weakAreaCount: v.number(),
     createdAt: v.number(),
+    expiresAt: v.optional(v.number()),
     // Game Security Copilot — per-game context
     gameSlug: v.optional(v.string()),
     platform: v.optional(v.string()),
@@ -1120,6 +1128,7 @@ export default defineSchema({
   breachSimulations: defineTable({
     sessionId: v.string(),
     userId: v.optional(v.string()),
+    consentId: v.optional(v.id("consents")),
     scenarioId: v.string(),
     scenarioTitle: v.string(),
     decisions: v.array(v.object({
@@ -1133,6 +1142,7 @@ export default defineSchema({
     finalTime: v.number(),
     outcome: v.union(v.literal("success"), v.literal("partial"), v.literal("failure")),
     createdAt: v.number(),
+    expiresAt: v.optional(v.number()),
     // AI post-mortem for simulation depth and learning linkage
     aiFeedback: v.optional(v.object({
       summary: v.string(),
@@ -1189,10 +1199,12 @@ export default defineSchema({
     clickPosition: v.optional(v.float64()),
     hasAiSummary: v.boolean(),
     searchedAt: v.float64(),
+    expiresAt: v.optional(v.number()),
   })
     .index("by_query", ["query"])
     .index("by_searched_at", ["searchedAt"])
-    .index("by_user", ["userId"]),
+    .index("by_user", ["userId"])
+    .index("by_expiresAt", ["expiresAt"]),
 
   // ════════════════════════════════════════════════════════════════════════════
   // NEXUS v2.0 SCHEMA ADDITIONS
@@ -1514,9 +1526,11 @@ export default defineSchema({
     generatedAt: v.float64(),
     summary: v.string(),
     topContentIds: v.array(v.id("content")),
+    expiresAt: v.optional(v.number()),
   })
     .index("by_session", ["sessionId", "generatedAt"])
-    .index("by_query", ["query", "generatedAt"]),
+    .index("by_query", ["query", "generatedAt"])
+    .index("by_expiresAt", ["expiresAt"]),
 
   // ════════════════════════════════════════════════════════════════════════════
   // GROWTH v2.0 — Revenue, Experiments, Attribution & GEO
@@ -1821,12 +1835,41 @@ export default defineSchema({
     .index("by_budget_tier", ["budgetTier"])
     .index("by_updated", ["updatedAt"]),
 
+  // ─── Consents — opt-in storage ledger (P0-02) ─────────────────────────────
+  // No user-entered tool content may be persisted without a matching active
+  // consent row (subjectKey = userId or sessionId).
+  consents: defineTable({
+    subjectKey: v.string(),
+    purpose: v.union(
+      v.literal("save_checkup"),
+      v.literal("alerts"),
+      v.literal("report_submission"),
+      v.literal("copilot_history"),
+      v.literal("analytics")
+    ),
+    grantedAt: v.number(),
+    withdrawnAt: v.optional(v.number()),
+  }).index("by_subject_purpose", ["subjectKey", "purpose"]),
+
   // ─── Tool Usage Logs — analytics/debugging for all 8 tools ────────────────
-  toolUsageLogs: defineTable({
+  toolRegistry: defineTable({
+    slug: v.string(), name: v.string(),
+    audience: v.union(v.literal("player"), v.literal("parent"), v.literal("creator"), v.literal("admin"), v.literal("pro"), v.literal("legacy")),
+    status: v.union(v.literal("flagship"), v.literal("keep"), v.literal("rebuild"), v.literal("merged"), v.literal("sunset")),
+    indexable: v.boolean(),
+    mergedIntoSlug: v.optional(v.string()),
+    answerFirst: v.string(),
+    howItWorks: v.array(v.string()),
+    privacyMode: v.union(v.literal("client_only"), v.literal("hash_only"), v.literal("server_opt_in"), v.literal("server_logged")),
+    faq: v.array(v.object({ q: v.string(), a: v.string() })),
+    relatedSlugs: v.array(v.string()),
+    updatedAt: v.number(),
+  }).index("by_slug", ["slug"]).index("by_status_indexable", ["status", "indexable"]),
     toolId: v.string(),
     userId: v.optional(v.string()),
     sessionId: v.string(),
-    input: v.any(),
+    input: v.optional(v.any()),
+    inputMeta: v.optional(v.object({ length: v.number(), kind: v.string() })),
     status: v.union(
       v.literal("success"),
       v.literal("error"),
@@ -1835,9 +1878,11 @@ export default defineSchema({
     ),
     latencyMs: v.float64(),
     createdAt: v.float64(),
+    expiresAt: v.optional(v.number()),
   })
     .index("by_tool", ["toolId", "createdAt"])
-    .index("by_user", ["userId", "createdAt"]),
+    .index("by_user", ["userId", "createdAt"])
+    .index("by_expiresAt", ["expiresAt"]),
 
   // ─── News Bookmarks — server-side bookmark persistence for Tool 04 ────────
   newsBookmarks: defineTable({
@@ -1854,7 +1899,7 @@ export default defineSchema({
   moderationResults: defineTable({
     sessionId: v.string(),
     userId: v.optional(v.string()),
-    inputText: v.string(),
+    inputText: v.optional(v.string()),
     verdict: v.union(
       v.literal("approved"),
       v.literal("flagged"),
@@ -1883,10 +1928,12 @@ export default defineSchema({
     analyzedAt: v.float64(),
     mode: v.union(v.literal("example"), v.literal("custom")),
     inputLengthChars: v.float64(),
+    expiresAt: v.optional(v.number()),
   })
     .index("by_session", ["sessionId", "analyzedAt"])
     .index("by_verdict", ["verdict", "analyzedAt"])
-    .index("by_user", ["userId", "analyzedAt"]),
+    .index("by_user", ["userId", "analyzedAt"])
+    .index("by_expiresAt", ["expiresAt"]),
 
   // ─── Copilot Sessions — conversation history for Tool 07 ──────────────────
   copilotSessions: defineTable({
@@ -1907,8 +1954,10 @@ export default defineSchema({
     totalTokensUsed: v.optional(v.float64()),
     lastUserMessage: v.optional(v.string()),
     guardrailTriggered: v.optional(v.boolean()),
+    expiresAt: v.optional(v.number()),
   })
     .index("by_session", ["sessionId"])
     .index("by_user", ["userId", "createdAt"])
-    .index("by_updated", ["updatedAt"]),
+    .index("by_updated", ["updatedAt"])
+    .index("by_expiresAt", ["expiresAt"]),
 });

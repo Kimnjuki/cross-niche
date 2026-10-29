@@ -44,28 +44,16 @@ ${urlEntries}
  * Central registry — update here when tools are added/removed.
  */
 export const TOOL_PAGES = [
-  { slug: '/tools/security-scanner',        name: 'Security Scanner',               priority: 0.9, changefreq: 'weekly' as const },
-  { slug: '/tools/nexusguard',              name: 'NexusGuard',                     priority: 0.8, changefreq: 'weekly' as const },
-  { slug: '/tools/security-briefing',       name: 'Security Briefing Room',         priority: 0.7, changefreq: 'weekly' as const },
-  { slug: '/tools/vr-cyber-training',       name: 'VR Cyber Training',              priority: 0.6, changefreq: 'weekly' as const },
   { slug: '/tools/steam-scanner',           name: 'Steam Security Scanner',         priority: 0.8, changefreq: 'weekly' as const },
-  { slug: '/tools/ioc-lookup',              name: 'IOC Threat-Hunting Lookup',      priority: 0.8, changefreq: 'daily' as const },
   { slug: '/tools/gaming-security-checkup', name: 'Gaming Security Checkup',        priority: 0.8, changefreq: 'weekly' as const },
   { slug: '/tools/breach-explainer',        name: 'Breach Explainer',               priority: 0.8, changefreq: 'weekly' as const },
-  { slug: '/tools/ai-tool-finder',          name: 'AI Security Tool Finder',        priority: 0.7, changefreq: 'weekly' as const },
-  { slug: '/tools/patch-risk-tracker',      name: 'Game Patch Risk Tracker',        priority: 0.8, changefreq: 'daily' as const },
-  { slug: '/tools/zero-trust-quiz',         name: 'Zero-Trust Readiness Quiz',      priority: 0.7, changefreq: 'monthly' as const },
-  { slug: '/tools/exploit-risk-meter',      name: 'Exploit Risk Meter',             priority: 0.8, changefreq: 'daily' as const },
-  { slug: '/tools/pc-builder',              name: 'AI PC Builder',                  priority: 0.8, changefreq: 'weekly' as const },
-  { slug: '/tools/sentiment-analyzer',      name: 'Game Sentiment Analyzer',        priority: 0.8, changefreq: 'weekly' as const },
-  { slug: '/tools/news-personalizer',       name: 'AI News Personalizer',           priority: 0.7, changefreq: 'daily' as const },
-  { slug: '/tools/recommendation-engine',   name: 'AI Recommendation Engine',       priority: 0.8, changefreq: 'weekly' as const },
+  { slug: '/tools/scam-check',              name: 'Scam Check',                     priority: 0.8, changefreq: 'weekly' as const },
   { slug: '/tools/threat-scanner',          name: 'Real-Time Threat Scanner',       priority: 0.9, changefreq: 'daily' as const },
-  { slug: '/tools/community-moderator',     name: 'Community AI Moderator',         priority: 0.7, changefreq: 'weekly' as const },
+  { slug: '/tools/patch-risk-tracker',      name: 'Game Patch Risk Tracker',        priority: 0.8, changefreq: 'daily' as const },
   { slug: '/tools/gaming-copilot',          name: 'Gaming Copilot AI',              priority: 0.9, changefreq: 'daily' as const },
+  { slug: '/tools/zero-trust-quiz',         name: 'Zero-Trust Readiness Quiz',      priority: 0.7, changefreq: 'monthly' as const },
+  { slug: '/tools/sentiment-analyzer',      name: 'Game Sentiment Analyzer',        priority: 0.8, changefreq: 'weekly' as const },
   { slug: '/tools/release-predictor',       name: 'Game Release Predictor',         priority: 0.8, changefreq: 'daily' as const },
-  { slug: '/security-score',                name: 'Security Score',                 priority: 0.7, changefreq: 'monthly' as const },
-  { slug: '/breach-sim',                    name: 'Breach Simulator',               priority: 0.7, changefreq: 'monthly' as const },
 ] as const;
 
 export type ToolPageSlug = typeof TOOL_PAGES[number]['slug'];

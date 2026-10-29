@@ -134,6 +134,9 @@
     <loc>https://thegridnexus.com/recover</loc>
   </url>
   <url>
+    <loc>https://thegridnexus.com/recover/discord</loc>
+  </url>
+  <url>
     <loc>https://thegridnexus.com/recover/discord/account-stolen</loc>
     <lastmod>2026-10-15</lastmod>
   </url>
@@ -164,6 +167,9 @@
   <url>
     <loc>https://thegridnexus.com/recover/discord/unauthorized-purchase</loc>
     <lastmod>2026-10-16</lastmod>
+  </url>
+  <url>
+    <loc>https://thegridnexus.com/recover/ea</loc>
   </url>
   <url>
     <loc>https://thegridnexus.com/recover/ea/account-stolen</loc>
@@ -198,6 +204,9 @@
     <lastmod>2026-10-16</lastmod>
   </url>
   <url>
+    <loc>https://thegridnexus.com/recover/epic-games</loc>
+  </url>
+  <url>
     <loc>https://thegridnexus.com/recover/epic-games/account-stolen</loc>
     <lastmod>2026-10-15</lastmod>
   </url>
@@ -228,6 +237,9 @@
   <url>
     <loc>https://thegridnexus.com/recover/epic-games/unauthorized-purchase</loc>
     <lastmod>2026-10-16</lastmod>
+  </url>
+  <url>
+    <loc>https://thegridnexus.com/recover/playstation</loc>
   </url>
   <url>
     <loc>https://thegridnexus.com/recover/playstation/account-stolen</loc>
@@ -262,6 +274,9 @@
     <lastmod>2026-10-16</lastmod>
   </url>
   <url>
+    <loc>https://thegridnexus.com/recover/riot-games</loc>
+  </url>
+  <url>
     <loc>https://thegridnexus.com/recover/riot-games/account-stolen</loc>
     <lastmod>2026-10-15</lastmod>
   </url>
@@ -294,6 +309,9 @@
     <lastmod>2026-10-16</lastmod>
   </url>
   <url>
+    <loc>https://thegridnexus.com/recover/steam</loc>
+  </url>
+  <url>
     <loc>https://thegridnexus.com/recover/steam/account-stolen</loc>
     <lastmod>2026-10-14</lastmod>
   </url>
@@ -324,6 +342,9 @@
   <url>
     <loc>https://thegridnexus.com/recover/steam/unauthorized-purchase</loc>
     <lastmod>2026-10-16</lastmod>
+  </url>
+  <url>
+    <loc>https://thegridnexus.com/recover/xbox</loc>
   </url>
   <url>
     <loc>https://thegridnexus.com/recover/xbox/account-stolen</loc>
@@ -382,6 +403,73 @@
     <loc>https://thegridnexus.com/platforms/xbox/security</loc>
   </url>
   <url>
+    <loc>https://thegridnexus.com/safety</loc>
+  </url>
+  <url>
+    <loc>https://thegridnexus.com/safety/nexus-mods</loc>
+    <lastmod>2026-10-20</lastmod>
+  </url>
+  <url>
+    <loc>https://thegridnexus.com/safety/curseforge</loc>
+    <lastmod>2026-10-20</lastmod>
+  </url>
+  <url>
+    <loc>https://thegridnexus.com/safety/g2a-key-resellers</loc>
+    <lastmod>2026-10-20</lastmod>
+  </url>
+  <url>
+    <loc>https://thegridnexus.com/safety/skin-trading-sites</loc>
+    <lastmod>2026-10-20</lastmod>
+  </url>
+  <url>
+    <loc>https://thegridnexus.com/safety/gaming-vpns</loc>
+    <lastmod>2026-10-20</lastmod>
+  </url>
+  <url>
+    <loc>https://thegridnexus.com/safety/game-boosting-services</loc>
+    <lastmod>2026-10-20</lastmod>
+  </url>
+  <url>
+    <loc>https://thegridnexus.com/safety/free-game-cheats-aimbot</loc>
+    <lastmod>2026-10-20</lastmod>
+  </url>
+  <url>
+    <loc>https://thegridnexus.com/safety/free-skin-generators</loc>
+    <lastmod>2026-10-20</lastmod>
+  </url>
+  <url>
+    <loc>https://thegridnexus.com/safety/account-sellers</loc>
+    <lastmod>2026-10-20</lastmod>
+  </url>
+  <url>
+    <loc>https://thegridnexus.com/safety/free-gift-card-sites</loc>
+    <lastmod>2026-10-20</lastmod>
+  </url>
+  <url>
+    <loc>https://thegridnexus.com/safety/discord-verify-qr-scams</loc>
+    <lastmod>2026-10-20</lastmod>
+  </url>
+  <url>
+    <loc>https://thegridnexus.com/safety/fake-support-recovery</loc>
+    <lastmod>2026-10-20</lastmod>
+  </url>
+  <url>
+    <loc>https://thegridnexus.com/safety/cracked-game-downloads</loc>
+    <lastmod>2026-10-20</lastmod>
+  </url>
+  <url>
+    <loc>https://thegridnexus.com/safety/mod-apk-sites</loc>
+    <lastmod>2026-10-20</lastmod>
+  </url>
+  <url>
+    <loc>https://thegridnexus.com/safety/minecraft-private-servers</loc>
+    <lastmod>2026-10-20</lastmod>
+  </url>
+  <url>
+    <loc>https://thegridnexus.com/safety/steam-account-phishing</loc>
+    <lastmod>2026-10-20</lastmod>
+  </url>
+  <url>
     <loc>https://thegridnexus.com/privacy/tools</loc>
   </url>
   <url>
@@ -394,9 +482,6 @@
     <loc>https://thegridnexus.com/security-disclosure</loc>
   </url>
   <url>
-    <loc>https://thegridnexus.com/tools/scam-check</loc>
-  </url>
-  <url>
     <loc>https://thegridnexus.com/anti-cheat</loc>
   </url>
   <url>
@@ -407,5 +492,8 @@
   </url>
   <url>
     <loc>https://thegridnexus.com/parents</loc>
+  </url>
+  <url>
+    <loc>https://thegridnexus.com/data</loc>
   </url>
 </urlset>

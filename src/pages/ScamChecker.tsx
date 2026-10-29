@@ -10,6 +10,8 @@ import { triageDomain, type TriageResult } from '@/lib/triage/domainTriage';
 import { triageMessage, extractUrl, type MessageTriageResult } from '@/lib/triage/messageTriage';
 import platformData from '@/data/platform-security.json';
 import safetyData from '@/data/safety-verdicts.json';
+import { ToolPageSEO } from '@/components/tools/ToolPageSEO';
+import { useConvexDisabled } from '@/components/SafeConvexProvider';
 
 // Category slug → safety-database verdict, so a matched "avoid" category shows a
 // definitive Avoid (not just Caution) when the message maps to a known scam type.
@@ -17,8 +19,9 @@ const CATEGORY_VERDICT: Record<string, string> = Object.fromEntries(
   (safetyData.verdicts as Array<{ slug: string; verdict: string }>).map((v) => [v.slug, v.verdict])
 );
 
-// ── Official domains (from platform-security.json) + established mod sites ────
-const OFFICIAL = [
+// Category slug → safety-database verdict, so a matched "avoid" category shows a
+// definitive Avoid (not just Caution) when the message maps to a known scam type.
+const CATEGORY_VERDICT: Record<string, string> = Object.fromEntries(
   ...(platformData.platforms as Array<{ name: string; officialDomains: string[] }>).flatMap((p) =>
     p.officialDomains.map((d) => ({ host: d, label: p.name }))
   ),
