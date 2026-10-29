@@ -1,0 +1,17 @@
+slug,assetName,verdict,riskLevel,summary,lastVerified
+nexus-mods,Nexus Mods,safe,1,"An established, official PC mod repository. The site itself is legitimate, but any downloaded mod file still needs basic caution.",2026-10-20
+curseforge,CurseForge,safe,1,"An established, official mod platform. The platform is legitimate, but a 2023 malware incident showed that even major mod platforms can be abused.",2026-10-20
+g2a-key-resellers,Grey-market game key resellers (G2A and similar),cautious,2,"Real marketplaces that sell game keys, but keys can be sourced from fraud or regional pricing and may later be revoked.",2026-10-20
+skin-trading-sites,Third-party skin trading and marketplace sites,cautious,2,"Legitimate sites exist, but the category is dense with phishing pages and API-key scams that drain inventories.",2026-10-20
+gaming-vpns,Consumer gaming VPNs,cautious,2,"Legitimate VPNs can protect your network, but the category includes aggressive marketing, latency trade-offs, and occasional fake or malware-laden 'VPN' apps.",2026-10-20
+game-boosting-services,Account boosting and piloting services,cautious,3,Paying someone to play on your account violates most games' terms and means handing your login to a stranger.,2026-10-20
+free-game-cheats-aimbot,"""Free aimbot"" and game cheat downloads",avoid,4,Cheat downloads are one of the most common ways players get infected with info-stealing malware.,2026-10-20
+free-skin-generators,"""Free skin / Nitro / V-Bucks / Riot Points"" generators",avoid,4,There is no such thing as a free-currency generator — these are phishing and credential-theft fronts.,2026-10-20
+account-sellers,Bought and sold game accounts,avoid,4,Buying an account usually means buying one that was stolen or will be recovered by the original owner — and the sale violates platform rules.,2026-10-20
+free-gift-card-sites,"""Free Steam / PSN / Xbox gift card"" sites",avoid,4,"Sites promising free gift cards are survey-and-credential-collection scams, not giveaways.",2026-10-20
+discord-verify-qr-scams,"""Verify your account"" Discord QR-code and login scams",avoid,4,Scanning a QR code to 'verify' in a Discord server can hand your entire session to an attacker.,2026-10-20
+fake-support-recovery,"Third-party ""account recovery agents""",avoid,4,"Anyone offering to recover your account for a fee is a scammer — recovery is always done through the official platform, free of charge.",2026-10-20
+cracked-game-downloads,Cracked and pirated game downloads,avoid,4,Pirated game downloads are a leading vector for malware bundled into the installer.,2026-10-20
+mod-apk-sites,Third-party mod APK sites,avoid,4,Modded APK files from outside official app stores are a common way to install mobile malware.,2026-10-20
+minecraft-private-servers,Third-party Minecraft servers and launchers,cautious,2,"Private servers and custom launchers are common and mostly fine, but they bypass official moderation and some bundle malware.",2026-10-20
+steam-account-phishing,Fake Steam login pages and trade offers,avoid,4,Phishing pages that imitate Steam's login to steal your credentials and Steam Guard codes.,2026-10-20

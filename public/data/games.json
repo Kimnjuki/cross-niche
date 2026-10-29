@@ -1,0 +1,256 @@
+{
+  "games": [
+    {
+      "slug": "playstation-network",
+      "name": "PlayStation Network",
+      "grade": "A",
+      "platforms": [
+        "PlayStation"
+      ],
+      "genres": [
+        "platform"
+      ],
+      "publisher": "Sony",
+      "developer": "Sony Interactive Entertainment",
+      "releaseYear": 2006,
+      "securityNotes": "PSN supports 2FA and passkeys. The 2011 breach is historical; current account protection is strong with 2FA enabled.",
+      "updatedAt": "2026-10-13"
+    },
+    {
+      "slug": "nintendo-switch-online",
+      "name": "Nintendo Switch Online",
+      "grade": "B",
+      "platforms": [
+        "Switch"
+      ],
+      "genres": [
+        "platform"
+      ],
+      "publisher": "Nintendo",
+      "developer": "Nintendo",
+      "releaseYear": 2018,
+      "securityNotes": "Nintendo accounts support 2FA and passkeys, but have a documented credential-stuffing history (2020 NNID breach). Enable 2FA and unique credentials.",
+      "updatedAt": "2026-10-13"
+    },
+    {
+      "slug": "apex-legends",
+      "name": "Apex Legends",
+      "grade": "B",
+      "platforms": [
+        "PC",
+        "PlayStation",
+        "Xbox",
+        "Switch"
+      ],
+      "genres": [
+        "battle-royale",
+        "shooter"
+      ],
+      "publisher": "Electronic Arts",
+      "developer": "Respawn Entertainment",
+      "releaseYear": 2019,
+      "securityNotes": "EA account supports 2FA; account-recovery can be slow, so protect the email account behind it.",
+      "updatedAt": "2026-10-13"
+    },
+    {
+      "slug": "gta-online",
+      "name": "GTA Online",
+      "grade": "C",
+      "platforms": [
+        "PC",
+        "PlayStation",
+        "Xbox"
+      ],
+      "genres": [
+        "open-world",
+        "action"
+      ],
+      "publisher": "Rockstar Games",
+      "developer": "Rockstar Games",
+      "releaseYear": 2013,
+      "securityNotes": "Rockstar Social Club supports 2FA but account takeovers and modding-based theft are common, especially on PC. Use 2FA and a unique password.",
+      "updatedAt": "2026-10-13"
+    },
+    {
+      "slug": "call-of-duty",
+      "name": "Call of Duty",
+      "grade": "C",
+      "platforms": [
+        "PC",
+        "PlayStation",
+        "Xbox"
+      ],
+      "genres": [
+        "shooter"
+      ],
+      "publisher": "Activision",
+      "developer": "Activision",
+      "releaseYear": 2003,
+      "securityNotes": "Activision accounts support 2FA but have seen documented account-takeover waves and account-unlink attacks. Review linked accounts regularly.",
+      "updatedAt": "2026-10-13"
+    },
+    {
+      "slug": "genshin-impact",
+      "name": "Genshin Impact",
+      "grade": "B",
+      "platforms": [
+        "PC",
+        "PlayStation",
+        "Mobile"
+      ],
+      "genres": [
+        "rpg",
+        "gacha"
+      ],
+      "publisher": "HoYoverse",
+      "developer": "HoYoverse",
+      "releaseYear": 2020,
+      "securityNotes": "HoYoverse account supports 2FA and email verification, but spending-linked accounts are heavily phished.",
+      "updatedAt": "2026-10-13"
+    },
+    {
+      "slug": "counter-strike-2",
+      "name": "Counter-Strike 2",
+      "grade": "A",
+      "platforms": [
+        "PC"
+      ],
+      "genres": [
+        "tactical-shooter"
+      ],
+      "publisher": "Valve",
+      "developer": "Valve",
+      "releaseYear": 2023,
+      "securityNotes": "Runs on Steam, inheriting Steam Guard TOTP 2FA. High-value inventory makes accounts prime targets.",
+      "updatedAt": "2026-10-13"
+    },
+    {
+      "slug": "league-of-legends",
+      "name": "League of Legends",
+      "grade": "A",
+      "platforms": [
+        "PC"
+      ],
+      "genres": [
+        "moba"
+      ],
+      "publisher": "Riot Games",
+      "developer": "Riot Games",
+      "releaseYear": 2009,
+      "securityNotes": "Riot account supports TOTP 2FA and active account-recovery.",
+      "updatedAt": "2026-10-13"
+    },
+    {
+      "slug": "valorant",
+      "name": "Valorant",
+      "grade": "A",
+      "platforms": [
+        "PC"
+      ],
+      "genres": [
+        "tactical-shooter"
+      ],
+      "publisher": "Riot Games",
+      "developer": "Riot Games",
+      "releaseYear": 2020,
+      "securityNotes": "Riot account supports TOTP 2FA; Vanguard anti-cheat and active account-recovery. High-value accounts are frequent targets, so 2FA is essential.",
+      "updatedAt": "2026-10-13"
+    },
+    {
+      "slug": "roblox",
+      "name": "Roblox",
+      "grade": "B",
+      "platforms": [
+        "PC",
+        "Xbox",
+        "Mobile"
+      ],
+      "genres": [
+        "sandbox",
+        "social"
+      ],
+      "publisher": "Roblox Corporation",
+      "developer": "Roblox Corporation",
+      "releaseYear": 2006,
+      "securityNotes": "Supports TOTP 2FA and account PINs. Very young audience is heavily targeted by fake \"free Robux\" scams and cookie-theft phishing.",
+      "updatedAt": "2026-10-13"
+    },
+    {
+      "slug": "minecraft",
+      "name": "Minecraft",
+      "grade": "B",
+      "platforms": [
+        "PC",
+        "PlayStation",
+        "Xbox",
+        "Switch",
+        "Mobile"
+      ],
+      "genres": [
+        "sandbox",
+        "survival"
+      ],
+      "publisher": "Microsoft",
+      "developer": "Mojang Studios",
+      "releaseYear": 2011,
+      "securityNotes": "Migrated to Microsoft accounts with 2FA. Younger player base is a heavy phishing target; account-migration confusion is a common entry point for attackers.",
+      "updatedAt": "2026-10-13"
+    },
+    {
+      "slug": "fortnite",
+      "name": "Fortnite",
+      "grade": "A",
+      "platforms": [
+        "PC",
+        "PlayStation",
+        "Xbox",
+        "Switch",
+        "Mobile"
+      ],
+      "genres": [
+        "battle-royale",
+        "shooter"
+      ],
+      "publisher": "Epic Games",
+      "developer": "Epic Games",
+      "releaseYear": 2017,
+      "securityNotes": "Epic account supports TOTP 2FA and email/app verification. Strong anti-cheat and active account-recovery support.",
+      "updatedAt": "2026-10-13"
+    },
+    {
+      "slug": "discord",
+      "name": "Discord",
+      "grade": "B",
+      "platforms": [
+        "PC",
+        "Mobile"
+      ],
+      "genres": [
+        "communication"
+      ],
+      "publisher": "Discord Inc.",
+      "developer": "Discord Inc.",
+      "releaseYear": 2015,
+      "securityNotes": "Supports TOTP 2FA, passkeys, and hardware security keys, but account-token-stealing malware and phishing are rampant on the platform. Enable 2FA and never run unverified scripts.",
+      "updatedAt": "2026-10-13"
+    },
+    {
+      "slug": "steam",
+      "name": "Steam",
+      "grade": "A",
+      "platforms": [
+        "PC"
+      ],
+      "genres": [
+        "storefront"
+      ],
+      "publisher": "Valve",
+      "developer": "Valve",
+      "releaseYear": 2003,
+      "securityNotes": "Steam Guard Mobile Authenticator (TOTP) and Steam Guard email codes. No passkey or hardware-key support yet — the mobile authenticator is the strongest option.",
+      "updatedAt": "2026-10-13"
+    }
+  ],
+  "_note": "Game security grades. Document-based, not a certification. CC BY 4.0.",
+  "_source": "https://thegridnexus.com/data"
+}

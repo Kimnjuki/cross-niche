@@ -137,7 +137,6 @@ export const insertUsersBatch = mutation({
         socialLinks: row.socialLinks ?? undefined,
         // CRITICAL: Handle new user fields
         emailVerified: row.emailVerified ?? false,
-        phoneNumber: row.phoneNumber ?? undefined,
         location: row.location ?? undefined,
         websiteUrl: row.websiteUrl ?? undefined,
         twitterHandle: row.twitterHandle ?? undefined,

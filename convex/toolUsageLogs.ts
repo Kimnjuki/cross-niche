@@ -11,7 +11,7 @@ export const logUsage = mutation({
     toolId: v.string(),
     userId: v.optional(v.string()),
     sessionId: v.string(),
-    input: v.any(),
+    inputMeta: v.optional(v.object({ length: v.number(), kind: v.string() })),
     status: v.union(v.literal("success"), v.literal("error"), v.literal("empty"), v.literal("notFound")),
     latencyMs: v.float64(),
   },
@@ -20,10 +20,11 @@ export const logUsage = mutation({
       toolId: args.toolId,
       userId: args.userId,
       sessionId: args.sessionId,
-      input: args.input,
+      inputMeta: args.inputMeta,
       status: args.status,
       latencyMs: args.latencyMs,
       createdAt: Date.now(),
+      expiresAt: Date.now() + 30 * 24 * 60 * 60 * 1000, // 30-day TTL
     });
   },
 });

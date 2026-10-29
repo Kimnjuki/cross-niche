@@ -1,6 +1,156 @@
+# DDoS & IP Protection for Streamers and Gamers: The Real Steps
+URL: https://thegridnexus.com/article/ddos-attack-streamer-ip-protection
+Author: Kim Njuki
+Published: 2026-10-17
+Topics: 
+
+If you stream or play competitive games, your real IP address is the one piece of information that turns a stranger into someone who can take you offline. A DDoS attack floods your connection with junk traffic using that IP, and the attack is cheap to launch — no technical skill required, tools available for free. ## How your IP leaks [An analysis of how streamers leak their IP](https://dcspeedtest.com/blog/why-streamers-hide-ip-going-live-2026) lists the common vectors: peer-to-peer game sessions where other players can capture your IP from lobby packets, Discord direct voice calls (use server voice channels instead), accepting game invites that expose your IP in the handshake, and clicking links in chat that log your IP on the destination server. In 2025, average DDoS attacks on streamers were measured at 8–15 Gbps — more than enough to overwhelm any residential connection. ## The Cloudflare misconception A lot of advice says "put Cloudflare in front of it and your IP is hidden." For a *website*, that is true. For a *game server*, it is mostly wrong. [A detailed breakdown of Cloudflare and game ports](https://nubitro.com/en/article/does-cloudflare-protect-game-servers-the-udp-reality) explains why: Cloudflare's proxy only handles HTTP/HTTPS traffic on ports 80 and 443. Game servers use UDP on ports like 25565 (Minecraft) or 27015 (Source games), and Cloudflare never sees that traffic — your real IP has to be published for players to connect, and it is findable with a simple DNS lookup. ## What actually works - **A VPN, on before you go live.** This is the foundation for streamers: every connection leaves with the VPN's IP instead of your home IP. Enable the kill switch so a dropped VPN cuts your internet rather than exposing your real IP mid-stream. - **Use server-based voice channels, not direct calls.** Discord direct calls can expose your IP; server voice channels route through Discord's infrastructure. - **Do not click links from chat.** A link in your own chat is a request from a stranger to log your IP. - **If you run a game server, use a DDoS-protected proxy or hosting provider** — TCPShield for Minecraft, or a host with network-level mitigation — so the attack hits their infrastructure, not your home connection. [This guide to Minecraft DDoS protection](https://rackdiff.com/en/blog/minecraft-ddos-schutz) walks through the setup. - **Do not host a game server from your home connection** if you are a target. ## If you are already under attack End the stream, disconnect, and stay offline until you have the VPN or a new IP. Contact your ISP — they can sometimes block the attack upstream and issue a new IP. For severe or repeated attacks, report to the [FBI's Internet Crime Complaint Center](https://www.ic3.gov). Most of the damage from a DDoS is a few minutes to half an hour of downtime; the goal of the precautions is to make it not worth the attacker's time in the first place. ## Sources - [dcspeedtest — Why Every Pro Streamer Hides Their IP While Going Live](https://dcspeedtest.com/blog/why-streamers-hide-ip-going-live-2026) - [nubitro — Does Cloudflare Protect Game Servers? The UDP Reality](https://nubitro.com/en/article/does-cloudflare-protect-game-servers-the-udp-reality) - [rackdiff — Protect Minecraft Server from DDoS: TCPShield & Alternatives](https://rackdiff.com/en/blog/minecraft-ddos-schutz)
+
+---
+
+# Account Boosting & Trading Bans: Riot, Valve Rules Explained
+URL: https://thegridnexus.com/article/account-boosting-trading-bans
+Author: Kim Njuki
+Published: 2026-10-17
+Topics: 
+
+"Get boosted to Diamond, pay after you rank up." It is one of the oldest offers in competitive gaming, and it is a trap in two different ways at once: it gets the account banned, and it frequently gets the account stolen. ## What the rules actually say Riot's rules are the clearest, because they spell out the terms directly. [Riot's Terms of Service](https://www.riotgames.com/en/terms-of-service) prohibit "playing on another person's account or otherwise engaging in activity intended to 'boost' an account's status or rank." The [Community Pact](https://www.riotgames.com/en/community-pact) lists the whole family of offenses: solo boosting, queue boosting, deranking, smurfing, win-trading, and match-fixing — and is explicit that "buying, selling, or transferring accounts violates our Terms of Service." Penalties range from temporary bans to permanent suspension and hardware (HWID) bans that block the device itself, not just the account. [Valorant's support page](https://support-valorant.riotgames.com/hc/en-us/articles/360044270174-Be-on-Your-Best-Behavior) is even more direct: "boosting and bussing are bannable offenses," and you should never share your account or login credentials with anyone. Valve's position on Steam is the same in practice: account sharing and selling violate the Steam Subscriber Agreement, and — as covered in [our Steam trade scam guide](/article/steam-api-trade-scam-cs2-skins) — stolen items are not returned. ## Why the "service" is a scam even when it works The account that gets boosted is the account that gets handed to a stranger. To boost you, someone else has to log in as you — which means you have given away your password, and with it every account that shares that password or is linked to the same email. The CFPB's [spotlight on gaming](https://www.consumerfinance.gov/data-research/research-reports/issue-spotlight-video-games/) documents exactly this: people buy an account or a boost from a third party, confirm receipt, and then the account is recovered by the original owner or drained by the "booster," with no recourse because the transaction itself violates the platform's terms. And the rank is not yours anyway. It is a rank you did not earn, on an account that can be permanently banned the moment the boost is detected — and Riot's detection is not subtle. The whole transaction trades a real account for a number that disappears. ## The honest alternative The only rank worth having is the one you earn on an account only you can log into. The players selling boosts are not selling a service; they are selling access to your account. No legitimate rank boost exists, because every platform that runs a ladder prohibits it in writing. ## Sources - [Riot Games — Terms of Service](https://www.riotgames.com/en/terms-of-service) - [Riot Games — Community Pact](https://www.riotgames.com/en/community-pact) - [Valorant Support — Be on Your Best Behavior](https://support-valorant.riotgames.com/hc/en-us/articles/360044270174-Be-on-Your-Best-Behavior) - [CFPB — Banking in video games and virtual worlds](https://www.consumerfinance.gov/data-research/research-reports/issue-spotlight-video-games/)
+
+---
+
+# Public Wi-Fi Gaming Security: LAN Events, Hotels & Internet Cafes
+URL: https://thegridnexus.com/article/public-wifi-gaming-security-lan-events
+Author: Kim Njuki
+Published: 2026-10-17
+Topics: 
+
+Gaming at a LAN event, a hotel, or an internet cafe usually means connecting to Wi-Fi you do not control, surrounded by strangers. The [FTC's guidance on public Wi-Fi](https://consumer.ftc.gov/articles/are-public-wi-fi-networks-safe-what-you-need-know) is the right starting point: these networks are built for convenience, not security. ## The attacks that actually happen The threats are concrete and well-documented, not theoretical: - **Evil twin hotspots.** An attacker sets up a Wi-Fi network with the same name as the real one — "Hotel_Free_WiFi" — and your device auto-connects to whichever has the stronger signal. Everything you do then routes through their device, as [a breakdown of the attacks](https://cyberbasics.io/posts/public-wifi-safety-guide) explains. - **Packet sniffing.** On an open network, freely available tools like Wireshark can capture unencrypted traffic and read the metadata of everything else — which domains you visit, when, and how often. - **Session hijacking.** Your login session is a cookie; capture the cookie, and an attacker can impersonate you without your password. - **Compromised or hostile captive portals.** The login page a Wi-Fi network shows you is itself a vector if it asks for credentials you were not expecting. The uncomfortable detail most guides skip: HTTPS encrypts the *content* of your connection, but not the domain name (the SNI field stays in plaintext during the TLS handshake), and not your DNS queries. [A technical rundown](https://dev.to/ricco020/public-wifi-in-2026-whats-actually-risky-and-what-isnt-4an5) is blunt: with HTTPS alone, the network operator still knows every site you visit. ## What actually protects you - **A VPN, activated before you connect.** It encrypts everything leaving your device — DNS, domain names, all traffic — so the network sees only an encrypted stream to the VPN server. Choose a reputable, audited provider, and enable the kill switch so a dropped VPN does not silently expose you. - **Verify the network name with staff.** Do not assume the SSID your phone found is the real one. Ask. - **Disable auto-connect** to open networks in your OS settings, so your device does not silently join an evil twin. - **For anything sensitive — banking, password changes, a valuable gaming account — use your phone's mobile hotspot** instead of the venue's Wi-Fi. Your carrier's connection is not shared with a room full of strangers. - **Log out completely** on any shared computer, and never let a browser or password manager save credentials on a machine you do not own. Internet cafes deserve an extra warning: their machines are shared, often poorly maintained, and a common home for keyloggers and info-stealers. Do not log into your real accounts on a cafe PC. Bring your own device. ## Sources - [FTC — Are Public Wi-Fi Networks Safe?](https://consumer.ftc.gov/articles/are-public-wi-fi-networks-safe-what-you-need-know) - [cyberbasics.io — Public Wi-Fi Security: 4 Attacks Happening Right Now](https://cyberbasics.io/posts/public-wifi-safety-guide) - [dev.to — Public WiFi in 2026: What’s Actually Risky and What Isn’t](https://dev.to/ricco020/public-wifi-in-2026-whats-actually-risky-and-what-isnt-4an5)
+
+---
+
+# In-App Purchase Fraud & Chargebacks: What Gamers Should Know
+URL: https://thegridnexus.com/article/in-app-purchase-chargeback-fraud-gaming
+Author: Kim Njuki
+Published: 2026-10-17
+Topics: 
+
+In-app purchase fraud is a two-sided problem that most guides only tell you half of. On one side, platforms have been fined hundreds of millions for making it too easy to charge people without consent. On the other side, if you dispute a gaming charge the wrong way, the platform may lock or ban your entire account. ## What the FTC found The [FTC's $245 million settlement with Epic Games](https://www.ftc.gov/business-guidance/blog/2022/12/245-million-ftc-settlement-alleges-fortnite-owner-epic-games-used-digital-dark-patterns-charge) is the landmark case. The FTC alleged Fortnite saved a parent's credit card by default, let kids buy V-Bucks with a single button press and no cardholder consent, and placed the preview button next to the purchase button so a misaligned tap triggered a charge. The complaint documented over a million complaints about unwanted charges. Epic's own fraud consultant recommended requiring CVV confirmation to "prevent kids from using mom's credit card," advice that was not implemented until after millions of unauthorized transactions. The same pattern goes back years: the FTC settled with [Apple for $32.5 million](https://www.ftc.gov/business-guidance/blog/2014/01/15-minutes-game-getting-core-ftcs-325-million-settlement-apple) and [Google for $19 million](https://www.ftc.gov/business-guidance/blog/2014/09/4-tips-businesses-can-take-ftcs-19-million-google-settlement) over kids racking up in-app charges during post-password "windows" parents did not know existed. ## The trap on the other side Here is the part that catches people: disputing a gaming charge with your bank can get your account terminated. The [Consumer Financial Protection Bureau's spotlight on gaming](https://www.consumerfinance.gov/data-research/research-reports/issue-spotlight-video-games/) documents players who received refunds from their financial institution, then had their game accounts locked or terminated for the chargeback. Roblox's own terms, the CFPB notes, ask users to contact Roblox support before disputing any charge with a payment processor. Steam, for its part, states it does not return stolen items — the value of virtual goods is tied to scarcity. ## How to handle an unwanted charge without losing your account - **Contact the platform's support first.** Refund requests handled through the platform's own process do not trigger a chargeback ban. This is what the platforms themselves tell you to do. - **Use the chargeback only as a last resort** for genuinely fraudulent charges you cannot resolve through support — and understand it may cost you the account. - **Lock down the billing path before it happens.** Remove saved cards from gaming accounts, require a password or biometric for purchases, and set spending limits where the platform offers them. For kids, use gift cards instead of a linked card so a mistake cannot run up an unbounded bill. - **Dispute through the store where the purchase was made** (Apple, Google, console store) rather than the game publisher, where possible. ## Sources - [FTC — $245 million settlement alleges Epic Games used dark patterns to charge players](https://www.ftc.gov/business-guidance/blog/2022/12/245-million-ftc-settlement-alleges-fortnite-owner-epic-games-used-digital-dark-patterns-charge) - [CFPB — Banking in video games and virtual worlds](https://www.consumerfinance.gov/data-research/research-reports/issue-spotlight-video-games/) - [FTC — 15 minutes of game: the $32.5 million Apple settlement](https://www.ftc.gov/business-guidance/blog/2014/01/15-minutes-game-getting-core-ftcs-325-million-settlement-apple)
+
+---
+
+# Pirated Games & Emulator Malware: The Real Risk, Explained
+URL: https://thegridnexus.com/article/pirated-games-emulators-malware-risk
+Author: Kim Njuki
+Published: 2026-10-17
+Topics: 
+
+The appeal of a free game is obvious. The problem is that cracked games have become one of the most reliable malware delivery channels in existence, and the numbers keep getting worse. ## The scale of it In 2026, [Cyderes researchers reported](https://pcmag.com/news/malware-hidden-in-pirated-games-infects-400000-devices) that a loader dubbed "RenEngine" — hidden inside cracked versions of Far Cry, Need for Speed, FIFA, and Assassin's Creed — had infected over 400,000 devices worldwide, with the malware's own telemetry logging 4,000 to 10,000 new victims per day. The cracked game appears fully functional while silently installing an infostealer called ARC that harvests browser passwords, cookies, cryptocurrency wallets, and autofill data, per [Malwarebytes](https://malwarebytes.com/blog/threat-intel/2026/06/pirated-pc-games-are-delivering-password-stealing-malware). An earlier [Trellix investigation covered by Forbes](https://forbes.com/sites/zakdoffman/2025/08/19/microsoft-windows-warning-stop-playing-these-free-pc-games) found a "Dodi Repacks" download that ran a multi-stage HijackLoader infection — and, notably, it happened even with an adblocker installed, debunking the common piracy-forum claim that "as long as you have an adblocker you're safe." It is not only pirated AAA games. [Kaspersky documented](https://www.kaspersky.com/blog/mario-forever-malware-too/48547/) a fan-made Super Mario game whose infected installer bundled a Monero miner and the Umbral stealer, which specifically hunts Discord, Telegram, Roblox, and Minecraft tokens. ## Emulators are different — the sites are the risk The nuance worth stating: legitimate emulators are not malware. [An analysis of emulator safety](https://laptop251.com/emulators-and-pc-safety-separating-fact-from-fiction) is clear that the real danger comes from fake project pages, repackaged installers, and ROM/BIOS sites — not from PCSX2, Dolphin, PPSSPP, or RPCS3 themselves. The red flags are specific: - The site asks you to disable your antivirus or SmartScreen. - A "BIOS installer" or "ROM downloader" is required — game images should not arrive as executables. - A ROM arrives as a `.exe`, `.scr`, `.bat`, or `.cmd` file — those are programs, not game images. - The download is a lookalike domain or a cloned GitHub page. ## The rule that covers all of it Download from the official source, and treat everything else as suspect. For emulators, that means the project's own site or verified repository, not a download portal. For games, that means the store you already trust — and accepting that a game that is not free is not free. The cost of a cracked game is not zero; it is paid in stolen passwords, drained accounts, and a compromised machine. ## Sources - [PCMag — Malware Hidden in Pirated Games Infects 400,000 Devices](https://pcmag.com/news/malware-hidden-in-pirated-games-infects-400000-devices) - [Malwarebytes — Pirated PC games are delivering password-stealing malware](https://malwarebytes.com/blog/threat-intel/2026/06/pirated-pc-games-are-delivering-password-stealing-malware) - [Forbes — If You Download This Game On Your PC, You Will Be Hacked](https://forbes.com/sites/zakdoffman/2025/08/19/microsoft-windows-warning-stop-playing-these-free-pc-games) - [Kaspersky — Malware in the free game Super Mario 3: Mario Forever](https://www.kaspersky.com/blog/mario-forever-malware-too/48547/) - [laptop251 — Are Emulators Safe for Your PC?](https://laptop251.com/emulators-and-pc-safety-separating-fact-from-fiction)
+
+---
+
+# Used Console Banned Risk: What to Check Before You Buy
+URL: https://thegridnexus.com/article/used-console-banned-risk-nintendo
+Author: Kim Njuki
+Published: 2026-10-17
+Topics: 
+
+A used console used to be a simple value buy. In 2025 that changed, because console manufacturers now ban the *device*, not just the account — and a factory reset will not undo it. ## What actually happened Shortly after the Switch 2 launch, [Nintendo Life reported](https://www.nintendolife.com/news/2025/07/psa-you-might-want-to-be-careful-buying-pre-owned-switch-1-games-for-your-switch-2) that Nintendo was banning Switch 2 consoles it detected using copied games. The most troubling case involved a buyer who purchased legitimate second-hand Switch 1 cartridges on Facebook Marketplace, played them on a new Switch 2, and had their *console* banned — error code 0x1F727C — cutting off the eShop and all online services. The trigger: a game cartridge's unique key had been dumped and used on multiple consoles, and Nintendo's anti-piracy detection banned the key and every console that had played it. [IGN covered the same incident](https://www.ign.com/articles/nintendo-switch-2-owner-says-their-console-was-banned-after-playing-legitimate-second-hand-games-another-user-had-copied), noting the buyer was innocent and had bought the games second-hand, unaware they had been copied by a previous owner. The ban was lifted after contacting Nintendo support, but the point stands: the risk landed on someone who did nothing wrong. ## The new rule for second-hand hardware [Swappa's used Switch 2 buyer's guide](https://swappa.com/blog/used-nintendo-switch-2-buyers-guide) puts it plainly: the console itself can be permanently banned from Nintendo's online services, and a factory reset will not fix it. That is a meaningful shift from the account-ban model — when a console is banned, the next owner inherits the punishment. ## How to protect yourself as a buyer There is no universal "ban check" API, but you can reduce the risk to near zero: - **Buy from platforms with buyer protection** that let you test the device and return it if it is banned — not a cash sale from a stranger. - **Ask the seller to demonstrate the console signing into online services** before you hand over money. If it cannot reach the eShop or online play, walk away. - **Be wary of used *games*, not just consoles.** As the Switch 2 cases showed, a copied cartridge can get your console banned even if you bought the game legitimately second-hand. Test used games on a secondary device first if you have one. - **Keep the purchase history and receipts.** In the Nintendo Life case, the buyer's Marketplace purchase history and chat logs were what convinced Nintendo to unban the console. The honest summary is that Nintendo, Sony, and Microsoft all ban hardware for piracy and fraud, but Nintendo's console-level bans on copied-game detection are the most likely to catch an innocent second-hand buyer. The mitigation is diligence at the point of purchase, because after the ban lands, your only recourse is pleading with support. ## Sources - [Nintendo Life — PSA: Be Careful Buying Pre-Owned Switch 1 Games For Your Switch 2](https://www.nintendolife.com/news/2025/07/psa-you-might-want-to-be-careful-buying-pre-owned-switch-1-games-for-your-switch-2) - [IGN — Switch 2 Owner Banned After Playing Legitimate Second-Hand Games](https://www.ign.com/articles/nintendo-switch-2-owner-says-their-console-was-banned-after-playing-legitimate-second-hand-games-another-user-had-copied) - [Swappa — Used Nintendo Switch 2 Buyer’s Guide](https://swappa.com/blog/used-nintendo-switch-2-buyers-guide)
+
+---
+
+# Kernel Anti-Cheat Privacy: Vanguard, EAC, BattlEye Explained
+URL: https://thegridnexus.com/article/kernel-anti-cheat-privacy-vanguard-eac
+Author: Kim Njuki
+Published: 2026-10-17
+Topics: 
+
+If you play Valorant, Fortnite, PUBG, or almost any competitive PC game, you are running a kernel-level anti-cheat driver. The question people keep asking is whether that driver is a security risk, and the honest answer is: it depends on which one, and the trade-off is real. ## Why they run at the kernel level A cheat that runs at the kernel level can hide from anti-cheat software that only runs at the user level. As Riot's then-head of anti-cheat Paul Chamberlain put it in [an Ars Technica interview](https://arstechnica.com/gaming/2020/04/ring-0-of-fire-does-riot-games-new-anti-cheat-measure-go-too-far/): "Whoever's driver loads first gets to observe or influence everything that happens on your computer after that point." So anti-cheat vendors moved to the kernel to keep up — and that means their driver loads with Windows itself, before the game starts, with the deepest access the OS allows. ## What the research actually found A peer-reviewed paper, ["If It Looks Like a Rootkit and Deceives Like a Rootkit,"](https://arxiv.org/html/2408.00500) evaluated the four major anti-cheat systems — BattlEye, Easy Anti-Cheat, FACEIT, and Vanguard — against formal rootkit criteria. Its conclusion: **Vanguard and FACEIT exhibit rootkit-like behavior**, while BattlEye and EAC show only minor similarities, insufficient to classify them that way. The specific concerns: Vanguard and FACEIT use evasion techniques, hide from processes and threads, and block virtualization (Vanguard requires disabling Hyper-V, which also disables WSL2). All four were found to collect and transmit system information — hardware IDs, loaded drivers, module lists — continuously, regardless of whether you are suspected of cheating. A separate 2025 analysis reached the same conclusion, noting the core problem is transparency: anti-cheat software "lacks transparency regarding the operations it performs," and because it can access system files, memory, and user directories, a vulnerability in it "could grant privileged access to attackers." ## What that means for you There is no evidence any major anti-cheat is harvesting your documents or watching you. The real, documented risks are narrower: - **A vulnerability in the driver is a system-wide risk.** [Ars Technica quoted](https://arstechnica.com/gaming/2020/04/ring-0-of-fire-does-riot-games-new-anti-cheat-measure-go-too-far/) security researcher Saleem Rashid: a bug in a kernel driver can crash the entire OS, and an exploit "could let an attacker install their own malicious code at an extremely low level." - **They phone home with system information** — hardware IDs, loaded drivers, module lists — and you cannot fully audit what is sent. - **Vanguard runs at boot**, not just when you play, though Riot now lets you disable it and re-enable it when you want to play. The trade-off is not "privacy vs. nothing." It is "an effective anti-cheat requires deep access, and you are trusting the vendor to use it responsibly." For most players that is an acceptable risk; for a machine you use for sensitive work, it is a reason to keep your gaming and non-gaming setups separate. ## Sources - [arXiv — If It Looks Like a Rootkit and Deceives Like a Rootkit (kernel-level anti-cheat analysis)](https://arxiv.org/html/2408.00500) - [Ars Technica — Ring 0 of fire: Does Riot Games’ new anti-cheat measure go too far?](https://arstechnica.com/gaming/2020/04/ring-0-of-fire-does-riot-games-new-anti-cheat-measure-go-too-far/) - [ISCC 2025 — How Risky Is It? A Closer Look at Game Anti-Cheat Software](https://www.inf.ufpr.br/vinicius/files/ISCC-2025.pdf)
+
+---
+
+# Roblox Parental Controls: Account Security & Child Safety Guide
+URL: https://thegridnexus.com/article/roblox-account-security-parental-controls
+Author: Kim Njuki
+Published: 2026-10-17
+Topics: 
+
+Roblox is where a huge share of young players spend their time, and the platform's safety model changed substantially in 2026 — the old four-digit parent PIN is gone, replaced by age-based accounts managed from a linked, age-verified parent account. If you are a parent reading older guides, most of them describe controls that no longer exist. ## The new account structure Since June 2026, every player under 16 has an account matched to their age: **Roblox Kids** (ages 5–8) and **Roblox Select** (9–15), with full Roblox at 16 and up. [Roblox's parental controls page](https://about.roblox.com/parental-controls) is the source of truth. The Kids and Select catalogs only contain games that passed extra review from verified developers, and chat of any kind now requires an age check. ## Step one: link a parent account Parental controls are managed from your own Roblox account, linked to your child's. You must be 18 or older and verify your age — typically with a government ID or credit card. From your child's account, go to Settings → Parental Controls → Add parent, enter your email, and follow the verification steps. [Roblox's FAQ](https://en.help.roblox.com/hc/en-us/articles/30428248050068-Parental-Controls-FAQ) notes you can manage everything through age 12, with certain controls like game management and Direct Chat extending to age 15. ## Step two: secure the parent account itself This is the step most people skip, and it is the one that matters most. Your parent account controls the child's account, so if someone gets into it, they control everything. [Roblox's own guidance](https://en.help.roblox.com/hc/en-us/articles/30428310121620-Parental-Controls-Overview) and independent [parenting guides](https://gamers.wiki/en/games/roblox/lists/roblox-parental-controls-10-settings-to-review) agree: turn on two-step verification, use a unique password, and do not share the parent login. Anyone with that login can change the child's settings, manage linked accounts, and make changes to sensitive information. ## What you can actually control From the linked parent dashboard you can, per [Roblox's documentation](https://about.roblox.com/parental-controls): - Set the **content maturity level** (Minimal, Mild, Moderate, or Restricted) and block or allow specific games. - Choose who your child can **chat** with — in-game chat, direct chat, and friends chat are separate settings, and the safest starting point for younger kids is the narrowest audience or "No one." - Set a **daily screen time limit** and see a seven-day usage average. - Set a **monthly spending limit** and get spending notifications. - View, block, and report your child's **connections**. ## The scam every parent should warn about Roblox's help pages are unambiguous about one thing: **any offer of free Robux is a scam**, meant to take over the account. A password should only ever be typed on the actual Roblox login page, and never shared with anyone in-game. This is the single most common way young players lose their accounts — not a technical exploit, but a "free Robux" or fake-support message that convinces them to hand over credentials. ## Sources - [Roblox — Parental Controls](https://about.roblox.com/parental-controls) - [Roblox — Parental Controls FAQ](https://en.help.roblox.com/hc/en-us/articles/30428248050068-Parental-Controls-FAQ) - [Roblox — Parental Controls Overview](https://en.help.roblox.com/hc/en-us/articles/30428310121620-Parental-Controls-Overview) - [gamers.wiki — Roblox Parental Controls: 10 Settings to Review](https://gamers.wiki/en/games/roblox/lists/roblox-parental-controls-10-settings-to-review)
+
+---
+
+# Minecraft Mod Malware: Fracturiser & BleedingPipe Explained
+URL: https://thegridnexus.com/article/minecraft-mod-malware-fracturiser-bleedingpipe
+Author: Kim Njuki
+Published: 2026-10-17
+Topics: 
+
+Minecraft modding is one of the biggest software ecosystems in gaming, and it has been used twice in recent years to spread serious malware. Both incidents are worth understanding, because they were not the usual "random download from a shady site" — one hit the most trusted mod platform in the space. ## Fracturiser: malware inside CurseForge itself In June 2023, dozens of mods and plugins on CurseForge and the Bukkit plugin site were found to contain a multi-stage infostealer called **Fracturiser**. [Ars Technica reported](https://arstechnica.com/information-technology/2023/06/dozens-of-popular-minecraft-mods-found-infected-with-fracturiser-malware) that the platform advised users to immediately stop downloading or updating mods. The attack worked by compromising CurseForge and Bukkit developer accounts and injecting malicious code into existing projects — which then trickled into popular modpacks like "Better Minecraft," which had over 4.6 million downloads, according to [BleepingComputer](https://www.bleepingcomputer.com/news/security/new-fractureiser-malware-used-curseforge-minecraft-mods-to-infect-windows-linux). What Fracturiser did, per [Bitdefender's analysis](https://www.bitdefender.com/en-au/blog/labs/infected-minecraft-mods-lead-to-multi-stage-multi-platform-infostealer-malware), is the standard infostealer playbook: it stole Minecraft and Discord authentication tokens, browser cookies and saved logins, and tried to inject itself into every other .jar file on the system. It was a genuine supply-chain attack — the infected files were hosted on the official platforms, not a torrent site. ## BleedingPipe: a bug that ran code on servers and players A month later came a different kind of threat. **BleedingPipe** was a remote code execution vulnerability caused by unsafe deserialization in the `ObjectInputStream` Java class, used by many Minecraft mods to exchange network packets. [BleepingComputer reported](https://www.bleepingcomputer.com/news/security/hackers-exploit-bleedingpipe-rce-to-target-minecraft-servers-players/) that attackers sent crafted packets to vulnerable modded servers to take them over, then used those servers to hit the players connecting to them — stealing Discord and Steam session cookies. The affected mods included EnderCore, LogisticsPipes, BDLib, and a dozen others, and the fix was simply updating to patched releases. ## What this means for how you download mods The lesson is not "never use mods." It is that the mod's *platform* and the mod's *version* both matter: - Download from official, reviewed sources — CurseForge, Modrinth, or the mod author's own repository — and even then, only install the latest patched release. The Fracturiser incident proves even trusted platforms get compromised, which is why keeping the platform's own security guidance current matters. - Update mods when a vulnerability is announced. BleedingPipe was fixed by mod updates; anyone running the old versions stayed exposed. - Treat modded servers the way you would any software: if a server is running vulnerable mods, it can be turned against the players on it. The defence is the same one that applies everywhere else in gaming security: keep everything updated, and do not run a file you cannot trace back to a source you trust. ## Sources - [Ars Technica — Dozens of popular Minecraft mods found infected with Fracturiser malware](https://arstechnica.com/information-technology/2023/06/dozens-of-popular-minecraft-mods-found-infected-with-fracturiser-malware) - [BleepingComputer — New Fractureiser malware used CurseForge Minecraft mods to infect Windows, Linux](https://www.bleepingcomputer.com/news/security/new-fractureiser-malware-used-curseforge-minecraft-mods-to-infect-windows-linux) - [BleepingComputer — Hackers exploit BleedingPipe RCE to target Minecraft servers, players](https://www.bleepingcomputer.com/news/security/hackers-exploit-bleedingpipe-rce-to-target-minecraft-servers-players/) - [Bitdefender — Infected Minecraft Mods Lead to Multi-Stage, Multi-Platform Infostealer Malware](https://www.bitdefender.com/en-au/blog/labs/infected-minecraft-mods-lead-to-multi-stage-multi-platform-infostealer-malware)
+
+---
+
+# Doxxing & Swatting Protection: FBI Guidance for Streamers & Gamers
+URL: https://thegridnexus.com/article/doxxing-swatting-protection-streamers
+Author: Kim Njuki
+Published: 2026-10-17
+Topics: 
+
+Swatting is the one threat on this list that can get someone physically hurt. It is a hoax call to emergency services reporting an immediate threat to life at your address — a hostage situation, a shooting — made to draw a SWAT team to your door. The [FBI's public service announcement on swatting](https://ic3.gov/PSA/2025/PSA250429) is blunt about it: the intent is to cause chaos and "the potential for injury or violence." For streamers and visible gamers, swatting is the endgame of doxxing. Doxxing is publishing your real name, address, or phone number so a stranger can target you. The two are linked because you cannot swat someone whose address you do not have. ## How attackers get your address The FBI's PSA lists the vector plainly: "Review your online presence for sensitive personal information that could enable malicious actors to conduct a swatting attack," and "Exercise care when posting content (including photos and videos)." It is rarely a single leak. It is an accumulation — a street name visible in a photo background, a city in a stream title, a real name tied to a gamer tag through an old forum post, an address sitting on a people-search site. Attackers assemble the pieces. ## What the FBI says to do before it happens The [FBI's protective steps](https://ic3.gov/PSA/2025/PSA250429) are concrete: - Review your online presence and remove sensitive personal information. - Use strong, unique passwords and multi-factor authentication everywhere, including smart-home devices — a compromised smart doorbell or camera can reveal your address or confirm you are home. - Discuss swatting with your family and have a plan for what to do if police arrive. One measure the FBI PSA does not mention but that [guides specifically about swatting recommend](https://delist.ai/guides/swatting-protection) is the **911 address flag**: you can call your local non-emergency line and ask that a note be placed on your address in the dispatch system, so responders know a swatting risk exists. Availability is local and opt-in — not every 911 center offers it, so ask. It is the one protection that reaches responders no matter who placed the call. ## If armed officers are at your door Stay calm, keep your hands visible, and comply with the officers' instructions. Do not make sudden movements, and do not argue — the officers believe they are responding to a real emergency. Once things de-escalate, calmly explain that you believe this is a swatting incident. Everything you want to say in your defence can wait until after the situation is contained. ## After it happens Report it to your local police, then file with the FBI's [Internet Crime Complaint Center](https://www.ic3.gov). Preserve everything — usernames, chat logs, screenshots, timestamps. The FBI treats swatting as a federal crime and coordinates across agencies, and your report is part of the paper trail that leads back to the caller. The uncomfortable truth is that swatting is mostly a prevention problem. You reduce the risk by making your address hard to find, not by reacting faster once the call is already made. ## Sources - [FBI IC3 — Threat Actors Use "Swatting" to Target Victims Nationwide (PSA)](https://ic3.gov/PSA/2025/PSA250429) - [delist.ai — Swatting: how to protect yourself and what to do if it happens](https://delist.ai/guides/swatting-protection)
+
+---
+
+# Passkeys for Gamers: Steam, Discord, PlayStation, Xbox Support in 2026
+URL: https://thegridnexus.com/article/passkeys-for-gamers-platform-support
+Author: Kim Njuki
+Published: 2026-10-17
+Topics: 
+
+Passkeys are the one authentication change worth getting excited about, because they fix the single biggest problem in account security: they cannot be phished. A passkey is bound to the real website, so a fake login page cannot trick it — the same credential will simply refuse to authenticate against a lookalike domain. That one property defeats the fake-Steam-login, fake-Discord-invite, and giveaway-page attacks that keep costing players their accounts. The catch is that gaming platforms have adopted them unevenly. Here is the accurate picture as of late 2026, because a lot of roundups get this wrong — several claim Steam supports hardware keys, and it does not. ## Which platforms support passkeys **Discord — yes.** [Discord's official documentation](https://support.discord.com/hc/en-us/articles/25966860846231-Security-Keys-Passkeys-and-Passwordless-Login-on-Discord) covers both passkeys and security keys. Passkeys enable passwordless, one-step login on mobile and desktop, and you can register up to 16 keys. Security keys (like a YubiKey) work as a second factor after your password. **PlayStation — yes.** PlayStation [supports passkey sign-in](https://brutaluniverse.com/passkeys-for-gamers-how-safer-sign-in-works) for PS5 and PS4 accounts, the website, and the PlayStation App. On PS5 the path is Settings → Users and Accounts → Account → Security → Sign in with Passkey. **Xbox / Microsoft — yes.** An Xbox account is a Microsoft account, and Microsoft supports passkeys through its standard account security. If you have a Microsoft account, you can register a passkey and sign in without a password. ## Which platforms do not **Steam — no.** This is the one that gets misreported most often. [Steam's own Steam Guard documentation](https://help.steampowered.com/en/faqs/view/06B0-26E6-2CF8-254C) lists exactly two options: an emailed code or a code from the Steam Mobile app. There is no passkey option and no FIDO2 hardware-key support. A [long-running Steam community thread](https://steamcommunity.com/discussions/forum/10/3878221099911763286/) has people asking for passkey support for years with no announcement from Valve. Steam Guard Mobile Authenticator is the strongest option Steam currently offers, and that is the ceiling, not a hardware key. **Epic Games — no.** Epic supports two-factor via authenticator app, email, or SMS, but not passkeys or hardware security keys. ## What this means in practice You cannot put a passkey on every gaming account today, and pretending otherwise just sends people looking for a setting that does not exist. The practical strategy is layered: - Turn on passkeys **where they exist** — Discord, PlayStation, and your Microsoft/Xbox account. That covers a large share of real risk, because those are the accounts most often phished through fake invites and giveaway pages. - On Steam and Epic, use the **strongest available** factor: Steam Guard Mobile Authenticator on Steam, and an authenticator-app code on Epic. - Secure the **email account** behind all of them with a passkey or security key. The email is the reset path for every platform, so a passkey there is the highest-leverage single change you can make. Passkeys are not magic, and they are not everywhere yet. But where they exist, they are strictly better than a password and a six-digit code — because there is nothing for a phishing page to steal. ## Sources - [Discord — Security Keys, Passkeys, and Passwordless Login](https://support.discord.com/hc/en-us/articles/25966860846231-Security-Keys-Passkeys-and-Passwordless-Login-on-Discord) (accessed Oct 2026) - [Steam Support — Steam Guard](https://help.steampowered.com/en/faqs/view/06B0-26E6-2CF8-254C) (accessed Oct 2026) - [Steam Community — Passkey Support for Steam When?](https://steamcommunity.com/discussions/forum/10/3878221099911763286/) - [BrutalUniverse — Passkeys For Gamers: How Safer Sign-In Works](https://brutaluniverse.com/passkeys-for-gamers-how-safer-sign-in-works) - [GamingPassword — Multi-Factor Authentication for Gamers](https://gamingpassword.net/blog/multi-factor-authentication-gamers.html)
+
+---
+
+# SIM Swap Attack Defense: Protect Your Phone Number & Gaming Accounts
+URL: https://thegridnexus.com/article/sim-swap-attack-defense-gaming-accounts
+Author: Kim Njuki
+Published: 2026-10-17
+Topics: 
+
+Your phone number is a password you did not choose, and you cannot change it on a whim. A SIM swap is what happens when someone else convinces your carrier to hand it to them anyway. The [FTC describes the mechanics](https://consumer.ftc.gov/consumer-alerts/2019/10/sim-swap-scams-how-protect-yourself) directly: the scammer calls your carrier, claims your phone was lost or damaged, and asks them to activate a new SIM connected to your number on a phone the scammer owns. If the carrier believes the story, every call and text — including every two-factor code and password-reset link — now goes to the attacker's phone. Your own phone just goes quiet. ## Why this matters for gaming accounts A SIM swap does not give the attacker your phone's files or your passwords. What it gives them is every account that uses SMS as a recovery method or second factor. For a lot of players, that is the reset path into Steam, PlayStation, Xbox, email, and anything linked to them. A strong password does not stop it, because the attack never touches the password. ## The rules changed in 2024 The good news is that this is no longer a free-for-all. The FCC adopted rules in late 2023 — [published in the Federal Register](https://www.federalregister.gov/documents/2023/12/08/2023-26338/protecting-consumers-from-sim-swap-and-port-out-fraud) — that took effect January 8, 2024, with carrier compliance due July 8, 2024. Under them, carriers must: - authenticate you before any SIM change or port-out using methods that do **not** rely on readily available biographical data — your date of birth, address, last four digits, or recent payment history; - send you an **immediate notification** before completing a swap or port; - offer a **free port-out lock and SIM change lock** on every line, including prepaid. The [FTC's consumer advice](https://consumer.ftc.gov/consumer-alerts/2019/10/sim-swap-scams-how-protect-yourself) predates the rules but makes the same practical point: the lock and the PIN are your first line of defence, and SMS is the weakest second factor. ## What to actually do The rules only help if you turn the protections on — most carriers do not enable the locks by default. - **Turn on your carrier's port-out lock and SIM lock today.** This is free on every major US carrier. In most cases you can enable it in the carrier's app or website, or by calling and asking for it by name — and ask for a case number so there is a record. - **Set a carrier account PIN that is not guessable.** Not your birthday, not the last four of anything public. Treat it like a password. - **Move your important accounts off SMS 2FA.** Use an authenticator app or a security key instead. On gaming platforms specifically: Steam Guard Mobile Authenticator, Discord's authenticator-app or passkey option, and PlayStation's authenticator-app or passkey. The [FTC says it outright](https://consumer.ftc.gov/consumer-alerts/2019/10/sim-swap-scams-how-protect-yourself): text-message verification may not stop a SIM swap, so use an authentication app or security key where you can. - **Do not broadcast your inventory or your number.** The less biographical data and the less visible value you present, the harder the social-engineering call becomes. ## If your phone just went dead If you lose service somewhere you normally have a signal — no calls, no texts, no data — treat it as a SIM swap until proven otherwise, not a dead cell tower. The [FTC's steps](https://consumer.ftc.gov/consumer-alerts/2019/10/sim-swap-scams-how-protect-yourself) are: contact your carrier immediately from a different phone or in person and get the number back, then check your financial accounts for unauthorised activity, and change your passwords once you have regained control. Speed matters — most of the damage happens in the first hours, while you are still trying to figure out why your phone stopped working. ## Sources - [FTC — SIM Swap Scams: How to Protect Yourself](https://consumer.ftc.gov/consumer-alerts/2019/10/sim-swap-scams-how-protect-yourself) - [Federal Register — Protecting Consumers from SIM-Swap and Port-Out Fraud (FCC 23-95)](https://www.federalregister.gov/documents/2023/12/08/2023-26338/protecting-consumers-from-sim-swap-and-port-out-fraud) - [eCFR — 47 CFR 64.2010 (Safeguards on Customer Proprietary Network Information)](https://www.ecfr.gov/current/title-47/section-64.2010)
+
+---
+
+# Steam API Trade Scam: How CS2 Skins Get Stolen & How to Stop It
+URL: https://thegridnexus.com/article/steam-api-trade-scam-cs2-skins
+Author: Kim Njuki
+Published: 2026-10-17
+Topics: 
+
+Of all the ways to lose skins in Counter-Strike 2, one keeps taking people by surprise because it looks, at the moment of confirmation, exactly like the trade they meant to make. It is called the API scam, and it does not brute-force your password. It waits for you to trade, then swaps the destination at the last second. ## What actually happens The mechanism is documented repeatedly and it is consistent across every account of it — [this community guide](https://steamcommunity.com/sharedfiles/filedetails/?id=3125255595), [skin.land](https://skin.land/blog/what-is-a-steam-api-scam/), [CS.MONEY](https://cs.money/blog/games/most-dangerous-scam/), and [BitSkins](https://bitskins.com/blog/steam-web-api-key-scam/) all describe the same sequence: 1. You get phished into logging in on a fake Steam page — a "free skins" giveaway, a "tournament" you must join, a "skin checker," or a message from a fake admin. 2. The phished login gives the attacker your session. Their script creates a Steam Web API key on your account, which lets it monitor your trade offers. 3. The script does nothing until you try to trade. Then it cancels your real offer and instantly sends a new one from an account with the same name and avatar as the person you were trading with. 4. You confirm in Steam Guard without checking closely — one tap — and your skins go to the scammer. The subtle part is that the fake offer often arrives through the API key, so it shows up in your confirmations looking legitimate. [CS.MONEY puts the difference plainly](https://cs.money/blog/games/most-dangerous-scam/): the scammer tracks only high-value trades, cancels the real one, and sends a nearly identical offer. If you accept, you get nothing and your items are gone. ## Why you will not get the items back This is the part people do not want to hear, so it is worth saying directly: Steam's stated policy is that lost items are not returned. [The community guide](https://steamcommunity.com/sharedfiles/filedetails/?id=3125255595) and [BitSkins](https://bitskins.com/blog/steam-web-api-key-scam/) both say the same thing — the skins are your responsibility once you confirm the trade. You can report the scammer's account and it may get banned, but the trade is not reversed. Steam's newer [trade protection window](https://skin.land/blog/what-is-a-steam-api-scam/) can help if the items are still eligible, but it has limits and comes with restrictions. Prevention is the whole game here. ## The checklist that stops it Do these in order, and check the first one today: - **Check your API key page right now.** Go to [steamcommunity.com/dev/apikey](https://steamcommunity.com/dev/apikey). If a key exists that you did not create, revoke it immediately — that is the surest sign your account was already touched. - **Enable Steam Guard Mobile Authenticator**, not email codes. It is the strongest option Steam offers, and it is what unlocks the trade-hold protection that slows this whole scam down. Note: Steam Guard is time-based codes and email codes — [Steam does not support passkeys or hardware security keys](https://help.steampowered.com/en/faqs/view/06B0-26E6-2CF8-254C), so the mobile authenticator is the ceiling, not the floor. - **Never log in to Steam through a link someone sent you.** Log in at steamcommunity.com or the Steam client first. [Steam's own guidance](https://help.steampowered.com/en/faqs/view/6639-EB3C-EC79-FF60) is that once you are logged in, a third-party site should not be asking for your credentials again. - **Check the trade before you confirm.** Look at the profile level, account age, and whether it is actually your friend. [CS.MONEY](https://cs.money/blog/games/most-dangerous-scam/) and [Blix](https://blix.gg/news/what-is-an-api-scam-and-how-do-i-prevent-it) both suggest the same trick: add a cheap item to the trade so you have something concrete to compare against the offer that appears in your confirmation. - **Regenerate your trade URL** if you have posted it publicly or used it on a site you do not fully trust. ## If you think you have already been hit Change your Steam password from a clean device, revoke the API key, deauthorise all other devices in Steam Guard settings, check your trade history, and regenerate your backup codes. Then secure the email account tied to Steam — it is the reset path, and an attacker who holds it can get back in regardless of what you just fixed. ## Sources - [Steam Community — CS2: How to avoid being API scammed](https://steamcommunity.com/sharedfiles/filedetails/?id=3125255595) - [skin.land — What is a Steam API Scam?](https://skin.land/blog/what-is-a-steam-api-scam/) - [CS.MONEY — What's an API Scam?](https://cs.money/blog/games/most-dangerous-scam/) - [BitSkins — Steam Web API Key Scam](https://bitskins.com/blog/steam-web-api-key-scam/) - [Blix — What is an API Scam and how do I prevent it?](https://blix.gg/news/what-is-an-api-scam-and-how-do-i-prevent-it) - [Steam Support — Steam Guard](https://help.steampowered.com/en/faqs/view/06B0-26E6-2CF8-254C) - [Steam Support — Account Security Recommendations](https://help.steampowered.com/en/faqs/view/6639-EB3C-EC79-FF60)
+
+---
+
+# Infostealer Malware in Fake Game Cheats: How It Works & How to Stay Safe
+URL: https://thegridnexus.com/article/fake-game-cheats-infostealer-malware
+Author: Kim Njuki
+Published: 2026-10-17
+Topics: 
+
+The most effective malware delivery channel in PC gaming is not a sketchy torrent site. It is the promise of a free cheat. A cheat has to reach into a game's memory, inject into processes, and usually run as administrator — often while you disable or whitelist your antivirus because the cheat "triggers false positives." That is the exact environment a piece of malware wants, and the attackers know it. [ESET's analysis of RedLine Stealer](https://www.eset.com/us/about/newsroom/press-releases/days-after-takedown-eset-research-releases-analysis-of-redline-stealer-infostealer-empire-4/) notes that the malware "masqueraded as video game cheats in the first half of 2024" — one of the two most common disguises, alongside fake ChatGPT downloads. ## What these stealers take RedLine, first spotted in 2020 and sold as malware-as-a-service so anyone can run a campaign, harvests saved browser credentials, cookies, autofill and credit-card details, cryptocurrency wallets, and "saved data from Steam, Discord, Telegram, and various desktop VPN applications," per [ESET](https://www.eset.com/us/about/newsroom/press-releases/days-after-takedown-eset-research-releases-analysis-of-redline-stealer-infostealer-empire-4/). Vidar Stealer does the same job with a different codebase. Both exfiltrate quietly, often within minutes, and the victim sees nothing. The sessions are the worst part. A stolen session cookie or Steam token is a logged-in state — two-factor authentication does not stop an attacker who already holds the session. ## The campaigns are not subtle - A [BleepingComputer report](https://www.bleepingcomputer.com/news/security/fake-cheat-lures-gamers-into-spreading-infostealer-malware) described a RedLine-linked campaign using fake "Cheat Lab" and "Cheater Pro" tools, distributed as ZIP files with an MSI installer that unpacks a Lua bytecode payload. The kicker: the fake cheat promised a free licence if you convinced your friends to install it too — turning victims into distributors. - [ASEC researchers found](https://www.bleepingcomputer.com/news/security/fake-valorant-cheats-on-youtube-infect-you-with-redline-stealer) fake Valorant "auto-aim" cheats promoted through YouTube video descriptions, delivering RedLine from an archive containing a file literally named "Cheat installer.exe." - In March 2026, [Acronis Threat Research Unit reported](https://www.infosecurity-magazine.com/news/vidar-stealer-exploits-github) hundreds of GitHub repositories offering "free game cheats" that actually deliver Vidar Stealer 2.0, alongside Reddit posts pushing a fake Counter-Strike 2 cheat. - The problem is not confined to third-party sites. In February 2025, a free-to-play game called **PirateFi** was pulled from Steam after researchers at SECUINFRA identified it as distributing the Vidar infostealer; [TechRepublic reported](https://www.techrepublic.com/article/steam-piratefi-malware-vidar-infostealer) that as many as 1,500 people had downloaded it before removal. The last one matters because it breaks the "only download from Steam" advice. Steam review caught it eventually, but not before real players were infected — and the advice that follows from it is not "don't use Steam," it is "treat any free game, cheat, or mod as suspect until you have verified where it came from." ## How to tell a fake before you run it No cheat tool from an unknown source is trustworthy, and none of these are digitally signed by a real entity. The telltale signs: - It arrived through a Discord DM, a YouTube video description, a Reddit comment, or a search ad — not the game's official site or a mod platform with a review process. - It asks you to disable your antivirus or Windows security features "to avoid false positives." Legitimate software does not need you to disarm your defences. - It is delivered as an obscure file type — an MSI with a `.lua` or bytecode payload, a self-extracting archive with an invalid signature — rather than a straightforward installer from a known publisher. ## What to do instead The defence is boring and it works. Get mods from platforms with actual review and moderation — Nexus Mods or CurseForge — not from a link someone sent you. Keep your antivirus on and updated, and do not add exclusions for anything you cannot verify. If you already ran something you are not sure about, assume the worst: change your passwords from a clean device, revoke active sessions on Steam and Discord, and check your [Steam API key page](https://steamcommunity.com/dev/apikey) for anything you did not create. One more thing worth saying plainly: if you installed a "cheat" and it worked, that is not evidence it was safe. Plenty of these loaders ship a functional cheat alongside the stealer, because a working tool is the best way to keep you from uninstalling it. ## Sources - [ESET — Analysis of RedLine Stealer infostealer empire](https://www.eset.com/us/about/newsroom/press-releases/days-after-takedown-eset-research-releases-analysis-of-redline-stealer-infostealer-empire-4/) - [BleepingComputer — Fake cheat lures gamers into spreading infostealer malware](https://www.bleepingcomputer.com/news/security/fake-cheat-lures-gamers-into-spreading-infostealer-malware) (Apr 2024) - [BleepingComputer — Fake Valorant cheats on YouTube infect you with RedLine stealer](https://www.bleepingcomputer.com/news/security/fake-valorant-cheats-on-youtube-infect-you-with-redline-stealer) (Mar 2022) - [Infosecurity Magazine — Vidar Stealer 2.0 Exploits Fake Game Cheats on GitHub, Reddit](https://www.infosecurity-magazine.com/news/vidar-stealer-exploits-github) (Mar 2026) - [TechRepublic — Steam Malware Alert: PirateFi Game Spreads Vidar Infostealer](https://www.techrepublic.com/article/steam-piratefi-malware-vidar-infostealer) (Feb 2025)
+
+---
+
+# Discord Token Theft & QR-Login Scams: How Accounts Get Stolen
+URL: https://thegridnexus.com/article/discord-token-theft-qr-login-scams
+Author: Kim Njuki
+Published: 2026-10-17
+Topics: 
+
+If you spend any time in gaming servers, you have almost certainly received a message like this: "free Nitro," "beta test our new game," or a link to "claim your drop." Most of them are not gifts. They are the delivery mechanism for the two most common ways a Discord account gets stolen — token-stealing malware and QR-login phishing. This guide walks through both, because the defence for each is different. One you can mostly solve with settings. The other you solve by refusing to click. ## The token: why a password is not what they steal Your Discord "token" is the long credential string the app uses to prove you are already logged in. Steal the token and you do not need the password, the email, or the two-factor code — the token is the logged-in session. That is why Discord-focused malware does not bother asking for your password. It reads the token straight out of the app. Security researchers have documented this for years. [BbyStealer](https://petermaguire.xyz/posts/bbystealer-analysis/), first seen around December 2021, injects itself into the Discord client and intercepts login requests so it can capture the token in its unencrypted form — a trick that defeats Discord's own token encryption because the token has to be plaintext at the moment it is sent. [Skuld Stealer](https://www.darkreading.com/vulnerabilities-threats/skuld-stealer-shows-open-source-dark-side), an open-source stealer written in Go that appeared in mid-2023, injects JavaScript that pulls emails, passwords, tokens, and even two-factor registration requests. Neither of these asks for your password. They run, they read, they upload. The first sign is usually not your account acting weird — it is your friends receiving messages from "you" that you never sent. ## The lure: "game tester" and "beta" DMs The malware has to get onto your machine somehow, and the most common bait is a direct message. [Malwarebytes documented a campaign](https://www.infosecurity-magazine.com/news/infostealer-campaign-discord/) where victims get an unsolicited message from someone posing as a developer asking if they want to beta test a game. If you say yes, you get a download link and a password for an archive — hosted on Dropbox, Catbox, or Discord's own CDN using a compromised account so it looks legitimate. Inside is not a game. It is Nova, Ageo, or Hexon stealer, packed into an NSIS or MSI installer. The malware then harvests browser passwords, session cookies for Discord and Steam, and cryptocurrency wallet data. Discord's own [phishing guidance](https://support.discord.com/hc/en-us/articles/360037660611) makes the same point from the other side: treat unsolicited files and links as hostile by default. The rule that stops this whole class of attack is simple and worth stating plainly: **never run an executable someone sent you in a DM, even from a friend.** A real friend's account can be the one that got compromised. Legitimate games, mods, and tools are distributed through official sites and established platforms — not through a Discord attachment. ## The QR trick: approving a login you did not start The second method targets a convenience feature. Discord lets you log in on a new device by scanning a QR code with your already-logged-in phone — no password typing. It is genuinely handy, and it is also phishable. [Discord's own QR-login FAQ](https://support.discord.com/hc/en-us/articles/360039213771-QR-Code-Login-FAQ) is explicit about the risk: "If someone you don't know is asking you to login using a QR code, they may be trying to phish your account." The attack, often called [QRLJacking or "EvilQR"](https://breakdev.org/evilqr-phishing/), works like this: the attacker opens Discord's login page, grabs the sign-in QR code, and serves it on a fake page — a fake "exclusive server invite," for example. You scan it with your phone, your phone shows the "approve this login?" screen, and if you tap approve, the attacker's browser is now logged in as you. The tell is always the same: **you are being asked to approve a login you did not generate yourself.** Discord's guidance is to hit Cancel immediately. QR codes also expire after two minutes, so a "scan this now" link is a red flag by itself. ## What actually protects you Turn on two-factor authentication. Discord supports [passkeys, security keys, and authenticator apps](https://support.discord.com/hc/en-us/articles/25966860846231-Security-Keys-Passkeys-and-Passwordless-Login-on-Discord) — up to 16 keys at once, and a security key or passkey is phishing-resistant in a way a six-digit code is not. Then download and store your backup codes somewhere offline. Then audit what already has access. In Settings, revoke any authorised apps you do not recognise — a malicious OAuth app can hold onto your account even after you change your password. And if you did approve a login you did not mean to, Discord's own advice is to [change your password](https://support.discord.com/hc/en-us/articles/218410947), which logs out every device at once. The pattern is consistent enough that recognising it is most of the defence: unexpected executables and "scan this QR to join" links are the attack, not the invitation. ## Sources - [Discord — QR Code Login FAQ](https://support.discord.com/hc/en-us/articles/360039213771-QR-Code-Login-FAQ) (accessed Oct 2026) - [Discord — Security Keys, Passkeys, and Passwordless Login](https://support.discord.com/hc/en-us/articles/25966860846231-Security-Keys-Passkeys-and-Passwordless-Login-on-Discord) (accessed Oct 2026) - [Dark Reading — Skuld Stealer Shows Open Source's Dark Side](https://www.darkreading.com/vulnerabilities-threats/skuld-stealer-shows-open-source-dark-side) (Mar 2025) - [Peter Maguire — BbyStealer Analysis](https://petermaguire.xyz/posts/bbystealer-analysis/) - [Infosecurity Magazine — New Infostealer Campaign Uses Discord Videogame Lure](https://www.infosecurity-magazine.com/news/infostealer-campaign-discord/) (citing Malwarebytes) - [BreakDev — Evil QR: Phishing With QR Codes](https://breakdev.org/evilqr-phishing/)
+
+---
+
 # East Africa Mobile Gaming Security Guide
 URL: https://thegridnexus.com/article/east-africa-mobile-gaming-security-guide
-Author: The Grid Nexus Editorial Team
+Author: Kim Njuki
 Published: 2026-10-14
 Topics: 
 
@@ -10,7 +160,7 @@ Topics:
 
 # Gaming PC Security Hardening Guide 2026
 URL: https://thegridnexus.com/article/gaming-pc-security-hardening-guide
-Author: The Grid Nexus Editorial Team
+Author: Kim Njuki
 Published: 2026-09-29
 Topics: Security Guide, Gaming PC, Windows 11, Memory Integrity, VBS, Anti-Cheat, Account Security
 
@@ -20,7 +170,7 @@ Most PC tuning guides have security as something you turn off for frames. That t
 
 # Mobile Gaming Security Guide 2026
 URL: https://thegridnexus.com/article/mobile-gaming-security-guide
-Author: The Grid Nexus Editorial Team
+Author: Kim Njuki
 Published: 2026-09-24
 Topics: Security Guide, Mobile Gaming, iOS, Android, Account Security, 2FA, Passkeys
 
@@ -30,7 +180,7 @@ You probably already protect your phone with a passcode or with Face ID or a fin
 
 # Steam Xbox PlayStation & Discord Security
 URL: https://thegridnexus.com/article/ultimate-guide-steam-xbox-playstation-discord-security
-Author: The Grid Nexus Editorial Team
+Author: Kim Njuki
 Published: 2026-07-31
 Topics: 
 
@@ -40,7 +190,7 @@ You already spend a great deal of time on Steam, Xbox, PlayStation, and Discord;
 
 # The Ultimate Guide to How to Improve Security for Online Gaming
 URL: https://thegridnexus.com/article/ultimate-guide-improve-security-online-gaming
-Author: The Grid Nexus Editorial Team
+Author: Kim Njuki
 Published: 2026-07-31
 Topics: 
 
@@ -50,7 +200,7 @@ Topics:
 
 # Gaming Security in 2026: How to Keep Your Accounts Safe
 URL: https://thegridnexus.com/article/gaming-security-in-2026-how-to-actually-keep-your-accounts-safe
-Author: The Grid Nexus Editorial Team
+Author: Kim Njuki
 Published: 2026-07-27
 Topics: 
 
@@ -60,7 +210,7 @@ You probably already have a password and two-factor authentication on your email
 
 # AI-Driven Threat Detection & Response 2026 | Cybersecurity Roadmap
 URL: https://thegridnexus.com/article/ai-driven-threat-detection-response-2026-cybersecurity-roadmap
-Author: The Grid Nexus Editorial Team
+Author: Kim Njuki
 Published: 2026-03-27
 Topics: 
 
@@ -70,7 +220,7 @@ Topics:
 
 # Zero Trust Architecture (ZTA) Intelligence 2026 | Security Roadmap Guide
 URL: https://thegridnexus.com/article/zero-trust-architecture-intelligence-2026-roadmap
-Author: The Grid Nexus Editorial Team
+Author: Kim Njuki
 Published: 2026-03-27
 Topics: 
 
@@ -80,7 +230,7 @@ Topics:
 
 # AI-Enhanced Game Security & Anti-Cheat 2026 | ML-Powered Gaming Protection
 URL: https://thegridnexus.com/article/ai-enhanced-game-security-anti-cheat-machine-learning-2026
-Author: The Grid Nexus Editorial Team
+Author: Kim Njuki
 Published: 2026-03-27
 Topics: 
 
@@ -90,7 +240,7 @@ Topics:
 
 # Generative AI for Cybersecurity 2026 | LLM SOC Automation & Threat Intel
 URL: https://thegridnexus.com/article/generative-ai-cybersecurity-llm-soc-automation-2026
-Author: The Grid Nexus Editorial Team
+Author: Kim Njuki
 Published: 2026-03-27
 Topics: 
 
@@ -100,7 +250,7 @@ Topics:
 
 # AI-Driven CTEM 2026 | Continuous Threat Exposure Management Roadmap
 URL: https://thegridnexus.com/article/ai-driven-continuous-threat-exposure-management-ctem-2026
-Author: The Grid Nexus Editorial Team
+Author: Kim Njuki
 Published: 2026-03-27
 Topics: 
 
@@ -110,7 +260,7 @@ Topics:
 
 # AI Risk Governance & Trustworthy AI TRiSM 2026 | Secure AI Roadmap
 URL: https://thegridnexus.com/article/secure-ai-risk-governance-trustworthy-ai-trism-2026
-Author: The Grid Nexus Editorial Team
+Author: Kim Njuki
 Published: 2026-03-27
 Topics: 
 
@@ -120,7 +270,7 @@ Topics:
 
 # Cloud-Native Security CSPM CWPP 2026 | Multi-Cloud Security Intelligence
 URL: https://thegridnexus.com/article/cloud-native-security-intelligence-cspm-cwpp-2026
-Author: The Grid Nexus Editorial Team
+Author: Kim Njuki
 Published: 2026-03-27
 Topics: 
 
@@ -130,7 +280,7 @@ Topics:
 
 # Identity-Centric Security & Passwordless Auth 2026 | FIDO Passkeys Roadmap
 URL: https://thegridnexus.com/article/identity-centric-security-passwordless-auth-2026-roadmap
-Author: The Grid Nexus Editorial Team
+Author: Kim Njuki
 Published: 2026-03-27
 Topics: 
 
@@ -140,7 +290,7 @@ Topics:
 
 # Game Account Security & Anti-Phishing 2026 | Gaming Platform Protection
 URL: https://thegridnexus.com/article/game-account-security-anti-phishing-2026-gaming-platforms
-Author: The Grid Nexus Editorial Team
+Author: Kim Njuki
 Published: 2026-03-27
 Topics: 
 
@@ -150,7 +300,7 @@ Topics:
 
 # Threat Intelligence Proactive Defense 2026 | STIX TAXII IOC Hunting Roadmap
 URL: https://thegridnexus.com/article/threat-intelligence-proactive-defense-stix-taxii-2026
-Author: The Grid Nexus Editorial Team
+Author: Kim Njuki
 Published: 2026-03-27
 Topics: 
 
@@ -160,7 +310,7 @@ Topics:
 
 # AI Security Awareness Training 2026 | Adaptive Phishing Simulation & Micro-Learning
 URL: https://thegridnexus.com/article/ai-enabled-security-awareness-training-adaptive-learning-2026
-Author: The Grid Nexus Editorial Team
+Author: Kim Njuki
 Published: 2026-03-27
 Topics: 
 
@@ -170,7 +320,7 @@ Topics:
 
 # DevSecOps Intelligence 2026 | Secure DevOps SAST DAST SBOM CI/CD Roadmap
 URL: https://thegridnexus.com/article/secure-devops-devsecops-intelligence-cicd-2026
-Author: The Grid Nexus Editorial Team
+Author: Kim Njuki
 Published: 2026-03-27
 Topics: 
 
@@ -180,7 +330,7 @@ Topics:
 
 # Game Cheating & Exploit Detection Analytics 2026 | Cheat Intelligence Layer
 URL: https://thegridnexus.com/article/game-cheating-exploit-detection-analytics-cheat-intelligence-2026
-Author: The Grid Nexus Editorial Team
+Author: Kim Njuki
 Published: 2026-03-27
 Topics: 
 
@@ -190,7 +340,7 @@ Topics:
 
 # AI Digital Twin Security 2026 | Critical Systems Cyber-Physical Protection
 URL: https://thegridnexus.com/article/ai-driven-digital-twin-security-critical-systems-2026
-Author: The Grid Nexus Editorial Team
+Author: Kim Njuki
 Published: 2026-03-27
 Topics: 
 
@@ -200,7 +350,7 @@ Topics:
 
 # Privacy-Enhancing Technologies PETs Confidential AI 2026 | Federated Learning Roadmap
 URL: https://thegridnexus.com/article/privacy-enhancing-technologies-confidential-ai-federated-learning-2026
-Author: The Grid Nexus Editorial Team
+Author: Kim Njuki
 Published: 2026-03-27
 Topics: 
 
@@ -210,7 +360,7 @@ Topics:
 
 # Secure Metaverse & Virtual World Security 2026 | Avatar Identity NFT Fraud AI Moderation
 URL: https://thegridnexus.com/article/secure-metaverse-virtual-world-infrastructure-security-intelligence-2026
-Author: The Grid Nexus Editorial Team
+Author: Kim Njuki
 Published: 2026-03-27
 Topics: 
 
@@ -220,7 +370,7 @@ Topics:
 
 # AI-Driven Endpoint Security EDR 2026 | Behavioral Baselining Fileless Malware
 URL: https://thegridnexus.com/article/ai-driven-endpoint-device-security-intelligence-edr-2026
-Author: The Grid Nexus Editorial Team
+Author: Kim Njuki
 Published: 2026-03-27
 Topics: 
 
@@ -230,7 +380,7 @@ Topics:
 
 # Game Monetization Anti-Fraud Intelligence 2026 | In-App Purchase Chargeback Protection
 URL: https://thegridnexus.com/article/game-monetization-anti-fraud-intelligence-2026-in-app-purchases
-Author: The Grid Nexus Editorial Team
+Author: Kim Njuki
 Published: 2026-03-27
 Topics: 
 
@@ -240,7 +390,7 @@ Topics:
 
 # AI-Assisted Game Design & Balance Analytics 2026 | Exploit-Resistant Economy Design
 URL: https://thegridnexus.com/article/secure-ai-assisted-game-design-balance-analytics-2026
-Author: The Grid Nexus Editorial Team
+Author: Kim Njuki
 Published: 2026-03-27
 Topics: 
 
@@ -250,7 +400,7 @@ Topics:
 
 # Cross-Vertical Cybersecurity Intelligence Sharing 2026 | STIX MISP Federation Roadmap
 URL: https://thegridnexus.com/article/cross-vertical-cybersecurity-intelligence-sharing-stix-misp-2026
-Author: The Grid Nexus Editorial Team
+Author: Kim Njuki
 Published: 2026-03-27
 Topics: 
 
@@ -260,7 +410,7 @@ Topics:
 
 # Nioh 3 Announced at Sony State of Play: Instant Play Access & Full Details
 URL: https://thegridnexus.com/article/nioh-3-announced-sony-state-of-play-instant-play-access
-Author: The Grid Nexus Editorial Team
+Author: Kim Njuki
 Published: 2025-05-20
 Topics: 
 
@@ -270,7 +420,7 @@ Team Ninja has done it again — and this time, they didn't make anyone wait. Th
 
 # WWE 2K26: Sandbox Mode, Division Storylines & Community Creations Full Guide
 URL: https://thegridnexus.com/article/wwe-2k26-review-sandbox-mode-division-storylines-community-creations
-Author: The Grid Nexus Editorial Team
+Author: Kim Njuki
 Published: 2025-05-20
 Topics: 
 
@@ -280,7 +430,7 @@ The wrestling gaming landscape just got a serious upgrade. WWE 2K26 has official
 
 # Nvidia Invests $2B in Nebius AI Cloud: 8.3% Stake and 5GW Data Center Plans Explained
 URL: https://thegridnexus.com/article/nvidia-invests-2-billion-nebius-ai-cloud-data-centers
-Author: The Grid Nexus Editorial Team
+Author: Kim Njuki
 Published: 2025-05-20
 Topics: 
 
@@ -290,7 +440,7 @@ When Nvidia invests $2 billion in anything, the entire tech industry pays attent
 
 # Mind Robotics Raises $500M: RJ Scaringe's AI Robotics Firm Hits $2B Valuation
 URL: https://thegridnexus.com/article/mind-robotics-500m-funding-rj-scaringe-rivian-spinout-embodied-ai
-Author: The Grid Nexus Editorial Team
+Author: Kim Njuki
 Published: 2025-05-20
 Topics: 
 
@@ -300,7 +450,7 @@ When RJ Scaringe, the founder and CEO of electric vehicle maker Rivian, announce
 
 # Oracle Customers Pre-Pay for GPUs: What It Means for Enterprise AI Cloud Access
 URL: https://thegridnexus.com/article/oracle-ai-cloud-customers-prepay-gpus-enterprise-ai-access
-Author: The Grid Nexus Editorial Team
+Author: Kim Njuki
 Published: 2025-05-20
 Topics: 
 
@@ -310,7 +460,7 @@ Cloud computing has operated on a relatively consistent economic model for over 
 
 # Senate AI Weapons Bill: NDAA Draft Bans Autonomous Weapons and Limits Military Surveillance AI
 URL: https://thegridnexus.com/article/senate-ai-weapons-surveillance-ndaa-autonomous-weapons-ban-anthropic-pentagon
-Author: The Grid Nexus Editorial Team
+Author: Kim Njuki
 Published: 2025-05-20
 Topics: 
 
@@ -320,7 +470,7 @@ The United States Senate is moving to put legislative guardrails around some of 
 
 # Perplexity AI Agent Tools: Local PC AI, Privacy-First Design & Dev Conference Recap
 URL: https://thegridnexus.com/article/perplexity-ai-agent-tools-launched-local-ai-privacy-dev-conference
-Author: The Grid Nexus Editorial Team
+Author: Kim Njuki
 Published: 2025-05-20
 Topics: 
 
@@ -330,7 +480,7 @@ Perplexity AI has been best known as the AI-powered search engine that dared to 
 
 # Atlassian Layoffs 2025: 10% Cuts Driven by AI Transformation in Jira and Confluence
 URL: https://thegridnexus.com/article/atlassian-layoffs-2025-ai-shift-developer-tools-jira
-Author: The Grid Nexus Editorial Team
+Author: Kim Njuki
 Published: 2025-05-20
 Topics: 
 
@@ -340,7 +490,7 @@ Atlassian, the Australian enterprise software company behind Jira, Confluence, a
 
 # Google Gemini in Chrome: Global Rollout in India, Canada & New Zealand With 50+ Languages
 URL: https://thegridnexus.com/article/google-gemini-chrome-global-rollout-india-canada-new-zealand-languages
-Author: The Grid Nexus Editorial Team
+Author: Kim Njuki
 Published: 2025-05-20
 Topics: 
 
@@ -350,7 +500,7 @@ The browser you use to access the internet is about to become fundamentally more
 
 # Qualcomm Arduino Ventuno Q: 40 TOPS NPU for Real-Time Edge AI Robotics Without Cloud
 URL: https://thegridnexus.com/article/qualcomm-arduino-ventuno-q-40-tops-npu-edge-ai-robotics
-Author: The Grid Nexus Editorial Team
+Author: Kim Njuki
 Published: 2025-05-20
 Topics: 
 
@@ -360,7 +510,7 @@ The race to bring powerful AI inference to edge devices has a new milestone: the
 
 # Gmail Hack Attacks Surge: How Gamers Are Being Targeted in 2026
 URL: https://thegridnexus.com/article/gmail-hack-attacks-surge-gamers-2fa-2026
-Author: The Grid Nexus Editorial Team
+Author: Kim Njuki
 Published: 2025-04-29
 Topics: 
 
@@ -370,7 +520,7 @@ If you use a Gmail address as the recovery email for your Steam, Epic Games, Pla
 
 # Bitwarden Security Incident 2026: What Gamers Need to Do Now
 URL: https://thegridnexus.com/article/bitwarden-security-incident-gaming-password-manager
-Author: The Grid Nexus Editorial Team
+Author: Kim Njuki
 Published: 2025-04-29
 Topics: 
 
@@ -380,7 +530,7 @@ Let's be precise about what happened, because the framing matters: Bitwarden was
 
 # Steam Account Takeovers Up 340% in 2026: Protection Guide
 URL: https://thegridnexus.com/article/steam-account-takeover-protection-guide-2026
-Author: The Grid Nexus Editorial Team
+Author: Kim Njuki
 Published: 2025-04-29
 Topics: 
 
@@ -390,7 +540,7 @@ Protect your Steam account by enabling the Steam Guard mobile authenticator (not
 
 # Discord Malware Spreading Through Gaming Servers in 2026: Full Guide
 URL: https://thegridnexus.com/article/discord-malware-gamers-how-to-stay-safe
-Author: The Grid Nexus Editorial Team
+Author: Kim Njuki
 Published: 2025-04-29
 Topics: 
 
@@ -400,7 +550,7 @@ Discord is where gaming communities live. It's also, in 2026, the most active di
 
 # Nintendo Switch 2 Security Guide: Lock Down Your Account Before Launch
 URL: https://thegridnexus.com/article/nintendo-switch-2-security-guide
-Author: The Grid Nexus Editorial Team
+Author: Kim Njuki
 Published: 2025-04-29
 Topics: 
 
@@ -410,7 +560,7 @@ New console launches are one of the highest-risk periods for gaming account secu
 
 # Fake Game Cheats Steal Accounts: How the Malware Works in 2026
 URL: https://thegridnexus.com/article/fake-game-cheats-malware-account-stealer
-Author: The Grid Nexus Editorial Team
+Author: Kim Njuki
 Published: 2025-04-29
 Topics: 
 
@@ -420,7 +570,7 @@ The gaming community has a well-documented and persistent security problem: chea
 
 # SIM Swapping Targets Gamers in 2026: Complete Protection Guide
 URL: https://thegridnexus.com/article/sim-swapping-gaming-accounts-protection
-Author: The Grid Nexus Editorial Team
+Author: Kim Njuki
 Published: 2025-04-29
 Topics: 
 
@@ -430,7 +580,7 @@ SIM swapping — also called SIM hijacking — is an attack where a threat actor
 
 # Windows 11 Anti-Cheat Broken on New Hardware: Complete Fix Guide 2026
 URL: https://thegridnexus.com/article/windows-11-anti-cheat-broken-fix-guide
-Author: The Grid Nexus Editorial Team
+Author: Kim Njuki
 Published: 2025-04-29
 Topics: 
 
@@ -440,7 +590,7 @@ A Windows 11 24H2 update released in late April 2026 has introduced a kernel dri
 
 # Microsoft Gaming Rebrand 2026: Account Security Changes Explained
 URL: https://thegridnexus.com/article/xbox-rebrand-security-changes-gamers
-Author: The Grid Nexus Editorial Team
+Author: Kim Njuki
 Published: 2025-04-29
 Topics: 
 
@@ -450,7 +600,7 @@ Microsoft's rebranding of its gaming operations in early 2026 — folding Xbox, 
 
 # Steam Controller and Gaming Peripheral Security: Real Risks Explained
 URL: https://thegridnexus.com/article/steam-controller-security-risks-gamers
-Author: The Grid Nexus Editorial Team
+Author: Kim Njuki
 Published: 2025-04-29
 Topics: 
 
@@ -460,7 +610,7 @@ Gaming peripherals — controllers, headsets, and other Bluetooth or USB-connect
 
 # VPNs for Gaming 2026: Latency Test & Honest Verdict
 URL: https://thegridnexus.com/article/vpn-gaming-security-latency-test-2026
-Author: The Grid Nexus Editorial Team
+Author: Kim Njuki
 Published: 2025-04-29
 Topics: 
 
@@ -470,7 +620,7 @@ A VPN only meaningfully helps your gaming in one narrow case: DDoS protection in
 
 # Twitch Streamer Security Guide 2026: Protect Against Doxxing and Swatting
 URL: https://thegridnexus.com/article/twitch-streamer-security-guide-doxxing-swatting
-Author: The Grid Nexus Editorial Team
+Author: Kim Njuki
 Published: 2025-04-29
 Topics: 
 
@@ -480,7 +630,7 @@ Swatting and doxxing are not new problems in streaming communities, but in 2026 
 
 # Razer Synapse Security Flaw: Millions of Gaming PCs Affected — Fix Now
 URL: https://thegridnexus.com/article/razer-synapse-security-vulnerability-fix
-Author: The Grid Nexus Editorial Team
+Author: Kim Njuki
 Published: 2025-04-29
 Topics: 
 
@@ -490,7 +640,7 @@ Razer Synapse, the peripheral management software used by millions of PC gamers 
 
 # G2A, CDKeys, and Gray Market Game Keys: How the Scams Work in 2026
 URL: https://thegridnexus.com/article/game-key-reseller-scams-g2a-cdkeys
-Author: The Grid Nexus Editorial Team
+Author: Kim Njuki
 Published: 2025-04-29
 Topics: 
 
@@ -500,7 +650,7 @@ Gray market game key sites occupy an uncomfortable position in the PC gaming eco
 
 # Roblox Safety 2026: Complete Parent's Guide to Account Security
 URL: https://thegridnexus.com/article/roblox-parents-guide-account-security-safety
-Author: The Grid Nexus Editorial Team
+Author: Kim Njuki
 Published: 2025-04-29
 Topics: 
 
@@ -510,7 +660,7 @@ Roblox has 380 million monthly active users as of early 2026, with a substantial
 
 # Minecraft Server Security Guide 2026: Complete Hardening for Java and Bedrock
 URL: https://thegridnexus.com/article/minecraft-server-security-guide
-Author: The Grid Nexus Editorial Team
+Author: Kim Njuki
 Published: 2025-04-29
 Topics: 
 
@@ -520,7 +670,7 @@ Running a Minecraft server is a hands-on introduction to real system administrat
 
 # Twitch Account Breach Wave April 2026: Check Your Exposure and Secure Your Account
 URL: https://thegridnexus.com/article/twitch-accounts-hacked-breach-guide-2026
-Author: The Grid Nexus Editorial Team
+Author: Kim Njuki
 Published: 2025-04-29
 Topics: 
 
@@ -530,7 +680,7 @@ Reports surfaced in mid-April 2026 of Twitch account credentials being offered i
 
 # Gaming Headset Privacy 2026: What Your Microphone Actually Captures
 URL: https://thegridnexus.com/article/gaming-headset-malware-privacy-guide
-Author: The Grid Nexus Editorial Team
+Author: Kim Njuki
 Published: 2025-04-29
 Topics: 
 
@@ -540,7 +690,7 @@ Gaming headset microphones, always-on noise cancellation features, and the compa
 
 # Best Antivirus for Gaming PCs 2026: Performance Benchmarks
 URL: https://thegridnexus.com/article/gaming-pc-antivirus-best-2026
-Author: The Grid Nexus Editorial Team
+Author: Kim Njuki
 Published: 2025-04-29
 Topics: 
 
@@ -550,7 +700,7 @@ The best antivirus for gaming PCs in 2026 is Malwarebytes Premium for maximum pr
 
 # Gaming Router Security Guide 2026: Protect Your Network and Latency
 URL: https://thegridnexus.com/article/router-security-gamers-network-protection
-Author: The Grid Nexus Editorial Team
+Author: Kim Njuki
 Published: 2025-04-29
 Topics: 
 
@@ -560,7 +710,7 @@ The gaming router market sells products on LAN party aesthetics and QoS features
 
 # Meta Llama 4 Scout & Maverick: Multimodal AI Revolution 2026
 URL: https://thegridnexus.com/article/meta-llama-4-scout-maverick-multimodal-ai-2026
-Author: The Grid Nexus Editorial Team
+Author: Kim Njuki
 Published: 2025-04-15
 Topics: 
 
@@ -570,7 +720,7 @@ There are product launches you see coming from miles away, and then there are th
 
 # Quantum Computing Cybersecurity Risks 2026: Post-Quantum Guide
 URL: https://thegridnexus.com/article/quantum-computing-cybersecurity-risks-2026
-Author: The Grid Nexus Editorial Team
+Author: Kim Njuki
 Published: 2025-04-15
 Topics: 
 
@@ -580,7 +730,7 @@ Let's start with something most cybersecurity briefings skip over: the threat is
 
 # PS5 Xbox PC Games 2026: Full Release Calendar & Dates
 URL: https://thegridnexus.com/article/ps5-xbox-pc-games-2026-release-calendar
-Author: The Grid Nexus Editorial Team
+Author: Kim Njuki
 Published: 2025-04-15
 Topics: 
 
@@ -590,7 +740,7 @@ Some years in gaming are filler. This isn't one of them. 2026 has already delive
 
 # KadNap Botnet 2026: ASUS Router Hack Analysis & How to Protect Yourself
 URL: https://thegridnexus.com/article/kadnap-botnet-asus-router-hack-analysis-2026
-Author: The Grid Nexus Editorial Team
+Author: Kim Njuki
 Published: 2025-04-15
 Topics: 
 
@@ -600,7 +750,7 @@ If you own an ASUS router, sit down for a minute. Because what security research
 
 # Edge Security and UEBA in Cybersecurity 2026: Complete Overview
 URL: https://thegridnexus.com/article/edge-security-ueba-cybersecurity-2026
-Author: The Grid Nexus Editorial Team
+Author: Kim Njuki
 Published: 2025-04-15
 Topics: 
 
@@ -610,7 +760,7 @@ There's a troubling thing that happens when you rely on perimeter security too l
 
 # Fortnite & Valorant 2026: Security Patches & Account Protection
 URL: https://thegridnexus.com/article/fortnite-valorant-updates-2026-security-patches
-Author: The Grid Nexus Editorial Team
+Author: Kim Njuki
 Published: 2025-04-15
 Topics: 
 
@@ -620,7 +770,7 @@ Competitive gaming has always had a cheating problem. What's changed in 2026 is 
 
 # ChromeOS Flex & Snapdragon X2 Elite Laptops 2026: Full Guide
 URL: https://thegridnexus.com/article/chromeos-flex-snapdragon-x2-laptops-2026
-Author: The Grid Nexus Editorial Team
+Author: Kim Njuki
 Published: 2025-04-15
 Topics: 
 
@@ -630,7 +780,7 @@ The ARM laptop story has been slowly building for two years. In 2024, the origin
 
 # Supply Chain Attacks 2026: LiteLLM Malware & TeamPCP Analysis
 URL: https://thegridnexus.com/article/supply-chain-attacks-2026-litellm-malware-teampcp
-Author: The Grid Nexus Editorial Team
+Author: Kim Njuki
 Published: 2025-04-15
 Topics: 
 
@@ -640,7 +790,7 @@ A developer's machine froze hard on March 24, 2026. Not the usual IDE slow-down,
 
 # AI Cybersecurity Trends 2026: Agentic AI & Threat Detection
 URL: https://thegridnexus.com/article/ai-cybersecurity-trends-2026-agentic-ai-threat-detection
-Author: The Grid Nexus Editorial Team
+Author: Kim Njuki
 Published: 2025-04-14
 Topics: 
 
@@ -650,7 +800,7 @@ There's a moment every CISO remembers. It's the instant they realize the threat 
 
 # Zero Trust & Quantum-Ready Security 2026: What You Need Now
 URL: https://thegridnexus.com/article/zero-trust-quantum-ready-security-2026
-Author: The Grid Nexus Editorial Team
+Author: Kim Njuki
 Published: 2025-04-14
 Topics: 
 
@@ -660,7 +810,7 @@ There's a phrase making the rounds in security circles that should give every CI
 
 # Best AI Tools 2026: Complete Guide to What's Worth Using
 URL: https://thegridnexus.com/article/best-ai-tools-2026-guide
-Author: The Grid Nexus Editorial Team
+Author: Kim Njuki
 Published: 2025-04-14
 Topics: 
 
@@ -670,7 +820,7 @@ Walk into any technology team today and you'll hear a version of the same compla
 
 # AI Regulation 2026: EU AI Act, US Laws & What to Do Now
 URL: https://thegridnexus.com/article/ai-regulation-2026-eu-ai-act-us-policy
-Author: The Grid Nexus Editorial Team
+Author: Kim Njuki
 Published: 2025-04-14
 Topics: 
 
@@ -680,7 +830,7 @@ August 2, 2026. Mark it in your compliance calendar. That's the date the EU Arti
 
 # Best Gaming GPU 1440p 2026: RX 9070 XT vs RTX 5080
 URL: https://thegridnexus.com/article/best-gaming-gpu-1440p-2026-rx-9070-xt-vs-rtx-5080
-Author: The Grid Nexus Editorial Team
+Author: Kim Njuki
 Published: 2025-04-14
 Topics: 
 
@@ -690,7 +840,7 @@ The GPU market in 2026 is a peculiar place. Supply constraints, tariff-driven pr
 
 # Best Gaming PC Under $1000 in 2026: Build & Buy Guide
 URL: https://thegridnexus.com/article/best-gaming-pc-under-1000-2026
-Author: The Grid Nexus Editorial Team
+Author: Kim Njuki
 Published: 2025-04-14
 Topics: 
 
@@ -700,7 +850,7 @@ A thousand dollars doesn't go as far as it used to. That's the honest starting p
 
 # NVIDIA Rubin Platform 2026: Blackwell Successor Specs, Release Date & AI Impact
 URL: https://thegridnexus.com/article/nvidia-rubin-platform-2026-blackwell-successor-release-date-specs
-Author: The Grid Nexus Editorial Team
+Author: Kim Njuki
 Published: 2025-03-19
 Topics: 
 
@@ -710,7 +860,7 @@ If you've been keeping a close eye on the AI hardware race, you already know tha
 
 # Agentic AI Security Risks 2026: The CISO's Complete Guide to Autonomous AI Threats
 URL: https://thegridnexus.com/article/agentic-ai-cybersecurity-risks-enterprise-2026-ciso-guide
-Author: The Grid Nexus Editorial Team
+Author: Kim Njuki
 Published: 2025-03-19
 Topics: 
 
@@ -720,7 +870,7 @@ There's a specific kind of dread that experienced cybersecurity professionals fe
 
 # ShinyHunters Crunchbase Breach 2026: 2M Records Stolen via Social Engineering
 URL: https://thegridnexus.com/article/shinyhunters-crunchbase-breach-2026-2-million-records-social-engineering
-Author: The Grid Nexus Editorial Team
+Author: Kim Njuki
 Published: 2025-03-19
 Topics: 
 
@@ -730,7 +880,7 @@ ShinyHunters has built one of the most feared reputations in the cybercrime unde
 
 # Threat Actor Zestix: Stolen ShareFile, Nextcloud & OwnCloud Data Sold on Dark Web
 URL: https://thegridnexus.com/article/zestix-threat-actor-stolen-cloud-data-sharefile-nextcloud-owncloud-dark-web-2026
-Author: The Grid Nexus Editorial Team
+Author: Kim Njuki
 Published: 2025-03-19
 Topics: 
 
@@ -740,7 +890,7 @@ A threat actor operating under the handle Zestix has emerged as a notable initia
 
 # WoW Midnight Expansion Review 2026: Void Raids, Class Overhauls & Verdict
 URL: https://thegridnexus.com/article/world-of-warcraft-midnight-expansion-review-2026-lore-void-raids
-Author: The Grid Nexus Editorial Team
+Author: Kim Njuki
 Published: 2025-03-19
 Topics: 
 
@@ -750,7 +900,7 @@ Blizzard Entertainment has been on a creative redemption arc since the Dragonfli
 
 # Monster Hunter Stories 3: Twisted Reflection Review — Capcom's Best Spin-Off Yet?
 URL: https://thegridnexus.com/article/monster-hunter-stories-3-twisted-reflection-review-2026-capcom
-Author: The Grid Nexus Editorial Team
+Author: Kim Njuki
 Published: 2025-03-19
 Topics: 
 
@@ -760,7 +910,7 @@ Capcom has always understood something that many publishers struggle with: the b
 
 # Crimson Desert Review 2026: Pearl Abyss's Open-World Action RPG Verdict
 URL: https://thegridnexus.com/article/crimson-desert-review-launch-march-2026-pearl-abyss-ps5-xbox-pc
-Author: The Grid Nexus Editorial Team
+Author: Kim Njuki
 Published: 2025-03-19
 Topics: 
 
@@ -770,7 +920,7 @@ There are games that have a story, and then there are games that have a developm
 
 # Death Stranding 2 PC Launch Review: Kojima's Asynchronous Masterpiece on Steam
 URL: https://thegridnexus.com/article/death-stranding-2-on-the-beach-pc-launch-march-2026-steam-review
-Author: The Grid Nexus Editorial Team
+Author: Kim Njuki
 Published: 2025-03-19
 Topics: 
 
@@ -780,7 +930,7 @@ Hideo Kojima has spent his entire career making games that resist easy categoriz
 
 # Dead by Daylight All-Kill Update March 2026: Trickster Rework, New Survivor & Map
 URL: https://thegridnexus.com/article/dead-by-daylight-all-kill-update-march-2026-trickster-rework-k-pop
-Author: The Grid Nexus Editorial Team
+Author: Kim Njuki
 Published: 2025-03-19
 Topics: 
 
@@ -790,7 +940,7 @@ Dead by Daylight has mastered the art of the live-service refresh cycle more con
 
 # Arc Raiders Flashpoint Update 2026: New Map, Threats & Expedition Overhaul Explained
 URL: https://thegridnexus.com/article/arc-raiders-flashpoint-update-2026-extraction-shooter-embark-studios
-Author: The Grid Nexus Editorial Team
+Author: Kim Njuki
 Published: 2025-03-19
 Topics: 
 
@@ -800,7 +950,7 @@ The extraction shooter genre has undergone a significant maturation in 2026, wit
 
 # Nvidia Blackwell Chips Eye $1 Trillion Orders: What Jensen Huang's Bold Prediction Means for AI Hardware
 URL: https://thegridnexus.com/article/nvidia-blackwell-chips-eye-1-trillion-orders-what-jensen-huangs-bold-prediction-means-for-ai-hardwar
-Author: The Grid Nexus Editorial Team
+Author: Kim Njuki
 Published: 2025-03-17
 Topics: 
 
@@ -810,7 +960,7 @@ Nvidia CEO Jensen Huang has projected a staggering $1 trillion in cumulative sal
 
 # Meta Unveils Four New In-House AI Chips: MTIA 300 to 500 Explained — How Big Tech Is Breaking Free from Nvidia
 URL: https://thegridnexus.com/article/meta-unveils-four-new-in-house-ai-chips-mtia-300-to-500-explained-how-big-tech-is-breaking-free-from
-Author: The Grid Nexus Editorial Team
+Author: Kim Njuki
 Published: 2025-03-16
 Topics: 
 
@@ -820,7 +970,7 @@ Meta has announced four new generations of its Meta Training and Inference Accel
 
 # xAI Gains Pentagon Access Amid Security Concerns: Grok, Classified Networks, and the Military AI Dilemma
 URL: https://thegridnexus.com/article/xai-gains-pentagon-access-amid-security-concerns-grok-classified-networks-and-the-military-ai-dilemm
-Author: The Grid Nexus Editorial Team
+Author: Kim Njuki
 Published: 2025-03-15
 Topics: 
 
@@ -830,7 +980,7 @@ Senator Elizabeth Warren has raised formal concerns about the Pentagon's decisio
 
 # Apple Acquires MotionVFX: Final Cut Pro's AI-Powered Creative Leap and What It Means for Video Editing Software
 URL: https://thegridnexus.com/article/apple-acquires-motionvfx-final-cut-pros-ai-powered-creative-leap-and-what-it-means-for-video-editing
-Author: The Grid Nexus Editorial Team
+Author: Kim Njuki
 Published: 2025-03-14
 Topics: 
 
@@ -840,7 +990,7 @@ Apple has acquired MotionVFX, a leading provider of professional visual effects 
 
 # Frore Systems Hits Unicorn Status: $143M Raise at $1.64B Valuation Puts AI Chip Cooling in the Spotlight
 URL: https://thegridnexus.com/article/frore-systems-hits-unicorn-status-143m-raise-at-164b-valuation-puts-ai-chip-cooling-in-the-spotlight
-Author: The Grid Nexus Editorial Team
+Author: Kim Njuki
 Published: 2025-03-13
 Topics: 
 
@@ -850,7 +1000,7 @@ Frore Systems, a deep tech startup specializing in solid-state active cooling te
 
 # Conduent Data Breach Exposes 25 Million Records: What Enterprises Must Learn from One of 2026's Largest Cyberattacks
 URL: https://thegridnexus.com/article/conduent-data-breach-exposes-25-million-records-what-enterprises-must-learn-from-one-of-2026s-larges
-Author: The Grid Nexus Editorial Team
+Author: Kim Njuki
 Published: 2025-03-12
 Topics: 
 
@@ -860,7 +1010,7 @@ Conduent, a major business process services company serving government agencies 
 
 # AkzoNobel Data Breach Targets US Operations: Supply Chain Cyberattacks and Zero-Trust Security in the Manufacturing Sector
 URL: https://thegridnexus.com/article/akzonobel-data-breach-targets-us-operations-supply-chain-cyberattacks-and-zero-trust-security-in-the
-Author: The Grid Nexus Editorial Team
+Author: Kim Njuki
 Published: 2025-03-11
 Topics: 
 
@@ -870,7 +1020,7 @@ AkzoNobel, one of the world's largest paint and coatings manufacturers with bran
 
 # IceWarp RCE Vulnerability CVE-2025-14500: Over 1,200 Email Servers Exposed to Unauthenticated Remote Code Execution
 URL: https://thegridnexus.com/article/icewarp-rce-vulnerability-cve-2025-14500-over-1200-email-servers-exposed-to-unauthenticated-remote-c
-Author: The Grid Nexus Editorial Team
+Author: Kim Njuki
 Published: 2025-03-10
 Topics: 
 
@@ -880,7 +1030,7 @@ A critical remote code execution (RCE) vulnerability, tracked as CVE-2025-14500,
 
 # Crimson Collective Steals 570GB from Red Hat GitLab: NSA and DoD Credentials Exposed in Massive Repository Breach
 URL: https://thegridnexus.com/article/crimson-collective-steals-570gb-from-red-hat-gitlab-nsa-and-dod-credentials-exposed-in-massive-repos
-Author: The Grid Nexus Editorial Team
+Author: Kim Njuki
 Published: 2025-03-09
 Topics: 
 
@@ -890,7 +1040,7 @@ A threat actor group identifying as Crimson Collective has claimed responsibilit
 
 # Helldivers 2 Force of Law Warbond: New Weapons, Armor, and What It Means for the Live-Service Shooter Meta
 URL: https://thegridnexus.com/article/helldivers-2-force-of-law-warbond-new-weapons-armor-and-what-it-means-for-the-live-service-shooter-m
-Author: The Grid Nexus Editorial Team
+Author: Kim Njuki
 Published: 2025-03-08
 Topics: 
 
@@ -900,7 +1050,7 @@ Helldivers 2 has launched its latest premium Warbond, Force of Law, introducing 
 
 # Resident Evil: Requiem Review: Biggest New Game Releases February 2026
 URL: https://thegridnexus.com/article/resident-evil-requiem-launch-2026
-Author: The Grid Nexus Editorial Team
+Author: Kim Njuki
 Published: 2025-02-27
 Topics: 
 
@@ -910,7 +1060,7 @@ Topics:
 
 # Grok AI Market Share Growth 2026 Paradox | The Grid Nexus
 URL: https://thegridnexus.com/article/grok-ai-market-share-growth-2026
-Author: The Grid Nexus Editorial Team
+Author: Kim Njuki
 Published: 2025-02-21
 Topics: 
 
@@ -920,7 +1070,7 @@ Topics:
 
 # China AI Scraping Surge 2026: Niche Sites Targeted
 URL: https://thegridnexus.com/article/china-ai-scraping-bot-traffic-2026
-Author: The Grid Nexus Editorial Team
+Author: Kim Njuki
 Published: 2025-02-21
 Topics: 
 
@@ -930,7 +1080,7 @@ Topics:
 
 # TikTok US Algorithm Deal 2026: Oracle Oversight Explained
 URL: https://thegridnexus.com/article/tiktok-us-deal-algorithm-control-2026
-Author: The Grid Nexus Editorial Team
+Author: Kim Njuki
 Published: 2025-02-21
 Topics: 
 
@@ -940,7 +1090,7 @@ Topics:
 
 # Claude AI Weaponized: AI-Driven Cybersecurity Threats 2026
 URL: https://thegridnexus.com/article/claude-ai-weaponized-espionage-2026
-Author: The Grid Nexus Editorial Team
+Author: Kim Njuki
 Published: 2025-02-20
 Topics: 
 
@@ -950,7 +1100,7 @@ Topics:
 
 # Ys X: Proud Nordics Review & Launch Guide | The Grid Nexus
 URL: https://thegridnexus.com/article/ys-x-proud-nordics-launch-2026
-Author: The Grid Nexus Editorial Team
+Author: Kim Njuki
 Published: 2025-02-20
 Topics: 
 
@@ -960,7 +1110,7 @@ Topics:
 
 # Tata & OpenAI Partner for 2026 Data Center | The Grid Nexus
 URL: https://thegridnexus.com/article/tata-openai-india-data-center-2026
-Author: The Grid Nexus Editorial Team
+Author: Kim Njuki
 Published: 2025-02-20
 Topics: 
 
@@ -970,7 +1120,7 @@ Topics:
 
 # Meta Facial Recognition Smart Glasses Review | The Grid Nexus
 URL: https://thegridnexus.com/article/meta-facial-recognition-smart-glasses-2026
-Author: The Grid Nexus Editorial Team
+Author: Kim Njuki
 Published: 2025-02-20
 Topics: 
 
@@ -980,7 +1130,7 @@ Topics:
 
 # Sandworm Attacks Poland Power Grid 2026 | The Grid Nexus
 URL: https://thegridnexus.com/article/sandworm-hackers-poland-power-grid-2026
-Author: The Grid Nexus Editorial Team
+Author: Kim Njuki
 Published: 2025-02-19
 Topics: 
 
@@ -990,7 +1140,7 @@ Topics:
 
 # WEF Cybersecurity Outlook 2026 | The Grid Nexus
 URL: https://thegridnexus.com/article/global-cybersecurity-outlook-2026-ai-risks
-Author: The Grid Nexus Editorial Team
+Author: Kim Njuki
 Published: 2025-02-19
 Topics: 
 
@@ -1000,7 +1150,7 @@ Topics:
 
 # Microsoft Fixes 6 Zero-Days: Feb 2026 Guide | The Grid Nexus
 URL: https://thegridnexus.com/article/microsoft-patch-tuesday-6-zero-days-february-2026
-Author: The Grid Nexus Editorial Team
+Author: Kim Njuki
 Published: 2025-02-13
 Topics: 
 
@@ -1010,7 +1160,7 @@ Topics:
 
 # High on Life 2 Review: Top Gaming Releases 2026
 URL: https://thegridnexus.com/article/high-on-life-2-release-2026
-Author: The Grid Nexus Editorial Team
+Author: Kim Njuki
 Published: 2025-02-13
 Topics: 
 
@@ -1020,7 +1170,7 @@ Topics:
 
 # Nioh 3 Review: Intense Souls-Like Action | The Grid Nexus
 URL: https://thegridnexus.com/article/nioh-3-release-ps5-2026
-Author: The Grid Nexus Editorial Team
+Author: Kim Njuki
 Published: 2025-02-06
 Topics: 
 

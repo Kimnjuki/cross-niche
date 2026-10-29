@@ -1,0 +1,85 @@
+{
+  "@context": "https://www.w3.org/ns/json-ld",
+  "@type": "APIReference",
+  "name": "The Grid Nexus — Gaming Security Data",
+  "description": "Machine-readable gaming-security data: game grades, platform security, safety verdicts, and recovery playbooks.",
+  "url": "https://thegridnexus.com/data",
+  "license": "https://creativecommons.org/licenses/by/4.0/",
+  "apis": [
+    {
+      "name": "Game Security Grades",
+      "url": "https://thegridnexus.com/data/games.json",
+      "format": "application/json"
+    },
+    {
+      "name": "Platform Security",
+      "url": "https://thegridnexus.com/data/platforms.json",
+      "format": "application/json"
+    },
+    {
+      "name": "Safety Verdicts",
+      "url": "https://thegridnexus.com/data/safety-verdicts.json",
+      "format": "application/json"
+    },
+    {
+      "name": "Recovery Playbooks",
+      "url": "https://thegridnexus.com/data/recovery-playbooks.json",
+      "format": "application/json"
+    },
+    {
+      "name": "Full Text Corpus",
+      "url": "https://thegridnexus.com/llms-full.txt",
+      "format": "text/plain"
+    }
+  ],
+  "linkset": [
+    {
+      "anchor": "https://thegridnexus.com/",
+      "rel": "service-doc",
+      "href": "https://thegridnexus.com/data",
+      "type": "text/html"
+    },
+    {
+      "anchor": "https://thegridnexus.com/",
+      "rel": "service-desc",
+      "href": "https://thegridnexus.com/data/games.json",
+      "type": "application/json"
+    },
+    {
+      "anchor": "https://thegridnexus.com/",
+      "rel": "describedby",
+      "href": "https://thegridnexus.com/llms.txt",
+      "type": "text/plain"
+    },
+    {
+      "anchor": "https://thegridnexus.com/data",
+      "rel": "item",
+      "href": "https://thegridnexus.com/data/games.json",
+      "type": "application/json"
+    },
+    {
+      "anchor": "https://thegridnexus.com/data",
+      "rel": "item",
+      "href": "https://thegridnexus.com/data/platforms.json",
+      "type": "application/json"
+    },
+    {
+      "anchor": "https://thegridnexus.com/data",
+      "rel": "item",
+      "href": "https://thegridnexus.com/data/safety-verdicts.json",
+      "type": "application/json"
+    },
+    {
+      "anchor": "https://thegridnexus.com/data",
+      "rel": "item",
+      "href": "https://thegridnexus.com/data/recovery-playbooks.json",
+      "type": "application/json"
+    },
+    {
+      "anchor": "https://thegridnexus.com/data",
+      "rel": "item",
+      "href": "https://thegridnexus.com/llms-full.txt",
+      "type": "text/plain"
+    }
+  ]
+}

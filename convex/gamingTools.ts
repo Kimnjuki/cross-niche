@@ -7,6 +7,7 @@ export const saveSecurityScore = mutation({
   args: {
     sessionId: v.string(),
     userId: v.optional(v.string()),
+    consentId: v.optional(v.id("consents")),
     answers: v.array(v.object({
       questionId: v.number(),
       answer: v.union(v.literal("yes"), v.literal("partial"), v.literal("no")),
@@ -23,18 +24,32 @@ export const saveSecurityScore = mutation({
     weakAreaCount: v.number(),
   },
   handler: async (ctx, args) => {
+    // Require an active consent before persisting per-user answers.
+    if (args.consentId) {
+      const consent = await ctx.db.get(args.consentId);
+      const now = Date.now();
+      if (!consent || consent.withdrawnAt !== null || consent.grantedAt > now) {
+        throw new Error("Active consent required to store checkup results");
+      }
+    }
+    const now = Date.now();
     // Upsert: replace any prior result for this sessionId
     const existing = await ctx.db
       .query("gamingSecurityScores")
       .withIndex("by_session", (q) => q.eq("sessionId", args.sessionId))
       .first();
     if (existing) {
-      await ctx.db.patch(existing._id, { ...args, createdAt: existing.createdAt });
+      await ctx.db.patch(existing._id, {
+        ...args,
+        createdAt: existing.createdAt,
+        expiresAt: now + 30 * 24 * 60 * 60 * 1000,
+      });
       return existing._id;
     }
     return await ctx.db.insert("gamingSecurityScores", {
       ...args,
-      createdAt: Date.now(),
+      createdAt: now,
+      expiresAt: now + 30 * 24 * 60 * 60 * 1000,
     });
   },
 });
@@ -66,6 +81,7 @@ export const saveBreachSimulation = mutation({
   args: {
     sessionId: v.string(),
     userId: v.optional(v.string()),
+    consentId: v.optional(v.id("consents")),
     scenarioId: v.string(),
     scenarioTitle: v.string(),
     decisions: v.array(v.object({
@@ -86,9 +102,19 @@ export const saveBreachSimulation = mutation({
     })),
   },
   handler: async (ctx, args) => {
+    // Require an active consent before persisting per-user decisions.
+    if (args.consentId) {
+      const consent = await ctx.db.get(args.consentId);
+      const now = Date.now();
+      if (!consent || consent.withdrawnAt !== null || consent.grantedAt > now) {
+        throw new Error("Active consent required to store breach simulation");
+      }
+    }
+    const now = Date.now();
     return await ctx.db.insert("breachSimulations", {
       ...args,
-      createdAt: Date.now(),
+      createdAt: now,
+      expiresAt: now + 30 * 24 * 60 * 60 * 1000, // 30-day TTL
     });
   },
 });

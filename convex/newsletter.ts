@@ -31,6 +31,7 @@ export const subscribe = mutation({
 
     const token = createToken();
     const subscribedAt = Date.now();
+    const tokenExpiresAt = subscribedAt + 24 * 60 * 60 * 1000; // 24h TTL
 
     if (existing) {
       await ctx.db.patch(existing._id, {
@@ -42,6 +43,7 @@ export const subscribe = mutation({
         subscribedAt,
         verifiedAt: existing.verifiedAt,
         verificationToken: existing.verifiedAt ? undefined : token,
+        tokenExpiresAt: existing.verifiedAt ? undefined : tokenExpiresAt,
       });
 
       return {
@@ -61,6 +63,7 @@ export const subscribe = mutation({
       newsletterTypes: args.newsletterTypes,
       topicSubscriptions: args.topicSubscriptions,
       verificationToken: token,
+      tokenExpiresAt,
     });
 
     return { success: true, id, already: false, verificationToken: token };
@@ -83,6 +86,7 @@ export const verifySubscription = mutation({
     await ctx.db.patch(existing._id, {
       verifiedAt: Date.now(),
       verificationToken: undefined,
+      tokenExpiresAt: undefined,
       isActive: true,
     });
 

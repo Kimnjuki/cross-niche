@@ -1,0 +1,15 @@
+slug,name,grade,platforms,genres,publisher,releaseYear,securityNotes,updatedAt
+playstation-network,PlayStation Network,A,PlayStation,platform,Sony,2006,PSN supports 2FA and passkeys. The 2011 breach is historical; current account protection is strong with 2FA enabled.,1791926368391
+nintendo-switch-online,Nintendo Switch Online,B,Switch,platform,Nintendo,2018,"Nintendo accounts support 2FA and passkeys, but have a documented credential-stuffing history (2020 NNID breach). Enable 2FA and unique credentials.",1791926368391
+apex-legends,Apex Legends,B,PC; PlayStation; Xbox; Switch,battle-royale; shooter,Electronic Arts,2019,"EA account supports 2FA; account-recovery can be slow, so protect the email account behind it.",1791926368391
+gta-online,GTA Online,C,PC; PlayStation; Xbox,open-world; action,Rockstar Games,2013,"Rockstar Social Club supports 2FA but account takeovers and modding-based theft are common, especially on PC. Use 2FA and a unique password.",1791926368391
+call-of-duty,Call of Duty,C,PC; PlayStation; Xbox,shooter,Activision,2003,Activision accounts support 2FA but have seen documented account-takeover waves and account-unlink attacks. Review linked accounts regularly.,1791926368391
+genshin-impact,Genshin Impact,B,PC; PlayStation; Mobile,rpg; gacha,HoYoverse,2020,"HoYoverse account supports 2FA and email verification, but spending-linked accounts are heavily phished.",1791926368391
+counter-strike-2,Counter-Strike 2,A,PC,tactical-shooter,Valve,2023,"Runs on Steam, inheriting Steam Guard TOTP 2FA. High-value inventory makes accounts prime targets.",1791926368391
+league-of-legends,League of Legends,A,PC,moba,Riot Games,2009,Riot account supports TOTP 2FA and active account-recovery.,1791926368391
+valorant,Valorant,A,PC,tactical-shooter,Riot Games,2020,"Riot account supports TOTP 2FA; Vanguard anti-cheat and active account-recovery. High-value accounts are frequent targets, so 2FA is essential.",1791926368391
+roblox,Roblox,B,PC; Xbox; Mobile,sandbox; social,Roblox Corporation,2006,"Supports TOTP 2FA and account PINs. Very young audience is heavily targeted by fake ""free Robux"" scams and cookie-theft phishing.",1791926368391
+minecraft,Minecraft,B,PC; PlayStation; Xbox; Switch; Mobile,sandbox; survival,Microsoft,2011,Migrated to Microsoft accounts with 2FA. Younger player base is a heavy phishing target; account-migration confusion is a common entry point for attackers.,1791926368391
+fortnite,Fortnite,A,PC; PlayStation; Xbox; Switch; Mobile,battle-royale; shooter,Epic Games,2017,Epic account supports TOTP 2FA and email/app verification. Strong anti-cheat and active account-recovery support.,1791926368391
+discord,Discord,B,PC; Mobile,communication,Discord Inc.,2015,"Supports TOTP 2FA, passkeys, and hardware security keys, but account-token-stealing malware and phishing are rampant on the platform. Enable 2FA and never run unverified scripts.",1791926368391
+steam,Steam,A,PC,storefront,Valve,2003,Steam Guard Mobile Authenticator (TOTP) and Steam Guard email codes. No passkey or hardware-key support yet — the mobile authenticator is the strongest option.,1791926368391

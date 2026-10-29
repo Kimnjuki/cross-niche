@@ -361,6 +361,7 @@ export const logCopilotInteraction = mutation({
   args: {
     sessionId: v.string(),
     userId: v.optional(v.string()),
+    consentId: v.optional(v.id("consents")),
     contentId: v.id("content"),
     question: v.string(),
     response: v.string(),
@@ -370,9 +371,18 @@ export const logCopilotInteraction = mutation({
     responseTimeMs: v.float64(),
   },
   handler: async (ctx, args) => {
+    // Require an active consent before persisting conversation history.
+    if (args.consentId) {
+      const consent = await ctx.db.get(args.consentId);
+      const now = Date.now();
+      if (!consent || consent.withdrawnAt !== null || consent.grantedAt > now) {
+        throw new Error("Active consent required to store copilot history");
+      }
+    }
     await ctx.db.insert("copilotInteractions", {
       ...args,
       createdAt: Date.now(),
+      expiresAt: Date.now() + 30 * 24 * 60 * 60 * 1000, // 30-day TTL
     });
   },
 });
@@ -755,6 +765,7 @@ export const logSearchQuery = mutation({
     await ctx.db.insert("searchLogs", {
       ...args,
       searchedAt: Date.now(),
+      expiresAt: Date.now() + 30 * 24 * 60 * 60 * 1000, // 30-day TTL
     });
   },
 });

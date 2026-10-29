@@ -1,0 +1,116 @@
+{
+  "platforms": [
+    {
+      "slug": "steam",
+      "name": "Steam",
+      "mfa": "supported",
+      "mfaNote": "Steam Guard Mobile Authenticator (time-based codes) and Steam Guard email codes. Steam does not support passkeys or FIDO2 hardware keys — the mobile authenticator is the strongest option.",
+      "officialDomains": [
+        "steampowered.com",
+        "steamcommunity.com"
+      ],
+      "recoveryPath": "/recover/steam/account-stolen",
+      "scamPatterns": [
+        "Fake item or trade offers that redirect to a login page",
+        "\"Free gift card\" or \"free game\" direct messages",
+        "Fake Steam Support messages asking for your password or Steam Guard code",
+        "Third-party trade sites that ask for your API key"
+      ]
+    },
+    {
+      "slug": "discord",
+      "name": "Discord",
+      "mfa": "supported",
+      "mfaNote": "Discord supports two-factor authentication via an authenticator app, plus passkeys (passwordless login) and hardware security keys (FIDO2).",
+      "officialDomains": [
+        "discord.com"
+      ],
+      "recoveryPath": "/recover/discord/account-stolen",
+      "scamPatterns": [
+        "Links that steal your Discord token or session",
+        "Fake Nitro giveaways and \"free boosts\"",
+        "\"Verify your account\" QR codes that hand over your session",
+        "Fake Discord staff or support direct messages"
+      ]
+    },
+    {
+      "slug": "epic-games",
+      "name": "Epic Games",
+      "mfa": "supported",
+      "mfaNote": "Epic supports two-factor authentication via authenticator app, email, or SMS.",
+      "officialDomains": [
+        "epicgames.com"
+      ],
+      "recoveryPath": "/recover/epic-games/account-stolen",
+      "scamPatterns": [
+        "Free V-Bucks or cosmetic scams",
+        "Fake Epic login pages",
+        "Account-trade and account-selling scams"
+      ]
+    },
+    {
+      "slug": "ea",
+      "name": "EA",
+      "mfa": "supported",
+      "mfaNote": "EA supports login verification via authenticator app or email.",
+      "officialDomains": [
+        "ea.com"
+      ],
+      "recoveryPath": "/recover/ea/account-stolen",
+      "scamPatterns": [
+        "FUT coins or in-game currency scams",
+        "Fake EA Help phishing pages",
+        "Account-selling and account-takeover scams"
+      ]
+    },
+    {
+      "slug": "riot-games",
+      "name": "Riot Games",
+      "mfa": "supported",
+      "mfaNote": "Riot supports two-factor authentication via email and authenticator app.",
+      "officialDomains": [
+        "riotgames.com"
+      ],
+      "recoveryPath": "/recover/riot-games/account-stolen",
+      "scamPatterns": [
+        "Skin and account giveaway scams",
+        "Fake tournament invitations",
+        "\"Free Riot Points\" or free currency scams"
+      ]
+    },
+    {
+      "slug": "playstation",
+      "name": "PlayStation",
+      "mfa": "supported",
+      "mfaNote": "PlayStation supports 2-step verification via authenticator app or text message, plus passkey sign-in.",
+      "officialDomains": [
+        "playstation.com"
+      ],
+      "recoveryPath": "/recover/playstation/account-stolen",
+      "scamPatterns": [
+        "\"Free PSN codes\" scams",
+        "Fake Sony or PlayStation support calls",
+        "Account-deactivation phishing links"
+      ]
+    },
+    {
+      "slug": "xbox",
+      "name": "Xbox",
+      "mfa": "supported",
+      "mfaNote": "Xbox accounts use Microsoft two-step verification (authenticator app or passwordless).",
+      "officialDomains": [
+        "xbox.com",
+        "microsoft.com",
+        "live.com"
+      ],
+      "recoveryPath": "/recover/xbox/account-stolen",
+      "scamPatterns": [
+        "\"Free Game Pass\" or free subscription scams",
+        "Fake Microsoft support calls",
+        "Gift-card refund and account-takeover scams"
+      ]
+    }
+  ],
+  "_note": "Platform security. CC BY 4.0.",
+  "_source": "https://thegridnexus.com/data"
+}

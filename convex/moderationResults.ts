@@ -10,7 +10,7 @@ export const logResult = mutation({
   args: {
     sessionId: v.string(),
     userId: v.optional(v.string()),
-    inputText: v.string(),
+    inputLengthChars: v.float64(),
     verdict: v.union(v.literal("approved"), v.literal("flagged"), v.literal("removed")),
     ruleHits: v.array(
       v.object({
@@ -29,12 +29,18 @@ export const logResult = mutation({
       nsfw: v.float64(),
     }),
     mode: v.union(v.literal("example"), v.literal("custom")),
-    inputLengthChars: v.float64(),
   },
   handler: async (ctx, args) => {
     return await ctx.db.insert("moderationResults", {
-      ...args,
+      sessionId: args.sessionId,
+      userId: args.userId,
+      inputLengthChars: args.inputLengthChars,
+      verdict: args.verdict,
+      ruleHits: args.ruleHits,
+      scores: args.scores,
+      mode: args.mode,
       analyzedAt: Date.now(),
+      expiresAt: Date.now() + 30 * 24 * 60 * 60 * 1000, // 30-day TTL
     });
   },
 });

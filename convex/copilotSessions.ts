@@ -21,6 +21,7 @@ export const createSession = mutation({
       systemPromptVersion,
       createdAt: now,
       updatedAt: now,
+      expiresAt: now + 30 * 24 * 60 * 60 * 1000, // 30-day TTL
     });
   },
 });
@@ -43,8 +44,9 @@ export const addMessage = mutation({
     }
 
     const now = Date.now();
+    const MAX_MESSAGES = 100;
     const messages = [
-      ...session.messages,
+      ...session.messages.slice(-(MAX_MESSAGES - 1)),
       { role, content, timestamp: now, tokensUsed: tokensUsed ?? undefined },
     ];
 
@@ -56,6 +58,7 @@ export const addMessage = mutation({
       updatedAt: now,
       totalTokensUsed,
       lastUserMessage: role === "user" ? content : session.lastUserMessage,
+      expiresAt: now + 30 * 24 * 60 * 60 * 1000, // 30-day TTL
     });
 
     return {

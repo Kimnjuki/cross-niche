@@ -1,0 +1,629 @@
+{
+  "pages": [
+    {
+      "platform": "discord",
+      "platformName": "Discord",
+      "scenario": "account-stolen",
+      "steps": [
+        "Isolate a possibly infected device first",
+        "Change your password from a clean device",
+        "Enable two-factor authentication",
+        "Report the compromised account to Discord",
+        "Review authorized apps and bots"
+      ]
+    },
+    {
+      "platform": "discord",
+      "platformName": "Discord",
+      "scenario": "email-changed",
+      "steps": [
+        "Act immediately on the change notice",
+        "Use a clean device",
+        "Recover through official support",
+        "Restore your email and enable 2FA"
+      ]
+    },
+    {
+      "platform": "discord",
+      "platformName": "Discord",
+      "scenario": "lost-authenticator",
+      "steps": [
+        "Use your saved backup codes",
+        "Recover through official support",
+        "Re-enable two-factor authentication",
+        "Store new backup codes offline"
+      ]
+    },
+    {
+      "platform": "discord",
+      "platformName": "Discord",
+      "scenario": "lost-linked-email",
+      "steps": [
+        "Recover the linked email account",
+        "Recover through official support",
+        "Update the linked email",
+        "Enable two-factor authentication"
+      ]
+    },
+    {
+      "platform": "discord",
+      "platformName": "Discord",
+      "scenario": "scam-recovery-contact",
+      "steps": [
+        "Stop communicating and do not pay",
+        "Change passwords from a clean device",
+        "Report the scam",
+        "Recover through the official process"
+      ]
+    },
+    {
+      "platform": "discord",
+      "platformName": "Discord",
+      "scenario": "suspected-malware",
+      "steps": [
+        "Stop using the possibly infected device",
+        "Scan the device",
+        "Change passwords from a clean device",
+        "Recover the account if it was taken"
+      ]
+    },
+    {
+      "platform": "discord",
+      "platformName": "Discord",
+      "scenario": "suspicious-session",
+      "steps": [
+        "Change your password",
+        "Sign out of other sessions",
+        "Enable two-factor authentication",
+        "Review recent activity"
+      ]
+    },
+    {
+      "platform": "discord",
+      "platformName": "Discord",
+      "scenario": "unauthorized-purchase",
+      "steps": [
+        "Review recent purchases",
+        "Secure the account first",
+        "Report the unauthorized charge",
+        "Review saved payment methods"
+      ]
+    },
+    {
+      "platform": "ea",
+      "platformName": "EA",
+      "scenario": "account-stolen",
+      "steps": [
+        "Use a clean device",
+        "Secure the email on your EA account",
+        "Use EA's official hacked-account process",
+        "Turn on EA Login Verification",
+        "Review linked accounts"
+      ]
+    },
+    {
+      "platform": "ea",
+      "platformName": "EA",
+      "scenario": "email-changed",
+      "steps": [
+        "Act immediately on the change notice",
+        "Use a clean device",
+        "Recover through official support",
+        "Restore your email and enable 2FA"
+      ]
+    },
+    {
+      "platform": "ea",
+      "platformName": "EA",
+      "scenario": "lost-authenticator",
+      "steps": [
+        "Use your saved backup codes",
+        "Recover through official support",
+        "Re-enable two-factor authentication",
+        "Store new backup codes offline"
+      ]
+    },
+    {
+      "platform": "ea",
+      "platformName": "EA",
+      "scenario": "lost-linked-email",
+      "steps": [
+        "Recover the linked email account",
+        "Recover through official support",
+        "Update the linked email",
+        "Enable two-factor authentication"
+      ]
+    },
+    {
+      "platform": "ea",
+      "platformName": "EA",
+      "scenario": "scam-recovery-contact",
+      "steps": [
+        "Stop communicating and do not pay",
+        "Change passwords from a clean device",
+        "Report the scam",
+        "Recover through the official process"
+      ]
+    },
+    {
+      "platform": "ea",
+      "platformName": "EA",
+      "scenario": "suspected-malware",
+      "steps": [
+        "Stop using the possibly infected device",
+        "Scan the device",
+        "Change passwords from a clean device",
+        "Recover the account if it was taken"
+      ]
+    },
+    {
+      "platform": "ea",
+      "platformName": "EA",
+      "scenario": "suspicious-session",
+      "steps": [
+        "Change your password",
+        "Sign out of other sessions",
+        "Enable two-factor authentication",
+        "Review recent activity"
+      ]
+    },
+    {
+      "platform": "ea",
+      "platformName": "EA",
+      "scenario": "unauthorized-purchase",
+      "steps": [
+        "Review recent purchases",
+        "Secure the account first",
+        "Report the unauthorized charge",
+        "Review saved payment methods"
+      ]
+    },
+    {
+      "platform": "epic-games",
+      "platformName": "Epic Games",
+      "scenario": "account-stolen",
+      "steps": [
+        "Use a clean device",
+        "Secure the email on the Epic account",
+        "Submit Epic's official account-recovery request",
+        "Enable two-factor authentication",
+        "Review linked external accounts"
+      ]
+    },
+    {
+      "platform": "epic-games",
+      "platformName": "Epic Games",
+      "scenario": "email-changed",
+      "steps": [
+        "Act immediately on the change notice",
+        "Use a clean device",
+        "Recover through official support",
+        "Restore your email and enable 2FA"
+      ]
+    },
+    {
+      "platform": "epic-games",
+      "platformName": "Epic Games",
+      "scenario": "lost-authenticator",
+      "steps": [
+        "Use your saved backup codes",
+        "Recover through official support",
+        "Re-enable two-factor authentication",
+        "Store new backup codes offline"
+      ]
+    },
+    {
+      "platform": "epic-games",
+      "platformName": "Epic Games",
+      "scenario": "lost-linked-email",
+      "steps": [
+        "Recover the linked email account",
+        "Recover through official support",
+        "Update the linked email",
+        "Enable two-factor authentication"
+      ]
+    },
+    {
+      "platform": "epic-games",
+      "platformName": "Epic Games",
+      "scenario": "scam-recovery-contact",
+      "steps": [
+        "Stop communicating and do not pay",
+        "Change passwords from a clean device",
+        "Report the scam",
+        "Recover through the official process"
+      ]
+    },
+    {
+      "platform": "epic-games",
+      "platformName": "Epic Games",
+      "scenario": "suspected-malware",
+      "steps": [
+        "Stop using the possibly infected device",
+        "Scan the device",
+        "Change passwords from a clean device",
+        "Recover the account if it was taken"
+      ]
+    },
+    {
+      "platform": "epic-games",
+      "platformName": "Epic Games",
+      "scenario": "suspicious-session",
+      "steps": [
+        "Change your password",
+        "Sign out of other sessions",
+        "Enable two-factor authentication",
+        "Review recent activity"
+      ]
+    },
+    {
+      "platform": "epic-games",
+      "platformName": "Epic Games",
+      "scenario": "unauthorized-purchase",
+      "steps": [
+        "Review recent purchases",
+        "Secure the account first",
+        "Report the unauthorized charge",
+        "Review saved payment methods"
+      ]
+    },
+    {
+      "platform": "playstation",
+      "platformName": "PlayStation",
+      "scenario": "account-stolen",
+      "steps": [
+        "Use a clean device",
+        "Secure the email on your account",
+        "Use PlayStation's official account-recovery process",
+        "Turn on 2-step verification",
+        "Sign out of unfamiliar consoles and devices"
+      ]
+    },
+    {
+      "platform": "playstation",
+      "platformName": "PlayStation",
+      "scenario": "email-changed",
+      "steps": [
+        "Act immediately on the change notice",
+        "Use a clean device",
+        "Recover through official support",
+        "Restore your email and enable 2FA"
+      ]
+    },
+    {
+      "platform": "playstation",
+      "platformName": "PlayStation",
+      "scenario": "lost-authenticator",
+      "steps": [
+        "Use your saved backup codes",
+        "Recover through official support",
+        "Re-enable two-factor authentication",
+        "Store new backup codes offline"
+      ]
+    },
+    {
+      "platform": "playstation",
+      "platformName": "PlayStation",
+      "scenario": "lost-linked-email",
+      "steps": [
+        "Recover the linked email account",
+        "Recover through official support",
+        "Update the linked email",
+        "Enable two-factor authentication"
+      ]
+    },
+    {
+      "platform": "playstation",
+      "platformName": "PlayStation",
+      "scenario": "scam-recovery-contact",
+      "steps": [
+        "Stop communicating and do not pay",
+        "Change passwords from a clean device",
+        "Report the scam",
+        "Recover through the official process"
+      ]
+    },
+    {
+      "platform": "playstation",
+      "platformName": "PlayStation",
+      "scenario": "suspected-malware",
+      "steps": [
+        "Stop using the possibly infected device",
+        "Scan the device",
+        "Change passwords from a clean device",
+        "Recover the account if it was taken"
+      ]
+    },
+    {
+      "platform": "playstation",
+      "platformName": "PlayStation",
+      "scenario": "suspicious-session",
+      "steps": [
+        "Change your password",
+        "Sign out of other sessions",
+        "Enable two-factor authentication",
+        "Review recent activity"
+      ]
+    },
+    {
+      "platform": "playstation",
+      "platformName": "PlayStation",
+      "scenario": "unauthorized-purchase",
+      "steps": [
+        "Review recent purchases",
+        "Secure the account first",
+        "Report the unauthorized charge",
+        "Review saved payment methods"
+      ]
+    },
+    {
+      "platform": "riot-games",
+      "platformName": "Riot Games",
+      "scenario": "account-stolen",
+      "steps": [
+        "Use a clean device",
+        "Secure the email on your Riot account",
+        "Start Riot's official account recovery",
+        "Enable two-factor authentication",
+        "Review active sign-in sessions"
+      ]
+    },
+    {
+      "platform": "riot-games",
+      "platformName": "Riot Games",
+      "scenario": "email-changed",
+      "steps": [
+        "Act immediately on the change notice",
+        "Use a clean device",
+        "Recover through official support",
+        "Restore your email and enable 2FA"
+      ]
+    },
+    {
+      "platform": "riot-games",
+      "platformName": "Riot Games",
+      "scenario": "lost-authenticator",
+      "steps": [
+        "Use your saved backup codes",
+        "Recover through official support",
+        "Re-enable two-factor authentication",
+        "Store new backup codes offline"
+      ]
+    },
+    {
+      "platform": "riot-games",
+      "platformName": "Riot Games",
+      "scenario": "lost-linked-email",
+      "steps": [
+        "Recover the linked email account",
+        "Recover through official support",
+        "Update the linked email",
+        "Enable two-factor authentication"
+      ]
+    },
+    {
+      "platform": "riot-games",
+      "platformName": "Riot Games",
+      "scenario": "scam-recovery-contact",
+      "steps": [
+        "Stop communicating and do not pay",
+        "Change passwords from a clean device",
+        "Report the scam",
+        "Recover through the official process"
+      ]
+    },
+    {
+      "platform": "riot-games",
+      "platformName": "Riot Games",
+      "scenario": "suspected-malware",
+      "steps": [
+        "Stop using the possibly infected device",
+        "Scan the device",
+        "Change passwords from a clean device",
+        "Recover the account if it was taken"
+      ]
+    },
+    {
+      "platform": "riot-games",
+      "platformName": "Riot Games",
+      "scenario": "suspicious-session",
+      "steps": [
+        "Change your password",
+        "Sign out of other sessions",
+        "Enable two-factor authentication",
+        "Review recent activity"
+      ]
+    },
+    {
+      "platform": "riot-games",
+      "platformName": "Riot Games",
+      "scenario": "unauthorized-purchase",
+      "steps": [
+        "Review recent purchases",
+        "Secure the account first",
+        "Report the unauthorized charge",
+        "Review saved payment methods"
+      ]
+    },
+    {
+      "platform": "steam",
+      "platformName": "Steam",
+      "scenario": "account-stolen",
+      "steps": [
+        "Use a different trusted device if possible",
+        "Secure the email connected to Steam",
+        "Start Steam's official account-recovery process",
+        "Review authorized devices and Steam Guard",
+        "Review Steam Web API key access"
+      ]
+    },
+    {
+      "platform": "steam",
+      "platformName": "Steam",
+      "scenario": "email-changed",
+      "steps": [
+        "Act immediately on the change notice",
+        "Use a clean device",
+        "Recover through official support",
+        "Restore your email and enable 2FA"
+      ]
+    },
+    {
+      "platform": "steam",
+      "platformName": "Steam",
+      "scenario": "lost-authenticator",
+      "steps": [
+        "Use your saved backup codes",
+        "Recover through official support",
+        "Re-enable two-factor authentication",
+        "Store new backup codes offline"
+      ]
+    },
+    {
+      "platform": "steam",
+      "platformName": "Steam",
+      "scenario": "lost-linked-email",
+      "steps": [
+        "Recover the linked email account",
+        "Recover through official support",
+        "Update the linked email",
+        "Enable two-factor authentication"
+      ]
+    },
+    {
+      "platform": "steam",
+      "platformName": "Steam",
+      "scenario": "scam-recovery-contact",
+      "steps": [
+        "Stop communicating and do not pay",
+        "Change passwords from a clean device",
+        "Report the scam",
+        "Recover through the official process"
+      ]
+    },
+    {
+      "platform": "steam",
+      "platformName": "Steam",
+      "scenario": "suspected-malware",
+      "steps": [
+        "Stop using the possibly infected device",
+        "Scan the device",
+        "Change passwords from a clean device",
+        "Recover the account if it was taken"
+      ]
+    },
+    {
+      "platform": "steam",
+      "platformName": "Steam",
+      "scenario": "suspicious-session",
+      "steps": [
+        "Change your password",
+        "Sign out of other sessions",
+        "Enable two-factor authentication",
+        "Review recent activity"
+      ]
+    },
+    {
+      "platform": "steam",
+      "platformName": "Steam",
+      "scenario": "unauthorized-purchase",
+      "steps": [
+        "Review recent purchases",
+        "Secure the account first",
+        "Report the unauthorized charge",
+        "Review saved payment methods"
+      ]
+    },
+    {
+      "platform": "xbox",
+      "platformName": "Xbox",
+      "scenario": "account-stolen",
+      "steps": [
+        "Use a clean device",
+        "Secure the Microsoft account email",
+        "Use Microsoft's official account-recovery form",
+        "Turn on two-step verification or passwordless sign-in",
+        "Review devices and recent sign-ins"
+      ]
+    },
+    {
+      "platform": "xbox",
+      "platformName": "Xbox",
+      "scenario": "email-changed",
+      "steps": [
+        "Act immediately on the change notice",
+        "Use a clean device",
+        "Recover through official support",
+        "Restore your email and enable 2FA"
+      ]
+    },
+    {
+      "platform": "xbox",
+      "platformName": "Xbox",
+      "scenario": "lost-authenticator",
+      "steps": [
+        "Use your saved backup codes",
+        "Recover through official support",
+        "Re-enable two-factor authentication",
+        "Store new backup codes offline"
+      ]
+    },
+    {
+      "platform": "xbox",
+      "platformName": "Xbox",
+      "scenario": "lost-linked-email",
+      "steps": [
+        "Recover the linked email account",
+        "Recover through official support",
+        "Update the linked email",
+        "Enable two-factor authentication"
+      ]
+    },
+    {
+      "platform": "xbox",
+      "platformName": "Xbox",
+      "scenario": "scam-recovery-contact",
+      "steps": [
+        "Stop communicating and do not pay",
+        "Change passwords from a clean device",
+        "Report the scam",
+        "Recover through the official process"
+      ]
+    },
+    {
+      "platform": "xbox",
+      "platformName": "Xbox",
+      "scenario": "suspected-malware",
+      "steps": [
+        "Stop using the possibly infected device",
+        "Scan the device",
+        "Change passwords from a clean device",
+        "Recover the account if it was taken"
+      ]
+    },
+    {
+      "platform": "xbox",
+      "platformName": "Xbox",
+      "scenario": "suspicious-session",
+      "steps": [
+        "Change your password",
+        "Sign out of other sessions",
+        "Enable two-factor authentication",
+        "Review recent activity"
+      ]
+    },
+    {
+      "platform": "xbox",
+      "platformName": "Xbox",
+      "scenario": "unauthorized-purchase",
+      "steps": [
+        "Review recent purchases",
+        "Secure the account first",
+        "Report the unauthorized charge",
+        "Review saved payment methods"
+      ]
+    }
+  ],
+  "_note": "Recovery playbooks. CC BY 4.0.",
+  "_source": "https://thegridnexus.com/data"
+}

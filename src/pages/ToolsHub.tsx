@@ -11,7 +11,7 @@ const tools = [
     href: '/tools/gaming-security-checkup',
     icon: Gamepad2,
     name: 'Gaming Security Checkup',
-    tagline: 'Self-reported account readiness',
+    tagline: '7-point account audit',
     description:
       'Answer a short questionnaire across email/recovery, account auth, device hygiene, downloads and payments. Get a self-reported readiness band — a measure of your habits, not a device or account audit.',
     badge: 'Free',
@@ -28,17 +28,6 @@ const tools = [
     badge: 'Free',
     badgeVariant: 'outline' as const,
     iconColor: 'text-gaming',
-  },
-  {
-    href: '/tools/ioc-lookup',
-    icon: Search,
-    name: 'IOC Threat-Hunting Lookup',
-    tagline: 'IP · Domain · Hash · URL',
-    description:
-      'Internal research tool. Domains and URLs get a client-side official-domain triage; indicators are checked against the VirusTotal public API (non-commercial only).',
-    badge: 'Internal',
-    badgeVariant: 'default' as const,
-    iconColor: 'text-security',
   },
   {
     href: '/tools/scam-check',
@@ -59,6 +48,76 @@ const tools = [
     description:
       'Rule-based Q&A assistant for common gaming security questions. Answers come from a curated knowledge base, not a live AI model.',
     badge: 'FAQ',
+    badgeVariant: 'default' as const,
+    iconColor: 'text-[#B026FF]',
+  },
+  {
+    href: '/tools/threat-scanner',
+    icon: Search,
+    name: 'Real-Time Threat Scanner',
+    tagline: 'Server/domain threat scan',
+    description:
+      'Check a domain or IP for known CVEs, open ports, misconfigurations, and threat-intel indicators. Results are indicative, not a clearance.',
+    badge: 'Internal',
+    badgeVariant: 'default' as const,
+    iconColor: 'text-security',
+  },
+  {
+    href: '/tools/patch-risk-tracker',
+    icon: AlertTriangle,
+    name: 'Patch Risk Tracker',
+    tagline: 'Patch vulnerability tracking',
+    description:
+      'Track which game patches introduce security risks, with CVE references and suggested rollback or mitigation steps.',
+    badge: 'Guide',
+    badgeVariant: 'outline' as const,
+    iconColor: 'text-security',
+  },
+  {
+    href: '/tools/breach-explainer',
+    icon: LifeBuoy,
+    name: 'Breach Explainer',
+    tagline: 'Understand past breaches',
+    description:
+      'Plain-language explanations of major gaming-related data breaches: what was exposed, what to do, and whether your accounts are likely affected.',
+    badge: 'Guide',
+    badgeVariant: 'outline' as const,
+    iconColor: 'text-gaming',
+  },
+  {
+    href: '/tools/zero-trust-quiz',
+    icon: Shield,
+    name: 'Zero-Trust Readiness Quiz',
+    tagline: 'Test your security knowledge',
+    description:
+      'A short quiz that scores your security habits across accounts, devices, downloads, and social engineering resistance.',
+    badge: 'Quiz',
+    badgeVariant: 'outline' as const,
+    iconColor: 'text-gaming',
+  },
+  {
+    href: '/tools/sentiment-analyzer',
+    icon: BarChart3,
+    name: 'Game Sentiment Analyzer',
+    tagline: 'Review intelligence',
+    description:
+      'Aggregate player sentiment about a game\'s security, privacy, and monetization practices from public reviews and discussions.',
+    badge: 'Research',
+    badgeVariant: 'outline' as const,
+    iconColor: 'text-security',
+  },
+  {
+    href: '/tools/release-predictor',
+    icon: ArrowRight,
+    name: 'Game Release Predictor',
+    tagline: 'Launch risk signals',
+    description:
+      'Signal-based predictions for upcoming game releases: timing, platform, and potential security risks at launch.',
+    badge: 'Research',
+    badgeVariant: 'outline' as const,
+    iconColor: 'text-security',
+  },
+];    badge: 'FAQ',
     badgeVariant: 'default' as const,
     iconColor: 'text-[#B026FF]',
   },

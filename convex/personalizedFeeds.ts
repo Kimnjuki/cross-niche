@@ -85,6 +85,7 @@ export const saveSearchSummary = mutation({
       generatedAt: Date.now(),
       summary: args.summary,
       topContentIds: args.topContentIds,
+      expiresAt: Date.now() + 30 * 24 * 60 * 60 * 1000, // 30-day TTL
     });
   },
 });

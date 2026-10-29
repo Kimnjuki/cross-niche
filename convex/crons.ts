@@ -45,7 +45,71 @@ export const cleanupExpiredContent = internalMutation({
       await ctx.db.delete(threat._id);
     }
 
-    const totalCleaned = expiredArticles.length + expiredAiUpdates.length + expiredThreatIntel.length;
+    // Clean up expired log/session rows (P0-02 privacy TTL)
+    const expiredLogs = await ctx.db
+      .query("toolUsageLogs")
+      .withIndex("by_expiresAt", (q) => q.lt("expiresAt", now))
+      .take(500);
+    for (const row of expiredLogs) {
+      await ctx.db.delete(row._id);
+    }
+
+    const expiredModeration = await ctx.db
+      .query("moderationResults")
+      .withIndex("by_expiresAt", (q) => q.lt("expiresAt", now))
+      .take(500);
+    for (const row of expiredModeration) {
+      await ctx.db.delete(row._id);
+    }
+
+    const expiredSessions = await ctx.db
+      .query("copilotSessions")
+      .withIndex("by_expiresAt", (q) => q.lt("expiresAt", now))
+      .take(500);
+    for (const row of expiredSessions) {
+      await ctx.db.delete(row._id);
+    }
+
+    const expiredInteractions = await ctx.db
+      .query("copilotInteractions")
+      .withIndex("by_expiresAt", (q) => q.lt("expiresAt", now))
+      .take(500);
+    for (const row of expiredInteractions) {
+      await ctx.db.delete(row._id);
+    }
+
+    const expiredSearchLogs = await ctx.db
+      .query("searchLogs")
+      .withIndex("by_expiresAt", (q) => q.lt("expiresAt", now))
+      .take(500);
+    for (const row of expiredSearchLogs) {
+      await ctx.db.delete(row._id);
+    }
+
+    const expiredAiSummaries = await ctx.db
+      .query("aiSearchSummaries")
+      .withIndex("by_expiresAt", (q) => q.lt("expiresAt", now))
+      .take(500);
+    for (const row of expiredAiSummaries) {
+      await ctx.db.delete(row._id);
+    }
+
+    // Expire newsletter verification tokens past TTL
+    const expiredTokens = await ctx.db
+      .query("newsletterSubscribers")
+      .withIndex("by_token_expires_at", (q) => q.lt("tokenExpiresAt", now))
+      .take(500);
+    for (const row of expiredTokens) {
+      await ctx.db.patch(row._id, {
+        verificationToken: undefined,
+        tokenExpiresAt: undefined,
+      });
+    }
+
+    const totalCleaned = expiredArticles.length + expiredAiUpdates.length + expiredThreatIntel.length
+      + expiredLogs.length + expiredModeration.length + expiredSessions.length
+      + expiredInteractions.length + expiredSearchLogs.length + expiredAiSummaries.length
+      + expiredTokens.length;
     console.log(`Auto-cleanup: Removed ${totalCleaned} expired items`);
   },
 });
@@ -76,6 +140,13 @@ crons.daily(
   "daily-seo-monitoring-audit",
   { hourUTC: 3, minuteUTC: 45 },
   internal.seoMonitoring.runDailySEOAuditInternal,
+);
+
+// Daily purge of expired log/session rows (P0-02 privacy TTL).
+crons.daily(
+  "purge-expired",
+  { hourUTC: 4, minuteUTC: 0 },
+  internal.crons.cleanupExpiredContent,
 );
 
 export default crons;
