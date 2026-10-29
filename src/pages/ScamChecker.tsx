@@ -6,7 +6,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { ShieldAlert, ShieldCheck, ShieldQuestion, ExternalLink, RotateCcw } from 'lucide-react';
-import { triageDomain, type TriageResult } from '@/lib/triage/domainTriage';
+import { triageDomain, type TriageResult, OfficialDomain } from '@/lib/triage/domainTriage';
 import { triageMessage, extractUrl, type MessageTriageResult } from '@/lib/triage/messageTriage';
 import platformData from '@/data/platform-security.json';
 import safetyData from '@/data/safety-verdicts.json';
@@ -19,20 +19,17 @@ const CATEGORY_VERDICT: Record<string, string> = Object.fromEntries(
   (safetyData.verdicts as Array<{ slug: string; verdict: string }>).map((v) => [v.slug, v.verdict])
 );
 
-// Category slug → safety-database verdict, so a matched "avoid" category shows a
-// definitive Avoid (not just Caution) when the message maps to a known scam type.
-const CATEGORY_VERDICT: Record<string, string> = Object.fromEntries(
-  ...(platformData.platforms as Array<{ name: string; officialDomains: string[] }>).flatMap((p) =>
-    p.officialDomains.map((d) => ({ host: d, label: p.name }))
-  ),
-  { host: 'nexusmods.com', label: 'Nexus Mods' },
-  { host: 'curseforge.com', label: 'CurseForge' },
-  { host: 'steampowered.com', label: 'Steam' },
-];
-
 // Honest: no verified malicious-domain feed is shipped. Unknown domains return
 // "insufficient evidence" rather than a fabricated "clean" verdict.
 const KNOWN_BAD: Array<{ host: string; label: string }> = [];
+
+const OFFICIAL: OfficialDomain[] = (platformData.platforms as Array<{ name: string; officialDomains: string[] }>).flatMap(
+  (p) => p.officialDomains.map((d) => ({ host: d, label: p.name }))
+).concat([
+  { host: 'nexusmods.com', label: 'Nexus Mods' },
+  { host: 'curseforge.com', label: 'CurseForge' },
+  { host: 'steampowered.com', label: 'Steam' },
+]);
 
 type DisplayVerdict = 'avoid' | 'caution' | 'official' | 'unknown';
 

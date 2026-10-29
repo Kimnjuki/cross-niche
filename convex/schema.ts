@@ -1865,6 +1865,7 @@ export default defineSchema({
     relatedSlugs: v.array(v.string()),
     updatedAt: v.number(),
   }).index("by_slug", ["slug"]).index("by_status_indexable", ["status", "indexable"]),
+  toolUsageLogs: defineTable({
     toolId: v.string(),
     userId: v.optional(v.string()),
     sessionId: v.string(),

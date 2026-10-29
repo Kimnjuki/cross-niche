@@ -117,21 +117,6 @@ const tools = [
     badgeVariant: 'outline' as const,
     iconColor: 'text-security',
   },
-];    badge: 'FAQ',
-    badgeVariant: 'default' as const,
-    iconColor: 'text-[#B026FF]',
-  },
-  {
-    href: '/tools/download-check',
-    icon: Download,
-    name: 'Download Check',
-    tagline: 'Verify a file before you run it',
-    description:
-      'How to verify a downloaded file: official distributor, SHA-256 hash, code signature and update channel. Unknown hashes are never called clean.',
-    badge: 'Guide',
-    badgeVariant: 'outline' as const,
-    iconColor: 'text-gaming',
-  },
 ];
 
 const resources = [
