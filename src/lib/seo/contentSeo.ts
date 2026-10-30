@@ -20,9 +20,9 @@ export const MAX_DESCRIPTION_LENGTH = 160;
 export const MIN_DESCRIPTION_LENGTH = 70;
 
 const NICHE_DESCRIPTOR: Record<string, string> = {
-  security: 'cybersecurity',
-  gaming: 'gaming',
-  tech: 'technology',
+  security: 'cybersecurity - Protect your gaming accounts from hacks, scams, and data breaches. Discover 2FA guides and recovery steps.',
+  gaming: 'Game security grades & risk assessment - Check 2FA support, breach history, and protective actions for Fortnite, Roblox, Minecraft & more.',
+  tech: 'Technology security & privacy - Reviews, tutorials, and guides on protecting your digital life, data, and devices.',
 };
 
 /**
@@ -238,7 +238,7 @@ export function buildSeoDescription(content: SeoContentInput, siteName: string):
 
   if (candidate.length < MIN_DESCRIPTION_LENGTH) {
     const nicheLabel = NICHE_DESCRIPTOR[(content.niche ?? '').toLowerCase()] ?? 'technology';
-    const cta = `Read the full ${nicheLabel} analysis on ${siteName}.`;
+    const cta = `Discover how to protect your ${nicheLabel} with our detailed guides and security recommendations.`;
     candidate = candidate
       ? `${candidate} ${cta}`
       : `${stripHtml(content.title) || siteName} — ${cta}`;

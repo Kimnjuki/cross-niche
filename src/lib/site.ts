@@ -1,0 +1,1 @@
+﻿/**`n * Canonical site URL – used for redirects, metadata, and internal links.`n * Set via VITE_SITE_URL env var; fallback to the known domain.`n */`nexport const SITE_URL = import.meta.env.VITE_SITE_URL || `https://thegridnexus.com`;`nexport const isCanonicalHost = (host) => host === new URL(SITE_URL).host;`nexport const url = (path) => new URL(path, SITE_URL).href;
