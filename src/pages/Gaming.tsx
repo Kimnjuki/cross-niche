@@ -24,7 +24,7 @@ const SAMPLE_SECURITY_RATINGS = [
 ];
 
 export default function Gaming() {
-  const [viewMode, setViewMode] = useState<'grid' | 'list' | 'compact' | 'board'>('grid');
+  const [viewMode, setViewMode] = useState<'grid' | 'list' | 'compact'>('grid');
   const { data: gamingContent, isLoading } = useContentByFeed('play', 30);
 
   const gamingArticles = !isLoading && gamingContent && gamingContent.length > 0
@@ -33,13 +33,23 @@ export default function Gaming() {
       ? mockArticles.filter(a => a.niche === 'gaming')
       : [];
 
+  // Tier Board data: group games by letter grade derived from securityScore (0-100)
+  const gradeFor = (score: number | undefined): 'A' | 'B' | 'C' | 'D' | 'F' => {
+    if (score == null) return 'F';
+    if (score >= 90) return 'A';
+    if (score >= 80) return 'B';
+    if (score >= 70) return 'C';
+    if (score >= 60) return 'D';
+    return 'F';
+  };
+
   // Tier Board data: group games by grade
   const gradeGroups = {
-    A: gamingArticles.filter(g => g.securityGrade === 'A'),
-    B: gamingArticles.filter(g => g.securityGrade === 'B'),
-    C: gamingArticles.filter(g => g.securityGrade === 'C'),
-    D: gamingArticles.filter(g => g.securityGrade === 'D'),
-    F: gamingArticles.filter(g => g.securityGrade === 'F'),
+    A: gamingArticles.filter(g => gradeFor(g.securityScore) === 'A'),
+    B: gamingArticles.filter(g => gradeFor(g.securityScore) === 'B'),
+    C: gamingArticles.filter(g => gradeFor(g.securityScore) === 'C'),
+    D: gamingArticles.filter(g => gradeFor(g.securityScore) === 'D'),
+    F: gamingArticles.filter(g => gradeFor(g.securityScore) === 'F'),
   };
   const meta = getPageMetadata('/gaming');
 
