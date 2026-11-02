@@ -23,8 +23,6 @@ export default function BlogSeries() {
   const { data: contentRows } = usePublishedContent(40);
   const articles = useMemo(() => mapContentToArticles(contentRows ?? []), [contentRows]);
   const liveWire = useQuery(api.articles.getLatest, { limit: 24 }) ?? [];
-// Related articles for internal linking (fix 100% bounce rate)
-const relatedArticles = articles.slice(1, 7);
   const { items: aiUpdates } = useAIPulse();
 
   const hero = articles[0];
@@ -103,7 +101,6 @@ const relatedArticles = articles.slice(1, 7);
                 </ContentCard>
               </motion.div>
             ))}
-
             {liveWire.slice(0, 12).map((row) => (
               <div key={row.url} className="mb-4 break-inside-avoid">
                 <ContentCard className="p-4">
@@ -118,7 +115,6 @@ const relatedArticles = articles.slice(1, 7);
                 </ContentCard>
               </div>
             ))}
-
             {aiUpdates.filter((i) => i.hasBenchmarks).slice(0, 6).map((item) => (
               <div key={item.id} className="mb-4 break-inside-avoid">
                 <ContentCard className="p-4">
@@ -142,22 +138,7 @@ const relatedArticles = articles.slice(1, 7);
           </div>
       </div>
     </Layout>
-  {/* Related Articles Section - Fix for 100% bounce rate */}
-  {relatedArticles.length > 0 && (
-    <div className="mt-8 pt-8 border-t border-zinc-800/30">
-      <h3 className="font-display text-lg font-semibold text-zinc-300 mb-4">Related Articles</h3>
-      <div className="grid grid-cols-1 gap-3 lg:grid-cols-3">
-        {relatedArticles.map((article) => (
-          <ArticleCard
-            key={article.slug ?? article.id}
-            article={article}
-            variant="compact"
-          />
-        ))}
-      </div>
-    </div>
-  )}
-  </>
+  );
 }
 
 function Sparkline({ value }: { value: number }) {
@@ -167,4 +148,3 @@ function Sparkline({ value }: { value: number }) {
     </div>
   );
 }
-
