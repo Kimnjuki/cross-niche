@@ -72,6 +72,19 @@ Would love feedback on which platform to add next (Nintendo? Ubisoft?) and wheth
 
 ## Notes for the submitter
 
-- AlternativeTo: pick the "Security" and "Games" categories; the dofollow link + high DR make this the highest-value single submission.
+- AlternativeTo form (login required, verified email required): https://alternativeto.net/manage-item/
+  Path: user icon → “Suggest new application”. New listings are usually `rel="nofollow"`; still worth it for referral traffic and brand search.
 - Product Hunt: launch on a Tuesday morning ET; the maker comment above is the conversion surface — post it as soon as the page is live.
 - Do NOT claim it "scans" your actual account (it's a self-audit, not a scanner). The copy above says "audit/checklist" precisely to avoid overpromising.
+- Do NOT reuse the old “340% Steam takeovers” statistic in any submission.
+
+## Paste pack — AlternativeTo fields
+
+**Name:** Gaming Security Checkup  
+**Official website:** https://thegridnexus.com/tools/gaming-security-checkup  
+**License:** Free  
+**Platforms:** Web  
+**Tags / categories:** Security, Games, Privacy  
+**Alternatives to suggest against:** Have I Been Pwned, Mozilla Monitor, Bitwarden (position as gaming-account hygiene, not a breach checker)  
+**Short description:** Free 7-point security audit for Steam, PlayStation, Xbox, Riot, Epic & Battle.net — get your Fort-Knox-to-Exposed tier in 3 minutes.  
+**Long description:** Run a platform-specific account security audit across six gaming platforms. Each platform gets a tailored, weighted 7-point checklist covering MFA/2FA, password reuse, privacy settings, API keys, login history and payment exposure — then you get a scored tier (Fort Knox → Exposed) with exact fix steps for every gap. Runs entirely in your browser; nothing is stored or uploaded.
