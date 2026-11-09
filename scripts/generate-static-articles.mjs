@@ -77,7 +77,8 @@ function truncateAtWord(str, maxLength) {
   const lastSpace = cut.lastIndexOf(' ');
   const body = lastSpace > maxLength * 0.6 ? cut.substring(0, lastSpace) : cut;
   // No ellipsis — Google rewrites ellipsis-truncated titles as "incomplete".
-  return body.replace(/[,\s]+$/, '');
+  // Also drop a trailing colon so a cut never ships as "2026: | The Grid Nexus".
+  return body.replace(/[\s,;:.–—-]+$/, '');
 }
 
 /**
@@ -90,14 +91,15 @@ function truncateAtWord(str, maxLength) {
 function buildTitle(article) {
   const base = String(article.metaTitle || article.title || 'Untitled').trim();
   const brand = ` | ${SITE_NAME}`;
+  // Brand only when the query still fits in a SERP title. Reserving the brand
+  // first was cutting "Security for Online Gaming" and "Stolen" out of live
+  // titles ("How to Improve", "How CS2 Skins Get"), which removes both the
+  // words Google matches and the words a searcher clicks.
   if (base.length + brand.length <= TITLE_MAX) return base + brand;
-
-  // Too long with brand: keep the headline, drop the brand, disambiguate.
-  const headline = truncateAtWord(base, TITLE_MAX - brand.length);
-  if (headline.length + brand.length <= TITLE_MAX) return headline + brand;
-
-  // Still too long: drop the brand entirely and truncate the headline.
-  return truncateAtWord(base, TITLE_MAX);
+  // Google already prints the site name. Keep the topic intact up to ~70
+  // characters rather than amputating it to make room for the brand.
+  if (base.length <= 70) return base;
+  return truncateAtWord(base, 65);
 }
 
 /**

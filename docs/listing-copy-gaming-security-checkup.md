@@ -39,7 +39,7 @@ Run a platform-specific account security audit across six gaming platforms. Each
 Get your gaming accounts' security tier in 3 minutes — free, nothing stored.
 
 **Description (the "what & why"):**
-Your Steam, PlayStation, Xbox, Riot, Epic and Battle.net accounts are worth more than you think — rare skins, V-Bucks, WoW items and stored payment methods. Gaming account takeovers are up 340% in 2026.
+Your Steam, PlayStation, Xbox, Riot, Epic and Battle.net accounts are worth more than you think — rare skins, V-Bucks, WoW items and stored payment methods. Credential stuffing and phishing remain the main drivers of gaming account takeovers in 2026.
 
 Gaming Security Checkup gives you a platform-specific, weighted 7-point audit for each account: is mobile 2FA on? Is your password reused? Are your profile and playtime public? Any rogue API keys or unfamiliar logins?
 
@@ -50,7 +50,7 @@ You get a scored tier — Fort Knox, Secured, Hardened or Exposed — and, for e
 **Maker's first comment:**
 Hi PH — I'm the founder of The Grid Nexus, a gaming & security intelligence platform.
 
-The idea came from our reporting on the 340% surge in Steam account takeovers this year. The #1 driver is credential stuffing, and the #1 fix is a few account settings — but the settings are buried in six different platform menus. So we built a 3-minute checkup that tells you exactly which toggles to flip, in the order that matters.
+The idea came from our Steam and Discord recovery work: the #1 driver of gaming account takeovers is credential stuffing, and the #1 fix is a few account settings — but the settings are buried in six different platform menus. So we built a 3-minute checkup that tells you exactly which toggles to flip, in the order that matters.
 
 A few choices worth noting:
 - Scores are weighted. Enabling mobile 2FA (25 pts) moves your score more than hiding your real name (5 pts), because it protects you more.

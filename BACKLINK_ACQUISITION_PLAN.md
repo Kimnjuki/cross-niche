@@ -13,8 +13,10 @@ FPS benchmarks, VPN latency tests, Steam takeover statistics).
    listicle links to them.
 2. **Original data reports** — `/article/gaming-pc-antivirus-best-2026`
    (six products benchmarked), `/article/vpn-gaming-security-latency-test-2026`
-   (eight VPNs, twelve games), `/article/steam-account-takeover-protection-guide-2026`
-   (340% surge stat). Journalists and roundups cite original numbers.
+   (eight VPNs, twelve games), and `/data` (grades, verdicts, recovery playbooks
+   under CC BY 4.0). Do not pitch the Steam “340%” guide until that statistic
+   is sourced or rewritten — it stays noindex. Journalists and roundups cite
+   original numbers and downloadable datasets.
 
 ## Quick wins (self-service, no relationship needed)
 
@@ -36,8 +38,10 @@ FPS benchmarks, VPN latency tests, Steam takeover statistics).
 - **"Best tools" outreach** — email 10 roundup authors (search
   `"best gaming security tools"` + "guest post" / "submit your tool") offering
   the free checker. Roundups are the highest-ROI one-to-many link source.
-- **Digital PR** — pitch the Steam 340% stat and the antivirus FPS benchmark to
-  gaming/security journalists; a single citation from a gaming outlet compounds.
+- **Digital PR** — pitch the antivirus FPS benchmark, VPN latency tests, and
+  the `/data` downloads to gaming/security journalists; a single citation from
+  a gaming outlet compounds. Hold the Steam takeover guide until its stats are
+  verified.
 
 ## Outreach template (for the free tool)
 

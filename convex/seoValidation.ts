@@ -108,15 +108,13 @@ export const validatePublish = mutation({
       }
 
       // Title too long (P1-04).
-      const computed = args.metaTitle?.trim()
-        ? `${args.metaTitle.trim()} | The Grid Nexus`
-        : `${args.title} | The Grid Nexus`;
-      if (computed.length > MAX_TITLE_LENGTH) {
+      const topic = (args.metaTitle?.trim() || args.title).trim();
+      if (topic.length > 70) {
         issues.push({
           field: "metaTitle",
           severity: "warning",
-          message: `Title is ${computed.length} chars; truncated beyond ${MAX_TITLE_LENGTH}.`,
-          suggestion: truncateAtWord(computed, MAX_TITLE_LENGTH),
+          message: `Title topic is ${topic.length} chars. Keep the query under 70. Add the brand only when topic plus " | The Grid Nexus" still fits in ${MAX_TITLE_LENGTH}.`,
+          suggestion: truncateAtWord(topic, 65),
         });
       }
 
@@ -183,9 +181,7 @@ export const runIndexabilityAudit = query({
     };
 
     for (const d of published) {
-      const computedTitle = d.metaTitle?.trim()
-        ? `${d.metaTitle.trim()} | The Grid Nexus`
-        : `${d.title} | The Grid Nexus`;
+      const topic = (d.metaTitle?.trim() || d.title || "").trim();
 
       if (!d.canonicalUrl) {
         issues.missingCanonical.push({ _id: String(d._id), slug: d.slug, title: d.title });
@@ -193,8 +189,8 @@ export const runIndexabilityAudit = query({
       if (!d.seoDescription?.trim()) {
         issues.missingDescription.push({ _id: String(d._id), slug: d.slug, title: d.title });
       }
-      if (computedTitle.length > MAX_TITLE_LENGTH) {
-        issues.longTitles.push({ _id: String(d._id), slug: d.slug, length: computedTitle.length });
+      if (topic.length > 70) {
+        issues.longTitles.push({ _id: String(d._id), slug: d.slug, length: topic.length });
       }
 
       const type = (d.contentType ?? "").toLowerCase();

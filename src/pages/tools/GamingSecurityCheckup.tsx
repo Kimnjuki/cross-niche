@@ -313,7 +313,7 @@ export default function GamingSecurityCheckup() {
           <h1 className="font-display font-bold text-4xl mb-3">Gaming Account Security Checkup</h1>
           <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
             Find out what a hacker could do to your Steam, PSN, Xbox, Riot, Epic or Battle.net account — in 3 minutes.
-            Gaming account takeovers are up <strong className="text-foreground">340%</strong> in 2026.
+            Credential stuffing and phishing remain the main drivers of gaming account takeovers in 2026.
           </p>
           {/* Zero-data trust badge — surfaced upfront, HaveIBeenPwned-style */}
           <div className="mt-4 inline-flex items-center gap-2 rounded-full border border-green-500/30 bg-green-500/10 px-3 py-1.5 text-xs font-medium text-green-600 dark:text-green-400">

@@ -228,8 +228,8 @@ function generateDetail(game) {
 
 function generateIndex(games) {
   const url = `${BASE_URL}/games`;
-  const title = `Game Security Grades — Documented Protections | ${SITE_NAME}`;
-  const description = 'Nexus Security Grades for popular games and platforms: Steam, Discord, Fortnite, Minecraft, Roblox, Valorant and more. Document-based guidance on documented security controls and breach history — not a safety certification.';
+  const title = `Game Security Grades for Steam and Discord | ${SITE_NAME}`;
+  const description = 'Security grades for Steam, Discord, Fortnite, Minecraft, Roblox and Valorant. Documented controls and breach history, not a safety certification.';
 
   const rows = games
     .map((g) => {

@@ -160,28 +160,31 @@ function contentTypeLabel(contentType: string | null | undefined): string {
  * Build a title that is unique and within length limits (P1-01 / P1-04).
  *
  * Priority:
- *   1. Explicit metaTitle when it already fits.
- *   2. focusKeyword prefixed to the headline — the cheapest way to differentiate
- *      two articles that share a headline but target different keywords.
- *   3. Content-type label suffix (e.g. "Guide", "Review").
- *   4. Plain headline.
- *
- * A `disambiguator` (author, date, or topic) can be supplied by callers that
- * already know a duplicate exists.
+ *   1. A candidate that still fits with " | {site}" inside 60 characters.
+ *   2. The same candidate without the brand, when the brand would cut the query.
+ *   3. A word-boundary trim only when the topic itself exceeds 70 characters.
  */
+/** Topic may run past the branded 60-char target. Cutting it to fit the brand was the live CTR bug. */
+const TOPIC_TITLE_MAX = 70;
+
+function finishTitle(topic: string, brandSuffix: string): string {
+  const clean = topic.replace(/[\s,;:.\-–—]+$/g, '').trim();
+  if (!clean) return brandSuffix.trim() || 'Untitled';
+  if (brandSuffix && clean.length + brandSuffix.length <= MAX_TITLE_LENGTH) {
+    return `${clean}${brandSuffix}`;
+  }
+  if (clean.length <= TOPIC_TITLE_MAX) return clean;
+  return truncateAtWord(clean, 65).replace(/\u2026$/g, '');
+}
+
 export function buildSeoTitle(
   content: SeoContentInput,
   siteName: string,
   disambiguator?: string,
 ): string {
   const brandSuffix = siteName ? ` | ${siteName}` : '';
-  const budget = Math.max(1, MAX_TITLE_LENGTH - brandSuffix.length);
 
   const explicitMeta = stripHtml(content.metaTitle);
-  if (explicitMeta && explicitMeta.length <= budget) {
-    return `${explicitMeta}${brandSuffix}`;
-  }
-
   const base = stripHtml(content.title) || explicitMeta || 'Untitled';
   const keyword = stripHtml(content.focusKeyword);
 
@@ -196,21 +199,23 @@ export function buildSeoTitle(
   const tail = disambiguator ? ` — ${stripHtml(disambiguator)}` : '';
 
   const candidates = [
+    ...(disambiguator ? [] : [explicitMeta]),
     `${keywordPrefix}${base}${tail}${typeSuffix}`,
     `${keywordPrefix}${base}${tail}`,
     `${keywordPrefix}${base}`,
     base,
-  ];
+    ...(disambiguator ? [explicitMeta] : []),
+  ].filter((candidate) => candidate.length > 0);
 
   for (const candidate of candidates) {
-    const fitted = truncateAtWord(candidate, budget);
-    // Reject truncations that lost the distinguishing information.
-    if (fitted && fitted.length >= Math.min(25, candidate.length)) {
-      return `${fitted}${brandSuffix}`;
+    if (candidate.length + brandSuffix.length <= MAX_TITLE_LENGTH) {
+      return finishTitle(candidate, brandSuffix);
     }
   }
 
-  return `${truncateAtWord(base, budget)}${brandSuffix}`;
+  // Brand would delete the query. Keep the shortest complete candidate.
+  const intact = candidates.find((candidate) => candidate.length <= TOPIC_TITLE_MAX);
+  return finishTitle(intact || candidates[0] || base, '');
 }
 
 /* ───────────────────────────── descriptions ───────────────────────────── */
@@ -431,12 +436,12 @@ export function validateContentForPublish(
     });
   }
 
-  if (computedTitle.length > MAX_TITLE_LENGTH) {
+  if (computedTitle.length > 70) {
     issues.push({
       field: 'metaTitle',
       severity: 'warning',
-      message: `Title is ${computedTitle.length} characters; search engines truncate beyond ${MAX_TITLE_LENGTH}.`,
-      suggestion: truncateAtWord(computedTitle, MAX_TITLE_LENGTH),
+      message: `Title is ${computedTitle.length} characters. Keep the query under 70 and add " | The Grid Nexus" only when the full string still fits in ${MAX_TITLE_LENGTH}.`,
+      suggestion: truncateAtWord(computedTitle, 65).replace(/\u2026$/g, ''),
     });
   }
 

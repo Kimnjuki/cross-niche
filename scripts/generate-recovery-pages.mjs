@@ -277,9 +277,9 @@ function generatePlatformHub(platform, platformPages) {
 
 function generateIndex(pages) {
   const url = `${BASE_URL}/recover`;
-  const title = `Account Recovery Navigator for Gamers | Steam, Discord, Epic, Xbox & More | ${SITE_NAME}`;
+  const title = `Steam, Discord & Xbox Account Recovery | ${SITE_NAME}`;
   const description =
-    'Take back your account. Symptom-first recovery triage for Steam, Discord, Epic, EA, Riot Games, PlayStation and Xbox — routing you to each platform\'s official process, free. We never recover accounts for you or ask for credentials.';
+    'Take back a hacked Steam, Discord, Xbox, PlayStation, Epic, EA or Riot account. Official free steps only. We never ask for your password.';
 
   const byScenario = {};
   const byPlatform = {};

@@ -109,7 +109,7 @@ export function optimizeTitle(title: string, maxLength: number = 60): string {
   // titles as "incomplete". Prefer dropping a trailing modifier over emitting "...".
   const cut = title.lastIndexOf(' ', maxLength);
   const pos = cut > maxLength * 0.6 ? cut : maxLength;
-  return title.slice(0, pos).replace(/[,\s]+$/, '');
+  return title.slice(0, pos).replace(/[\s,;:.–—-]+$/, '');
 }
 
 /**
@@ -173,7 +173,7 @@ function truncateAtWord(str: string, maxLength: number): string {
   const cut = clean.substring(0, maxLength);
   const lastSpace = cut.lastIndexOf(' ');
   const body = lastSpace > maxLength * 0.6 ? cut.substring(0, lastSpace) : cut;
-  return body.replace(/[,\s]+$/, '');
+  return body.replace(/[\s,;:.–—-]+$/, '');
 }
 
 /**
@@ -181,9 +181,9 @@ function truncateAtWord(str: string, maxLength: number): string {
  * Editorial `metaTitle` is authoritative and already CTR-optimized — use it
  * verbatim (do NOT double-apply modifiers). Only when metaTitle is absent
  * (mockData fallback) derive a CTR title from the raw headline.
- * The metaTitle branch mirrors `buildTitle` in scripts/generate-static-articles.mjs
- * byte-for-byte (brand-preserving truncation, no ellipsis) so the prerendered
- * <title> and the hydrated <title> are the same string.
+ * The metaTitle branch mirrors `buildTitle` in scripts/generate-static-articles.mjs:
+ * add " | The Grid Nexus" only when the full string is still within 60
+ * characters; otherwise keep the query and omit the brand.
  */
 export function generateArticleTitle(article: {
   title: string;
@@ -194,16 +194,16 @@ export function generateArticleTitle(article: {
   contentType?: string;
 }): string {
   // Single source of truth: editorial metaTitle when present, else the raw
-  // headline, always + brand. Byte-matches `buildTitle` in
-  // scripts/generate-static-articles.mjs (brand-preserving truncation, no
-  // ellipsis) so the prerendered <title> and the hydrated <title> are identical.
-  // CTR optimisation is applied editorially via metaTitle, not at runtime.
+  // headline. Byte-matches `buildTitle` in scripts/generate-static-articles.mjs
+  // so the prerendered <title> and the hydrated <title> are identical.
   const base = String(article.metaTitle || article.title || 'Untitled').trim();
   const suffix = ' | The Grid Nexus';
+  // Byte-matches buildTitle in scripts/generate-static-articles.mjs.
+  // Drop the brand before cutting the query. The old 44-character budget
+  // produced live titles like "The Ultimate Guide to How to Improve".
   if (base.length + suffix.length <= 60) return base + suffix;
-  const headline = truncateAtWord(base, 60 - suffix.length);
-  if (headline.length + suffix.length <= 60) return headline + suffix;
-  return truncateAtWord(base, 60);
+  if (base.length <= 70) return base;
+  return truncateAtWord(base, 65);
 }
 
 /**

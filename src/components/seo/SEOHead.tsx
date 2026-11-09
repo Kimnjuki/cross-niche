@@ -130,7 +130,10 @@ export function SEOHead({
       ? generateArticleMetaDescription(article)
       : providedDescription || '';
 
-  const optimizedTitle       = optimizeTitle(rawTitle, 60);
+  // 70, not 60: a 60-char ceiling was deleting the query from article titles
+  // after generateArticleTitle had already kept it. Route titles that already
+  // fit in 60 are unchanged.
+  const optimizedTitle       = optimizeTitle(rawTitle, type === 'article' ? 70 : 60);
   const optimizedDescription = optimizeMetaDescription(rawDescription, 160);
 
   // ── Canonical URL (strip query + fragment + trailing slash, always HTTPS) ──
