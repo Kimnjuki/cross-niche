@@ -352,7 +352,7 @@ export default function AIThreatIntelligencePillar() {
         <section className="border-t border-border pt-12">
           <h2 className="font-display font-bold text-2xl mb-4">Explore Related AI & Tech Topics</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <Link to="/article/ai-security-threats-2026" className="group p-4 border border-border rounded-lg hover:border-tech/50 transition-all">
+            <Link to="/pillar/ai-threat-intelligence" className="group p-4 border border-border rounded-lg hover:border-tech/50 transition-all">
               <h3 className="font-semibold mb-1 group-hover:text-tech">AI Security Threats 2026</h3>
               <p className="text-sm text-muted-foreground">Deepfake voice clones, weaponized AI, and quantum risks.</p>
             </Link>

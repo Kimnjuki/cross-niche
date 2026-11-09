@@ -264,7 +264,7 @@ export default function GamingSecurityPillar() {
             <li><strong>Use VPN for Gaming:</strong> Encrypt traffic and protect against DDoS and ISP throttling.</li>
           </ul>
 
-          <Link to="/article/router-security-gamers-2026" className="text-primary hover:underline flex items-center gap-1">
+          <Link to="/article/gaming-pc-security-hardening-guide" className="text-primary hover:underline flex items-center gap-1">
             Complete Router Security Guide for Gamers <ArrowRight className="h-3 w-3" />
           </Link>
         </section>

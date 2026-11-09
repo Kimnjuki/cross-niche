@@ -18,6 +18,7 @@ import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { loadPublishedContent, canonicalUrlFor } from './lib/content-source.mjs';
+import { isOnNicheArticle } from './lib/off-niche-articles.mjs';
 import { normalizeArticleHtml, repairMojibake } from './lib/normalize-article-html.mjs';
 import { markdownToHtml } from './lib/markdown-to-html.mjs';
 import { navHtml, footerHtml, chromeCss } from './lib/static-chrome.mjs';
@@ -494,11 +495,16 @@ function generateArticleHtml(article, bundleScript, allArticles = [], relatedLis
   const metaDescription = buildDescription(article);
   const extract = buildExtract(article);
 
-  // Explicit, data-driven indexability (P0-02). Only an explicit content.noindex
-  // flag on a published document suppresses indexing — never template guesswork.
-  const robotsDirective = article.noindex === true
-    ? 'noindex, follow'
-    : 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1';
+  // Indexability:
+  //   1. Explicit content.noindex (fabricated / trust demotions in Convex)
+  //   2. Off-niche / DEMOTE_SLUGS — already dropped from the sitemap, but the
+  //      previous build still emitted index,follow, so Googlebot spent crawl
+  //      budget on AI-news and enterprise breach URLs instead of /recover and
+  //      /games (confirmed in the 9 Nov 2026 "Latest URLs crawled" sample).
+  const robotsDirective =
+    article.noindex === true || !isOnNicheArticle(article)
+      ? 'noindex, follow'
+      : 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1';
 
   const modifiedStr = article.lastModified
     ? new Date(article.lastModified).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })

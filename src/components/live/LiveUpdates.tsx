@@ -52,7 +52,7 @@ const mockUpdates: LiveUpdate[] = [
     priority: 'high',
     category: 'AI',
     imageUrl: '/api/placeholder/400/200',
-    link: '/article/ai-security-threats-2026',
+    link: '/pillar/ai-threat-intelligence',
     metrics: { views: 5432, shares: 234, comments: 67 }
   },
   {

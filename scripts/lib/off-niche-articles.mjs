@@ -7,8 +7,9 @@
  * the `security` and `gaming` types.
  *
  * Reversible: remove a slug from a set to re-index it. The app still renders
- * demoted articles — they are only excluded from the sitemap (and noindexed by
- * the route shell), so no existing URL 404s.
+ * demoted articles. They are excluded from the sitemap AND emitted with
+ * `noindex, follow` by `generate-static-articles.mjs`, so no existing URL 404s
+ * and Google stops spending crawl budget on them.
  */
 const DEMOTED_CONTENT_TYPES = new Set(['technology', 'news', 'feature']);
 

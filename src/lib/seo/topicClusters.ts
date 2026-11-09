@@ -29,9 +29,9 @@ export const TOPIC_CLUSTERS: Record<string, TopicCluster[]> = {
       },
       spokes: [
         { title: 'How AI Works', url: '/article/ai-enabled-security-awareness-training-adaptive-learning-2026', keywords: ['AI basics', 'how AI works'] },
-        { title: 'Machine Learning Explained', url: '/article/ai-security-threats-2026', keywords: ['machine learning', 'ML'] },
+        { title: 'Machine Learning Explained', url: '/pillar/ai-threat-intelligence', keywords: ['machine learning', 'ML'] },
         { title: 'Deep Learning Guide', url: '/article/ai-enabled-security-awareness-training-adaptive-learning-2026', keywords: ['deep learning', 'neural networks'] },
-        { title: 'AI Security Concerns', url: '/article/ai-security-threats-2026', keywords: ['AI security', 'AI risks'] },
+        { title: 'AI Security Concerns', url: '/pillar/ai-threat-intelligence', keywords: ['AI security', 'AI risks'] },
       ]
     },
     {
@@ -72,7 +72,7 @@ export const TOPIC_CLUSTERS: Record<string, TopicCluster[]> = {
         { title: 'Cybersecurity Basics', url: '/article/secure-devops-devsecops-intelligence-cicd-2026', keywords: ['cybersecurity basics'] },
         { title: 'Network Security Guide', url: '/article/complete-guide-to-scanning-gaming-servers-for-vulnerabilities', keywords: ['network security'] },
         { title: 'Endpoint Protection', url: '/article/gaming-pc-security-hardening-guide', keywords: ['endpoint security'] },
-        { title: 'Threat Intelligence', url: '/article/ai-security-threats-2026', keywords: ['threat intelligence'] },
+        { title: 'Threat Intelligence', url: '/pillar/ai-threat-intelligence', keywords: ['threat intelligence'] },
       ]
     },
     {

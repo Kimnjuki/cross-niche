@@ -384,7 +384,7 @@ export default function AnnualResearchReport() {
         <section className="border-t border-border pt-12">
           <h2 className="font-display font-bold text-2xl mb-4">Explore Related Research</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <Link to="/article/ai-security-threats-2026" className="group p-4 border border-border rounded-lg hover:border-security/50 transition-all">
+            <Link to="/pillar/ai-threat-intelligence" className="group p-4 border border-border rounded-lg hover:border-security/50 transition-all">
               <h3 className="font-semibold mb-1 group-hover:text-security">AI Security Threats 2026</h3>
               <p className="text-sm text-muted-foreground">Deep dive into weaponized AI, deepfakes, and quantum risks.</p>
             </Link>

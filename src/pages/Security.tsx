@@ -129,7 +129,7 @@ export default function Security() {
         <section className="mt-12">
           <h2 className="font-display font-bold text-2xl mb-4">More Security Coverage</h2>
           <div className="flex flex-wrap gap-3">
-            <Link to="/article/ai-security-threats-2026" className="text-sm hover:underline">AI Security Threats 2026</Link>
+            <Link to="/pillar/ai-threat-intelligence" className="text-sm hover:underline">AI Threat Intelligence</Link>
             <Link to="/article/fake-game-cheats-malware-account-stealer" className="text-sm hover:underline">Fake Cheats and Malware Guide</Link>
             <Link to="/article/game-key-reseller-scams-g2a-cdkeys" className="text-sm hover:underline">Game Key Reseller Scams</Link>
             <Link to="/article/gaming-pc-security-hardening-guide" className="text-sm hover:underline">Gaming PC Security Hardening Guide</Link>
