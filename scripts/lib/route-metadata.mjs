@@ -400,6 +400,7 @@ export const ROUTE_METADATA = [
       'Interactive utilities that run in your browser: score your account hygiene, audit a Steam profile, triage a suspicious link, or look up an indicator. No sign-up and no data retention.',
     links: [
       { href: '/tools/gaming-security-checkup', label: 'Gaming security checkup' },
+      { href: '/tools/scam-check', label: 'Scam Checker' },
       { href: '/tools/steam-scanner', label: 'Steam security scanner' },
       { href: '/tools/ioc-lookup', label: 'IOC lookup' },
       { href: '/tools/gaming-copilot', label: 'Gaming copilot' },
@@ -426,6 +427,10 @@ const TOOL_ROUTES = [
   ['/tools/steam-scanner', 'Steam Security Scanner', 'Steam security scanner', 'audit a Steam profile for hijack risk', 'weekly', 0.8],
   ['/tools/ioc-lookup', 'IOC Threat-Hunting Lookup', 'IOC threat-hunting lookup', 'enrich a hash, domain or IP indicator', 'daily', 0.8],
   ['/tools/gaming-security-checkup', 'Gaming Security Checkup', 'Gaming security checkup', 'score gaming accounts against known attacks', 'weekly', 0.8],
+  // Interactive React tool — still needs a unique static shell so crawlers do
+  // not receive the homepage HTML (soft-404). Confirmed 9 Nov 2026 Screaming
+  // Frog crawl: /tools/scam-check was an exact duplicate of /.
+  ['/tools/scam-check', 'Scam Checker', 'Scam checker', 'triage a game link, Discord invite or message', 'daily', 0.9],
   ['/tools/breach-explainer', 'Breach Explainer', 'Breach explainer', 'see what a data breach actually exposes', 'weekly', 0.8],
   ['/tools/ai-tool-finder', 'AI Security Tool Finder', 'AI security tool finder', 'match a security problem to the right AI tool', 'weekly', 0.7],
   ['/tools/patch-risk-tracker', 'Game Patch Risk Tracker', 'Game patch risk tracker', 'decide whether a game patch is safe to defer', 'daily', 0.8],
