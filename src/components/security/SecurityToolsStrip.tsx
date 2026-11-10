@@ -4,10 +4,10 @@ import { cn } from '@/lib/utils';
 
 const tools = [
   {
-    href: '/tools/nexusguard',
+    href: '/tools/scam-check',
     icon: Shield,
-    label: 'NexusGuard',
-    sub: 'Threat assessment',
+    label: 'Scam Check',
+    sub: 'Link and message triage',
     color: 'text-security hover:bg-security/10 border-security/20',
   },
   {

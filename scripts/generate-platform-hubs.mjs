@@ -12,6 +12,10 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { staticShell } from './lib/static-chrome.mjs';
+import {
+  gradeSourceSlugForPlatform,
+  reviewedDate,
+} from './lib/game-platform-split.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const projectRoot = path.resolve(__dirname, '..');
@@ -20,6 +24,10 @@ const SITE_NAME = 'The Grid Nexus';
 
 const DATA = JSON.parse(
   fs.readFileSync(path.join(projectRoot, 'src', 'data', 'platform-security.json'), 'utf8')
+);
+const GRADE_BY_SLUG = Object.fromEntries(
+  (JSON.parse(fs.readFileSync(path.join(projectRoot, 'src', 'data', 'game-library.json'), 'utf8')).games || [])
+    .map((g) => [g.slug, g]),
 );
 
 function esc(s) {
@@ -51,6 +59,14 @@ function platformFaqHtml(platform) {
       </details>`;
 }
 
+function gradeCallout(platform) {
+  const sourceSlug = gradeSourceSlugForPlatform(platform.slug);
+  const game = sourceSlug ? GRADE_BY_SLUG[sourceSlug] : null;
+  if (!game?.securityGrade) return '';
+  const reviewed = reviewedDate(game.updatedAt) || 'undated';
+  return `<p style="color:#cbd5e1;max-width:68ch;margin:0.75rem 0 0">Documented account-protection grade: <strong style="color:#e2e8f0">${esc(game.securityGrade)}</strong>. A grade does not mean we scanned an account, certified the client download, or guaranteed the platform cannot be phished. Last verified ${esc(reviewed)}. See the <a href="/methodology" style="color:#60a5fa">methodology</a> and <a href="/corrections" style="color:#60a5fa">corrections</a>.</p>`;
+}
+
 function generateHub(platform) {
   const url = `${BASE_URL}/platforms/${platform.slug}/security`;
   const title = `${platform.name} account security — official domains, 2FA & recovery | ${SITE_NAME}`;
@@ -73,6 +89,7 @@ function generateHub(platform) {
       <p style="color:#60a5fa;font-size:0.9rem;margin:0 0 0.5rem">Platform security hub</p>
       <h1 style="font-size:2rem;margin:0 0 0.75rem">${esc(platform.name)} account security</h1>
       <p style="color:#e2e8f0;max-width:65ch;margin:0 0 0.5rem">${esc(platform.name)} accounts are targeted because they hold games, payment methods, and — for many players — years of progress. This page lists the official domains, the two-factor options, the recovery path, and the scams that most often cost ${esc(platform.name)} players their accounts.</p>
+      ${gradeCallout(platform)}
 
       <h2 style="font-size:1.2rem;margin:1.5rem 0 0.5rem">Quick security checklist</h2>
       <ol style="margin:0.5rem 0 0;padding-left:1.4rem;color:#cbd5e1">

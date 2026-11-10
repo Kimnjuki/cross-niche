@@ -11,6 +11,7 @@
  * Run after export-gamer-threats.mjs + export-game-library.mjs.
  */
 import fs from 'node:fs';
+import { canonicalGradePath } from './lib/game-platform-split.mjs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { isGamerRelevant } from './lib/gamer-threat-filter.mjs';
@@ -105,7 +106,7 @@ const html = `<!doctype html>
           <th style="padding:0.5rem">Game / platform</th><th style="padding:0.5rem;text-align:center">Grade</th><th style="padding:0.5rem">Platforms</th>
         </tr></thead>
         <tbody>
-          ${games.map((g) => `<tr><td style="padding:0.5rem;border-bottom:1px solid rgba(148,163,184,0.15)"><a href="/games/${esc(g.slug)}" style="color:#60a5fa;text-decoration:none">${esc(g.name)}</a></td><td style="padding:0.5rem;border-bottom:1px solid rgba(148,163,184,0.15);text-align:center;font-weight:700">${esc(g.securityGrade)}</td><td style="padding:0.5rem;border-bottom:1px solid rgba(148,163,184,0.15);color:#94a3b8">${esc((g.platforms || []).join(', '))}</td></tr>`).join('')}
+          ${games.map((g) => `<tr><td style="padding:0.5rem;border-bottom:1px solid rgba(148,163,184,0.15)"><a href="${esc(canonicalGradePath(g.slug))}" style="color:#60a5fa;text-decoration:none">${esc(g.name)}</a></td><td style="padding:0.5rem;border-bottom:1px solid rgba(148,163,184,0.15);text-align:center;font-weight:700">${esc(g.securityGrade)}</td><td style="padding:0.5rem;border-bottom:1px solid rgba(148,163,184,0.15);color:#94a3b8">${esc((g.platforms || []).join(', '))}</td></tr>`).join('')}
         </tbody>
       </table>
 

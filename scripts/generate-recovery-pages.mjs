@@ -14,6 +14,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { staticShell } from './lib/static-chrome.mjs';
+import { trustBoundariesHtml } from './lib/trust-boundaries.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const projectRoot = path.resolve(__dirname, '..');
@@ -191,6 +192,7 @@ function generatePage(page) {
         <strong style="color:#EAF1FF">Verified official links</strong>
         <div style="margin-top:0.5rem">${linksHtml}</div>
       </div>
+      ${trustBoundariesHtml({ compact: true })}
       <p style="margin-top:1.5rem;color:#6F82A6;font-size:0.85rem">Reviewed ${new Date(playbook.reviewedAt ?? Date.now()).toISOString().slice(0, 10)} · Playbook v${esc(playbook.version)}</p>
     </article>`;
 
@@ -261,6 +263,7 @@ function generatePlatformHub(platform, platformPages) {
         <p style="color:#9FB0D0;margin:0.5rem 0 0">Recovery is always free through ${esc(platform.name)}'s official support. Anyone asking for a fee — or for your password or codes — is a scammer.</p>
       </div>
 
+      ${trustBoundariesHtml({ compact: true })}
       <p style="margin-top:1.5rem"><a href="/recover">← Back to all platforms</a></p>
     </article>`;
 
@@ -376,6 +379,7 @@ function generateIndex(pages) {
 
   <h2 style="font-size:1.4rem;margin:2rem 0 0.5rem">How we verify guides</h2>
   <p style="color:#9FB0D0;max-width:65ch;margin:0">Every guide links only to official platform domains, carries a last-verified date, and never collects credentials. <a href="/methodology">Read our methodology</a>. Not sure a link or message is real? <a href="/tools/scam-check">Run the Scam Checker</a>.</p>
+  ${trustBoundariesHtml({ compact: true })}
 
   <h2 style="font-size:1.4rem;margin:2rem 0 0.5rem">Frequently asked</h2>
   ${faqHtml}

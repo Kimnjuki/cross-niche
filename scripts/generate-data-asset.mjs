@@ -18,6 +18,11 @@ import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { staticShell, BASE_URL } from './lib/static-chrome.mjs';
+import {
+  canonicalGradePath,
+  entityTypeForGrade,
+  reviewedDate,
+} from './lib/game-platform-split.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const projectRoot = path.resolve(__dirname, '..');
@@ -55,13 +60,15 @@ function buildGamesCsv(games) {
     games.map((g) => ({
       slug: g.slug,
       name: g.name,
+      entityType: entityTypeForGrade(g),
+      canonicalPath: canonicalGradePath(g.slug),
       grade: g.securityGrade,
       platforms: g.platforms,
       genres: g.genres,
       publisher: g.publisher,
       releaseYear: g.releaseYear,
       securityNotes: g.securityNotes,
-      updatedAt: g.updatedAt,
+      updatedAt: reviewedDate(g.updatedAt),
     })),
   );
 }
@@ -106,7 +113,7 @@ function generateDataPage(stats) {
     ['platforms.csv', 'Same as platforms.json, CSV for spreadsheets.'],
     ['safety-verdicts.json', '"Is it safe?" verdicts (16 entries) — verdict, risk level, summary.'],
     ['safety-verdicts.csv', 'Same as safety-verdicts.json, CSV for spreadsheets.'],
-    ['recovery-playbooks.json', 'Account-recovery playbooks (56 guides) — platform × scenario steps.'],
+    ['recovery-playbooks.json', 'Account-recovery playbooks (56 guides) — steps, official links, reviewedAt, schemaVersion 1.'],
   ];
 
   const rows = fileList
@@ -172,6 +179,8 @@ function main() {
   const cleanGames = games.map((g) => ({
     slug: g.slug,
     name: g.name,
+    entityType: entityTypeForGrade(g),
+    canonicalPath: canonicalGradePath(g.slug),
     grade: g.securityGrade,
     platforms: g.platforms ?? [],
     genres: g.genres ?? [],
@@ -206,8 +215,21 @@ function main() {
     platform: p.platform?.slug,
     platformName: p.platform?.name,
     scenario: p.playbook?.scenario,
-    title: p.playbook?.title,
-    steps: (p.playbook?.steps?.steps ?? []).map((s) => s.title),
+    title: p.playbook?.title ?? null,
+    reviewedAt: iso(p.playbook?.reviewedAt),
+    schemaVersion: p.playbook?.steps?.schemaVersion ?? null,
+    disclaimer: p.playbook?.steps?.disclaimer ?? null,
+    officialLinks: (p.officialLinks ?? []).map((l) => ({
+      purpose: l.purpose,
+      url: l.url,
+      verifiedAt: iso(l.verifiedAt),
+    })),
+    steps: (p.playbook?.steps?.steps ?? []).map((s) => ({
+      key: s.key,
+      title: s.title,
+      body: s.body,
+      urgency: s.urgency ?? null,
+    })),
   }));
 
   for (const dir of ['public', 'dist']) {
@@ -220,7 +242,7 @@ function main() {
     writeData(outDir, 'platforms.csv', buildPlatformsCsv(platforms));
     writeData(outDir, 'safety-verdicts.json', JSON.stringify({ verdicts: cleanVerdicts, _note: 'Safety verdicts. CC BY 4.0.', _source: `${BASE_URL}/data` }, null, 2));
     writeData(outDir, 'safety-verdicts.csv', buildSafetyCsv(verdicts));
-    writeData(outDir, 'recovery-playbooks.json', JSON.stringify({ pages: cleanRecovery, _note: 'Recovery playbooks. CC BY 4.0.', _source: `${BASE_URL}/data` }, null, 2));
+    writeData(outDir, 'recovery-playbooks.json', JSON.stringify({ schemaVersion: 1, pages: cleanRecovery, _note: 'Recovery playbooks with official links, reviewedAt, and step text. CC BY 4.0.', _source: `${BASE_URL}/data` }, null, 2));
 
     // Documentation page (only in dist/, where nginx serves static HTML).
     if (dir === 'dist') {

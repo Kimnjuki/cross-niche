@@ -3,6 +3,8 @@
     {
       "slug": "playstation-network",
       "name": "PlayStation Network",
+      "entityType": "platform",
+      "canonicalPath": "/platforms/playstation/security",
       "grade": "A",
       "platforms": [
         "PlayStation"
@@ -19,6 +21,8 @@
     {
       "slug": "nintendo-switch-online",
       "name": "Nintendo Switch Online",
+      "entityType": "account-service",
+      "canonicalPath": "/games/nintendo-switch-online",
       "grade": "B",
       "platforms": [
         "Switch"
@@ -35,6 +39,8 @@
     {
       "slug": "apex-legends",
       "name": "Apex Legends",
+      "entityType": "game",
+      "canonicalPath": "/games/apex-legends",
       "grade": "B",
       "platforms": [
         "PC",
@@ -55,6 +61,8 @@
     {
       "slug": "gta-online",
       "name": "GTA Online",
+      "entityType": "game",
+      "canonicalPath": "/games/gta-online",
       "grade": "C",
       "platforms": [
         "PC",
@@ -74,6 +82,8 @@
     {
       "slug": "call-of-duty",
       "name": "Call of Duty",
+      "entityType": "game",
+      "canonicalPath": "/games/call-of-duty",
       "grade": "C",
       "platforms": [
         "PC",
@@ -92,6 +102,8 @@
     {
       "slug": "genshin-impact",
       "name": "Genshin Impact",
+      "entityType": "game",
+      "canonicalPath": "/games/genshin-impact",
       "grade": "B",
       "platforms": [
         "PC",
@@ -111,6 +123,8 @@
     {
       "slug": "counter-strike-2",
       "name": "Counter-Strike 2",
+      "entityType": "game",
+      "canonicalPath": "/games/counter-strike-2",
       "grade": "A",
       "platforms": [
         "PC"
@@ -127,6 +141,8 @@
     {
       "slug": "league-of-legends",
       "name": "League of Legends",
+      "entityType": "game",
+      "canonicalPath": "/games/league-of-legends",
       "grade": "A",
       "platforms": [
         "PC"
@@ -143,6 +159,8 @@
     {
       "slug": "valorant",
       "name": "Valorant",
+      "entityType": "game",
+      "canonicalPath": "/games/valorant",
       "grade": "A",
       "platforms": [
         "PC"
@@ -159,6 +177,8 @@
     {
       "slug": "roblox",
       "name": "Roblox",
+      "entityType": "game",
+      "canonicalPath": "/games/roblox",
       "grade": "B",
       "platforms": [
         "PC",
@@ -178,6 +198,8 @@
     {
       "slug": "minecraft",
       "name": "Minecraft",
+      "entityType": "game",
+      "canonicalPath": "/games/minecraft",
       "grade": "B",
       "platforms": [
         "PC",
@@ -199,6 +221,8 @@
     {
       "slug": "fortnite",
       "name": "Fortnite",
+      "entityType": "game",
+      "canonicalPath": "/games/fortnite",
       "grade": "A",
       "platforms": [
         "PC",
@@ -220,6 +244,8 @@
     {
       "slug": "discord",
       "name": "Discord",
+      "entityType": "platform",
+      "canonicalPath": "/platforms/discord/security",
       "grade": "B",
       "platforms": [
         "PC",
@@ -237,6 +263,8 @@
     {
       "slug": "steam",
       "name": "Steam",
+      "entityType": "platform",
+      "canonicalPath": "/platforms/steam/security",
       "grade": "A",
       "platforms": [
         "PC"

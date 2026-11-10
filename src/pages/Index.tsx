@@ -367,7 +367,7 @@ export default function Index() {
             <h2 className="text-sm font-bold text-white tracking-wide section-heading-pink">
               Live Tools &amp; Dashboards
             </h2>
-            <Link to="/tools/security-scanner" className="flex items-center gap-1 text-xs font-mono text-[#FF007A]/70 hover:text-[#FF007A]">
+            <Link to="/tools" className="flex items-center gap-1 text-xs font-mono text-[#FF007A]/70 hover:text-[#FF007A]">
               All tools <ChevronRight className="h-3 w-3" />
             </Link>
           </div>

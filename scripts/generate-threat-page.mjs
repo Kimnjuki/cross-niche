@@ -133,6 +133,10 @@ const body = `
   <h2 style="font-size:1.2rem;margin:2rem 0 0.6rem">How we score</h2>
   <p style="color:#9AA7C7;max-width:70ch;margin:0">The <strong style="color:#E8EEFF">Gamer Impact Score</strong> (0–100) combines six transparent factors: exploitation confidence (severity of an actively-exploited flaw), attack reach (remote vs local), user interaction, platform gamer share, gaming-surface relevance (GPU, launcher, browser, console), and recency. Tiers: <strong style="color:#f87171">Act now</strong> 80–100 · <strong style="color:#fb923c">Patch soon</strong> 60–79 · <strong style="color:#facc15">Monitor</strong> 35–59 · <strong style="color:#94a3b8">Low relevance</strong> 0–34.</p>
   <p style="color:#6B7799;font-size:0.85rem;margin-top:0.6rem">Scores are a heuristic based on public CISA KEV data — not a substitute for the vendor advisory. Verify before acting. Full <a href="/methodology">methodology</a>.</p>
+  <aside style="margin:1rem 0;padding:0.85rem 1rem;border:1px solid rgba(148,163,184,0.35);border-radius:0.75rem;background:rgba(15,23,42,0.55)">
+    <strong style="color:#EAF1FF">What The Grid Nexus does not do</strong>
+    <p style="color:#9FB0D0;margin:0.4rem 0 0;font-size:0.9rem">No account scanning, credential collection, guaranteed recovery, malware-clean claims, or anti-cheat bypass assistance. See <a href="/methodology">methodology</a>.</p>
+  </aside>
 </article>`;
 
 const jsonLd = {

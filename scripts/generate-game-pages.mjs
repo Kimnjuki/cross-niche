@@ -16,6 +16,12 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { staticShell } from './lib/static-chrome.mjs';
+import { trustBoundariesHtml } from './lib/trust-boundaries.mjs';
+import {
+  canonicalGradePath,
+  isRedirectedGameSlug,
+  reviewedDate,
+} from './lib/game-platform-split.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const projectRoot = path.resolve(__dirname, '..');
@@ -209,7 +215,8 @@ function generateDetail(game) {
         <span style="color:#94a3b8">${esc(meta.verdict)}</span>
       </div>
       ${gameIntroHtml(game)}
-      <p style="color:#94a3b8;font-size:0.85rem;margin-bottom:1rem">Not a safety certification or a live scan. Grade reflects documented security controls and breach history — see the <a href="/methodology" style="color:#60a5fa">methodology</a>.</p>
+      <p style="color:#94a3b8;font-size:0.85rem;margin-bottom:1rem">A grade does not mean we scanned an account, certified a download, or guaranteed this title cannot be phished. Last verified ${esc(reviewedDate(game.updatedAt) || 'undated')}. See the <a href="/methodology" style="color:#60a5fa">methodology</a> and <a href="/corrections" style="color:#60a5fa">corrections</a>.</p>
+      ${trustBoundariesHtml({ compact: true })}
       <p style="font-size:1.1rem;color:#e2e8f0">${esc(game.securityNotes || '')}</p>
       <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:1rem;margin:1.5rem 0">
         <div style="background:rgba(148,163,184,0.08);padding:1rem;border-radius:0.5rem"><strong style="color:#60a5fa">Platforms</strong><br>${esc(platforms)}</div>
@@ -226,47 +233,64 @@ function generateDetail(game) {
   return pageShell(title, description, url, body, videoGameJsonLd(game, url));
 }
 
-function generateIndex(games) {
-  const url = `${BASE_URL}/games`;
-  const title = `Game Security Grades for Steam and Discord | ${SITE_NAME}`;
-  const description = 'Security grades for Steam, Discord, Fortnite, Minecraft, Roblox and Valorant. Documented controls and breach history, not a safety certification.';
-
-  const rows = games
+function gradeRows(entries) {
+  return entries
     .map((g) => {
       const meta = gradeMeta(g.securityGrade);
+      const href = canonicalGradePath(g.slug);
       return `<tr>
-        <td style="padding:0.6rem 0.5rem;border-bottom:1px solid rgba(148,163,184,0.15)"><a href="/games/${esc(g.slug)}" style="color:#60a5fa;text-decoration:none">${esc(g.name)}</a></td>
+        <td style="padding:0.6rem 0.5rem;border-bottom:1px solid rgba(148,163,184,0.15)"><a href="${esc(href)}" style="color:#60a5fa;text-decoration:none">${esc(g.name)}</a></td>
         <td style="padding:0.6rem 0.5rem;border-bottom:1px solid rgba(148,163,184,0.15)">${esc((g.platforms || []).join(', '))}</td>
         <td style="padding:0.6rem 0.5rem;border-bottom:1px solid rgba(148,163,184,0.15);text-align:center"><span style="display:inline-block;background:${meta.color};color:#0f172a;font-weight:800;padding:0.1rem 0.6rem;border-radius:9999px">${meta.label}</span></td>
         <td style="padding:0.6rem 0.5rem;border-bottom:1px solid rgba(148,163,184,0.15);color:#94a3b8">${esc(meta.verdict)}</td>
       </tr>`;
     })
     .join('');
+}
 
+function generateIndex(games, platformGrades) {
+  const url = `${BASE_URL}/games`;
+  const title = `Game Security Grades for Steam and Discord | ${SITE_NAME}`;
+  const description = 'Security grades for Fortnite, Minecraft, Roblox, Valorant, Steam, Discord and PlayStation. Documented controls and breach history, not a safety certification.';
+
+  const listed = [...games, ...platformGrades];
   const body = `
     <article>
       <h1 style="font-size:2rem;margin:0 0 0.5rem">Game Security Grades</h1>
-      <p style="color:#e2e8f0;max-width:60ch">How safe are the games and platforms you play on? These grades are initial assessments based on documented two-factor-authentication support and known account-takeover or breach history.</p>
-      <table style="width:100%;border-collapse:collapse;margin-top:1.5rem">
+      <p style="color:#e2e8f0;max-width:65ch">These grades are initial assessments of documented two-factor-authentication support and known account-takeover or breach history. A grade does not mean we scanned an account or certified a download. Account platforms (Steam, Discord, PlayStation) live on their security hubs.</p>
+      <h2 style="font-size:1.2rem;margin:1.5rem 0 0.5rem">Games</h2>
+      <table style="width:100%;border-collapse:collapse;margin-top:0.5rem">
         <thead><tr style="text-align:left;color:#94a3b8;border-bottom:1px solid rgba(148,163,184,0.3)">
-          <th style="padding:0.6rem 0.5rem">Game / Platform</th>
+          <th style="padding:0.6rem 0.5rem">Game</th>
           <th style="padding:0.6rem 0.5rem">Platforms</th>
           <th style="padding:0.6rem 0.5rem;text-align:center">Grade</th>
           <th style="padding:0.6rem 0.5rem">Verdict</th>
         </tr></thead>
-        <tbody>${rows}</tbody>
+        <tbody>${gradeRows(games)}</tbody>
       </table>
+      <h2 style="font-size:1.2rem;margin:2rem 0 0.5rem">Account platforms</h2>
+      <p style="color:#94a3b8;max-width:65ch">These rows are account services, not games. Nintendo Switch Online stays in the game list because it does not have a separate platform hub yet.</p>
+      <table style="width:100%;border-collapse:collapse;margin-top:0.5rem">
+        <thead><tr style="text-align:left;color:#94a3b8;border-bottom:1px solid rgba(148,163,184,0.3)">
+          <th style="padding:0.6rem 0.5rem">Platform</th>
+          <th style="padding:0.6rem 0.5rem">Where it runs</th>
+          <th style="padding:0.6rem 0.5rem;text-align:center">Grade</th>
+          <th style="padding:0.6rem 0.5rem">Verdict</th>
+        </tr></thead>
+        <tbody>${gradeRows(platformGrades)}</tbody>
+      </table>
+      <p style="margin-top:1.5rem"><a href="/platforms" style="color:#60a5fa">All platform security hubs →</a></p>
     </article>`;
 
   const jsonLd = {
     '@context': 'https://schema.org',
     '@type': 'ItemList',
     name: 'Game Security Grades',
-    itemListElement: games.map((g, i) => ({
+    itemListElement: listed.map((g, i) => ({
       '@type': 'ListItem',
       position: i + 1,
       name: g.name,
-      url: `${BASE_URL}/games/${g.slug}`,
+      url: `${BASE_URL}${canonicalGradePath(g.slug)}`,
     })),
   };
 
@@ -274,14 +298,14 @@ function generateIndex(games) {
 }
 
 function main() {
-  const games = LIB.games || [];
+  const all = LIB.games || [];
+  const games = all.filter((g) => !isRedirectedGameSlug(g.slug));
+  const platformGrades = all.filter((g) => isRedirectedGameSlug(g.slug));
   const outDir = path.join(projectRoot, 'dist', 'games');
   fs.mkdirSync(outDir, { recursive: true });
 
-  // index
-  fs.writeFileSync(path.join(outDir, 'index.html'), generateIndex(games), 'utf-8');
+  fs.writeFileSync(path.join(outDir, 'index.html'), generateIndex(games, platformGrades), 'utf-8');
 
-  // per-game
   const urls = [`${BASE_URL}/games`];
   for (const g of games) {
     const dir = path.join(outDir, g.slug);
@@ -290,7 +314,11 @@ function main() {
     urls.push(`${BASE_URL}/games/${g.slug}`);
   }
 
-  console.log(`Generated ${games.length + 1} game pages (index + ${games.length} details).`);
+  for (const g of platformGrades) {
+    fs.rmSync(path.join(outDir, g.slug), { recursive: true, force: true });
+  }
+
+  console.log(`Generated ${games.length + 1} game pages (index + ${games.length} details); ${platformGrades.length} platform grades redirect to hubs.`);
   // Emit URL list for the sitemap generator to consume (one per line on stdout via a marker file).
   fs.writeFileSync(path.join(outDir, 'urls.json'), JSON.stringify(urls, null, 2), 'utf-8');
   console.log(urls.join('\n'));

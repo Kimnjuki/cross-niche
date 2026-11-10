@@ -29,7 +29,57 @@
     },
     {
       "source": "/security-tools",
-      "destination": "/tools/security-scanner",
+      "destination": "/tools",
+      "permanent": true
+    },
+    {
+      "source": "/games/steam",
+      "destination": "/platforms/steam/security",
+      "permanent": true
+    },
+    {
+      "source": "/games/discord",
+      "destination": "/platforms/discord/security",
+      "permanent": true
+    },
+    {
+      "source": "/games/playstation-network",
+      "destination": "/platforms/playstation/security",
+      "permanent": true
+    },
+    {
+      "source": "/tools/security-scanner",
+      "destination": "/tools/scam-check",
+      "permanent": true
+    },
+    {
+      "source": "/tools/nexusguard",
+      "destination": "/tools",
+      "permanent": true
+    },
+    {
+      "source": "/tools/security-briefing",
+      "destination": "/threats",
+      "permanent": true
+    },
+    {
+      "source": "/tools/breach-explainer",
+      "destination": "/threats",
+      "permanent": true
+    },
+    {
+      "source": "/tools/exploit-risk-meter",
+      "destination": "/threats",
+      "permanent": true
+    },
+    {
+      "source": "/tools/pc-builder",
+      "destination": "/tools",
+      "permanent": true
+    },
+    {
+      "source": "/tools/threat-scanner",
+      "destination": "/tools/scam-check",
       "permanent": true
     },
     {
@@ -49,7 +99,7 @@
     },
     {
       "source": "/nexus/nexusguard",
-      "destination": "/tools/nexusguard",
+      "destination": "/tools",
       "permanent": true
     },
     {

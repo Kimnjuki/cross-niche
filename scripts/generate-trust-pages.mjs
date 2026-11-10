@@ -9,6 +9,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { staticShell } from './lib/static-chrome.mjs';
+import { trustBoundariesHtml } from './lib/trust-boundaries.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const projectRoot = path.resolve(__dirname, '..');
@@ -32,6 +33,60 @@ function webPage(title, description, url) {
 
 const PAGES = [
   {
+    route: '/methodology',
+    title: `Methodology: How We Grade & Verify | ${SITE_NAME}`,
+    description:
+      'How The Grid Nexus produces security grades, checkup scores, threat advisories and scam verdicts — sources, confidence, review cadence, corrections, and what we do not claim.',
+    body: `
+    <article>
+      <h1 style="font-size:2rem;margin:0 0 0.75rem">Methodology and evidence standards</h1>
+      <p style="color:#cbd5e1;max-width:70ch">Every score, grade and verdict on The Grid Nexus is <strong>document-based guidance</strong>, not a safety certification and not a live scan of your device or account. This page explains what each output means, how it is produced, how often it is reviewed, and how corrections are published.</p>
+
+      ${trustBoundariesHtml({ compact: true })}
+
+      <h2 style="font-size:1.25rem;margin:1.75rem 0 0.5rem">Output types</h2>
+      <dl style="color:#cbd5e1;max-width:70ch">
+        <dt style="font-weight:600;color:#f8fafc;margin-top:0.85rem">Security grades</dt>
+        <dd style="margin:0.25rem 0 0">Documented MFA support and known account-takeover / breach history for a game or platform. Grades are never derived from review sentiment. Unknown controls are shown as unknown — not assumed good.</dd>
+        <dt style="font-weight:600;color:#f8fafc;margin-top:0.85rem">Scam Check verdicts</dt>
+        <dd style="margin:0.25rem 0 0">Explicit labels only: <code>known_malicious</code>, <code>suspicious</code>, <code>no_known_indicators</code>, <code>insufficient_evidence</code>, or <code>provider_unavailable</code>. Unknown domains are never labeled safe. External reputation lookup stays off until licensed.</dd>
+        <dt style="font-weight:600;color:#f8fafc;margin-top:0.85rem">Gaming Security Checkup</dt>
+        <dd style="margin:0.25rem 0 0">Self-reported readiness from your answers. It does not scan devices or accounts. Low coverage or critical gaps suppress a misleading score.</dd>
+        <dt style="font-weight:600;color:#f8fafc;margin-top:0.85rem">Gamer Threat Report</dt>
+        <dd style="margin:0.25rem 0 0">Prioritizes public exploitation evidence (including CISA KEV) by player impact. KEV inclusion is not proof that every game or player is affected.</dd>
+        <dt style="font-weight:600;color:#f8fafc;margin-top:0.85rem">Recovery playbooks</dt>
+        <dd style="margin:0.25rem 0 0">Official-links-only steps with review dates. We never ask for credentials and never promote paid recovery agents.</dd>
+      </dl>
+
+      <h2 style="font-size:1.25rem;margin:1.75rem 0 0.5rem">Evidence and confidence</h2>
+      <ul style="color:#cbd5e1;max-width:70ch;padding-left:1.2rem">
+        <li style="margin-bottom:0.4rem"><strong>Source types:</strong> official support, vendor advisory, security research, secondary.</li>
+        <li style="margin-bottom:0.4rem"><strong>Confidence:</strong> high / medium / low — speculative claims are labeled or removed.</li>
+        <li style="margin-bottom:0.4rem"><strong>Review cadence:</strong> official links and capability claims carry verification and recheck dates; stale items are marked or removed, never guessed.</li>
+      </ul>
+
+      <h2 style="font-size:1.25rem;margin:1.75rem 0 0.5rem">Limitations</h2>
+      <ul style="color:#cbd5e1;max-width:70ch;padding-left:1.2rem">
+        <li style="margin-bottom:0.4rem">We do not perform live malware detonation or account forensic scans.</li>
+        <li style="margin-bottom:0.4rem">Absence of known indicators is not a clean bill of health.</li>
+        <li style="margin-bottom:0.4rem">Grades are not child-safety ratings and are not certifications.</li>
+        <li style="margin-bottom:0.4rem">Community reports are not published as confirmed threats without review.</li>
+      </ul>
+
+      <h2 style="font-size:1.25rem;margin:1.75rem 0 0.5rem">Corrections</h2>
+      <p style="color:#cbd5e1;max-width:70ch">Corrections are public, dated, and listed on <a href="/corrections">/corrections</a>. Affected pages should link back to the correction entry.</p>
+
+      <h2 style="font-size:1.25rem;margin:1.75rem 0 0.5rem">Related</h2>
+      <ul style="color:#cbd5e1;padding-left:1.2rem">
+        <li><a href="/games">Security grades</a></li>
+        <li><a href="/threats">Gamer threat report</a></li>
+        <li><a href="/tools/scam-check">Scam Checker</a></li>
+        <li><a href="/editorial-standards">Editorial standards</a></li>
+        <li><a href="/privacy/tools">Tool privacy</a></li>
+      </ul>
+    </article>`,
+  },
+  {
     route: '/privacy/tools',
     title: `Tool Privacy — what our security tools collect | ${SITE_NAME}`,
     description:
@@ -45,10 +100,10 @@ const PAGES = [
       <p style="color:#cbd5e1;max-width:65ch">The checkup processes <strong>self-reported answers only</strong> (your answers to yes/partial/no questions about your own habits). It does <strong>not</strong> scan your device, connect to your game accounts, or inspect your files. A score is a measure of your self-reported readiness — <strong>not</strong> a device or account audit.</p>
 
       <h2 style="font-size:1.2rem;margin:1.5rem 0 0.5rem">Scam check / domain triage</h2>
-      <p style="color:#cbd5e1;max-width:65ch">The scam check processes the domain, URL, or message <strong>you paste</strong>. Parsing happens in your browser; raw messages and full URLs are <strong>not persisted</strong> to analytics or logs. Secrets you paste are not sent to any external service.</p>
+      <p style="color:#cbd5e1;max-width:65ch">The scam check processes the domain, URL, or message <strong>you paste</strong>. Parsing happens in your browser (or the static page’s local script); raw messages and full URLs are <strong>not persisted</strong> to analytics. Secrets you paste are not sent to any external reputation service. Note: a GET query string may appear in short-lived edge access logs — never paste passwords, tokens, or MFA codes.</p>
 
-      <h2 style="font-size:1.2rem;margin:1.5rem 0 0.5rem">IOC lookup</h2>
-      <p style="color:#cbd5e1;max-width:65ch">The IOC lookup sends the indicator you submit to VirusTotal's public API, which is licensed for <strong>internal, non-commercial use</strong>. Review their terms before relying on results.</p>
+      <h2 style="font-size:1.2rem;margin:1.5rem 0 0.5rem">IOC / download lookup</h2>
+      <p style="color:#cbd5e1;max-width:65ch">Browser-local hashing does not upload file bytes. Live commercial reputation APIs are <strong>disabled</strong> until licensed. VirusTotal’s public API is not used to power a commercial product path. When a provider is unavailable, the tool returns <code>provider_unavailable</code> — never a fabricated clean verdict.</p>
 
       <h2 style="font-size:1.2rem;margin:1.5rem 0 0.5rem">What we never collect</h2>
       <ul style="color:#cbd5e1;max-width:65ch">
@@ -57,6 +112,8 @@ const PAGES = [
         <li>Session cookies or tokens</li>
         <li>Crypto wallet seed phrases</li>
       </ul>
+
+      ${trustBoundariesHtml({ compact: true })}
 
       <h2 style="font-size:1.2rem;margin:1.5rem 0 0.5rem">Storage and retention</h2>
       <p style="color:#cbd5e1;max-width:65ch">Signed-in checkup answers are stored against your account so you can re-check your progress. Anonymous sessions expire. AI is not used to process tool inputs. To delete your data, delete your account or contact us.</p>

@@ -26,6 +26,7 @@ import {
   NON_INDEXABLE_ROUTES,
   isNonIndexable,
 } from './lib/route-metadata.mjs';
+import { isRedirectedGameSlug } from './lib/game-platform-split.mjs';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -100,7 +101,7 @@ function getGamePages() {
       { loc: `${BASE_URL}/threats`, lastmod: '' },
     ];
     for (const g of games) {
-      if (!g.slug) continue;
+      if (!g.slug || isRedirectedGameSlug(g.slug)) continue;
       pages.push({
         loc: `${BASE_URL}/games/${g.slug}`,
         lastmod: g.updatedAt ? new Date(g.updatedAt).toISOString().slice(0, 10) : '',

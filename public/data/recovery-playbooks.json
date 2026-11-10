@@ -1,629 +1,2961 @@
 {
+  "schemaVersion": 1,
   "pages": [
     {
       "platform": "discord",
       "platformName": "Discord",
       "scenario": "account-stolen",
+      "title": null,
+      "reviewedAt": "2026-10-15",
+      "schemaVersion": 1,
+      "disclaimer": "The Grid Nexus does not recover accounts or request account credentials. Follow the official process.",
+      "officialLinks": [
+        {
+          "purpose": "login",
+          "url": "https://discord.com/login",
+          "verifiedAt": "2026-10-15"
+        },
+        {
+          "purpose": "recovery",
+          "url": "https://support.discord.com/hc/en-us/articles/216679607",
+          "verifiedAt": "2026-10-15"
+        },
+        {
+          "purpose": "security",
+          "url": "https://support.discord.com/hc/en-us/articles/219576828-Setting-up-Two-Factor-Authentication",
+          "verifiedAt": "2026-10-15"
+        }
+      ],
       "steps": [
-        "Isolate a possibly infected device first",
-        "Change your password from a clean device",
-        "Enable two-factor authentication",
-        "Report the compromised account to Discord",
-        "Review authorized apps and bots"
+        {
+          "key": "isolate-device",
+          "title": "Isolate a possibly infected device first",
+          "body": "Discord account theft often comes with a token stealer. Sign out on the infected device and do not reuse it until cleaned.",
+          "urgency": "critical"
+        },
+        {
+          "key": "change-password",
+          "title": "Change your password from a clean device",
+          "body": "Changing your Discord password logs out all other sessions, revoking a stolen token.",
+          "urgency": "critical"
+        },
+        {
+          "key": "enable-2fa",
+          "title": "Enable two-factor authentication",
+          "body": "Turn on 2FA so a stolen password or token alone cannot take the account back over.",
+          "urgency": "critical"
+        },
+        {
+          "key": "official-report",
+          "title": "Report the compromised account to Discord",
+          "body": "Use Discord's official support flow to report the compromise and recover access if you are locked out.",
+          "urgency": "critical"
+        },
+        {
+          "key": "review-bots",
+          "title": "Review authorized apps and bots",
+          "body": "Check which third-party apps and bots have access and revoke anything you do not recognize.",
+          "urgency": "important"
+        }
       ]
     },
     {
       "platform": "discord",
       "platformName": "Discord",
       "scenario": "email-changed",
+      "title": null,
+      "reviewedAt": "2026-10-17",
+      "schemaVersion": 1,
+      "disclaimer": "The Grid Nexus does not recover accounts or request account credentials. Follow the official process.",
+      "officialLinks": [
+        {
+          "purpose": "login",
+          "url": "https://discord.com/login",
+          "verifiedAt": "2026-10-15"
+        },
+        {
+          "purpose": "recovery",
+          "url": "https://support.discord.com/hc/en-us/articles/216679607",
+          "verifiedAt": "2026-10-15"
+        },
+        {
+          "purpose": "security",
+          "url": "https://support.discord.com/hc/en-us/articles/219576828-Setting-up-Two-Factor-Authentication",
+          "verifiedAt": "2026-10-15"
+        }
+      ],
       "steps": [
-        "Act immediately on the change notice",
-        "Use a clean device",
-        "Recover through official support",
-        "Restore your email and enable 2FA"
+        {
+          "key": "act-fast",
+          "title": "Act immediately on the change notice",
+          "body": "If you received an \"email changed\" notice you did not make, act now — an attacker is taking over the account.",
+          "urgency": "critical"
+        },
+        {
+          "key": "clean-device",
+          "title": "Use a clean device",
+          "body": "If malware is suspected, do not sign in from the possibly infected device until it is cleaned.",
+          "urgency": "critical"
+        },
+        {
+          "key": "official-recovery",
+          "title": "Recover through official support",
+          "body": "Use Discord's official account-recovery process to prove you own the account — never a third-party service.",
+          "urgency": "critical"
+        },
+        {
+          "key": "restore-email",
+          "title": "Restore your email and enable 2FA",
+          "body": "After regaining access, restore your email address and turn on two-factor authentication.",
+          "urgency": "critical"
+        }
       ]
     },
     {
       "platform": "discord",
       "platformName": "Discord",
       "scenario": "lost-authenticator",
+      "title": null,
+      "reviewedAt": "2026-10-16",
+      "schemaVersion": 1,
+      "disclaimer": "The Grid Nexus does not recover accounts or request account credentials. Follow the official process.",
+      "officialLinks": [
+        {
+          "purpose": "login",
+          "url": "https://discord.com/login",
+          "verifiedAt": "2026-10-15"
+        },
+        {
+          "purpose": "recovery",
+          "url": "https://support.discord.com/hc/en-us/articles/216679607",
+          "verifiedAt": "2026-10-15"
+        },
+        {
+          "purpose": "security",
+          "url": "https://support.discord.com/hc/en-us/articles/219576828-Setting-up-Two-Factor-Authentication",
+          "verifiedAt": "2026-10-15"
+        }
+      ],
       "steps": [
-        "Use your saved backup codes",
-        "Recover through official support",
-        "Re-enable two-factor authentication",
-        "Store new backup codes offline"
+        {
+          "key": "backup-codes",
+          "title": "Use your saved backup codes",
+          "body": "If you saved recovery codes when you set up two-factor authentication, use one now to sign in.",
+          "urgency": "critical"
+        },
+        {
+          "key": "official-recovery",
+          "title": "Recover through official support",
+          "body": "If you have no backup codes, use Discord's official account-recovery process — never a paid third-party service.",
+          "urgency": "critical"
+        },
+        {
+          "key": "re-enable-2fa",
+          "title": "Re-enable two-factor authentication",
+          "body": "Once you are back in, set up two-factor authentication again so the account is protected.",
+          "urgency": "critical"
+        },
+        {
+          "key": "save-codes",
+          "title": "Store new backup codes offline",
+          "body": "Save the new recovery codes somewhere safe and offline.",
+          "urgency": "important"
+        }
       ]
     },
     {
       "platform": "discord",
       "platformName": "Discord",
       "scenario": "lost-linked-email",
+      "title": null,
+      "reviewedAt": "2026-10-17",
+      "schemaVersion": 1,
+      "disclaimer": "The Grid Nexus does not recover accounts or request account credentials. Follow the official process.",
+      "officialLinks": [
+        {
+          "purpose": "login",
+          "url": "https://discord.com/login",
+          "verifiedAt": "2026-10-15"
+        },
+        {
+          "purpose": "recovery",
+          "url": "https://support.discord.com/hc/en-us/articles/216679607",
+          "verifiedAt": "2026-10-15"
+        },
+        {
+          "purpose": "security",
+          "url": "https://support.discord.com/hc/en-us/articles/219576828-Setting-up-Two-Factor-Authentication",
+          "verifiedAt": "2026-10-15"
+        }
+      ],
       "steps": [
-        "Recover the linked email account",
-        "Recover through official support",
-        "Update the linked email",
-        "Enable two-factor authentication"
+        {
+          "key": "recover-email",
+          "title": "Recover the linked email account",
+          "body": "First recover access to the email address through its own provider — most account controls rely on it.",
+          "urgency": "critical"
+        },
+        {
+          "key": "official-recovery",
+          "title": "Recover through official support",
+          "body": "If you cannot recover the email, use Discord's official account-recovery process to prove ownership another way.",
+          "urgency": "critical"
+        },
+        {
+          "key": "update-email",
+          "title": "Update the linked email",
+          "body": "Once back in, change the linked email to one you control.",
+          "urgency": "important"
+        },
+        {
+          "key": "enable-2fa",
+          "title": "Enable two-factor authentication",
+          "body": "Turn on two-factor authentication so the account is not tied to a single email.",
+          "urgency": "critical"
+        }
       ]
     },
     {
       "platform": "discord",
       "platformName": "Discord",
       "scenario": "scam-recovery-contact",
+      "title": null,
+      "reviewedAt": "2026-10-17",
+      "schemaVersion": 1,
+      "disclaimer": "The Grid Nexus does not recover accounts or request account credentials. Follow the official process.",
+      "officialLinks": [
+        {
+          "purpose": "login",
+          "url": "https://discord.com/login",
+          "verifiedAt": "2026-10-15"
+        },
+        {
+          "purpose": "recovery",
+          "url": "https://support.discord.com/hc/en-us/articles/216679607",
+          "verifiedAt": "2026-10-15"
+        },
+        {
+          "purpose": "security",
+          "url": "https://support.discord.com/hc/en-us/articles/219576828-Setting-up-Two-Factor-Authentication",
+          "verifiedAt": "2026-10-15"
+        }
+      ],
       "steps": [
-        "Stop communicating and do not pay",
-        "Change passwords from a clean device",
-        "Report the scam",
-        "Recover through the official process"
+        {
+          "key": "stop-contact",
+          "title": "Stop communicating and do not pay",
+          "body": "Stop responding to the \"recovery service\" and do not send more money — a scammer who has already defrauded you is unlikely to return the account even if paid.",
+          "urgency": "critical"
+        },
+        {
+          "key": "change-passwords",
+          "title": "Change passwords from a clean device",
+          "body": "Change your password and any passwords you reused, from a device you trust.",
+          "urgency": "critical"
+        },
+        {
+          "key": "report-scam",
+          "title": "Report the scam",
+          "body": "Report the scammer to Discord and to your payment provider if you paid.",
+          "urgency": "important"
+        },
+        {
+          "key": "official-recovery",
+          "title": "Recover through the official process",
+          "body": "Recover the account through Discord's official process — never a paid third party.",
+          "urgency": "critical"
+        }
       ]
     },
     {
       "platform": "discord",
       "platformName": "Discord",
       "scenario": "suspected-malware",
+      "title": null,
+      "reviewedAt": "2026-10-16",
+      "schemaVersion": 1,
+      "disclaimer": "The Grid Nexus does not recover accounts or request account credentials. Follow the official process.",
+      "officialLinks": [
+        {
+          "purpose": "login",
+          "url": "https://discord.com/login",
+          "verifiedAt": "2026-10-15"
+        },
+        {
+          "purpose": "recovery",
+          "url": "https://support.discord.com/hc/en-us/articles/216679607",
+          "verifiedAt": "2026-10-15"
+        },
+        {
+          "purpose": "security",
+          "url": "https://support.discord.com/hc/en-us/articles/219576828-Setting-up-Two-Factor-Authentication",
+          "verifiedAt": "2026-10-15"
+        }
+      ],
       "steps": [
-        "Stop using the possibly infected device",
-        "Scan the device",
-        "Change passwords from a clean device",
-        "Recover the account if it was taken"
+        {
+          "key": "isolate-device",
+          "title": "Stop using the possibly infected device",
+          "body": "Sign out and stop using the device until it has been scanned and cleaned. Use a different trusted device for the next steps.",
+          "urgency": "critical"
+        },
+        {
+          "key": "scan-device",
+          "title": "Scan the device",
+          "body": "Run a reputable antivirus or anti-malware scan and remove anything it flags before signing in again.",
+          "urgency": "critical"
+        },
+        {
+          "key": "change-passwords",
+          "title": "Change passwords from a clean device",
+          "body": "After cleaning, change your password from a device you trust — not the infected one.",
+          "urgency": "critical"
+        },
+        {
+          "key": "official-recovery",
+          "title": "Recover the account if it was taken",
+          "body": "If the account was already stolen, follow Discord's official account-recovery process.",
+          "urgency": "critical"
+        }
       ]
     },
     {
       "platform": "discord",
       "platformName": "Discord",
       "scenario": "suspicious-session",
+      "title": null,
+      "reviewedAt": "2026-10-16",
+      "schemaVersion": 1,
+      "disclaimer": "The Grid Nexus does not recover accounts or request account credentials. Follow the official process.",
+      "officialLinks": [
+        {
+          "purpose": "login",
+          "url": "https://discord.com/login",
+          "verifiedAt": "2026-10-15"
+        },
+        {
+          "purpose": "recovery",
+          "url": "https://support.discord.com/hc/en-us/articles/216679607",
+          "verifiedAt": "2026-10-15"
+        },
+        {
+          "purpose": "security",
+          "url": "https://support.discord.com/hc/en-us/articles/219576828-Setting-up-Two-Factor-Authentication",
+          "verifiedAt": "2026-10-15"
+        }
+      ],
       "steps": [
-        "Change your password",
-        "Sign out of other sessions",
-        "Enable two-factor authentication",
-        "Review recent activity"
+        {
+          "key": "change-password",
+          "title": "Change your password",
+          "body": "Change your password from a device you trust, in case someone else is already signed in.",
+          "urgency": "critical"
+        },
+        {
+          "key": "revoke-sessions",
+          "title": "Sign out of other sessions",
+          "body": "Revoke unfamiliar sessions and devices through Discord's account settings.",
+          "urgency": "critical"
+        },
+        {
+          "key": "enable-2fa",
+          "title": "Enable two-factor authentication",
+          "body": "Turn on two-factor authentication so a stolen password alone cannot take the account back.",
+          "urgency": "critical"
+        },
+        {
+          "key": "review-activity",
+          "title": "Review recent activity",
+          "body": "Check for changed email, phone number, linked accounts, or messages you did not write.",
+          "urgency": "important"
+        }
       ]
     },
     {
       "platform": "discord",
       "platformName": "Discord",
       "scenario": "unauthorized-purchase",
+      "title": null,
+      "reviewedAt": "2026-10-16",
+      "schemaVersion": 1,
+      "disclaimer": "The Grid Nexus does not recover accounts or request account credentials. Follow the official process.",
+      "officialLinks": [
+        {
+          "purpose": "login",
+          "url": "https://discord.com/login",
+          "verifiedAt": "2026-10-15"
+        },
+        {
+          "purpose": "recovery",
+          "url": "https://support.discord.com/hc/en-us/articles/216679607",
+          "verifiedAt": "2026-10-15"
+        },
+        {
+          "purpose": "security",
+          "url": "https://support.discord.com/hc/en-us/articles/219576828-Setting-up-Two-Factor-Authentication",
+          "verifiedAt": "2026-10-15"
+        }
+      ],
       "steps": [
-        "Review recent purchases",
-        "Secure the account first",
-        "Report the unauthorized charge",
-        "Review saved payment methods"
+        {
+          "key": "review-purchases",
+          "title": "Review recent purchases",
+          "body": "Check your Discord purchase history for charges you did not make, and do not click links in unexpected receipt emails.",
+          "urgency": "critical"
+        },
+        {
+          "key": "secure-account",
+          "title": "Secure the account first",
+          "body": "Change your password and enable two-factor authentication so a thief cannot keep spending.",
+          "urgency": "critical"
+        },
+        {
+          "key": "report-charge",
+          "title": "Report the unauthorized charge",
+          "body": "Dispute the charge through Discord's official support — never a third-party refund service.",
+          "urgency": "critical"
+        },
+        {
+          "key": "review-payment",
+          "title": "Review saved payment methods",
+          "body": "Remove or replace any card or payment method you do not recognize.",
+          "urgency": "important"
+        }
       ]
     },
     {
       "platform": "ea",
       "platformName": "EA",
       "scenario": "account-stolen",
+      "title": null,
+      "reviewedAt": "2026-10-15",
+      "schemaVersion": 1,
+      "disclaimer": "The Grid Nexus does not recover accounts or request account credentials. Follow the official process.",
+      "officialLinks": [
+        {
+          "purpose": "login",
+          "url": "https://signin.ea.com/p/web2/login",
+          "verifiedAt": "2026-10-15"
+        },
+        {
+          "purpose": "recovery",
+          "url": "https://help.ea.com/en/help/account/i-think-someone-hacked-my-ea-account/",
+          "verifiedAt": "2026-10-15"
+        },
+        {
+          "purpose": "security",
+          "url": "https://help.ea.com/en/help/account/ea-login-verification/",
+          "verifiedAt": "2026-10-15"
+        }
+      ],
       "steps": [
-        "Use a clean device",
-        "Secure the email on your EA account",
-        "Use EA's official hacked-account process",
-        "Turn on EA Login Verification",
-        "Review linked accounts"
+        {
+          "key": "isolate-device",
+          "title": "Use a clean device",
+          "body": "If malware is suspected, avoid signing in from the infected device until it is cleaned.",
+          "urgency": "critical"
+        },
+        {
+          "key": "secure-email",
+          "title": "Secure the email on your EA account",
+          "body": "Confirm you still control the email address and enable its own two-factor authentication.",
+          "urgency": "critical"
+        },
+        {
+          "key": "official-recovery",
+          "title": "Use EA's official hacked-account process",
+          "body": "Follow EA Help's 'I think someone hacked my EA account' steps — never a third-party recovery service.",
+          "urgency": "critical"
+        },
+        {
+          "key": "enable-2fa",
+          "title": "Turn on EA Login Verification",
+          "body": "EA's two-factor login verification prevents a password alone from re-taking the account.",
+          "urgency": "critical"
+        },
+        {
+          "key": "review-linked",
+          "title": "Review linked accounts",
+          "body": "Unlink any unfamiliar console or platform accounts that could be used to sign in.",
+          "urgency": "important"
+        }
       ]
     },
     {
       "platform": "ea",
       "platformName": "EA",
       "scenario": "email-changed",
+      "title": null,
+      "reviewedAt": "2026-10-17",
+      "schemaVersion": 1,
+      "disclaimer": "The Grid Nexus does not recover accounts or request account credentials. Follow the official process.",
+      "officialLinks": [
+        {
+          "purpose": "login",
+          "url": "https://signin.ea.com/p/web2/login",
+          "verifiedAt": "2026-10-15"
+        },
+        {
+          "purpose": "recovery",
+          "url": "https://help.ea.com/en/help/account/i-think-someone-hacked-my-ea-account/",
+          "verifiedAt": "2026-10-15"
+        },
+        {
+          "purpose": "security",
+          "url": "https://help.ea.com/en/help/account/ea-login-verification/",
+          "verifiedAt": "2026-10-15"
+        }
+      ],
       "steps": [
-        "Act immediately on the change notice",
-        "Use a clean device",
-        "Recover through official support",
-        "Restore your email and enable 2FA"
+        {
+          "key": "act-fast",
+          "title": "Act immediately on the change notice",
+          "body": "If you received an \"email changed\" notice you did not make, act now — an attacker is taking over the account.",
+          "urgency": "critical"
+        },
+        {
+          "key": "clean-device",
+          "title": "Use a clean device",
+          "body": "If malware is suspected, do not sign in from the possibly infected device until it is cleaned.",
+          "urgency": "critical"
+        },
+        {
+          "key": "official-recovery",
+          "title": "Recover through official support",
+          "body": "Use EA's official account-recovery process to prove you own the account — never a third-party service.",
+          "urgency": "critical"
+        },
+        {
+          "key": "restore-email",
+          "title": "Restore your email and enable 2FA",
+          "body": "After regaining access, restore your email address and turn on two-factor authentication.",
+          "urgency": "critical"
+        }
       ]
     },
     {
       "platform": "ea",
       "platformName": "EA",
       "scenario": "lost-authenticator",
+      "title": null,
+      "reviewedAt": "2026-10-16",
+      "schemaVersion": 1,
+      "disclaimer": "The Grid Nexus does not recover accounts or request account credentials. Follow the official process.",
+      "officialLinks": [
+        {
+          "purpose": "login",
+          "url": "https://signin.ea.com/p/web2/login",
+          "verifiedAt": "2026-10-15"
+        },
+        {
+          "purpose": "recovery",
+          "url": "https://help.ea.com/en/help/account/i-think-someone-hacked-my-ea-account/",
+          "verifiedAt": "2026-10-15"
+        },
+        {
+          "purpose": "security",
+          "url": "https://help.ea.com/en/help/account/ea-login-verification/",
+          "verifiedAt": "2026-10-15"
+        }
+      ],
       "steps": [
-        "Use your saved backup codes",
-        "Recover through official support",
-        "Re-enable two-factor authentication",
-        "Store new backup codes offline"
+        {
+          "key": "backup-codes",
+          "title": "Use your saved backup codes",
+          "body": "If you saved recovery codes when you set up two-factor authentication, use one now to sign in.",
+          "urgency": "critical"
+        },
+        {
+          "key": "official-recovery",
+          "title": "Recover through official support",
+          "body": "If you have no backup codes, use EA's official account-recovery process — never a paid third-party service.",
+          "urgency": "critical"
+        },
+        {
+          "key": "re-enable-2fa",
+          "title": "Re-enable two-factor authentication",
+          "body": "Once you are back in, set up two-factor authentication again so the account is protected.",
+          "urgency": "critical"
+        },
+        {
+          "key": "save-codes",
+          "title": "Store new backup codes offline",
+          "body": "Save the new recovery codes somewhere safe and offline.",
+          "urgency": "important"
+        }
       ]
     },
     {
       "platform": "ea",
       "platformName": "EA",
       "scenario": "lost-linked-email",
+      "title": null,
+      "reviewedAt": "2026-10-17",
+      "schemaVersion": 1,
+      "disclaimer": "The Grid Nexus does not recover accounts or request account credentials. Follow the official process.",
+      "officialLinks": [
+        {
+          "purpose": "login",
+          "url": "https://signin.ea.com/p/web2/login",
+          "verifiedAt": "2026-10-15"
+        },
+        {
+          "purpose": "recovery",
+          "url": "https://help.ea.com/en/help/account/i-think-someone-hacked-my-ea-account/",
+          "verifiedAt": "2026-10-15"
+        },
+        {
+          "purpose": "security",
+          "url": "https://help.ea.com/en/help/account/ea-login-verification/",
+          "verifiedAt": "2026-10-15"
+        }
+      ],
       "steps": [
-        "Recover the linked email account",
-        "Recover through official support",
-        "Update the linked email",
-        "Enable two-factor authentication"
+        {
+          "key": "recover-email",
+          "title": "Recover the linked email account",
+          "body": "First recover access to the email address through its own provider — most account controls rely on it.",
+          "urgency": "critical"
+        },
+        {
+          "key": "official-recovery",
+          "title": "Recover through official support",
+          "body": "If you cannot recover the email, use EA's official account-recovery process to prove ownership another way.",
+          "urgency": "critical"
+        },
+        {
+          "key": "update-email",
+          "title": "Update the linked email",
+          "body": "Once back in, change the linked email to one you control.",
+          "urgency": "important"
+        },
+        {
+          "key": "enable-2fa",
+          "title": "Enable two-factor authentication",
+          "body": "Turn on two-factor authentication so the account is not tied to a single email.",
+          "urgency": "critical"
+        }
       ]
     },
     {
       "platform": "ea",
       "platformName": "EA",
       "scenario": "scam-recovery-contact",
+      "title": null,
+      "reviewedAt": "2026-10-17",
+      "schemaVersion": 1,
+      "disclaimer": "The Grid Nexus does not recover accounts or request account credentials. Follow the official process.",
+      "officialLinks": [
+        {
+          "purpose": "login",
+          "url": "https://signin.ea.com/p/web2/login",
+          "verifiedAt": "2026-10-15"
+        },
+        {
+          "purpose": "recovery",
+          "url": "https://help.ea.com/en/help/account/i-think-someone-hacked-my-ea-account/",
+          "verifiedAt": "2026-10-15"
+        },
+        {
+          "purpose": "security",
+          "url": "https://help.ea.com/en/help/account/ea-login-verification/",
+          "verifiedAt": "2026-10-15"
+        }
+      ],
       "steps": [
-        "Stop communicating and do not pay",
-        "Change passwords from a clean device",
-        "Report the scam",
-        "Recover through the official process"
+        {
+          "key": "stop-contact",
+          "title": "Stop communicating and do not pay",
+          "body": "Stop responding to the \"recovery service\" and do not send more money — a scammer who has already defrauded you is unlikely to return the account even if paid.",
+          "urgency": "critical"
+        },
+        {
+          "key": "change-passwords",
+          "title": "Change passwords from a clean device",
+          "body": "Change your password and any passwords you reused, from a device you trust.",
+          "urgency": "critical"
+        },
+        {
+          "key": "report-scam",
+          "title": "Report the scam",
+          "body": "Report the scammer to EA and to your payment provider if you paid.",
+          "urgency": "important"
+        },
+        {
+          "key": "official-recovery",
+          "title": "Recover through the official process",
+          "body": "Recover the account through EA's official process — never a paid third party.",
+          "urgency": "critical"
+        }
       ]
     },
     {
       "platform": "ea",
       "platformName": "EA",
       "scenario": "suspected-malware",
+      "title": null,
+      "reviewedAt": "2026-10-16",
+      "schemaVersion": 1,
+      "disclaimer": "The Grid Nexus does not recover accounts or request account credentials. Follow the official process.",
+      "officialLinks": [
+        {
+          "purpose": "login",
+          "url": "https://signin.ea.com/p/web2/login",
+          "verifiedAt": "2026-10-15"
+        },
+        {
+          "purpose": "recovery",
+          "url": "https://help.ea.com/en/help/account/i-think-someone-hacked-my-ea-account/",
+          "verifiedAt": "2026-10-15"
+        },
+        {
+          "purpose": "security",
+          "url": "https://help.ea.com/en/help/account/ea-login-verification/",
+          "verifiedAt": "2026-10-15"
+        }
+      ],
       "steps": [
-        "Stop using the possibly infected device",
-        "Scan the device",
-        "Change passwords from a clean device",
-        "Recover the account if it was taken"
+        {
+          "key": "isolate-device",
+          "title": "Stop using the possibly infected device",
+          "body": "Sign out and stop using the device until it has been scanned and cleaned. Use a different trusted device for the next steps.",
+          "urgency": "critical"
+        },
+        {
+          "key": "scan-device",
+          "title": "Scan the device",
+          "body": "Run a reputable antivirus or anti-malware scan and remove anything it flags before signing in again.",
+          "urgency": "critical"
+        },
+        {
+          "key": "change-passwords",
+          "title": "Change passwords from a clean device",
+          "body": "After cleaning, change your password from a device you trust — not the infected one.",
+          "urgency": "critical"
+        },
+        {
+          "key": "official-recovery",
+          "title": "Recover the account if it was taken",
+          "body": "If the account was already stolen, follow EA's official account-recovery process.",
+          "urgency": "critical"
+        }
       ]
     },
     {
       "platform": "ea",
       "platformName": "EA",
       "scenario": "suspicious-session",
+      "title": null,
+      "reviewedAt": "2026-10-16",
+      "schemaVersion": 1,
+      "disclaimer": "The Grid Nexus does not recover accounts or request account credentials. Follow the official process.",
+      "officialLinks": [
+        {
+          "purpose": "login",
+          "url": "https://signin.ea.com/p/web2/login",
+          "verifiedAt": "2026-10-15"
+        },
+        {
+          "purpose": "recovery",
+          "url": "https://help.ea.com/en/help/account/i-think-someone-hacked-my-ea-account/",
+          "verifiedAt": "2026-10-15"
+        },
+        {
+          "purpose": "security",
+          "url": "https://help.ea.com/en/help/account/ea-login-verification/",
+          "verifiedAt": "2026-10-15"
+        }
+      ],
       "steps": [
-        "Change your password",
-        "Sign out of other sessions",
-        "Enable two-factor authentication",
-        "Review recent activity"
+        {
+          "key": "change-password",
+          "title": "Change your password",
+          "body": "Change your password from a device you trust, in case someone else is already signed in.",
+          "urgency": "critical"
+        },
+        {
+          "key": "revoke-sessions",
+          "title": "Sign out of other sessions",
+          "body": "Revoke unfamiliar sessions and devices through EA's account settings.",
+          "urgency": "critical"
+        },
+        {
+          "key": "enable-2fa",
+          "title": "Enable two-factor authentication",
+          "body": "Turn on two-factor authentication so a stolen password alone cannot take the account back.",
+          "urgency": "critical"
+        },
+        {
+          "key": "review-activity",
+          "title": "Review recent activity",
+          "body": "Check for changed email, phone number, linked accounts, or messages you did not write.",
+          "urgency": "important"
+        }
       ]
     },
     {
       "platform": "ea",
       "platformName": "EA",
       "scenario": "unauthorized-purchase",
+      "title": null,
+      "reviewedAt": "2026-10-16",
+      "schemaVersion": 1,
+      "disclaimer": "The Grid Nexus does not recover accounts or request account credentials. Follow the official process.",
+      "officialLinks": [
+        {
+          "purpose": "login",
+          "url": "https://signin.ea.com/p/web2/login",
+          "verifiedAt": "2026-10-15"
+        },
+        {
+          "purpose": "recovery",
+          "url": "https://help.ea.com/en/help/account/i-think-someone-hacked-my-ea-account/",
+          "verifiedAt": "2026-10-15"
+        },
+        {
+          "purpose": "security",
+          "url": "https://help.ea.com/en/help/account/ea-login-verification/",
+          "verifiedAt": "2026-10-15"
+        }
+      ],
       "steps": [
-        "Review recent purchases",
-        "Secure the account first",
-        "Report the unauthorized charge",
-        "Review saved payment methods"
+        {
+          "key": "review-purchases",
+          "title": "Review recent purchases",
+          "body": "Check your EA purchase history for charges you did not make, and do not click links in unexpected receipt emails.",
+          "urgency": "critical"
+        },
+        {
+          "key": "secure-account",
+          "title": "Secure the account first",
+          "body": "Change your password and enable two-factor authentication so a thief cannot keep spending.",
+          "urgency": "critical"
+        },
+        {
+          "key": "report-charge",
+          "title": "Report the unauthorized charge",
+          "body": "Dispute the charge through EA's official support — never a third-party refund service.",
+          "urgency": "critical"
+        },
+        {
+          "key": "review-payment",
+          "title": "Review saved payment methods",
+          "body": "Remove or replace any card or payment method you do not recognize.",
+          "urgency": "important"
+        }
       ]
     },
     {
       "platform": "epic-games",
       "platformName": "Epic Games",
       "scenario": "account-stolen",
+      "title": null,
+      "reviewedAt": "2026-10-15",
+      "schemaVersion": 1,
+      "disclaimer": "The Grid Nexus does not recover accounts or request account credentials. Follow the official process.",
+      "officialLinks": [
+        {
+          "purpose": "login",
+          "url": "https://www.epicgames.com/id/login",
+          "verifiedAt": "2026-10-15"
+        },
+        {
+          "purpose": "recovery",
+          "url": "https://www.epicgames.com/help/en-US/c-Category_EpicAccount/c-AccountSecurity",
+          "verifiedAt": "2026-10-15"
+        },
+        {
+          "purpose": "security",
+          "url": "https://www.epicgames.com/help/en-US/c-Category_EpicAccount/c-EpicAccountSecurity",
+          "verifiedAt": "2026-10-15"
+        }
+      ],
       "steps": [
-        "Use a clean device",
-        "Secure the email on the Epic account",
-        "Submit Epic's official account-recovery request",
-        "Enable two-factor authentication",
-        "Review linked external accounts"
+        {
+          "key": "isolate-device",
+          "title": "Use a clean device",
+          "body": "If malware is suspected, avoid signing in from the infected device until it is cleaned.",
+          "urgency": "critical"
+        },
+        {
+          "key": "secure-email",
+          "title": "Secure the email on the Epic account",
+          "body": "Confirm you still control the email address and enable its own two-factor authentication.",
+          "urgency": "critical"
+        },
+        {
+          "key": "official-recovery",
+          "title": "Submit Epic's official account-recovery request",
+          "body": "Use Epic's official recovery form; do not trust third-party 'recovery agents'.",
+          "urgency": "critical"
+        },
+        {
+          "key": "enable-2fa",
+          "title": "Enable two-factor authentication",
+          "body": "Turn on Epic's 2FA after regaining access so the account cannot be re-taken with a password alone.",
+          "urgency": "critical"
+        },
+        {
+          "key": "review-linked",
+          "title": "Review linked external accounts",
+          "body": "Unlink any unfamiliar console or social accounts that could be used to sign in.",
+          "urgency": "important"
+        }
       ]
     },
     {
       "platform": "epic-games",
       "platformName": "Epic Games",
       "scenario": "email-changed",
+      "title": null,
+      "reviewedAt": "2026-10-17",
+      "schemaVersion": 1,
+      "disclaimer": "The Grid Nexus does not recover accounts or request account credentials. Follow the official process.",
+      "officialLinks": [
+        {
+          "purpose": "login",
+          "url": "https://www.epicgames.com/id/login",
+          "verifiedAt": "2026-10-15"
+        },
+        {
+          "purpose": "recovery",
+          "url": "https://www.epicgames.com/help/en-US/c-Category_EpicAccount/c-AccountSecurity",
+          "verifiedAt": "2026-10-15"
+        },
+        {
+          "purpose": "security",
+          "url": "https://www.epicgames.com/help/en-US/c-Category_EpicAccount/c-EpicAccountSecurity",
+          "verifiedAt": "2026-10-15"
+        }
+      ],
       "steps": [
-        "Act immediately on the change notice",
-        "Use a clean device",
-        "Recover through official support",
-        "Restore your email and enable 2FA"
+        {
+          "key": "act-fast",
+          "title": "Act immediately on the change notice",
+          "body": "If you received an \"email changed\" notice you did not make, act now — an attacker is taking over the account.",
+          "urgency": "critical"
+        },
+        {
+          "key": "clean-device",
+          "title": "Use a clean device",
+          "body": "If malware is suspected, do not sign in from the possibly infected device until it is cleaned.",
+          "urgency": "critical"
+        },
+        {
+          "key": "official-recovery",
+          "title": "Recover through official support",
+          "body": "Use Epic Games's official account-recovery process to prove you own the account — never a third-party service.",
+          "urgency": "critical"
+        },
+        {
+          "key": "restore-email",
+          "title": "Restore your email and enable 2FA",
+          "body": "After regaining access, restore your email address and turn on two-factor authentication.",
+          "urgency": "critical"
+        }
       ]
     },
     {
       "platform": "epic-games",
       "platformName": "Epic Games",
       "scenario": "lost-authenticator",
+      "title": null,
+      "reviewedAt": "2026-10-16",
+      "schemaVersion": 1,
+      "disclaimer": "The Grid Nexus does not recover accounts or request account credentials. Follow the official process.",
+      "officialLinks": [
+        {
+          "purpose": "login",
+          "url": "https://www.epicgames.com/id/login",
+          "verifiedAt": "2026-10-15"
+        },
+        {
+          "purpose": "recovery",
+          "url": "https://www.epicgames.com/help/en-US/c-Category_EpicAccount/c-AccountSecurity",
+          "verifiedAt": "2026-10-15"
+        },
+        {
+          "purpose": "security",
+          "url": "https://www.epicgames.com/help/en-US/c-Category_EpicAccount/c-EpicAccountSecurity",
+          "verifiedAt": "2026-10-15"
+        }
+      ],
       "steps": [
-        "Use your saved backup codes",
-        "Recover through official support",
-        "Re-enable two-factor authentication",
-        "Store new backup codes offline"
+        {
+          "key": "backup-codes",
+          "title": "Use your saved backup codes",
+          "body": "If you saved recovery codes when you set up two-factor authentication, use one now to sign in.",
+          "urgency": "critical"
+        },
+        {
+          "key": "official-recovery",
+          "title": "Recover through official support",
+          "body": "If you have no backup codes, use Epic Games's official account-recovery process — never a paid third-party service.",
+          "urgency": "critical"
+        },
+        {
+          "key": "re-enable-2fa",
+          "title": "Re-enable two-factor authentication",
+          "body": "Once you are back in, set up two-factor authentication again so the account is protected.",
+          "urgency": "critical"
+        },
+        {
+          "key": "save-codes",
+          "title": "Store new backup codes offline",
+          "body": "Save the new recovery codes somewhere safe and offline.",
+          "urgency": "important"
+        }
       ]
     },
     {
       "platform": "epic-games",
       "platformName": "Epic Games",
       "scenario": "lost-linked-email",
+      "title": null,
+      "reviewedAt": "2026-10-17",
+      "schemaVersion": 1,
+      "disclaimer": "The Grid Nexus does not recover accounts or request account credentials. Follow the official process.",
+      "officialLinks": [
+        {
+          "purpose": "login",
+          "url": "https://www.epicgames.com/id/login",
+          "verifiedAt": "2026-10-15"
+        },
+        {
+          "purpose": "recovery",
+          "url": "https://www.epicgames.com/help/en-US/c-Category_EpicAccount/c-AccountSecurity",
+          "verifiedAt": "2026-10-15"
+        },
+        {
+          "purpose": "security",
+          "url": "https://www.epicgames.com/help/en-US/c-Category_EpicAccount/c-EpicAccountSecurity",
+          "verifiedAt": "2026-10-15"
+        }
+      ],
       "steps": [
-        "Recover the linked email account",
-        "Recover through official support",
-        "Update the linked email",
-        "Enable two-factor authentication"
+        {
+          "key": "recover-email",
+          "title": "Recover the linked email account",
+          "body": "First recover access to the email address through its own provider — most account controls rely on it.",
+          "urgency": "critical"
+        },
+        {
+          "key": "official-recovery",
+          "title": "Recover through official support",
+          "body": "If you cannot recover the email, use Epic Games's official account-recovery process to prove ownership another way.",
+          "urgency": "critical"
+        },
+        {
+          "key": "update-email",
+          "title": "Update the linked email",
+          "body": "Once back in, change the linked email to one you control.",
+          "urgency": "important"
+        },
+        {
+          "key": "enable-2fa",
+          "title": "Enable two-factor authentication",
+          "body": "Turn on two-factor authentication so the account is not tied to a single email.",
+          "urgency": "critical"
+        }
       ]
     },
     {
       "platform": "epic-games",
       "platformName": "Epic Games",
       "scenario": "scam-recovery-contact",
+      "title": null,
+      "reviewedAt": "2026-10-17",
+      "schemaVersion": 1,
+      "disclaimer": "The Grid Nexus does not recover accounts or request account credentials. Follow the official process.",
+      "officialLinks": [
+        {
+          "purpose": "login",
+          "url": "https://www.epicgames.com/id/login",
+          "verifiedAt": "2026-10-15"
+        },
+        {
+          "purpose": "recovery",
+          "url": "https://www.epicgames.com/help/en-US/c-Category_EpicAccount/c-AccountSecurity",
+          "verifiedAt": "2026-10-15"
+        },
+        {
+          "purpose": "security",
+          "url": "https://www.epicgames.com/help/en-US/c-Category_EpicAccount/c-EpicAccountSecurity",
+          "verifiedAt": "2026-10-15"
+        }
+      ],
       "steps": [
-        "Stop communicating and do not pay",
-        "Change passwords from a clean device",
-        "Report the scam",
-        "Recover through the official process"
+        {
+          "key": "stop-contact",
+          "title": "Stop communicating and do not pay",
+          "body": "Stop responding to the \"recovery service\" and do not send more money — a scammer who has already defrauded you is unlikely to return the account even if paid.",
+          "urgency": "critical"
+        },
+        {
+          "key": "change-passwords",
+          "title": "Change passwords from a clean device",
+          "body": "Change your password and any passwords you reused, from a device you trust.",
+          "urgency": "critical"
+        },
+        {
+          "key": "report-scam",
+          "title": "Report the scam",
+          "body": "Report the scammer to Epic Games and to your payment provider if you paid.",
+          "urgency": "important"
+        },
+        {
+          "key": "official-recovery",
+          "title": "Recover through the official process",
+          "body": "Recover the account through Epic Games's official process — never a paid third party.",
+          "urgency": "critical"
+        }
       ]
     },
     {
       "platform": "epic-games",
       "platformName": "Epic Games",
       "scenario": "suspected-malware",
+      "title": null,
+      "reviewedAt": "2026-10-16",
+      "schemaVersion": 1,
+      "disclaimer": "The Grid Nexus does not recover accounts or request account credentials. Follow the official process.",
+      "officialLinks": [
+        {
+          "purpose": "login",
+          "url": "https://www.epicgames.com/id/login",
+          "verifiedAt": "2026-10-15"
+        },
+        {
+          "purpose": "recovery",
+          "url": "https://www.epicgames.com/help/en-US/c-Category_EpicAccount/c-AccountSecurity",
+          "verifiedAt": "2026-10-15"
+        },
+        {
+          "purpose": "security",
+          "url": "https://www.epicgames.com/help/en-US/c-Category_EpicAccount/c-EpicAccountSecurity",
+          "verifiedAt": "2026-10-15"
+        }
+      ],
       "steps": [
-        "Stop using the possibly infected device",
-        "Scan the device",
-        "Change passwords from a clean device",
-        "Recover the account if it was taken"
+        {
+          "key": "isolate-device",
+          "title": "Stop using the possibly infected device",
+          "body": "Sign out and stop using the device until it has been scanned and cleaned. Use a different trusted device for the next steps.",
+          "urgency": "critical"
+        },
+        {
+          "key": "scan-device",
+          "title": "Scan the device",
+          "body": "Run a reputable antivirus or anti-malware scan and remove anything it flags before signing in again.",
+          "urgency": "critical"
+        },
+        {
+          "key": "change-passwords",
+          "title": "Change passwords from a clean device",
+          "body": "After cleaning, change your password from a device you trust — not the infected one.",
+          "urgency": "critical"
+        },
+        {
+          "key": "official-recovery",
+          "title": "Recover the account if it was taken",
+          "body": "If the account was already stolen, follow Epic Games's official account-recovery process.",
+          "urgency": "critical"
+        }
       ]
     },
     {
       "platform": "epic-games",
       "platformName": "Epic Games",
       "scenario": "suspicious-session",
+      "title": null,
+      "reviewedAt": "2026-10-16",
+      "schemaVersion": 1,
+      "disclaimer": "The Grid Nexus does not recover accounts or request account credentials. Follow the official process.",
+      "officialLinks": [
+        {
+          "purpose": "login",
+          "url": "https://www.epicgames.com/id/login",
+          "verifiedAt": "2026-10-15"
+        },
+        {
+          "purpose": "recovery",
+          "url": "https://www.epicgames.com/help/en-US/c-Category_EpicAccount/c-AccountSecurity",
+          "verifiedAt": "2026-10-15"
+        },
+        {
+          "purpose": "security",
+          "url": "https://www.epicgames.com/help/en-US/c-Category_EpicAccount/c-EpicAccountSecurity",
+          "verifiedAt": "2026-10-15"
+        }
+      ],
       "steps": [
-        "Change your password",
-        "Sign out of other sessions",
-        "Enable two-factor authentication",
-        "Review recent activity"
+        {
+          "key": "change-password",
+          "title": "Change your password",
+          "body": "Change your password from a device you trust, in case someone else is already signed in.",
+          "urgency": "critical"
+        },
+        {
+          "key": "revoke-sessions",
+          "title": "Sign out of other sessions",
+          "body": "Revoke unfamiliar sessions and devices through Epic Games's account settings.",
+          "urgency": "critical"
+        },
+        {
+          "key": "enable-2fa",
+          "title": "Enable two-factor authentication",
+          "body": "Turn on two-factor authentication so a stolen password alone cannot take the account back.",
+          "urgency": "critical"
+        },
+        {
+          "key": "review-activity",
+          "title": "Review recent activity",
+          "body": "Check for changed email, phone number, linked accounts, or messages you did not write.",
+          "urgency": "important"
+        }
       ]
     },
     {
       "platform": "epic-games",
       "platformName": "Epic Games",
       "scenario": "unauthorized-purchase",
+      "title": null,
+      "reviewedAt": "2026-10-16",
+      "schemaVersion": 1,
+      "disclaimer": "The Grid Nexus does not recover accounts or request account credentials. Follow the official process.",
+      "officialLinks": [
+        {
+          "purpose": "login",
+          "url": "https://www.epicgames.com/id/login",
+          "verifiedAt": "2026-10-15"
+        },
+        {
+          "purpose": "recovery",
+          "url": "https://www.epicgames.com/help/en-US/c-Category_EpicAccount/c-AccountSecurity",
+          "verifiedAt": "2026-10-15"
+        },
+        {
+          "purpose": "security",
+          "url": "https://www.epicgames.com/help/en-US/c-Category_EpicAccount/c-EpicAccountSecurity",
+          "verifiedAt": "2026-10-15"
+        }
+      ],
       "steps": [
-        "Review recent purchases",
-        "Secure the account first",
-        "Report the unauthorized charge",
-        "Review saved payment methods"
+        {
+          "key": "review-purchases",
+          "title": "Review recent purchases",
+          "body": "Check your Epic Games purchase history for charges you did not make, and do not click links in unexpected receipt emails.",
+          "urgency": "critical"
+        },
+        {
+          "key": "secure-account",
+          "title": "Secure the account first",
+          "body": "Change your password and enable two-factor authentication so a thief cannot keep spending.",
+          "urgency": "critical"
+        },
+        {
+          "key": "report-charge",
+          "title": "Report the unauthorized charge",
+          "body": "Dispute the charge through Epic Games's official support — never a third-party refund service.",
+          "urgency": "critical"
+        },
+        {
+          "key": "review-payment",
+          "title": "Review saved payment methods",
+          "body": "Remove or replace any card or payment method you do not recognize.",
+          "urgency": "important"
+        }
       ]
     },
     {
       "platform": "playstation",
       "platformName": "PlayStation",
       "scenario": "account-stolen",
+      "title": null,
+      "reviewedAt": "2026-10-15",
+      "schemaVersion": 1,
+      "disclaimer": "The Grid Nexus does not recover accounts or request account credentials. Follow the official process.",
+      "officialLinks": [
+        {
+          "purpose": "login",
+          "url": "https://www.playstation.com/sign-in/",
+          "verifiedAt": "2026-10-15"
+        },
+        {
+          "purpose": "recovery",
+          "url": "https://www.playstation.com/support/account/recover-account/",
+          "verifiedAt": "2026-10-15"
+        },
+        {
+          "purpose": "security",
+          "url": "https://www.playstation.com/support/account/2sv/",
+          "verifiedAt": "2026-10-15"
+        }
+      ],
       "steps": [
-        "Use a clean device",
-        "Secure the email on your account",
-        "Use PlayStation's official account-recovery process",
-        "Turn on 2-step verification",
-        "Sign out of unfamiliar consoles and devices"
+        {
+          "key": "isolate-device",
+          "title": "Use a clean device",
+          "body": "If malware is suspected, avoid signing in from the infected device until it is cleaned.",
+          "urgency": "critical"
+        },
+        {
+          "key": "secure-email",
+          "title": "Secure the email on your account",
+          "body": "Confirm you still control the email address and enable its own two-factor authentication.",
+          "urgency": "critical"
+        },
+        {
+          "key": "official-recovery",
+          "title": "Use PlayStation's official account-recovery process",
+          "body": "Follow PlayStation Support's recovery steps; do not trust third-party 'recovery agents'.",
+          "urgency": "critical"
+        },
+        {
+          "key": "enable-2fa",
+          "title": "Turn on 2-step verification",
+          "body": "Enable PlayStation 2SV so a stolen password alone cannot re-take the account.",
+          "urgency": "critical"
+        },
+        {
+          "key": "revoke-devices",
+          "title": "Sign out of unfamiliar consoles and devices",
+          "body": "After regaining access, deactivate unfamiliar consoles and sign out of other sessions.",
+          "urgency": "important"
+        }
       ]
     },
     {
       "platform": "playstation",
       "platformName": "PlayStation",
       "scenario": "email-changed",
+      "title": null,
+      "reviewedAt": "2026-10-17",
+      "schemaVersion": 1,
+      "disclaimer": "The Grid Nexus does not recover accounts or request account credentials. Follow the official process.",
+      "officialLinks": [
+        {
+          "purpose": "login",
+          "url": "https://www.playstation.com/sign-in/",
+          "verifiedAt": "2026-10-15"
+        },
+        {
+          "purpose": "recovery",
+          "url": "https://www.playstation.com/support/account/recover-account/",
+          "verifiedAt": "2026-10-15"
+        },
+        {
+          "purpose": "security",
+          "url": "https://www.playstation.com/support/account/2sv/",
+          "verifiedAt": "2026-10-15"
+        }
+      ],
       "steps": [
-        "Act immediately on the change notice",
-        "Use a clean device",
-        "Recover through official support",
-        "Restore your email and enable 2FA"
+        {
+          "key": "act-fast",
+          "title": "Act immediately on the change notice",
+          "body": "If you received an \"email changed\" notice you did not make, act now — an attacker is taking over the account.",
+          "urgency": "critical"
+        },
+        {
+          "key": "clean-device",
+          "title": "Use a clean device",
+          "body": "If malware is suspected, do not sign in from the possibly infected device until it is cleaned.",
+          "urgency": "critical"
+        },
+        {
+          "key": "official-recovery",
+          "title": "Recover through official support",
+          "body": "Use PlayStation's official account-recovery process to prove you own the account — never a third-party service.",
+          "urgency": "critical"
+        },
+        {
+          "key": "restore-email",
+          "title": "Restore your email and enable 2FA",
+          "body": "After regaining access, restore your email address and turn on two-factor authentication.",
+          "urgency": "critical"
+        }
       ]
     },
     {
       "platform": "playstation",
       "platformName": "PlayStation",
       "scenario": "lost-authenticator",
+      "title": null,
+      "reviewedAt": "2026-10-16",
+      "schemaVersion": 1,
+      "disclaimer": "The Grid Nexus does not recover accounts or request account credentials. Follow the official process.",
+      "officialLinks": [
+        {
+          "purpose": "login",
+          "url": "https://www.playstation.com/sign-in/",
+          "verifiedAt": "2026-10-15"
+        },
+        {
+          "purpose": "recovery",
+          "url": "https://www.playstation.com/support/account/recover-account/",
+          "verifiedAt": "2026-10-15"
+        },
+        {
+          "purpose": "security",
+          "url": "https://www.playstation.com/support/account/2sv/",
+          "verifiedAt": "2026-10-15"
+        }
+      ],
       "steps": [
-        "Use your saved backup codes",
-        "Recover through official support",
-        "Re-enable two-factor authentication",
-        "Store new backup codes offline"
+        {
+          "key": "backup-codes",
+          "title": "Use your saved backup codes",
+          "body": "If you saved recovery codes when you set up two-factor authentication, use one now to sign in.",
+          "urgency": "critical"
+        },
+        {
+          "key": "official-recovery",
+          "title": "Recover through official support",
+          "body": "If you have no backup codes, use PlayStation's official account-recovery process — never a paid third-party service.",
+          "urgency": "critical"
+        },
+        {
+          "key": "re-enable-2fa",
+          "title": "Re-enable two-factor authentication",
+          "body": "Once you are back in, set up two-factor authentication again so the account is protected.",
+          "urgency": "critical"
+        },
+        {
+          "key": "save-codes",
+          "title": "Store new backup codes offline",
+          "body": "Save the new recovery codes somewhere safe and offline.",
+          "urgency": "important"
+        }
       ]
     },
     {
       "platform": "playstation",
       "platformName": "PlayStation",
       "scenario": "lost-linked-email",
+      "title": null,
+      "reviewedAt": "2026-10-17",
+      "schemaVersion": 1,
+      "disclaimer": "The Grid Nexus does not recover accounts or request account credentials. Follow the official process.",
+      "officialLinks": [
+        {
+          "purpose": "login",
+          "url": "https://www.playstation.com/sign-in/",
+          "verifiedAt": "2026-10-15"
+        },
+        {
+          "purpose": "recovery",
+          "url": "https://www.playstation.com/support/account/recover-account/",
+          "verifiedAt": "2026-10-15"
+        },
+        {
+          "purpose": "security",
+          "url": "https://www.playstation.com/support/account/2sv/",
+          "verifiedAt": "2026-10-15"
+        }
+      ],
       "steps": [
-        "Recover the linked email account",
-        "Recover through official support",
-        "Update the linked email",
-        "Enable two-factor authentication"
+        {
+          "key": "recover-email",
+          "title": "Recover the linked email account",
+          "body": "First recover access to the email address through its own provider — most account controls rely on it.",
+          "urgency": "critical"
+        },
+        {
+          "key": "official-recovery",
+          "title": "Recover through official support",
+          "body": "If you cannot recover the email, use PlayStation's official account-recovery process to prove ownership another way.",
+          "urgency": "critical"
+        },
+        {
+          "key": "update-email",
+          "title": "Update the linked email",
+          "body": "Once back in, change the linked email to one you control.",
+          "urgency": "important"
+        },
+        {
+          "key": "enable-2fa",
+          "title": "Enable two-factor authentication",
+          "body": "Turn on two-factor authentication so the account is not tied to a single email.",
+          "urgency": "critical"
+        }
       ]
     },
     {
       "platform": "playstation",
       "platformName": "PlayStation",
       "scenario": "scam-recovery-contact",
+      "title": null,
+      "reviewedAt": "2026-10-17",
+      "schemaVersion": 1,
+      "disclaimer": "The Grid Nexus does not recover accounts or request account credentials. Follow the official process.",
+      "officialLinks": [
+        {
+          "purpose": "login",
+          "url": "https://www.playstation.com/sign-in/",
+          "verifiedAt": "2026-10-15"
+        },
+        {
+          "purpose": "recovery",
+          "url": "https://www.playstation.com/support/account/recover-account/",
+          "verifiedAt": "2026-10-15"
+        },
+        {
+          "purpose": "security",
+          "url": "https://www.playstation.com/support/account/2sv/",
+          "verifiedAt": "2026-10-15"
+        }
+      ],
       "steps": [
-        "Stop communicating and do not pay",
-        "Change passwords from a clean device",
-        "Report the scam",
-        "Recover through the official process"
+        {
+          "key": "stop-contact",
+          "title": "Stop communicating and do not pay",
+          "body": "Stop responding to the \"recovery service\" and do not send more money — a scammer who has already defrauded you is unlikely to return the account even if paid.",
+          "urgency": "critical"
+        },
+        {
+          "key": "change-passwords",
+          "title": "Change passwords from a clean device",
+          "body": "Change your password and any passwords you reused, from a device you trust.",
+          "urgency": "critical"
+        },
+        {
+          "key": "report-scam",
+          "title": "Report the scam",
+          "body": "Report the scammer to PlayStation and to your payment provider if you paid.",
+          "urgency": "important"
+        },
+        {
+          "key": "official-recovery",
+          "title": "Recover through the official process",
+          "body": "Recover the account through PlayStation's official process — never a paid third party.",
+          "urgency": "critical"
+        }
       ]
     },
     {
       "platform": "playstation",
       "platformName": "PlayStation",
       "scenario": "suspected-malware",
+      "title": null,
+      "reviewedAt": "2026-10-16",
+      "schemaVersion": 1,
+      "disclaimer": "The Grid Nexus does not recover accounts or request account credentials. Follow the official process.",
+      "officialLinks": [
+        {
+          "purpose": "login",
+          "url": "https://www.playstation.com/sign-in/",
+          "verifiedAt": "2026-10-15"
+        },
+        {
+          "purpose": "recovery",
+          "url": "https://www.playstation.com/support/account/recover-account/",
+          "verifiedAt": "2026-10-15"
+        },
+        {
+          "purpose": "security",
+          "url": "https://www.playstation.com/support/account/2sv/",
+          "verifiedAt": "2026-10-15"
+        }
+      ],
       "steps": [
-        "Stop using the possibly infected device",
-        "Scan the device",
-        "Change passwords from a clean device",
-        "Recover the account if it was taken"
+        {
+          "key": "isolate-device",
+          "title": "Stop using the possibly infected device",
+          "body": "Sign out and stop using the device until it has been scanned and cleaned. Use a different trusted device for the next steps.",
+          "urgency": "critical"
+        },
+        {
+          "key": "scan-device",
+          "title": "Scan the device",
+          "body": "Run a reputable antivirus or anti-malware scan and remove anything it flags before signing in again.",
+          "urgency": "critical"
+        },
+        {
+          "key": "change-passwords",
+          "title": "Change passwords from a clean device",
+          "body": "After cleaning, change your password from a device you trust — not the infected one.",
+          "urgency": "critical"
+        },
+        {
+          "key": "official-recovery",
+          "title": "Recover the account if it was taken",
+          "body": "If the account was already stolen, follow PlayStation's official account-recovery process.",
+          "urgency": "critical"
+        }
       ]
     },
     {
       "platform": "playstation",
       "platformName": "PlayStation",
       "scenario": "suspicious-session",
+      "title": null,
+      "reviewedAt": "2026-10-16",
+      "schemaVersion": 1,
+      "disclaimer": "The Grid Nexus does not recover accounts or request account credentials. Follow the official process.",
+      "officialLinks": [
+        {
+          "purpose": "login",
+          "url": "https://www.playstation.com/sign-in/",
+          "verifiedAt": "2026-10-15"
+        },
+        {
+          "purpose": "recovery",
+          "url": "https://www.playstation.com/support/account/recover-account/",
+          "verifiedAt": "2026-10-15"
+        },
+        {
+          "purpose": "security",
+          "url": "https://www.playstation.com/support/account/2sv/",
+          "verifiedAt": "2026-10-15"
+        }
+      ],
       "steps": [
-        "Change your password",
-        "Sign out of other sessions",
-        "Enable two-factor authentication",
-        "Review recent activity"
+        {
+          "key": "change-password",
+          "title": "Change your password",
+          "body": "Change your password from a device you trust, in case someone else is already signed in.",
+          "urgency": "critical"
+        },
+        {
+          "key": "revoke-sessions",
+          "title": "Sign out of other sessions",
+          "body": "Revoke unfamiliar sessions and devices through PlayStation's account settings.",
+          "urgency": "critical"
+        },
+        {
+          "key": "enable-2fa",
+          "title": "Enable two-factor authentication",
+          "body": "Turn on two-factor authentication so a stolen password alone cannot take the account back.",
+          "urgency": "critical"
+        },
+        {
+          "key": "review-activity",
+          "title": "Review recent activity",
+          "body": "Check for changed email, phone number, linked accounts, or messages you did not write.",
+          "urgency": "important"
+        }
       ]
     },
     {
       "platform": "playstation",
       "platformName": "PlayStation",
       "scenario": "unauthorized-purchase",
+      "title": null,
+      "reviewedAt": "2026-10-16",
+      "schemaVersion": 1,
+      "disclaimer": "The Grid Nexus does not recover accounts or request account credentials. Follow the official process.",
+      "officialLinks": [
+        {
+          "purpose": "login",
+          "url": "https://www.playstation.com/sign-in/",
+          "verifiedAt": "2026-10-15"
+        },
+        {
+          "purpose": "recovery",
+          "url": "https://www.playstation.com/support/account/recover-account/",
+          "verifiedAt": "2026-10-15"
+        },
+        {
+          "purpose": "security",
+          "url": "https://www.playstation.com/support/account/2sv/",
+          "verifiedAt": "2026-10-15"
+        }
+      ],
       "steps": [
-        "Review recent purchases",
-        "Secure the account first",
-        "Report the unauthorized charge",
-        "Review saved payment methods"
+        {
+          "key": "review-purchases",
+          "title": "Review recent purchases",
+          "body": "Check your PlayStation purchase history for charges you did not make, and do not click links in unexpected receipt emails.",
+          "urgency": "critical"
+        },
+        {
+          "key": "secure-account",
+          "title": "Secure the account first",
+          "body": "Change your password and enable two-factor authentication so a thief cannot keep spending.",
+          "urgency": "critical"
+        },
+        {
+          "key": "report-charge",
+          "title": "Report the unauthorized charge",
+          "body": "Dispute the charge through PlayStation's official support — never a third-party refund service.",
+          "urgency": "critical"
+        },
+        {
+          "key": "review-payment",
+          "title": "Review saved payment methods",
+          "body": "Remove or replace any card or payment method you do not recognize.",
+          "urgency": "important"
+        }
       ]
     },
     {
       "platform": "riot-games",
       "platformName": "Riot Games",
       "scenario": "account-stolen",
+      "title": null,
+      "reviewedAt": "2026-10-15",
+      "schemaVersion": 1,
+      "disclaimer": "The Grid Nexus does not recover accounts or request account credentials. Follow the official process.",
+      "officialLinks": [
+        {
+          "purpose": "login",
+          "url": "https://auth.riotgames.com/login",
+          "verifiedAt": "2026-10-15"
+        },
+        {
+          "purpose": "recovery",
+          "url": "https://support.riotgames.com/hc/en-us/articles/201751944-Recovering-Your-Account",
+          "verifiedAt": "2026-10-15"
+        },
+        {
+          "purpose": "security",
+          "url": "https://account.riotgames.com/",
+          "verifiedAt": "2026-10-15"
+        }
+      ],
       "steps": [
-        "Use a clean device",
-        "Secure the email on your Riot account",
-        "Start Riot's official account recovery",
-        "Enable two-factor authentication",
-        "Review active sign-in sessions"
+        {
+          "key": "isolate-device",
+          "title": "Use a clean device",
+          "body": "If malware is suspected, avoid signing in from the infected device until it is cleaned.",
+          "urgency": "critical"
+        },
+        {
+          "key": "secure-email",
+          "title": "Secure the email on your Riot account",
+          "body": "Confirm you still control the email address and enable its own two-factor authentication.",
+          "urgency": "critical"
+        },
+        {
+          "key": "official-recovery",
+          "title": "Start Riot's official account recovery",
+          "body": "Submit Riot's account-recovery request; do not trust third-party 'recovery agents'.",
+          "urgency": "critical"
+        },
+        {
+          "key": "enable-2fa",
+          "title": "Enable two-factor authentication",
+          "body": "Turn on 2FA on your Riot account so a stolen password alone cannot take it back over.",
+          "urgency": "critical"
+        },
+        {
+          "key": "review-sessions",
+          "title": "Review active sign-in sessions",
+          "body": "Sign out of unfamiliar sessions after regaining access.",
+          "urgency": "important"
+        }
       ]
     },
     {
       "platform": "riot-games",
       "platformName": "Riot Games",
       "scenario": "email-changed",
+      "title": null,
+      "reviewedAt": "2026-10-17",
+      "schemaVersion": 1,
+      "disclaimer": "The Grid Nexus does not recover accounts or request account credentials. Follow the official process.",
+      "officialLinks": [
+        {
+          "purpose": "login",
+          "url": "https://auth.riotgames.com/login",
+          "verifiedAt": "2026-10-15"
+        },
+        {
+          "purpose": "recovery",
+          "url": "https://support.riotgames.com/hc/en-us/articles/201751944-Recovering-Your-Account",
+          "verifiedAt": "2026-10-15"
+        },
+        {
+          "purpose": "security",
+          "url": "https://account.riotgames.com/",
+          "verifiedAt": "2026-10-15"
+        }
+      ],
       "steps": [
-        "Act immediately on the change notice",
-        "Use a clean device",
-        "Recover through official support",
-        "Restore your email and enable 2FA"
+        {
+          "key": "act-fast",
+          "title": "Act immediately on the change notice",
+          "body": "If you received an \"email changed\" notice you did not make, act now — an attacker is taking over the account.",
+          "urgency": "critical"
+        },
+        {
+          "key": "clean-device",
+          "title": "Use a clean device",
+          "body": "If malware is suspected, do not sign in from the possibly infected device until it is cleaned.",
+          "urgency": "critical"
+        },
+        {
+          "key": "official-recovery",
+          "title": "Recover through official support",
+          "body": "Use Riot Games's official account-recovery process to prove you own the account — never a third-party service.",
+          "urgency": "critical"
+        },
+        {
+          "key": "restore-email",
+          "title": "Restore your email and enable 2FA",
+          "body": "After regaining access, restore your email address and turn on two-factor authentication.",
+          "urgency": "critical"
+        }
       ]
     },
     {
       "platform": "riot-games",
       "platformName": "Riot Games",
       "scenario": "lost-authenticator",
+      "title": null,
+      "reviewedAt": "2026-10-16",
+      "schemaVersion": 1,
+      "disclaimer": "The Grid Nexus does not recover accounts or request account credentials. Follow the official process.",
+      "officialLinks": [
+        {
+          "purpose": "login",
+          "url": "https://auth.riotgames.com/login",
+          "verifiedAt": "2026-10-15"
+        },
+        {
+          "purpose": "recovery",
+          "url": "https://support.riotgames.com/hc/en-us/articles/201751944-Recovering-Your-Account",
+          "verifiedAt": "2026-10-15"
+        },
+        {
+          "purpose": "security",
+          "url": "https://account.riotgames.com/",
+          "verifiedAt": "2026-10-15"
+        }
+      ],
       "steps": [
-        "Use your saved backup codes",
-        "Recover through official support",
-        "Re-enable two-factor authentication",
-        "Store new backup codes offline"
+        {
+          "key": "backup-codes",
+          "title": "Use your saved backup codes",
+          "body": "If you saved recovery codes when you set up two-factor authentication, use one now to sign in.",
+          "urgency": "critical"
+        },
+        {
+          "key": "official-recovery",
+          "title": "Recover through official support",
+          "body": "If you have no backup codes, use Riot Games's official account-recovery process — never a paid third-party service.",
+          "urgency": "critical"
+        },
+        {
+          "key": "re-enable-2fa",
+          "title": "Re-enable two-factor authentication",
+          "body": "Once you are back in, set up two-factor authentication again so the account is protected.",
+          "urgency": "critical"
+        },
+        {
+          "key": "save-codes",
+          "title": "Store new backup codes offline",
+          "body": "Save the new recovery codes somewhere safe and offline.",
+          "urgency": "important"
+        }
       ]
     },
     {
       "platform": "riot-games",
       "platformName": "Riot Games",
       "scenario": "lost-linked-email",
+      "title": null,
+      "reviewedAt": "2026-10-17",
+      "schemaVersion": 1,
+      "disclaimer": "The Grid Nexus does not recover accounts or request account credentials. Follow the official process.",
+      "officialLinks": [
+        {
+          "purpose": "login",
+          "url": "https://auth.riotgames.com/login",
+          "verifiedAt": "2026-10-15"
+        },
+        {
+          "purpose": "recovery",
+          "url": "https://support.riotgames.com/hc/en-us/articles/201751944-Recovering-Your-Account",
+          "verifiedAt": "2026-10-15"
+        },
+        {
+          "purpose": "security",
+          "url": "https://account.riotgames.com/",
+          "verifiedAt": "2026-10-15"
+        }
+      ],
       "steps": [
-        "Recover the linked email account",
-        "Recover through official support",
-        "Update the linked email",
-        "Enable two-factor authentication"
+        {
+          "key": "recover-email",
+          "title": "Recover the linked email account",
+          "body": "First recover access to the email address through its own provider — most account controls rely on it.",
+          "urgency": "critical"
+        },
+        {
+          "key": "official-recovery",
+          "title": "Recover through official support",
+          "body": "If you cannot recover the email, use Riot Games's official account-recovery process to prove ownership another way.",
+          "urgency": "critical"
+        },
+        {
+          "key": "update-email",
+          "title": "Update the linked email",
+          "body": "Once back in, change the linked email to one you control.",
+          "urgency": "important"
+        },
+        {
+          "key": "enable-2fa",
+          "title": "Enable two-factor authentication",
+          "body": "Turn on two-factor authentication so the account is not tied to a single email.",
+          "urgency": "critical"
+        }
       ]
     },
     {
       "platform": "riot-games",
       "platformName": "Riot Games",
       "scenario": "scam-recovery-contact",
+      "title": null,
+      "reviewedAt": "2026-10-17",
+      "schemaVersion": 1,
+      "disclaimer": "The Grid Nexus does not recover accounts or request account credentials. Follow the official process.",
+      "officialLinks": [
+        {
+          "purpose": "login",
+          "url": "https://auth.riotgames.com/login",
+          "verifiedAt": "2026-10-15"
+        },
+        {
+          "purpose": "recovery",
+          "url": "https://support.riotgames.com/hc/en-us/articles/201751944-Recovering-Your-Account",
+          "verifiedAt": "2026-10-15"
+        },
+        {
+          "purpose": "security",
+          "url": "https://account.riotgames.com/",
+          "verifiedAt": "2026-10-15"
+        }
+      ],
       "steps": [
-        "Stop communicating and do not pay",
-        "Change passwords from a clean device",
-        "Report the scam",
-        "Recover through the official process"
+        {
+          "key": "stop-contact",
+          "title": "Stop communicating and do not pay",
+          "body": "Stop responding to the \"recovery service\" and do not send more money — a scammer who has already defrauded you is unlikely to return the account even if paid.",
+          "urgency": "critical"
+        },
+        {
+          "key": "change-passwords",
+          "title": "Change passwords from a clean device",
+          "body": "Change your password and any passwords you reused, from a device you trust.",
+          "urgency": "critical"
+        },
+        {
+          "key": "report-scam",
+          "title": "Report the scam",
+          "body": "Report the scammer to Riot Games and to your payment provider if you paid.",
+          "urgency": "important"
+        },
+        {
+          "key": "official-recovery",
+          "title": "Recover through the official process",
+          "body": "Recover the account through Riot Games's official process — never a paid third party.",
+          "urgency": "critical"
+        }
       ]
     },
     {
       "platform": "riot-games",
       "platformName": "Riot Games",
       "scenario": "suspected-malware",
+      "title": null,
+      "reviewedAt": "2026-10-16",
+      "schemaVersion": 1,
+      "disclaimer": "The Grid Nexus does not recover accounts or request account credentials. Follow the official process.",
+      "officialLinks": [
+        {
+          "purpose": "login",
+          "url": "https://auth.riotgames.com/login",
+          "verifiedAt": "2026-10-15"
+        },
+        {
+          "purpose": "recovery",
+          "url": "https://support.riotgames.com/hc/en-us/articles/201751944-Recovering-Your-Account",
+          "verifiedAt": "2026-10-15"
+        },
+        {
+          "purpose": "security",
+          "url": "https://account.riotgames.com/",
+          "verifiedAt": "2026-10-15"
+        }
+      ],
       "steps": [
-        "Stop using the possibly infected device",
-        "Scan the device",
-        "Change passwords from a clean device",
-        "Recover the account if it was taken"
+        {
+          "key": "isolate-device",
+          "title": "Stop using the possibly infected device",
+          "body": "Sign out and stop using the device until it has been scanned and cleaned. Use a different trusted device for the next steps.",
+          "urgency": "critical"
+        },
+        {
+          "key": "scan-device",
+          "title": "Scan the device",
+          "body": "Run a reputable antivirus or anti-malware scan and remove anything it flags before signing in again.",
+          "urgency": "critical"
+        },
+        {
+          "key": "change-passwords",
+          "title": "Change passwords from a clean device",
+          "body": "After cleaning, change your password from a device you trust — not the infected one.",
+          "urgency": "critical"
+        },
+        {
+          "key": "official-recovery",
+          "title": "Recover the account if it was taken",
+          "body": "If the account was already stolen, follow Riot Games's official account-recovery process.",
+          "urgency": "critical"
+        }
       ]
     },
     {
       "platform": "riot-games",
       "platformName": "Riot Games",
       "scenario": "suspicious-session",
+      "title": null,
+      "reviewedAt": "2026-10-16",
+      "schemaVersion": 1,
+      "disclaimer": "The Grid Nexus does not recover accounts or request account credentials. Follow the official process.",
+      "officialLinks": [
+        {
+          "purpose": "login",
+          "url": "https://auth.riotgames.com/login",
+          "verifiedAt": "2026-10-15"
+        },
+        {
+          "purpose": "recovery",
+          "url": "https://support.riotgames.com/hc/en-us/articles/201751944-Recovering-Your-Account",
+          "verifiedAt": "2026-10-15"
+        },
+        {
+          "purpose": "security",
+          "url": "https://account.riotgames.com/",
+          "verifiedAt": "2026-10-15"
+        }
+      ],
       "steps": [
-        "Change your password",
-        "Sign out of other sessions",
-        "Enable two-factor authentication",
-        "Review recent activity"
+        {
+          "key": "change-password",
+          "title": "Change your password",
+          "body": "Change your password from a device you trust, in case someone else is already signed in.",
+          "urgency": "critical"
+        },
+        {
+          "key": "revoke-sessions",
+          "title": "Sign out of other sessions",
+          "body": "Revoke unfamiliar sessions and devices through Riot Games's account settings.",
+          "urgency": "critical"
+        },
+        {
+          "key": "enable-2fa",
+          "title": "Enable two-factor authentication",
+          "body": "Turn on two-factor authentication so a stolen password alone cannot take the account back.",
+          "urgency": "critical"
+        },
+        {
+          "key": "review-activity",
+          "title": "Review recent activity",
+          "body": "Check for changed email, phone number, linked accounts, or messages you did not write.",
+          "urgency": "important"
+        }
       ]
     },
     {
       "platform": "riot-games",
       "platformName": "Riot Games",
       "scenario": "unauthorized-purchase",
+      "title": null,
+      "reviewedAt": "2026-10-16",
+      "schemaVersion": 1,
+      "disclaimer": "The Grid Nexus does not recover accounts or request account credentials. Follow the official process.",
+      "officialLinks": [
+        {
+          "purpose": "login",
+          "url": "https://auth.riotgames.com/login",
+          "verifiedAt": "2026-10-15"
+        },
+        {
+          "purpose": "recovery",
+          "url": "https://support.riotgames.com/hc/en-us/articles/201751944-Recovering-Your-Account",
+          "verifiedAt": "2026-10-15"
+        },
+        {
+          "purpose": "security",
+          "url": "https://account.riotgames.com/",
+          "verifiedAt": "2026-10-15"
+        }
+      ],
       "steps": [
-        "Review recent purchases",
-        "Secure the account first",
-        "Report the unauthorized charge",
-        "Review saved payment methods"
+        {
+          "key": "review-purchases",
+          "title": "Review recent purchases",
+          "body": "Check your Riot Games purchase history for charges you did not make, and do not click links in unexpected receipt emails.",
+          "urgency": "critical"
+        },
+        {
+          "key": "secure-account",
+          "title": "Secure the account first",
+          "body": "Change your password and enable two-factor authentication so a thief cannot keep spending.",
+          "urgency": "critical"
+        },
+        {
+          "key": "report-charge",
+          "title": "Report the unauthorized charge",
+          "body": "Dispute the charge through Riot Games's official support — never a third-party refund service.",
+          "urgency": "critical"
+        },
+        {
+          "key": "review-payment",
+          "title": "Review saved payment methods",
+          "body": "Remove or replace any card or payment method you do not recognize.",
+          "urgency": "important"
+        }
       ]
     },
     {
       "platform": "steam",
       "platformName": "Steam",
       "scenario": "account-stolen",
+      "title": null,
+      "reviewedAt": "2026-10-14",
+      "schemaVersion": 1,
+      "disclaimer": "The Grid Nexus does not recover accounts or request account credentials. Follow the official Steam Support process.",
+      "officialLinks": [
+        {
+          "purpose": "login",
+          "url": "https://store.steampowered.com/login/",
+          "verifiedAt": "2026-10-14"
+        },
+        {
+          "purpose": "recovery",
+          "url": "https://help.steampowered.com/",
+          "verifiedAt": "2026-10-14"
+        },
+        {
+          "purpose": "security",
+          "url": "https://store.steampowered.com/twofactor/manage",
+          "verifiedAt": "2026-10-14"
+        }
+      ],
       "steps": [
-        "Use a different trusted device if possible",
-        "Secure the email connected to Steam",
-        "Start Steam's official account-recovery process",
-        "Review authorized devices and Steam Guard",
-        "Review Steam Web API key access"
+        {
+          "key": "isolate-device",
+          "title": "Use a different trusted device if possible",
+          "body": "If you suspect malware, avoid signing in from the possibly infected device until it has been cleaned.",
+          "urgency": "critical"
+        },
+        {
+          "key": "secure-email",
+          "title": "Secure the email connected to Steam",
+          "body": "Confirm you still control the email address, change its password if needed, and enable its own two-factor authentication.",
+          "urgency": "critical"
+        },
+        {
+          "key": "official-recovery",
+          "title": "Start Steam's official account-recovery process",
+          "body": "Use Steam Support directly rather than a search-result link or a third-party recovery service.",
+          "urgency": "critical"
+        },
+        {
+          "key": "revoke-sessions",
+          "title": "Review authorized devices and Steam Guard",
+          "body": "After regaining access, deauthorize unfamiliar devices and review Steam Guard settings.",
+          "urgency": "important"
+        },
+        {
+          "key": "review-api-key",
+          "title": "Review Steam Web API key access",
+          "body": "If you did not intentionally create an API key, revoke it through Steam's official API key page.",
+          "urgency": "important"
+        }
       ]
     },
     {
       "platform": "steam",
       "platformName": "Steam",
       "scenario": "email-changed",
+      "title": null,
+      "reviewedAt": "2026-10-17",
+      "schemaVersion": 1,
+      "disclaimer": "The Grid Nexus does not recover accounts or request account credentials. Follow the official process.",
+      "officialLinks": [
+        {
+          "purpose": "login",
+          "url": "https://store.steampowered.com/login/",
+          "verifiedAt": "2026-10-14"
+        },
+        {
+          "purpose": "recovery",
+          "url": "https://help.steampowered.com/",
+          "verifiedAt": "2026-10-14"
+        },
+        {
+          "purpose": "security",
+          "url": "https://store.steampowered.com/twofactor/manage",
+          "verifiedAt": "2026-10-14"
+        }
+      ],
       "steps": [
-        "Act immediately on the change notice",
-        "Use a clean device",
-        "Recover through official support",
-        "Restore your email and enable 2FA"
+        {
+          "key": "act-fast",
+          "title": "Act immediately on the change notice",
+          "body": "If you received an \"email changed\" notice you did not make, act now — an attacker is taking over the account.",
+          "urgency": "critical"
+        },
+        {
+          "key": "clean-device",
+          "title": "Use a clean device",
+          "body": "If malware is suspected, do not sign in from the possibly infected device until it is cleaned.",
+          "urgency": "critical"
+        },
+        {
+          "key": "official-recovery",
+          "title": "Recover through official support",
+          "body": "Use Steam's official account-recovery process to prove you own the account — never a third-party service.",
+          "urgency": "critical"
+        },
+        {
+          "key": "restore-email",
+          "title": "Restore your email and enable 2FA",
+          "body": "After regaining access, restore your email address and turn on two-factor authentication.",
+          "urgency": "critical"
+        }
       ]
     },
     {
       "platform": "steam",
       "platformName": "Steam",
       "scenario": "lost-authenticator",
+      "title": null,
+      "reviewedAt": "2026-10-16",
+      "schemaVersion": 1,
+      "disclaimer": "The Grid Nexus does not recover accounts or request account credentials. Follow the official process.",
+      "officialLinks": [
+        {
+          "purpose": "login",
+          "url": "https://store.steampowered.com/login/",
+          "verifiedAt": "2026-10-14"
+        },
+        {
+          "purpose": "recovery",
+          "url": "https://help.steampowered.com/",
+          "verifiedAt": "2026-10-14"
+        },
+        {
+          "purpose": "security",
+          "url": "https://store.steampowered.com/twofactor/manage",
+          "verifiedAt": "2026-10-14"
+        }
+      ],
       "steps": [
-        "Use your saved backup codes",
-        "Recover through official support",
-        "Re-enable two-factor authentication",
-        "Store new backup codes offline"
+        {
+          "key": "backup-codes",
+          "title": "Use your saved backup codes",
+          "body": "If you saved recovery codes when you set up two-factor authentication, use one now to sign in.",
+          "urgency": "critical"
+        },
+        {
+          "key": "official-recovery",
+          "title": "Recover through official support",
+          "body": "If you have no backup codes, use Steam's official account-recovery process — never a paid third-party service.",
+          "urgency": "critical"
+        },
+        {
+          "key": "re-enable-2fa",
+          "title": "Re-enable two-factor authentication",
+          "body": "Once you are back in, set up two-factor authentication again so the account is protected.",
+          "urgency": "critical"
+        },
+        {
+          "key": "save-codes",
+          "title": "Store new backup codes offline",
+          "body": "Save the new recovery codes somewhere safe and offline.",
+          "urgency": "important"
+        }
       ]
     },
     {
       "platform": "steam",
       "platformName": "Steam",
       "scenario": "lost-linked-email",
+      "title": null,
+      "reviewedAt": "2026-10-17",
+      "schemaVersion": 1,
+      "disclaimer": "The Grid Nexus does not recover accounts or request account credentials. Follow the official process.",
+      "officialLinks": [
+        {
+          "purpose": "login",
+          "url": "https://store.steampowered.com/login/",
+          "verifiedAt": "2026-10-14"
+        },
+        {
+          "purpose": "recovery",
+          "url": "https://help.steampowered.com/",
+          "verifiedAt": "2026-10-14"
+        },
+        {
+          "purpose": "security",
+          "url": "https://store.steampowered.com/twofactor/manage",
+          "verifiedAt": "2026-10-14"
+        }
+      ],
       "steps": [
-        "Recover the linked email account",
-        "Recover through official support",
-        "Update the linked email",
-        "Enable two-factor authentication"
+        {
+          "key": "recover-email",
+          "title": "Recover the linked email account",
+          "body": "First recover access to the email address through its own provider — most account controls rely on it.",
+          "urgency": "critical"
+        },
+        {
+          "key": "official-recovery",
+          "title": "Recover through official support",
+          "body": "If you cannot recover the email, use Steam's official account-recovery process to prove ownership another way.",
+          "urgency": "critical"
+        },
+        {
+          "key": "update-email",
+          "title": "Update the linked email",
+          "body": "Once back in, change the linked email to one you control.",
+          "urgency": "important"
+        },
+        {
+          "key": "enable-2fa",
+          "title": "Enable two-factor authentication",
+          "body": "Turn on two-factor authentication so the account is not tied to a single email.",
+          "urgency": "critical"
+        }
       ]
     },
     {
       "platform": "steam",
       "platformName": "Steam",
       "scenario": "scam-recovery-contact",
+      "title": null,
+      "reviewedAt": "2026-10-17",
+      "schemaVersion": 1,
+      "disclaimer": "The Grid Nexus does not recover accounts or request account credentials. Follow the official process.",
+      "officialLinks": [
+        {
+          "purpose": "login",
+          "url": "https://store.steampowered.com/login/",
+          "verifiedAt": "2026-10-14"
+        },
+        {
+          "purpose": "recovery",
+          "url": "https://help.steampowered.com/",
+          "verifiedAt": "2026-10-14"
+        },
+        {
+          "purpose": "security",
+          "url": "https://store.steampowered.com/twofactor/manage",
+          "verifiedAt": "2026-10-14"
+        }
+      ],
       "steps": [
-        "Stop communicating and do not pay",
-        "Change passwords from a clean device",
-        "Report the scam",
-        "Recover through the official process"
+        {
+          "key": "stop-contact",
+          "title": "Stop communicating and do not pay",
+          "body": "Stop responding to the \"recovery service\" and do not send more money — a scammer who has already defrauded you is unlikely to return the account even if paid.",
+          "urgency": "critical"
+        },
+        {
+          "key": "change-passwords",
+          "title": "Change passwords from a clean device",
+          "body": "Change your password and any passwords you reused, from a device you trust.",
+          "urgency": "critical"
+        },
+        {
+          "key": "report-scam",
+          "title": "Report the scam",
+          "body": "Report the scammer to Steam and to your payment provider if you paid.",
+          "urgency": "important"
+        },
+        {
+          "key": "official-recovery",
+          "title": "Recover through the official process",
+          "body": "Recover the account through Steam's official process — never a paid third party.",
+          "urgency": "critical"
+        }
       ]
     },
     {
       "platform": "steam",
       "platformName": "Steam",
       "scenario": "suspected-malware",
+      "title": null,
+      "reviewedAt": "2026-10-16",
+      "schemaVersion": 1,
+      "disclaimer": "The Grid Nexus does not recover accounts or request account credentials. Follow the official process.",
+      "officialLinks": [
+        {
+          "purpose": "login",
+          "url": "https://store.steampowered.com/login/",
+          "verifiedAt": "2026-10-14"
+        },
+        {
+          "purpose": "recovery",
+          "url": "https://help.steampowered.com/",
+          "verifiedAt": "2026-10-14"
+        },
+        {
+          "purpose": "security",
+          "url": "https://store.steampowered.com/twofactor/manage",
+          "verifiedAt": "2026-10-14"
+        }
+      ],
       "steps": [
-        "Stop using the possibly infected device",
-        "Scan the device",
-        "Change passwords from a clean device",
-        "Recover the account if it was taken"
+        {
+          "key": "isolate-device",
+          "title": "Stop using the possibly infected device",
+          "body": "Sign out and stop using the device until it has been scanned and cleaned. Use a different trusted device for the next steps.",
+          "urgency": "critical"
+        },
+        {
+          "key": "scan-device",
+          "title": "Scan the device",
+          "body": "Run a reputable antivirus or anti-malware scan and remove anything it flags before signing in again.",
+          "urgency": "critical"
+        },
+        {
+          "key": "change-passwords",
+          "title": "Change passwords from a clean device",
+          "body": "After cleaning, change your password from a device you trust — not the infected one.",
+          "urgency": "critical"
+        },
+        {
+          "key": "official-recovery",
+          "title": "Recover the account if it was taken",
+          "body": "If the account was already stolen, follow Steam's official account-recovery process.",
+          "urgency": "critical"
+        }
       ]
     },
     {
       "platform": "steam",
       "platformName": "Steam",
       "scenario": "suspicious-session",
+      "title": null,
+      "reviewedAt": "2026-10-16",
+      "schemaVersion": 1,
+      "disclaimer": "The Grid Nexus does not recover accounts or request account credentials. Follow the official process.",
+      "officialLinks": [
+        {
+          "purpose": "login",
+          "url": "https://store.steampowered.com/login/",
+          "verifiedAt": "2026-10-14"
+        },
+        {
+          "purpose": "recovery",
+          "url": "https://help.steampowered.com/",
+          "verifiedAt": "2026-10-14"
+        },
+        {
+          "purpose": "security",
+          "url": "https://store.steampowered.com/twofactor/manage",
+          "verifiedAt": "2026-10-14"
+        }
+      ],
       "steps": [
-        "Change your password",
-        "Sign out of other sessions",
-        "Enable two-factor authentication",
-        "Review recent activity"
+        {
+          "key": "change-password",
+          "title": "Change your password",
+          "body": "Change your password from a device you trust, in case someone else is already signed in.",
+          "urgency": "critical"
+        },
+        {
+          "key": "revoke-sessions",
+          "title": "Sign out of other sessions",
+          "body": "Revoke unfamiliar sessions and devices through Steam's account settings.",
+          "urgency": "critical"
+        },
+        {
+          "key": "enable-2fa",
+          "title": "Enable two-factor authentication",
+          "body": "Turn on two-factor authentication so a stolen password alone cannot take the account back.",
+          "urgency": "critical"
+        },
+        {
+          "key": "review-activity",
+          "title": "Review recent activity",
+          "body": "Check for changed email, phone number, linked accounts, or messages you did not write.",
+          "urgency": "important"
+        }
       ]
     },
     {
       "platform": "steam",
       "platformName": "Steam",
       "scenario": "unauthorized-purchase",
+      "title": null,
+      "reviewedAt": "2026-10-16",
+      "schemaVersion": 1,
+      "disclaimer": "The Grid Nexus does not recover accounts or request account credentials. Follow the official process.",
+      "officialLinks": [
+        {
+          "purpose": "login",
+          "url": "https://store.steampowered.com/login/",
+          "verifiedAt": "2026-10-14"
+        },
+        {
+          "purpose": "recovery",
+          "url": "https://help.steampowered.com/",
+          "verifiedAt": "2026-10-14"
+        },
+        {
+          "purpose": "security",
+          "url": "https://store.steampowered.com/twofactor/manage",
+          "verifiedAt": "2026-10-14"
+        }
+      ],
       "steps": [
-        "Review recent purchases",
-        "Secure the account first",
-        "Report the unauthorized charge",
-        "Review saved payment methods"
+        {
+          "key": "review-purchases",
+          "title": "Review recent purchases",
+          "body": "Check your Steam purchase history for charges you did not make, and do not click links in unexpected receipt emails.",
+          "urgency": "critical"
+        },
+        {
+          "key": "secure-account",
+          "title": "Secure the account first",
+          "body": "Change your password and enable two-factor authentication so a thief cannot keep spending.",
+          "urgency": "critical"
+        },
+        {
+          "key": "report-charge",
+          "title": "Report the unauthorized charge",
+          "body": "Dispute the charge through Steam's official support — never a third-party refund service.",
+          "urgency": "critical"
+        },
+        {
+          "key": "review-payment",
+          "title": "Review saved payment methods",
+          "body": "Remove or replace any card or payment method you do not recognize.",
+          "urgency": "important"
+        }
       ]
     },
     {
       "platform": "xbox",
       "platformName": "Xbox",
       "scenario": "account-stolen",
+      "title": null,
+      "reviewedAt": "2026-10-15",
+      "schemaVersion": 1,
+      "disclaimer": "The Grid Nexus does not recover accounts or request account credentials. Follow the official process.",
+      "officialLinks": [
+        {
+          "purpose": "login",
+          "url": "https://login.live.com/",
+          "verifiedAt": "2026-10-15"
+        },
+        {
+          "purpose": "recovery",
+          "url": "https://account.live.com/acsr",
+          "verifiedAt": "2026-10-15"
+        },
+        {
+          "purpose": "security",
+          "url": "https://account.microsoft.com/security",
+          "verifiedAt": "2026-10-15"
+        }
+      ],
       "steps": [
-        "Use a clean device",
-        "Secure the Microsoft account email",
-        "Use Microsoft's official account-recovery form",
-        "Turn on two-step verification or passwordless sign-in",
-        "Review devices and recent sign-ins"
+        {
+          "key": "isolate-device",
+          "title": "Use a clean device",
+          "body": "If malware is suspected, avoid signing in from the infected device until it is cleaned.",
+          "urgency": "critical"
+        },
+        {
+          "key": "secure-email",
+          "title": "Secure the Microsoft account email",
+          "body": "Confirm you still control the email address and enable its own two-factor authentication.",
+          "urgency": "critical"
+        },
+        {
+          "key": "official-recovery",
+          "title": "Use Microsoft's official account-recovery form",
+          "body": "Submit Microsoft's account recovery form; do not trust third-party 'recovery agents'.",
+          "urgency": "critical"
+        },
+        {
+          "key": "enable-2fa",
+          "title": "Turn on two-step verification or passwordless sign-in",
+          "body": "Enable Microsoft two-step verification (or go passwordless) so a stolen password alone cannot re-take the account.",
+          "urgency": "critical"
+        },
+        {
+          "key": "review-devices",
+          "title": "Review devices and recent sign-ins",
+          "body": "Remove unfamiliar devices from your Microsoft account after regaining access.",
+          "urgency": "important"
+        }
       ]
     },
     {
       "platform": "xbox",
       "platformName": "Xbox",
       "scenario": "email-changed",
+      "title": null,
+      "reviewedAt": "2026-10-17",
+      "schemaVersion": 1,
+      "disclaimer": "The Grid Nexus does not recover accounts or request account credentials. Follow the official process.",
+      "officialLinks": [
+        {
+          "purpose": "login",
+          "url": "https://login.live.com/",
+          "verifiedAt": "2026-10-15"
+        },
+        {
+          "purpose": "recovery",
+          "url": "https://account.live.com/acsr",
+          "verifiedAt": "2026-10-15"
+        },
+        {
+          "purpose": "security",
+          "url": "https://account.microsoft.com/security",
+          "verifiedAt": "2026-10-15"
+        }
+      ],
       "steps": [
-        "Act immediately on the change notice",
-        "Use a clean device",
-        "Recover through official support",
-        "Restore your email and enable 2FA"
+        {
+          "key": "act-fast",
+          "title": "Act immediately on the change notice",
+          "body": "If you received an \"email changed\" notice you did not make, act now — an attacker is taking over the account.",
+          "urgency": "critical"
+        },
+        {
+          "key": "clean-device",
+          "title": "Use a clean device",
+          "body": "If malware is suspected, do not sign in from the possibly infected device until it is cleaned.",
+          "urgency": "critical"
+        },
+        {
+          "key": "official-recovery",
+          "title": "Recover through official support",
+          "body": "Use Xbox's official account-recovery process to prove you own the account — never a third-party service.",
+          "urgency": "critical"
+        },
+        {
+          "key": "restore-email",
+          "title": "Restore your email and enable 2FA",
+          "body": "After regaining access, restore your email address and turn on two-factor authentication.",
+          "urgency": "critical"
+        }
       ]
     },
     {
       "platform": "xbox",
       "platformName": "Xbox",
       "scenario": "lost-authenticator",
+      "title": null,
+      "reviewedAt": "2026-10-16",
+      "schemaVersion": 1,
+      "disclaimer": "The Grid Nexus does not recover accounts or request account credentials. Follow the official process.",
+      "officialLinks": [
+        {
+          "purpose": "login",
+          "url": "https://login.live.com/",
+          "verifiedAt": "2026-10-15"
+        },
+        {
+          "purpose": "recovery",
+          "url": "https://account.live.com/acsr",
+          "verifiedAt": "2026-10-15"
+        },
+        {
+          "purpose": "security",
+          "url": "https://account.microsoft.com/security",
+          "verifiedAt": "2026-10-15"
+        }
+      ],
       "steps": [
-        "Use your saved backup codes",
-        "Recover through official support",
-        "Re-enable two-factor authentication",
-        "Store new backup codes offline"
+        {
+          "key": "backup-codes",
+          "title": "Use your saved backup codes",
+          "body": "If you saved recovery codes when you set up two-factor authentication, use one now to sign in.",
+          "urgency": "critical"
+        },
+        {
+          "key": "official-recovery",
+          "title": "Recover through official support",
+          "body": "If you have no backup codes, use Xbox's official account-recovery process — never a paid third-party service.",
+          "urgency": "critical"
+        },
+        {
+          "key": "re-enable-2fa",
+          "title": "Re-enable two-factor authentication",
+          "body": "Once you are back in, set up two-factor authentication again so the account is protected.",
+          "urgency": "critical"
+        },
+        {
+          "key": "save-codes",
+          "title": "Store new backup codes offline",
+          "body": "Save the new recovery codes somewhere safe and offline.",
+          "urgency": "important"
+        }
       ]
     },
     {
       "platform": "xbox",
       "platformName": "Xbox",
       "scenario": "lost-linked-email",
+      "title": null,
+      "reviewedAt": "2026-10-17",
+      "schemaVersion": 1,
+      "disclaimer": "The Grid Nexus does not recover accounts or request account credentials. Follow the official process.",
+      "officialLinks": [
+        {
+          "purpose": "login",
+          "url": "https://login.live.com/",
+          "verifiedAt": "2026-10-15"
+        },
+        {
+          "purpose": "recovery",
+          "url": "https://account.live.com/acsr",
+          "verifiedAt": "2026-10-15"
+        },
+        {
+          "purpose": "security",
+          "url": "https://account.microsoft.com/security",
+          "verifiedAt": "2026-10-15"
+        }
+      ],
       "steps": [
-        "Recover the linked email account",
-        "Recover through official support",
-        "Update the linked email",
-        "Enable two-factor authentication"
+        {
+          "key": "recover-email",
+          "title": "Recover the linked email account",
+          "body": "First recover access to the email address through its own provider — most account controls rely on it.",
+          "urgency": "critical"
+        },
+        {
+          "key": "official-recovery",
+          "title": "Recover through official support",
+          "body": "If you cannot recover the email, use Xbox's official account-recovery process to prove ownership another way.",
+          "urgency": "critical"
+        },
+        {
+          "key": "update-email",
+          "title": "Update the linked email",
+          "body": "Once back in, change the linked email to one you control.",
+          "urgency": "important"
+        },
+        {
+          "key": "enable-2fa",
+          "title": "Enable two-factor authentication",
+          "body": "Turn on two-factor authentication so the account is not tied to a single email.",
+          "urgency": "critical"
+        }
       ]
     },
     {
       "platform": "xbox",
       "platformName": "Xbox",
       "scenario": "scam-recovery-contact",
+      "title": null,
+      "reviewedAt": "2026-10-17",
+      "schemaVersion": 1,
+      "disclaimer": "The Grid Nexus does not recover accounts or request account credentials. Follow the official process.",
+      "officialLinks": [
+        {
+          "purpose": "login",
+          "url": "https://login.live.com/",
+          "verifiedAt": "2026-10-15"
+        },
+        {
+          "purpose": "recovery",
+          "url": "https://account.live.com/acsr",
+          "verifiedAt": "2026-10-15"
+        },
+        {
+          "purpose": "security",
+          "url": "https://account.microsoft.com/security",
+          "verifiedAt": "2026-10-15"
+        }
+      ],
       "steps": [
-        "Stop communicating and do not pay",
-        "Change passwords from a clean device",
-        "Report the scam",
-        "Recover through the official process"
+        {
+          "key": "stop-contact",
+          "title": "Stop communicating and do not pay",
+          "body": "Stop responding to the \"recovery service\" and do not send more money — a scammer who has already defrauded you is unlikely to return the account even if paid.",
+          "urgency": "critical"
+        },
+        {
+          "key": "change-passwords",
+          "title": "Change passwords from a clean device",
+          "body": "Change your password and any passwords you reused, from a device you trust.",
+          "urgency": "critical"
+        },
+        {
+          "key": "report-scam",
+          "title": "Report the scam",
+          "body": "Report the scammer to Xbox and to your payment provider if you paid.",
+          "urgency": "important"
+        },
+        {
+          "key": "official-recovery",
+          "title": "Recover through the official process",
+          "body": "Recover the account through Xbox's official process — never a paid third party.",
+          "urgency": "critical"
+        }
       ]
     },
     {
       "platform": "xbox",
       "platformName": "Xbox",
       "scenario": "suspected-malware",
+      "title": null,
+      "reviewedAt": "2026-10-16",
+      "schemaVersion": 1,
+      "disclaimer": "The Grid Nexus does not recover accounts or request account credentials. Follow the official process.",
+      "officialLinks": [
+        {
+          "purpose": "login",
+          "url": "https://login.live.com/",
+          "verifiedAt": "2026-10-15"
+        },
+        {
+          "purpose": "recovery",
+          "url": "https://account.live.com/acsr",
+          "verifiedAt": "2026-10-15"
+        },
+        {
+          "purpose": "security",
+          "url": "https://account.microsoft.com/security",
+          "verifiedAt": "2026-10-15"
+        }
+      ],
       "steps": [
-        "Stop using the possibly infected device",
-        "Scan the device",
-        "Change passwords from a clean device",
-        "Recover the account if it was taken"
+        {
+          "key": "isolate-device",
+          "title": "Stop using the possibly infected device",
+          "body": "Sign out and stop using the device until it has been scanned and cleaned. Use a different trusted device for the next steps.",
+          "urgency": "critical"
+        },
+        {
+          "key": "scan-device",
+          "title": "Scan the device",
+          "body": "Run a reputable antivirus or anti-malware scan and remove anything it flags before signing in again.",
+          "urgency": "critical"
+        },
+        {
+          "key": "change-passwords",
+          "title": "Change passwords from a clean device",
+          "body": "After cleaning, change your password from a device you trust — not the infected one.",
+          "urgency": "critical"
+        },
+        {
+          "key": "official-recovery",
+          "title": "Recover the account if it was taken",
+          "body": "If the account was already stolen, follow Xbox's official account-recovery process.",
+          "urgency": "critical"
+        }
       ]
     },
     {
       "platform": "xbox",
       "platformName": "Xbox",
       "scenario": "suspicious-session",
+      "title": null,
+      "reviewedAt": "2026-10-16",
+      "schemaVersion": 1,
+      "disclaimer": "The Grid Nexus does not recover accounts or request account credentials. Follow the official process.",
+      "officialLinks": [
+        {
+          "purpose": "login",
+          "url": "https://login.live.com/",
+          "verifiedAt": "2026-10-15"
+        },
+        {
+          "purpose": "recovery",
+          "url": "https://account.live.com/acsr",
+          "verifiedAt": "2026-10-15"
+        },
+        {
+          "purpose": "security",
+          "url": "https://account.microsoft.com/security",
+          "verifiedAt": "2026-10-15"
+        }
+      ],
       "steps": [
-        "Change your password",
-        "Sign out of other sessions",
-        "Enable two-factor authentication",
-        "Review recent activity"
+        {
+          "key": "change-password",
+          "title": "Change your password",
+          "body": "Change your password from a device you trust, in case someone else is already signed in.",
+          "urgency": "critical"
+        },
+        {
+          "key": "revoke-sessions",
+          "title": "Sign out of other sessions",
+          "body": "Revoke unfamiliar sessions and devices through Xbox's account settings.",
+          "urgency": "critical"
+        },
+        {
+          "key": "enable-2fa",
+          "title": "Enable two-factor authentication",
+          "body": "Turn on two-factor authentication so a stolen password alone cannot take the account back.",
+          "urgency": "critical"
+        },
+        {
+          "key": "review-activity",
+          "title": "Review recent activity",
+          "body": "Check for changed email, phone number, linked accounts, or messages you did not write.",
+          "urgency": "important"
+        }
       ]
     },
     {
       "platform": "xbox",
       "platformName": "Xbox",
       "scenario": "unauthorized-purchase",
+      "title": null,
+      "reviewedAt": "2026-10-16",
+      "schemaVersion": 1,
+      "disclaimer": "The Grid Nexus does not recover accounts or request account credentials. Follow the official process.",
+      "officialLinks": [
+        {
+          "purpose": "login",
+          "url": "https://login.live.com/",
+          "verifiedAt": "2026-10-15"
+        },
+        {
+          "purpose": "recovery",
+          "url": "https://account.live.com/acsr",
+          "verifiedAt": "2026-10-15"
+        },
+        {
+          "purpose": "security",
+          "url": "https://account.microsoft.com/security",
+          "verifiedAt": "2026-10-15"
+        }
+      ],
       "steps": [
-        "Review recent purchases",
-        "Secure the account first",
-        "Report the unauthorized charge",
-        "Review saved payment methods"
+        {
+          "key": "review-purchases",
+          "title": "Review recent purchases",
+          "body": "Check your Xbox purchase history for charges you did not make, and do not click links in unexpected receipt emails.",
+          "urgency": "critical"
+        },
+        {
+          "key": "secure-account",
+          "title": "Secure the account first",
+          "body": "Change your password and enable two-factor authentication so a thief cannot keep spending.",
+          "urgency": "critical"
+        },
+        {
+          "key": "report-charge",
+          "title": "Report the unauthorized charge",
+          "body": "Dispute the charge through Xbox's official support — never a third-party refund service.",
+          "urgency": "critical"
+        },
+        {
+          "key": "review-payment",
+          "title": "Review saved payment methods",
+          "body": "Remove or replace any card or payment method you do not recognize.",
+          "urgency": "important"
+        }
       ]
     }
   ],
-  "_note": "Recovery playbooks. CC BY 4.0.",
+  "_note": "Recovery playbooks with official links, reviewedAt, and step text. CC BY 4.0.",
   "_source": "https://thegridnexus.com/data"
 }
