@@ -6,6 +6,10 @@ import { test } from 'node:test';
 const html = fs.readFileSync(new URL('../index.html', import.meta.url), 'utf8');
 const head = html.split('</head>')[0].replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi, '');
 
+test('homepage raw HTML contains the Bing site verification tag', () => {
+  assert.match(head, /<meta\s+name="msvalidate\.01"\s+content="0B8B1512C564440D65647936958B2322"\s*\/>/);
+});
+
 test('homepage raw HTML contains exactly one canonical URL', () => {
   const links = [...head.matchAll(/<link\b[^>]*rel="canonical"[^>]*>/gi)];
   assert.equal(links.length, 1);
