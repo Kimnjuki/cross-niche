@@ -19,7 +19,10 @@ const projectRoot = path.resolve(__dirname, '..');
 const HOST = 'thegridnexus.com';
 const KEY = 'aa8245eb73a4eed4dddf92b938f96cf5';
 const KEY_LOCATION = `https://${HOST}/${KEY}.txt`;
-const ENDPOINT = 'https://api.indexnow.org/indexnow';
+const ENDPOINTS = [
+  'https://api.indexnow.org/indexnow',
+  'https://www.bing.com/indexnow',
+];
 
 const DEFAULT_URLS = [
   `https://${HOST}/`,
@@ -51,7 +54,28 @@ function collectUrls(argv) {
   return fromArgs.length ? fromArgs : DEFAULT_URLS;
 }
 
-async function submit(urlList) {
+function sleep(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+async function verifyKeyFile() {
+  const res = await fetch(KEY_LOCATION, {
+    headers: { Accept: 'text/plain,*/*' },
+    redirect: 'follow',
+  });
+  const text = (await res.text()).trim();
+  const contentType = res.headers.get('content-type') || '';
+  const ok =
+    res.ok &&
+    text === KEY &&
+    !contentType.includes('text/html') &&
+    !text.startsWith('<!doctype') &&
+    !text.startsWith('<html');
+
+  return { ok, status: res.status, contentType, preview: text.slice(0, 120) };
+}
+
+async function postOnce(endpoint, urlList) {
   const body = {
     host: HOST,
     key: KEY,
@@ -59,14 +83,34 @@ async function submit(urlList) {
     urlList,
   };
 
-  const res = await fetch(ENDPOINT, {
+  const res = await fetch(endpoint, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json; charset=utf-8' },
     body: JSON.stringify(body),
   });
-
   const text = await res.text();
-  return { status: res.status, text };
+  return { endpoint, status: res.status, text };
+}
+
+async function submitWithRetry(urlList, attempts = 3) {
+  let lastError;
+  for (let attempt = 1; attempt <= attempts; attempt++) {
+    for (const endpoint of ENDPOINTS) {
+      try {
+        const result = await postOnce(endpoint, urlList);
+        if (result.status === 200 || result.status === 202) return result;
+        lastError = new Error(
+          `${endpoint} returned HTTP ${result.status}${result.text ? `: ${result.text}` : ''}`
+        );
+      } catch (err) {
+        lastError = err;
+        const cause = err?.cause?.code || err?.code || err?.message;
+        console.error(`Attempt ${attempt}/${attempts} failed for ${endpoint}: ${cause}`);
+      }
+    }
+    if (attempt < attempts) await sleep(1500 * attempt);
+  }
+  throw lastError ?? new Error('IndexNow submit failed');
 }
 
 const urls = [...new Set(collectUrls(process.argv.slice(2)))];
@@ -76,7 +120,33 @@ if (!urls.length) {
 }
 
 console.log(`IndexNow key file: ${KEY_LOCATION}`);
+try {
+  const keyCheck = await verifyKeyFile();
+  if (!keyCheck.ok) {
+    console.error(
+      [
+        'Key file is not live yet (Coolify has not deployed it, or nginx is serving the SPA shell).',
+        `HTTP ${keyCheck.status} content-type=${keyCheck.contentType || 'unknown'}`,
+        `Body preview: ${keyCheck.preview || '(empty)'}`,
+        'Wait for https://thegridnexus.com/aa8245eb73a4eed4dddf92b938f96cf5.txt to return only the key as text/plain, then rerun npm run indexnow.',
+        'You can still submit sitemaps in Bing Webmaster Tools without IndexNow.',
+      ].join('\n')
+    );
+    process.exit(2);
+  }
+  console.log('Key file verified.');
+} catch (err) {
+  console.error(`Could not fetch key file: ${err?.cause?.code || err.message}`);
+  process.exit(2);
+}
+
 console.log(`Submitting ${urls.length} URL(s)…`);
-const result = await submit(urls);
-console.log(`HTTP ${result.status}${result.text ? ` — ${result.text}` : ''}`);
-if (result.status !== 200 && result.status !== 202) process.exit(1);
+try {
+  const result = await submitWithRetry(urls);
+  console.log(
+    `HTTP ${result.status} via ${result.endpoint}${result.text ? ` — ${result.text}` : ''}`
+  );
+} catch (err) {
+  console.error(`IndexNow submit failed: ${err?.cause?.code || err.message}`);
+  process.exit(1);
+}
