@@ -1,0 +1,66 @@
+Bing Webmaster Tools — The Grid Nexus
+Verified: 2026-11-17
+Site: https://thegridnexus.com/
+
+═══════════════════════════════════════════════════════════════════
+1) SITEMAPS  (Bing → Sitemaps → Submit sitemap)
+═══════════════════════════════════════════════════════════════════
+Submit these in order. Prefer the index first; Bing will follow the children.
+
+  https://thegridnexus.com/sitemap-index.xml
+  https://thegridnexus.com/sitemap.xml
+  https://thegridnexus.com/sitemap-articles.xml
+
+Optional RSS (also accepted as a sitemap feed):
+
+  https://thegridnexus.com/rss.xml
+
+Do NOT submit sitemap-news.xml while it is empty (no articles in the last 48h).
+robots.txt already advertises the index:
+
+  Sitemap: https://thegridnexus.com/sitemap-index.xml
+
+Current counts (generated 2026-11-17):
+  sitemap.xml           ≈ 134 indexable URLs (hubs, tools, games, articles)
+  sitemap-articles.xml  ≈ 22 article URLs
+  sitemap-index.xml     points at the two files above
+
+═══════════════════════════════════════════════════════════════════
+2) URL INSPECTION  (Bing → URL Inspection)
+═══════════════════════════════════════════════════════════════════
+Inspect these priority pages after the sitemap is accepted:
+
+  https://thegridnexus.com/
+  https://thegridnexus.com/tools/gaming-security-checkup
+  https://thegridnexus.com/tools/scam-check
+  https://thegridnexus.com/games
+  https://thegridnexus.com/safety
+  https://thegridnexus.com/recover
+  https://thegridnexus.com/threats
+  https://thegridnexus.com/data
+  https://thegridnexus.com/research/state-of-gaming-security-2026
+  https://thegridnexus.com/article/gaming-pc-antivirus-best-2026
+  https://thegridnexus.com/article/vpn-gaming-security-latency-test-2026
+
+═══════════════════════════════════════════════════════════════════
+3) INDEXNOW  (Bing → IndexNow)
+═══════════════════════════════════════════════════════════════════
+Key:          aa8245eb73a4eed4dddf92b938f96cf5
+Key file URL: https://thegridnexus.com/aa8245eb73a4eed4dddf92b938f96cf5.txt
+
+After deploy, open the key file URL and confirm it shows only the key.
+Then ping changed URLs:
+
+  npm run indexnow
+  npm run indexnow -- https://thegridnexus.com/tools/gaming-security-checkup
+
+Or POST to https://api.indexnow.org/indexnow with host, key, keyLocation, urlList.
+
+═══════════════════════════════════════════════════════════════════
+4) OTHER BING SETTINGS WORTH CHECKING
+═══════════════════════════════════════════════════════════════════
+- Site Scan / Site Explorer: confirm crawl is not blocked on /tools, /games, /article
+- Block URLs: leave empty unless a private URL is indexed
+- Geographic Targeting: leave as Worldwide (English, no country lock)
+- Robots.txt tester: https://thegridnexus.com/robots.txt allows Bingbot
+- Disavow: Bing no longer has a disavow tool; keep the Google Search Console disavow for the spam farms
