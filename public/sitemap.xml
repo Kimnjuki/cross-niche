@@ -4,78 +4,103 @@
         xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
   <url>
     <loc>https://thegridnexus.com/</loc>
+    <lastmod>2026-11-09</lastmod>
   </url>
   <url>
     <loc>https://thegridnexus.com/gaming</loc>
+    <lastmod>2026-11-09</lastmod>
   </url>
   <url>
     <loc>https://thegridnexus.com/research/state-of-gaming-security-2026</loc>
+    <lastmod>2026-11-10</lastmod>
   </url>
   <url>
     <loc>https://thegridnexus.com/gaming/security-guides</loc>
+    <lastmod>2026-11-09</lastmod>
   </url>
   <url>
     <loc>https://thegridnexus.com/gaming/security</loc>
+    <lastmod>2026-11-09</lastmod>
   </url>
   <url>
     <loc>https://thegridnexus.com/tools</loc>
+    <lastmod>2026-11-09</lastmod>
   </url>
   <url>
     <loc>https://thegridnexus.com/tools/steam-scanner</loc>
+    <lastmod>2026-11-09</lastmod>
   </url>
   <url>
     <loc>https://thegridnexus.com/tools/ioc-lookup</loc>
+    <lastmod>2026-11-09</lastmod>
   </url>
   <url>
     <loc>https://thegridnexus.com/tools/gaming-security-checkup</loc>
+    <lastmod>2026-11-09</lastmod>
   </url>
   <url>
     <loc>https://thegridnexus.com/tools/scam-check</loc>
+    <lastmod>2026-11-09</lastmod>
   </url>
   <url>
     <loc>https://thegridnexus.com/tools/gaming-copilot</loc>
+    <lastmod>2026-11-09</lastmod>
   </url>
   <url>
     <loc>https://thegridnexus.com/roadmap</loc>
+    <lastmod>2026-11-09</lastmod>
   </url>
   <url>
     <loc>https://thegridnexus.com/newsletter</loc>
+    <lastmod>2026-11-09</lastmod>
   </url>
   <url>
     <loc>https://thegridnexus.com/about</loc>
+    <lastmod>2026-11-09</lastmod>
   </url>
   <url>
     <loc>https://thegridnexus.com/contact</loc>
+    <lastmod>2026-11-09</lastmod>
   </url>
   <url>
     <loc>https://thegridnexus.com/editorial</loc>
+    <lastmod>2026-11-09</lastmod>
   </url>
   <url>
     <loc>https://thegridnexus.com/methodology</loc>
+    <lastmod>2026-11-10</lastmod>
   </url>
   <url>
     <loc>https://thegridnexus.com/disclosure</loc>
+    <lastmod>2026-11-09</lastmod>
   </url>
   <url>
     <loc>https://thegridnexus.com/quality-guidelines</loc>
+    <lastmod>2026-11-09</lastmod>
   </url>
   <url>
     <loc>https://thegridnexus.com/content-policy</loc>
+    <lastmod>2026-11-09</lastmod>
   </url>
   <url>
     <loc>https://thegridnexus.com/community-guidelines</loc>
+    <lastmod>2026-11-09</lastmod>
   </url>
   <url>
     <loc>https://thegridnexus.com/privacy</loc>
+    <lastmod>2026-11-09</lastmod>
   </url>
   <url>
     <loc>https://thegridnexus.com/terms</loc>
+    <lastmod>2026-11-09</lastmod>
   </url>
   <url>
     <loc>https://thegridnexus.com/games</loc>
+    <lastmod>2026-11-10</lastmod>
   </url>
   <url>
     <loc>https://thegridnexus.com/threats</loc>
+    <lastmod>2026-11-10</lastmod>
   </url>
   <url>
     <loc>https://thegridnexus.com/games/nintendo-switch-online</loc>
@@ -123,9 +148,11 @@
   </url>
   <url>
     <loc>https://thegridnexus.com/recover</loc>
+    <lastmod>2026-11-10</lastmod>
   </url>
   <url>
     <loc>https://thegridnexus.com/recover/discord</loc>
+    <lastmod>2026-11-10</lastmod>
   </url>
   <url>
     <loc>https://thegridnexus.com/recover/discord/account-stolen</loc>
@@ -161,6 +188,7 @@
   </url>
   <url>
     <loc>https://thegridnexus.com/recover/ea</loc>
+    <lastmod>2026-11-10</lastmod>
   </url>
   <url>
     <loc>https://thegridnexus.com/recover/ea/account-stolen</loc>
@@ -196,6 +224,7 @@
   </url>
   <url>
     <loc>https://thegridnexus.com/recover/epic-games</loc>
+    <lastmod>2026-11-10</lastmod>
   </url>
   <url>
     <loc>https://thegridnexus.com/recover/epic-games/account-stolen</loc>
@@ -231,6 +260,7 @@
   </url>
   <url>
     <loc>https://thegridnexus.com/recover/playstation</loc>
+    <lastmod>2026-11-10</lastmod>
   </url>
   <url>
     <loc>https://thegridnexus.com/recover/playstation/account-stolen</loc>
@@ -266,6 +296,7 @@
   </url>
   <url>
     <loc>https://thegridnexus.com/recover/riot-games</loc>
+    <lastmod>2026-11-10</lastmod>
   </url>
   <url>
     <loc>https://thegridnexus.com/recover/riot-games/account-stolen</loc>
@@ -301,6 +332,7 @@
   </url>
   <url>
     <loc>https://thegridnexus.com/recover/steam</loc>
+    <lastmod>2026-11-10</lastmod>
   </url>
   <url>
     <loc>https://thegridnexus.com/recover/steam/account-stolen</loc>
@@ -336,6 +368,7 @@
   </url>
   <url>
     <loc>https://thegridnexus.com/recover/xbox</loc>
+    <lastmod>2026-11-10</lastmod>
   </url>
   <url>
     <loc>https://thegridnexus.com/recover/xbox/account-stolen</loc>
@@ -371,30 +404,39 @@
   </url>
   <url>
     <loc>https://thegridnexus.com/platforms</loc>
+    <lastmod>2026-11-10</lastmod>
   </url>
   <url>
     <loc>https://thegridnexus.com/platforms/steam/security</loc>
+    <lastmod>2026-11-10</lastmod>
   </url>
   <url>
     <loc>https://thegridnexus.com/platforms/discord/security</loc>
+    <lastmod>2026-11-10</lastmod>
   </url>
   <url>
     <loc>https://thegridnexus.com/platforms/epic-games/security</loc>
+    <lastmod>2026-11-10</lastmod>
   </url>
   <url>
     <loc>https://thegridnexus.com/platforms/ea/security</loc>
+    <lastmod>2026-11-10</lastmod>
   </url>
   <url>
     <loc>https://thegridnexus.com/platforms/riot-games/security</loc>
+    <lastmod>2026-11-10</lastmod>
   </url>
   <url>
     <loc>https://thegridnexus.com/platforms/playstation/security</loc>
+    <lastmod>2026-11-10</lastmod>
   </url>
   <url>
     <loc>https://thegridnexus.com/platforms/xbox/security</loc>
+    <lastmod>2026-11-10</lastmod>
   </url>
   <url>
     <loc>https://thegridnexus.com/safety</loc>
+    <lastmod>2026-10-21</lastmod>
   </url>
   <url>
     <loc>https://thegridnexus.com/safety/nexus-mods</loc>
@@ -462,29 +504,38 @@
   </url>
   <url>
     <loc>https://thegridnexus.com/privacy/tools</loc>
+    <lastmod>2026-11-10</lastmod>
   </url>
   <url>
     <loc>https://thegridnexus.com/editorial-standards</loc>
+    <lastmod>2026-11-10</lastmod>
   </url>
   <url>
     <loc>https://thegridnexus.com/corrections</loc>
+    <lastmod>2026-11-10</lastmod>
   </url>
   <url>
     <loc>https://thegridnexus.com/security-disclosure</loc>
+    <lastmod>2026-11-10</lastmod>
   </url>
   <url>
     <loc>https://thegridnexus.com/anti-cheat</loc>
+    <lastmod>2026-11-10</lastmod>
   </url>
   <url>
     <loc>https://thegridnexus.com/tools/download-check</loc>
+    <lastmod>2026-11-10</lastmod>
   </url>
   <url>
     <loc>https://thegridnexus.com/report</loc>
+    <lastmod>2026-11-10</lastmod>
   </url>
   <url>
     <loc>https://thegridnexus.com/parents</loc>
+    <lastmod>2026-11-10</lastmod>
   </url>
   <url>
     <loc>https://thegridnexus.com/data</loc>
+    <lastmod>2026-11-10</lastmod>
   </url>
 </urlset>

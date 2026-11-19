@@ -11,6 +11,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { staticShell } from './lib/static-chrome.mjs';
+import { composeTitle, fitSafetySubject, BRAND_SUFFIX } from './lib/seo-title.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const projectRoot = path.resolve(__dirname, '..');
@@ -60,7 +61,11 @@ function pageShell(title, description, canonical, body, jsonLd) {
 function generateVerdict(v) {
   const style = VERDICT_STYLE[v.verdict] || VERDICT_STYLE.cautious;
   const url = `${BASE_URL}/safety/${v.slug}`;
-  const title = `Is ${v.assetName} safe? — ${style.label} | ${SITE_NAME}`;
+  const title = composeTitle([
+    `Is ${fitSafetySubject(v.assetName)} safe?`,
+    `— ${style.label}`,
+    BRAND_SUFFIX,
+  ]);
   const description = `${style.label}: ${v.summary}`;
 
   const patterns = (v.scamPatterns ?? []).map((s) => `<li style="margin-bottom:0.35rem">${esc(s)}</li>`).join('');
@@ -121,7 +126,7 @@ function generateVerdict(v) {
 
 function generateIndex(verdicts) {
   const url = `${BASE_URL}/safety`;
-  const title = `Gamer Safety Console — is it safe? | ${SITE_NAME}`;
+  const title = composeTitle(['Gamer Safety Console — is it safe?', BRAND_SUFFIX]);
   const description = 'Check whether a game, mod, download or message is safe — then act in minutes. Scenario triage, protection grid, recovery pathways and a 60-second checkup.';
 
   const triage = TRIAGE_SCENARIOS.map((s) => `

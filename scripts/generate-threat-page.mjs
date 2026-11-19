@@ -20,6 +20,7 @@ import {
   severityColor,
   actionFor,
 } from './lib/gamer-threat-filter.mjs';
+import { composeTitle, BRAND_SUFFIX } from './lib/seo-title.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const projectRoot = path.resolve(__dirname, '..');
@@ -110,7 +111,7 @@ const cards = threats.slice(0, MAX).map((t) => {
     </div>`;
 }).join('');
 
-const title = `Gamer Threat Report — Which Exploits Affect Players | ${SITE_NAME}`;
+const title = composeTitle(['Gamer Threat Report — Which Exploits Affect Players', BRAND_SUFFIX]);
 const description = 'Actively-exploited vulnerabilities that affect players, ranked by gamer impact with CVE IDs, platform tags, dates and plain-language fixes. Sourced from CISA KEV.';
 const canonical = `${BASE_URL}/threats`;
 

@@ -16,6 +16,7 @@ import {
   gradeSourceSlugForPlatform,
   reviewedDate,
 } from './lib/game-platform-split.mjs';
+import { composeTitle, BRAND_SUFFIX } from './lib/seo-title.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const projectRoot = path.resolve(__dirname, '..');
@@ -69,7 +70,11 @@ function gradeCallout(platform) {
 
 function generateHub(platform) {
   const url = `${BASE_URL}/platforms/${platform.slug}/security`;
-  const title = `${platform.name} account security — official domains, 2FA & recovery | ${SITE_NAME}`;
+  const title = composeTitle([
+    `${platform.name} account security`,
+    ' — 2FA, recovery',
+    BRAND_SUFFIX,
+  ]);
   const description = `${platform.name} account security: official domains, two-factor authentication, account recovery, and the scam patterns that target ${platform.name} players.`;
 
   const domainsHtml = platform.officialDomains
@@ -142,7 +147,7 @@ function generateHub(platform) {
 
 function generateIndex(platforms) {
   const url = `${BASE_URL}/platforms`;
-  const title = `Platform Security Hubs | ${SITE_NAME}`;
+  const title = composeTitle(['Platform Security Hubs', BRAND_SUFFIX]);
   const description =
     'Official domains, two-factor authentication, account recovery, and scam patterns for Steam, Discord, Epic, EA, Riot, PlayStation and Xbox.';
 

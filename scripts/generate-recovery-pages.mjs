@@ -15,6 +15,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { staticShell } from './lib/static-chrome.mjs';
 import { trustBoundariesHtml } from './lib/trust-boundaries.mjs';
+import { composeTitle, BRAND_SUFFIX } from './lib/seo-title.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const projectRoot = path.resolve(__dirname, '..');
@@ -158,7 +159,11 @@ function generatePage(page) {
   const { platform, playbook, officialLinks } = page;
   const scenarioLabel = titleCase(playbook.scenario);
   const url = `${BASE_URL}/recover/${platform.slug}/${playbook.scenario}`;
-  const title = `${platform.name} Account Recovery — ${scenarioLabel} | ${SITE_NAME}`;
+  const title = composeTitle([
+    `${platform.name} Account Recovery`,
+    `— ${scenarioLabel}`,
+    BRAND_SUFFIX,
+  ]);
   const description = `Step-by-step ${platform.name} account recovery: secure your device and email, then use the official ${platform.name} process. Verified guidance, not account recovery on your behalf.`;
 
   const steps = Array.isArray(playbook.steps?.steps) ? playbook.steps.steps : [];
@@ -219,7 +224,11 @@ function generatePage(page) {
 
 function generatePlatformHub(platform, platformPages) {
   const url = `${BASE_URL}/recover/${platform.slug}`;
-  const title = `${platform.name} Account Recovery — Official Guides | ${SITE_NAME}`;
+  const title = composeTitle([
+    `${platform.name} Account Recovery`,
+    '— Official Guides',
+    BRAND_SUFFIX,
+  ]);
   const description = `${PLATFORM_OVERVIEW[platform.slug] ?? ''} Official ${platform.name} recovery steps for every situation — hacked, locked out, scammed, or lost 2FA.`;
 
   // Official links (from the first guide's officialLinks, deduped).
@@ -280,7 +289,7 @@ function generatePlatformHub(platform, platformPages) {
 
 function generateIndex(pages) {
   const url = `${BASE_URL}/recover`;
-  const title = `Steam, Discord & Xbox Account Recovery | ${SITE_NAME}`;
+  const title = composeTitle(['Steam, Discord & Xbox Account Recovery', BRAND_SUFFIX]);
   const description =
     'Take back a hacked Steam, Discord, Xbox, PlayStation, Epic, EA or Riot account. Official free steps only. We never ask for your password.';
 

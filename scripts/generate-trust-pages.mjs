@@ -10,6 +10,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { staticShell } from './lib/static-chrome.mjs';
 import { trustBoundariesHtml } from './lib/trust-boundaries.mjs';
+import { composeTitle, BRAND_SUFFIX } from './lib/seo-title.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const projectRoot = path.resolve(__dirname, '..');
@@ -34,7 +35,7 @@ function webPage(title, description, url) {
 const PAGES = [
   {
     route: '/methodology',
-    title: `Methodology: How We Grade & Verify | ${SITE_NAME}`,
+    title: composeTitle(['Methodology: How We Grade & Verify', BRAND_SUFFIX]),
     description:
       'How The Grid Nexus produces security grades, checkup scores, threat advisories and scam verdicts — sources, confidence, review cadence, corrections, and what we do not claim.',
     body: `
@@ -88,7 +89,7 @@ const PAGES = [
   },
   {
     route: '/privacy/tools',
-    title: `Tool Privacy — what our security tools collect | ${SITE_NAME}`,
+    title: composeTitle(['Tool Privacy — what our security tools collect', BRAND_SUFFIX]),
     description:
       'Plain-language disclosure of what the checkup, scam check, and IOC lookup collect, inspect, store, and never collect.',
     body: `
@@ -139,7 +140,7 @@ const PAGES = [
   },
   {
     route: '/corrections',
-    title: `Corrections | ${SITE_NAME}`,
+    title: composeTitle(['Corrections & Updates', BRAND_SUFFIX]),
     description: 'Dated corrections and updates to published guidance on The Grid Nexus.',
     body: `
     <article>
@@ -202,7 +203,7 @@ const PAGES = [
   },
   {
     route: '/tools/download-check',
-    title: `Download Check — verify a file before you run it | ${SITE_NAME}`,
+    title: composeTitle(['Download Check — verify a file before you run it', BRAND_SUFFIX]),
     description:
       'How to verify a downloaded file before running it: official distributor, SHA-256 hash, code signature and update channel. Unknown hashes are never called clean.',
     body: `

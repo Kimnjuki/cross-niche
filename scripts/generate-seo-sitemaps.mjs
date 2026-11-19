@@ -27,6 +27,7 @@ import {
   isNonIndexable,
 } from './lib/route-metadata.mjs';
 import { isRedirectedGameSlug } from './lib/game-platform-split.mjs';
+import { lastmodForRoute } from './lib/route-lastmod.mjs';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -80,7 +81,10 @@ function urlEntry(loc, lastmod, image = '') {
 function getStaticPages() {
   const pages = INDEXABLE_ROUTES.map((route) => ({
     loc: route.path === '/' ? `${BASE_URL}/` : `${BASE_URL}${route.path}`,
-    lastmod: '',
+    // Real per-page freshness: the last commit date of the source that builds
+    // this route. A shared build timestamp would tell Google every page changed
+    // on the same day, which defeats the signal entirely.
+    lastmod: lastmodForRoute(route.path),
   }));
   // Q3 trust fix: no persona author pages are indexed. The 12 named profiles
   // don't back any content (articles carry the "The Grid Nexus Editorial Team"
@@ -97,8 +101,8 @@ function getGamePages() {
     const lib = JSON.parse(fs.readFileSync(libPath, 'utf8'));
     const games = Array.isArray(lib.games) ? lib.games : [];
     const pages = [
-      { loc: `${BASE_URL}/games`, lastmod: '' },
-      { loc: `${BASE_URL}/threats`, lastmod: '' },
+      { loc: `${BASE_URL}/games`, lastmod: lastmodForRoute(new URL(`${BASE_URL}/games`).pathname) },
+      { loc: `${BASE_URL}/threats`, lastmod: lastmodForRoute(new URL(`${BASE_URL}/threats`).pathname) },
     ];
     for (const g of games) {
       if (!g.slug || isRedirectedGameSlug(g.slug)) continue;
@@ -120,14 +124,14 @@ function getRecoveryPages() {
   try {
     const lib = JSON.parse(fs.readFileSync(libPath, 'utf8'));
     const pages = Array.isArray(lib.pages) ? lib.pages : [];
-    const out = [{ loc: `${BASE_URL}/recover`, lastmod: '' }];
+    const out = [{ loc: `${BASE_URL}/recover`, lastmod: lastmodForRoute(new URL(`${BASE_URL}/recover`).pathname) }];
     // Platform hub pages (dist/recover/{platform}/index.html)
     const hubSlugs = new Set();
     for (const p of pages) {
       if (!p.platform?.slug || !p.playbook?.scenario) continue;
       if (!hubSlugs.has(p.platform.slug)) {
         hubSlugs.add(p.platform.slug);
-        out.push({ loc: `${BASE_URL}/recover/${p.platform.slug}`, lastmod: '' });
+        out.push({ loc: `${BASE_URL}/recover/${p.platform.slug}`, lastmod: lastmodForRoute(new URL(`${BASE_URL}/recover/${p.platform.slug}`).pathname) });
       }
       out.push({
         loc: `${BASE_URL}/recover/${p.platform.slug}/${p.playbook.scenario}`,
@@ -147,10 +151,10 @@ function getPlatformHubPages() {
   try {
     const lib = JSON.parse(fs.readFileSync(libPath, 'utf8'));
     const platforms = Array.isArray(lib.platforms) ? lib.platforms : [];
-    const out = [{ loc: `${BASE_URL}/platforms`, lastmod: '' }];
+    const out = [{ loc: `${BASE_URL}/platforms`, lastmod: lastmodForRoute(new URL(`${BASE_URL}/platforms`).pathname) }];
     for (const p of platforms) {
       if (!p.slug) continue;
-      out.push({ loc: `${BASE_URL}/platforms/${p.slug}/security`, lastmod: '' });
+      out.push({ loc: `${BASE_URL}/platforms/${p.slug}/security`, lastmod: lastmodForRoute(new URL(`${BASE_URL}/platforms/${p.slug}/security`).pathname) });
     }
     return out;
   } catch {
@@ -165,7 +169,7 @@ function getSafetyPages() {
   try {
     const lib = JSON.parse(fs.readFileSync(libPath, 'utf8'));
     const verdicts = Array.isArray(lib.verdicts) ? lib.verdicts : [];
-    const out = [{ loc: `${BASE_URL}/safety`, lastmod: '' }];
+    const out = [{ loc: `${BASE_URL}/safety`, lastmod: lastmodForRoute(new URL(`${BASE_URL}/safety`).pathname) }];
     for (const v of verdicts) {
       if (!v.slug) continue;
       out.push({ loc: `${BASE_URL}/safety/${v.slug}`, lastmod: v.lastVerified || '' });
@@ -183,15 +187,15 @@ function getSafetyPages() {
 // generate-trust-pages.mjs.
 function getTrustPages() {
   return [
-    { loc: `${BASE_URL}/privacy/tools`, lastmod: '' },
-    { loc: `${BASE_URL}/editorial-standards`, lastmod: '' },
-    { loc: `${BASE_URL}/corrections`, lastmod: '' },
-    { loc: `${BASE_URL}/security-disclosure`, lastmod: '' },
-    { loc: `${BASE_URL}/anti-cheat`, lastmod: '' },
-    { loc: `${BASE_URL}/tools/download-check`, lastmod: '' },
-    { loc: `${BASE_URL}/report`, lastmod: '' },
-    { loc: `${BASE_URL}/parents`, lastmod: '' },
-    { loc: `${BASE_URL}/data`, lastmod: '' },
+    { loc: `${BASE_URL}/privacy/tools`, lastmod: lastmodForRoute(new URL(`${BASE_URL}/privacy/tools`).pathname) },
+    { loc: `${BASE_URL}/editorial-standards`, lastmod: lastmodForRoute(new URL(`${BASE_URL}/editorial-standards`).pathname) },
+    { loc: `${BASE_URL}/corrections`, lastmod: lastmodForRoute(new URL(`${BASE_URL}/corrections`).pathname) },
+    { loc: `${BASE_URL}/security-disclosure`, lastmod: lastmodForRoute(new URL(`${BASE_URL}/security-disclosure`).pathname) },
+    { loc: `${BASE_URL}/anti-cheat`, lastmod: lastmodForRoute(new URL(`${BASE_URL}/anti-cheat`).pathname) },
+    { loc: `${BASE_URL}/tools/download-check`, lastmod: lastmodForRoute(new URL(`${BASE_URL}/tools/download-check`).pathname) },
+    { loc: `${BASE_URL}/report`, lastmod: lastmodForRoute(new URL(`${BASE_URL}/report`).pathname) },
+    { loc: `${BASE_URL}/parents`, lastmod: lastmodForRoute(new URL(`${BASE_URL}/parents`).pathname) },
+    { loc: `${BASE_URL}/data`, lastmod: lastmodForRoute(new URL(`${BASE_URL}/data`).pathname) },
   ];
 }
 

@@ -51,6 +51,11 @@ test('nginx 301s platform grade URLs and does not loop', () => {
   }
 });
 
+test('legacy /articles/slug URLs canonicalise in one hop', () => {
+  assert.match(nginx, /rewrite \^\/articles\/\(\[\^\/\]\+\)\/\?\$ \/article\/\$1 permanent;/);
+  assert.equal(vercelDestination('/articles/:slug'), '/article/:slug');
+});
+
 test('vercel redirects match nginx', () => {
   assert.equal(vercelDestination('/security-tools'), '/tools');
   assert.equal(vercelDestination('/nexus/nexusguard'), '/tools');

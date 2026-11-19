@@ -31,6 +31,8 @@ interface SEOHeadProps {
   tags?: string[];
   autoGenerate?: boolean;
   noindex?: boolean;
+  /** When noindex is set, keep follow so crawlers can still use outbound links. */
+  noindexFollow?: boolean;
   /** Explicit canonical override (content.canonicalUrl). Falls back to self-canonical. */
   canonicalUrl?: string;
   /** Alias for canonicalUrl for callers that use the shorter name. */
@@ -108,7 +110,11 @@ export function SEOHead({
   tags = [],
   autoGenerate = true,
   noindex = false,
+  noindexFollow = false,
   canonicalUrl: canonicalOverride,
+  // `canonical` is a documented alias for `canonicalUrl`; it was previously
+  // never destructured, so callers using it were silently ignored.
+  canonical: canonicalAlias,
   faqs,
   howTo,
   person,
@@ -165,7 +171,7 @@ export function SEOHead({
       return href.split('?')[0].split('#')[0];
     }
   }
-  const canonical = buildCanonical(canonicalOverride || url);
+  const canonical = buildCanonical(canonicalOverride || canonicalAlias || url);
 
   // Ensure canonical is never self-conflicting
   const safeCanonical = canonical && canonical !== `${BASE_URL}/` ? canonical : `${BASE_URL}/`;
@@ -206,7 +212,7 @@ export function SEOHead({
 
     // ── Robots ─────────────────────────────────────────────────────────
     const robotsValue = noindex
-      ? 'noindex, nofollow'
+      ? (noindexFollow ? 'noindex, follow' : 'noindex, nofollow')
       : 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1';
     upsertMeta('name', 'robots',    robotsValue);
     upsertMeta('name', 'googlebot', robotsValue);
@@ -251,13 +257,28 @@ export function SEOHead({
     upsertMeta('name', 'twitter:url',         canonical);
 
     // ── Canonical link ─────────────────────────────────────────────────
+    // Google explicitly warns against using JavaScript to change a canonical
+    // URL away from the value in the original HTML. Every route here is
+    // prerendered with a correct self-canonical, so the served value is
+    // authoritative: read it first and only fill the tag when it is absent.
+    // An explicit canonicalUrl/canonical prop is still honoured, because that
+    // is a deliberate editorial override (e.g. syndicated content) rather than
+    // a client-side guess.
     let canonicalLink = document.querySelector('link[rel="canonical"]') as HTMLLinkElement | null;
+    const ssrCanonical = canonicalLink?.getAttribute('href')?.trim() || '';
     if (!canonicalLink) {
       canonicalLink = document.createElement('link');
       canonicalLink.rel = 'canonical';
       document.head.appendChild(canonicalLink);
     }
-    canonicalLink.href = canonical;
+    if (canonicalOverride || canonicalAlias) {
+      canonicalLink.href = safeCanonical;
+    } else if (ssrCanonical) {
+      // Preserve the prerendered value verbatim.
+      canonicalLink.href = ssrCanonical;
+    } else {
+      canonicalLink.href = safeCanonical;
+    }
 
     // ── hreflang: intentionally NOT emitted (SEO remediation P1-06) ─────
     // This site serves a single language/region and the Convex schema has no
@@ -347,7 +368,7 @@ export function SEOHead({
   }, [
     optimizedTitle, optimizedDescription, keywords, ogImage, canonical,
     type, article, publishedTime, modifiedTime, author, section, tags,
-    noindex, faqs, howTo, person, software, videos, events, itemList, review,
+    noindex, noindexFollow, faqs, howTo, person, software, videos, events, itemList, review,
   ]);
 
   return null;

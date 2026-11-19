@@ -41,6 +41,11 @@ playwright-report/
 test-results/
 coverage/
 .nyc_output
+tsc-app-err.txt
+tsc-app-exit.txt
+tsc-app-out.txt
+vite-build-exit.txt
+vite-build-out.txt
 
 # Scratch / one-off files
 complete-homepage-component.tsx
