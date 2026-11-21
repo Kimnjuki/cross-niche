@@ -246,15 +246,15 @@ The patch is available. There's no excuse for running the vulnerable version aft
 
   // ── Article 4: Security ─────────────────────────────────────────────────────
   {
-    title: "Steam Account Takeovers Up 340%: The Complete Protection Guide for 2026",
+    title: "Steam Account Takeover Protection Guide for 2026",
     slug: "steam-account-takeover-protection-guide-2026",
-    subtitle: "Valve's data shows a dramatic spike in compromised accounts — here's exactly why it's happening and every step you need to take",
-    summary: "Steam account takeovers have surged 340% in early 2026 compared to the same period in 2025. Valve has published new guidance, but most gamers still haven't taken the critical steps that would stop 99% of these attacks.",
-    body: `Steam account theft is not a new problem. But in 2026, the scale has reached levels that Valve itself is treating as an emergency. Internal data shared in a Steam blog post in April 2026 cited a 340% year-over-year increase in account compromise reports for the first quarter — a number that represents hundreds of thousands of gamers losing access to their libraries, trading inventories, and stored wallet balances.
+    subtitle: "Reused passwords, fake login pages, and stolen sessions — and the settings that reduce each one",
+    summary: "Steam accounts are taken over through reused passwords, fake login pages, and stolen sessions. This summary does not cite an unsourced takeover percentage.",
+    body: `Steam account theft is not a new problem. Accounts are taken over through reused passwords, fake login pages, and stolen sessions. This guide does not cite an unsourced takeover percentage. The steps below are the settings that reduce those three paths.
 
-Understanding why the spike is happening matters for knowing how to defend against it.
+The settings below are what reduce those three paths.
 
-## The Three Attack Methods Driving the Surge
+## The Three Attack Methods
 
 **Credential stuffing is the biggest driver.** The gaming community has been in and around multiple major data breaches over the past three years — including incidents at Twitch, several Discord servers, and third-party gaming sites. Breach compilations circulating in 2026 contain tens of millions of email-password pairs from these incidents. Attackers run automated tools against Steam's login endpoints, testing combinations at scale. Any user who reused a password from any of these incidents is vulnerable.
 
@@ -280,11 +280,11 @@ Valve has updated Steam's security infrastructure to include better detection of
 
 **Keep your PC clean.** Run a reputable antivirus regularly and don't install game cracks or pirated software. InfoStealer malware is the one attack vector that bypasses properly configured Steam Guard entirely.
 
-The 340% surge is alarming, but the attacks being documented are almost entirely preventable by users who take the right precautions. Most victims had either no 2FA or SMS-only 2FA — a configuration that Valve has been recommending against for years.`,
+The attacks this guide covers are reduced when players use an authenticator app instead of SMS, a unique password, and only the official Steam domains.`,
     contentType: "security",
     focusKeyword: "Steam account takeover protection 2026",
-    metaTitle: "Steam Account Takeovers Up 340% in 2026: Complete Protection Guide",
-    seoDescription: "Steam account compromises surged 340% in early 2026. Credential stuffing, fake login pages, and InfoStealer malware are the main vectors. Here's the complete checklist to lock down your Steam account.",
+    metaTitle: "Steam Account Takeover Protection Guide for 2026",
+    seoDescription: "Credential stuffing, fake login pages, and InfoStealer malware are the main ways Steam accounts are taken over. Here is the checklist to lock one down.",
     isBreaking: false,
     isFeatured: true,
     isPremium: false,
@@ -294,7 +294,7 @@ The 340% surge is alarming, but the attacks being documented are almost entirely
     source: "thegridnexus.com",
     originalUrl: "https://thegridnexus.com/security/steam-account-takeover-protection-guide-2026",
     articleUrl: "https://thegridnexus.com/security/steam-account-takeover-protection-guide-2026",
-    articleSummary: "Steam account takeovers surged 340% in Q1 2026. Credential stuffing, phishing, and InfoStealer malware are the three main vectors. Complete protection guide covering Steam Guard, device auditing, and PC hygiene.",
+    articleSummary: "Credential stuffing, phishing, and InfoStealer malware are the three main ways a Steam account is taken over. Protection guide covering Steam Guard, device auditing, and PC hygiene.",
   },
 
   // ── Article 5: Security ─────────────────────────────────────────────────────

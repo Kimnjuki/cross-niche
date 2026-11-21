@@ -27,6 +27,7 @@ import { useReadingTracker, useUserBehavior } from '@/hooks/useUserBehavior';
 import { AITools } from '@/components/ai/AITools';
 import { EnhancedShareBar } from '@/components/sharing/EnhancedShareBar';
 import { SEOHead } from '@/components/seo/SEOHead';
+import { shouldNoindexArticle } from '@/lib/offNicheArticles';
 import { Breadcrumbs } from '@/components/seo/Breadcrumbs';
 import { FAQSection } from '@/components/seo/FAQSection';
 import { FAQSchema } from '@/components/seo/FAQSchema';
@@ -302,7 +303,8 @@ export default function Article() {
         tags={tags}
         autoGenerate={true}
         canonicalUrl={article.canonicalUrl || undefined}
-        noindex={article.noindex === true}
+        noindex={shouldNoindexArticle(article)}
+        noindexFollow
         reviews={article.reviews}
       />
 

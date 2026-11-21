@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Shield, Brain, Activity, TrendingUp, AlertTriangle, Play, ChevronRight, Zap, Eye, MessageSquare, Share2, Bookmark, Cpu, Gamepad2, Lock, Wifi } from 'lucide-react';
 import { GlassCard } from '@/components/ui/GlassCard';
+import { SEOHead } from '@/components/seo/SEOHead';
 import { LiveUpdates } from '@/components/live/LiveUpdates';
 import { cn } from '@/lib/utils';
 
@@ -52,20 +53,19 @@ export default function EnhancedIndexSimple() {
   const [isDarkMode, setIsDarkMode] = useState(true);
 
   useEffect(() => {
-    // Noindex: dev/preview page
-    let meta = document.querySelector('meta[name="robots"]') as HTMLMetaElement | null;
-    if (!meta) { meta = document.createElement('meta'); meta.name = 'robots'; document.head.appendChild(meta); }
-    meta.content = 'noindex, nofollow';
-    return () => { if (meta) meta.content = 'index, follow'; };
-  }, []);
-
-  useEffect(() => {
     // Apply theme
     document.documentElement.setAttribute('data-theme', isDarkMode ? 'dark' : 'light');
   }, [isDarkMode]);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-blue-900 to-black">
+      {/* Dev/preview page — declarative noindex (no direct DOM mutation of the
+          shared robots tag, which could flip another page back to indexable). */}
+      <SEOHead
+        title="Enhanced Index Preview | The Grid Nexus"
+        description="Internal preview page for The Grid Nexus. Not intended for search indexing."
+        noindex
+      />
       {/* Hero Section */}
       <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
         {/* Background Effects */}

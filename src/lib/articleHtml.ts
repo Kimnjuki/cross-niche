@@ -150,8 +150,72 @@ export function expandInlineBulletRuns(html: string): string {
   });
 }
 
-/** Full clean-up pass for an article body: repair encoding, then fix lists. */
+/**
+ * Strip a leading YAML front-matter block from an article body.
+ *
+ * Some CMS exports store the body as:
+ *
+ *   ---
+ *   meta_title: Is Retrac Safe?
+ *   meta_description: …
+ *   ---
+ *   <p>Real content…</p>
+ *
+ * When the template renders the raw body, that block becomes visible body text
+ * ("---" delimiters and "meta-*" lines), which pollutes the snippet and makes
+ * the page look broken. The metadata belongs in <head>, never in the body.
+ *
+ * Rules (deliberately conservative):
+ *  - The block must start at the very beginning of the body (leading whitespace
+ *    allowed) and open with a `---` line.
+ *  - A closing `---` line must exist; an unterminated block is left untouched
+ *    so a legitimate horizontal rule at the top of an article survives.
+ *  - After the block, any contiguous run of `meta-*:` / `meta_*:` lines is
+ *    removed too — some exports emit the metadata keys without the delimiters.
+ */
+export function stripFrontMatter(input: string | null | undefined): string {
+  if (!input) return '';
+
+  const text = String(input);
+  const leading = text.match(/^\s*/)?.[0] ?? '';
+  const body = text.slice(leading.length);
+
+  // Case 1 — delimited YAML front matter.
+  if (/^---[ \t]*\r?\n/.test(body)) {
+    const closing = /^---[ \t]*$/m.exec(body.slice(4));
+    if (closing && closing.index !== undefined) {
+      const block = body.slice(4, 4 + closing.index);
+      // Require at least one `key:` line so a legitimate horizontal rule at the
+      // top of an article is not mistaken for front matter.
+      if (/^[ \t]*[A-Za-z0-9_-]+[ \t]*:/m.test(block)) {
+        const afterBlock = body.slice(4 + closing.index + closing[0].length);
+        return stripMetadataLines(afterBlock.replace(/^\r?\n/, ''));
+      }
+    }
+  }
+
+  // Case 2 — undelimited metadata keys at the top of the body.
+  return stripMetadataLines(body);
+}
+
+/** Remove a contiguous run of `meta-*:` / `meta_*:` lines from the top of a body. */
+function stripMetadataLines(body: string): string {
+  const lines = body.split(/\r?\n/);
+  let index = 0;
+  while (index < lines.length) {
+    const line = lines[index];
+    if (/^\s*meta[-_][a-z0-9_-]*\s*:/i.test(line)) {
+      index += 1;
+      continue;
+    }
+    break;
+  }
+  if (index === 0) return body;
+  return lines.slice(index).join('\n');
+}
+
+/** Full clean-up pass for an article body: strip front matter, repair encoding, fix lists. */
 export function normalizeArticleHtml(html: string | null | undefined): string {
   if (!html) return '';
-  return expandInlineBulletRuns(repairMojibake(html));
+  return expandInlineBulletRuns(repairMojibake(stripFrontMatter(html)));
 }

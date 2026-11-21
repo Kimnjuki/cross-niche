@@ -24,6 +24,7 @@ import {
   Wifi
 } from 'lucide-react';
 import { GlassCard } from '@/components/ui/GlassCard';
+import { SEOHead } from '@/components/seo/SEOHead';
 import { ArticleCard } from '@/components/ui/ArticleCard';
 import { AISummary } from '@/components/ai/AISummary';
 import { SecurityScoreCalculator } from '@/components/security/SecurityScoreCalculator';
@@ -97,14 +98,6 @@ export default function EnhancedIndex() {
   const [showSecurityTools, setShowSecurityTools] = useState(false);
 
   useEffect(() => {
-    // Noindex: dev/preview page
-    let meta = document.querySelector('meta[name="robots"]') as HTMLMetaElement | null;
-    if (!meta) { meta = document.createElement('meta'); meta.name = 'robots'; document.head.appendChild(meta); }
-    meta.content = 'noindex, nofollow';
-    return () => { if (meta) meta.content = 'index, follow'; };
-  }, []);
-
-  useEffect(() => {
     // Apply theme
     document.documentElement.setAttribute('data-theme', isDarkMode ? 'dark' : 'light');
   }, [isDarkMode]);
@@ -119,6 +112,13 @@ export default function EnhancedIndex() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-nexus-blue via-nexus-blue/95 to-gray-900">
+      {/* Dev/preview page — declarative noindex (no direct DOM mutation of the
+          shared robots tag, which could flip another page back to indexable). */}
+      <SEOHead
+        title="Enhanced Index Preview | The Grid Nexus"
+        description="Internal preview page for The Grid Nexus. Not intended for search indexing."
+        noindex
+      />
       {/* Global Navigation */}
       <nav className="fixed top-0 left-0 right-0 z-50 glass border-b border-white/10">
         <div className="container mx-auto px-4">

@@ -952,6 +952,44 @@ export const NON_INDEXABLE_ROUTES = [
   '/api',
 ];
 
+/**
+ * Hand-written SERP metadata for the non-indexable routes that deserve better
+ * copy than `humanise(path)` produces.
+ *
+ * Shared by scripts/generate-static-route-shells.mjs (static shells) and
+ * scripts/generate-page-metadata.mjs (the SPA's runtime map) so a route cannot
+ * carry one title when served as HTML and a different one after hydration.
+ * Routes absent from this table fall back to the humanised default.
+ *
+ * @type {Record<string, { title: string, description: string, h1: string }>}
+ */
+export const NON_INDEXABLE_METADATA = {
+  '/seo-checklist': {
+    title: 'SEO Audit Checklist – Issues & Ideas | The Grid Nexus',
+    description:
+      'Track remediation of SEO issues and improvement ideas from our audit. Interactive checklist covering security headers, content quality, hreflang, canonicals, and more.',
+    h1: 'SEO Audit Checklist',
+  },
+  '/sitemap': {
+    title: 'Site Map | The Grid Nexus',
+    description:
+      'Complete site map for The Grid Nexus. Find all published pages, articles, tools, guides, and category sections in one place.',
+    h1: 'Site Map',
+  },
+  '/api': {
+    title: 'API Documentation | The Grid Nexus',
+    description:
+      'The Grid Nexus API documentation. Access security data, threat intelligence, gaming stats, and AI insights programmatically via REST endpoints.',
+    h1: 'API Documentation',
+  },
+  '/security-profile': {
+    title: 'Security Profile Dashboard | The Grid Nexus',
+    description:
+      'Your personal cybersecurity profile and risk assessment dashboard. Track account security scores, breach exposure, and recommended security actions.',
+    h1: 'Security Profile Dashboard',
+  },
+};
+
 // Final pass: normalise every description into the 140-158 SERP window. Titles
 // are hand-written for CTR and are enforced by scripts/route-shells.test.mjs.
 for (const route of ROUTE_METADATA) {

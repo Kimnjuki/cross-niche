@@ -27,14 +27,14 @@ const PILLARS = [
 ];
 
 const KEY_STATISTICS = [
-  { value: '340%', label: 'YoY increase in gaming account takeovers' },
-  { value: '15B+', label: 'Stolen gaming credentials circulating' },
-  { value: '$1,900', label: 'Avg. Steam library value at risk' },
-  { value: '99.9%', label: 'Of attacks blocked by TOTP 2FA' },
+  { value: '56', label: 'Account recovery guides on this site' },
+  { value: '7', label: 'Platform security hubs' },
+  { value: '11', label: 'Game security grades' },
+  { value: '6', label: 'Accounts covered by the free checkup' },
 ];
 
 const RECOMMENDED_TOOLS = [
-  { icon: Shield, label: 'Steam Security Scanner', href: '/tools/steam-scanner', desc: 'Scan your Steam account for compromise' },
+  { icon: Shield, label: 'Steam security hub', href: '/platforms/steam/security', desc: 'Official domains, Steam Guard, and recovery' },
   { icon: Lock, label: 'Gaming Security Checkup', href: '/tools/gaming-security-checkup', desc: 'Quick 3-question risk assessment' },
   { icon: Smartphone, label: 'Security Score', href: '/security-score', desc: 'Calculate your overall security posture' },
 ];

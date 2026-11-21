@@ -101,7 +101,55 @@ export function expandInlineBulletRuns(html) {
   });
 }
 
+/**
+ * Strip a leading YAML front-matter block from an article body.
+ *
+ * Mirrors stripFrontMatter in src/lib/articleHtml.ts. Some CMS exports store
+ * the body as "---\nmeta_title: …\n---\n<p>Real content…</p>"; rendering that
+ * raw prints the metadata block as visible body text.
+ */
+export function stripFrontMatter(input) {
+  if (!input) return '';
+
+  const text = String(input);
+  const leading = text.match(/^\s*/)?.[0] ?? '';
+  const body = text.slice(leading.length);
+
+  // Case 1 — delimited YAML front matter.
+  if (/^---[ \t]*\r?\n/.test(body)) {
+    const closing = /^---[ \t]*$/m.exec(body.slice(4));
+    if (closing && closing.index !== undefined) {
+      const block = body.slice(4, 4 + closing.index);
+      // Require at least one `key:` line so a legitimate horizontal rule at the
+      // top of an article is not mistaken for front matter.
+      if (/^[ \t]*[A-Za-z0-9_-]+[ \t]*:/m.test(block)) {
+        const afterBlock = body.slice(4 + closing.index + closing[0].length);
+        return stripMetadataLines(afterBlock.replace(/^\r?\n/, ''));
+      }
+    }
+  }
+
+  // Case 2 — undelimited metadata keys at the top of the body.
+  return stripMetadataLines(body);
+}
+
+/** Remove a contiguous run of `meta-*:` / `meta_*:` lines from the top of a body. */
+function stripMetadataLines(body) {
+  const lines = body.split(/\r?\n/);
+  let index = 0;
+  while (index < lines.length) {
+    const line = lines[index];
+    if (/^\s*meta[-_][a-z0-9_-]*\s*:/i.test(line)) {
+      index += 1;
+      continue;
+    }
+    break;
+  }
+  if (index === 0) return body;
+  return lines.slice(index).join('\n');
+}
+
 export function normalizeArticleHtml(html) {
   if (!html) return '';
-  return expandInlineBulletRuns(repairMojibake(html));
+  return expandInlineBulletRuns(repairMojibake(stripFrontMatter(html)));
 }

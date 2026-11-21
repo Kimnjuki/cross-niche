@@ -17,6 +17,7 @@
 
 import fs from 'fs';
 import path from 'path';
+import { ROUTE_METADATA, INDEXABLE_ROUTES } from './lib/route-metadata.mjs';
 
 const BASE_URL = 'https://thegridnexus.com';
 const PUBLIC_DIR = path.join(process.cwd(), 'public');
@@ -148,15 +149,58 @@ const sitemap = readFile('sitemap.xml');
 if (sitemap) {
   check('sitemap.xml exists', true);
   check('Contains homepage', sitemap.includes('thegridnexus.com/</loc>'));
-  check('Contains /tech', sitemap.includes('thegridnexus.com/tech</loc>'));
-  check('Contains /security', sitemap.includes('thegridnexus.com/security</loc>'));
   check('Contains /gaming', sitemap.includes('thegridnexus.com/gaming</loc>'));
-  // T2 (2026-10): static routes (about/contact/tools/authors) carry no lastmod
-  // (a build date would be fake freshness); changefreq/priority are dropped
-  // (Google ignores both). Game pages keep a REAL lastmod (gameLibrary.updatedAt).
-  check('Static routes omit build-date lastmod', !/\/about<\/loc>\s*<lastmod>/.test(sitemap));
+  // Registry-derived coverage (2026-11-21). The previous hard-coded
+  // "Contains /tech" and "Contains /security" expectations predate the
+  // "gaming security for players" pivot, which demoted those general-tech
+  // sections to `noindex, follow` and dropped them from every sitemap
+  // (DEMOTE_PATHS in lib/route-metadata.mjs). Assert the invariant instead of
+  // a stale URL list, so the check cannot drift from the registry again:
+  // every indexable route is submitted, and no demoted route is.
+  const missingIndexable = INDEXABLE_ROUTES.map((route) =>
+    route.path === '/' ? `${BASE_URL}/` : `${BASE_URL}${route.path}`
+  ).filter((loc) => !sitemap.includes(`${loc}</loc>`));
+  check(
+    `All ${INDEXABLE_ROUTES.length} indexable routes are submitted`,
+    missingIndexable.length === 0,
+    missingIndexable.length ? `missing: ${missingIndexable.join(', ')}` : ''
+  );
+  const demotedLeaked = ROUTE_METADATA.filter((route) => route.indexable === false)
+    .map((route) => `${BASE_URL}${route.path}`)
+    .filter((loc) => sitemap.includes(`${loc}</loc>`));
+  check(
+    'No demoted (noindex) route is submitted',
+    demotedLeaked.length === 0,
+    demotedLeaked.length ? `leaked: ${demotedLeaked.join(', ')}` : ''
+  );
+  // T2 (2026-10): changefreq/priority are dropped (Google ignores both).
   check('Omits changefreq (Google ignores it)', !sitemap.includes('<changefreq>'));
   check('Omits priority (Google ignores it)', !sitemap.includes('<priority>'));
+  // lastmod (2026-11-19, lib/route-lastmod.mjs): static routes now carry a
+  // REAL per-route date — the last git commit of the script or data file that
+  // builds them. The old "static routes omit build-date lastmod" check
+  // predates that and now fails by design. What still matters is that the
+  // dates are well-formed, not in the future, and not one shared build
+  // timestamp stamped on every URL (which would tell Google the entire site
+  // changed on the same day and defeat the signal).
+  const lastmods = [...sitemap.matchAll(/<lastmod>([^<]+)<\/lastmod>/g)].map((m) => m[1]);
+  const today = new Date().toISOString().slice(0, 10);
+  const future = lastmods.filter((d) => d > today);
+  check(
+    'lastmod values are valid ISO dates',
+    lastmods.length > 0 && lastmods.every((d) => /^\d{4}-\d{2}-\d{2}$/.test(d)),
+    `${lastmods.length} URLs carry a lastmod`
+  );
+  check('No lastmod is in the future', future.length === 0, future.join(', '));
+  const distinctDates = new Set(lastmods).size;
+  if (distinctDates <= 1) {
+    warn(
+      'lastmod is a single shared date across every URL',
+      'Fake freshness — check that git is available so lib/route-lastmod.mjs can resolve per-route source dates'
+    );
+  } else {
+    check('lastmod is per-route, not one shared build date', true, `${distinctDates} distinct dates`);
+  }
 }
 
 const newsSitemap = newsSitemapRaw;

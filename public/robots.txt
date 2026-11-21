@@ -36,25 +36,18 @@ Allow: /
 # `Disallow: /auth` would also block every /author/<name> bio page (a core
 # E-E-A-T signal submitted in the sitemap), so auth/admin/subscription/api
 # rules are anchored with `$` where they have no trailing slash.
+#
+# IMPORTANT — do NOT add a Disallow rule for a page that already carries a
+# `<meta name="robots" content="noindex">` tag. Google cannot read a noindex
+# tag on a page it is not allowed to fetch, so the URL is never dropped from
+# the index and instead sits in "Discovered, currently not indexed" forever.
+# Every route in NON_INDEXABLE_ROUTES (scripts/lib/route-metadata.mjs) already
+# emits `noindex, follow` in its static shell, so it must stay crawlable here.
+# Blocking is reserved for URL patterns that should never be requested at all
+# (parameters, drafts, probes) — not for pages that need a directive read.
 Disallow: /admin/
 Disallow: /admin$
-Disallow: /profile
-Disallow: /auth$
-Disallow: /auth/
-Disallow: /signin
-Disallow: /signup
-Disallow: /settings
 Disallow: /billing
-Disallow: /subscription$
-Disallow: /subscription/
-Disallow: /bookmarks
-Disallow: /original-index
-Disallow: /notifications
-
-# ── API responses + personal results (not editorial content) ─────────────────
-Disallow: /api$
-Disallow: /api/
-Disallow: /security-profile
 
 # ── Unpublished preview / draft routes ───────────────────────────────────────
 Disallow: /preview
@@ -68,19 +61,13 @@ Disallow: /*?*draft=*
 Allow: /author/
 
 # ── Search/filter variants duplicate the canonical listings ──────────────────
+# These are parameterised duplicates of canonical listings, so they are blocked
+# rather than noindexed: there is no single canonical page to point at.
 Disallow: /search
 Disallow: /*?search=*
 Disallow: /*?*&search=*
 Disallow: /*?filter=*
 Disallow: /*?*&filter=*
-
-# ── Dev / test pages (not for indexing) ──────────────────────────────────────
-Disallow: /simple
-Disallow: /enhanced
-Disallow: /enhanced-simple
-Disallow: /test-features
-Disallow: /newsletter/verify
-Disallow: /tools-old
 
 # ── Legacy / malformed article helpers ───────────────────────────────────────
 Disallow: /article-detail

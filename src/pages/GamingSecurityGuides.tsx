@@ -13,10 +13,10 @@ import { SecurityToolsStrip } from '@/components/security/SecurityToolsStrip';
 type Difficulty = 'all' | 'Beginner' | 'Intermediate' | 'Advanced';
 
 const STAT_CELLS = [
-  { value: '340%', label: 'Rise in account takeovers, Q1 2026' },
-  { value: '15B+', label: 'Stolen gaming credentials on dark web' },
-  { value: '$1,900', label: 'Average Steam library value at risk' },
-  { value: '99.9%', label: 'Of attacks blocked by TOTP 2FA' },
+  { value: '56', label: 'Account recovery guides on this site' },
+  { value: '7', label: 'Platform security hubs' },
+  { value: '11', label: 'Game security grades' },
+  { value: '6', label: 'Accounts covered by the free checkup' },
 ];
 
 const DIFFICULTY_TABS: { value: Difficulty; label: string; color: string }[] = [

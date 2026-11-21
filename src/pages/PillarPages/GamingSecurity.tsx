@@ -113,7 +113,7 @@ export default function GamingSecurityPillar() {
               </CardHeader>
               <CardContent>
                 <p className="text-sm text-muted-foreground">
-                  Automated bots test billions of leaked credentials against gaming platforms. Successful takeovers lead to stolen items, financial fraud, and identity theft. In 2025, gaming credential stuffing attacks increased by 340%.
+                  Automated bots test leaked credentials against gaming platforms. Successful takeovers lead to stolen items, financial fraud, and identity theft. Credential stuffing and phishing remain the main drivers.
                 </p>
               </CardContent>
             </Card>

@@ -123,11 +123,11 @@ const vpn = `\
 `;
 
 const steamTakeover = `\
-<p>Protect your Steam account by enabling the <strong>Steam Guard mobile authenticator</strong> (not SMS), using a unique password stored in a password manager, and never clicking unsolicited "free game" or "beta access" links. The 340% year-over-year surge in 2026 account takeovers is driven by three attack methods — credential stuffing, fake-game phishing, and session-stealing malware — and all three are preventable with the right settings.</p>
+<p>Protect your Steam account by enabling the <strong>Steam Guard mobile authenticator</strong> (not SMS), using a unique password stored in a password manager, and never clicking unsolicited "free game" or "beta access" links. Credential stuffing, fake-game phishing, and session-stealing malware are the three methods this guide covers, and each one is reduced by the settings below.</p>
 
 <h2>Key Takeaways</h2>
 <ul>
-<li>Steam account compromise reports rose 340% in Q1 2026 versus Q1 2025, per Valve's April 2026 blog post.</li>
+<li>This guide does not cite an unsourced takeover percentage. It covers the settings that stop the common paths: reused passwords, fake-game links, and stolen session tokens.</li>
 <li>Credential stuffing (reused passwords from prior breaches) is the single biggest driver.</li>
 <li>Fake-game phishing captures the Steam Guard code at the same moment you enter it, defeating 2FA.</li>
 <li>InfoStealer malware extracts live Steam session tokens — bypassing Steam Guard entirely.</li>
@@ -200,12 +200,12 @@ export const restructuredGuides: RestructuredGuide[] = [
   },
   {
     slug: 'steam-account-takeover-protection-guide-2026',
-    title: 'Steam Account Takeovers Up 340% in 2026: Complete Protection Guide',
-    metaTitle: 'Steam Account Takeovers Up 340% in 2026: Protection Guide',
+    title: 'Steam Account Takeover Protection Guide for 2026',
+    metaTitle: 'Steam Account Takeover Protection Guide for 2026',
     summary:
-      'Steam account takeovers have surged 340% in early 2026. Valve has treated it as an emergency. Here are the three attack methods driving the surge and the exact steps to protect your account.',
+      'How credential stuffing, fake-game phishing, and session theft take over Steam accounts, and the settings that reduce each one.',
     seoDescription:
-      'Steam account takeovers are up 340% in 2026. Learn the three attack methods — credential stuffing, fake-game phishing, and session-stealing malware — and the exact protection checklist.',
+      'Credential stuffing, fake-game phishing, and session-stealing malware: the protection checklist for a Steam account.',
     body: steamTakeover,
   },
 ];

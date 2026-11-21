@@ -23,7 +23,7 @@ export const MOCK_NEWS: MockNewsItem[] = [
     _id: 'mock-news-1',
     id: 'steam-account-takeovers-surge',
     slug: 'steam-account-takeovers-surge',
-    title: 'Steam Account Takeovers Up 340% — Complete Protection Guide for Gamers',
+    title: 'Steam Account Takeover Protection Guide for Gamers',
     excerpt: 'A massive wave of Steam account takeovers is targeting gamers through phishing links and social engineering. Here\'s how to lock down your account in 5 minutes.',
     published_at: new Date().toISOString(),
     publishedAt: Date.now() - 3600000 * 2,

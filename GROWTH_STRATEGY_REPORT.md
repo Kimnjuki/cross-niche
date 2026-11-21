@@ -286,7 +286,7 @@ Apply this template to all article titles:
 ```
 
 **Example:**
-> "Steam account takeovers are up 340% this year. Learn how to check if yours is compromised in 5 minutes, then lock it down with these 7 security settings. Free checklist inside."
+> "Credential stuffing and phishing are how gaming accounts get taken over. Lock yours down with these 7 security settings. Free checklist inside."
 
 ### CTR Best Practices (2026)
 

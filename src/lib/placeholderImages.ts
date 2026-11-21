@@ -8,43 +8,48 @@ const ASSETS_BASE = '/assets';
 
 export type ImageTheme = 'tech' | 'security' | 'gaming' | 'ai' | 'cyber' | 'default';
 
-// Local assets: aai.jpg, abstract.jpg, Ai.jpg, box.jpg, circuit.jpg, cyber.jpg, globe.jpg, motherboard.jpg, network.jpg, networking.jpg, tech.jpg, unsplash.jpg
+// Local assets: aai.webp, abstract.webp, Ai.webp, box.webp, circuit.webp, cyber.webp, globe.webp, motherboard.webp, network.webp, networking.webp, tech.webp, unsplash.webp
+//
+// WebP, not the original JPEGs. The source photographs are 1600–6000px and
+// total ~15.9 MB; scripts/optimize-theme-images.mjs re-encodes them to <=1600px
+// WebP (~1.25 MB total, a 92% reduction). The .jpg originals are still on disk
+// but are no longer referenced, so nothing requests them.
 const THEME_IMAGES: Record<ImageTheme, string[]> = {
   tech: [
-    `${ASSETS_BASE}/tech.jpg`,
-    `${ASSETS_BASE}/circuit.jpg`,
-    `${ASSETS_BASE}/motherboard.jpg`,
-    `${ASSETS_BASE}/network.jpg`,
-    `${ASSETS_BASE}/networking.jpg`,
-    `${ASSETS_BASE}/globe.jpg`,
+    `${ASSETS_BASE}/tech.webp`,
+    `${ASSETS_BASE}/circuit.webp`,
+    `${ASSETS_BASE}/motherboard.webp`,
+    `${ASSETS_BASE}/network.webp`,
+    `${ASSETS_BASE}/networking.webp`,
+    `${ASSETS_BASE}/globe.webp`,
   ],
   security: [
-    `${ASSETS_BASE}/cyber.jpg`,
-    `${ASSETS_BASE}/network.jpg`,
-    `${ASSETS_BASE}/circuit.jpg`,
+    `${ASSETS_BASE}/cyber.webp`,
+    `${ASSETS_BASE}/network.webp`,
+    `${ASSETS_BASE}/circuit.webp`,
   ],
   gaming: [
-    `${ASSETS_BASE}/tech.jpg`,
-    `${ASSETS_BASE}/abstract.jpg`,
-    `${ASSETS_BASE}/box.jpg`,
+    `${ASSETS_BASE}/tech.webp`,
+    `${ASSETS_BASE}/abstract.webp`,
+    `${ASSETS_BASE}/box.webp`,
   ],
   ai: [
-    `${ASSETS_BASE}/Ai.jpg`,
-    `${ASSETS_BASE}/aai.jpg`,
-    `${ASSETS_BASE}/tech.jpg`,
-    `${ASSETS_BASE}/circuit.jpg`,
+    `${ASSETS_BASE}/Ai.webp`,
+    `${ASSETS_BASE}/aai.webp`,
+    `${ASSETS_BASE}/tech.webp`,
+    `${ASSETS_BASE}/circuit.webp`,
   ],
   cyber: [
-    `${ASSETS_BASE}/cyber.jpg`,
-    `${ASSETS_BASE}/network.jpg`,
-    `${ASSETS_BASE}/circuit.jpg`,
+    `${ASSETS_BASE}/cyber.webp`,
+    `${ASSETS_BASE}/network.webp`,
+    `${ASSETS_BASE}/circuit.webp`,
   ],
   default: [
-    `${ASSETS_BASE}/globe.jpg`,
-    `${ASSETS_BASE}/abstract.jpg`,
-    `${ASSETS_BASE}/unsplash.jpg`,
-    `${ASSETS_BASE}/tech.jpg`,
-    `${ASSETS_BASE}/network.jpg`,
+    `${ASSETS_BASE}/globe.webp`,
+    `${ASSETS_BASE}/abstract.webp`,
+    `${ASSETS_BASE}/unsplash.webp`,
+    `${ASSETS_BASE}/tech.webp`,
+    `${ASSETS_BASE}/network.webp`,
   ],
 };
 

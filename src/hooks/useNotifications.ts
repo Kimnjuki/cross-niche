@@ -6,7 +6,7 @@ const initialNotifications: Notification[] = [
   {
     id: 'notif-sec-1',
     title: 'Breaking security alert',
-    message: 'Steam account takeovers up 340% this week.',
+    message: 'Review Steam Guard, unfamiliar logins, and API keys this week.',
     category: 'breaking',
     read: false,
     createdAt: new Date().toISOString(),

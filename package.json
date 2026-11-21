@@ -6,7 +6,7 @@
   "scripts": {
     "copy-assets": "node -e \"const fs=require('fs');if(fs.existsSync('assets')){fs.cpSync('assets','public/assets',{recursive:true});console.log('Assets copied to public/assets');}\"",
     "predev": "npm run copy-assets",
-    "prebuild": "npm run copy-assets && node scripts/generate-prerender-routes.mjs && node scripts/generate-seo-sitemaps.mjs",
+    "prebuild": "npm run copy-assets && node scripts/generate-page-metadata.mjs && node scripts/generate-prerender-routes.mjs && node scripts/generate-seo-sitemaps.mjs",
     "dev": "convex dev & vite",
     "build": "convex deploy --yes && npm run type-check && vite build && npm run generate:static-articles && npm run generate:llms-full && npm run generate:static-shells && npm run generate:game-pages && npm run generate:threat-page && npm run generate:research-report && npm run generate:recovery-pages && npm run generate:platform-hubs && npm run generate:safety-pages && npm run generate:trust-pages && npm run generate:scam-check && npm run generate:data-asset",
     "build:frontend": "npm run type-check && vite build",
@@ -14,7 +14,7 @@
     "generate:static-shells": "node scripts/generate-static-route-shells.mjs",
     "retire:meta-injector": "node scripts/retire-runtime-meta-injector.mjs",
     "indexnow": "node scripts/indexnow-submit.mjs",
-    "test:seo": "node --test scripts/route-shells.test.mjs scripts/robots.test.mjs scripts/homepage-metadata.test.mjs",
+    "test:seo": "node --test scripts/route-shells.test.mjs scripts/robots.test.mjs scripts/homepage-metadata.test.mjs scripts/page-metadata.test.mjs scripts/sitemap.test.mjs",
     "test:checkup": "tsx --test src/lib/checkup/evaluator.test.ts",
     "test:triage": "tsx --test src/lib/triage/domainTriage.test.ts src/lib/triage/messageTriage.test.ts",
     "export:recovery-playbooks": "node scripts/export-recovery-playbooks.mjs --url https://canny-mule-83.convex.cloud",

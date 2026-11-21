@@ -10,13 +10,14 @@
  *
  * Run: npm run verify:article-html
  */
-import { expandInlineBulletRuns, repairMojibake, normalizeArticleHtml } from '../src/lib/articleHtml';
+import { expandInlineBulletRuns, repairMojibake, normalizeArticleHtml, stripFrontMatter } from '../src/lib/articleHtml';
 import { markdownToHtml } from '../src/lib/markdownToHtml';
 
 type Mirror = {
   repairMojibake: (input: string | null | undefined) => string;
   expandInlineBulletRuns: (html: string) => string;
   normalizeArticleHtml: (html: string | null | undefined) => string;
+  stripFrontMatter: (input: string | null | undefined) => string;
 };
 
 const mirror = (await import(new URL('./lib/normalize-article-html.mjs', import.meta.url).href)) as Mirror;
@@ -76,6 +77,19 @@ check(
 check('paragraph without bullets is untouched', expandInlineBulletRuns('<p>Nothing here.</p>'), '<p>Nothing here.</p>');
 
 /* ------------------------------------------------------------------ *
+ * 2b. Front-matter stripping (metadata must never print as body text)
+ * ------------------------------------------------------------------ */
+
+const FRONT_MATTER_BODY = '---\nmeta_title: Is Retrac Safe?\nmeta_description: We tested it.\n---\n<p>Real content here.</p>';
+check('delimited front matter is stripped', stripFrontMatter(FRONT_MATTER_BODY), '<p>Real content here.</p>');
+check('undelimited meta_* lines are stripped', stripFrontMatter('meta_title: X\nmeta_description: Y\n<p>Body</p>'), '<p>Body</p>');
+check('body without front matter is untouched', stripFrontMatter('<p>No front matter</p>'), '<p>No front matter</p>');
+check('a top-of-article horizontal rule survives', stripFrontMatter('---\n<p>hr at top</p>\n---\n<p>body</p>'), '---\n<p>hr at top</p>\n---\n<p>body</p>');
+check('empty input', stripFrontMatter(''), '');
+checkTrue('no metadata key survives in the rendered body', !normalizeArticleHtml(FRONT_MATTER_BODY).includes('meta_title'));
+checkTrue('front matter never reaches the markdown path', !markdownToHtml(FRONT_MATTER_BODY).includes('meta_title'));
+
+/* ------------------------------------------------------------------ *
  * 3. The two implementations must agree
  * ------------------------------------------------------------------ */
 
@@ -88,6 +102,8 @@ const corpus = [
   `<ul><li>${BULLET} a</li></ul>`,
   `<h2>Takeaways ${EM_DASH_MOJIBAKE}</h2>\n<p>It${RSQUO_MOJIBAKE}s fine.</p>`,
   `<p>Mixed ${BULLET_MOJIBAKE} ${EM_DASH_MOJIBAKE} ${EACUTE_MOJIBAKE}</p>`,
+  FRONT_MATTER_BODY,
+  'meta_title: X\nmeta_description: Y\n<p>Body</p>',
 ];
 
 for (const sample of corpus) {
@@ -102,6 +118,11 @@ for (const sample of corpus) {
     `mirror normalizeArticleHtml(${label})`,
     mirror.normalizeArticleHtml(sample),
     normalizeArticleHtml(sample),
+  );
+  check(
+    `mirror stripFrontMatter(${label})`,
+    mirror.stripFrontMatter(sample),
+    stripFrontMatter(sample),
   );
 }
 
