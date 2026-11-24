@@ -7,8 +7,8 @@ export default function Privacy() {
   return (
     <Layout>
       <SEOHead
-        title="Privacy | The Grid Nexus"
-        description="Read The Grid Nexus privacy policy. Learn how we collect, use, and protect your data. GDPR and CCPA compliant."
+        title="Privacy Policy | The Grid Nexus"
+        description="Read The Grid Nexus privacy policy. Learn exactly what data we collect (and don't), which third-party services we use, and how to exercise your data rights."
         url={typeof window !== 'undefined' ? `${window.location.origin}/privacy` : '/privacy'}
       />
       <div className="container mx-auto px-4 py-12">
@@ -42,15 +42,15 @@ export default function Privacy() {
                 <h2 className="font-display font-semibold text-2xl">Information We Collect</h2>
               </div>
               <p className="text-muted-foreground mb-4">
-                We collect information that you provide directly to us and information that is automatically 
+                We collect information that you provide directly to us and information that is automatically
                 collected when you use our services:
               </p>
               <ul className="list-disc list-inside text-muted-foreground space-y-2">
-                <li><strong>Account Information:</strong> Name, email address, and profile information when you create an account</li>
-                <li><strong>Content Data:</strong> Articles you read, bookmarks, comments, and preferences</li>
-                <li><strong>Usage Data:</strong> Pages visited, time spent, click patterns, and navigation paths</li>
-                <li><strong>Device Information:</strong> IP address, browser type, operating system, and device identifiers</li>
-                <li><strong>Cookies and Tracking:</strong> We use cookies and similar technologies to enhance your experience</li>
+                <li><strong>Account Information (only if you sign in):</strong> Name, email address, and profile avatar, provided via Clerk authentication. Our security tools (Scam Checker, Security Checkup, Steam Scanner) require <em>no account</em> and collect <em>no answers</em> — results stay in your browser memory only.</li>
+                <li><strong>Newsletter email:</strong> If you subscribe, your email is stored in our Convex database to send the newsletter. You can unsubscribe at any time.</li>
+                <li><strong>Usage Data:</strong> Pages visited and aggregate events via Google Analytics 4 (measurement ID G-XMGRJBSN5Y). We do not track individual security-tool answers.</li>
+                <li><strong>Device Information:</strong> IP address, browser type, and operating system, collected automatically by our hosting provider and analytics.</li>
+                <li><strong>Cookies and Tracking:</strong> We use cookies for authentication (Clerk), consent preferences, and — only with your consent — advertising (Google AdSense) and analytics (GA4).</li>
               </ul>
             </section>
 
@@ -64,12 +64,11 @@ export default function Privacy() {
               </p>
               <ul className="list-disc list-inside text-muted-foreground space-y-2">
                 <li>Provide, maintain, and improve our services</li>
-                <li>Personalize your experience and content recommendations</li>
-                <li>Send you newsletters, updates, and promotional communications (with your consent)</li>
-                <li>Analyze usage patterns to enhance our platform</li>
+                <li>Send you newsletters if you subscribed (with your consent; unsubscribe anytime)</li>
+                <li>Analyze aggregate usage patterns via Google Analytics 4 to enhance our platform</li>
                 <li>Detect and prevent fraud, abuse, and security issues</li>
                 <li>Comply with legal obligations and enforce our terms</li>
-                <li>Serve personalized advertisements through Google AdSense (with your consent)</li>
+                <li>Serve advertisements through Google AdSense — <strong>only after you grant advertising consent</strong> via our cookie banner</li>
               </ul>
             </section>
 
@@ -125,16 +124,18 @@ export default function Privacy() {
             <section>
               <h2 className="font-display font-semibold text-2xl mb-4">Third-Party Services</h2>
               <p className="text-muted-foreground mb-4">
-                We may use third-party services that collect, monitor, and analyze information, including:
+                We use the following third-party services, each of which processes data under its own privacy policy:
               </p>
               <ul className="list-disc list-inside text-muted-foreground space-y-2">
-                <li>Analytics providers (e.g., Google Analytics)</li>
-                <li>Cloud hosting and database services</li>
-                <li>Email service providers</li>
-                <li>Content delivery networks</li>
+                <li><strong>Google Analytics 4</strong> (measurement ID G-XMGRJBSN5Y) — aggregate usage analytics. Loads only after analytics consent.</li>
+                <li><strong>Google AdSense</strong> (publisher ID ca-pub-9278124025449370) — advertising. Loads only after advertising consent.</li>
+                <li><strong>Clerk</strong> — authentication for optional user accounts. Processes name, email, and avatar if you sign in.</li>
+                <li><strong>Convex</strong> — backend database and hosting. Stores newsletter emails and account data (only if you create an account).</li>
+                <li><strong>Sentry</strong> — error monitoring. Receives anonymized error reports in production.</li>
+                <li><strong>Vercel / Coolify</strong> — hosting and CDN. Processes IP addresses and request logs.</li>
               </ul>
               <p className="text-muted-foreground mt-4">
-                These third parties have access to your information only to perform specific tasks on our behalf 
+                These third parties have access to your information only to perform specific tasks on our behalf
                 and are obligated not to disclose or use it for any other purpose.
               </p>
             </section>
@@ -157,18 +158,24 @@ export default function Privacy() {
                 <li><strong>Right to Non-Discrimination:</strong> We will not discriminate against you for exercising your privacy rights</li>
               </ul>
               <p className="text-muted-foreground mt-4">
-                To exercise any of these rights, please contact us at{' '}
-                <a href="mailto:kimnjuki2@gmail.com" className="text-primary hover:underline">kimnjuki2@gmail.com</a>.
+                To exercise any of these rights, please contact us via our{' '}
+                <a href="/contact" className="text-primary hover:underline">contact page</a>.
                 We will respond to verified requests within 30 days.
               </p>
             </section>
 
             <section>
-              <h2 className="font-display font-semibold text-2xl mb-4">Cookies</h2>
+              <h2 className="font-display font-semibold text-2xl mb-4">Cookies & Consent</h2>
               <p className="text-muted-foreground mb-4">
-                We use cookies and similar tracking technologies to track activity on our website and hold 
-                certain information. You can instruct your browser to refuse all cookies or to indicate when 
-                a cookie is being sent.
+                We use a consent banner to let you choose which categories of cookies to allow:
+              </p>
+              <ul className="list-disc list-inside text-muted-foreground space-y-2 mb-4">
+                <li><strong>Essential</strong> — required for the site to function (authentication session, consent preferences). Always on.</li>
+                <li><strong>Analytics</strong> — Google Analytics 4. Off by default; enabled only with your consent.</li>
+                <li><strong>Advertising</strong> — Google AdSense. Off by default; enabled only with your consent.</li>
+              </ul>
+              <p className="text-muted-foreground">
+                You can change your preferences at any time by clearing your browser's local storage or using the cookie settings link in the footer. Rejecting analytics or advertising prevents the corresponding scripts from loading.
               </p>
             </section>
 
@@ -196,9 +203,6 @@ export default function Privacy() {
                 please contact us:
               </p>
               <ul className="list-none text-muted-foreground space-y-1">
-                <li><strong>Email:</strong>{' '}
-                  <a href="mailto:kimnjuki2@gmail.com" className="text-primary hover:underline">kimnjuki2@gmail.com</a>
-                </li>
                 <li><strong>Website:</strong>{' '}
                   <a href="/contact" className="text-primary hover:underline">thegridnexus.com/contact</a>
                 </li>

@@ -44,11 +44,11 @@ export default function AnnualResearchReport() {
           published when a grade or guide is wrong.
         </p>
         <p className="flex flex-wrap gap-4">
-          <Link className="text-primary underline" to="/games">Game grades</Link>
-          <Link className="text-primary underline" to="/platforms">Platform hubs</Link>
-          <Link className="text-primary underline" to="/data">Open data</Link>
-          <Link className="text-primary underline" to="/methodology">Methodology</Link>
-          <Link className="text-primary underline" to="/corrections">Corrections</Link>
+          <a className="text-primary underline" href="/games">Game grades</a>
+          <a className="text-primary underline" href="/platforms">Platform hubs</a>
+          <a className="text-primary underline" href="/data">Open data</a>
+          <a className="text-primary underline" href="/methodology">Methodology</a>
+          <a className="text-primary underline" href="/corrections">Corrections</a>
         </p>
       </article>
     </Layout>

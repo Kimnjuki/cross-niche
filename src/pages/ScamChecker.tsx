@@ -264,12 +264,12 @@ export default function ScamChecker() {
 
               {showRecover && (
                 <div className="mt-4">
-                  <Link
-                    to="/recover"
+                  <a
+                    href="/recover"
                     className="inline-flex rounded-md border border-red-500/40 bg-red-500/10 px-3 py-2 text-sm text-red-200 hover:underline"
                   >
                     My account may be compromised → Recovery Navigator
-                  </Link>
+                  </a>
                 </div>
               )}
 
@@ -290,8 +290,8 @@ export default function ScamChecker() {
             <li>No anti-cheat bypass or exploit assistance</li>
           </ul>
           <p className="mt-2 text-xs text-muted-foreground">
-            See <Link to="/privacy/tools" className="text-cyan hover:underline">tool privacy</Link> and{' '}
-            <Link to="/methodology" className="text-cyan hover:underline">methodology</Link>.
+            See <a href="/privacy/tools" className="text-cyan hover:underline">tool privacy</a> and{' '}
+            <a href="/methodology" className="text-cyan hover:underline">methodology</a>.
           </p>
         </aside>
       </div>

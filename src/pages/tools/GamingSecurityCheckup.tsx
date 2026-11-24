@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useRef, useMemo } from 'react';
+import React, { useState, useCallback, useMemo } from 'react';
 import { Layout } from '@/components/layout/Layout';
 import { SEO } from '@/components/SEO';
 import { Link } from 'react-router-dom';
@@ -13,10 +13,6 @@ import {
   Eye, Key, Bell, Globe, ArrowLeft, Activity, Zap, Star,
   Share2, Download, Check,
 } from 'lucide-react';
-import { useMutation } from 'convex/react';
-import { api } from '../../../convex/_generated/api';
-import { useConvexDisabled } from '@/components/SafeConvexProvider';
-import { useAuth } from '@/contexts/AuthContext';
 import { ToolPageSEO } from '@/components/tools/ToolPageSEO';
 
 // ── Types ─────────────────────────────────────────────────────────────────────
@@ -156,10 +152,10 @@ const PLATFORMS: PlatformConfig[] = [
 // ── Score tier helpers ────────────────────────────────────────────────────────
 
 function getTier(pct: number): { label: string; desc: string; color: string; bg: string } {
-  if (pct >= 90) return { label: 'Fort Knox', desc: 'Even a stolen password cannot move your skins or drain your wallet.', color: 'text-green-600 dark:text-green-400', bg: 'bg-green-500' };
-  if (pct >= 70) return { label: 'Secured', desc: 'Strong defences. Close the last few gaps to reach Fort Knox tier.', color: 'text-gaming', bg: 'bg-gaming' };
-  if (pct >= 50) return { label: 'Hardened', desc: 'Basic protections in place, but a phished password could still reach your account.', color: 'text-yellow-600 dark:text-yellow-400', bg: 'bg-yellow-500' };
-  return { label: 'Exposed', desc: 'A single phished password can empty your Steam wallet and inventory in minutes.', color: 'text-destructive', bg: 'bg-destructive' };
+  if (pct >= 85) return { label: 'Excellent', desc: 'Your account has strong protections in place. Review any remaining gaps to reach 100%.', color: 'text-green-600 dark:text-green-400', bg: 'bg-green-500' };
+  if (pct >= 65) return { label: 'Good', desc: 'Good protection baseline. A few more steps would strengthen your account further.', color: 'text-gaming', bg: 'bg-gaming' };
+  if (pct >= 40) return { label: 'Fair', desc: 'Some protections active, but several important gaps remain. Consider addressing them.', color: 'text-yellow-600 dark:text-yellow-400', bg: 'bg-yellow-500' };
+  return { label: 'Needs Work', desc: 'Minimal protections detected. Priority: enable MFA, unique password, and review login activity.', color: 'text-destructive', bg: 'bg-destructive' };
 }
 
 // ── Score Ring ────────────────────────────────────────────────────────────────
@@ -188,16 +184,8 @@ const ScoreRing = React.memo(function ScoreRing({ pct, color, ringColor }: { pct
 // ── Component ─────────────────────────────────────────────────────────────────
 
 export default function GamingSecurityCheckup() {
-  const isDisabled = useConvexDisabled();
-  const { user } = useAuth();
-  const saveScore = useMutation(api.gamingTools.saveSecurityScore);
-  const sessionIdRef = useRef(() => {
-    const stored = sessionStorage.getItem('gnx_gaming_checkup_session');
-    if (stored) return stored;
-    const id = crypto.randomUUID();
-    sessionStorage.setItem('gnx_gaming_checkup_session', id);
-    return id;
-  });
+  // T04: Fully anonymous — no Convex mutation, no auth, no sessionStorage.
+  // Answers live only in component state (memory) and are never transmitted.
 
   const [phase, setPhase] = useState<Phase>('platform');
   const [selectedPlatform, setSelectedPlatform] = useState<PlatformConfig | null>(null);
@@ -231,32 +219,11 @@ export default function GamingSecurityCheckup() {
 
   const handleFinish = useCallback(() => {
     setPhase('results');
-    if (isDisabled || !platform) return;
-    const answersArr = checks.map((item, i) => ({
-      questionId: i,
-      answer: answers[item.id] === 'yes' ? 'yes' as const : 'no' as const,
-    }));
-    const bandMap: Record<string, 'excellent' | 'good' | 'fair' | 'needs_work'> = {
-      'Fort Knox': 'excellent', 'Secured': 'good', 'Hardened': 'fair', 'Exposed': 'needs_work',
-    };
-    saveScore({
-      sessionId: sessionIdRef.current(),
-      userId: user?.id,
-      answers: answersArr,
-      totalScore: score,
-      maxScore,
-      percentScore: pct,
-      band: bandMap[tier.label] ?? 'needs_work',
-      weakAreaCount: failedItems.length,
-    }).catch(() => {});
-  }, [isDisabled, platform, checks, answers, score, maxScore, pct, tier.label, failedItems.length, saveScore, user?.id]);
+    // T04: Anonymous by default — results stay in memory only.
+    // No Convex mutation, no sessionStorage, no network call.
+  }, []);
 
   const handleReset = useCallback(() => {
-    sessionIdRef.current = () => {
-      const id = crypto.randomUUID();
-      sessionStorage.setItem('gnx_gaming_checkup_session', id);
-      return id;
-    };
     setSelectedPlatform(null);
     setAnswers({});
     setCurrentIndex(0);
@@ -455,37 +422,40 @@ export default function GamingSecurityCheckup() {
         )}
 
         {/* ── PHASE: RESULTS ── */}
-        {phase === 'results' && platform && (
-          <div className="space-y-6">
-            {/* Score card */}
-            <Card className="border-gaming/20">
-              <CardContent className="pt-8 pb-6 text-center space-y-4">
-                <ScoreRing pct={pct} color={tier.color} ringColor={platform.ring} />
-                <div>
-                  <div className="flex items-center justify-center gap-2 mb-2">
-                    <Star className={cn('h-5 w-5', tier.color)} />
-                    <span className={cn('text-xl font-bold font-display', tier.color)}>{tier.label}</span>
-                    <Star className={cn('h-5 w-5', tier.color)} />
-                  </div>
-                  <p className="text-muted-foreground text-sm max-w-md mx-auto">{tier.desc}</p>
-                  <div className={cn('inline-flex items-center gap-1.5 mt-2 text-xs px-2.5 py-1 rounded-full', platform.bg)}>
-                    <span>{platform.emoji}</span>
-                    <span className="font-medium">{platform.name}</span>
-                  </div>
-                </div>
-                <Progress value={pct} className={cn('h-3 max-w-xs mx-auto', '[&>div]:' + tier.bg)} />
-                <p className="text-sm text-muted-foreground">
-                  Score: {score}/{maxScore} pts · {failedItems.length} gaps found
-                </p>
-                <p className="text-sm font-semibold">
-                  {failedItems.length === 0
-                    ? 'Your account is protected — no issues found'
-                    : criticalFails.length > 0
-                      ? `You have ${criticalFails.length} critical recommendation${criticalFails.length === 1 ? '' : 's'} to fix`
-                      : `You have ${failedItems.length} security tip${failedItems.length === 1 ? '' : 's'} to apply`}
-                </p>
-              </CardContent>
-            </Card>
+                {phase === 'results' && platform && (
+                  <div className="space-y-6">
+                    {/* Score card */}
+                    <Card className="border-gaming/20">
+                      <CardContent className="pt-8 pb-6 text-center space-y-4">
+                        <ScoreRing pct={pct} color={tier.color} ringColor={platform.ring} />
+                        <div>
+                          <div className="flex items-center justify-center gap-2 mb-2">
+                            <Star className={cn('h-5 w-5', tier.color)} />
+                            <span className={cn('text-xl font-bold font-display', tier.color)}>{tier.label}</span>
+                            <Star className={cn('h-5 w-5', tier.color)} />
+                          </div>
+                          <p className="text-muted-foreground text-sm max-w-md mx-auto">{tier.desc}</p>
+                          <div className={cn('inline-flex items-center gap-1.5 mt-2 text-xs px-2.5 py-1 rounded-full', platform.bg)}>
+                            <span>{platform.emoji}</span>
+                            <span className="font-medium">{platform.name}</span>
+                          </div>
+                          <Badge className={cn('mt-2 text-xs px-2.5 py-1', tier.color, 'bg-transparent border-current')}>
+                            {tier.label} protection readiness — self-reported
+                          </Badge>
+                        </div>
+                        <Progress value={pct} className={cn('h-3 max-w-xs mx-auto', '[&>div]:' + tier.bg)} />
+                        <p className="text-sm text-muted-foreground">
+                          Score: {score}/{maxScore} pts · {failedItems.length} gaps found
+                        </p>
+                        <p className="text-sm font-semibold">
+                          {failedItems.length === 0
+                            ? 'Your account has strong protections — no issues found'
+                            : criticalFails.length > 0
+                              ? `You have ${criticalFails.length} critical recommendation${criticalFails.length === 1 ? '' : 's'} to fix`
+                              : `You have ${failedItems.length} security tip${failedItems.length === 1 ? '' : 's'} to apply`}>
+                        </p>
+                      </CardContent>
+                    </Card>
 
             {/* Report actions — exportable report + share (client-side) */}
             <div className="flex flex-col sm:flex-row gap-2">

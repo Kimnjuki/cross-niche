@@ -92,6 +92,16 @@ export default defineConfig(({ mode }: ConfigEnv) => {
     server: {
       host: "::",
       port: 8080,
+      headers: {
+        // T11: CSP report-only for local dev parity with nginx.conf.
+        // Remove "-Report-Only" to enforce after reviewing reports.
+        "Content-Security-Policy-Report-Only":
+          "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://pagead2.googlesyndication.com https://*.clerk.accounts.dev https://*.clerk.dev https://*.convex.cloud https://browser.sentry-cdn.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https: blob:; connect-src 'self' ws://localhost:* http://localhost:* https://www.google-analytics.com https://analytics.google.com https://*.google-analytics.com https://*.clerk.accounts.dev https://*.clerk.dev https://*.convex.cloud https://*.convex.site wss://*.convex.cloud https://browser.sentry-cdn.com https://*.ingest.sentry.io; frame-src https://*.clerk.accounts.dev https://*.clerk.dev https://www.google.com; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'self'",
+        "X-Frame-Options": "SAMEORIGIN",
+        "X-Content-Type-Options": "nosniff",
+        "Referrer-Policy": "strict-origin-when-cross-origin",
+        "Permissions-Policy": "camera=(), microphone=(), geolocation=(), interest-cohort=()",
+      },
     },
     plugins,
     // Do NOT explicitly define VITE_CONVEX_URL here. SafeConvexProvider
