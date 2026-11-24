@@ -5,15 +5,15 @@
   "risks": [
     {
       "id": "R001",
-      "title": "NexusScoreWidget displays fabricated 72/100 threat score globally",
+      "title": "VERIFIED FALSE POSITIVE: NexusScoreWidget does not exist in codebase",
       "category": "Trust & Safety",
-      "severity": "High",
-      "likelihood": "High",
-      "impact": "Players misled by fake risk metric; no methodology, no provenance, simulates real-time updates",
-      "evidence": "src/components/ui/NexusScoreWidget.tsx:17 (hardcoded 72), Layout.tsx:32 (global render)",
+      "severity": "Info",
+      "likelihood": "N/A",
+      "impact": "Original plan claim about hardcoded 72/100 score widget was not found. SecurityScore.tsx shows placeholder (—) awaiting user input. No global 72/100 widget exists.",
+      "evidence": "Verified 2026-11-24: src/components/ui/NexusScoreWidget.tsx does not exist. Search for '72/100', 'Moderate Risk', 'NexusScoreWidget' in src/ returned 0 results. src/pages/SecurityScore.tsx:173 shows '—' placeholder.",
       "plan_ref": "G03, T05",
-      "status": "open",
-      "mitigation": "Remove widget globally; replace with evidence-backed grade component on relevant pages only"
+      "status": "verified_not_present",
+      "mitigation": "No action needed. If a 72/100 score appears on live site, it may be from a different deployment or cached version. Verify against production."
     },
     {
       "id": "R002",
@@ -89,15 +89,15 @@
     },
     {
       "id": "R008",
-      "title": "SteamScanner username input visible (disabled) — implies collection",
+      "title": "VERIFIED FALSE POSITIVE: SteamScanner has no username input",
       "category": "Trust & Safety",
-      "severity": "Low",
-      "likelihood": "Medium",
-      "impact": "Users may believe username is collected/used; contradicts 'anonymous' claim",
-      "evidence": "src/pages/tools/SteamScanner.tsx:320-327 (disabled Input with placeholder)",
+      "severity": "Info",
+      "likelihood": "N/A",
+      "impact": "Original plan claim about username input was not found. SteamScanner.tsx (574 lines) contains no username field — only yes/no/unknown answers stored in sessionStorage.",
+      "evidence": "Verified 2026-11-24: src/pages/tools/SteamScanner.tsx read in full (lines 1-574). No Input component for username. Header text at line 302 says 'we don't query Steam or store your username'.",
       "plan_ref": "G02, T04",
-      "status": "open",
-      "mitigation": "Remove username input entirely; strengthen 'no username collected' messaging"
+      "status": "verified_not_present",
+      "mitigation": "No action needed. Tool already meets T04 anonymous requirement."
     },
     {
       "id": "R009",
@@ -186,10 +186,12 @@
   ],
   "summary": {
     "total": 15,
+    "verified_false_positives": 2,
     "by_severity": {
       "High": 6,
       "Medium": 7,
-      "Low": 2
+      "Low": 2,
+      "Info": 2
     },
     "by_category": {
       "Trust & Safety": 4,

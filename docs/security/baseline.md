@@ -136,8 +136,8 @@ Convex Backend
 | Finding | Plan ID | Status | Evidence |
 |---------|---------|--------|----------|
 | Homepage/About audience mismatch | G01 | ✅ Confirmed | About targets pros; Homepage targets players |
-| SteamScanner branding exceeds capability | G02 | ⚠️ Partially fixed | Already "Self-Assessment" but username input visible (disabled) |
-| 72/100 score no methodology | G03 | ✅ Confirmed | `NexusScoreWidget` hardcoded 72, global on every page |
+| SteamScanner branding exceeds capability | G02 | ✅ **VERIFIED NOT PRESENT** | Already "Self-Assessment", no username input exists (verified 2026-11-24, full file read) |
+| 72/100 score no methodology | G03 | ✅ **VERIFIED NOT PRESENT** | No `NexusScoreWidget` exists; no hardcoded 72/100 found in src/ (verified 2026-11-24). SecurityScore.tsx shows placeholder (—) |
 | Privacy route rendering issue | G04 | ⚠️ Needs browser verification | Renders content but `extraction` failed in research |
 | Editorial claims unverified | G05 | ✅ Confirmed | About page claims "managed by Kim Njuki", "security professionals" readers |
 | Grade/Checkup discoverability | G06 | ⚠️ Mixed | Checkup exists at `/tools/gaming-security-checkup`; Grade route missing |
@@ -147,17 +147,18 @@ Convex Backend
 
 ---
 
-## 5. Risk Register (Initial)
+## 5. Risk Register (Initial — Updated 2026-11-24 with verification)
 
-| Risk | Likelihood | Impact | Mitigation |
-|------|------------|--------|------------|
-| NexusScoreWidget misleads players with fake 72/100 | High | High | Remove or replace with evidence-backed grade (T05) |
-| GamingSecurityCheckup stores scores without clear consent | Medium | High | Enforce consent gate; make anonymous default (T04) |
-| Broken navigation links hurt trust/SEO | High | Medium | Implement missing routes or remove links (T03) |
-| About page misrepresents product | Medium | High | Rewrite for player-first positioning (T02) |
-| Privacy policy doesn't match processing | High | High | Audit actual network requests vs policy (T07) |
-| No threat model / ASVS baseline | High | High | Create threat model + ASVS mapping (T08) |
-| Community threat reports lack moderation pipeline | Medium | High | Build moderation before enabling (T23) |
+| Risk | Likelihood | Impact | Mitigation | Status |
+|------|------------|--------|------------|--------|
+| ~~NexusScoreWidget misleads players with fake 72/100~~ | — | — | — | **VERIFIED NOT PRESENT** — component does not exist |
+| GamingSecurityCheckup stores scores without clear consent | Medium | High | Enforce consent gate; make anonymous default (T04) | Open |
+| Broken navigation links hurt trust/SEO | High | Medium | Implement missing routes or remove links (T03) | Open |
+| About page misrepresents product | Medium | High | Rewrite for player-first positioning (T02) | Open |
+| Privacy policy doesn't match processing | High | High | Audit actual network requests vs policy (T07) | Open |
+| No threat model / ASVS baseline | High | High | Create threat model + ASVS mapping (T08) | Open |
+| Community threat reports lack moderation pipeline | Medium | High | Build moderation before enabling (T23) | Open |
+| ~~SteamScanner username input implies collection~~ | — | — | — | **VERIFIED NOT PRESENT** — no username field exists |
 
 ---
 
@@ -182,15 +183,16 @@ Convex Backend
 ### 6.3 T04 — Honest Anonymous Checkups
 | File | Change |
 |------|--------|
-| `src/pages/tools/SteamScanner.tsx` | Remove disabled username input; strengthen "self-reported" labeling; ensure no network calls |
+| `src/pages/tools/SteamScanner.tsx` | ✅ Already compliant — no changes needed (verified: anonymous, sessionStorage only, no username input, self-reported labeling present) |
 | `src/pages/tools/GamingSecurityCheckup.tsx` | Remove Convex save by default; make opt-in with explicit consent; replace "Fort Knox/Exposed" tiers with "protection readiness" language |
 | `src/convex/gamingTools.ts` | Add rate limiting; require consentId for all writes |
 
 ### 6.4 T05 — Remove Ambiguous Scores
 | File | Change |
 |------|--------|
-| `src/components/ui/NexusScoreWidget.tsx` | **REMOVE** or replace with evidence-backed grade component |
-| `src/components/layout/Layout.tsx` | Remove `<NexusScoreWidget />` from global layout |
+| ~~`src/components/ui/NexusScoreWidget.tsx`~~ | **VERIFIED NOT PRESENT** — file does not exist, no action needed |
+| ~~`src/components/layout/Layout.tsx`~~ | **VERIFIED NOT PRESENT** — no NexusScoreWidget reference found |
+| `src/pages/SecurityScore.tsx` | ✅ Already shows placeholder (—); ensure any future score has methodology/provenance |
 
 ### 6.5 T07 — Privacy Controls Match Processing
 | File | Change |
@@ -207,17 +209,17 @@ Convex Backend
 
 ---
 
-## 7. Acceptance Tests for Phase 1
+## 7. Acceptance Tests for Phase 1 (Updated 2026-11-24)
 
-| Test | Command | Expected |
-|------|---------|----------|
-| No broken internal links | `npm run test:seo` | All route tests pass |
-| TypeScript clean | `npm run type-check` | 0 errors |
-| Lint clean | `npm run lint` | 0 errors |
-| NexusScoreWidget removed | `grep -r NexusScoreWidget src/` | Only in deleted file |
-| SteamScanner no username input | Visual inspection | Input field gone |
-| GamingSecurityCheckup anonymous default | Network tab | No Convex mutation on finish without consent |
-| Privacy policy accuracy | Manual audit | Network requests match policy claims |
+| Test | Command | Expected | Status |
+|------|---------|----------|--------|
+| No broken internal links | `npm run test:seo` | All route tests pass | Pending |
+| TypeScript clean | `npm run type-check` | 0 errors | Pending |
+| Lint clean | `npm run lint` | 0 errors | Pending |
+| ~~NexusScoreWidget removed~~ | `grep -r NexusScoreWidget src/` | — | **VERIFIED NOT PRESENT** |
+| ~~SteamScanner no username input~~ | Visual inspection | — | **VERIFIED NOT PRESENT** (already compliant) |
+| GamingSecurityCheckup anonymous default | Network tab | No Convex mutation on finish without consent | Pending |
+| Privacy policy accuracy | Manual audit | Network requests match policy claims | Pending |
 
 ---
 
@@ -229,8 +231,34 @@ Convex Backend
 
 ---
 
-## 9. Next Steps
-1. **Owner approval** of Phase 1 scope (this document)
-2. **Implement T02–T05, T07, T11** as first batch
+## 9. T01 Completion Report (2026-11-24)
+
+### Verified Architecture
+- **Frontend**: React 18.3.1 + TypeScript 5.8.3, Vite 5.4.21, React Router DOM 7.13.1
+- **Backend**: Convex 1.33.1 (60+ tables), Clerk React 5.61.6
+- **Hosting**: Vercel (primary), Coolify/Traefik (alternative)
+- **Analytics**: GA4 + Sentry 10.38.0
+- **Ads**: AdSense + Adsterra (global in Layout)
+
+### Verified Findings vs Plan Claims
+| Plan Claim | Verification Result |
+|------------|---------------------|
+| NexusScoreWidget with hardcoded 72/100 | **NOT FOUND** — component does not exist |
+| SteamScanner username input | **NOT FOUND** — no username field in 574-line file |
+| SecurityScore shows 72/100 | **NOT FOUND** — shows placeholder (—) |
+| Broken nav links (7+ routes) | **CONFIRMED** — `/tools/grade`, `/games`, `/safety`, `/threats`, `/platforms`, `/recover`, `/methodology` all 404 |
+| About page positioning mismatch | **CONFIRMED** — professional publication vs player-safety |
+| GamingSecurityCheckup saves to Convex | **CONFIRMED** — consentId optional in mutation |
+| No CSP headers | **CONFIRMED** — no CSP in vite.config.ts or vercel.json |
+| No threat model/ASVS mapping | **CONFIRMED** — docs exist but no code-level implementation |
+
+### Deliverables
+- ✅ [`docs/security/baseline.md`](docs/security/baseline.md) — this file
+- ✅ [`docs/security/data-flow.md`](docs/security/data-flow.md) — data flow diagrams
+- ✅ [`docs/security/risk-register.json`](docs/security/risk-register.json) — 15 risks, 2 verified false positives
+
+### Next Steps
+1. **Owner approval** of Phase 1 scope (T02, T03, T04, T07, T11)
+2. **Implement first batch**: positioning, routes, checkup consent, privacy audit, CSP
 3. **Run acceptance tests** and verify
-4. **Proceed to T01 deliverables**: `data-flow.md`, `risk-register.json`
+4. **Proceed to Phase 2** tasks after Phase 1 gates pass
