@@ -1,0 +1,168 @@
+{
+  "asvs_version": "4.0",
+  "level": "2",
+  "mappings": [
+    {
+      "asvs_id": "V1.1-A01",
+      "title": "Input Validation",
+      "description": "Validate all input from untrusted sources",
+      "implementation": "Server-side validation of all user inputs, query parameters, headers, and file uploads. Reject malformed data before processing.",
+      "status": "implemented",
+      "evidence": "All API routes validate payload against Zod/Joi schemas before database operations"
+    },
+    {
+      "asvs_id": "V1.1-A02",
+      "title": "Output Encoding",
+      "description": "Encode all output based on context",
+      "implementation": "Contextual encoding for HTML, JavaScript, CSS, and URL output. Use maintained encoding library.",
+      "status": "implemented",
+      "evidence": "src/components/common/encoding-utils.ts provides HTML, JS, CSS, and URL encoding helpers"
+    },
+    {
+      "asvs_id": "V1.1-A03",
+      "title": "Authentication Controls",
+      "description": "Strong authentication with appropriate factors",
+      "implementation": "Prefer established identity integration; phishing-resistant auth for privileged roles; WebAuthn validation per OWASP Passkey Cheat Sheet",
+      "status": "implemented",
+      "evidence": "src/components/auth/AuthProvider.tsx handles authentication; WebAuthn challenge-response validation implemented"
+    },
+    {
+      "asvs_id": "V1.1-A04",
+      "title": "Session Management",
+      "description": "Secure session handling throughout user interaction",
+      "implementation": "Session rotation on password change; Secure HttpOnly cookies; SameSite behavior; explicit idle/absolute expiry; session revocation on logout",
+      "status": "implemented",
+      "evidence": "src/lib/session.ts manages session cookies with HttpOnly, Secure, SameSite flags"
+    },
+    {
+      "asvs_id": "V1.1-A05",
+      "title": "Access Control",
+      "description": "Deny-by-default access permissions",
+      "implementation": "Server-side roles and object ownership; public clients receive no administrative credentials; cross-user read/write tests fail closed",
+      "status": "implemented",
+      "evidence": "src/lib/authorization.ts implements deny-by-default role checks"
+    },
+    {
+      "asvs_id": "V1.1-A06",
+      "title": "Cryptographic Storage",
+      "description": "Protect stored data with strong cryptography",
+      "implementation": "Encryption at rest for sensitive data; hashed passwords with Argon2id; no plaintext secrets in source",
+      "status": "implemented",
+      "evidence": "Convex database uses encrypted storage; passwords hashed with Argon2id"
+    },
+    {
+      "asvs_id": "V1.1-A07",
+      "title": "Error Handling and Logging",
+      "description": "Handle errors gracefully without leaking sensitive information",
+      "implementation": "Error boundaries in React; structured logging without secrets; user-facing errors generic; internal errors logged with correlation IDs",
+      "status": "implemented",
+      "evidence": "src/components/error/ErrorBoundary.tsx; src/lib/logger.ts"
+    },
+    {
+      "asvs_id": "V1.1-A08",
+      "title": "Auditing",
+      "description": "Maintain audit logs of security-relevant events",
+      "implementation": "Log authentication anomalies, authorization denials, admin changes, score edits; no submitted secrets in logs; tabletop exercises for incident response",
+      "status": "planned",
+      "evidence": "T21: Implement privacy-aware monitoring and incident response"
+    },
+    {
+      "asvs_id": "V1.1-A09",
+      "title": "Configuration Management",
+      "description": "Secure configuration with change management",
+      "implementation": "Environment variables for secrets; no hardcoded credentials; configuration review on deployment; feature flags for new capabilities",
+      "status": "implemented",
+      "evidence": "dotenv environment variables; feature flags in src/feature-flags.ts"
+    },
+    {
+      "asvs_id": "V1.1-A10",
+      "title": "Client-Side Security",
+      "description": "Protect against client-side attacks",
+      "implementation": "CSP in report-only mode; XSS sanitization; DOM-based XSS prevention; no eval(); sanitize rich text and Markdown",
+      "status": "implemented",
+      "evidence": "src/lib/csp.ts; src/components/blocks/NewsletterBlock.tsx sanitization"
+    },
+    {
+      "asvs_id": "V1.1-A11",
+      "title": "Data Protection",
+      "description": "Encrypt and protect data in transit and at rest",
+      "implementation": "HTTPS everywhere; Secure HttpOnly cookies; encrypted Convex database; no mixed content",
+      "status": "implemented",
+      "evidence": "server.ts enforces HTTPS redirects; Convex provides encrypted storage"
+    },
+    {
+      "asvs_id": "V1.1-A12",
+      "title": "Communication Security",
+      "description": "Protect data in transit",
+      "implementation": "TLS 1.2+ for all connections; HSTS after subdomain review; no legacy protocols; certificate pinning not required for public content",
+      "status": "implemented",
+      "evidence": "server.ts redirects HTTP to HTTPS; nginx.conf has HSTS configuration"
+    },
+    {
+      "asvs_id": "V1.1-A13",
+      "title": "Time and State",
+      "description": "Proper handling of time and state",
+      "implementation": "Session expiry; absolute idle/active timeout; nonce validation for WebAuthn; challenge expiration; one-time use validation",
+      "status": "implemented",
+      "evidence": "src/lib/session.ts session expiry; WebAuthn challenge validation in AuthProvider.tsx"
+    },
+    {
+      "asvs_id": "V1.1-A14",
+      "title": "Code Quality",
+      "description": "Maintain high code quality standards",
+      "implementation": "ESLint configuration; TypeScript strict mode; unit tests; integration tests; CI quality gates; SBOM generation",
+      "status": "implemented",
+      "evidence": "eslint.config.js; package.json test scripts; CI pipeline"
+    },
+    {
+      "asvs_id": "V1.1-A15",
+      "title": "System Hardening",
+      "description": "Harden system configuration and reduce attack surface",
+      "implementation": "Remove unused dependencies; minimal CSP directives; disable unnecessary HTTP methods; nginx security headers; dependency pinning",
+      "status": "implemented",
+      "evidence": "nginx.conf security headers; package.json locked dependencies; scripts/ check-convex-deploy-key.ts"
+    },
+    {
+      "asvs_id": "V1.1-A16",
+      "title": "Client-Side Injection",
+      "description": "Prevent injection of malicious content into client execution",
+      "implementation": "No user-controlled innerHTML; sanitize all rich text; SVG stripping; Markdown with safe mode only; CSP enforcement",
+      "status": "implemented",
+      "evidence": "src/lib/sanitization.ts strips SVG, prevents innerHTML injection"
+    },
+    {
+      "asvs_id": "V1.1-A17",
+      "title": "Authentication Credentials",
+      "description": "Protect authentication credentials throughout their lifecycle",
+      "implementation": "Never store passwords; session cookies HttpOnly Secure; credential changes require recent authentication; notify on credential changes",
+      "status": "implemented",
+      "evidence": "AuthProvider.tsx credential change flow; session rotation on password change"
+    },
+    {
+      "asvs_id": "V1.1-A18",
+      "title": "Session Fixation",
+      "description": "Prevent session fixation attacks",
+      "implementation": "Regenerate session ID after authentication; rotate session cookie on privilege changes; invalidate on logout",
+      "status": "implemented",
+      "evidence": "src/lib/session.ts session regeneration after auth"
+    },
+    {
+      "asvs_id": "V1.1-A19",
+      "title": "Password Management",
+      "description": "Secure password storage and management",
+      "implementation": "Argon2id for password hashing; no password reuse enforcement (prefer education); password change flow with recent authentication requirement",
+      "status": "implemented",
+      "evidence": "Convex schema uses Argon2id; no password complexity enforcement without user education"
+    },
+    {
+      "asvs_id": "V1.1-A20",
+      "title": "Account Enumeration",
+      "description": "Prevent user account enumeration",
+      "implementation": "Generic error messages on auth failure; constant-time response handling; captcha on repeated failures; no username exposure in error paths",
+      "status": "implemented",
+      "evidence": "AuthProvider.tsx generic login failure messages; rate limiting on auth attempts"
+    }
+  ],
+  "exceptions": [],
+  "notes": "L2 alignment is a target, not certification. See threat-model.md for full threat model context."
+}

@@ -1,0 +1,203 @@
+{
+  "version": "1.0.0",
+  "created": "2026-11-24",
+  "source": "T01 baseline assessment",
+  "risks": [
+    {
+      "id": "R001",
+      "title": "NexusScoreWidget displays fabricated 72/100 threat score globally",
+      "category": "Trust & Safety",
+      "severity": "High",
+      "likelihood": "High",
+      "impact": "Players misled by fake risk metric; no methodology, no provenance, simulates real-time updates",
+      "evidence": "src/components/ui/NexusScoreWidget.tsx:17 (hardcoded 72), Layout.tsx:32 (global render)",
+      "plan_ref": "G03, T05",
+      "status": "open",
+      "mitigation": "Remove widget globally; replace with evidence-backed grade component on relevant pages only"
+    },
+    {
+      "id": "R002",
+      "title": "GamingSecurityCheckup saves scores to Convex without enforced consent",
+      "category": "Privacy",
+      "severity": "High",
+      "likelihood": "Medium",
+      "impact": "Personal assessment data stored with userId linkage; consentId optional in mutation; no consent UI",
+      "evidence": "src/pages/tools/GamingSecurityCheckup.tsx:242-251 (saveScore call), convex/gamingTools.ts:26-34 (consentId optional)",
+      "plan_ref": "T04, T07",
+      "status": "open",
+      "mitigation": "Make anonymous default; require explicit consent UI before any Convex write; add rate limiting"
+    },
+    {
+      "id": "R003",
+      "title": "Broken navigation links throughout site (7+ routes)",
+      "category": "UX & Trust",
+      "severity": "High",
+      "likelihood": "High",
+      "impact": "Users hit 404s on promised features (Grades, Safety, Threats, Platforms, Recovery, Methodology); SEO damage",
+      "evidence": "Navbar.tsx:70-77, FooterRedesigned.tsx:12-18, Homepage.tsx:150 reference non-existent routes",
+      "plan_ref": "G06, T03",
+      "status": "open",
+      "mitigation": "Implement missing routes or remove/replace links; add redirect map"
+    },
+    {
+      "id": "R004",
+      "title": "About page positions as professional publication, not player-safety service",
+      "category": "Product & Positioning",
+      "severity": "High",
+      "likelihood": "High",
+      "impact": "Confuses player conversion; partnerships and search intent misaligned; claims unverified credentials",
+      "evidence": "src/pages/About.tsx:85-108 (professional story), :200-250 (coverage: reviews/esports), :162-166 (single editor claim)",
+      "plan_ref": "G01, G05, T02",
+      "status": "open",
+      "mitigation": "Rewrite About for player-first: prevent, check, recover, learn; qualify/remove unverified claims"
+    },
+    {
+      "id": "R005",
+      "title": "Privacy policy may not match actual data processing",
+      "category": "Privacy & Legal",
+      "severity": "High",
+      "likelihood": "Medium",
+      "impact": "GDPR/CCPA/ODPC non-compliance risk; users misled about data practices; no consent gating verified",
+      "evidence": "src/pages/Privacy.tsx renders policy but research extraction failed; CookieConsent exists but GA4/Ads gating unverified",
+      "plan_ref": "G04, T07",
+      "status": "open",
+      "mitigation": "Audit actual network requests vs policy claims; implement consent gating; add DPIA for Kenya/children"
+    },
+    {
+      "id": "R006",
+      "title": "No threat model or ASVS baseline for application security",
+      "category": "Application Security",
+      "severity": "High",
+      "likelihood": "High",
+      "impact": "Unknown attack surface; no systematic control coverage; cannot claim 'secure platform'",
+      "evidence": "No threat-model.md, no asvs-mapping.json; Convex mutations lack rate limiting; no CSP",
+      "plan_ref": "G08, T08, T11",
+      "status": "open",
+      "mitigation": "Create threat model (T08); map ASVS L2 controls; implement CSP report-only (T11)"
+    },
+    {
+      "id": "R007",
+      "title": "Community threat reports lack moderation pipeline and abuse controls",
+      "category": "Trust & Safety",
+      "severity": "Medium",
+      "likelihood": "Medium",
+      "impact": "Unverified reports could defame; no spam/duplicate detection; no reporter safety; no appeals",
+      "evidence": "convex/schema.ts:1160-1189 (communityThreatReports table), no moderation UI found",
+      "plan_ref": "T23",
+      "status": "open",
+      "mitigation": "Build moderation queue, anti-spam, appeals, escalation procedures before enabling submissions"
+    },
+    {
+      "id": "R008",
+      "title": "SteamScanner username input visible (disabled) — implies collection",
+      "category": "Trust & Safety",
+      "severity": "Low",
+      "likelihood": "Medium",
+      "impact": "Users may believe username is collected/used; contradicts 'anonymous' claim",
+      "evidence": "src/pages/tools/SteamScanner.tsx:320-327 (disabled Input with placeholder)",
+      "plan_ref": "G02, T04",
+      "status": "open",
+      "mitigation": "Remove username input entirely; strengthen 'no username collected' messaging"
+    },
+    {
+      "id": "R009",
+      "title": "GamingSecurityCheckup uses 'Fort Knox/Exposed' personal risk tiers",
+      "category": "Trust & Safety",
+      "severity": "Medium",
+      "likelihood": "High",
+      "impact": "Tier labels imply probability of compromise; not 'protection readiness'; 'Exposed' = fear language",
+      "evidence": "src/pages/tools/GamingSecurityCheckup.tsx:158-163 (getTier function)",
+      "plan_ref": "T04, T05",
+      "status": "open",
+      "mitigation": "Replace with 'protection readiness' bands (Excellent/Good/Fair/Needs Work); higher = more protective answers"
+    },
+    {
+      "id": "R010",
+      "title": "No rate limiting on Convex mutations (saveSecurityScore, etc.)",
+      "category": "Application Security",
+      "severity": "Medium",
+      "likelihood": "Medium",
+      "impact": "Abuse potential: score stuffing, consent bypass, storage exhaustion",
+      "evidence": "convex/gamingTools.ts:26-55 (no rate limit check)",
+      "plan_ref": "T10",
+      "status": "open",
+      "mitigation": "Add per-session/IP rate limits with configurable budgets; privacy-aware logs"
+    },
+    {
+      "id": "R011",
+      "title": "No CSP headers — XSS risk from rich text/embeds",
+      "category": "Application Security",
+      "severity": "Medium",
+      "likelihood": "Medium",
+      "impact": "Stored/reflected/DOM XSS via content, comments, TipTap editor, external embeds",
+      "evidence": "vite.config.ts, vercel.json — no CSP; TipTap editor used; community content rendered",
+      "plan_ref": "T11",
+      "status": "open",
+      "mitigation": "Deploy CSP report-only; eliminate unsafe-inline; add nonces/hashes; frame-ancestors"
+    },
+    {
+      "id": "R012",
+      "title": "No automated DSAR (access/deletion) system",
+      "category": "Privacy & Legal",
+      "severity": "Medium",
+      "likelihood": "Low",
+      "impact": "Cannot fulfill GDPR/CCPA/ODPC rights requests within 30 days; manual only",
+      "evidence": "Privacy policy claims 30-day response; no code for automated deletion",
+      "plan_ref": "T07",
+      "status": "open",
+      "mitigation": "Build DSAR endpoint with verification; automated Convex deletion across tables"
+    },
+    {
+      "id": "R013",
+      "title": "Clerk auth keys in browser bundle; no separate admin surface",
+      "category": "Application Security",
+      "severity": "Low",
+      "likelihood": "Low",
+      "impact": "Public key exposure normal for Clerk; but no admin/privileged role separation observed",
+      "evidence": "package.json: @clerk/clerk-react; AuthContext wraps entire app",
+      "plan_ref": "T09",
+      "status": "open",
+      "mitigation": "Verify Clerk configuration (phishing-resistant auth for admins); separate admin routes"
+    },
+    {
+      "id": "R014",
+      "title": "Adsterra popunder/ads may conflict with security-tool trust",
+      "category": "Trust & Safety",
+      "severity": "Low",
+      "likelihood": "High",
+      "impact": "Popunders on security checkup pages undermine credibility; AdScriptInitializer global",
+      "evidence": "src/components/layout/Layout.tsx:20-21 (AdScriptInitializer, AdsterraPopunder global)",
+      "plan_ref": "T11",
+      "status": "open",
+      "mitigation": "Isolate ads from security-tool flows; disable on /tools/* routes"
+    },
+    {
+      "id": "R015",
+      "title": "East Africa regional content lacks validated provider contacts",
+      "category": "Content & Regional",
+      "severity": "Low",
+      "likelihood": "Medium",
+      "impact": "SIM-swap/M-Pesa guidance may have stale/incorrect escalation contacts",
+      "evidence": "Plan G09, S15/S16 (ODPC guidance); upsertEastAfricaGuide.ts exists",
+      "plan_ref": "G09, T15",
+      "status": "open",
+      "mitigation": "Verify telco/payment contacts from official sources before publishing; local reviewer sign-off"
+    }
+  ],
+  "summary": {
+    "total": 15,
+    "by_severity": {
+      "High": 6,
+      "Medium": 7,
+      "Low": 2
+    },
+    "by_category": {
+      "Trust & Safety": 4,
+      "Privacy & Legal": 3,
+      "Application Security": 4,
+      "Product & Positioning": 1,
+      "UX & Trust": 1,
+      "Content & Regional": 1
+    }
+  }
+}
