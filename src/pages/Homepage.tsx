@@ -126,25 +126,32 @@ export function Homepage() {
     <main>
       <HeroSection
         variant="homepage"
-        eyebrow="INTELLIGENCE HUB"
+        eyebrow="PLAYER SAFETY HUB"
         ctas={[
-          { label: 'Read the latest', href: '/explore', variant: 'primary' },
-          { label: 'Check your security score', href: '/security-score', variant: 'secondary' },
+          { label: 'Security Checkup', href: '/tools/steam-scanner', variant: 'primary' },
+          { label: 'Scam Check', href: '/tools/scam-check', variant: 'secondary' },
+          { label: 'Recovery Guides', href: '/guides', variant: 'secondary' },
         ]}
       />
 
-      {/* Three-pillar navigation strip */}
-      <section className="border-b border-white/[0.06] bg-ink-900/50" aria-label="Coverage pillars">
+      {/* Player safety navigation */}
+      <section className="border-b border-white/[0.06] bg-ink-900/50" aria-label="Player safety pillars">
         <div className="container-tokens">
-          <div className="grid grid-cols-3">
-            <Link to="/tech" className="group flex items-center justify-center gap-3 py-4 border-r border-white/[0.06] hover:bg-cyan/5 transition-colors">
-              <span className="text-cyan font-semibold text-sm md:text-base group-hover:underline">Technology</span>
+          <div className="grid grid-cols-5">
+            <Link to="/tools/steam-scanner" className="group flex items-center justify-center gap-3 py-4 border-r border-white/[0.06] hover:bg-security/5 transition-colors">
+              <span className="text-security font-semibold text-sm md:text-base group-hover:underline">Checkup</span>
             </Link>
-            <Link to="/security" className="group flex items-center justify-center gap-3 py-4 border-r border-white/[0.06] hover:bg-violet/5 transition-colors">
-              <span className="text-violet font-semibold text-sm md:text-base group-hover:underline">Security</span>
+            <Link to="/tools/scam-check" className="group flex items-center justify-center gap-3 py-4 border-r border-white/[0.06] hover:bg-destructive/5 transition-colors">
+              <span className="text-destructive font-semibold text-sm md:text-base group-hover:underline">Scam Check</span>
             </Link>
-            <Link to="/gaming" className="group flex items-center justify-center gap-3 py-4 hover:bg-amber/5 transition-colors">
-              <span className="text-amber font-semibold text-sm md:text-base group-hover:underline">Gaming</span>
+            <Link to="/guides" className="group flex items-center justify-center gap-3 py-4 border-r border-white/[0.06] hover:bg-warning/5 transition-colors">
+              <span className="text-warning font-semibold text-sm md:text-base group-hover:underline">Recovery</span>
+            </Link>
+            <Link to="/tools/grade" className="group flex items-center justify-center gap-3 py-4 border-r border-white/[0.06] hover:bg-tech/5 transition-colors">
+              <span className="text-tech font-semibold text-sm md:text-base group-hover:underline">Grades</span>
+            </Link>
+            <Link to="/live-threat-dashboard" className="group flex items-center justify-center gap-3 py-4">
+              <span className="text-red font-semibold text-sm md:text-base group-hover:underline">Threat Feed</span>
             </Link>
           </div>
         </div>

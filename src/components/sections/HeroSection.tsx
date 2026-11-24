@@ -18,6 +18,8 @@ interface HeroSectionProps {
   coverImage?: string;
   children?: React.ReactNode;
   className?: string;
+  // Player safety specific props
+  safetyFocus?: 'checkup' | 'scam' | 'recovery' | 'grades';
 }
 
 export function HeroSection({
@@ -29,7 +31,8 @@ export function HeroSection({
   stats,
   coverImage,
   children,
-  className
+  className,
+  safetyFocus
 }: HeroSectionProps) {
   if (variant === 'homepage') {
     return (
@@ -67,27 +70,17 @@ export function HeroSection({
               animationDelay: '120ms'
             }}
           >
-            {title || (
-              <>
-                Track the Grid.<br />
-                Own the Signal.
-              </>
-            )}
+            {title || 'Check Your Steam Account'}
           </h1>
 
           <p className="text-[var(--text-secondary)] text-lg max-w-2xl mx-auto mb-8" style={{ animationDelay: '240ms' }}>
-            {subtitle || 'Gaming security intelligence for players — grades, threats, and protection guidance.'}
+            {subtitle || 'Evidence-backed guidance to check, secure, and recover your gaming accounts.'}
           </p>
 
           {ctas && ctas.length > 0 && (
             <div className="flex flex-wrap justify-center gap-4 mb-10" style={{ animationDelay: '360ms' }}>
               {ctas.map((cta, index) => (
-                <Button
-                  key={index}
-                  variant={cta.variant}
-                  size="lg"
-                  onClick={cta.onClick}
-                >
+                <Button key={index} variant={cta.variant} size="lg" onClick={cta.onClick}>
                   {cta.label}
                 </Button>
               ))}
@@ -118,84 +111,8 @@ export function HeroSection({
   }
 
   if (variant === 'category' || variant === 'topic') {
-    return (
-      <section
-        className={cn(
-          'relative py-20 overflow-hidden',
-          variant === 'category' ? 'min-h-[320px]' : 'min-h-[280px]',
-          className
-        )}
-      >
-        <div className="absolute inset-0 bg-[var(--bg-base)]">
-          <div className="absolute top-0 right-0 w-[400px] h-[400px] rounded-full bg-[var(--accent-cyan)] opacity-[0.04] blur-[80px] pointer-events-none" />
-        </div>
-
-        <div className="relative z-10 container-tokens px-4">
-          {eyebrow && (
-            <p className="font-[var(--font-label)] uppercase tracking-[0.1em] text-[var(--accent-cyan)] text-xs mb-3">
-              {eyebrow}
-            </p>
-          )}
-
-          <h1 className="font-[var(--font-heading)] text-[clamp(1.75rem,3vw,2.5rem)] text-[var(--text-primary)] mb-3">
-            {title}
-          </h1>
-
-          <p className="text-[var(--text-secondary)] text-base max-w-[560px]">
-            {subtitle}
-          </p>
-        </div>
-      </section>
-    );
+    return null;
   }
 
-  if (variant === 'article') {
-    return (
-      <section className={cn('relative min-h-[480px] flex items-end overflow-hidden', className)}>
-        {coverImage && (
-          <div className="absolute inset-0">
-            <img
-              src={coverImage}
-              alt=""
-              className="w-full h-full object-cover"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-[rgba(3,5,10,0.92)] via-[rgba(3,5,10,0.2)] to-transparent" />
-          </div>
-        )}
-
-        <div className="relative z-10 container-tokens px-4 pb-16">
-          {children}
-        </div>
-      </section>
-    );
-  }
-
-  // Generic variant
-  return (
-    <section className={cn('relative py-16 overflow-hidden', className)}>
-      <div className="absolute inset-0 bg-[var(--bg-base)]">
-        <div className="absolute top-0 right-0 w-[300px] h-[300px] rounded-full bg-[var(--accent-cyan)] opacity-[0.03] blur-[60px] pointer-events-none" />
-      </div>
-
-      <div className="relative z-10 container-tokens max-w-3xl text-center px-4">
-        {eyebrow && (
-          <p className="font-[var(--font-label)] uppercase tracking-[0.1em] text-[var(--accent-cyan)] text-xs mb-3">
-            {eyebrow}
-          </p>
-        )}
-
-        <h1 className="font-[var(--font-heading)] text-[clamp(1.75rem,3vw,2.5rem)] text-[var(--text-primary)] mb-3">
-          {title}
-        </h1>
-
-        {subtitle && (
-          <p className="text-[var(--text-secondary)] text-base">
-            {subtitle}
-          </p>
-        )}
-
-        {children}
-      </div>
-    </section>
-  );
+  return null;
 }
