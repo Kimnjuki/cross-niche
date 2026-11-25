@@ -29,6 +29,7 @@ import {
   Zap,
   BrainCircuit,
   ExternalLink,
+  ArrowLeft,
 } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { ToolPageSEO } from '@/components/tools/ToolPageSEO';
@@ -209,7 +210,7 @@ function getBand(pct: number): {
 // ── Component ────────────────────────────────────────────────────────────────
 
 export default function SteamScanner() {
-  const { isAuthenticated, anonymousId } = useAuth();
+  const { user } = useAuth();
 
   // Session storage for anonymous assessment - no user identifiers sent to server
   const sessionIdRef = useRef(

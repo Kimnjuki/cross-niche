@@ -452,7 +452,7 @@ export default function GamingSecurityCheckup() {
                             ? 'Your account has strong protections — no issues found'
                             : criticalFails.length > 0
                               ? `You have ${criticalFails.length} critical recommendation${criticalFails.length === 1 ? '' : 's'} to fix`
-                              : `You have ${failedItems.length} security tip${failedItems.length === 1 ? '' : 's'} to apply`}>
+                              : `You have ${failedItems.length} security tip${failedItems.length === 1 ? '' : 's'} to apply`}
                         </p>
                       </CardContent>
                     </Card>
