@@ -147,8 +147,8 @@ export function Homepage() {
             <Link to="/guides" className="group flex items-center justify-center gap-3 py-4 border-r border-white/[0.06] hover:bg-warning/5 transition-colors">
               <span className="text-warning font-semibold text-sm md:text-base group-hover:underline">Recovery</span>
             </Link>
-            <Link to="/tools/grade" className="group flex items-center justify-center gap-3 py-4 border-r border-white/[0.06] hover:bg-tech/5 transition-colors">
-              <span className="text-tech font-semibold text-sm md:text-base group-hover:underline">Grades</span>
+            <Link to="/tools" className="group flex items-center justify-center gap-3 py-4 border-r border-white/[0.06] hover:bg-tech/5 transition-colors">
+              <span className="text-tech font-semibold text-sm md:text-base group-hover:underline">All Tools</span>
             </Link>
             <Link to="/live-threat-dashboard" className="group flex items-center justify-center gap-3 py-4">
               <span className="text-red font-semibold text-sm md:text-base group-hover:underline">Threat Feed</span>

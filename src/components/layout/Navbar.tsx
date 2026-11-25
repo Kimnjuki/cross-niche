@@ -67,25 +67,20 @@ function NotificationsDropdown() {
 
 /** Primary navigation — reconciles live IA with spec's pillar model. */
 const navLinks = [
-  { href: '/safety', label: 'Is it safe?', color: 'text-emerald', external: true },
-  { href: '/tools/scam-check', label: 'Scam Checker', color: 'text-primary' },
-  { href: '/recover', label: 'Recovery', color: 'text-primary', external: true },
-  { href: '/games', label: 'Security Grades', color: 'text-cyan', external: true },
-  { href: '/threats', label: 'Threat Report', color: 'text-violet', external: true },
-  { href: '/platforms', label: 'Platforms', color: 'text-primary', external: true },
-  { href: '/tools', label: 'Checkup', color: 'text-primary' },
-  { href: '/guides', label: 'Guides', color: 'text-primary' },
+  { href: '/tools/gaming-security-checkup', label: 'Security Checkup', color: 'text-primary', external: false },
+  { href: '/tools/scam-check', label: 'Scam Checker', color: 'text-primary', external: false },
+  { href: '/guides', label: 'Recovery Guides', color: 'text-primary', external: false },
+  { href: '/tools', label: 'All Tools', color: 'text-primary', external: false },
+  { href: '/gaming', label: 'Gaming Security', color: 'text-amber', external: false },
 ];
 
 /** Primary CTAs for mobile: gaming-security-first. */
 const mobilePrimaryLinks = [
-  { href: '/gaming', label: 'Gaming Security', color: 'text-amber' },
-  { href: '/games', label: 'Grades', color: 'text-cyan', external: true },
-  { href: '/safety', label: 'Is it safe?', color: 'text-emerald', external: true },
-  { href: '/threats', label: 'Threat Report', color: 'text-violet', external: true },
-  { href: '/recover', label: 'Recovery', color: 'text-primary', external: true },
-  { href: '/tools/gaming-security-checkup', label: 'Checkup', color: 'text-primary' },
-  { href: '/guides', label: 'Guides', color: 'text-primary' },
+  { href: '/gaming', label: 'Gaming Security', color: 'text-amber', external: false },
+  { href: '/tools/gaming-security-checkup', label: 'Security Checkup', color: 'text-primary', external: false },
+  { href: '/tools/scam-check', label: 'Scam Checker', color: 'text-primary', external: false },
+  { href: '/guides', label: 'Recovery Guides', color: 'text-primary', external: false },
+  { href: '/tools', label: 'All Tools', color: 'text-primary', external: false },
 ];
 
 const roleFilters = [

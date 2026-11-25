@@ -10,11 +10,10 @@ import { cn } from '@/lib/utils';
 // <a href>, not a client-side <Link>, or they 404 on the * catch-all.
 const coverageLinks = [
   { label: 'Gaming Security', href: '/gaming', external: false },
-  { label: 'Security Grades', href: '/games', external: true },
-  { label: 'Is it safe?', href: '/safety', external: true },
-  { label: 'Gamer Threat Report', href: '/threats', external: true },
-  { label: 'Account Recovery', href: '/recover', external: true },
-  { label: 'Platform Security', href: '/platforms', external: true },
+  { label: 'Security Checkup', href: '/tools/gaming-security-checkup', external: false },
+  { label: 'Scam Checker', href: '/tools/scam-check', external: false },
+  { label: 'Recovery Guides', href: '/guides', external: false },
+  { label: 'All Tools', href: '/tools', external: false },
 ];
 
 const toolsLinks = [
@@ -26,7 +25,6 @@ const toolsLinks = [
 
 const companyLinks = [
   { label: 'About', href: '/about', external: false },
-  { label: 'Methodology', href: '/methodology', external: true },
   { label: 'Editorial policy', href: '/editorial', external: false },
   { label: 'Contact', href: '/contact', external: false },
   { label: 'Media & press kit', href: '/media', external: false },
