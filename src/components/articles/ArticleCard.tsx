@@ -71,12 +71,14 @@ export function ArticleCard({ article, variant = 'default', onArticleClick }: Ar
   if (!article) return null;
 
   const articleId = safeArticleId(article);
-  // Build URL with niche prefix for SEO (niche pages are content hubs)
-  const niche = article.niche?.toLowerCase() ?? '';
-  const articleSlug = article.slug ?? article.id ?? articleId;
-  const articleUrl = niche && ['tech', 'security', 'gaming'].includes(niche)
-    ? `/${niche}/${articleSlug}`
-    : `/article/${articleSlug}`;
+  // Canonical article URLs only. Niche-prefixed paths (/tech|security|gaming/:slug)
+  // are duplicate-content sources that previously produced GSC "Excluded by
+  // noindex" rows and /tech/undefined when slug was missing.
+  const articleSlug = String(article.slug ?? article.id ?? articleId ?? '').trim();
+  const articleUrl =
+    articleSlug && articleSlug !== 'undefined'
+      ? `/article/${articleSlug}`
+      : '/explore';
   const styles = nicheStyles[article.niche ?? 'tech'];
   const placeholderFallback = getPlaceholderByNiche(article.niche ?? 'tech', article.slug ?? article.id ?? articleId);
   const imageUrl = secureImageUrl(article.imageUrl, placeholderFallback);

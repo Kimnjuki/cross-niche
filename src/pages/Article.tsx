@@ -83,7 +83,13 @@ function isPlaceholderTitle(title: string | undefined): boolean {
 
 export default function Article() {
   const params = useParams<{ slug?: string; id?: string }>();
-  const slugOrId = (params.slug ?? params.id ?? '').trim();
+  const rawSlugOrId = (params.slug ?? params.id ?? '').trim();
+  // Guard against literal "undefined"/"null" path segments from bad template links
+  // (historically produced /tech/undefined in GSC as noindex 404 shells).
+  const slugOrId =
+    !rawSlugOrId || rawSlugOrId === 'undefined' || rawSlugOrId === 'null'
+      ? ''
+      : rawSlugOrId;
 
   // All hooks must run unconditionally (no early return before hooks — fixes React #300)
   const { data: contentData, isLoading } = useContentBySlug(slugOrId, { enabled: slugOrId.length > 0 });

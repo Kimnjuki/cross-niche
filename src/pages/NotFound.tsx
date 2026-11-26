@@ -93,7 +93,7 @@ const NotFound = () => {
                 {suggestions.slice(0, 4).map((a) => (
                   <Link
                     key={a.slug}
-                    to={`/${a.niche}/${a.slug}`}
+                    to={`/article/${a.slug}`}
                     className="group flex items-center gap-2 p-2 rounded-lg hover:bg-zinc-900 border border-transparent hover:border-zinc-800 transition-all text-left"
                   >
                     <ExternalLink className="w-3 h-3 text-zinc-500 shrink-0 group-hover:text-primary transition-colors" />

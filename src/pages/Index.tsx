@@ -67,10 +67,11 @@ const FEED_SLUGS = [
 
 function articleLink(article: Article | null | undefined): string {
   if (!article) return '/';
-  const slug = article.slug ?? article.id ?? '';
+  const slug = String(article.slug ?? article.id ?? '').trim();
   // Single canonical URL pattern: /article/<slug>. Niche-prefixed paths
   // (/security/<slug>, /tech/<slug>, /gaming/<slug>) are duplicate-content
   // sources (P0-3) — they are 301-redirected at the edge to this canonical.
+  if (!slug || slug === 'undefined') return '/explore';
   return `/article/${slug}`;
 }
 
