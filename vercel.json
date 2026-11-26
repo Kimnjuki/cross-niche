@@ -93,6 +93,46 @@
       "permanent": true
     },
     {
+      "source": "/article",
+      "destination": "/explore",
+      "permanent": true
+    },
+    {
+      "source": "/article/",
+      "destination": "/explore",
+      "permanent": true
+    },
+    {
+      "source": "/tech/undefined",
+      "destination": "/explore",
+      "permanent": true
+    },
+    {
+      "source": "/security/undefined",
+      "destination": "/explore",
+      "permanent": true
+    },
+    {
+      "source": "/gaming/undefined",
+      "destination": "/explore",
+      "permanent": true
+    },
+    {
+      "source": "/tech/:slug",
+      "destination": "/article/:slug",
+      "permanent": true
+    },
+    {
+      "source": "/security/:slug",
+      "destination": "/article/:slug",
+      "permanent": true
+    },
+    {
+      "source": "/gaming/:slug",
+      "destination": "/article/:slug",
+      "permanent": true
+    },
+    {
       "source": "/article/:slug/",
       "destination": "/article/:slug",
       "permanent": true

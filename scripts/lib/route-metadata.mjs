@@ -463,7 +463,7 @@ const NOINDEX_TOOLS = new Set([
   '/tools/ai-tool-finder',
   '/tools/vr-cyber-training',
   '/tools/zero-trust-quiz',
-  '/tools/patch-risk-tracker',
+  // /tools/patch-risk-tracker reinstated for indexing (GSC coverage 2026-11-26)
   // legacy general-tech tools (pivot: gaming security only)
   '/tools/security-scanner',
   '/tools/nexusguard',
@@ -972,7 +972,7 @@ const DEMOTE_PATHS = new Set([
   '/nexus-intersection',
   '/comparisons',
   '/topics',
-  '/explore',
+  // /explore reinstated for indexing (GSC coverage 2026-11-26)
   '/news',
   '/live-updates',
   '/tech',

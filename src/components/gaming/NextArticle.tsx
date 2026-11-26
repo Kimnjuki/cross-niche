@@ -42,10 +42,10 @@ export function NextArticle({ currentSlug, niche, articles }: NextArticleProps) 
     return [...candidates].sort((a, b) => publishedTime(b) - publishedTime(a))[0];
   }, [articles, currentSlug, niche]);
 
-  // Get the niche prefix path
-  const nichePath = niche === 'security' ? '/security' : niche === 'gaming' ? '/gaming' : '/tech';
-
   if (!next) return null;
+
+  const nextSlug = String(next.slug ?? '').trim();
+  if (!nextSlug || nextSlug === 'undefined') return null;
 
   return (
     <section className="border-t border-border pt-8 pb-4 mt-8" aria-label="Next article">
@@ -54,7 +54,7 @@ export function NextArticle({ currentSlug, niche, articles }: NextArticleProps) 
           Keep reading
         </p>
         <Link
-          to={`${nichePath}/${next.slug}`}
+          to={`/article/${nextSlug}`}
           className="group inline-flex items-center gap-3 text-xl font-display font-semibold text-foreground hover:text-primary transition-colors"
         >
           <span className="group-hover:underline decoration-primary/30 underline-offset-4">
